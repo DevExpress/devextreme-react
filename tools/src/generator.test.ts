@@ -22,6 +22,7 @@ export default class CLASS_NAME extends BaseComponent<IOptions> {
     this.WidgetClass = Widget;
   }
 }
+export { IOptions };
 `.trimLeft();
 //#endregion
 
@@ -62,5 +63,6 @@ export default class CLASS_NAME extends BaseComponent<IOptions> {
     },]
   }
 }
+export { IOptions };
 `.trimLeft();
 //#endregion
