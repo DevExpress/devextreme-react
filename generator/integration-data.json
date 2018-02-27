@@ -1,0 +1,424 @@
+[
+  {
+    "name": "DxAccordion",
+    "exportPath": "ui/accordion",
+    "templates": [
+      "itemTitleTemplate",
+      "itemTemplate"
+    ]
+  },
+  {
+    "name": "DxActionSheet",
+    "exportPath": "ui/action_sheet",
+    "templates": [
+      "itemTemplate"
+    ]
+  },
+  {
+    "name": "DxAutocomplete",
+    "exportPath": "ui/autocomplete",
+    "templates": [
+      "groupTemplate",
+      "itemTemplate",
+      "dropDownButtonTemplate"
+    ]
+  },
+  {
+    "name": "DxBarGauge",
+    "exportPath": "viz/bar_gauge"
+  },
+  {
+    "name": "DxBox",
+    "exportPath": "ui/box",
+    "templates": [
+      "itemTemplate"
+    ]
+  },
+  {
+    "name": "DxBullet",
+    "exportPath": "viz/bullet"
+  },
+  {
+    "name": "DxButton",
+    "exportPath": "ui/button",
+    "templates": [
+      "template"
+    ]
+  },
+  {
+    "name": "DxCalendar",
+    "exportPath": "ui/calendar",
+    "templates": [
+      "cellTemplate"
+    ]
+  },
+  {
+    "name": "DxChart",
+    "exportPath": "viz/chart"
+  },
+  {
+    "name": "DxCheckBox",
+    "exportPath": "ui/check_box"
+  },
+  {
+    "name": "DxCircularGauge",
+    "exportPath": "viz/circular_gauge"
+  },
+  {
+    "name": "DxColorBox",
+    "exportPath": "ui/color_box",
+    "templates": [
+      "fieldTemplate",
+      "dropDownButtonTemplate"
+    ]
+  },
+  {
+    "name": "DxContextMenu",
+    "exportPath": "ui/context_menu",
+    "templates": [
+      "itemTemplate"
+    ]
+  },
+  {
+    "name": "DxDataGrid",
+    "exportPath": "ui/data_grid",
+    "templates": [
+      "rowTemplate"
+    ]
+  },
+  {
+    "name": "DxDateBox",
+    "exportPath": "ui/date_box",
+    "templates": [
+      "dropDownButtonTemplate"
+    ]
+  },
+  {
+    "name": "DxDeferRendering",
+    "exportPath": "ui/defer_rendering"
+  },
+  {
+    "name": "DxDropDownBox",
+    "exportPath": "ui/drop_down_box",
+    "templates": [
+      "contentTemplate",
+      "fieldTemplate",
+      "dropDownButtonTemplate"
+    ]
+  },
+  {
+    "name": "DxFileUploader",
+    "exportPath": "ui/file_uploader"
+  },
+  {
+    "name": "DxFilterBuilder",
+    "exportPath": "ui/filter_builder"
+  },
+  {
+    "name": "DxForm",
+    "exportPath": "ui/form"
+  },
+  {
+    "name": "DxFunnel",
+    "exportPath": "viz/funnel"
+  },
+  {
+    "name": "DxGallery",
+    "exportPath": "ui/gallery",
+    "templates": [
+      "itemTemplate"
+    ]
+  },
+  {
+    "name": "DxLinearGauge",
+    "exportPath": "viz/linear_gauge"
+  },
+  {
+    "name": "DxList",
+    "exportPath": "ui/list",
+    "templates": [
+      "groupTemplate",
+      "itemTemplate"
+    ]
+  },
+  {
+    "name": "DxLoadIndicator",
+    "exportPath": "ui/load_indicator"
+  },
+  {
+    "name": "DxLoadPanel",
+    "exportPath": "ui/load_panel"
+  },
+  {
+    "name": "DxLookup",
+    "exportPath": "ui/lookup",
+    "templates": [
+      "titleTemplate",
+      "groupTemplate",
+      "fieldTemplate",
+      "itemTemplate",
+      "dropDownButtonTemplate"
+    ]
+  },
+  {
+    "name": "DxMap",
+    "exportPath": "ui/map"
+  },
+  {
+    "name": "DxMenu",
+    "exportPath": "ui/menu",
+    "templates": [
+      "itemTemplate"
+    ]
+  },
+  {
+    "name": "DxMultiView",
+    "exportPath": "ui/multi_view",
+    "templates": [
+      "itemTemplate"
+    ]
+  },
+  {
+    "name": "DxNavBar",
+    "exportPath": "ui/nav_bar",
+    "templates": [
+      "itemTemplate"
+    ]
+  },
+  {
+    "name": "DxNumberBox",
+    "exportPath": "ui/number_box"
+  },
+  {
+    "name": "DxPanorama",
+    "exportPath": "ui/panorama",
+    "templates": [
+      "itemTemplate"
+    ]
+  },
+  {
+    "name": "DxPieChart",
+    "exportPath": "viz/pie_chart"
+  },
+  {
+    "name": "DxPivot",
+    "exportPath": "ui/pivot",
+    "templates": [
+      "itemTitleTemplate",
+      "contentTemplate",
+      "itemTemplate"
+    ]
+  },
+  {
+    "name": "DxPivotGrid",
+    "exportPath": "ui/pivot_grid"
+  },
+  {
+    "name": "DxPivotGridFieldChooser",
+    "exportPath": "ui/pivot_grid_field_chooser"
+  },
+  {
+    "name": "DxPolarChart",
+    "exportPath": "viz/polar_chart"
+  },
+  {
+    "name": "DxPopover",
+    "exportPath": "ui/popover",
+    "templates": [
+      "titleTemplate",
+      "contentTemplate"
+    ]
+  },
+  {
+    "name": "DxPopup",
+    "exportPath": "ui/popup",
+    "templates": [
+      "titleTemplate",
+      "contentTemplate"
+    ]
+  },
+  {
+    "name": "DxProgressBar",
+    "exportPath": "ui/progress_bar"
+  },
+  {
+    "name": "DxRadioGroup",
+    "exportPath": "ui/radio_group",
+    "templates": [
+      "itemTemplate"
+    ]
+  },
+  {
+    "name": "DxRangeSelector",
+    "exportPath": "viz/range_selector"
+  },
+  {
+    "name": "DxRangeSlider",
+    "exportPath": "ui/range_slider"
+  },
+  {
+    "name": "DxResizable",
+    "exportPath": "ui/resizable"
+  },
+  {
+    "name": "DxResponsiveBox",
+    "exportPath": "ui/responsive_box",
+    "templates": [
+      "itemTemplate"
+    ]
+  },
+  {
+    "name": "DxScheduler",
+    "exportPath": "ui/scheduler",
+    "templates": [
+      "appointmentTemplate",
+      "dropDownAppointmentTemplate",
+      "dataCellTemplate",
+      "timeCellTemplate",
+      "resourceCellTemplate",
+      "dateCellTemplate",
+      "appointmentTooltipTemplate"
+    ]
+  },
+  {
+    "name": "DxScrollView",
+    "exportPath": "ui/scroll_view"
+  },
+  {
+    "name": "DxSelectBox",
+    "exportPath": "ui/select_box",
+    "templates": [
+      "fieldTemplate",
+      "groupTemplate",
+      "itemTemplate",
+      "dropDownButtonTemplate"
+    ]
+  },
+  {
+    "name": "DxSlideOut",
+    "exportPath": "ui/slide_out",
+    "templates": [
+      "menuItemTemplate",
+      "menuGroupTemplate",
+      "contentTemplate",
+      "itemTemplate"
+    ]
+  },
+  {
+    "name": "DxSlideOutView",
+    "exportPath": "ui/slide_out_view",
+    "templates": [
+      "menuTemplate",
+      "contentTemplate"
+    ]
+  },
+  {
+    "name": "DxSlider",
+    "exportPath": "ui/slider"
+  },
+  {
+    "name": "DxSparkline",
+    "exportPath": "viz/sparkline"
+  },
+  {
+    "name": "DxSwitch",
+    "exportPath": "ui/switch"
+  },
+  {
+    "name": "DxTabPanel",
+    "exportPath": "ui/tab_panel",
+    "templates": [
+      "itemTitleTemplate",
+      "itemTemplate"
+    ]
+  },
+  {
+    "name": "DxTabs",
+    "exportPath": "ui/tabs",
+    "templates": [
+      "itemTemplate"
+    ]
+  },
+  {
+    "name": "DxTagBox",
+    "exportPath": "ui/tag_box",
+    "templates": [
+      "tagTemplate",
+      "fieldTemplate",
+      "groupTemplate",
+      "itemTemplate",
+      "dropDownButtonTemplate"
+    ]
+  },
+  {
+    "name": "DxTextArea",
+    "exportPath": "ui/text_area"
+  },
+  {
+    "name": "DxTextBox",
+    "exportPath": "ui/text_box"
+  },
+  {
+    "name": "DxTileView",
+    "exportPath": "ui/tile_view",
+    "templates": [
+      "itemTemplate"
+    ]
+  },
+  {
+    "name": "DxToast",
+    "exportPath": "ui/toast",
+    "templates": [
+      "contentTemplate"
+    ]
+  },
+  {
+    "name": "DxToolbar",
+    "exportPath": "ui/toolbar",
+    "templates": [
+      "menuItemTemplate",
+      "itemTemplate"
+    ]
+  },
+  {
+    "name": "DxTooltip",
+    "exportPath": "ui/tooltip",
+    "templates": [
+      "contentTemplate"
+    ]
+  },
+  {
+    "name": "DxTreeList",
+    "exportPath": "ui/tree_list"
+  },
+  {
+    "name": "DxTreeMap",
+    "exportPath": "viz/tree_map"
+  },
+  {
+    "name": "DxTreeView",
+    "exportPath": "ui/tree_view",
+    "templates": [
+      "itemTemplate"
+    ]
+  },
+  {
+    "name": "DxValidationGroup",
+    "exportPath": "ui/validation_group"
+  },
+  {
+    "name": "DxValidationSummary",
+    "exportPath": "ui/validation_summary",
+    "templates": [
+      "itemTemplate"
+    ]
+  },
+  {
+    "name": "DxValidator",
+    "exportPath": "ui/validator"
+  },
+  {
+    "name": "DxVectorMap",
+    "exportPath": "viz/vector_map"
+  }
+]
