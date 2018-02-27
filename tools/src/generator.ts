@@ -89,4 +89,5 @@ export default class <#= it.name #> extends BaseComponent<IOptions> {
     },<#~#>]
 <#?#>  }
 }
+export { IOptions };
 `.trimLeft());
