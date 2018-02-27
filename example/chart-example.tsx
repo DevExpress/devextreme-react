@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { orangesByDay } from "./data";
-import Example from "./Example";
+import Example from "./example-block";
 
 import Button from "../src/ui/Button";
 import Chart from "../src/ui/Chart";
