@@ -1,8 +1,8 @@
 import * as React from "react";
 
-import Button from "../src/ui/Button";
-import List from "../src/ui/List";
-import TextBox from "../src/ui/TextBox";
+import Button from "../src/ui/button";
+import List from "../src/ui/list";
+import TextBox from "../src/ui/text-box";
 
 import Example from "./example-block";
 

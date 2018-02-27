@@ -2,9 +2,9 @@ import * as React from "react";
 
 import Example from "./example-block";
 
-import Button from "../src/ui/Button";
-import ScrollView from "../src/ui/ScrollView";
-import TextBox from "../src/ui/TextBox";
+import Button from "../src/ui/button";
+import ScrollView from "../src/ui/scroll-view";
+import TextBox from "../src/ui/text-box";
 
 interface IState {
     textBoxValue: string;

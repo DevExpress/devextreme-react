@@ -14,6 +14,7 @@
     "@types/react": "^16.0.36",
     "@types/react-dom": "^16.0.3",
     "css-loader": "^0.28.9",
+    "dasherize": "^2.0.0",
     "devextreme": "^18.1.1-pre",
     "dot": "^1.1.2",
     "enzyme": "^3.3.0",
