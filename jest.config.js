@@ -1,7 +1,7 @@
 module.exports = {
     "roots": [
       "<rootDir>/src",
-      "<rootDir>/generator"
+      "<rootDir>/tools"
     ],
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
@@ -17,5 +17,5 @@ module.exports = {
     ],
     "moduleNameMapper": {
       "\\.(css|less)$": "identity-obj-proxy"
-    }    
-  }
+    }
+}

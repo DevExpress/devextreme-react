@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import Example from "./Example";
+import Example from "./example-block";
 
 import Button from "../src/ui/Button";
 import ScrollView from "../src/ui/ScrollView";

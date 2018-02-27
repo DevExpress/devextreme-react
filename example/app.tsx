@@ -1,11 +1,11 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import ChartExample from "./ChartExample";
-import Example from "./Example";
-import ListExample from "./ListExample";
-import PopupExample from "./PopupExample";
-import ScrollViewExample from "./ScrollViewExample";
-import TexBoxExample from "./TexBoxExample";
+import ChartExample from "./chart-example";
+import Example from "./example-block";
+import ListExample from "./list-example";
+import PopupExample from "./popup-example";
+import ScrollViewExample from "./scroll-view-example";
+import TexBoxExample from "./text-box-example";
 
 import Button from "../src/ui/Button";
 import DataGrid from "../src/ui/DataGrid";

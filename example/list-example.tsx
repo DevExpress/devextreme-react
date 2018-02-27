@@ -4,7 +4,7 @@ import Button from "../src/ui/Button";
 import List from "../src/ui/List";
 import TextBox from "../src/ui/TextBox";
 
-import Example from "./Example";
+import Example from "./example-block";
 
 interface IState {
     text: string;

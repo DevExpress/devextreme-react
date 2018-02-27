@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import Button from "../src/ui/Button";
-import Example from "./Example";
+import Example from "./example-block";
 
 import Popup from "../src/ui/Popup";
 
