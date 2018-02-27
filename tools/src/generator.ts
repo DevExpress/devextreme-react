@@ -33,7 +33,12 @@ function generateAll(outputDir: string, components: IComponentDescriptor[]) {
 }
 
 function generateComponent(component: IComponentDescriptor): string {
-  return componentTemplate(component);
+  const componentModel: IComponentModel = {
+    ...component,
+    renderedTemplateProps: component.templates ? component.templates.map(templatePropTemplate) : null
+  };
+
+  return componentTemplate(componentModel);
 }
 
 function mapComponent(raw: any, baseComponent: string): IComponentDescriptor {
@@ -68,7 +73,11 @@ interface IComponentDescriptor {
   templates?: ITemplateItem[];
 }
 
-const componentTemplate = template(`
+interface IComponentModel extends IComponentDescriptor {
+  renderedTemplateProps?: string[];
+}
+
+const componentTemplate: (IComponentModel) => string = template(`
 import Widget, { IOptions <#? it.templates #>as WidgetOptions <#?#>} from "devextreme/<#= it.dxExportPath #>";
 import BaseComponent from "<#= it.baseComponentPath #>";
 <#? it.templates #>
@@ -81,13 +90,17 @@ export default class <#= it.name #> extends BaseComponent<IOptions> {
   constructor(props: IOptions) {
     super(props);
     this.WidgetClass = Widget;
-<#? it.templates #>
-    this.templateProps = [<#~ it.templates :template #>{
-      tmplOption: "<#= template.name #>",
-      render: "<#= template.render #>",
-      component: "<#= template.component #>"
-    },<#~#>]
+<#? it.renderedTemplateProps #>
+    this.templateProps = [<#= it.renderedTemplateProps.join(', ') #>];
 <#?#>  }
 }
 export { IOptions };
 `.trimLeft());
+
+const templatePropTemplate: (ITemplateItem) => string = template(`
+    {
+      tmplOption: "<#= it.name #>",
+      render: "<#= it.render #>",
+      component: "<#= it.component #>"
+    }
+`.trim());

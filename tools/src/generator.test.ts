@@ -60,7 +60,7 @@ export default class CLASS_NAME extends BaseComponent<IOptions> {
       tmplOption: "optionTemplate",
       render: "optionRender",
       component: "optionComponent"
-    },]
+    }];
   }
 }
 export { IOptions };
