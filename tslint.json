@@ -1,12 +1,13 @@
 {
     "defaultSeverity": "error",
     "extends": [
-        "tslint:recommended"
+        "tslint:recommended", "tslint-react"
     ],
     "jsRules": {},
     "rules": {
         "object-literal-sort-keys": false,
-        "trailing-comma": false
+        "trailing-comma": false,
+        "jsx-no-lambda": false
     },
     "rulesDirectory": []
 }

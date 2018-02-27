@@ -29,7 +29,7 @@ export default class extends React.Component<any, IState> {
                     <Button text="Clear TextBox" onClick={() => this.setState({ textBoxValue: "" })} />
                     <br/>
                     <br/>
-                    <TextBox value={ this.state.textBoxValue } onValueChanged={ (e) => this.setState({ textBoxValue: e.value }) } valueChangeEvent="keydown"/>
+                    <TextBox value={this.state.textBoxValue} onValueChanged={(e) => this.setState({textBoxValue: e.value})} valueChangeEvent="keydown"/>
                     <br/>
                     <div>
                         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, eveniet tempore, perspiciatis totam qui est minima dicta beatae dolores, omnis enim ut incidunt. Ut reprehenderit, tempore iusto deserunt doloremque fugit.</p>
