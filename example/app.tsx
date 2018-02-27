@@ -47,7 +47,8 @@ ReactDOM.render(
         height={400}
         currentView={"week"}
         currentDate={new Date(2017, 4, 25)}
-        startDayHour={9}/>
+        startDayHour={9}
+      />
     </Example>
     <ChartExample />
 

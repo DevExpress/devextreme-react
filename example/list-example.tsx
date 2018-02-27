@@ -36,13 +36,17 @@ export default class extends React.Component<any, IState> {
     }
 
     public render() {
+        const itemRender: any = (props: any) =>
+        <i>This is function template for item {props.text}</i>;
+
         return (
             <Example title="DxList" state={this.state} >
-                <List items={this.state.items} itemRender={ (props: any) =>
-                    <i>This is function template for item { props.text }</i>
-                }/>
+                <List
+                    items={this.state.items}
+                    itemRender={itemRender}
+                />
 
-                <List items={this.state.items} itemComponent={ ItemTemplate }/>
+                <List items={this.state.items} itemComponent={ItemTemplate}/>
 
                 <TextBox value={this.state.text} onValueChanged={this.updateText} valueChangeEvent="keyup" />
                 <Button text="Add to list" onClick={this.addTextToList} />

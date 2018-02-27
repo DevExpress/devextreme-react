@@ -74,8 +74,9 @@ describe("component rendering", () => {
 describe("templates", () => {
 
     it("renders function template", () => {
+        const itemRender: any = () => <div>Template</div>;
         mount(
-            <TestComponent itemRender={ () => <div>Template</div> } />
+            <TestComponent itemRender={itemRender} />
         );
         const integrationOptions = WidgetMock.mock.calls[0][1].integrationOptions;
 
