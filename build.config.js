@@ -1,12 +1,15 @@
 
 module.exports = {
+  src: './src/**/*.{ts,tsx}',
   generator: {
-    srcDir: './tools/src/',
+    src: './tools/src/**/*.{ts,tsx}',
     binDir: './tools/bin/',
     entry: './tools/bin/generator.js'
   },
+  example: {
+    src: "example/**/*.ts{,x}"
+  },
   npm: {
-    src: './src/**/*.{ts,tsx}',
     dist: './npm/',
     package: 'package.json'
   },

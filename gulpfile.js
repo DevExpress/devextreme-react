@@ -5,6 +5,7 @@ const path = require('path');
 const gulp = require('gulp');
 const clean = require('gulp-clean');
 const ts = require('gulp-typescript');
+const tslint = require("gulp-tslint");
 const runSequence = require('run-sequence');
 
 const config = require('./build.config');
@@ -18,6 +19,8 @@ const
   GEN_COMPILE = 'generator.compile',
   GEN_CLEAN = 'generator.clean',
   GEN_RUN = 'generator.run',
+
+  LINT = 'lint',
 
   NPM_CLEAN = 'npm.clean',
   NPM_PACKAGE = 'npm.package',
@@ -48,7 +51,7 @@ gulp.task(OUTPUTDIR_CREATE, (done) =>
 );
 
 gulp.task(GEN_COMPILE, [GEN_CLEAN], () =>
-  gulp.src([path.join(config.generator.srcDir, '**/*.ts'), `!**/*.test.ts`])
+  gulp.src([config.generator.src, `!**/*.test.ts`])
     .pipe(ts({
       'target': 'es6',
       'module': 'commonjs'
@@ -78,7 +81,15 @@ gulp.task(NPM_PACKAGE, [NPM_CLEAN], () =>
 )
 
 gulp.task(NPM_BUILD, [NPM_PACKAGE], () => {
-  return gulp.src(config.npm.src)
+  return gulp.src(config.src)
     .pipe(ts('tsconfig.json'))
     .pipe(gulp.dest(config.npm.dist))
 });
+
+gulp.task(LINT, () => {
+  return gulp.src([config.src, config.generator.src, config.example.src])
+    .pipe(tslint({
+        formatter: "verbose"
+    }))
+    .pipe(tslint.report())
+})
