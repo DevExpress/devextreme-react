@@ -39,7 +39,7 @@
   "scripts": {
     "start": "npm run build && npm run serve",
     "serve": "webpack-dev-server",
-    "lint": "tslint src/**/*.ts{,x} generator/**/*.ts{,x} example/**/*.ts{,x}",
+    "lint": "tslint src/**/*.ts{,x} tools/**/*.ts{,x} example/**/*.ts{,x}",
     "build": "npm run lint && npm run generate",
     "generate": "gulp generate",
     "clean": "gulp clean",

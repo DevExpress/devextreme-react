@@ -1,5 +1,5 @@
 import * as React from "react";
-import Example from "./Example";
+import Example from "./example-block";
 
 import TextBox from "../src/ui/TextBox";
 

@@ -1,7 +1,5 @@
-node_modules
-bower_components
-coverage
-npm
 .vscode/launch.json
+node_modules/
+npm/
 src/ui/
-generator/bin
+tools/bin/
