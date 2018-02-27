@@ -1,9 +1,9 @@
 import * as React from "react";
 
-import Button from "../src/ui/Button";
+import Button from "../src/ui/button";
 import Example from "./example-block";
 
-import Popup from "../src/ui/Popup";
+import Popup from "../src/ui/popup";
 
 interface IState {
     visible: boolean;

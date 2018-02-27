@@ -3,6 +3,8 @@ import { writeFileSync as writeFile } from "fs";
 import { join as joinPaths } from "path";
 import { removePrefix } from "./helpers";
 
+import * as dasherize from "dasherize";
+
 (Object as any).assign(templateSettings, {
   conditional: /\<#\?(\?)?\s*([\s\S]*?)\s*#\>/g,
   define: /\<###\s*([\w\.$]+)\s*(\:|=)([\s\S]+?)##\>/g,
@@ -28,7 +30,7 @@ function generateFromRawData(outputDir: string, rawData: any[], baseComponent: s
 
 function generateAll(outputDir: string, components: IComponentDescriptor[]) {
   components.forEach((c) => {
-    writeFile(joinPaths(outputDir, `${c.name}.ts`), generateComponent(c), { encoding: "utf8" });
+    writeFile(joinPaths(outputDir, `${dasherize(c.name)}.ts`), generateComponent(c), { encoding: "utf8" });
   });
 }
 
