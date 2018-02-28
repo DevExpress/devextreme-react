@@ -1,7 +1,7 @@
 import * as React from "react";
 import Example from "./example-block";
 
-import TextBox from "../src/ui/text-box";
+import { TextBox } from "../src/ui/text-box";
 
 interface IState {
     text: string;

@@ -2,6 +2,7 @@
   "name": "devextreme-react",
   "version": "18.1.0",
   "main": "index.js",
+  "types": "index.d.ts",
   "peerDependencies": {
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
