@@ -11,10 +11,7 @@ import PopupExample from "./popup-example";
 import ScrollViewExample from "./scroll-view-example";
 import TexBoxExample from "./text-box-example";
 
-import Button from "../src/ui/button";
-import DataGrid from "../src/ui/data-grid";
-import NumberBox from "../src/ui/number-box";
-import Scheduler from "../src/ui/scheduler";
+import { Button, DataGrid, NumberBox, Scheduler } from "../src";
 
 import { appointments, orangesByDay } from "./data";
 

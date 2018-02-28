@@ -10,6 +10,7 @@ interface IComponent {
 function generate(component: IComponent): string {
     const componentModel = {
         ...component,
+        optionsName: `I${component.name}Options`,
         templates: component.templates ? component.templates.map(createTemplateModel) : null
     };
 
@@ -32,6 +33,7 @@ function replaceTemplateSuffix(name: string, suffix: string): string {
 
 const renderComponent: (model: {
     name: string;
+    optionsName: string;
     baseComponentPath: string;
     dxExportPath: string;
     templates?: Array<{
@@ -42,23 +44,23 @@ const renderComponent: (model: {
     }>;
 }
 ) => string = createTempate(`
-import Widget, { IOptions <#? it.templates #>as WidgetOptions <#?#>} from "devextreme/<#= it.dxExportPath #>";
+import Widget, { IOptions <#? !it.templates #>as <#= it.optionsName #> <#?#>} from "devextreme/<#= it.dxExportPath #>";
 import BaseComponent from "<#= it.baseComponentPath #>";
 <#? it.templates #>
-interface IOptions extends WidgetOptions {<#~ it.templates :template #>
+interface <#= it.optionsName #> extends IOptions {<#~ it.templates :template #>
     <#= template.render #>?: (props: any) => React.ReactNode;
     <#= template.component #>?: React.ComponentType<any>;<#~#>
 }<#?#>
-export default class <#= it.name #> extends BaseComponent<IOptions> {
+class <#= it.name #> extends BaseComponent<<#= it.optionsName #>> {
 
-  constructor(props: IOptions) {
+  constructor(props: <#= it.optionsName #>) {
     super(props);
     this.WidgetClass = Widget;
 <#? it.templates #>
     this.templateProps = [<#= it.templates.map(t => t.renderedProp).join(', ') #>];
 <#?#>  }
 }
-export { IOptions as I<#= it.name #>Options };
+export { <#= it.name #>, <#= it.optionsName #> };
 `.trimLeft());
 
 const renderTemplateProp: (model: {

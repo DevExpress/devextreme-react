@@ -12,17 +12,17 @@ it("generates", () => {
 
 //#region EXPECTED_RENDERS_WITH_PROPS
 const EXPECTED_RENDERS_WITH_PROPS = `
-import Widget, { IOptions } from "devextreme/DX/WIDGET/PATH";
+import Widget, { IOptions as ICLASS_NAMEOptions } from "devextreme/DX/WIDGET/PATH";
 import BaseComponent from "BASE_COMPONENT_PATH";
 
-export default class CLASS_NAME extends BaseComponent<IOptions> {
+class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 
-  constructor(props: IOptions) {
+  constructor(props: ICLASS_NAMEOptions) {
     super(props);
     this.WidgetClass = Widget;
   }
 }
-export { IOptions as ICLASS_NAMEOptions };
+export { CLASS_NAME, ICLASS_NAMEOptions };
 `.trimLeft();
 //#endregion
 
@@ -39,16 +39,16 @@ it("generates widget with template", () => {
 
 //#region EXPECTED_RENDERS_WIDGET_WITH_TEMPLATE
 const EXPECTED_RENDERS_WIDGET_WITH_TEMPLATE = `
-import Widget, { IOptions as WidgetOptions } from "devextreme/DX/WIDGET/PATH";
+import Widget, { IOptions } from "devextreme/DX/WIDGET/PATH";
 import BaseComponent from "BASE_COMPONENT_PATH";
 
-interface IOptions extends WidgetOptions {
+interface ICLASS_NAMEOptions extends IOptions {
     optionRender?: (props: any) => React.ReactNode;
     optionComponent?: React.ComponentType<any>;
 }
-export default class CLASS_NAME extends BaseComponent<IOptions> {
+class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 
-  constructor(props: IOptions) {
+  constructor(props: ICLASS_NAMEOptions) {
     super(props);
     this.WidgetClass = Widget;
 
@@ -59,6 +59,6 @@ export default class CLASS_NAME extends BaseComponent<IOptions> {
     }];
   }
 }
-export { IOptions as ICLASS_NAMEOptions };
+export { CLASS_NAME, ICLASS_NAMEOptions };
 `.trimLeft();
 //#endregion
