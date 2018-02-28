@@ -1,4 +1,4 @@
-import { generate } from "./component-generator";
+import generate from "./component-generator";
 
 it("generates", () => {
     expect(

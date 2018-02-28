@@ -1,4 +1,4 @@
-import { generate } from "./index-generator";
+import generate from "./index-generator";
 
 it("generates", () => {
     expect(generate([ "./path", "./another/path" ])).toBe(EXPECTED_GENERATES);

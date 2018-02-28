@@ -1,13 +1,13 @@
-import { createTempate } from "./template";
+import createTempate from "./template";
 
-export interface IComponent {
+interface IComponent {
     name: string;
     baseComponentPath: string;
     dxExportPath: string;
     templates?: string[];
 }
 
-export function generate(component: IComponent): string {
+function generate(component: IComponent): string {
     const componentModel = {
         ...component,
         templates: component.templates ? component.templates.map(createTemplateModel) : null
@@ -72,3 +72,5 @@ const renderTemplateProp: (model: {
         component: "<#= it.component #>"
     }
 `.trim());
+
+export default generate;

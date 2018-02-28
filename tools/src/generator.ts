@@ -1,10 +1,10 @@
 import { writeFileSync as writeFile } from "fs";
 import { dirname as getDirName, join as joinPaths, relative as getRelativePath, sep as pathSeparator } from "path";
-import { generate as generateComponent, IComponent } from "./component-generator";
+import generateComponent from "./component-generator";
 import { removeExtension, removePrefix, toKebabCase } from "./helpers";
-import { generate as generateIndex } from "./index-generator";
+import generateIndex from "./index-generator";
 
-export default function generateFromRawData(
+function generate(
   rawData: any[],
   baseComponent: string,
   out: {
@@ -28,10 +28,7 @@ export default function generateFromRawData(
   writeFile(out.indexFileName, generateIndex(modulePaths), { encoding: "utf8" });
 }
 
-function mapWidget(raw: any, baseComponent: string): {
-  fileName: string;
-  component: IComponent;
-} {
+function mapWidget(raw: any, baseComponent: string) {
   const name = removePrefix(raw.name, "dx");
 
   return {
@@ -43,5 +40,6 @@ function mapWidget(raw: any, baseComponent: string): {
       templates: raw.templates
     }
   };
-
 }
+
+export default generate;
