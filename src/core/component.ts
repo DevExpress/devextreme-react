@@ -23,8 +23,10 @@ export default class Component<P> extends React.Component<P, any> {
   }
 
   public componentDidMount() {
-    const options: any = {};
-    (Object as any).assign(options, this.props, this.getIntegrationOptions());
+    const options: any = {
+      ...this.props as object,
+      ...this.getIntegrationOptions()
+    };
 
     this.instance = new this.WidgetClass(this.element, options);
   }
@@ -101,7 +103,7 @@ export default class Component<P> extends React.Component<P, any> {
   private fillTemplate(tmplFn: any): object {
     return {
       render: (data: any) => {
-        const result = this.getTemplateContent(tmplFn, { data: data.model });
+        const result = this.getTemplateContent(tmplFn, {...data.model});
         data.container.appendChild(result);
         return result;
       }
