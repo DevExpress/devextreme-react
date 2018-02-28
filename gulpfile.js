@@ -37,7 +37,7 @@ gulp.task(GENERATE, () =>
 gulp.task(CLEAN, [OUTPUTDIR_CLEAN, GEN_CLEAN]);
 
 gulp.task(OUTPUTDIR_CLEAN, () =>
-  gulp.src(config.componentFolder, { read: false })
+  gulp.src([config.componentFolder, config.indexFileName], { read: false })
     .pipe(clean())
 );
 
@@ -62,9 +62,12 @@ gulp.task(GEN_COMPILE, [GEN_CLEAN], () =>
 gulp.task(GEN_RUN, (done) => {
   const generateSync = require(`${config.generator.binDir}\\generator.js`).default;
   generateSync(
-    config.componentFolder,
     JSON.parse(fs.readFileSync(config.metadataPath).toString()),
-    config.baseComponent
+    config.baseComponent,
+    {
+      componentsDir: config.componentFolder,
+      indexFileName: config.indexFileName
+    }
   );
 
   done();

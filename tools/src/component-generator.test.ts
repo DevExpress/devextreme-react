@@ -1,8 +1,8 @@
-import { generateComponent } from "./generator";
+import { generate } from "./component-generator";
 
-it("renders", () => {
+it("generates", () => {
     expect(
-        generateComponent({
+        generate({
             name: "CLASS_NAME",
             baseComponentPath: "BASE_COMPONENT_PATH",
             dxExportPath: "DX/WIDGET/PATH"
@@ -22,27 +22,23 @@ export default class CLASS_NAME extends BaseComponent<IOptions> {
     this.WidgetClass = Widget;
   }
 }
-export { IOptions };
+export { IOptions as ICLASS_NAMEOptions };
 `.trimLeft();
 //#endregion
 
-it("renders with templates", () => {
+it("generates widget with template", () => {
     expect(
-        generateComponent({
+        generate({
             name: "CLASS_NAME",
             baseComponentPath: "BASE_COMPONENT_PATH",
             dxExportPath: "DX/WIDGET/PATH",
-            templates: [{
-                name: "optionTemplate",
-                render: "optionRender",
-                component: "optionComponent"
-            }]
+            templates: ["optionTemplate"]
         })
-    ).toBe(EXPECTED_RENDERS_WITH_TEMPLATES);
+    ).toBe(EXPECTED_RENDERS_WIDGET_WITH_TEMPLATE);
 });
 
-//#region EXPECTED_RENDERS_WITH_TEMPLATES
-const EXPECTED_RENDERS_WITH_TEMPLATES = `
+//#region EXPECTED_RENDERS_WIDGET_WITH_TEMPLATE
+const EXPECTED_RENDERS_WIDGET_WITH_TEMPLATE = `
 import Widget, { IOptions as WidgetOptions } from "devextreme/DX/WIDGET/PATH";
 import BaseComponent from "BASE_COMPONENT_PATH";
 
@@ -57,12 +53,12 @@ export default class CLASS_NAME extends BaseComponent<IOptions> {
     this.WidgetClass = Widget;
 
     this.templateProps = [{
-      tmplOption: "optionTemplate",
-      render: "optionRender",
-      component: "optionComponent"
+        tmplOption: "optionTemplate",
+        render: "optionRender",
+        component: "optionComponent"
     }];
   }
 }
-export { IOptions };
+export { IOptions as ICLASS_NAMEOptions };
 `.trimLeft();
 //#endregion
