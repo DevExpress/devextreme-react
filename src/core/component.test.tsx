@@ -71,9 +71,9 @@ describe("component rendering", () => {
     });
 });
 
-describe("templates", () => {
+describe("templates: function template", () => {
 
-    it("renders function template", () => {
+    it("pass integrationOptions to widget", () => {
         const itemRender: any = () => <div>Template</div>;
         mount(
             <TestComponent itemRender={itemRender} />
@@ -83,18 +83,27 @@ describe("templates", () => {
         expect(integrationOptions).toBeDefined();
         expect(integrationOptions.templates).toBeDefined();
         expect(integrationOptions.templates.item).toBeDefined();
-
-        const render = integrationOptions.templates.item.render;
-
-        expect(typeof render).toBe("function");
-        expect(render({
-            container: document.createElement("div"), model: undefined
-        }).outerHTML).toBe("<div><div>Template</div></div>");
+        expect(typeof integrationOptions.templates.item.render).toBe("function");
     });
 
-    it("renders component template", () => {
-        const ItemTemplate = () => <div>Template</div>;
+    it("renders", () => {
+        const itemRender: any = (props: any) => <div>Template {props.text}</div>;
+        mount(
+            <TestComponent itemRender={itemRender} />
+        );
 
+        const render = WidgetMock.mock.calls[0][1].integrationOptions.templates.item.render;
+
+        expect(render({
+            container: document.createElement("div"), model: { text: "with data" }
+        }).outerHTML).toBe("<div><div>Template with data</div></div>");
+    });
+});
+
+describe("templates: component template", () => {
+
+    it("pass integrationOptions to widget", () => {
+        const ItemTemplate = () => <div>Template</div>;
         mount(
             <TestComponent itemComponent={ItemTemplate} />
         );
@@ -104,13 +113,20 @@ describe("templates", () => {
         expect(integrationOptions).toBeDefined();
         expect(integrationOptions.templates).toBeDefined();
         expect(integrationOptions.templates.item).toBeDefined();
+        expect(typeof integrationOptions.templates.item.render).toBe("function");
+    });
 
-        const render = integrationOptions.templates.item.render;
+    it("renders", () => {
+        const ItemTemplate = (props: any) => <div>Template {props.text}</div>;
+        mount(
+            <TestComponent itemComponent={ItemTemplate} />
+        );
 
-        expect(typeof render).toBe("function");
+        const render = WidgetMock.mock.calls[0][1].integrationOptions.templates.item.render;
+
         expect(render({
-            container: document.createElement("div"), model: undefined
-        }).outerHTML).toBe("<div><div>Template</div></div>");
+            container: document.createElement("div"), model: { text: "with data" }
+        }).outerHTML).toBe("<div><div>Template with data</div></div>");
     });
 });
 
