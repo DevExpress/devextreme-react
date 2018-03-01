@@ -1,14 +1,8 @@
 #set your language below
 language: node_js
 
-env:
-	- XUNIT_FILE=shippable/testresults/test-results.xml
-
 node_js:
-  - "5.10"
-
-before_script:
-  - mkdir -p shippable/testresults
+  - 6.2.0
 
 build:
   pre_ci_boot:
@@ -17,5 +11,9 @@ build:
     pull: true
 
   ci:
-    - shippable_retry npm install --unsafe-perm
+    - npm install
+    - npm run build
     - npm run test
+  cache: true
+  cache_dir_list:
+    - $SHIPPABLE_BUILD_DIR/node_modules
