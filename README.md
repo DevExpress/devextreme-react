@@ -12,7 +12,7 @@ This project allows you to use [DevExtreme Widgets](http://js.devexpress.com/Dem
 
 Install the **devextreme** and **devextreme-react** npm packages:
 
-```sh
+```console
 npm install --save devextreme@18.1-unstable devextreme-react
 ```
 ### Import DevExtreme Components  ####
@@ -43,7 +43,7 @@ class Example extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            text: "inital text"
+            text: 'inital text'
         };
     }
 
@@ -52,14 +52,14 @@ class Example extends React.Component {
             <TextBox
                 value={this.state.text}
                 onValueChanged={this.update}
-                valueChangeEvent="keyup"
+                valueChangeEvent='keyup'
             />
         );
     }
 
     update(e) {
         this.setState({
-            text: e.component.option("value")
+            text: e.component.option('value')
         });
     }
 }
