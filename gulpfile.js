@@ -60,7 +60,7 @@ gulp.task(GEN_COMPILE, [GEN_CLEAN], () =>
 );
 
 gulp.task(GEN_RUN, (done) => {
-  const generateSync = require(`${config.generator.binDir}\\generator.js`).default;
+  const generateSync = require(`${config.generator.binDir}generator.js`).default;
   generateSync(
     JSON.parse(fs.readFileSync(config.metadataPath).toString()),
     config.baseComponent,
