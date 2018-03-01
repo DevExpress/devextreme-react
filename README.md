@@ -70,6 +70,51 @@ ReactDOM.render(
 );
 ```
 
+### Customizing component rendering
+```jsx
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+import { List } from 'devextreme-react';
+
+const items: IListItem[] = [
+    { text: "123" },
+    { text: "234" },
+    { text: "567" }
+];
+
+class ItemTemplate extends React.Component {
+    public render() {
+        return <i>This is component template for item {this.props.text}</i>;
+    }
+}
+
+ReactDOM.render(
+  <List items={items} itemComponent={ItemTemplate}/>,
+  document.getElementById('root')
+);
+```
+or use render-function:
+```jsx
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+import { List } from 'devextreme-react';
+
+const items = [
+    { text: "123" },
+    { text: "234" },
+    { text: "567" }
+];
+
+const itemRender = (it) => <i>This is function template for item {it.text}</i>;
+
+ReactDOM.render(
+  <List items={items} itemRender={itemRender}/>,
+  document.getElementById('root')
+);
+```
+
 ## <a name="api-reference"></a>API Reference ##
 
 Each DevExtreme React component correspond widget condfiguration described in [DevExtreme API Reference](http://js.devexpress.com/Documentation/ApiReference/).
@@ -86,4 +131,3 @@ Familiarize yourself with the [DevExtreme License](https://js.devexpress.com/Lic
 ## <a name="support-feedback"></a>Support & Feedback ##
 * For general React questions, check [React Docs](https://reactjs.org/docs)
 * For questions regarding DevExtreme libraries and JavaScript API, use [DevExpress Support Center](https://www.devexpress.com/Support/Center)
-* For DevExtreme React components bugs, questions and suggestions, use the [GitHub issue tracker](https://github.com/DevExpress/devextreme-react/issues)
