@@ -1,6 +1,6 @@
 # React UI and Visualization Components Based on DevExtreme Widgets #
 
-This project allows you to use [DevExtreme Widgets](http://js.devexpress.com/Demos/WidgetsGallery/) as [React](https://reactjs.org) components.
+This project allows you to use [DevExtreme Widgets](http://js.devexpress.com/Demos/WidgetsGallery/) as [React components](https://reactjs.org).
 
 
 ## <a name="getting-started"></a>Getting Started ##
@@ -31,7 +31,7 @@ ReactDOM.render(
 
 ## <a name="examples"></a>Examples ##
 
-### Using DevExtreme React Components in Controlled  Mode
+### Handle value changed
 ```jsx
 import React from 'react';
 import ReactDOM from 'react-dom';
