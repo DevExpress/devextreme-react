@@ -6,7 +6,7 @@ This project allows you to use [DevExtreme Widgets](http://js.devexpress.com/Dem
 ## <a name="getting-started"></a>Getting Started ##
 
 ### <a name="prerequisites"></a>Prerequisites ###
-* <a href="https://docs.npmjs.com/getting-started/installing-node" target="_blank" title="Installing Node.js and updating npm">Node.js and npm</a> are essential.
+[Node.js and npm](https://docs.npmjs.com/getting-started/installing-node) required
 
 ### <a name="installation"></a>Install DevExtreme ####
 
@@ -15,7 +15,7 @@ Install the **devextreme** and **devextreme-react** npm packages:
 ```sh
 npm install --save devextreme@18.1-unstable devextreme-react
 ```
-### Use DevExtreme Components  ####
+### Import DevExtreme Components  ####
 
 ```jsx
 import React from 'react';
