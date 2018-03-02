@@ -23,6 +23,9 @@ import ReactDOM from 'react-dom';
 
 import { Button } from 'devextreme-react';
 
+import "devextreme/dist/css/dx.common.css";
+import "devextreme/dist/css/dx.light.compact.css";
+
 ReactDOM.render(
   <Button text='Example Button' />,
   document.getElementById('root')
@@ -38,6 +41,9 @@ import ReactDOM from 'react-dom';
 
 import { TextBox } from 'devextreme-react';
 
+import "devextreme/dist/css/dx.common.css";
+import "devextreme/dist/css/dx.light.compact.css";
+
 class Example extends React.Component {
 
     constructor(props) {
@@ -49,11 +55,14 @@ class Example extends React.Component {
 
     render() {
         return (
-            <TextBox
-                value={this.state.text}
-                onValueChanged={this.update}
-                valueChangeEvent='keyup'
-            />
+            <div>
+                <TextBox
+                    value={this.state.text}
+                    onValueChanged={this.update.bind(this)}
+                    valueChangeEvent='keyup'
+                />
+                <div>{this.state.text}</div>
+            </div>
         );
     }
 
@@ -65,8 +74,8 @@ class Example extends React.Component {
 }
 
 ReactDOM.render(
-  <Example/>,
-  document.getElementById('root')
+    <Example />,
+    document.getElementById('root')
 );
 ```
 
@@ -77,15 +86,18 @@ import ReactDOM from 'react-dom';
 
 import { List } from 'devextreme-react';
 
-const items: IListItem[] = [
+import "devextreme/dist/css/dx.common.css";
+import "devextreme/dist/css/dx.light.compact.css";
+
+const items = [
     { text: "123" },
     { text: "234" },
     { text: "567" }
 ];
 
 class ItemTemplate extends React.Component {
-    public render() {
-        return <i>This is component template for item {this.props.text}</i>;
+    render() {
+        return <i>This is component template for item <b>{this.props.text}</b></i>;
     }
 }
 
@@ -101,13 +113,16 @@ import ReactDOM from 'react-dom';
 
 import { List } from 'devextreme-react';
 
+import "devextreme/dist/css/dx.common.css";
+import "devextreme/dist/css/dx.light.compact.css";
+
 const items = [
     { text: "123" },
     { text: "234" },
     { text: "567" }
 ];
 
-const itemRender = (it) => <i>This is function template for item {it.text}</i>;
+const itemRender = (it) => <i>This is function template for item <b>{it.text}</b></i>;
 
 ReactDOM.render(
   <List items={items} itemRender={itemRender}/>,
