@@ -1,41 +1,33 @@
-import { configure, mount, shallow } from "enzyme";
+import { configure as configureEnzyme, mount, shallow } from "enzyme";
 import * as Adapter from "enzyme-adapter-react-16";
 import * as React from "react";
 import Component from "../core/component";
 
-const OptionMock = jest.fn();
-const beginUpdateMock = jest.fn();
-const endUpdateMock = jest.fn();
 const Widget = {
-    option: OptionMock,
-    beginUpdate: beginUpdateMock,
-    endUpdate: endUpdateMock
+    option: jest.fn(),
+    beginUpdate: jest.fn(),
+    endUpdate: jest.fn()
 };
 
-const WidgetMock = jest.fn(() => Widget);
+const WidgetClass = jest.fn(() => Widget);
 
 class TestComponent extends Component<any> {
+
     constructor(props: any) {
         super(props);
-        this.WidgetClass = WidgetMock;
-        this.templateProps = [{
-            tmplOption: "item",
-            render: "itemRender",
-            component: "itemComponent"
-        }];
+
+        this.WidgetClass = WidgetClass;
     }
 }
 
-configure({ adapter: new Adapter() });
+configureEnzyme({ adapter: new Adapter() });
 
 beforeEach(() => {
-    WidgetMock.mockClear();
-    OptionMock.mockClear();
-    beginUpdateMock.mockClear();
-    endUpdateMock.mockClear();
+    jest.clearAllMocks();
 });
 
 describe("component rendering", () => {
+
     it("renders correctly", () => {
         const component = shallow(
             <TestComponent />
@@ -48,7 +40,7 @@ describe("component rendering", () => {
             <TestComponent />
         );
 
-        expect(WidgetMock.mock.instances.length).toBe(1);
+        expect(WidgetClass.mock.instances.length).toBe(1);
     });
 
     it("does not create empty children prop", () => {
@@ -66,68 +58,85 @@ describe("component rendering", () => {
             </TestComponent>
         );
 
-        expect(WidgetMock.mock.instances.length).toBe(2);
-        expect(WidgetMock.mock.instances[1]).toEqual({});
+        expect(WidgetClass.mock.instances.length).toBe(2);
+        expect(WidgetClass.mock.instances[1]).toEqual({});
     });
 });
 
-describe("templates: function template", () => {
+describe("templates", () => {
 
-    it("pass integrationOptions to widget", () => {
-        const itemRender: any = () => <div>Template</div>;
-        mount(
-            <TestComponent itemRender={itemRender} />
-        );
-        const integrationOptions = WidgetMock.mock.calls[0][1].integrationOptions;
+    describe("function template", () => {
 
-        expect(integrationOptions).toBeDefined();
-        expect(integrationOptions.templates).toBeDefined();
-        expect(integrationOptions.templates.item).toBeDefined();
-        expect(typeof integrationOptions.templates.item.render).toBe("function");
+        it("pass integrationOptions to widget", () => {
+            const itemRender: any = () => <div>Template</div>;
+            mount(
+                <ComponentWithTemplates itemRender={itemRender} />
+            );
+            const integrationOptions = WidgetClass.mock.calls[0][1].integrationOptions;
+
+            expect(integrationOptions).toBeDefined();
+            expect(integrationOptions.templates).toBeDefined();
+            expect(integrationOptions.templates.item).toBeDefined();
+            expect(typeof integrationOptions.templates.item.render).toBe("function");
+        });
+
+        it("renders", () => {
+            const itemRender: any = (props: any) => <div>Template {props.text}</div>;
+            mount(
+                <ComponentWithTemplates itemRender={itemRender} />
+            );
+
+            const render = WidgetClass.mock.calls[0][1].integrationOptions.templates.item.render;
+
+            expect(render({
+                container: document.createElement("div"), model: { text: "with data" }
+            }).outerHTML).toBe("<div><div>Template with data</div></div>");
+        });
     });
 
-    it("renders", () => {
-        const itemRender: any = (props: any) => <div>Template {props.text}</div>;
-        mount(
-            <TestComponent itemRender={itemRender} />
-        );
+    describe("component template", () => {
 
-        const render = WidgetMock.mock.calls[0][1].integrationOptions.templates.item.render;
+        it("pass integrationOptions to widget", () => {
+            const ItemTemplate = () => <div>Template</div>;
+            mount(
+                <ComponentWithTemplates itemComponent={ItemTemplate} />
+            );
 
-        expect(render({
-            container: document.createElement("div"), model: { text: "with data" }
-        }).outerHTML).toBe("<div><div>Template with data</div></div>");
+            const integrationOptions = WidgetClass.mock.calls[0][1].integrationOptions;
+
+            expect(integrationOptions).toBeDefined();
+            expect(integrationOptions.templates).toBeDefined();
+            expect(integrationOptions.templates.item).toBeDefined();
+            expect(typeof integrationOptions.templates.item.render).toBe("function");
+        });
+
+        it("renders", () => {
+            const ItemTemplate = (props: any) => <div>Template {props.text}</div>;
+            mount(
+                <ComponentWithTemplates itemComponent={ItemTemplate} />
+            );
+
+            const render = WidgetClass.mock.calls[0][1].integrationOptions.templates.item.render;
+
+            expect(render({
+                container: document.createElement("div"), model: { text: "with data" }
+            }).outerHTML).toBe("<div><div>Template with data</div></div>");
+        });
     });
-});
 
-describe("templates: component template", () => {
+    // tslint:disable-next-line:max-classes-per-file
+    class ComponentWithTemplates extends TestComponent {
 
-    it("pass integrationOptions to widget", () => {
-        const ItemTemplate = () => <div>Template</div>;
-        mount(
-            <TestComponent itemComponent={ItemTemplate} />
-        );
+        constructor(props: any) {
+            super(props);
 
-        const integrationOptions = WidgetMock.mock.calls[0][1].integrationOptions;
-
-        expect(integrationOptions).toBeDefined();
-        expect(integrationOptions.templates).toBeDefined();
-        expect(integrationOptions.templates.item).toBeDefined();
-        expect(typeof integrationOptions.templates.item.render).toBe("function");
-    });
-
-    it("renders", () => {
-        const ItemTemplate = (props: any) => <div>Template {props.text}</div>;
-        mount(
-            <TestComponent itemComponent={ItemTemplate} />
-        );
-
-        const render = WidgetMock.mock.calls[0][1].integrationOptions.templates.item.render;
-
-        expect(render({
-            container: document.createElement("div"), model: { text: "with data" }
-        }).outerHTML).toBe("<div><div>Template with data</div></div>");
-    });
+            this.templateProps = [{
+                tmplOption: "item",
+                render: "itemRender",
+                component: "itemComponent"
+            }];
+        }
+    }
 });
 
 describe("mutation detection", () => {
@@ -189,17 +198,17 @@ describe("mutation detection", () => {
     });
 
     const expectNoPropsUpdate = () => {
-        expect(OptionMock.mock.calls.length).toBe(0);
+        expect(Widget.option.mock.calls.length).toBe(0);
         expect(Widget.beginUpdate.mock.calls.length).toBe(0);
         expect(Widget.endUpdate.mock.calls.length).toBe(0);
     };
 
     const expectPropsUpdated = (expectedPath: string, value: any) => {
-        expect(OptionMock.mock.calls.length).toBe(1);
+        expect(Widget.option.mock.calls.length).toBe(1);
         expect(Widget.beginUpdate.mock.calls.length).toBe(1);
         expect(Widget.endUpdate.mock.calls.length).toBe(1);
-        expect(OptionMock.mock.calls[0][0]).toEqual(expectedPath);
-        expect(OptionMock.mock.calls[0][1]).toEqual(value);
+        expect(Widget.option.mock.calls[0][0]).toEqual(expectedPath);
+        expect(Widget.option.mock.calls[0][1]).toEqual(value);
     };
 });
 
@@ -207,16 +216,16 @@ it("calls option method on props update", () => {
     const component = mount(
         <TestComponent />
     );
-    expect(OptionMock.mock.calls.length).toBe(0);
+    expect(Widget.option.mock.calls.length).toBe(0);
 
     component.mount();
 
-    expect(OptionMock.mock.calls.length).toBe(0);
+    expect(Widget.option.mock.calls.length).toBe(0);
 
     const sampleProps = { text: "1" };
     component.setProps(sampleProps);
 
-    expect(OptionMock.mock.calls.length).toBe(1);
-    expect(OptionMock.mock.calls[0][0]).toEqual("text");
-    expect(OptionMock.mock.calls[0][1]).toEqual("1");
+    expect(Widget.option.mock.calls.length).toBe(1);
+    expect(Widget.option.mock.calls[0][0]).toEqual("text");
+    expect(Widget.option.mock.calls[0][1]).toEqual("1");
 });
