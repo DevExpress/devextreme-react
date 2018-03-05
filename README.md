@@ -6,7 +6,7 @@ This project allows you to use [DevExtreme Widgets](http://js.devexpress.com/Dem
 ## <a name="getting-started"></a>Getting Started ##
 
 ### <a name="prerequisites"></a>Prerequisites ###
-[Node.js and npm](https://docs.npmjs.com/getting-started/installing-node) required
+[Node.js and npm](https://docs.npmjs.com/getting-started/installing-node) are required
 
 ### <a name="installation"></a>Install DevExtreme ####
 
@@ -15,7 +15,8 @@ Install the **devextreme** and **devextreme-react** npm packages:
 ```console
 npm install --save devextreme@18.1-unstable devextreme-react
 ```
-### Import DevExtreme Components  ####
+
+### <a name="import-components"></a>Import DevExtreme Components  ####
 
 ```jsx
 import React from 'react';
@@ -31,10 +32,11 @@ ReactDOM.render(
   document.getElementById('root')
 );
 ```
+Note that one of the [predefined themes](https://js.devexpress.com/Documentation/Guide/Themes/Predefined_Themes/) is required
 
 ## <a name="examples"></a>Examples ##
 
-### Handle value changed
+### <a name="handle-value-change"></a>Handle Value Change
 ```jsx
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -51,6 +53,8 @@ class Example extends React.Component {
         this.state = {
             text: 'inital text'
         };
+
+        this.update = this.update.bind(this);
     }
 
     render() {
@@ -58,7 +62,7 @@ class Example extends React.Component {
             <div>
                 <TextBox
                     value={this.state.text}
-                    onValueChanged={this.update.bind(this)}
+                    onValueChanged={this.update}
                     valueChangeEvent='keyup'
                 />
                 <div>{this.state.text}</div>
@@ -79,7 +83,7 @@ ReactDOM.render(
 );
 ```
 
-### Customizing component rendering
+### <a name="customize-rendering"></a>Customize Rendering
 ```jsx
 import React from 'react';
 import ReactDOM from 'react-dom';
