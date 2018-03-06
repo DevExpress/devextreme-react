@@ -3,10 +3,14 @@ import * as Adapter from "enzyme-adapter-react-16";
 import * as React from "react";
 import Component from "../core/component";
 
+const eventHandlers: { [index: string]: (e?: any) => void}  = {};
 const Widget = {
     option: jest.fn(),
     beginUpdate: jest.fn(),
-    endUpdate: jest.fn()
+    endUpdate: jest.fn(),
+    on: (event: string, handler: (e: any) => void) => {
+        eventHandlers[event] = handler;
+    }
 };
 
 const WidgetClass = jest.fn(() => Widget);
@@ -21,6 +25,7 @@ class TestComponent extends Component<any> {
 }
 
 configureEnzyme({ adapter: new Adapter() });
+jest.useFakeTimers();
 
 beforeEach(() => {
     jest.clearAllMocks();
@@ -210,6 +215,36 @@ describe("mutation detection", () => {
         expect(Widget.option.mock.calls[0][0]).toEqual(expectedPath);
         expect(Widget.option.mock.calls[0][1]).toEqual(value);
     };
+});
+
+describe("controlled mode", () => {
+
+    it("binds callback for optionChanged", () => {
+        mount(
+            <ControlledComponent controlledOption={123} />
+        );
+
+        expect(eventHandlers).toHaveProperty("optionChanged");
+    });
+
+    it("rolls option value back", () => {
+        mount(
+            <ControlledComponent controlledOption={123} />
+        );
+
+        eventHandlers.optionChanged({ name: "controlledOption" });
+        jest.runAllTimers();
+        expect(Widget.option.mock.calls.length).toBe(1);
+        expect(Widget.option.mock.calls[0]).toEqual([ "controlledOption", 123 ]);
+    });
+
+    // tslint:disable-next-line:max-classes-per-file
+    class ControlledComponent extends TestComponent {
+
+        protected defaults = {
+            controlledOption : "onControlledOptionChanged"
+        };
+    }
 });
 
 it("calls option method on props update", () => {
