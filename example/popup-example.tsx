@@ -23,7 +23,11 @@ export default class extends React.Component<any, IState> {
         return (
             <Example title="DxPopup">
                 <Button text="Show popup" onClick={() => this.toggle(true)} />
-                <Popup visible={this.state.visible} closeOnOutsideClick={true} onHidden={() => this.toggle(false)}>
+                <Popup
+                    visible={this.state.visible}
+                    onHiding={() => this.toggle(false)}
+                    onShowing={() => this.toggle(true)}
+                >
                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
                     <p>Animi, eveniet tempore, perspiciatis totam qui est minima dicta beatae dolores.</p>
                     <p>Ut reprehenderit, tempore iusto deserunt doloremque fugit.</p>
