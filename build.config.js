@@ -1,6 +1,7 @@
 
 module.exports = {
   src: './src/**/*.{ts,tsx}',
+  testSrc: './src/**/*.test.{ts,tsx}', 
   generator: {
     src: './tools/src/**/*.{ts,tsx}',
     binDir: './tools/bin/',

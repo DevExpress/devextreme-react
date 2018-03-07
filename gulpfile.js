@@ -84,7 +84,10 @@ gulp.task(NPM_PACKAGE, [NPM_CLEAN], () =>
 )
 
 gulp.task(NPM_BUILD, [NPM_PACKAGE], () => {
-  return gulp.src(config.src)
+  return gulp.src([
+      config.src,
+      "!" + config.testSrc
+    ])
     .pipe(ts('tsconfig.json'))
     .pipe(gulp.dest(config.npm.dist))
 });
