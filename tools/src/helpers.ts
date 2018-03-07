@@ -12,3 +12,7 @@ export function removePrefix(value: string, prefix: string): string {
 export function toKebabCase(value: string): string {
     return dasherize(value);
 }
+
+export function capitalizeFirst(value: string): string {
+    return value[0].toUpperCase() + value.substr(1);
+}

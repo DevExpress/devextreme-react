@@ -37,7 +37,8 @@ function mapWidget(raw: any, baseComponent: string) {
       name,
       baseComponentPath: baseComponent,
       dxExportPath: raw.exportPath,
-      templates: raw.templates
+      templates: raw.templates,
+      subscribableOptions: raw.subscribableOptions
     }
   };
 }
