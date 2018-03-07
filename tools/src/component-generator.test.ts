@@ -1,17 +1,9 @@
 import generate from "./component-generator";
 
 it("generates", () => {
-    expect(
-        generate({
-            name: "CLASS_NAME",
-            baseComponentPath: "BASE_COMPONENT_PATH",
-            dxExportPath: "DX/WIDGET/PATH"
-        })
-    ).toBe(EXPECTED_RENDERS_WITH_PROPS);
-});
 
-//#region EXPECTED_RENDERS_WITH_PROPS
-const EXPECTED_RENDERS_WITH_PROPS = `
+//#region EXPECTED
+    const EXPECTED = `
 import Widget, { IOptions as ICLASS_NAMEOptions } from "devextreme/DX/WIDGET/PATH";
 import BaseComponent from "BASE_COMPONENT_PATH";
 
@@ -26,19 +18,18 @@ export { CLASS_NAME, ICLASS_NAMEOptions };
 `.trimLeft();
 //#endregion
 
-it("generates widget with template", () => {
     expect(
         generate({
             name: "CLASS_NAME",
             baseComponentPath: "BASE_COMPONENT_PATH",
-            dxExportPath: "DX/WIDGET/PATH",
-            templates: ["optionTemplate"]
+            dxExportPath: "DX/WIDGET/PATH"
         })
-    ).toBe(EXPECTED_RENDERS_WIDGET_WITH_TEMPLATE);
+    ).toBe(EXPECTED);
 });
 
-//#region EXPECTED_RENDERS_WIDGET_WITH_TEMPLATE
-const EXPECTED_RENDERS_WIDGET_WITH_TEMPLATE = `
+it("generates widget with template", () => {
+//#region EXPECTED
+    const EXPECTED = `
 import Widget, { IOptions } from "devextreme/DX/WIDGET/PATH";
 import BaseComponent from "BASE_COMPONENT_PATH";
 
@@ -62,3 +53,13 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 export { CLASS_NAME, ICLASS_NAMEOptions };
 `.trimLeft();
 //#endregion
+
+    expect(
+        generate({
+            name: "CLASS_NAME",
+            baseComponentPath: "BASE_COMPONENT_PATH",
+            dxExportPath: "DX/WIDGET/PATH",
+            templates: ["optionTemplate"]
+        })
+    ).toBe(EXPECTED);
+});
