@@ -3,17 +3,21 @@ import * as Adapter from "enzyme-adapter-react-16";
 import * as React from "react";
 import Component from "../core/component";
 
+const eventHandlers: { [index: string]: (e?: any) => void}  = {};
 const Widget = {
     option: jest.fn(),
     beginUpdate: jest.fn(),
-    endUpdate: jest.fn()
+    endUpdate: jest.fn(),
+    on: (event: string, handler: (e: any) => void) => {
+        eventHandlers[event] = handler;
+    }
 };
 
 const WidgetClass = jest.fn(() => Widget);
 
-class TestComponent extends Component<any> {
+class TestComponent<P = any> extends Component<P> {
 
-    constructor(props: any) {
+    constructor(props: P) {
         super(props);
 
         this.WidgetClass = WidgetClass;
@@ -21,6 +25,7 @@ class TestComponent extends Component<any> {
 }
 
 configureEnzyme({ adapter: new Adapter() });
+jest.useFakeTimers();
 
 beforeEach(() => {
     jest.clearAllMocks();
@@ -210,6 +215,128 @@ describe("mutation detection", () => {
         expect(Widget.option.mock.calls[0][0]).toEqual(expectedPath);
         expect(Widget.option.mock.calls[0][1]).toEqual(value);
     };
+});
+
+describe("controlled mode", () => {
+
+    it("binds callback for optionChanged", () => {
+        mount(
+            <ControlledComponent everyOption={123} />
+        );
+
+        expect(eventHandlers).toHaveProperty("optionChanged");
+    });
+
+    it("rolls option value back", () => {
+        mount(
+            <ControlledComponent everyOption={123} />
+        );
+
+        eventHandlers.optionChanged({ name: "everyOption", value: 234});
+        jest.runAllTimers();
+        expect(Widget.option.mock.calls.length).toBe(1);
+        expect(Widget.option.mock.calls[0]).toEqual([ "everyOption", 123 ]);
+    });
+
+    it("rolls option value back if value has no changes", () => {
+        const component = mount(
+            <ControlledComponent everyOption={123} anotherOption={"const"}/>
+        );
+
+        eventHandlers.optionChanged({ name: "anotherOption", value: "changed"});
+        component.setProps({everyOption: 234});
+        jest.runAllTimers();
+        expect(Widget.option.mock.calls.length).toBe(2);
+        expect(Widget.option.mock.calls[1]).toEqual([ "anotherOption", "const" ]);
+    });
+
+    it("apply option change if option really change", () => {
+        const component = mount(
+            <ControlledComponent everyOption={123}/>
+        );
+
+        eventHandlers.optionChanged({ name: "everyOption", value: 234});
+        component.setProps({everyOption: 234});
+        jest.runAllTimers();
+        expect(Widget.option.mock.calls.length).toBe(1);
+        expect(Widget.option.mock.calls[0]).toEqual([ "everyOption", 234 ]);
+    });
+
+    it("pass default values to widget", () => {
+        mount(
+            <ControlledComponent defaultControlledOption={"default"}/>
+        );
+
+        expect(WidgetClass.mock.calls[0][1].controlledOption).toBe("default");
+    });
+
+    it("does not control option with default prefix", () => {
+        mount(
+            <ControlledComponent defaultControlledOption={"default"}/>
+        );
+        eventHandlers.optionChanged({ name: "controlledOption", value: "changed"});
+        jest.runAllTimers();
+        expect(Widget.option.mock.calls.length).toBe(0);
+    });
+
+    it("ignores changes in default props", () => {
+        const component = mount(
+            <ControlledComponent defaultControlledOption={"default"}/>
+        );
+        component.setProps({
+            defaultControlledOption: "changed"
+        });
+        jest.runAllTimers();
+        expect(Widget.option.mock.calls.length).toBe(0);
+    });
+
+    it("does not pass default values to widget if controlledOption set", () => {
+        mount(
+            <ControlledComponent defaultControlledOption={"default"} controlledOption={"controlled"}/>
+        );
+
+        expect(WidgetClass.mock.calls[0][1].controlledOption).toBe("controlled");
+    });
+
+    it("does not fire events when option changed while props updating", () => {
+        const controlledOptionChanged = jest.fn();
+        const component = mount(
+            <ControlledComponent controlledOption={"controlled"} onControlledOptionChanged={controlledOptionChanged}/>
+        );
+        Widget.option.mockImplementation(
+            (name: string) => {
+                if (name === "controlledOption") {
+                    WidgetClass.mock.calls[0][1].onControlledOptionChanged();
+                }
+            }
+        );
+        component.setProps({
+            controlledOption: "changed"
+        });
+
+        expect(controlledOptionChanged.mock.calls.length).toBe(0);
+
+        Widget.option("controlledOption", "controlled");
+
+        expect(controlledOptionChanged.mock.calls.length).toBe(1);
+
+    });
+
+    interface IControlledComponentProps {
+        defaultControlledOption?: string;
+        controlledOption?: string;
+        onControlledOptionChanged?: () => void;
+        everyOption?: number;
+        anotherOption?: string;
+    }
+
+    // tslint:disable-next-line:max-classes-per-file
+    class ControlledComponent extends TestComponent<IControlledComponentProps> {
+
+        protected defaults = {
+            defaultControlledOption : "controlledOption"
+        };
+    }
 });
 
 it("calls option method on props update", () => {

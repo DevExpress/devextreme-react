@@ -1,10 +1,17 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
+const ROLLBACK_DELAY: number = 0;
+
+interface IDictionary<TValue = any> {
+  [index: string]: TValue;
+}
+
 export default class Component<P> extends React.Component<P, any> {
 
   protected WidgetClass: any;
   protected instance: any;
+  protected readonly defaults: { [index: string]: string };
 
   protected templateProps: Array<{
     tmplOption: string
@@ -12,7 +19,47 @@ export default class Component<P> extends React.Component<P, any> {
     component: string
   }> = [];
 
+  private readonly guards: { [optionName: string]: number } = {};
   private element: any;
+  private updatingProps: boolean;
+
+  constructor(props: P) {
+    super(props);
+    this.optionChangedHandler = this.optionChangedHandler.bind(this);
+    this.extractDefaultsValues = this.extractDefaultsValues.bind(this);
+  }
+
+  public componentWillReceiveProps(nextProps: P) {
+    const props: IDictionary = this.extractDefaultsValues(nextProps).options;
+    const prevProps: IDictionary = this.props;
+
+    Object.keys(this.guards).forEach((optionName) => {
+      if (props[optionName] !== prevProps[optionName]) {
+        window.clearTimeout(this.guards[optionName]);
+        delete this.guards[optionName];
+      }
+    });
+
+    this.updatingProps = false;
+    const updateOption = (optionPath: string, value: any): void => {
+      if (!this.updatingProps) {
+        this.instance.beginUpdate();
+        this.updatingProps = true;
+      }
+      this.instance.option(optionPath, value);
+    };
+
+    this.processChangedValues(props, prevProps, updateOption, []);
+
+    if (this.updatingProps) {
+      this.updatingProps = false;
+      this.instance.endUpdate();
+    }
+  }
+
+  public shouldComponentUpdate() {
+    return false;
+  }
 
   public render() {
     if (!!this.props.children) {
@@ -23,34 +70,75 @@ export default class Component<P> extends React.Component<P, any> {
   }
 
   public componentDidMount() {
+    const props: IDictionary = this.props;
+    const splitProps = this.extractDefaultsValues(props);
+
     const options: any = {
-      ...this.props as object,
+      ...splitProps.defaults,
+      ...splitProps.options,
       ...this.getIntegrationOptions()
     };
 
     this.instance = new this.WidgetClass(this.element, options);
+    this.instance.on("optionChanged", this.optionChangedHandler);
   }
 
   public componentWillUnmount() {
     this.instance.dispose();
   }
 
-  public componentDidUpdate(prevProps: P) {
-    let updateStarted = false;
-    const updateOption = (path: string, value: any): void => {
-      if (!updateStarted) {
-        this.instance.beginUpdate();
-        updateStarted = true;
-      }
+  private optionChangedHandler(e: any) {
+    const optionName = e.name;
+    const optionValue = (this.props as any)[optionName];
 
-      this.instance.option(path, value);
-    };
-
-    this.processChangedValues(this.props, prevProps, updateOption, []);
-
-    if (updateStarted) {
-      this.instance.endUpdate();
+    if (this.updatingProps) {
+      return;
     }
+
+    if (optionValue === undefined || optionValue === null) {
+      return;
+    }
+
+    if (this.guards[optionName] !== undefined) {
+      return;
+    }
+
+    const guardId = window.setTimeout(() => {
+      this.instance.option(optionName, optionValue);
+      window.clearTimeout(guardId);
+      delete this.guards[optionName];
+    }, ROLLBACK_DELAY);
+
+    this.guards[optionName] = guardId;
+  }
+
+  private extractDefaultsValues(props: IDictionary): { defaults: IDictionary, options: IDictionary } {
+    const defaults: any = {};
+    const options: any = {};
+
+    Object.keys(props).forEach((key) => {
+      const gaurdedOptionName = this.defaults ? this.defaults[key] : false;
+
+      if (gaurdedOptionName) {
+        defaults[gaurdedOptionName] = props[key];
+      } else {
+        options[key] = this.wrapEventHandler(props, key);
+      }
+    });
+
+    return { defaults, options };
+  }
+
+  private wrapEventHandler(options: any, key: string): any {
+    if (key.substr(0, 2) === "on" && typeof options[key] === "function") {
+      return (...args: any[]) => {
+        if (!this.updatingProps) {
+          options[key](...args);
+        }
+      };
+    }
+
+    return options[key];
   }
 
   private processChangedValues(
@@ -83,7 +171,7 @@ export default class Component<P> extends React.Component<P, any> {
       }
     };
 
-    const options: {[index: string]: any} = this.props;
+    const options: IDictionary = this.props;
     this.templateProps.forEach((m) => {
       if (options[m.component]) {
         result[m.tmplOption] = m.tmplOption;
