@@ -33,8 +33,10 @@ export default class Component<P> extends React.Component<P, any> {
     const prevProps = this.props;
 
     Object.keys(this.guards).forEach((optionName) => {
-      window.clearTimeout(this.guards[optionName]);
-      delete this.guards[optionName];
+      if ((nextProps as any)[optionName] !== (this.props as any)[optionName]) {
+        window.clearTimeout(this.guards[optionName]);
+        delete this.guards[optionName];
+      }
     });
 
     this.updatingProps = false;
