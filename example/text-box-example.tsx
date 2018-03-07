@@ -29,6 +29,7 @@ export default class extends React.Component<any, IState> {
                 <TextBox onValueChanged={this.hangleUncontrolledChange} valueChangeEvent="keyup" />
                 uncontrolled value with default
                 <TextBox
+                    defaultValue={"initial text"}
                     onValueChanged={this.hangleUncontrolledChange}
                     valueChangeEvent="keyup"
                 />
