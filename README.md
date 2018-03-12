@@ -34,9 +34,9 @@ ReactDOM.render(
 ```
 Note that one of the [predefined themes](https://js.devexpress.com/Documentation/Guide/Themes/Predefined_Themes/) is required
 
-## <a name="examples"></a>Examples ##
+## <a name="controlled-mode"></a>Controlled Mode
+Controlled mode assumes you provide an option value and handle the event fired once it is changed:
 
-### <a name="handle-value-change"></a>Handle Value Change
 ```jsx
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -50,11 +50,12 @@ class Example extends React.Component {
 
     constructor(props) {
         super(props);
+
+        this.handleChange = this.handleChange.bind(this);
+
         this.state = {
             text: 'inital text'
         };
-
-        this.update = this.update.bind(this);
     }
 
     render() {
@@ -62,7 +63,7 @@ class Example extends React.Component {
             <div>
                 <TextBox
                     value={this.state.text}
-                    onValueChanged={this.update}
+                    onValueChanged={this.handleChange}
                     valueChangeEvent='keyup'
                 />
                 <div>{this.state.text}</div>
@@ -70,9 +71,9 @@ class Example extends React.Component {
         );
     }
 
-    update(e) {
+    handleChange(e) {
         this.setState({
-            text: e.component.option('value')
+            text: e.value
         });
     }
 }
@@ -83,8 +84,59 @@ ReactDOM.render(
 );
 ```
 
+## <a name="uncontrolled-mode"></a>Uncontrolled Mode ##
+
+All DevExtreme widgets are able to manage their state internally, allowing you to avoid writing event handlers for every state update.
+
+To get a value of the option you need, obtain a widget instance and use the `.option('<optionName>')` method.
+
+Note that in the React rendering lifecycle, the value passed as an attribute will override the value in the DOM. If you want to specify the initial value, but leave subsequent updates uncontrolled you should use attribute with the `default` prefix instead.
+
+```jsx
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+import { TextBox } from 'devextreme-react';
+
+import "devextreme/dist/css/dx.common.css";
+import "devextreme/dist/css/dx.light.compact.css";
+
+class Example extends React.Component {
+
+    constructor(props) {
+        super(props);
+
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+    render() {
+        return (
+            <div>
+                <TextBox
+                    defaultValue={'inital text'}
+                    onInitialized={(e) => this.textBox = e.component}
+                    valueChangeEvent='keyup'
+                />
+                <button type='button' onClick={this.handleClick}>Submit</button>
+                <div ref={(el) => this.target = el}></div>
+            </div>
+        );
+    }
+
+    handleClick(e) {
+        this.target.innerText = this.textBox.option('value');
+    }
+}
+
+ReactDOM.render(
+    <Example />,
+    document.getElementById('root')
+);
+```
+
+## <a name="examples"></a>Examples ##
 ### <a name="customize-rendering"></a>Customize Rendering
-DevExtreme widgets support customization via templates. To achieve the same with React components you can use your own React component:
+DevExtreme widgets support customization via templates. To achieve the same with React components you can use your own component:
 ```jsx
 import React from 'react';
 import ReactDOM from 'react-dom';

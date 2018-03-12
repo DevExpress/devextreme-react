@@ -3,17 +3,12 @@ import Example from "./example-block";
 
 import { TextBox } from "../src/ui/text-box";
 
-interface IState {
-    text: string;
-    uncontrolledText: string;
-}
-
-export default class extends React.Component<any, IState> {
+export default class extends React.Component<any, { text: string; uncontrolledText: string; }> {
 
     constructor(props: any) {
         super(props);
 
-        this.handleUpdate = this.handleUpdate.bind(this);
+        this.handleChange = this.handleChange.bind(this);
         this.hangleUncontrolledChange = this.hangleUncontrolledChange.bind(this);
 
         this.state = {
@@ -30,7 +25,6 @@ export default class extends React.Component<any, IState> {
                 uncontrolled value with default
                 <TextBox
                     defaultValue={"initial text"}
-                    onValueChanged={this.hangleUncontrolledChange}
                     valueChangeEvent="keyup"
                 />
                 <br />
@@ -38,7 +32,7 @@ export default class extends React.Component<any, IState> {
                 <TextBox value={this.state.text} valueChangeEvent="keyup" />
                 <br />
                 controlled state value with change handling
-                <TextBox value={this.state.text} onValueChanged={this.handleUpdate} valueChangeEvent="keyup" />
+                <TextBox value={this.state.text} onValueChanged={this.handleChange} valueChangeEvent="keyup" />
             </Example>
         );
     }
@@ -49,7 +43,7 @@ export default class extends React.Component<any, IState> {
         });
     }
 
-    private handleUpdate(e: any) {
+    private handleChange(e: any) {
         this.setState({
             text: "#" + e.value ,
         });
