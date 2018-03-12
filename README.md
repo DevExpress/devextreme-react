@@ -133,8 +133,7 @@ ReactDOM.render(
 );
 ```
 
-## <a name="examples"></a>Examples ##
-### <a name="rendering-customization"></a>Rendering Customization
+## <a name="rendering-customization"></a>Rendering Customization
 DevExtreme widgets support customization via templates. To achieve the same with React components you can use a render function:
 ```jsx
 import React from 'react';
@@ -202,6 +201,27 @@ class Item extends React.Component {
 
 ReactDOM.render(
     <List items={items} itemComponent={Item} />,
+    document.getElementById('root')
+);
+```
+
+When using such widgets as [ScrollView](https://js.devexpress.com/Documentation/ApiReference/UI_Widgets/dxScrollView/) you can specify their content within corresponding tags:
+```jsx
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+import { Popup, ScrollView } from 'devextreme-react';
+
+import 'devextreme/dist/css/dx.common.css';
+import 'devextreme/dist/css/dx.light.compact.css';
+
+ReactDOM.render(
+    <Popup visible={true}>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, eveniet tempore, perspiciatis totam qui est minima dicta beatae dolores, omnis enim ut incidunt. Ut reprehenderit, tempore iusto deserunt doloremque fugit.</p>
+        <p>Sint natus quia repellendus cum neque. Velit similique dicta corrupti nesciunt quas ea quam minima, aliquid qui ratione suscipit magnam molestiae aspernatur iure, tenetur sapiente voluptates laborum quidem nisi molestias.</p>
+        <p>Id, nesciunt adipisci sint. Doloribus minima expedita, soluta. Eveniet reiciendis eius ducimus provident autem amet alias quis natus. In veritatis, repellendus laborum illo voluptates est quis consectetur consequuntur reiciendis rem!</p>
+        <p>In cum, ipsum ratione beatae odio officia doloribus ullam magnam impedit repudiandae odit, vero! Minus quisquam earum aliquam tempore iusto consequatur modi laborum facilis dolorum! Earum, exercitationem error. Placeat, optio!</p>
+    </Popup>,
     document.getElementById('root')
 );
 ```
