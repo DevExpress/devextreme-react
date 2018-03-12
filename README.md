@@ -34,6 +34,12 @@ ReactDOM.render(
 ```
 Note that one of the [predefined themes](https://js.devexpress.com/Documentation/Guide/Themes/Predefined_Themes/) is required
 
+
+## <a name="api-reference"></a>API Reference ##
+
+Each DevExtreme React component correspond widget condfiguration described in [DevExtreme API Reference](http://js.devexpress.com/Documentation/ApiReference/).
+
+
 ## <a name="controlled-mode"></a>Controlled Mode
 Controlled mode assumes you provide an option value and handle the event fired when it is changed:
 
@@ -84,6 +90,7 @@ ReactDOM.render(
 );
 ```
 
+
 ## <a name="uncontrolled-mode"></a>Uncontrolled Mode ##
 
 All DevExtreme widgets are able to manage their state internally, allowing you to avoid writing event handlers for every state update.
@@ -132,6 +139,7 @@ ReactDOM.render(
     document.getElementById('root')
 );
 ```
+
 
 ## <a name="rendering-customization"></a>Rendering Customization
 DevExtreme widgets support customization via templates. To achieve the same with React components you can use a render function:
@@ -226,6 +234,7 @@ ReactDOM.render(
 );
 ```
 
+
 ## <a name="typechecking"></a>Typechecking ##
 
 Typechecking allows you to catch a lot of bugs and improve your workflow by adding features like auto-completion and automated refactoring. This is why we provide TypeScript declarations for the components based on the DevExtreme widgets.
@@ -281,11 +290,6 @@ ReactDOM.render(
     document.getElementById("root")
 );
 ```
-
-
-## <a name="api-reference"></a>API Reference ##
-
-Each DevExtreme React component correspond widget condfiguration described in [DevExtreme API Reference](http://js.devexpress.com/Documentation/ApiReference/).
 
 
 ## <a name="license"></a>License ##
