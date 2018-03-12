@@ -56,18 +56,18 @@ export default class extends React.Component<any, IState> {
     }
 
     private updateTime() {
-        const state = { ...this.state };
-        state.currentTime = this.GetTimeString();
-        this.setState(state);
+        this.setState({
+            currentTime: this.GetTimeString()
+        });
     }
 
-    private updateSeriesName(name: string) {
-        const state = { ...this.state };
-        state.seriesName = name;
-        const series = [...state.series];
-        series[0].name = name;
-        state.series = series;
-        this.setState(state);
+    private updateSeriesName(seriesName: string) {
+        const series = [...this.state.series];
+        series[0].name = seriesName;
+        this.setState({
+            seriesName,
+            series
+        });
     }
 
     private GetTimeString = () => new Date().toLocaleTimeString();
@@ -105,8 +105,8 @@ class Updater extends React.Component<{ onChange: (value: string) => void }, { v
     }
 
     private update(e: any) {
-        const state = { ...this.state };
-        state.value = e.component.option("value");
-        this.setState(state);
+        this.setState({
+            value: e.value
+        });
     }
 }

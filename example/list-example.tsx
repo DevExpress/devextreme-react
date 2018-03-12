@@ -72,16 +72,16 @@ export default class extends React.Component<any, { text: string; items: IListIt
     }
 
     private updateText(e: any) {
-        const state = { ...this.state };
-        state.text = e.component.option("value");
-        this.setState(state);
+        this.setState({
+            text: e.value
+        });
     }
 
     private addTextToList() {
-        const state = { ...this.state };
-        state.items = [...state.items, { text: state.text }];
-        state.text = "";
-        this.setState(state);
+        this.setState({
+            items: [...this.state.items, { text: this.state.text }],
+            text: ""
+        });
     }
 }
 
