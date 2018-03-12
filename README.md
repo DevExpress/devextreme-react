@@ -206,6 +206,63 @@ ReactDOM.render(
 );
 ```
 
+## <a name="typechecking"></a>Typechecking ##
+
+Typechecking allows you to catch a lot of bugs and improve your workflow by adding features like auto-completion and automated refactoring. This is why we provide TypeScript declarations for the components based on the DevExtreme widgets.
+
+Here is a TypeScript example of rendering customization:
+```ts
+import * as React from "react";
+import * as ReactDOM from "react-dom";
+import { List } from "devextreme-react";
+
+import "devextreme/dist/css/dx.common.css";
+import "devextreme/dist/css/dx.light.compact.css";
+
+interface IListItem {
+    text: string;
+}
+
+class Item extends React.Component<IListItem, { counter: number }> {
+
+    constructor(props: IListItem) {
+        super(props);
+
+        this.clickHandler = this.clickHandler.bind(this);
+
+        this.state = {
+            counter: 0
+        };
+    }
+
+    public render() {
+        return (
+            <i onClick={this.clickHandler}>
+                Component template for item {this.props.text}. <b>Clicks: {this.state.counter}</b>
+            </i>
+        );
+    }
+
+    private clickHandler() {
+        this.setState({
+            counter: this.state.counter + 1
+        });
+    }
+}
+
+const items: IListItem[] = [
+    { text: "123" },
+    { text: "234" },
+    { text: "567" }
+];
+
+ReactDOM.render(
+    <List items={items} itemComponent={Item} />,
+    document.getElementById('root')
+);
+```
+
+
 ## <a name="api-reference"></a>API Reference ##
 
 Each DevExtreme React component correspond widget condfiguration described in [DevExtreme API Reference](http://js.devexpress.com/Documentation/ApiReference/).
