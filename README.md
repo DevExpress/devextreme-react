@@ -24,8 +24,8 @@ import ReactDOM from 'react-dom';
 
 import { Button } from 'devextreme-react';
 
-import "devextreme/dist/css/dx.common.css";
-import "devextreme/dist/css/dx.light.compact.css";
+import 'devextreme/dist/css/dx.common.css';
+import 'devextreme/dist/css/dx.light.compact.css';
 
 ReactDOM.render(
   <Button text='Example Button' />,
@@ -43,8 +43,8 @@ import ReactDOM from 'react-dom';
 
 import { TextBox } from 'devextreme-react';
 
-import "devextreme/dist/css/dx.common.css";
-import "devextreme/dist/css/dx.light.compact.css";
+import 'devextreme/dist/css/dx.common.css';
+import 'devextreme/dist/css/dx.light.compact.css';
 
 class Example extends React.Component {
 
@@ -98,8 +98,8 @@ import ReactDOM from 'react-dom';
 
 import { TextBox } from 'devextreme-react';
 
-import "devextreme/dist/css/dx.common.css";
-import "devextreme/dist/css/dx.light.compact.css";
+import 'devextreme/dist/css/dx.common.css';
+import 'devextreme/dist/css/dx.light.compact.css';
 
 class Example extends React.Component {
 
@@ -141,13 +141,13 @@ import ReactDOM from 'react-dom';
 
 import { List } from 'devextreme-react';
 
-import "devextreme/dist/css/dx.common.css";
-import "devextreme/dist/css/dx.light.compact.css";
+import 'devextreme/dist/css/dx.common.css';
+import 'devextreme/dist/css/dx.light.compact.css';
 
 const items = [
-    { text: "123" },
-    { text: "234" },
-    { text: "567" }
+    { text: '123' },
+    { text: '234' },
+    { text: '567' }
 ];
 
 
@@ -163,13 +163,13 @@ import ReactDOM from 'react-dom';
 
 import { List } from 'devextreme-react';
 
-import "devextreme/dist/css/dx.common.css";
-import "devextreme/dist/css/dx.light.compact.css";
+import 'devextreme/dist/css/dx.common.css';
+import 'devextreme/dist/css/dx.light.compact.css';
 
 const items = [
-    { text: "123" },
-    { text: "234" },
-    { text: "567" }
+    { text: '123' },
+    { text: '234' },
+    { text: '567' }
 ];
 
 class Item extends React.Component {
@@ -278,7 +278,7 @@ const items: IListItem[] = [
 
 ReactDOM.render(
     <List items={items} itemComponent={Item} />,
-    document.getElementById('root')
+    document.getElementById("root")
 );
 ```
 
