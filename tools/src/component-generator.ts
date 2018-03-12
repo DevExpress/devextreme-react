@@ -82,22 +82,19 @@ import Widget, { IOptions <#? !it.hasExtraOptions #>as <#= it.optionsName #> <#?
 import BaseComponent from "<#= it.baseComponentPath #>";
 <#? it.hasExtraOptions #>
 interface <#= it.optionsName #> extends IOptions {<#~ it.templates :template #>
-    <#= template.render #>?: (props: any) => React.ReactNode;
-    <#= template.component #>?: React.ComponentType<any>;<#~#><#~ it.subscribableOptions :option #>
-    <#= option.name #>?: <#= option.type #>;<#~#>
-}<#?#>
+  <#= template.render #>?: (props: any) => React.ReactNode;
+  <#= template.component #>?: React.ComponentType<any>;<#~#><#~ it.subscribableOptions :option #>
+  <#= option.name #>?: <#= option.type #>;<#~#>
+}
+<#?#>
 class <#= it.name #> extends BaseComponent<<#= it.optionsName #>> {
+  protected WidgetClass = Widget;
 <#? it.subscribableOptions #>
   protected defaults = {<#= it.subscribableOptions.map(t => t.renderedProp).join(',') #>
   };
-<#?#>
-  constructor(props: <#= it.optionsName #>) {
-    super(props);
-    this.WidgetClass = Widget;
-<#? it.templates #>
-    this.templateProps = [<#= it.templates.map(t => t.renderedProp).join(', ') #>];
-<#?#>  }
-}
+<#?#><#? it.templates #>
+  protected templateProps = [<#= it.templates.map(t => t.renderedProp).join(', ') #>];
+<#?#>}
 export { <#= it.name #>, <#= it.optionsName #> };
 `.trimLeft());
  // tslint:enable:max-line-length
@@ -107,11 +104,11 @@ const renderTemplateOption: (model: {
     render: string;
     component: string;
 }) => string = createTempate(`
-    {
-        tmplOption: "<#= it.name #>",
-        render: "<#= it.render #>",
-        component: "<#= it.component #>"
-    }
+  {
+    tmplOption: "<#= it.name #>",
+    render: "<#= it.render #>",
+    component: "<#= it.component #>"
+  }
 `.trim());
 
 const renderObjectEntry: (model: {
