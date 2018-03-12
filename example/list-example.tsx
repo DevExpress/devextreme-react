@@ -15,7 +15,7 @@ class Item extends React.Component<IListItem, { counter: number }> {
     constructor(props: IListItem) {
         super(props);
 
-        this.clickHandeler = this.clickHandeler.bind(this);
+        this.clickHandler = this.clickHandler.bind(this);
 
         this.state = {
             counter: 0
@@ -24,13 +24,13 @@ class Item extends React.Component<IListItem, { counter: number }> {
 
     public render() {
         return (
-            <i onClick={this.clickHandeler}>
+            <i onClick={this.clickHandler}>
                 Component template for item {this.props.text}. <b>Clicks: {this.state.counter}</b>
             </i>
         );
     }
 
-    private clickHandeler() {
+    private clickHandler() {
         this.setState({
             counter: this.state.counter + 1
         });

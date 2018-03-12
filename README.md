@@ -35,7 +35,7 @@ ReactDOM.render(
 Note that one of the [predefined themes](https://js.devexpress.com/Documentation/Guide/Themes/Predefined_Themes/) is required
 
 ## <a name="controlled-mode"></a>Controlled Mode
-Controlled mode assumes you provide an option value and handle the event fired once it is changed:
+Controlled mode assumes you provide an option value and handle the event fired when it is changed:
 
 ```jsx
 import React from 'react';
@@ -90,7 +90,7 @@ All DevExtreme widgets are able to manage their state internally, allowing you t
 
 To get a value of the option you need, obtain a widget instance and use the `.option('<optionName>')` method.
 
-Note that in the React rendering lifecycle, the value passed as an attribute will override the value in the DOM. If you want to specify the initial value, but leave subsequent updates uncontrolled you should use attribute with the `default` prefix instead.
+If you want to specify the initial value for an option, but leave subsequent updates uncontrolled you should use property with the `default` prefix.
 
 ```jsx
 import React from 'react';
@@ -115,7 +115,6 @@ class Example extends React.Component {
                 <TextBox
                     defaultValue={'inital text'}
                     onInitialized={(e) => this.textBox = e.component}
-                    valueChangeEvent='keyup'
                 />
                 <button type='button' onClick={this.handleClick}>Submit</button>
                 <div ref={(el) => this.target = el}></div>
@@ -135,8 +134,30 @@ ReactDOM.render(
 ```
 
 ## <a name="examples"></a>Examples ##
-### <a name="customize-rendering"></a>Customize Rendering
-DevExtreme widgets support customization via templates. To achieve the same with React components you can use your own component:
+### <a name="rendering-customization"></a>Rendering Customization
+DevExtreme widgets support customization via templates. To achieve the same with React components you can use a render function:
+```jsx
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+import { List } from 'devextreme-react';
+
+import "devextreme/dist/css/dx.common.css";
+import "devextreme/dist/css/dx.light.compact.css";
+
+const items = [
+    { text: "123" },
+    { text: "234" },
+    { text: "567" }
+];
+
+
+ReactDOM.render(
+  <List items={items} itemRender={(it) => <i>Function template for item <b>{it.text}</b></i>}/>,
+  document.getElementById('root')
+);
+```
+or a component:
 ```jsx
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -157,7 +178,7 @@ class Item extends React.Component {
     constructor(props) {
         super(props);
 
-        this.clickHandeler = this.clickHandeler.bind(this);
+        this.clickHandler = this.clickHandler.bind(this);
 
         this.state = {
             counter: 0
@@ -166,13 +187,13 @@ class Item extends React.Component {
 
     render() {
         return (
-            <i onClick={this.clickHandeler}>
+            <i onClick={this.clickHandler}>
                 Component template for item {this.props.text}. <b>Clicks: {this.state.counter}</b>
             </i>
         );
     }
 
-    clickHandeler() {
+    clickHandler() {
         this.setState({
             counter: this.state.counter + 1
         });
@@ -182,28 +203,6 @@ class Item extends React.Component {
 ReactDOM.render(
     <List items={items} itemComponent={Item} />,
     document.getElementById('root')
-);
-```
-or a render-function:
-```jsx
-import React from 'react';
-import ReactDOM from 'react-dom';
-
-import { List } from 'devextreme-react';
-
-import "devextreme/dist/css/dx.common.css";
-import "devextreme/dist/css/dx.light.compact.css";
-
-const items = [
-    { text: "123" },
-    { text: "234" },
-    { text: "567" }
-];
-
-
-ReactDOM.render(
-  <List items={items} itemRender={(it) => <i>Function template for item <b>{it.text}</b></i>}/>,
-  document.getElementById('root')
 );
 ```
 
