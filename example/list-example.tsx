@@ -6,23 +6,39 @@ import { TextBox } from "../src/ui/text-box";
 
 import Example from "./example-block";
 
-interface IState {
-    text: string;
-    items: IListItem[];
-}
-
 interface IListItem {
     text: string;
 }
 
-class ItemTemplate extends React.Component<any, any> {
+class Item extends React.Component<IListItem, { counter: number }> {
+
+    constructor(props: IListItem) {
+        super(props);
+
+        this.clickHandeler = this.clickHandeler.bind(this);
+
+        this.state = {
+            counter: 0
+        };
+    }
+
     public render() {
-        return <i>This is component template for item {this.props.text}</i>;
+        return (
+            <i onClick={this.clickHandeler}>
+                Component template for item {this.props.text}. <b>Clicks: {this.state.counter}</b>
+            </i>
+        );
+    }
+
+    private clickHandeler() {
+        this.setState({
+            counter: this.state.counter + 1
+        });
     }
 }
 
 // tslint:disable-next-line:max-classes-per-file
-export default class extends React.Component<any, IState> {
+export default class extends React.Component<any, { text: string; items: IListItem[]; }> {
 
     constructor(props: any) {
         super(props);
@@ -36,18 +52,19 @@ export default class extends React.Component<any, IState> {
     }
 
     public render() {
-        const itemRender: any = (props: any) =>
-        <i>This is function template for item {props.text}</i>;
-
         return (
             <Example title="DxList" state={this.state} >
+
                 <List
                     items={this.state.items}
-                    itemRender={itemRender}
+                    itemRender={(props: IListItem) => <i>Function template for item {props.text}</i>}
                 />
-
-                <List items={this.state.items} itemComponent={ItemTemplate}/>
-
+                <hr />
+                <List
+                    items={this.state.items}
+                    itemComponent={Item}
+                />
+                <br />
                 <TextBox value={this.state.text} onValueChanged={this.updateText} valueChangeEvent="keyup" />
                 <Button text="Add to list" onClick={this.addTextToList} />
             </Example>

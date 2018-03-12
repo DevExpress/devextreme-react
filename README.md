@@ -84,6 +84,7 @@ ReactDOM.render(
 ```
 
 ### <a name="customize-rendering"></a>Customize Rendering
+DevExtreme widgets support customization via templates. To achieve the same with React components you can use your own React component:
 ```jsx
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -99,18 +100,39 @@ const items = [
     { text: "567" }
 ];
 
-class ItemTemplate extends React.Component {
+class Item extends React.Component {
+
+    constructor(props) {
+        super(props);
+
+        this.clickHandeler = this.clickHandeler.bind(this);
+
+        this.state = {
+            counter: 0
+        };
+    }
+
     render() {
-        return <i>This is component template for item <b>{this.props.text}</b></i>;
+        return (
+            <i onClick={this.clickHandeler}>
+                Component template for item {this.props.text}. <b>Clicks: {this.state.counter}</b>
+            </i>
+        );
+    }
+
+    clickHandeler() {
+        this.setState({
+            counter: this.state.counter + 1
+        });
     }
 }
 
 ReactDOM.render(
-  <List items={items} itemComponent={ItemTemplate}/>,
-  document.getElementById('root')
+    <List items={items} itemComponent={Item} />,
+    document.getElementById('root')
 );
 ```
-or use render-function:
+or a render-function:
 ```jsx
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -126,10 +148,9 @@ const items = [
     { text: "567" }
 ];
 
-const itemRender = (it) => <i>This is function template for item <b>{it.text}</b></i>;
 
 ReactDOM.render(
-  <List items={items} itemRender={itemRender}/>,
+  <List items={items} itemRender={(it) => <i>Function template for item <b>{it.text}</b></i>}/>,
   document.getElementById('root')
 );
 ```
