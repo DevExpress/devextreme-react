@@ -2,6 +2,28 @@
   {
     "name": "DxAccordion",
     "exportPath": "ui/accordion",
+    "subscribableOptions": [
+      {
+        "name": "selectedIndex",
+        "type": "any"
+      },
+      {
+        "name": "items",
+        "type": "any"
+      },
+      {
+        "name": "selectedItems",
+        "type": "any"
+      },
+      {
+        "name": "selectedItemKeys",
+        "type": "any"
+      },
+      {
+        "name": "selectedItem",
+        "type": "any"
+      }
+    ],
     "templates": [
       "itemTitleTemplate",
       "itemTemplate"
@@ -10,6 +32,12 @@
   {
     "name": "DxActionSheet",
     "exportPath": "ui/action_sheet",
+    "subscribableOptions": [
+      {
+        "name": "items",
+        "type": "any"
+      }
+    ],
     "templates": [
       "itemTemplate"
     ]
@@ -17,6 +45,16 @@
   {
     "name": "DxAutocomplete",
     "exportPath": "ui/autocomplete",
+    "subscribableOptions": [
+      {
+        "name": "value",
+        "type": "any"
+      },
+      {
+        "name": "opened",
+        "type": "any"
+      }
+    ],
     "templates": [
       "groupTemplate",
       "itemTemplate",
@@ -30,6 +68,12 @@
   {
     "name": "DxBox",
     "exportPath": "ui/box",
+    "subscribableOptions": [
+      {
+        "name": "items",
+        "type": "any"
+      }
+    ],
     "templates": [
       "itemTemplate"
     ]
@@ -48,6 +92,12 @@
   {
     "name": "DxCalendar",
     "exportPath": "ui/calendar",
+    "subscribableOptions": [
+      {
+        "name": "value",
+        "type": "any"
+      }
+    ],
     "templates": [
       "cellTemplate"
     ]
@@ -58,7 +108,13 @@
   },
   {
     "name": "DxCheckBox",
-    "exportPath": "ui/check_box"
+    "exportPath": "ui/check_box",
+    "subscribableOptions": [
+      {
+        "name": "value",
+        "type": "any"
+      }
+    ]
   },
   {
     "name": "DxCircularGauge",
@@ -67,6 +123,16 @@
   {
     "name": "DxColorBox",
     "exportPath": "ui/color_box",
+    "subscribableOptions": [
+      {
+        "name": "value",
+        "type": "any"
+      },
+      {
+        "name": "opened",
+        "type": "any"
+      }
+    ],
     "templates": [
       "fieldTemplate",
       "dropDownButtonTemplate"
@@ -75,6 +141,20 @@
   {
     "name": "DxContextMenu",
     "exportPath": "ui/context_menu",
+    "subscribableOptions": [
+      {
+        "name": "items",
+        "type": "any"
+      },
+      {
+        "name": "visible",
+        "type": "any"
+      },
+      {
+        "name": "selectedItem",
+        "type": "any"
+      }
+    ],
     "templates": [
       "itemTemplate"
     ]
@@ -82,6 +162,16 @@
   {
     "name": "DxDataGrid",
     "exportPath": "ui/data_grid",
+    "subscribableOptions": [
+      {
+        "name": "selectionFilter",
+        "type": "any"
+      },
+      {
+        "name": "selectedRowKeys",
+        "type": "any"
+      }
+    ],
     "templates": [
       "rowTemplate"
     ]
@@ -89,6 +179,16 @@
   {
     "name": "DxDateBox",
     "exportPath": "ui/date_box",
+    "subscribableOptions": [
+      {
+        "name": "value",
+        "type": "any"
+      },
+      {
+        "name": "opened",
+        "type": "any"
+      }
+    ],
     "templates": [
       "dropDownButtonTemplate"
     ]
@@ -100,6 +200,12 @@
   {
     "name": "DxDropDownBox",
     "exportPath": "ui/drop_down_box",
+    "subscribableOptions": [
+      {
+        "name": "opened",
+        "type": "any"
+      }
+    ],
     "templates": [
       "contentTemplate",
       "fieldTemplate",
@@ -108,15 +214,33 @@
   },
   {
     "name": "DxFileUploader",
-    "exportPath": "ui/file_uploader"
+    "exportPath": "ui/file_uploader",
+    "subscribableOptions": [
+      {
+        "name": "value",
+        "type": "any"
+      }
+    ]
   },
   {
     "name": "DxFilterBuilder",
-    "exportPath": "ui/filter_builder"
+    "exportPath": "ui/filter_builder",
+    "subscribableOptions": [
+      {
+        "name": "value",
+        "type": "any"
+      }
+    ]
   },
   {
     "name": "DxForm",
-    "exportPath": "ui/form"
+    "exportPath": "ui/form",
+    "subscribableOptions": [
+      {
+        "name": "formData",
+        "type": "any"
+      }
+    ]
   },
   {
     "name": "DxFunnel",
@@ -125,6 +249,20 @@
   {
     "name": "DxGallery",
     "exportPath": "ui/gallery",
+    "subscribableOptions": [
+      {
+        "name": "selectedIndex",
+        "type": "any"
+      },
+      {
+        "name": "items",
+        "type": "any"
+      },
+      {
+        "name": "selectedItem",
+        "type": "any"
+      }
+    ],
     "templates": [
       "itemTemplate"
     ]
@@ -136,6 +274,20 @@
   {
     "name": "DxList",
     "exportPath": "ui/list",
+    "subscribableOptions": [
+      {
+        "name": "items",
+        "type": "any"
+      },
+      {
+        "name": "selectedItems",
+        "type": "any"
+      },
+      {
+        "name": "selectedItemKeys",
+        "type": "any"
+      }
+    ],
     "templates": [
       "groupTemplate",
       "itemTemplate"
@@ -147,11 +299,27 @@
   },
   {
     "name": "DxLoadPanel",
-    "exportPath": "ui/load_panel"
+    "exportPath": "ui/load_panel",
+    "subscribableOptions": [
+      {
+        "name": "visible",
+        "type": "any"
+      }
+    ]
   },
   {
     "name": "DxLookup",
     "exportPath": "ui/lookup",
+    "subscribableOptions": [
+      {
+        "name": "value",
+        "type": "any"
+      },
+      {
+        "name": "opened",
+        "type": "any"
+      }
+    ],
     "templates": [
       "titleTemplate",
       "groupTemplate",
@@ -167,6 +335,16 @@
   {
     "name": "DxMenu",
     "exportPath": "ui/menu",
+    "subscribableOptions": [
+      {
+        "name": "items",
+        "type": "any"
+      },
+      {
+        "name": "selectedItem",
+        "type": "any"
+      }
+    ],
     "templates": [
       "itemTemplate"
     ]
@@ -174,6 +352,20 @@
   {
     "name": "DxMultiView",
     "exportPath": "ui/multi_view",
+    "subscribableOptions": [
+      {
+        "name": "selectedIndex",
+        "type": "any"
+      },
+      {
+        "name": "items",
+        "type": "any"
+      },
+      {
+        "name": "selectedItem",
+        "type": "any"
+      }
+    ],
     "templates": [
       "itemTemplate"
     ]
@@ -181,17 +373,59 @@
   {
     "name": "DxNavBar",
     "exportPath": "ui/nav_bar",
+    "subscribableOptions": [
+      {
+        "name": "selectedItems",
+        "type": "any"
+      },
+      {
+        "name": "items",
+        "type": "any"
+      },
+      {
+        "name": "selectedItemKeys",
+        "type": "any"
+      },
+      {
+        "name": "selectedIndex",
+        "type": "any"
+      },
+      {
+        "name": "selectedItem",
+        "type": "any"
+      }
+    ],
     "templates": [
       "itemTemplate"
     ]
   },
   {
     "name": "DxNumberBox",
-    "exportPath": "ui/number_box"
+    "exportPath": "ui/number_box",
+    "subscribableOptions": [
+      {
+        "name": "value",
+        "type": "any"
+      }
+    ]
   },
   {
     "name": "DxPanorama",
     "exportPath": "ui/panorama",
+    "subscribableOptions": [
+      {
+        "name": "selectedIndex",
+        "type": "any"
+      },
+      {
+        "name": "items",
+        "type": "any"
+      },
+      {
+        "name": "selectedItem",
+        "type": "any"
+      }
+    ],
     "templates": [
       "itemTemplate"
     ]
@@ -203,6 +437,20 @@
   {
     "name": "DxPivot",
     "exportPath": "ui/pivot",
+    "subscribableOptions": [
+      {
+        "name": "selectedIndex",
+        "type": "any"
+      },
+      {
+        "name": "items",
+        "type": "any"
+      },
+      {
+        "name": "selectedItem",
+        "type": "any"
+      }
+    ],
     "templates": [
       "itemTitleTemplate",
       "contentTemplate",
@@ -224,6 +472,20 @@
   {
     "name": "DxPopover",
     "exportPath": "ui/popover",
+    "subscribableOptions": [
+      {
+        "name": "width",
+        "type": "any"
+      },
+      {
+        "name": "height",
+        "type": "any"
+      },
+      {
+        "name": "visible",
+        "type": "any"
+      }
+    ],
     "templates": [
       "titleTemplate",
       "contentTemplate"
@@ -232,6 +494,20 @@
   {
     "name": "DxPopup",
     "exportPath": "ui/popup",
+    "subscribableOptions": [
+      {
+        "name": "width",
+        "type": "any"
+      },
+      {
+        "name": "height",
+        "type": "any"
+      },
+      {
+        "name": "visible",
+        "type": "any"
+      }
+    ],
     "templates": [
       "titleTemplate",
       "contentTemplate"
@@ -239,11 +515,23 @@
   },
   {
     "name": "DxProgressBar",
-    "exportPath": "ui/progress_bar"
+    "exportPath": "ui/progress_bar",
+    "subscribableOptions": [
+      {
+        "name": "value",
+        "type": "any"
+      }
+    ]
   },
   {
     "name": "DxRadioGroup",
     "exportPath": "ui/radio_group",
+    "subscribableOptions": [
+      {
+        "name": "value",
+        "type": "any"
+      }
+    ],
     "templates": [
       "itemTemplate"
     ]
@@ -254,15 +542,37 @@
   },
   {
     "name": "DxRangeSlider",
-    "exportPath": "ui/range_slider"
+    "exportPath": "ui/range_slider",
+    "subscribableOptions": [
+      {
+        "name": "value",
+        "type": "any"
+      }
+    ]
   },
   {
     "name": "DxResizable",
-    "exportPath": "ui/resizable"
+    "exportPath": "ui/resizable",
+    "subscribableOptions": [
+      {
+        "name": "width",
+        "type": "any"
+      },
+      {
+        "name": "height",
+        "type": "any"
+      }
+    ]
   },
   {
     "name": "DxResponsiveBox",
     "exportPath": "ui/responsive_box",
+    "subscribableOptions": [
+      {
+        "name": "items",
+        "type": "any"
+      }
+    ],
     "templates": [
       "itemTemplate"
     ]
@@ -270,6 +580,16 @@
   {
     "name": "DxScheduler",
     "exportPath": "ui/scheduler",
+    "subscribableOptions": [
+      {
+        "name": "currentView",
+        "type": "any"
+      },
+      {
+        "name": "currentDate",
+        "type": "any"
+      }
+    ],
     "templates": [
       "appointmentTemplate",
       "dropDownAppointmentTemplate",
@@ -287,6 +607,16 @@
   {
     "name": "DxSelectBox",
     "exportPath": "ui/select_box",
+    "subscribableOptions": [
+      {
+        "name": "value",
+        "type": "any"
+      },
+      {
+        "name": "opened",
+        "type": "any"
+      }
+    ],
     "templates": [
       "fieldTemplate",
       "groupTemplate",
@@ -297,6 +627,20 @@
   {
     "name": "DxSlideOut",
     "exportPath": "ui/slide_out",
+    "subscribableOptions": [
+      {
+        "name": "selectedIndex",
+        "type": "any"
+      },
+      {
+        "name": "items",
+        "type": "any"
+      },
+      {
+        "name": "selectedItem",
+        "type": "any"
+      }
+    ],
     "templates": [
       "menuItemTemplate",
       "menuGroupTemplate",
@@ -314,7 +658,13 @@
   },
   {
     "name": "DxSlider",
-    "exportPath": "ui/slider"
+    "exportPath": "ui/slider",
+    "subscribableOptions": [
+      {
+        "name": "value",
+        "type": "any"
+      }
+    ]
   },
   {
     "name": "DxSparkline",
@@ -322,11 +672,31 @@
   },
   {
     "name": "DxSwitch",
-    "exportPath": "ui/switch"
+    "exportPath": "ui/switch",
+    "subscribableOptions": [
+      {
+        "name": "value",
+        "type": "any"
+      }
+    ]
   },
   {
     "name": "DxTabPanel",
     "exportPath": "ui/tab_panel",
+    "subscribableOptions": [
+      {
+        "name": "selectedIndex",
+        "type": "any"
+      },
+      {
+        "name": "items",
+        "type": "any"
+      },
+      {
+        "name": "selectedItem",
+        "type": "any"
+      }
+    ],
     "templates": [
       "itemTitleTemplate",
       "itemTemplate"
@@ -335,6 +705,28 @@
   {
     "name": "DxTabs",
     "exportPath": "ui/tabs",
+    "subscribableOptions": [
+      {
+        "name": "selectedItems",
+        "type": "any"
+      },
+      {
+        "name": "items",
+        "type": "any"
+      },
+      {
+        "name": "selectedItemKeys",
+        "type": "any"
+      },
+      {
+        "name": "selectedIndex",
+        "type": "any"
+      },
+      {
+        "name": "selectedItem",
+        "type": "any"
+      }
+    ],
     "templates": [
       "itemTemplate"
     ]
@@ -342,6 +734,16 @@
   {
     "name": "DxTagBox",
     "exportPath": "ui/tag_box",
+    "subscribableOptions": [
+      {
+        "name": "value",
+        "type": "any"
+      },
+      {
+        "name": "opened",
+        "type": "any"
+      }
+    ],
     "templates": [
       "tagTemplate",
       "fieldTemplate",
@@ -352,15 +754,33 @@
   },
   {
     "name": "DxTextArea",
-    "exportPath": "ui/text_area"
+    "exportPath": "ui/text_area",
+    "subscribableOptions": [
+      {
+        "name": "value",
+        "type": "any"
+      }
+    ]
   },
   {
     "name": "DxTextBox",
-    "exportPath": "ui/text_box"
+    "exportPath": "ui/text_box",
+    "subscribableOptions": [
+      {
+        "name": "value",
+        "type": "any"
+      }
+    ]
   },
   {
     "name": "DxTileView",
     "exportPath": "ui/tile_view",
+    "subscribableOptions": [
+      {
+        "name": "items",
+        "type": "any"
+      }
+    ],
     "templates": [
       "itemTemplate"
     ]
@@ -368,6 +788,12 @@
   {
     "name": "DxToast",
     "exportPath": "ui/toast",
+    "subscribableOptions": [
+      {
+        "name": "visible",
+        "type": "any"
+      }
+    ],
     "templates": [
       "contentTemplate"
     ]
@@ -375,6 +801,12 @@
   {
     "name": "DxToolbar",
     "exportPath": "ui/toolbar",
+    "subscribableOptions": [
+      {
+        "name": "items",
+        "type": "any"
+      }
+    ],
     "templates": [
       "menuItemTemplate",
       "itemTemplate"
@@ -383,13 +815,37 @@
   {
     "name": "DxTooltip",
     "exportPath": "ui/tooltip",
+    "subscribableOptions": [
+      {
+        "name": "width",
+        "type": "any"
+      },
+      {
+        "name": "height",
+        "type": "any"
+      },
+      {
+        "name": "visible",
+        "type": "any"
+      }
+    ],
     "templates": [
       "contentTemplate"
     ]
   },
   {
     "name": "DxTreeList",
-    "exportPath": "ui/tree_list"
+    "exportPath": "ui/tree_list",
+    "subscribableOptions": [
+      {
+        "name": "expandedRowKeys",
+        "type": "any"
+      },
+      {
+        "name": "selectedRowKeys",
+        "type": "any"
+      }
+    ]
   },
   {
     "name": "DxTreeMap",
@@ -398,6 +854,12 @@
   {
     "name": "DxTreeView",
     "exportPath": "ui/tree_view",
+    "subscribableOptions": [
+      {
+        "name": "items",
+        "type": "any"
+      }
+    ],
     "templates": [
       "itemTemplate"
     ]
@@ -409,6 +871,12 @@
   {
     "name": "DxValidationSummary",
     "exportPath": "ui/validation_summary",
+    "subscribableOptions": [
+      {
+        "name": "items",
+        "type": "any"
+      }
+    ],
     "templates": [
       "itemTemplate"
     ]

@@ -5,6 +5,7 @@ import { TextBox } from "../src/ui/text-box";
 
 interface IState {
     text: string;
+    uncontrolledText: string;
 }
 
 export default class extends React.Component<any, IState> {
@@ -12,33 +13,45 @@ export default class extends React.Component<any, IState> {
     constructor(props: any) {
         super(props);
 
-        this.update = this.update.bind(this);
+        this.handleUpdate = this.handleUpdate.bind(this);
+        this.hangleUncontrolledChange = this.hangleUncontrolledChange.bind(this);
 
         this.state = {
-            text: "text"
+            text: "text",
+            uncontrolledText: ""
         };
     }
 
     public render() {
         return (
             <Example title="DxTextBox" state={this.state}>
-                no value
-                <TextBox />
-                const value
-                <TextBox value="const text" />
+                uncontrolled value
+                <TextBox onValueChanged={this.hangleUncontrolledChange} valueChangeEvent="keyup" />
+                uncontrolled value with default
+                <TextBox
+                    defaultValue={"initial text"}
+                    onValueChanged={this.hangleUncontrolledChange}
+                    valueChangeEvent="keyup"
+                />
                 <br />
-                state value
-                <TextBox value={this.state.text} />
+                controlled state value
+                <TextBox value={this.state.text} valueChangeEvent="keyup" />
                 <br />
-                state value with change handling
-                <TextBox value={this.state.text} onValueChanged={this.update} valueChangeEvent="keyup" />
+                controlled state value with change handling
+                <TextBox value={this.state.text} onValueChanged={this.handleUpdate} valueChangeEvent="keyup" />
             </Example>
         );
     }
 
-    private update(e: any) {
-        const state = { ...this.state };
-        state.text = e.component.option("value");
-        this.setState(state);
+    private hangleUncontrolledChange(e: any) {
+        this.setState({
+            uncontrolledText: "#" + e.value
+        });
+    }
+
+    private handleUpdate(e: any) {
+        this.setState({
+            text: "#" + e.value ,
+        });
     }
 }
