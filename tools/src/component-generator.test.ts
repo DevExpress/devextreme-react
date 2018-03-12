@@ -7,11 +7,7 @@ import Widget, { IOptions as ICLASS_NAMEOptions } from "devextreme/DX/WIDGET/PAT
 import BaseComponent from "BASE_COMPONENT_PATH";
 
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
-
-  constructor(props: ICLASS_NAMEOptions) {
-    super(props);
-    this.WidgetClass = Widget;
-  }
+  protected WidgetClass = Widget;
 }
 export { CLASS_NAME, ICLASS_NAMEOptions };
 `.trimLeft();
@@ -33,21 +29,18 @@ import Widget, { IOptions } from "devextreme/DX/WIDGET/PATH";
 import BaseComponent from "BASE_COMPONENT_PATH";
 
 interface ICLASS_NAMEOptions extends IOptions {
-    optionRender?: (props: any) => React.ReactNode;
-    optionComponent?: React.ComponentType<any>;
+  optionRender?: (props: any) => React.ReactNode;
+  optionComponent?: React.ComponentType<any>;
 }
+
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
+  protected WidgetClass = Widget;
 
-  constructor(props: ICLASS_NAMEOptions) {
-    super(props);
-    this.WidgetClass = Widget;
-
-    this.templateProps = [{
-        tmplOption: "optionTemplate",
-        render: "optionRender",
-        component: "optionComponent"
-    }];
-  }
+  protected templateProps = [{
+    tmplOption: "optionTemplate",
+    render: "optionRender",
+    component: "optionComponent"
+  }];
 }
 export { CLASS_NAME, ICLASS_NAMEOptions };
 `.trimLeft();
@@ -70,27 +63,24 @@ import Widget, { IOptions } from "devextreme/DX/WIDGET/PATH";
 import BaseComponent from "BASE_COMPONENT_PATH";
 
 interface ICLASS_NAMEOptions extends IOptions {
-    optionRender?: (props: any) => React.ReactNode;
-    optionComponent?: React.ComponentType<any>;
-    anotherOptionRender?: (props: any) => React.ReactNode;
-    anotherOptionComponent?: React.ComponentType<any>;
+  optionRender?: (props: any) => React.ReactNode;
+  optionComponent?: React.ComponentType<any>;
+  anotherOptionRender?: (props: any) => React.ReactNode;
+  anotherOptionComponent?: React.ComponentType<any>;
 }
+
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
+  protected WidgetClass = Widget;
 
-  constructor(props: ICLASS_NAMEOptions) {
-    super(props);
-    this.WidgetClass = Widget;
-
-    this.templateProps = [{
-        tmplOption: "optionTemplate",
-        render: "optionRender",
-        component: "optionComponent"
-    }, {
-        tmplOption: "anotherOptionTemplate",
-        render: "anotherOptionRender",
-        component: "anotherOptionComponent"
-    }];
-  }
+  protected templateProps = [{
+    tmplOption: "optionTemplate",
+    render: "optionRender",
+    component: "optionComponent"
+  }, {
+    tmplOption: "anotherOptionTemplate",
+    render: "anotherOptionRender",
+    component: "anotherOptionComponent"
+  }];
 }
 export { CLASS_NAME, ICLASS_NAMEOptions };
 `.trimLeft();
@@ -113,18 +103,15 @@ import Widget, { IOptions } from "devextreme/DX/WIDGET/PATH";
 import BaseComponent from "BASE_COMPONENT_PATH";
 
 interface ICLASS_NAMEOptions extends IOptions {
-    defaultOption1?: someType;
+  defaultOption1?: someType;
 }
+
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
+  protected WidgetClass = Widget;
 
   protected defaults = {
     defaultOption1: "option1"
   };
-
-  constructor(props: ICLASS_NAMEOptions) {
-    super(props);
-    this.WidgetClass = Widget;
-  }
 }
 export { CLASS_NAME, ICLASS_NAMEOptions };
 `.trimLeft();
@@ -149,20 +136,17 @@ import Widget, { IOptions } from "devextreme/DX/WIDGET/PATH";
 import BaseComponent from "BASE_COMPONENT_PATH";
 
 interface ICLASS_NAMEOptions extends IOptions {
-    defaultOption1?: someType;
-    defaultOption2?: anotherType;
+  defaultOption1?: someType;
+  defaultOption2?: anotherType;
 }
+
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
+  protected WidgetClass = Widget;
 
   protected defaults = {
     defaultOption1: "option1",
     defaultOption2: "option2"
   };
-
-  constructor(props: ICLASS_NAMEOptions) {
-    super(props);
-    this.WidgetClass = Widget;
-  }
 }
 export { CLASS_NAME, ICLASS_NAMEOptions };
 `.trimLeft();
