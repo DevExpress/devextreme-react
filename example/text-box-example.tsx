@@ -1,32 +1,34 @@
 import * as React from "react";
 import Example from "./example-block";
 
+import { Button } from "../src/ui/button";
 import { TextBox } from "../src/ui/text-box";
 
 export default class extends React.Component<any, { text: string; uncontrolledText: string; }> {
+
+    private textBox: any;
 
     constructor(props: any) {
         super(props);
 
         this.handleChange = this.handleChange.bind(this);
-        this.hangleUncontrolledChange = this.hangleUncontrolledChange.bind(this);
+        this.updateUncontrolledValue = this.updateUncontrolledValue.bind(this);
 
         this.state = {
             text: "text",
-            uncontrolledText: ""
+            uncontrolledText: "initial text"
         };
     }
 
     public render() {
         return (
             <Example title="DxTextBox" state={this.state}>
-                uncontrolled value
-                <TextBox onValueChanged={this.hangleUncontrolledChange} valueChangeEvent="keyup" />
-                uncontrolled value with default
+                uncontrolled mode
                 <TextBox
                     defaultValue={"initial text"}
-                    valueChangeEvent="keyup"
+                    onInitialized={(e) => this.textBox = e.component}
                 />
+                <Button onClick={this.updateUncontrolledValue} text="Update text" />
                 <br />
                 controlled state value
                 <TextBox value={this.state.text} valueChangeEvent="keyup" />
@@ -37,15 +39,15 @@ export default class extends React.Component<any, { text: string; uncontrolledTe
         );
     }
 
-    private hangleUncontrolledChange(e: any) {
+    private updateUncontrolledValue() {
         this.setState({
-            uncontrolledText: "#" + e.value
+            uncontrolledText: this.textBox.option("value")
         });
     }
 
     private handleChange(e: any) {
         this.setState({
-            text: "#" + e.value ,
+            text: "#" + e.value,
         });
     }
 }
