@@ -37,7 +37,7 @@ Note that one of the [predefined themes](https://js.devexpress.com/Documentation
 
 ## <a name="api-reference"></a>API Reference ##
 
-Each DevExtreme React component correspond widget condfiguration described in [DevExtreme API Reference](http://js.devexpress.com/Documentation/ApiReference/).
+Each DevExtreme React component correspond widget con   figuration described in [DevExtreme API Reference](http://js.devexpress.com/Documentation/ApiReference/).
 
 
 ## <a name="controlled-mode"></a>Controlled Mode
@@ -302,4 +302,4 @@ Familiarize yourself with the [DevExtreme License](https://js.devexpress.com/Lic
 
 ## <a name="support-feedback"></a>Support & Feedback ##
 * For general React questions, check [React Docs](https://reactjs.org/docs)
-* For questions regarding DevExtreme libraries and JavaScript API, use [DevExpress Support Center](https://www.devexpress.com/Support/Center)
+* For questions regarding DevExtreme libraries and widgets API, use [DevExpress Support Center](https://www.devexpress.com/Support/Center)
