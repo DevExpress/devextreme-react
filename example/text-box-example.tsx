@@ -14,7 +14,7 @@ export default class extends React.Component<any, IState> {
         super(props);
 
         this.handleUpdate = this.handleUpdate.bind(this);
-        this.hangleUncontrolledChange = this.hangleUncontrolledChange.bind(this);
+        this.handleUncontrolledChange = this.handleUncontrolledChange.bind(this);
 
         this.state = {
             text: "text",
@@ -26,11 +26,11 @@ export default class extends React.Component<any, IState> {
         return (
             <Example title="DxTextBox" state={this.state}>
                 uncontrolled value
-                <TextBox onValueChanged={this.hangleUncontrolledChange} valueChangeEvent="keyup" />
+                <TextBox onValueChanged={this.handleUncontrolledChange} valueChangeEvent="keyup" />
                 uncontrolled value with default
                 <TextBox
                     defaultValue={"initial text"}
-                    onValueChanged={this.hangleUncontrolledChange}
+                    onValueChanged={this.handleUncontrolledChange}
                     valueChangeEvent="keyup"
                 />
                 <br />
@@ -43,7 +43,7 @@ export default class extends React.Component<any, IState> {
         );
     }
 
-    private hangleUncontrolledChange(e: any) {
+    private handleUncontrolledChange(e: any) {
         this.setState({
             uncontrolledText: "#" + e.value
         });
