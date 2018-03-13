@@ -1,6 +1,6 @@
 # React UI and Visualization Components Based on DevExtreme Widgets #
 
-This project allows you to use [DevExtreme Widgets](http://js.devexpress.com/Demos/WidgetsGallery/) as [React components](https://reactjs.org).
+This project allows you to use [DevExtreme Widgets](http://js.devexpress.com/Demos/WidgetsGallery/) as [React C omponents](https://reactjs.org).
 
 
 ## <a name="getting-started"></a>Getting Started ##
@@ -142,7 +142,7 @@ ReactDOM.render(
 
 
 ## <a name="rendering-customization"></a>Rendering Customization
-DevExtreme widgets support customization via templates. To achieve the same with React components you can use a render function:
+DevExtreme widgets support customization via templates. To achieve the same with DevExtreme React Components you can use a render function:
 ```jsx
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -236,9 +236,9 @@ ReactDOM.render(
 
 
 ## <a name="working-with-data"></a>Working with Data ##
-The DevExtreme framework includes a [data layer](https://js.devexpress.com/Documentation/Guide/Data_Layer/Data_Layer/), which is a set of complementary components that enable you to read and write data.
+The DevExtreme framework includes a [data layer](https://js.devexpress.com/Documentation/Guide/Data_Layer/Data_Layer/), that enable you to read and write data.
 
-Here is an example of using the [DataSource](https://js.devexpress.com/Documentation/ApiReference/Data_Layer/DataSource/) with React components based on DevEtreme widgets.
+Here is an example of use of the [DataSource](https://js.devexpress.com/Documentation/ApiReference/Data_Layer/DataSource/) with DevExtreme React Components.
 
 ```jsx
 import React from 'react';
@@ -294,7 +294,7 @@ ReactDOM.render(
 
 ## <a name="typechecking"></a>Typechecking ##
 
-Typechecking allows you to catch a lot of bugs and improve your workflow by adding features like auto-completion and automated refactoring. This is why we provide TypeScript declarations for the components based on the DevExtreme widgets.
+Typechecking allows you to catch a lot of bugs and improve your workflow by adding features like auto-completion and automated refactoring. This is why we provide TypeScript declarations for the DevExtreme React Components.
 
 Here is a TypeScript example of rendering customization:
 ```ts
