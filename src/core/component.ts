@@ -60,10 +60,6 @@ export default class Component<P> extends React.PureComponent<P, any> {
     }
   }
 
-  public shouldComponentUpdate() {
-    return false;
-  }
-
   public render() {
       const args: any[] = [
         "div",
@@ -73,7 +69,7 @@ export default class Component<P> extends React.PureComponent<P, any> {
         args.push(this.props.children);
       }
       if (this.state.templates.length) {
-        args.push(this.state.templates);
+        args.push(this.state.templates.map((m: any) => m()));
       }
       return React.createElement.apply(this, args);
   }
@@ -202,7 +198,7 @@ export default class Component<P> extends React.PureComponent<P, any> {
       render: (data: any) => {
         const element = document.createElement("div");
         data.container.appendChild(element);
-        const portal: any = ReactDOM.createPortal(tmplFn({...data.model}), element);
+        const portal: any = () => ReactDOM.createPortal(tmplFn({...data.model}), element);
         this.setState((state: any) => ({templates : state.templates.concat([portal])}) );
         return element;
       }
