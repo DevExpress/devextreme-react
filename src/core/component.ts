@@ -7,7 +7,7 @@ interface IDictionary<TValue = any> {
   [index: string]: TValue;
 }
 
-export default class Component<P> extends React.Component<P, any> {
+export default class Component<P> extends React.PureComponent<P, any> {
 
   protected WidgetClass: any;
   protected instance: any;
@@ -29,7 +29,7 @@ export default class Component<P> extends React.Component<P, any> {
     this.extractDefaultsValues = this.extractDefaultsValues.bind(this);
   }
 
-  public componentWillReceiveProps(nextProps: P) {
+  public componentWillUpdate(nextProps: P) {
     const props: IDictionary = this.extractDefaultsValues(nextProps).options;
     const prevProps: IDictionary = this.props;
 
