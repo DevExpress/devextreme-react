@@ -1,5 +1,6 @@
 import * as React from "react";
 
+import DataSource from "devextreme/data/data_source";
 import { Button } from "../src/ui/button";
 import { List } from "../src/ui/list";
 import { TextBox } from "../src/ui/text-box";
@@ -40,6 +41,8 @@ class Item extends React.Component<IListItem, { counter: number }> {
 // tslint:disable-next-line:max-classes-per-file
 export default class extends React.Component<any, { text: string; items: IListItem[]; }> {
 
+    private dataSource: DataSource;
+
     constructor(props: any) {
         super(props);
         this.updateText = this.updateText.bind(this);
@@ -49,6 +52,19 @@ export default class extends React.Component<any, { text: string; items: IListIt
             text: "",
             items
         };
+
+        this.dataSource = new DataSource(
+            {
+                store: {
+                    type: "array",
+                    data: items
+                },
+                sort: [
+                    { getter: "text", desc: true}
+                ],
+                pageSize: 1
+            }
+        );
     }
 
     public render() {
@@ -65,10 +81,17 @@ export default class extends React.Component<any, { text: string; items: IListIt
                     itemComponent={Item}
                 />
                 <br />
+
+                <List dataSource={this.dataSource} />
+                <br />
                 <TextBox value={this.state.text} onValueChanged={this.updateText} valueChangeEvent="keyup" />
                 <Button text="Add to list" onClick={this.addTextToList} />
             </Example>
         );
+    }
+
+    public componentWillUnmount() {
+        this.dataSource.dispose();
     }
 
     private updateText(e: any) {

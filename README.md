@@ -28,8 +28,8 @@ import 'devextreme/dist/css/dx.common.css';
 import 'devextreme/dist/css/dx.light.compact.css';
 
 ReactDOM.render(
-  <Button text='Example Button' />,
-  document.getElementById('root')
+    <Button text='Example Button' />,
+    document.getElementById('root')
 );
 ```
 Note that one of the [predefined themes](https://js.devexpress.com/Documentation/Guide/Themes/Predefined_Themes/) is required
@@ -160,8 +160,8 @@ const items = [
 
 
 ReactDOM.render(
-  <List items={items} itemRender={(it) => <i>Function template for item <b>{it.text}</b></i>}/>,
-  document.getElementById('root')
+    <List items={items} itemRender={(it) => <i>Function template for item <b>{it.text}</b></i>}/>,
+    document.getElementById('root')
 );
 ```
 or a component:
@@ -232,6 +232,63 @@ ReactDOM.render(
     </Popup>,
     document.getElementById('root')
 );
+```
+
+
+## <a name="working-with-data"></a>Working with Data ##
+The DevExtreme framework includes a [data layer](https://js.devexpress.com/Documentation/Guide/Data_Layer/Data_Layer/), which is a set of complementary components that enable you to read and write data.
+
+Here is an example of using the [DataSource](https://js.devexpress.com/Documentation/ApiReference/Data_Layer/DataSource/) with React components based on DevEtreme widgets.
+
+```jsx
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+import DataSource from 'devextreme/data/data_source';
+import { List } from 'devextreme-react';
+
+import 'devextreme/dist/css/dx.common.css';
+import 'devextreme/dist/css/dx.light.compact.css';
+
+const items = [
+    { text: '123' },
+    { text: '234' },
+    { text: '567' }
+];
+
+class Example extends React.Component {
+
+    constructor(props) {
+        super(props);
+
+        this.dataSource = new DataSource({
+            store: {
+                type: "array",
+                data: items
+            },
+            sort: [
+                { getter: "text", desc: true }
+            ],
+            pageSize: 1
+        });
+    }
+
+    render() {
+        return (
+            <List dataSource={this.dataSource} />
+        );
+    }
+
+    componentWillUnmount() {
+        this.dataSource.dispose();
+    }
+}
+
+ReactDOM.render(
+    <Example />,
+    document.getElementById('root')
+);
+
 ```
 
 
