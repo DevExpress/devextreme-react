@@ -1,6 +1,6 @@
-# React UI and Visualization Components Based on DevExtreme Widgets #
+# DevExtreme React UI and Visualization Components #
 
-This project allows you to use [DevExtreme Widgets](http://js.devexpress.com/Demos/WidgetsGallery/) as [React C omponents](https://reactjs.org).
+This project allows you to use [DevExtreme Widgets](http://js.devexpress.com/Demos/WidgetsGallery/) as [React Components](https://reactjs.org).
 
 
 ## <a name="getting-started"></a>Getting Started ##
