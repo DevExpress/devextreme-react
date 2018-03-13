@@ -27,6 +27,9 @@ export default class Component<P> extends React.PureComponent<P, any> {
     super(props);
     this.optionChangedHandler = this.optionChangedHandler.bind(this);
     this.extractDefaultsValues = this.extractDefaultsValues.bind(this);
+    this.state = {
+      templates: []
+    };
   }
 
   public componentWillUpdate(nextProps: P) {
@@ -62,11 +65,17 @@ export default class Component<P> extends React.PureComponent<P, any> {
   }
 
   public render() {
-    if (!!this.props.children) {
-      return React.createElement("div", { ref: (element) => this.element = element }, this.props.children);
-    } else {
-      return React.createElement("div", { ref: (element) => this.element = element });
-    }
+      const args: any[] = [
+        "div",
+        { ref: (element: any) => this.element = element }
+      ];
+      if (!!this.props.children) {
+        args.push(this.props.children);
+      }
+      if (this.state.templates.length) {
+        args.push(this.state.templates);
+      }
+      return React.createElement.apply(this, args);
   }
 
   public componentDidMount() {
@@ -191,17 +200,12 @@ export default class Component<P> extends React.PureComponent<P, any> {
   private fillTemplate(tmplFn: any): object {
     return {
       render: (data: any) => {
-        const result = this.getTemplateContent(tmplFn, {...data.model});
-        data.container.appendChild(result);
-        return result;
+        const element = document.createElement("div");
+        data.container.appendChild(element);
+        const portal: any = ReactDOM.createPortal(tmplFn({...data.model}), element);
+        this.setState((state: any) => ({templates : state.templates.concat([portal])}) );
+        return element;
       }
     };
-  }
-
-  private getTemplateContent(tmplFn: any, tmplProps: any): any {
-    const element = document.createElement("div");
-    const tmplWithData = tmplFn(tmplProps);
-    ReactDOM.render(tmplWithData, element);
-    return element;
   }
 }
