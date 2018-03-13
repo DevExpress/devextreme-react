@@ -37,10 +37,15 @@ Note that one of the [predefined themes](https://js.devexpress.com/Documentation
 
 ## <a name="api-reference"></a>API Reference ##
 
-Each DevExtreme React component correspond widget con   figuration described in [DevExtreme API Reference](http://js.devexpress.com/Documentation/ApiReference/).
+Each DevExtreme React component correspond widget configuration described in [DevExtreme API Reference](http://js.devexpress.com/Documentation/ApiReference/).
 
 
 ## <a name="controlled-mode"></a>Controlled Mode
+
+In the controlled mode, a component state is managed externally (for example, in the parent component). Refer to the [React documentation](https://facebook.github.io/react/docs/forms.html#controlled-components) for more information about the controlled components concept.
+
+This mode helps you to keep your UI in sync with the internal application state. You can also access a component state from other application parts, e.g. persist the state and restore it when required, or change it via an external UI.
+
 Controlled mode assumes you provide an option value and handle the event fired when it is changed:
 
 ```jsx
@@ -93,9 +98,10 @@ ReactDOM.render(
 
 ## <a name="uncontrolled-mode"></a>Uncontrolled Mode ##
 
-All DevExtreme widgets are able to manage their state internally, allowing you to avoid writing event handlers for every state update.
+All DevExtreme components are able to manage their state internally, allowing you to avoid writing event handlers for every state update.
 
-To get a value of the option you need, obtain a widget instance and use the `.option('<optionName>')` method.
+### <a name="getting-widget-instance"></a>Getting Widget Instance ###
+To interact with a component (e.g. to get and set options) you can use [DevExtreme Widgets API](http://js.devexpress.com/Documentation/ApiReference/). To get a widget instance, use the `wref` attribute, which takes a callback function that will be executed once the component mounted.
 
 If you want to specify the initial value for an option, but leave subsequent updates uncontrolled you should use property with the `default` prefix.
 
@@ -121,7 +127,7 @@ class Example extends React.Component {
             <div>
                 <TextBox
                     defaultValue={'inital text'}
-                    onInitialized={(e) => this.textBox = e.component}
+                    wref={(w) => this.textBox = w}
                 />
                 <button type='button' onClick={this.handleClick}>Submit</button>
                 <div ref={(el) => this.target = el}></div>
@@ -142,7 +148,8 @@ ReactDOM.render(
 
 
 ## <a name="rendering-customization"></a>Rendering Customization
-DevExtreme widgets support customization via templates. To achieve the same with DevExtreme React Components you can use a render function:
+The way DevExtreme Components rendered can be customized via templated properties. A template could be specified as a render function or a a regular React component.
+Render function are set via options with `Render` suffix:
 ```jsx
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -164,7 +171,7 @@ ReactDOM.render(
     document.getElementById('root')
 );
 ```
-or a component:
+Use options with `Component` suffix to set a component template:
 ```jsx
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -213,12 +220,12 @@ ReactDOM.render(
 );
 ```
 
-When using such widgets as [ScrollView](https://js.devexpress.com/Documentation/ApiReference/UI_Widgets/dxScrollView/) you can specify their content within corresponding tags:
+When using such components as [Popup](https://js.devexpress.com/Documentation/ApiReference/UI_Widgets/dxPopup/) you can specify their content within corresponding tags:
 ```jsx
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { Popup, ScrollView } from 'devextreme-react';
+import { Popup } from 'devextreme-react';
 
 import 'devextreme/dist/css/dx.common.css';
 import 'devextreme/dist/css/dx.light.compact.css';
@@ -238,7 +245,7 @@ ReactDOM.render(
 ## <a name="working-with-data"></a>Working with Data ##
 The DevExtreme framework includes a [data layer](https://js.devexpress.com/Documentation/Guide/Data_Layer/Data_Layer/), that enable you to read and write data.
 
-Here is an example of use of the [DataSource](https://js.devexpress.com/Documentation/ApiReference/Data_Layer/DataSource/) with DevExtreme React Components.
+Here is an example of use of the [DataSource](https://js.devexpress.com/Documentation/ApiReference/Data_Layer/DataSource/) with DevExtreme Components.
 
 ```jsx
 import React from 'react';
@@ -291,10 +298,12 @@ ReactDOM.render(
 
 ```
 
+Note that a DataSource plays role of a 'service' not of a 'state' object. So modifying it's props doesn't immediately affect component rendering.
+
 
 ## <a name="typechecking"></a>Typechecking ##
 
-Typechecking allows you to catch a lot of bugs and improve your workflow by adding features like auto-completion and automated refactoring. This is why we provide TypeScript declarations for the DevExtreme React Components.
+Typechecking allows you to catch a lot of bugs and improve your workflow by adding features like auto-completion and automated refactoring. This is why we provide TypeScript declarations for the DevExtreme Components.
 
 Here is a TypeScript example of rendering customization:
 ```ts
