@@ -70,6 +70,15 @@ describe("component rendering", () => {
 
 describe("templates", () => {
 
+    const DX_TEMPLATE_WRAPPER = "dx-template-wrapper";
+
+    const renderItemTemplate: (model: object) => Element = (model: object) => {
+        const render = WidgetClass.mock.calls[0][1].integrationOptions.templates.item.render;
+        return render({
+            container: document.createElement("div"), model
+        });
+    };
+
     describe("function template", () => {
 
         it("pass integrationOptions to widget", () => {
@@ -86,16 +95,26 @@ describe("templates", () => {
         });
 
         it("renders", () => {
-            const itemRender: any = (props: any) => <div>Template {props.text}</div>;
+            const itemRender: any = jest.fn((props: any) => <div>Template {props.text}</div>);
             mount(
                 <ComponentWithTemplates itemRender={itemRender} />
             );
+            const renderedTemplate = renderItemTemplate({ text: "with data" });
 
-            const render = WidgetClass.mock.calls[0][1].integrationOptions.templates.item.render;
+            expect(itemRender).toBeCalled();
+            expect(renderedTemplate.className).toBe(DX_TEMPLATE_WRAPPER);
+            expect(renderedTemplate.innerHTML).toBe("<div>Template with data</div>");
+        });
 
-            expect(render({
-                container: document.createElement("div"), model: { text: "with data" }
-            }).outerHTML).toBe("<div><div>Template with data</div></div>");
+        it("renders inside component", () => {
+            const itemRender: any = jest.fn((props: any) => <div className={"template"}>Template {props.text}</div>);
+            const component = mount(
+                <ComponentWithTemplates itemRender={itemRender} />
+            );
+            renderItemTemplate({ text: "is rendered" });
+            expect(component.state("templates").length).toBe(1);
+            component.update();
+            expect(component.find(".template").html()).toBe('<div class="template">Template is rendered</div>');
         });
     });
 
@@ -121,11 +140,20 @@ describe("templates", () => {
                 <ComponentWithTemplates itemComponent={ItemTemplate} />
             );
 
-            const render = WidgetClass.mock.calls[0][1].integrationOptions.templates.item.render;
+            const renderedTemplate = renderItemTemplate({ text: "with data" });
+            expect(renderedTemplate.className).toBe(DX_TEMPLATE_WRAPPER);
+            expect(renderedTemplate.innerHTML).toBe("<div>Template with data</div>");
+        });
 
-            expect(render({
-                container: document.createElement("div"), model: { text: "with data" }
-            }).outerHTML).toBe("<div><div>Template with data</div></div>");
+        it("renders inside component", () => {
+            const ItemTemplate = (props: any) => <div className={"template"}>Template {props.text}</div>;
+            const component = mount(
+                <ComponentWithTemplates itemComponent={ItemTemplate} />
+            );
+            renderItemTemplate({ text: "is rendered" });
+            expect(component.state("templates").length).toBe(1);
+            component.update();
+            expect(component.find(".template").html()).toBe('<div class="template">Template is rendered</div>');
         });
     });
 

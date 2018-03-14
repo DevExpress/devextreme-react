@@ -2,6 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 const ROLLBACK_DELAY: number = 0;
+const DX_TEMPLATE_WRAPPER_CLASS = "dx-template-wrapper";
 
 interface IDictionary<TValue = any> {
   [index: string]: TValue;
@@ -197,6 +198,7 @@ export default class Component<P> extends React.PureComponent<P, any> {
     return {
       render: (data: any) => {
         const element = document.createElement("div");
+        element.className = DX_TEMPLATE_WRAPPER_CLASS;
         data.container.appendChild(element);
         const portal: any = () => ReactDOM.createPortal(tmplFn({...data.model}), element);
         this.setState((state: any) => ({templates : state.templates.concat([portal])}) );
