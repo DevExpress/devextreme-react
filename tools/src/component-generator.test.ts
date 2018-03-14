@@ -96,6 +96,40 @@ export { CLASS_NAME, ICLASS_NAMEOptions };
     ).toBe(EXPECTED);
 });
 
+it("generates widget with single template", () => {
+    //#region EXPECTED
+    const EXPECTED = `
+import Widget, { IOptions } from "devextreme/DX/WIDGET/PATH";
+import BaseComponent from "BASE_COMPONENT_PATH";
+
+interface ICLASS_NAMEOptions extends IOptions {
+  render?: (props: any) => React.ReactNode;
+  component?: React.ComponentType<any>;
+}
+
+class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
+  protected WidgetClass = Widget;
+
+  protected templateProps = [{
+    tmplOption: "template",
+    render: "render",
+    component: "component"
+  }];
+}
+export { CLASS_NAME, ICLASS_NAMEOptions };
+`.trimLeft();
+    //#endregion
+
+    expect(
+        generate({
+            name: "CLASS_NAME",
+            baseComponentPath: "BASE_COMPONENT_PATH",
+            dxExportPath: "DX/WIDGET/PATH",
+            templates: ["template"]
+        })
+    ).toBe(EXPECTED);
+});
+
 it("generates widget with subscribable prop", () => {
     //#region EXPECTED
     const EXPECTED = `
