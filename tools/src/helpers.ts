@@ -13,6 +13,10 @@ export function toKebabCase(value: string): string {
     return dasherize(value);
 }
 
-export function capitalizeFirst(value: string): string {
+export function uppercaseFirst(value: string): string {
     return value[0].toUpperCase() + value.substr(1);
+}
+
+export function lowercaseFirst(value: string): string {
+    return value[0].toLowerCase() + value.substr(1);
 }

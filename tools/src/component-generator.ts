@@ -1,4 +1,4 @@
-import { capitalizeFirst } from "./helpers";
+import { lowercaseFirst, uppercaseFirst } from "./helpers";
 import createTempate from "./template";
 
 interface IComponent {
@@ -36,19 +36,19 @@ function generate(component: IComponent): string {
 
 function createTemplateModel(name: string) {
     const model = {
-        render: replaceTemplateSuffix(name, "Render"),
-        component: replaceTemplateSuffix(name, "Component"),
+        render: formatTemplatePropName(name, "Render"),
+        component: formatTemplatePropName(name, "Component"),
     };
 
     return { ...model, renderedProp: renderTemplateOption({ name, ...model }) };
 }
 
-function replaceTemplateSuffix(name: string, suffix: string): string {
-    return name.replace(/template$/i, suffix);
+function formatTemplatePropName(name: string, suffix: string): string {
+    return lowercaseFirst(name.replace(/template$/i, suffix));
 }
 
 function createSubscribableOptionModel(option: IOption) {
-    const name = `default${capitalizeFirst(option.name)}`;
+    const name = `default${uppercaseFirst(option.name)}`;
     return {
         name,
         type: option.type,
