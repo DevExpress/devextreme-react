@@ -101,9 +101,7 @@ ReactDOM.render(
 All DevExtreme components are able to manage their state internally, allowing you to avoid writing event handlers for every state update.
 
 ### <a name="getting-widget-instance"></a>Getting Widget Instance ###
-To interact with a component (e.g. to get and set options) you can use [DevExtreme Widgets API](http://js.devexpress.com/Documentation/ApiReference/). To get a widget instance, use the `wref` attribute, which takes a callback function that will be executed once the component mounted.
-
-If you want to specify the initial value for an option, but leave subsequent updates uncontrolled you should use property with the `default` prefix.
+To interact with a component (e.g. to get and set options) you can use [DevExtreme Widgets API](http://js.devexpress.com/Documentation/ApiReference/). To get a widget instance, use the `ref` attribute, which takes a callback function that receives the mounted DevExtreme Component as its argument, which in its turn has the `instance` property.
 
 ```jsx
 import React from 'react';
@@ -127,7 +125,7 @@ class Example extends React.Component {
             <div>
                 <TextBox
                     defaultValue={'inital text'}
-                    wref={(w) => this.textBox = w}
+                    ref={(ref) => this.textBox = ref.instance}
                 />
                 <button type='button' onClick={this.handleClick}>Submit</button>
                 <div ref={(el) => this.target = el}></div>
@@ -145,6 +143,8 @@ ReactDOM.render(
     document.getElementById('root')
 );
 ```
+
+Note that if you want to specify the initial value for an option, but leave subsequent updates uncontrolled you should use attribute with the `default` prefix. In the example above the `defaultValue` attribute used to set the initial value for the `value` option.
 
 
 ## <a name="rendering-customization"></a>Rendering Customization
@@ -298,7 +298,7 @@ ReactDOM.render(
 
 ```
 
-Note that a DataSource plays role of a 'service' not of a 'state' object. So modifying it's props doesn't immediately affect component rendering.
+Note that a DataSource plays role of a 'service' not of a 'state' object. So modifying it's properties doesn't immediately affect component rendering.
 
 
 ## <a name="typechecking"></a>Typechecking ##
