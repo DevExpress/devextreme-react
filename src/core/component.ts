@@ -1,13 +1,16 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
+import * as events from "devextreme/events";
+
 const ROLLBACK_DELAY: number = 0;
+const DX_TEMPLATE_WRAPPER_CLASS = "dx-template-wrapper";
 
 interface IDictionary<TValue = any> {
   [index: string]: TValue;
 }
 
-export default class Component<P> extends React.Component<P, any> {
+export default class Component<P> extends React.PureComponent<P, any> {
 
   protected WidgetClass: any;
   protected instance: any;
@@ -27,9 +30,12 @@ export default class Component<P> extends React.Component<P, any> {
     super(props);
     this.optionChangedHandler = this.optionChangedHandler.bind(this);
     this.extractDefaultsValues = this.extractDefaultsValues.bind(this);
+    this.state = {
+      templates: {}
+    };
   }
 
-  public componentWillReceiveProps(nextProps: P) {
+  public componentWillUpdate(nextProps: P) {
     const props: IDictionary = this.extractDefaultsValues(nextProps).options;
     const prevProps: IDictionary = this.props;
 
@@ -57,16 +63,19 @@ export default class Component<P> extends React.Component<P, any> {
     }
   }
 
-  public shouldComponentUpdate() {
-    return false;
-  }
-
   public render() {
-    if (!!this.props.children) {
-      return React.createElement("div", { ref: (element) => this.element = element }, this.props.children);
-    } else {
-      return React.createElement("div", { ref: (element) => this.element = element });
-    }
+      const args: any[] = [
+        "div",
+        { ref: (element: any) => this.element = element }
+      ];
+      if (!!this.props.children) {
+        args.push(this.props.children);
+      }
+      const templates = Object.getOwnPropertySymbols(this.state.templates);
+      if (templates.length) {
+        args.push(templates.map((m: any) => this.state.templates[m]()));
+      }
+      return React.createElement.apply(this, args);
   }
 
   public componentDidMount() {
@@ -191,17 +200,32 @@ export default class Component<P> extends React.Component<P, any> {
   private fillTemplate(tmplFn: any): object {
     return {
       render: (data: any) => {
-        const result = this.getTemplateContent(tmplFn, {...data.model});
-        data.container.appendChild(result);
-        return result;
+        const element = document.createElement("div");
+        element.className = DX_TEMPLATE_WRAPPER_CLASS;
+        data.container.appendChild(element);
+
+        const elementSymbol = Symbol();
+        events.one(element, "dxremove", () => {
+          this.setState((state: any) => {
+            const updatedTemplates = {...state.templates};
+            delete updatedTemplates[elementSymbol];
+            return {
+              templates : updatedTemplates
+            };
+          });
+        });
+
+        const portal: any = () => ReactDOM.createPortal(tmplFn({...data.model}), element);
+
+        this.setState((state: any) => {
+          const updatedTemplates = {...state.templates};
+          updatedTemplates[elementSymbol] = portal;
+          return {
+            templates : updatedTemplates
+          };
+        });
+        return element;
       }
     };
-  }
-
-  private getTemplateContent(tmplFn: any, tmplProps: any): any {
-    const element = document.createElement("div");
-    const tmplWithData = tmplFn(tmplProps);
-    ReactDOM.render(tmplWithData, element);
-    return element;
   }
 }
