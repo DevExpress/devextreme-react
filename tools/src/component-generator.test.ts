@@ -3,11 +3,16 @@ import generate from "./component-generator";
 it("generates", () => {
     //#region EXPECTED
     const EXPECTED = `
-import Widget, { IOptions as ICLASS_NAMEOptions } from "devextreme/DX/WIDGET/PATH";
+import dxCLASS_NAME, { IOptions as ICLASS_NAMEOptions } from "devextreme/DX/WIDGET/PATH";
 import BaseComponent from "BASE_COMPONENT_PATH";
 
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
-  protected WidgetClass = Widget;
+
+  public get instance(): dxCLASS_NAME {
+    return this._instance;
+  }
+
+  protected WidgetClass = dxCLASS_NAME;
 }
 export { CLASS_NAME, ICLASS_NAMEOptions };
 `.trimLeft();
@@ -25,7 +30,7 @@ export { CLASS_NAME, ICLASS_NAMEOptions };
 it("generates widget with template", () => {
     //#region EXPECTED
     const EXPECTED = `
-import Widget, { IOptions } from "devextreme/DX/WIDGET/PATH";
+import dxCLASS_NAME, { IOptions } from "devextreme/DX/WIDGET/PATH";
 import BaseComponent from "BASE_COMPONENT_PATH";
 
 interface ICLASS_NAMEOptions extends IOptions {
@@ -34,7 +39,12 @@ interface ICLASS_NAMEOptions extends IOptions {
 }
 
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
-  protected WidgetClass = Widget;
+
+  public get instance(): dxCLASS_NAME {
+    return this._instance;
+  }
+
+  protected WidgetClass = dxCLASS_NAME;
 
   protected templateProps = [{
     tmplOption: "optionTemplate",
@@ -59,7 +69,7 @@ export { CLASS_NAME, ICLASS_NAMEOptions };
 it("generates widget with several templates", () => {
     //#region EXPECTED
     const EXPECTED = `
-import Widget, { IOptions } from "devextreme/DX/WIDGET/PATH";
+import dxCLASS_NAME, { IOptions } from "devextreme/DX/WIDGET/PATH";
 import BaseComponent from "BASE_COMPONENT_PATH";
 
 interface ICLASS_NAMEOptions extends IOptions {
@@ -70,7 +80,12 @@ interface ICLASS_NAMEOptions extends IOptions {
 }
 
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
-  protected WidgetClass = Widget;
+
+  public get instance(): dxCLASS_NAME {
+    return this._instance;
+  }
+
+  protected WidgetClass = dxCLASS_NAME;
 
   protected templateProps = [{
     tmplOption: "optionTemplate",
@@ -99,7 +114,7 @@ export { CLASS_NAME, ICLASS_NAMEOptions };
 it("generates widget with single template", () => {
     //#region EXPECTED
     const EXPECTED = `
-import Widget, { IOptions } from "devextreme/DX/WIDGET/PATH";
+import dxCLASS_NAME, { IOptions } from "devextreme/DX/WIDGET/PATH";
 import BaseComponent from "BASE_COMPONENT_PATH";
 
 interface ICLASS_NAMEOptions extends IOptions {
@@ -108,7 +123,12 @@ interface ICLASS_NAMEOptions extends IOptions {
 }
 
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
-  protected WidgetClass = Widget;
+
+  public get instance(): dxCLASS_NAME {
+    return this._instance;
+  }
+
+  protected WidgetClass = dxCLASS_NAME;
 
   protected templateProps = [{
     tmplOption: "template",
@@ -133,7 +153,7 @@ export { CLASS_NAME, ICLASS_NAMEOptions };
 it("generates widget with subscribable prop", () => {
     //#region EXPECTED
     const EXPECTED = `
-import Widget, { IOptions } from "devextreme/DX/WIDGET/PATH";
+import dxCLASS_NAME, { IOptions } from "devextreme/DX/WIDGET/PATH";
 import BaseComponent from "BASE_COMPONENT_PATH";
 
 interface ICLASS_NAMEOptions extends IOptions {
@@ -141,7 +161,12 @@ interface ICLASS_NAMEOptions extends IOptions {
 }
 
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
-  protected WidgetClass = Widget;
+
+  public get instance(): dxCLASS_NAME {
+    return this._instance;
+  }
+
+  protected WidgetClass = dxCLASS_NAME;
 
   protected defaults = {
     defaultOption1: "option1"
@@ -166,7 +191,7 @@ export { CLASS_NAME, ICLASS_NAMEOptions };
 it("generates widget with several subscribable props", () => {
     //#region EXPECTED
     const EXPECTED = `
-import Widget, { IOptions } from "devextreme/DX/WIDGET/PATH";
+import dxCLASS_NAME, { IOptions } from "devextreme/DX/WIDGET/PATH";
 import BaseComponent from "BASE_COMPONENT_PATH";
 
 interface ICLASS_NAMEOptions extends IOptions {
@@ -175,7 +200,12 @@ interface ICLASS_NAMEOptions extends IOptions {
 }
 
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
-  protected WidgetClass = Widget;
+
+  public get instance(): dxCLASS_NAME {
+    return this._instance;
+  }
+
+  protected WidgetClass = dxCLASS_NAME;
 
   protected defaults = {
     defaultOption1: "option1",

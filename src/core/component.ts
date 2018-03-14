@@ -13,7 +13,7 @@ interface IDictionary<TValue = any> {
 export default class Component<P> extends React.PureComponent<P, any> {
 
   protected WidgetClass: any;
-  protected instance: any;
+  protected _instance: any; // tslint:disable-line:variable-name
   protected readonly defaults: { [index: string]: string };
 
   protected templateProps: Array<{
@@ -49,17 +49,17 @@ export default class Component<P> extends React.PureComponent<P, any> {
     this.updatingProps = false;
     const updateOption = (optionPath: string, value: any): void => {
       if (!this.updatingProps) {
-        this.instance.beginUpdate();
+        this._instance.beginUpdate();
         this.updatingProps = true;
       }
-      this.instance.option(optionPath, value);
+      this._instance.option(optionPath, value);
     };
 
     this.processChangedValues(props, prevProps, updateOption, []);
 
     if (this.updatingProps) {
       this.updatingProps = false;
-      this.instance.endUpdate();
+      this._instance.endUpdate();
     }
   }
 
@@ -88,12 +88,12 @@ export default class Component<P> extends React.PureComponent<P, any> {
       ...this.getIntegrationOptions()
     };
 
-    this.instance = new this.WidgetClass(this.element, options);
-    this.instance.on("optionChanged", this.optionChangedHandler);
+    this._instance = new this.WidgetClass(this.element, options);
+    this._instance.on("optionChanged", this.optionChangedHandler);
   }
 
   public componentWillUnmount() {
-    this.instance.dispose();
+    this._instance.dispose();
   }
 
   private optionChangedHandler(e: any) {
@@ -113,7 +113,7 @@ export default class Component<P> extends React.PureComponent<P, any> {
     }
 
     const guardId = window.setTimeout(() => {
-      this.instance.option(optionName, optionValue);
+      this._instance.option(optionName, optionValue);
       window.clearTimeout(guardId);
       delete this.guards[optionName];
     }, ROLLBACK_DELAY);
