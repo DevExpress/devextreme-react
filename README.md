@@ -7,11 +7,12 @@ This project allows you to use [DevExtreme Widgets](http://js.devexpress.com/Dem
   * [Install DevExtreme](#installation)
   * [Import DevExtreme Components](#import-components)
 * [API Reference](#api-reference)
-* [Controlled Mode](#controlled-mode)
-* [Uncontrolled Mode](#uncontrolled-mode)
+* [State Management](#state-management)
+  * [Handle Change](#handle-change)
+  * [Control Change](#control-change)
   * [Getting Widget Instance](#getting-widget-instance)
-  * [Appearance Customization](#appearance-customization)
-  * [Working With Data](#working-with-data)
+* [Appearance Customization](#appearance-customization)
+* [Working With Data](#working-with-data)
 * [Strict Typing](#strict-typing)
 * [License](#license)
 * [Support & feedback](#support-feedback)
@@ -55,13 +56,73 @@ Note that one of the [predefined themes](https://js.devexpress.com/Documentation
 Each DevExtreme React component supports the same configuration and API as the corresponding DevExtreme widget. See [DevExtreme API Reference](http://js.devexpress.com/Documentation/ApiReference/).
 
 
-## <a name="controlled-mode"></a>Controlled Mode
+## <a name="state-management"></a>State Management ##
 
-In the controlled mode, a component state is managed externally (for example, in the parent component). See [React documentation](https://facebook.github.io/react/docs/forms.html#controlled-components).
+Both [Controlled mode](https://reactjs.org/docs/forms.html#controlled-components) and [Uncontrolled mode](https://reactjs.org/docs/uncontrolled-components.html) are supported.
 
-This mode helps you to keep your UI in sync with the internal application state. You can also access a component state from other application parts, e.g. persist the state and restore it when required, or change it via an external UI.
+In the controlled mode, a component state is managed externally (for example, in the parent component).
+This mode allows you to:
+- Keep UI up to date when modifying a component state from other application parts
+- Share a component state with other components in your app
+- Persist and restore state when required
 
-Controlled mode requires you to provide an option value and handle the appropriate event fired when this value is changed:
+In the uncontrolled mode, a DevExtreme component manages its state internally. This helps you write less code and focus on your application business logic. In this case, you can interact with the component via the underlying widget instance.
+
+### <a name="handle-change"></a>Handle Change ###
+
+You can leave updates uncontrolled and just get notified when component changed by assigning of a callback function to an attribute with the `on` prefix:
+
+```jsx
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+import { TextBox } from 'devextreme-react';
+
+import "devextreme/dist/css/dx.common.css";
+import "devextreme/dist/css/dx.light.compact.css";
+
+class Example extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            text: 'inital text'
+        };
+
+        this.update = this.update.bind(this);
+    }
+
+    render() {
+        return (
+            <div>
+                <TextBox
+                    defaultValue={'inital text'}
+                    onValueChanged={this.update}
+                    valueChangeEvent="input"
+                />
+                <div>{this.state.text}</div>
+            </div>
+        );
+    }
+
+    update(e) {
+        this.setState({
+            text: e.component.option('value')
+        });
+    }
+}
+
+ReactDOM.render(
+    <Example />,
+    document.getElementById('root')
+);
+```
+
+Note that if you want to specify an initial value for an option in the uncontrolled mode, you should use appropriate attribute with the `default` prefix. In the example below the `value` option's initial value is defined using the `defaultValue` attribute.
+
+### <a name="control-change"></a>Control Change ###
+
+If you need to control how a component changes its state, you required to provide a property value and handle the appropriate event fired when this property is changed:
 
 ```jsx
 import React from 'react';
@@ -110,11 +171,6 @@ ReactDOM.render(
 );
 ```
 
-
-## <a name="uncontrolled-mode"></a>Uncontrolled Mode ##
-
-In the uncontrolled mode, a DevExtreme component manages its state internally. In this case, you can interact with the component via the underlying widget instance.
-
 ### <a name="getting-widget-instance"></a>Getting Widget Instance ###
 You can get a widget instance by assigning of a callback function to the component's `ref` attribute. This function accepts the mounted DevExtreme Component as an argument, whose `instance` property holds the widget instance.
 
@@ -129,27 +185,10 @@ import 'devextreme/dist/css/dx.light.compact.css';
 
 class Example extends React.Component {
 
-    constructor(props) {
-        super(props);
-
-        this.handleClick = this.handleClick.bind(this);
-    }
-
     render() {
         return (
-            <div>
-                <TextBox
-                    defaultValue={'inital text'}
-                    ref={(ref) => this.textBox = ref.instance}
-                />
-                <button type='button' onClick={this.handleClick}>Submit</button>
-                <div ref={(el) => this.target = el}></div>
-            </div>
+            <TextBox ref={(ref) => this.textBox = ref.instance} />
         );
-    }
-
-    handleClick(e) {
-        this.target.innerText = this.textBox.option('value');
     }
 }
 
@@ -158,9 +197,6 @@ ReactDOM.render(
     document.getElementById('root')
 );
 ```
-
-Note that if you want to specify an initial value for an option in the uncontrolled mode, you should use appropriate attribute with the `default` prefix. In the example above the `value` option's initial value is defined using the `defaultValue` attribute.
-
 
 ## <a name="appearance-customization"></a>Appearance Customization
 You can customize widget elements' appearance via the appropriate template properties. A template could be specified as a rendering function or as a React component.
