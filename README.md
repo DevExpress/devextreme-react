@@ -274,24 +274,40 @@ ReactDOM.render(
 );
 ```
 
-The components that display content in an overlaying window (e.g. [Popup](https://js.devexpress.com/Documentation/ApiReference/UI_Widgets/dxPopup/)), allow to specify the content markup directly in the component container (nested components are supported):
+The components that display content in an overlaying window (e.g. [ScrollView](https://js.devexpress.com/Documentation/ApiReference/UI_Widgets/dxScrollView/)), allow to specify the content markup directly in the component container (nested components are supported):
 
 ```jsx
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { Popup } from 'devextreme-react';
+import { Button, ScrollView } from 'devextreme-react';
 
 import 'devextreme/dist/css/dx.common.css';
 import 'devextreme/dist/css/dx.light.compact.css';
 
+class Example extends React.Component {
+
+    render() {
+        return (
+            <ScrollView height={200} width={200}>
+                <Button text="Show alert" onClick={() => alert("shown")} />
+                <br />
+                <div>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, eveniet tempore, perspiciatis totam qui est minima dicta beatae dolores, omnis enim ut incidunt. Ut reprehenderit, tempore iusto deserunt doloremque fugit.</p>
+                    <p>Sint natus quia repellendus cum neque. Velit similique dicta corrupti nesciunt quas ea quam minima, aliquid qui ratione suscipit magnam molestiae aspernatur iure, tenetur sapiente voluptates laborum quidem nisi molestias.</p>
+                    <p>Id, nesciunt adipisci sint. Doloribus minima expedita, soluta. Eveniet reiciendis eius ducimus provident autem amet alias quis natus. In veritatis, repellendus laborum illo voluptates est quis consectetur consequuntur reiciendis rem!</p>
+                    <p>In cum, ipsum ratione beatae odio officia doloribus ullam magnam impedit repudiandae odit, vero! Minus quisquam earum aliquam tempore iusto consequatur modi laborum facilis dolorum! Earum, exercitationem error. Placeat, optio!</p>
+                    <p>Necessitatibus praesentium quisquam autem non dolores, doloremque architecto, suscipit nemo nisi et laboriosam temporibus maiores, quasi amet unde aut consectetur dolor quo. Minus laudantium, enim iste nesciunt ea pariatur eveniet!</p>
+                    <p>Illo, delectus deleniti nesciunt minima nisi eius accusantium asperiores corporis id repudiandae quia. Cum esse magni accusantium omnis laboriosam iure excepturi, saepe placeat laudantium amet molestiae dolores hic, labore laborum!</p>
+                    <p>Impedit deleniti rem delectus illum accusamus magni facere nam dolore dolor veniam quos accusantium nostrum magnam, velit praesentium! Optio amet quasi minus perspiciatis ex sit, similique reiciendis libero nostrum voluptatibus?</p>
+                </div>
+            </ScrollView>
+        );
+    }
+}
+
 ReactDOM.render(
-    <Popup visible={true}>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, eveniet tempore, perspiciatis totam qui est minima dicta beatae dolores, omnis enim ut incidunt. Ut reprehenderit, tempore iusto deserunt doloremque fugit.</p>
-        <p>Sint natus quia repellendus cum neque. Velit similique dicta corrupti nesciunt quas ea quam minima, aliquid qui ratione suscipit magnam molestiae aspernatur iure, tenetur sapiente voluptates laborum quidem nisi molestias.</p>
-        <p>Id, nesciunt adipisci sint. Doloribus minima expedita, soluta. Eveniet reiciendis eius ducimus provident autem amet alias quis natus. In veritatis, repellendus laborum illo voluptates est quis consectetur consequuntur reiciendis rem!</p>
-        <p>In cum, ipsum ratione beatae odio officia doloribus ullam magnam impedit repudiandae odit, vero! Minus quisquam earum aliquam tempore iusto consequatur modi laborum facilis dolorum! Earum, exercitationem error. Placeat, optio!</p>
-    </Popup>,
+    <Example />,
     document.getElementById('root')
 );
 ```
