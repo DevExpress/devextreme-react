@@ -1,3 +1,4 @@
+import * as events from "devextreme/events";
 import { configure as configureEnzyme, mount, shallow } from "enzyme";
 import * as Adapter from "enzyme-adapter-react-16";
 import * as React from "react";
@@ -112,7 +113,7 @@ describe("templates", () => {
                 <ComponentWithTemplates itemRender={itemRender} />
             );
             renderItemTemplate({ text: "is rendered" });
-            expect(component.state("templates").length).toBe(1);
+            expect(Object.getOwnPropertySymbols(component.state("templates")).length).toBe(1);
             component.update();
             expect(component.find(".template").html()).toBe('<div class="template">Template is rendered</div>');
         });
@@ -151,10 +152,23 @@ describe("templates", () => {
                 <ComponentWithTemplates itemComponent={ItemTemplate} />
             );
             renderItemTemplate({ text: "is rendered" });
-            expect(component.state("templates").length).toBe(1);
+            expect(Object.getOwnPropertySymbols(component.state("templates")).length).toBe(1);
             component.update();
             expect(component.find(".template").html()).toBe('<div class="template">Template is rendered</div>');
         });
+    });
+
+    it("removes deleted nodes from state", () => {
+        const ItemTemplate = (props: any) => <div className={"template"}>Template {props.text}</div>;
+        const component = mount(
+            <ComponentWithTemplates itemComponent={ItemTemplate} />
+        );
+        renderItemTemplate({});
+        expect(Object.getOwnPropertySymbols(component.state("templates")).length).toBe(1);
+        component.update();
+        events.triggerHandler(component.find(".template").getDOMNode().parentNode, "dxremove");
+        component.update();
+        expect(Object.getOwnPropertySymbols(component.state("templates")).length).toBe(0);
     });
 
     // tslint:disable-next-line:max-classes-per-file

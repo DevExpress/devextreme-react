@@ -1,6 +1,8 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
+import * as events from "devextreme/events";
+
 const ROLLBACK_DELAY: number = 0;
 const DX_TEMPLATE_WRAPPER_CLASS = "dx-template-wrapper";
 
@@ -29,7 +31,7 @@ export default class Component<P> extends React.PureComponent<P, any> {
     this.optionChangedHandler = this.optionChangedHandler.bind(this);
     this.extractDefaultsValues = this.extractDefaultsValues.bind(this);
     this.state = {
-      templates: []
+      templates: {}
     };
   }
 
@@ -69,8 +71,9 @@ export default class Component<P> extends React.PureComponent<P, any> {
       if (!!this.props.children) {
         args.push(this.props.children);
       }
-      if (this.state.templates.length) {
-        args.push(this.state.templates.map((m: any) => m()));
+      const templates = Object.getOwnPropertySymbols(this.state.templates);
+      if (templates.length) {
+        args.push(templates.map((m: any) => this.state.templates[m]()));
       }
       return React.createElement.apply(this, args);
   }
@@ -200,8 +203,27 @@ export default class Component<P> extends React.PureComponent<P, any> {
         const element = document.createElement("div");
         element.className = DX_TEMPLATE_WRAPPER_CLASS;
         data.container.appendChild(element);
+
+        const elementSymbol = Symbol();
+        events.one(element, "dxremove", () => {
+          this.setState((state: any) => {
+            const updatedTemplates = {...state.templates};
+            delete updatedTemplates[elementSymbol];
+            return {
+              templates : updatedTemplates
+            };
+          });
+        });
+
         const portal: any = () => ReactDOM.createPortal(tmplFn({...data.model}), element);
-        this.setState((state: any) => ({templates : state.templates.concat([portal])}) );
+
+        this.setState((state: any) => {
+          const updatedTemplates = {...state.templates};
+          updatedTemplates[elementSymbol] = portal;
+          return {
+            templates : updatedTemplates
+          };
+        });
         return element;
       }
     };
