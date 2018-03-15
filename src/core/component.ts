@@ -39,28 +39,7 @@ export default class Component<P> extends React.PureComponent<P, any> {
     const props: IDictionary = this.extractDefaultsValues(nextProps).options;
     const prevProps: IDictionary = this.props;
 
-    Object.keys(this.guards).forEach((optionName) => {
-      if (props[optionName] !== prevProps[optionName]) {
-        window.clearTimeout(this.guards[optionName]);
-        delete this.guards[optionName];
-      }
-    });
-
-    this.updatingProps = false;
-    const updateOption = (optionPath: string, value: any): void => {
-      if (!this.updatingProps) {
-        this._instance.beginUpdate();
-        this.updatingProps = true;
-      }
-      this._instance.option(optionPath, value);
-    };
-
-    this.processChangedValues(props, prevProps, updateOption, []);
-
-    if (this.updatingProps) {
-      this.updatingProps = false;
-      this._instance.endUpdate();
-    }
+    this._processChangedValues(props, prevProps);
   }
 
   public render() {
@@ -150,27 +129,28 @@ export default class Component<P> extends React.PureComponent<P, any> {
     return options[key];
   }
 
-  private processChangedValues(
-    value: any,
-    prevValue: any,
-    callback: (path: string, value: any) => void,
-    path: string[]
-  ): void {
-    if (!this.isContainer(value)) {
-      if (value !== prevValue) {
-        callback(path.join("."), value);
+  private _processChangedValues(props: any, prevProps: any): void {
+    this.updatingProps = false;
+
+    for (const optionName of Object.keys(props)) {
+      if (props[optionName] !== prevProps[optionName]) {
+        if (this.guards[optionName]) {
+          window.clearTimeout(this.guards[optionName]);
+          delete this.guards[optionName];
+        }
+
+        if (!this.updatingProps) {
+          this._instance.beginUpdate();
+          this.updatingProps = true;
+        }
+        this._instance.option(optionName, props[optionName]);
       }
-
-      return;
     }
 
-    for (const key of Object.keys(value)) {
-      this.processChangedValues(value[key], prevValue[key], callback, [...path, key]);
+    if (this.updatingProps) {
+      this.updatingProps = false;
+      this._instance.endUpdate();
     }
-  }
-
-  private isContainer(option: any): boolean {
-    return (option instanceof Object && !Array.isArray(option));
   }
 
   private getIntegrationOptions(): any {
