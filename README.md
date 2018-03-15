@@ -53,7 +53,7 @@ Note that one of the [predefined themes](https://js.devexpress.com/Documentation
 
 ## <a name="api-reference"></a>API Reference ##
 
-The complete list of widgets and their API described in the [DevExtreme API Reference](http://js.devexpress.com/Documentation/ApiReference/).
+The complete list of components and their API described in the [DevExtreme API Reference](http://js.devexpress.com/Documentation/ApiReference/).
 
 To know how to implement and apply templates, see [Markup Customization](#markup-customization).
 
