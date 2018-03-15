@@ -58,7 +58,7 @@ DevExtreme React components support both [Controlled](https://reactjs.org/docs/f
 ### <a name="controlled-mode"></a>Controlled Mode ###
 
 In the controlled mode, a component state is passed via its props by its parent component. This mode provides the following capabilities:
-- Keep UI up to date when modifying a component state from code
+- Control component state externally (stateless behavior)
 - Share state between components in your app
 - Persist and restore state
 
