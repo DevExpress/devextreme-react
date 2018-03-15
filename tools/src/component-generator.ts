@@ -25,6 +25,7 @@ function generate(component: IComponent): string {
 
     const componentModel = {
         ...component,
+        widgetName: `dx${uppercaseFirst(component.name)}`,
         optionsName: `I${component.name}Options`,
         hasExtraOptions: !!templates || !!subscribableOptions,
         subscribableOptions,
@@ -61,6 +62,7 @@ function createSubscribableOptionModel(option: IOption) {
 
 const renderComponent: (model: {
     name: string;
+    widgetName: string;
     optionsName: string;
     baseComponentPath: string;
     dxExportPath: string;
@@ -78,7 +80,7 @@ const renderComponent: (model: {
 }
 // tslint:disable:max-line-length
 ) => string = createTempate(`
-import Widget, { IOptions <#? !it.hasExtraOptions #>as <#= it.optionsName #> <#?#>} from "devextreme/<#= it.dxExportPath #>";
+import <#= it.widgetName #>, { IOptions <#? !it.hasExtraOptions #>as <#= it.optionsName #> <#?#>} from "devextreme/<#= it.dxExportPath #>";
 import BaseComponent from "<#= it.baseComponentPath #>";
 <#? it.hasExtraOptions #>
 interface <#= it.optionsName #> extends IOptions {<#~ it.templates :template #>
@@ -88,7 +90,12 @@ interface <#= it.optionsName #> extends IOptions {<#~ it.templates :template #>
 }
 <#?#>
 class <#= it.name #> extends BaseComponent<<#= it.optionsName #>> {
-  protected WidgetClass = Widget;
+
+  public get instance(): <#= it.widgetName #> {
+    return this._instance;
+  }
+
+  protected WidgetClass = <#= it.widgetName #>;
 <#? it.subscribableOptions #>
   protected defaults = {<#= it.subscribableOptions.map(t => t.renderedProp).join(',') #>
   };
