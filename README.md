@@ -6,14 +6,14 @@ This project allows you to use [DevExtreme Widgets](http://js.devexpress.com/Dem
   * [Prerequisites](#prerequisites)
   * [Install DevExtreme](#installation)
   * [Import DevExtreme Components](#import-components)
-* [API Reference](#api-reference)
 * [State Management](#state-management)
-  * [Handling State Changes](#handling-state-changes)
-  * [Control Over State Changes](#control-state-changes)
+  * [Controlled Mode](#controlled-mode)
+  * [Uncontrolled Mode](#uncontrolled-mode)
   * [Getting Widget Instance](#getting-widget-instance)
-* [Appearance Customization](#appearance-customization)
+* [Markup Customization](#markup-customization)
 * [Working With Data](#working-with-data)
-* [Strict Typing](#strict-typing)
+* [Typescript](#typescript)
+* [API Reference](#api-reference)
 * [License](#license)
 * [Support & feedback](#support-feedback)
 
@@ -51,25 +51,18 @@ ReactDOM.render(
 Note that one of the [predefined themes](https://js.devexpress.com/Documentation/Guide/Themes/Predefined_Themes/) is required.
 
 
-## <a name="api-reference"></a>API Reference ##
-
-Each DevExtreme React component supports the same configuration and API as the corresponding DevExtreme widget. See [DevExtreme API Reference](http://js.devexpress.com/Documentation/ApiReference/).
-
-
 ## <a name="state-management"></a>State Management ##
 
 DevExtreme React components support both [Controlled](https://reactjs.org/docs/forms.html#controlled-components) and [Uncontrolled](https://reactjs.org/docs/uncontrolled-components.html) state modes.
 
-In the controlled mode, a component state is managed externally (for example, in the parent component), which provides the following capabilities.
+### <a name="controlled-mode"></a>Controlled Mode ###
+
+In the controlled mode, a component state is passed via its props by its parent component. This mode provides the following capabilities:
 - Keep UI up to date when modifying a component state from other application parts
-- Share a component state with other components in your app
+- Share state between components in your app
 - Persist and restore state
 
-In the uncontrolled mode, a DevExtreme component manages its state internally. This helps you write less code and focus on your application business logic. In this case, you can interact with the component via the underlying widget instance.
-
-### <a name="handling-state-changes"></a>Handling State Changes ###
-
-You can handle state changes using a callback function passed to the appropriate attribute with the `on` prefix:
+To control component state, provide the value for the required property and handle the event fired when this property is changed (use the appropriate property with the `on` prefix):
 
 ```jsx
 import React from 'react';
@@ -85,59 +78,7 @@ class Example extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            text: 'inital text'
-        };
-
-        this.handleChange = this.handleChange.bind(this);
-    }
-
-    render() {
-        return (
-            <div>
-                <TextBox
-                    defaultValue='inital text'
-                    onValueChanged={this.handleChange}
-                    valueChangeEvent='input'
-                />
-                <div>{this.state.text}</div>
-            </div>
-        );
-    }
-
-    handleChange(e) {
-        this.setState({
-            text: e.value
-        });
-    }
-}
-
-ReactDOM.render(
-    <Example />,
-    document.getElementById('root')
-);
-```
-
-Note that if you want to specify an initial value for an option in the uncontrolled mode, you should use appropriate attribute with the `default` prefix. In the example above the `value` option's initial value is defined using the `defaultValue` attribute.
-
-### <a name="control-state-changes"></a>Control Over State Changes ###
-
-If you need to fully control component state, provide the value for the required property and handle the appropriate event fired when this property is changed:
-
-```jsx
-import React from 'react';
-import ReactDOM from 'react-dom';
-
-import { TextBox } from 'devextreme-react';
-
-import 'devextreme/dist/css/dx.common.css';
-import 'devextreme/dist/css/dx.light.compact.css';
-
-class Example extends React.Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            text: 'inital text'
+            text: 'TEXT'
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -149,7 +90,7 @@ class Example extends React.Component {
                 <TextBox
                     value={this.state.text}
                     onValueChanged={this.handleChange}
-                    valueChangeEvent='keyup'
+                    valueChangeEvent='input'
                 />
                 <div>{this.state.text}</div>
             </div>
@@ -158,7 +99,7 @@ class Example extends React.Component {
 
     handleChange(e) {
         this.setState({
-            text: e.value
+            text: e.value.toUpperCase().replace('A','_')
         });
     }
 }
@@ -169,14 +110,61 @@ ReactDOM.render(
 );
 ```
 
-### <a name="getting-widget-instance"></a>Getting Widget Instance ###
-You can get a widget instance by assigning of a callback function to the component's `ref` attribute. This function accepts the mounted DevExtreme Component as an argument, whose `instance` property holds the widget instance.
+### <a name="uncontrolled-mode"></a>Uncontrolled Mode ###
+
+------------------
+Sometimes there is no need to handle all the component updates, thus DevExtreme components can manage their state internally. This helps you write less code and focus on your application business logic.
+
+Note that if you want to specify an initial value for an option in the uncontrolled mode, you should use appropriate property with the `default` prefix. In the example below the `currentView` option's initial value is defined using the `defaultCurrentView` property.
 
 ```jsx
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { TextBox } from 'devextreme-react';
+import { Scheduler } from 'devextreme-react';
+
+import 'devextreme/dist/css/dx.common.css';
+import 'devextreme/dist/css/dx.light.compact.css';
+const appointments = [
+    {
+        text: 'Website Re-Design Plan',
+        startDate: new Date(2017, 4, 22, 9, 30),
+        endDate: new Date(2017, 4, 22, 11, 30)
+    }, {
+        text: 'Book Flights to San Fran for Sales Trip',
+        startDate: new Date(2017, 4, 22, 12, 0),
+        endDate: new Date(2017, 4, 22, 13, 0),
+        allDay: true
+    }, {
+        text: 'Install New Router in Dev Room',
+        startDate: new Date(2017, 4, 23, 10, 30),
+        endDate: new Date(2017, 4, 23, 16, 30)
+    }
+];
+
+
+ReactDOM.render(
+    <Scheduler
+        dataSource={appointments}
+        height={600}
+        editing={false}
+        defaultCurrentView={'week'}
+        defaultCurrentDate={new Date(2017, 4, 22)}
+        startDayHour={9}
+    />,
+    document.getElementById('root')
+);
+```
+
+
+### <a name="getting-widget-instance"></a>Getting Widget Instance ###
+In some cases when you need to call a widget method a widget instance is required. You can get it by assigning of a callback function to the component's `ref` property. This function accepts the mounted DevExtreme Component as an argument, whose `instance` property holds the widget instance.
+
+```jsx
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+import { Button, TextBox } from 'devextreme-react';
 
 import 'devextreme/dist/css/dx.common.css';
 import 'devextreme/dist/css/dx.light.compact.css';
@@ -185,7 +173,10 @@ class Example extends React.Component {
 
     render() {
         return (
-            <TextBox ref={(ref) => this.textBox = ref.instance} />
+            <div>
+                <TextBox ref={(ref) => this.textBox = ref.instance}/>
+                <Button text='Go to the TextBox' onClick={() => this.textBox.focus()} />
+            </div>
         );
     }
 }
@@ -196,7 +187,7 @@ ReactDOM.render(
 );
 ```
 
-## <a name="appearance-customization"></a>Appearance Customization
+## <a name="markup-customization"></a>Markup Customization
 You can customize widget elements' appearance via the appropriate template properties. A template could be specified as a rendering function or as a React component.
 
 Use an option with the `Render` suffix to specify a rendering function:
@@ -271,7 +262,7 @@ ReactDOM.render(
 );
 ```
 
-The components that display content in an overlaying window (e.g. [ScrollView](https://js.devexpress.com/Documentation/ApiReference/UI_Widgets/dxScrollView/)), allow to specify the content markup directly in the component container (nested components are supported):
+The components that display content in an overlaying window (e.g. [ScrollView](https://js.devexpress.com/Documentation/ApiReference/UI_Widgets/dxScrollView/)), allow to specify the content as component children:
 
 ```jsx
 import React from 'react';
@@ -289,15 +280,18 @@ class Example extends React.Component {
             <ScrollView height={200} width={200}>
                 <Button text='Show alert' onClick={() => alert('shown')} />
                 <br />
-                <div>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, eveniet tempore, perspiciatis totam qui est minima dicta beatae dolores, omnis enim ut incidunt. Ut reprehenderit, tempore iusto deserunt doloremque fugit.</p>
-                    <p>Sint natus quia repellendus cum neque. Velit similique dicta corrupti nesciunt quas ea quam minima, aliquid qui ratione suscipit magnam molestiae aspernatur iure, tenetur sapiente voluptates laborum quidem nisi molestias.</p>
-                    <p>Id, nesciunt adipisci sint. Doloribus minima expedita, soluta. Eveniet reiciendis eius ducimus provident autem amet alias quis natus. In veritatis, repellendus laborum illo voluptates est quis consectetur consequuntur reiciendis rem!</p>
-                    <p>In cum, ipsum ratione beatae odio officia doloribus ullam magnam impedit repudiandae odit, vero! Minus quisquam earum aliquam tempore iusto consequatur modi laborum facilis dolorum! Earum, exercitationem error. Placeat, optio!</p>
-                    <p>Necessitatibus praesentium quisquam autem non dolores, doloremque architecto, suscipit nemo nisi et laboriosam temporibus maiores, quasi amet unde aut consectetur dolor quo. Minus laudantium, enim iste nesciunt ea pariatur eveniet!</p>
-                    <p>Illo, delectus deleniti nesciunt minima nisi eius accusantium asperiores corporis id repudiandae quia. Cum esse magni accusantium omnis laboriosam iure excepturi, saepe placeat laudantium amet molestiae dolores hic, labore laborum!</p>
-                    <p>Impedit deleniti rem delectus illum accusamus magni facere nam dolore dolor veniam quos accusantium nostrum magnam, velit praesentium! Optio amet quasi minus perspiciatis ex sit, similique reiciendis libero nostrum voluptatibus?</p>
-                </div>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, eveniet tempore, perspiciatis totam qui est minima
+                    dicta beatae dolores, omnis enim ut incidunt. Ut reprehenderit, tempore iusto deserunt doloremque fugit. Sint natus
+                    quia repellendus cum neque.
+                </p>
+                <p>
+                    Velit similique dicta corrupti nesciunt quas ea quam minima, aliquid qui ratione suscipit
+                    magnam molestiae aspernatur iure, tenetur sapiente voluptates laborum quidem nisi molestias. Id, nesciunt adipisci
+                    sint. Doloribus minima expedita, soluta. Eveniet reiciendis eius ducimus provident autem amet alias quis natus. In
+                    veritatis, repellendus laborum illo voluptates est quis consectetur consequuntur reiciendis rem! In cum, ipsum ratione
+                    beatae odio officia doloribus ullam magnam impedit repudiandae odit, vero!
+                </p>
             </ScrollView>
         );
     }
@@ -368,7 +362,7 @@ ReactDOM.render(
 Note that a DataSource is considered as a 'service'. So, modifying its properties does not cause component rerendering.
 
 
-## <a name="strict-typing"></a>Strict Typing ##
+## <a name="typescript"></a>Typescript ##
 
 Strict typing allows you to catch a lot of bugs and improve your workflow by adding features like auto-completion and automated refactoring. This is why we provide TypeScript declarations for the DevExtreme Components.
 
@@ -423,6 +417,12 @@ ReactDOM.render(
     document.getElementById("root")
 );
 ```
+
+
+## <a name="api-reference"></a>API Reference ##
+
+Each DevExtreme React component supports the same configuration and API as the corresponding DevExtreme widget. See [DevExtreme API Reference](http://js.devexpress.com/Documentation/ApiReference/).
+Templates can be implemented and applied in a more convenient React way, see [Markup Customization](#markup-customization).
 
 
 ## <a name="license"></a>License ##
