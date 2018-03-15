@@ -8,8 +8,8 @@ This project allows you to use [DevExtreme Widgets](http://js.devexpress.com/Dem
   * [Import DevExtreme Components](#import-components)
 * [API Reference](#api-reference)
 * [State Management](#state-management)
-  * [Handle Change](#handle-change)
-  * [Control Change](#control-change)
+  * [Handling State Changes](#handling-state-changes)
+  * [Control Over State Changes](#control-state-changes)
   * [Getting Widget Instance](#getting-widget-instance)
 * [Appearance Customization](#appearance-customization)
 * [Working With Data](#working-with-data)
@@ -58,19 +58,18 @@ Each DevExtreme React component supports the same configuration and API as the c
 
 ## <a name="state-management"></a>State Management ##
 
-Both [Controlled mode](https://reactjs.org/docs/forms.html#controlled-components) and [Uncontrolled mode](https://reactjs.org/docs/uncontrolled-components.html) are supported.
+DevExtreme React components support both [Controlled](https://reactjs.org/docs/forms.html#controlled-components) and [Uncontrolled](https://reactjs.org/docs/uncontrolled-components.html) state modes.
 
-In the controlled mode, a component state is managed externally (for example, in the parent component).
-This mode allows you to:
+In the controlled mode, a component state is managed externally (for example, in the parent component), which provides the following capabilities.
 - Keep UI up to date when modifying a component state from other application parts
 - Share a component state with other components in your app
-- Persist and restore state when required
+- Persist and restore state
 
 In the uncontrolled mode, a DevExtreme component manages its state internally. This helps you write less code and focus on your application business logic. In this case, you can interact with the component via the underlying widget instance.
 
-### <a name="handle-change"></a>Handle Change ###
+### <a name="handle-state-change"></a>Handle State Changes ###
 
-You can leave updates uncontrolled and just get notified when component changed by assigning of a callback function to an attribute with the `on` prefix:
+You can handle state changes using a callback function passed to the appropriate attribute with the `on` prefix:
 
 ```jsx
 import React from 'react';
@@ -118,11 +117,11 @@ ReactDOM.render(
 );
 ```
 
-Note that if you want to specify an initial value for an option in the uncontrolled mode, you should use appropriate attribute with the `default` prefix. In the example below the `value` option's initial value is defined using the `defaultValue` attribute.
+Note that if you want to specify an initial value for an option in the uncontrolled mode, you should use appropriate attribute with the `default` prefix. In the example above the `value` option's initial value is defined using the `defaultValue` attribute.
 
-### <a name="control-change"></a>Control Change ###
+### <a name="control-state-changes"></a>Control Over State Changes ###
 
-If you need to control how a component changes its state, you required to provide a property value and handle the appropriate event fired when this property is changed:
+If you need to fully control component state, provide the default value for the required property and handle the appropriate event fired when this property is changed:
 
 ```jsx
 import React from 'react';
