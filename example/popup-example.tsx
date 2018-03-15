@@ -5,10 +5,15 @@ import { Popup } from "../src/ui/popup";
 import { TextBox } from "../src/ui/text-box";
 import Example from "./example-block";
 
+interface IState {
+    visible: boolean;
+    text: string;
+}
+
 const VALID_TEXT = "good";
 const validateText = (text: string) => text === VALID_TEXT;
 
-export default class extends React.Component<any, { visible: boolean; text: string; }> {
+export default class extends React.Component<any, IState> {
 
     constructor(props: any) {
         super(props);

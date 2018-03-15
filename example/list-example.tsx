@@ -1,47 +1,28 @@
 import * as React from "react";
 
-import DataSource from "devextreme/data/data_source";
 import { Button } from "../src/ui/button";
 import { List } from "../src/ui/list";
 import { TextBox } from "../src/ui/text-box";
 
 import Example from "./example-block";
 
-interface IListItemProps {
+interface IState {
+    text: string;
+    items: IListItem[];
+}
+
+interface IListItem {
     text: string;
 }
 
-class Item extends React.Component<IListItemProps, { counter: number }> {
-
-    constructor(props: IListItemProps) {
-        super(props);
-
-        this.handleClick = this.handleClick.bind(this);
-
-        this.state = {
-            counter: 0
-        };
-    }
-
+class ItemTemplate extends React.Component<any, any> {
     public render() {
-        return (
-            <i onClick={this.handleClick}>
-                Component template for item {this.props.text}. <b>Clicks: {this.state.counter}</b>
-            </i>
-        );
-    }
-
-    private handleClick() {
-        this.setState({
-            counter: this.state.counter + 1
-        });
+        return <i>This is component template for item {this.props.text}</i>;
     }
 }
 
 // tslint:disable-next-line:max-classes-per-file
-export default class extends React.Component<any, { text: string; items: IListItemProps[]; }> {
-
-    private dataSource: DataSource;
+export default class extends React.Component<any, IState> {
 
     constructor(props: any) {
         super(props);
@@ -52,62 +33,42 @@ export default class extends React.Component<any, { text: string; items: IListIt
             text: "",
             items
         };
-
-        this.dataSource = new DataSource(
-            {
-                store: {
-                    type: "array",
-                    data: items
-                },
-                sort: [
-                    { getter: "text", desc: true}
-                ],
-                pageSize: 1
-            }
-        );
     }
 
     public render() {
+        const itemRender: any = (props: any) =>
+        <i>This is function template for item {props.text}</i>;
+
         return (
             <Example title="DxList" state={this.state} >
+                <List
+                    items={this.state.items}
+                    itemRender={itemRender}
+                />
 
-                <List
-                    items={this.state.items}
-                    itemRender={(item: IListItemProps) => <i>Function template for item {item.text}</i>}
-                />
-                <hr />
-                <List
-                    items={this.state.items}
-                    itemComponent={Item}
-                />
-                <hr />
-                <List dataSource={this.dataSource} />
-                <hr />
+                <List items={this.state.items} itemComponent={ItemTemplate}/>
+
                 <TextBox value={this.state.text} onValueChanged={this.updateText} valueChangeEvent="keyup" />
                 <Button text="Add to list" onClick={this.addTextToList} />
             </Example>
         );
     }
 
-    public componentWillUnmount() {
-        this.dataSource.dispose();
-    }
-
     private updateText(e: any) {
-        this.setState({
-            text: e.value
-        });
+        const state = { ...this.state };
+        state.text = e.component.option("value");
+        this.setState(state);
     }
 
     private addTextToList() {
-        this.setState({
-            items: [...this.state.items, { text: this.state.text }],
-            text: ""
-        });
+        const state = { ...this.state };
+        state.items = [...state.items, { text: state.text }];
+        state.text = "";
+        this.setState(state);
     }
 }
 
-const items: IListItemProps[] = [
+const items: IListItem[] = [
     { text: "123" },
     { text: "234" },
     { text: "567" }
