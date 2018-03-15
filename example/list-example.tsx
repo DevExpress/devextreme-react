@@ -15,12 +15,11 @@ class Item extends React.Component<IListItemProps, { counter: number }> {
 
     constructor(props: IListItemProps) {
         super(props);
-
-        this.handleClick = this.handleClick.bind(this);
-
         this.state = {
             counter: 0
         };
+
+        this.handleClick = this.handleClick.bind(this);
     }
 
     public render() {
@@ -45,9 +44,6 @@ export default class extends React.Component<any, { text: string; items: IListIt
 
     constructor(props: any) {
         super(props);
-        this.updateText = this.updateText.bind(this);
-        this.addTextToList = this.addTextToList.bind(this);
-
         this.state = {
             text: "",
             items
@@ -65,6 +61,9 @@ export default class extends React.Component<any, { text: string; items: IListIt
                 pageSize: 1
             }
         );
+
+        this.updateText = this.updateText.bind(this);
+        this.addTextToList = this.addTextToList.bind(this);
     }
 
     public render() {
@@ -83,7 +82,7 @@ export default class extends React.Component<any, { text: string; items: IListIt
                 <hr />
                 <List dataSource={this.dataSource} />
                 <hr />
-                <TextBox value={this.state.text} onValueChanged={this.updateText} valueChangeEvent="keyup" />
+                <TextBox value={this.state.text} onValueChanged={this.updateText} valueChangeEvent="input" />
                 <Button text="Add to list" onClick={this.addTextToList} />
             </Example>
         );

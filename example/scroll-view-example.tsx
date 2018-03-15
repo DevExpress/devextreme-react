@@ -10,13 +10,12 @@ export default class extends React.Component<any, { text: string }> {
 
     constructor(props: any) {
         super(props);
-
-        this.clearText = this.clearText.bind(this);
-        this.handleTextChange = this.handleTextChange.bind(this);
-
         this.state = {
             text: "Clear me"
         };
+
+        this.clearText = this.clearText.bind(this);
+        this.handleTextChange = this.handleTextChange.bind(this);
     }
 
     public render() {

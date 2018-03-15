@@ -17,9 +17,6 @@ export default class extends React.Component<any, IState> {
 
     constructor(props: any) {
         super(props);
-        this.updateTime = this.updateTime.bind(this);
-        this.updateSeriesName = this.updateSeriesName.bind(this);
-
         this.state = {
             currentTime: this.GetTimeString(),
             seriesName: "My oranges",
@@ -30,6 +27,9 @@ export default class extends React.Component<any, IState> {
                 type: "line"
             }]
         };
+
+        this.updateTime = this.updateTime.bind(this);
+        this.updateSeriesName = this.updateSeriesName.bind(this);
     }
 
     public render() {
@@ -79,19 +79,19 @@ class Updater extends React.Component<{ onChange: (value: string) => void }, { v
 
     constructor(props: { onChange: (value: string) => void }) {
         super(props);
-
-        this.update = this.update.bind(this);
-        this.fireOnChange = this.fireOnChange.bind(this);
         this.state = {
             value: ""
         };
+
+        this.update = this.update.bind(this);
+        this.fireOnChange = this.fireOnChange.bind(this);
     }
 
     public render() {
         return (
             <div className="dx-field">
                 <div className="dx-field-label">
-                    <TextBox value={this.state.value} onValueChanged={this.update} valueChangeEvent="keyup" />
+                    <TextBox value={this.state.value} onValueChanged={this.update} valueChangeEvent="input" />
                 </div>
                 <div className="dx-field-value">
                     <Button text="Update series name" onClick={this.fireOnChange} />
