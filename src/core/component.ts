@@ -5,6 +5,7 @@ import * as events from "devextreme/events";
 
 const ROLLBACK_DELAY: number = 0;
 const DX_TEMPLATE_WRAPPER_CLASS = "dx-template-wrapper";
+const DX_REMOVE_EVENT = "dxremove";
 
 interface IDictionary<TValue = any> {
   [index: string]: TValue;
@@ -93,7 +94,8 @@ export default class Component<P> extends React.PureComponent<P, any> {
   }
 
   public componentWillUnmount() {
-    this._instance.dispose();
+    events.triggerHandler(this.element, DX_REMOVE_EVENT);
+    this.instance.dispose();
   }
 
   private optionChangedHandler(e: any) {
@@ -205,7 +207,7 @@ export default class Component<P> extends React.PureComponent<P, any> {
         data.container.appendChild(element);
 
         const elementSymbol = Symbol();
-        events.one(element, "dxremove", () => {
+        events.one(element, DX_REMOVE_EVENT, () => {
           this.setState((state: any) => {
             const updatedTemplates = {...state.templates};
             delete updatedTemplates[elementSymbol];

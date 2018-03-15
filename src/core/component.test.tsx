@@ -11,7 +11,8 @@ const Widget = {
     endUpdate: jest.fn(),
     on: (event: string, handler: (e: any) => void) => {
         eventHandlers[event] = handler;
-    }
+    },
+    dispose: jest.fn()
 };
 
 const WidgetClass = jest.fn(() => Widget);
@@ -379,6 +380,30 @@ describe("controlled mode", () => {
             defaultControlledOption : "controlledOption"
         };
     }
+});
+
+describe("disposing", () => {
+    it("call dispose", () => {
+        const component = mount(
+            <TestComponent/>
+        );
+
+        component.unmount();
+
+        expect(Widget.dispose).toBeCalled();
+    });
+
+    it("fires dxremove", () => {
+        const handleDxRemove = jest.fn();
+        const component = mount(
+            <TestComponent/>
+        );
+
+        events.one(component.getDOMNode(), "dxremove", handleDxRemove);
+        component.unmount();
+
+        expect(handleDxRemove).toHaveBeenCalledTimes(1);
+    });
 });
 
 it("calls option method on props update", () => {
