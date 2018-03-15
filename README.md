@@ -58,11 +58,11 @@ DevExtreme React components support both [Controlled](https://reactjs.org/docs/f
 ### <a name="controlled-mode"></a>Controlled Mode ###
 
 In the controlled mode, a component state is passed via its props by its parent component. This mode provides the following capabilities:
-- Keep UI up to date when modifying a component state from other application parts
+- Keep UI up to date when modifying a component state from code
 - Share state between components in your app
 - Persist and restore state
 
-To control component state, provide the value for the required property and handle the event fired when this property is changed (use the appropriate property with the `on` prefix):
+To control component state, provide the value for the required property and handle the event fired when it is changed (use the appropriate property with the `on` prefix):
 
 ```jsx
 import React from 'react';
@@ -112,7 +112,6 @@ ReactDOM.render(
 
 ### <a name="uncontrolled-mode"></a>Uncontrolled Mode ###
 
-------------------
 Sometimes there is no need to handle all the component updates, thus DevExtreme components can manage their state internally. This helps you write less code and focus on your application business logic.
 
 Note that if you want to specify an initial value for an option in the uncontrolled mode, you should use appropriate property with the `default` prefix. In the example below the `currentView` option's initial value is defined using the `defaultCurrentView` property.
