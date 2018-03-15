@@ -12,7 +12,7 @@ This project allows you to use [DevExtreme Widgets](http://js.devexpress.com/Dem
   * [Getting Widget Instance](#getting-widget-instance)
 * [Markup Customization](#markup-customization)
 * [Working With Data](#working-with-data)
-* [Typescript](#typescript)
+* [Typescript Support](#typescript-support)
 * [API Reference](#api-reference)
 * [License](#license)
 * [Support & feedback](#support-feedback)
@@ -361,7 +361,7 @@ ReactDOM.render(
 Note that a DataSource is considered as a 'service'. So, modifying its properties does not cause component rerendering.
 
 
-## <a name="typescript"></a>Typescript ##
+## <a name="typescript-support"></a>Typescript Support ##
 
 Strict typing allows you to catch a lot of bugs and improve your workflow by adding features like auto-completion and automated refactoring. This is why we provide TypeScript declarations for the DevExtreme Components.
 
