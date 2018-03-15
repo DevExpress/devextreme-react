@@ -402,7 +402,7 @@ describe("disposing", () => {
         events.one(component.getDOMNode(), "dxremove", handleDxRemove);
         component.unmount();
 
-        expect(handleDxRemove).toBeCalled();
+        expect(handleDxRemove).toHaveBeenCalledTimes(1);
     });
 });
 
