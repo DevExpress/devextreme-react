@@ -95,12 +95,12 @@ class <#= it.name #> extends BaseComponent<<#= it.optionsName #>> {
     return this._instance;
   }
 
-  protected WidgetClass = <#= it.widgetName #>;
+  protected _WidgetClass = <#= it.widgetName #>;
 <#? it.subscribableOptions #>
-  protected defaults = {<#= it.subscribableOptions.map(t => t.renderedProp).join(',') #>
+  protected _defaults = {<#= it.subscribableOptions.map(t => t.renderedProp).join(',') #>
   };
 <#?#><#? it.templates #>
-  protected templateProps = [<#= it.templates.map(t => t.renderedProp).join(', ') #>];
+  protected _templateProps = [<#= it.templates.map(t => t.renderedProp).join(', ') #>];
 <#?#>}
 export { <#= it.name #>, <#= it.optionsName #> };
 `.trimLeft());

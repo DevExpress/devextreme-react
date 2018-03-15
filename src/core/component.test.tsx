@@ -22,7 +22,7 @@ class TestComponent<P = any> extends Component<P> {
     constructor(props: P) {
         super(props);
 
-        this.WidgetClass = WidgetClass;
+        this._WidgetClass = WidgetClass;
     }
 }
 
@@ -178,7 +178,7 @@ describe("templates", () => {
         constructor(props: any) {
             super(props);
 
-            this.templateProps = [{
+            this._templateProps = [{
                 tmplOption: "item",
                 render: "itemRender",
                 component: "itemComponent"
@@ -376,7 +376,7 @@ describe("controlled mode", () => {
     // tslint:disable-next-line:max-classes-per-file
     class ControlledComponent extends TestComponent<IControlledComponentProps> {
 
-        protected defaults = {
+        protected _defaults = { // tslint:disable-line:variable-name
             defaultControlledOption : "controlledOption"
         };
     }
