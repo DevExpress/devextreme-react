@@ -5,7 +5,8 @@ This project allows you to use [DevExtreme Widgets](http://js.devexpress.com/Dem
 * [Getting started](#getting-started)
   * [Prerequisites](#prerequisites)
   * [Install DevExtreme](#installation)
-  * [Import DevExtreme Components](#import-components)
+  * [Use DevExtreme Components](#use-components)
+* [API Reference](#api-reference)
 * [State Management](#state-management)
   * [Controlled Mode](#controlled-mode)
   * [Uncontrolled Mode](#uncontrolled-mode)
@@ -13,7 +14,6 @@ This project allows you to use [DevExtreme Widgets](http://js.devexpress.com/Dem
 * [Markup Customization](#markup-customization)
 * [Working With Data](#working-with-data)
 * [Typescript Support](#typescript-support)
-* [API Reference](#api-reference)
 * [License](#license)
 * [Support & feedback](#support-feedback)
 
@@ -31,7 +31,7 @@ Install the **devextreme** and **devextreme-react** npm packages:
 npm install --save devextreme@18.1-unstable devextreme-react
 ```
 
-### <a name="import-components"></a>Import DevExtreme Components  ####
+### <a name="use-components"></a>Use DevExtreme Components  ####
 
 ```jsx
 import React from 'react';
@@ -49,6 +49,13 @@ ReactDOM.render(
 ```
 
 Note that one of the [predefined themes](https://js.devexpress.com/Documentation/Guide/Themes/Predefined_Themes/) is required.
+
+
+## <a name="api-reference"></a>API Reference ##
+
+The complete list of widgets and their API described in the [DevExtreme API Reference](http://js.devexpress.com/Documentation/ApiReference/).
+
+To know how to implement and apply templates, see [Markup Customization](#markup-customization).
 
 
 ## <a name="state-management"></a>State Management ##
@@ -416,12 +423,6 @@ ReactDOM.render(
     document.getElementById("root")
 );
 ```
-
-
-## <a name="api-reference"></a>API Reference ##
-
-Each DevExtreme React component supports the same configuration and API as the corresponding DevExtreme widget. See [DevExtreme API Reference](http://js.devexpress.com/Documentation/ApiReference/).
-Templates can be implemented and applied in a more convenient React way, see [Markup Customization](#markup-customization).
 
 
 ## <a name="license"></a>License ##
