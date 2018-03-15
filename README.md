@@ -287,16 +287,22 @@ class Example extends React.Component {
                 <Button text='Show alert' onClick={() => alert('shown')} />
                 <br />
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, eveniet tempore, perspiciatis totam qui est minima
-                    dicta beatae dolores, omnis enim ut incidunt. Ut reprehenderit, tempore iusto deserunt doloremque fugit. Sint natus
-                    quia repellendus cum neque.
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent sed lacus
+                    egestas, facilisis urna nec, fringilla nibh. Maecenas enim felis, ultricies
+                    pretium aliquet ut, aliquam id urna. Lorem ipsum dolor sit amet, consectetur
+                    adipiscing elit. Nam viverra est at neque fringilla, non iaculis magna
+                    ultrices. Nunc posuere tincidunt elit a molestie. Nulla aliquet metus ex. Nunc
+                    aliquam volutpat libero, ac tincidunt felis consectetur id. Sed diam lectus,
+                    dictum non tempus fringilla, semper in dui. Donec at hendrerit massa. Aenean
+                    quis suscipit nisi. Cras sed eros tristique, venenatis diam in, rhoncus enim.
                 </p>
                 <p>
-                    Velit similique dicta corrupti nesciunt quas ea quam minima, aliquid qui ratione suscipit
-                    magnam molestiae aspernatur iure, tenetur sapiente voluptates laborum quidem nisi molestias. Id, nesciunt adipisci
-                    sint. Doloribus minima expedita, soluta. Eveniet reiciendis eius ducimus provident autem amet alias quis natus. In
-                    veritatis, repellendus laborum illo voluptates est quis consectetur consequuntur reiciendis rem! In cum, ipsum ratione
-                    beatae odio officia doloribus ullam magnam impedit repudiandae odit, vero!
+                    Orci varius natoque penatibus et magnis dis parturient montes, nascetur
+                    ridiculus mus. Curabitur et ex sit amet odio efficitur fermentum.
+                    Donec lobortis hendrerit massa. Praesent tempus cursus tempus. Maecenas at
+                    dolor lacus. Vestibulum suscipit ac mi vitae posuere. Maecenas id urna eget
+                    sapien volutpat laoreet. Sed nulla purus, aliquam nec augue vel, consequat
+                    tincidunt erat. Phasellus hendrerit rhoncus erat, ut fermentum orci molestie a.
                 </p>
             </ScrollView>
         );
