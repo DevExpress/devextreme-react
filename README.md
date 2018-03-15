@@ -67,61 +67,9 @@ In the controlled mode, a component state is managed externally (for example, in
 
 In the uncontrolled mode, a DevExtreme component manages its state internally. This helps you write less code and focus on your application business logic. In this case, you can interact with the component via the underlying widget instance.
 
-### <a name="handle-state-change"></a>Handle State Changes ###
+### <a name="handling-state-changes"></a>Handling State Changes ###
 
 You can handle state changes using a callback function passed to the appropriate attribute with the `on` prefix:
-
-```jsx
-import React from 'react';
-import ReactDOM from 'react-dom';
-
-import { TextBox } from 'devextreme-react';
-
-import "devextreme/dist/css/dx.common.css";
-import "devextreme/dist/css/dx.light.compact.css";
-
-class Example extends React.Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            text: 'inital text'
-        };
-
-        this.update = this.update.bind(this);
-    }
-
-    render() {
-        return (
-            <div>
-                <TextBox
-                    defaultValue={'inital text'}
-                    onValueChanged={this.update}
-                    valueChangeEvent="input"
-                />
-                <div>{this.state.text}</div>
-            </div>
-        );
-    }
-
-    update(e) {
-        this.setState({
-            text: e.component.option('value')
-        });
-    }
-}
-
-ReactDOM.render(
-    <Example />,
-    document.getElementById('root')
-);
-```
-
-Note that if you want to specify an initial value for an option in the uncontrolled mode, you should use appropriate attribute with the `default` prefix. In the example above the `value` option's initial value is defined using the `defaultValue` attribute.
-
-### <a name="control-state-changes"></a>Control Over State Changes ###
-
-If you need to fully control component state, provide the default value for the required property and handle the appropriate event fired when this property is changed:
 
 ```jsx
 import React from 'react';
@@ -136,12 +84,63 @@ class Example extends React.Component {
 
     constructor(props) {
         super(props);
-
-        this.handleChange = this.handleChange.bind(this);
-
         this.state = {
             text: 'inital text'
         };
+
+        this.handleChange = this.handleChange.bind(this);
+    }
+
+    render() {
+        return (
+            <div>
+                <TextBox
+                    defaultValue='inital text'
+                    onValueChanged={this.handleChange}
+                    valueChangeEvent='input'
+                />
+                <div>{this.state.text}</div>
+            </div>
+        );
+    }
+
+    handleChange(e) {
+        this.setState({
+            text: e.value
+        });
+    }
+}
+
+ReactDOM.render(
+    <Example />,
+    document.getElementById('root')
+);
+```
+
+Note that if you want to specify an initial value for an option in the uncontrolled mode, you should use appropriate attribute with the `default` prefix. In the example above the `value` option's initial value is defined using the `defaultValue` attribute.
+
+### <a name="control-state-changes"></a>Control Over State Changes ###
+
+If you need to fully control component state, provide the value for the required property and handle the appropriate event fired when this property is changed:
+
+```jsx
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+import { TextBox } from 'devextreme-react';
+
+import 'devextreme/dist/css/dx.common.css';
+import 'devextreme/dist/css/dx.light.compact.css';
+
+class Example extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            text: 'inital text'
+        };
+
+        this.handleChange = this.handleChange.bind(this);
     }
 
     render() {
@@ -218,7 +217,7 @@ const items = [
 
 
 ReactDOM.render(
-    <List items={items} itemRender={(it) => <i>Function template for item <b>{it.text}</b></i>}/>,
+    <List items={items} itemRender={(item) => <i>Function template for item <b>{item.text}</b></i>}/>,
     document.getElementById('root')
 );
 ```
@@ -244,23 +243,22 @@ class Item extends React.Component {
 
     constructor(props) {
         super(props);
-
-        this.clickHandler = this.clickHandler.bind(this);
-
         this.state = {
             counter: 0
         };
+
+        this.handleClick = this.handleClick.bind(this);
     }
 
     render() {
         return (
-            <i onClick={this.clickHandler}>
+            <i onClick={this.handleClick}>
                 Component template for item {this.props.text}. <b>Clicks: {this.state.counter}</b>
             </i>
         );
     }
 
-    clickHandler() {
+    handleClick() {
         this.setState({
             counter: this.state.counter + 1
         });
@@ -289,7 +287,7 @@ class Example extends React.Component {
     render() {
         return (
             <ScrollView height={200} width={200}>
-                <Button text="Show alert" onClick={() => alert("shown")} />
+                <Button text='Show alert' onClick={() => alert('shown')} />
                 <br />
                 <div>
                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, eveniet tempore, perspiciatis totam qui est minima dicta beatae dolores, omnis enim ut incidunt. Ut reprehenderit, tempore iusto deserunt doloremque fugit.</p>
@@ -340,11 +338,11 @@ class Example extends React.Component {
 
         this.dataSource = new DataSource({
             store: {
-                type: "array",
+                type: 'array',
                 data: items
             },
             sort: [
-                { getter: "text", desc: true }
+                { getter: 'text', desc: true }
             ],
             pageSize: 1
         });
@@ -365,7 +363,6 @@ ReactDOM.render(
     <Example />,
     document.getElementById('root')
 );
-
 ```
 
 Note that a DataSource is considered as a 'service'. So, modifying its properties does not cause component rerendering.
@@ -385,38 +382,37 @@ import { List } from "devextreme-react";
 import "devextreme/dist/css/dx.common.css";
 import "devextreme/dist/css/dx.light.compact.css";
 
-interface IListItem {
+interface IListItemProps {
     text: string;
 }
 
-class Item extends React.Component<IListItem, { counter: number }> {
+class Item extends React.Component<IListItemProps, { counter: number }> {
 
-    constructor(props: IListItem) {
+    constructor(props: IListItemProps) {
         super(props);
-
-        this.clickHandler = this.clickHandler.bind(this);
-
         this.state = {
             counter: 0
         };
+
+        this.handleClick = this.handleClick.bind(this);
     }
 
     public render() {
         return (
-            <i onClick={this.clickHandler}>
+            <i onClick={this.handleClick}>
                 Component template for item {this.props.text}. <b>Clicks: {this.state.counter}</b>
             </i>
         );
     }
 
-    private clickHandler() {
+    private handleClick() {
         this.setState({
             counter: this.state.counter + 1
         });
     }
 }
 
-const items: IListItem[] = [
+const items: IListItemProps[] = [
     { text: "123" },
     { text: "234" },
     { text: "567" }

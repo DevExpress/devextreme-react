@@ -7,16 +7,16 @@ import { TextBox } from "../src/ui/text-box";
 
 import Example from "./example-block";
 
-interface IListItem {
+interface IListItemProps {
     text: string;
 }
 
-class Item extends React.Component<IListItem, { counter: number }> {
+class Item extends React.Component<IListItemProps, { counter: number }> {
 
-    constructor(props: IListItem) {
+    constructor(props: IListItemProps) {
         super(props);
 
-        this.clickHandler = this.clickHandler.bind(this);
+        this.handleClick = this.handleClick.bind(this);
 
         this.state = {
             counter: 0
@@ -25,13 +25,13 @@ class Item extends React.Component<IListItem, { counter: number }> {
 
     public render() {
         return (
-            <i onClick={this.clickHandler}>
+            <i onClick={this.handleClick}>
                 Component template for item {this.props.text}. <b>Clicks: {this.state.counter}</b>
             </i>
         );
     }
 
-    private clickHandler() {
+    private handleClick() {
         this.setState({
             counter: this.state.counter + 1
         });
@@ -39,7 +39,7 @@ class Item extends React.Component<IListItem, { counter: number }> {
 }
 
 // tslint:disable-next-line:max-classes-per-file
-export default class extends React.Component<any, { text: string; items: IListItem[]; }> {
+export default class extends React.Component<any, { text: string; items: IListItemProps[]; }> {
 
     private dataSource: DataSource;
 
@@ -73,17 +73,16 @@ export default class extends React.Component<any, { text: string; items: IListIt
 
                 <List
                     items={this.state.items}
-                    itemRender={(props: IListItem) => <i>Function template for item {props.text}</i>}
+                    itemRender={(item: IListItemProps) => <i>Function template for item {item.text}</i>}
                 />
                 <hr />
                 <List
                     items={this.state.items}
                     itemComponent={Item}
                 />
-                <br />
-
+                <hr />
                 <List dataSource={this.dataSource} />
-                <br />
+                <hr />
                 <TextBox value={this.state.text} onValueChanged={this.updateText} valueChangeEvent="keyup" />
                 <Button text="Add to list" onClick={this.addTextToList} />
             </Example>
@@ -108,7 +107,7 @@ export default class extends React.Component<any, { text: string; items: IListIt
     }
 }
 
-const items: IListItem[] = [
+const items: IListItemProps[] = [
     { text: "123" },
     { text: "234" },
     { text: "567" }
