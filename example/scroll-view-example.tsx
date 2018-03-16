@@ -6,18 +6,16 @@ import { Button } from "../src/ui/button";
 import { ScrollView } from "../src/ui/scroll-view";
 import { TextBox } from "../src/ui/text-box";
 
-interface IState {
-    textBoxValue: string;
-}
-
-export default class extends React.Component<any, IState> {
+export default class extends React.Component<any, { text: string }> {
 
     constructor(props: any) {
         super(props);
-
         this.state = {
-            textBoxValue: "Clear me"
+            text: "Clear me"
         };
+
+        this.clearText = this.clearText.bind(this);
+        this.handleTextChange = this.handleTextChange.bind(this);
     }
 
     public render() {
@@ -26,11 +24,11 @@ export default class extends React.Component<any, IState> {
             <Example title="DxScrollView" state={this.state} >
                 <ScrollView height="150px">
                     <Button text="Show alert" onClick={() => alert("shown")} />
-                    <Button text="Clear TextBox" onClick={() => this.setState({ textBoxValue: "" })} />
-                    <br/>
-                    <br/>
-                    <TextBox value={this.state.textBoxValue} onValueChanged={(e) => this.setState({textBoxValue: e.value})} valueChangeEvent="keydown"/>
-                    <br/>
+                    <Button text="Clear TextBox" onClick={this.clearText} />
+                    <br />
+                    <br />
+                    <TextBox value={this.state.text} onValueChanged={this.handleTextChange} valueChangeEvent="keydown" />
+                    <br />
                     <div>
                         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, eveniet tempore, perspiciatis totam qui est minima dicta beatae dolores, omnis enim ut incidunt. Ut reprehenderit, tempore iusto deserunt doloremque fugit.</p>
                         <p>Sint natus quia repellendus cum neque. Velit similique dicta corrupti nesciunt quas ea quam minima, aliquid qui ratione suscipit magnam molestiae aspernatur iure, tenetur sapiente voluptates laborum quidem nisi molestias.</p>
@@ -51,5 +49,17 @@ export default class extends React.Component<any, IState> {
                 </ScrollView>
             </Example>
         );
+    }
+
+    private clearText() {
+        this.setState({
+            text: ""
+        });
+    }
+
+    private handleTextChange(e: any) {
+        this.setState({
+            text: e.value
+        });
     }
 }
