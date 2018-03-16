@@ -13,31 +13,31 @@ interface IDictionary<TValue = any> {
 
 export default class Component<P> extends React.PureComponent<P, any> {
 
-  protected WidgetClass: any;
+  protected _WidgetClass: any; // tslint:disable-line:variable-name
   protected _instance: any; // tslint:disable-line:variable-name
-  protected readonly defaults: { [index: string]: string };
+  protected readonly _defaults: { [index: string]: string }; // tslint:disable-line:variable-name
 
-  protected templateProps: Array<{
+  protected _templateProps: Array<{ // tslint:disable-line:variable-name
     tmplOption: string
     render: string
     component: string
   }> = [];
 
-  private readonly guards: { [optionName: string]: number } = {};
-  private element: any;
-  private updatingProps: boolean;
+  private readonly _guards: { [optionName: string]: number } = {}; // tslint:disable-line:variable-name
+  private _element: any; // tslint:disable-line:variable-name
+  private _updatingProps: boolean; // tslint:disable-line:variable-name
 
   constructor(props: P) {
     super(props);
-    this.optionChangedHandler = this.optionChangedHandler.bind(this);
-    this.extractDefaultsValues = this.extractDefaultsValues.bind(this);
+    this._optionChangedHandler = this._optionChangedHandler.bind(this);
+    this._extractDefaultsValues = this._extractDefaultsValues.bind(this);
     this.state = {
       templates: {}
     };
   }
 
   public componentWillUpdate(nextProps: P) {
-    const props: IDictionary = this.extractDefaultsValues(nextProps).options;
+    const props: IDictionary = this._extractDefaultsValues(nextProps).options;
     const prevProps: IDictionary = this.props;
 
     this._processChangedValues(props, prevProps);
@@ -46,7 +46,7 @@ export default class Component<P> extends React.PureComponent<P, any> {
   public render() {
       const args: any[] = [
         "div",
-        { ref: (element: any) => this.element = element }
+        { ref: (element: any) => this._element = element }
       ];
       if (!!this.props.children) {
         args.push(this.props.children);
@@ -60,28 +60,28 @@ export default class Component<P> extends React.PureComponent<P, any> {
 
   public componentDidMount() {
     const props: IDictionary = this.props;
-    const splitProps = this.extractDefaultsValues(props);
+    const splitProps = this._extractDefaultsValues(props);
 
     const options: any = {
       ...splitProps.defaults,
       ...splitProps.options,
-      ...this.getIntegrationOptions()
+      ...this._getIntegrationOptions()
     };
 
-    this._instance = new this.WidgetClass(this.element, options);
-    this._instance.on("optionChanged", this.optionChangedHandler);
+    this._instance = new this._WidgetClass(this._element, options);
+    this._instance.on("optionChanged", this._optionChangedHandler);
   }
 
   public componentWillUnmount() {
-    events.triggerHandler(this.element, DX_REMOVE_EVENT);
+    events.triggerHandler(this._element, DX_REMOVE_EVENT);
     this._instance.dispose();
   }
 
-  private optionChangedHandler(e: any) {
+  private _optionChangedHandler(e: any) {
     const optionName = e.name;
     const optionValue = (this.props as any)[optionName];
 
-    if (this.updatingProps) {
+    if (this._updatingProps) {
       return;
     }
 
@@ -89,40 +89,40 @@ export default class Component<P> extends React.PureComponent<P, any> {
       return;
     }
 
-    if (this.guards[optionName] !== undefined) {
+    if (this._guards[optionName] !== undefined) {
       return;
     }
 
     const guardId = window.setTimeout(() => {
       this._instance.option(optionName, optionValue);
       window.clearTimeout(guardId);
-      delete this.guards[optionName];
+      delete this._guards[optionName];
     }, ROLLBACK_DELAY);
 
-    this.guards[optionName] = guardId;
+    this._guards[optionName] = guardId;
   }
 
-  private extractDefaultsValues(props: IDictionary): { defaults: IDictionary, options: IDictionary } {
+  private _extractDefaultsValues(props: IDictionary): { defaults: IDictionary, options: IDictionary } {
     const defaults: any = {};
     const options: any = {};
 
     Object.keys(props).forEach((key) => {
-      const gaurdedOptionName = this.defaults ? this.defaults[key] : false;
+      const gaurdedOptionName = this._defaults ? this._defaults[key] : false;
 
       if (gaurdedOptionName) {
         defaults[gaurdedOptionName] = props[key];
       } else {
-        options[key] = this.wrapEventHandler(props, key);
+        options[key] = this._wrapEventHandler(props, key);
       }
     });
 
     return { defaults, options };
   }
 
-  private wrapEventHandler(options: any, key: string): any {
+  private _wrapEventHandler(options: any, key: string): any {
     if (key.substr(0, 2) === "on" && typeof options[key] === "function") {
       return (...args: any[]) => {
-        if (!this.updatingProps) {
+        if (!this._updatingProps) {
           options[key](...args);
         }
       };
@@ -132,30 +132,30 @@ export default class Component<P> extends React.PureComponent<P, any> {
   }
 
   private _processChangedValues(props: any, prevProps: any): void {
-    this.updatingProps = false;
+    this._updatingProps = false;
 
     for (const optionName of Object.keys(props)) {
       if (props[optionName] !== prevProps[optionName]) {
-        if (this.guards[optionName]) {
-          window.clearTimeout(this.guards[optionName]);
-          delete this.guards[optionName];
+        if (this._guards[optionName]) {
+          window.clearTimeout(this._guards[optionName]);
+          delete this._guards[optionName];
         }
 
-        if (!this.updatingProps) {
+        if (!this._updatingProps) {
           this._instance.beginUpdate();
-          this.updatingProps = true;
+          this._updatingProps = true;
         }
         this._instance.option(optionName, props[optionName]);
       }
     }
 
-    if (this.updatingProps) {
-      this.updatingProps = false;
+    if (this._updatingProps) {
+      this._updatingProps = false;
       this._instance.endUpdate();
     }
   }
 
-  private getIntegrationOptions(): any {
+  private _getIntegrationOptions(): any {
     const result: any = {
       integrationOptions: {
         templates: {}
@@ -163,23 +163,23 @@ export default class Component<P> extends React.PureComponent<P, any> {
     };
 
     const options: IDictionary = this.props;
-    this.templateProps.forEach((m) => {
+    this._templateProps.forEach((m) => {
       if (options[m.component]) {
         result[m.tmplOption] = m.tmplOption;
         result.integrationOptions.templates[m.tmplOption] =
-          this.fillTemplate(React.createElement.bind(this, options[m.component]));
+          this._fillTemplate(React.createElement.bind(this, options[m.component]));
       }
       if (options[m.render]) {
         result[m.tmplOption] = m.tmplOption;
         result.integrationOptions.templates[m.tmplOption] =
-          this.fillTemplate(options[m.render].bind(this));
+          this._fillTemplate(options[m.render].bind(this));
       }
     });
 
     return result;
   }
 
-  private fillTemplate(tmplFn: any): object {
+  private _fillTemplate(tmplFn: any): object {
     return {
       render: (data: any) => {
         const element = document.createElement("div");

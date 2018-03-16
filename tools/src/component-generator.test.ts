@@ -12,7 +12,7 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
     return this._instance;
   }
 
-  protected WidgetClass = dxCLASS_NAME;
+  protected _WidgetClass = dxCLASS_NAME;
 }
 export { CLASS_NAME, ICLASS_NAMEOptions };
 `.trimLeft();
@@ -44,9 +44,9 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
     return this._instance;
   }
 
-  protected WidgetClass = dxCLASS_NAME;
+  protected _WidgetClass = dxCLASS_NAME;
 
-  protected templateProps = [{
+  protected _templateProps = [{
     tmplOption: "optionTemplate",
     render: "optionRender",
     component: "optionComponent"
@@ -85,9 +85,9 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
     return this._instance;
   }
 
-  protected WidgetClass = dxCLASS_NAME;
+  protected _WidgetClass = dxCLASS_NAME;
 
-  protected templateProps = [{
+  protected _templateProps = [{
     tmplOption: "optionTemplate",
     render: "optionRender",
     component: "optionComponent"
@@ -128,9 +128,9 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
     return this._instance;
   }
 
-  protected WidgetClass = dxCLASS_NAME;
+  protected _WidgetClass = dxCLASS_NAME;
 
-  protected templateProps = [{
+  protected _templateProps = [{
     tmplOption: "template",
     render: "render",
     component: "component"
@@ -166,9 +166,9 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
     return this._instance;
   }
 
-  protected WidgetClass = dxCLASS_NAME;
+  protected _WidgetClass = dxCLASS_NAME;
 
-  protected defaults = {
+  protected _defaults = {
     defaultOption1: "option1"
   };
 }
@@ -205,9 +205,9 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
     return this._instance;
   }
 
-  protected WidgetClass = dxCLASS_NAME;
+  protected _WidgetClass = dxCLASS_NAME;
 
-  protected defaults = {
+  protected _defaults = {
     defaultOption1: "option1",
     defaultOption2: "option2"
   };
