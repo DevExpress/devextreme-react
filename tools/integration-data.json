@@ -538,7 +538,13 @@
   },
   {
     "name": "DxRangeSelector",
-    "exportPath": "viz/range_selector"
+    "exportPath": "viz/range_selector",
+    "subscribableOptions": [
+      {
+        "name": "value",
+        "type": "any"
+      }
+    ]
   },
   {
     "name": "DxRangeSlider",
