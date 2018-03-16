@@ -1,12 +1,12 @@
 {
   "name": "devextreme-react",
-  "version": "18.1.0",
+  "version": "18.1.1-alpha.1",
   "main": "index.js",
   "types": "index.d.ts",
   "peerDependencies": {
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
-    "devextreme": "^18.1.1-pre"
+    "devextreme": "18.1.1-pre-18064"
   },
   "devDependencies": {
     "@types/enzyme": "^3.1.9",
@@ -16,7 +16,7 @@
     "@types/react-dom": "^16.0.3",
     "css-loader": "^0.28.9",
     "dasherize": "^2.0.0",
-    "devextreme": "^18.1.1-pre",
+    "devextreme": "18.1.1-pre-18064",
     "dot": "^1.1.2",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
