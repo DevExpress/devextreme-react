@@ -24,13 +24,15 @@ const
 
   NPM_CLEAN = 'npm.clean',
   NPM_PACKAGE = 'npm.package',
+  NPM_LICENSE = 'npm.license',
   NPM_BUILD = 'npm.build';
 
-gulp.task(GENERATE, () =>
+gulp.task(GENERATE, (done) =>
   runSequence(
     CLEAN,
     [OUTPUTDIR_CREATE, GEN_COMPILE],
-    GEN_RUN
+    GEN_RUN,
+    done
   )
 );
 
@@ -47,7 +49,7 @@ gulp.task(GEN_CLEAN, () =>
 );
 
 gulp.task(OUTPUTDIR_CREATE, (done) =>
-  mkdir(config.componentFolder, done)
+  mkdir(config.componentFolder, {}, done)
 );
 
 gulp.task(GEN_COMPILE, [GEN_CLEAN], () =>
@@ -83,7 +85,12 @@ gulp.task(NPM_PACKAGE, [NPM_CLEAN], () =>
     .pipe(gulp.dest(config.npm.dist))
 )
 
-gulp.task(NPM_BUILD, [NPM_PACKAGE], () => {
+gulp.task(NPM_LICENSE, [NPM_CLEAN], () =>
+  gulp.src(config.npm.license)
+    .pipe(gulp.dest(config.npm.dist))
+)
+
+gulp.task(NPM_BUILD, [NPM_LICENSE, NPM_PACKAGE, GENERATE], () => {
   return gulp.src([
       config.src,
       "!" + config.testSrc
