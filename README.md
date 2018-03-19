@@ -1,6 +1,21 @@
-# React UI and Visualization Components Based on DevExtreme Widgets #
+# DevExtreme React UI and Visualization Components #
 
-This project allows you to use [DevExtreme Widgets](http://js.devexpress.com/Demos/WidgetsGallery/) as [React components](https://reactjs.org).
+This project allows you to use [DevExtreme Widgets](http://js.devexpress.com/Demos/WidgetsGallery/) as [React Components](https://reactjs.org).
+
+* [Getting started](#getting-started)
+  * [Prerequisites](#prerequisites)
+  * [Install DevExtreme](#installation)
+  * [Use DevExtreme Components](#use-components)
+* [API Reference](#api-reference)
+* [State Management](#state-management)
+  * [Controlled Mode](#controlled-mode)
+  * [Uncontrolled Mode](#uncontrolled-mode)
+  * [Getting Widget Instance](#getting-widget-instance)
+* [Markup Customization](#markup-customization)
+* [Working With Data](#working-with-data)
+* [Typescript Support](#typescript-support)
+* [License](#license)
+* [Support & feedback](#support-feedback)
 
 
 ## <a name="getting-started"></a>Getting Started ##
@@ -16,7 +31,7 @@ Install the **devextreme** and **devextreme-react** npm packages:
 npm install --save devextreme@18.1-unstable devextreme-react
 ```
 
-### <a name="import-components"></a>Import DevExtreme Components  ####
+### <a name="use-components"></a>Use DevExtreme Components  ####
 
 ```jsx
 import React from 'react';
@@ -24,37 +39,56 @@ import ReactDOM from 'react-dom';
 
 import { Button } from 'devextreme-react';
 
-import "devextreme/dist/css/dx.common.css";
-import "devextreme/dist/css/dx.light.compact.css";
+import 'devextreme/dist/css/dx.common.css';
+import 'devextreme/dist/css/dx.light.compact.css';
 
 ReactDOM.render(
-  <Button text='Example Button' />,
-  document.getElementById('root')
+    <Button text='Example Button' />,
+    document.getElementById('root')
 );
 ```
-Note that one of the [predefined themes](https://js.devexpress.com/Documentation/Guide/Themes/Predefined_Themes/) is required
 
-## <a name="examples"></a>Examples ##
+Note that a [predefined theme](https://js.devexpress.com/Documentation/Guide/Themes/Predefined_Themes/) is required.
 
-### <a name="handle-value-change"></a>Handle Value Change
+
+## <a name="api-reference"></a>API Reference ##
+
+The complete list of components and their APIs are described in the [DevExtreme API Reference](http://js.devexpress.com/Documentation/ApiReference/).
+
+See [Markup Customization](#markup-customization) for details on how to implement and apply templates.
+
+
+## <a name="state-management"></a>State Management ##
+
+DevExtreme React components support both [Controlled](https://reactjs.org/docs/forms.html#controlled-components) and [Uncontrolled](https://reactjs.org/docs/uncontrolled-components.html) state modes.
+
+### <a name="controlled-mode"></a>Controlled Mode ###
+
+In the controlled mode, a parent component passes a component's state using its props. This mode provides the following capabilities:
+- Control component state externally (stateless behavior)
+- Share state between components in your app
+- Persist and restore state
+
+To control a component's state, provide the value for the required property and handle the event that is fired when it is changed (use the appropriate property with the `on` prefix):
+
 ```jsx
 import React from 'react';
 import ReactDOM from 'react-dom';
 
 import { TextBox } from 'devextreme-react';
 
-import "devextreme/dist/css/dx.common.css";
-import "devextreme/dist/css/dx.light.compact.css";
+import 'devextreme/dist/css/dx.common.css';
+import 'devextreme/dist/css/dx.light.compact.css';
 
 class Example extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            text: 'inital text'
+            text: 'TEXT'
         };
 
-        this.update = this.update.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
 
     render() {
@@ -62,17 +96,17 @@ class Example extends React.Component {
             <div>
                 <TextBox
                     value={this.state.text}
-                    onValueChanged={this.update}
-                    valueChangeEvent='keyup'
+                    onValueChanged={this.handleChange}
+                    valueChangeEvent='input'
                 />
                 <div>{this.state.text}</div>
             </div>
         );
     }
 
-    update(e) {
+    handleChange(e) {
         this.setState({
-            text: e.component.option('value')
+            text: e.value.toUpperCase().replace('A','_')
         });
     }
 }
@@ -83,60 +117,318 @@ ReactDOM.render(
 );
 ```
 
-### <a name="customize-rendering"></a>Customize Rendering
+### <a name="uncontrolled-mode"></a>Uncontrolled Mode ###
+
+Sometimes there is no need to handle all the component's updates, thus DevExtreme components can manage their state internally which reduces the amount of code required.
+
+Note that if you want to specify an initial value for an option in the uncontrolled mode, you should use an appropriate property with the `default` prefix. In the example below, the `currentView` option's initial value is defined using the `defaultCurrentView` property.
+
 ```jsx
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { List } from 'devextreme-react';
+import { Scheduler } from 'devextreme-react';
 
-import "devextreme/dist/css/dx.common.css";
-import "devextreme/dist/css/dx.light.compact.css";
-
-const items = [
-    { text: "123" },
-    { text: "234" },
-    { text: "567" }
+import 'devextreme/dist/css/dx.common.css';
+import 'devextreme/dist/css/dx.light.compact.css';
+const appointments = [
+    {
+        text: 'Website Re-Design Plan',
+        startDate: new Date(2017, 4, 22, 9, 30),
+        endDate: new Date(2017, 4, 22, 11, 30)
+    }, {
+        text: 'Book Flights to San Fran for Sales Trip',
+        startDate: new Date(2017, 4, 22, 12, 0),
+        endDate: new Date(2017, 4, 22, 13, 0),
+        allDay: true
+    }, {
+        text: 'Install New Router in Dev Room',
+        startDate: new Date(2017, 4, 23, 10, 30),
+        endDate: new Date(2017, 4, 23, 16, 30)
+    }
 ];
 
-class ItemTemplate extends React.Component {
+
+ReactDOM.render(
+    <Scheduler
+        dataSource={appointments}
+        height={600}
+        editing={false}
+        defaultCurrentView={'week'}
+        defaultCurrentDate={new Date(2017, 4, 22)}
+        startDayHour={9}
+    />,
+    document.getElementById('root')
+);
+```
+
+
+### <a name="getting-widget-instance"></a>Getting Widget Instance ###
+In some cases, a widget instance is required when you need to call a widget method. You can get it by assigning a callback function to the component's `ref` property. This function accepts the mounted DevExtreme Component as an argument whose `instance` property stores the widget instance.
+
+```jsx
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+import { Button, TextBox } from 'devextreme-react';
+
+import 'devextreme/dist/css/dx.common.css';
+import 'devextreme/dist/css/dx.light.compact.css';
+
+class Example extends React.Component {
+
     render() {
-        return <i>This is component template for item <b>{this.props.text}</b></i>;
+        return (
+            <div>
+                <TextBox ref={(ref) => this.textBox = ref.instance}/>
+                <Button text='Go to the TextBox' onClick={() => this.textBox.focus()} />
+            </div>
+        );
     }
 }
 
 ReactDOM.render(
-  <List items={items} itemComponent={ItemTemplate}/>,
-  document.getElementById('root')
+    <Example />,
+    document.getElementById('root')
 );
 ```
-or use render-function:
+
+## <a name="markup-customization"></a>Markup Customization
+You can customize widget elements' appearance via the corresponding template properties. A template could be specified as a rendering function or as a React component.
+
+Use an option with the `Render` suffix to specify a rendering function:
 ```jsx
 import React from 'react';
 import ReactDOM from 'react-dom';
 
 import { List } from 'devextreme-react';
 
+import 'devextreme/dist/css/dx.common.css';
+import 'devextreme/dist/css/dx.light.compact.css';
+
+const items = [
+    { text: '123' },
+    { text: '234' },
+    { text: '567' }
+];
+
+
+ReactDOM.render(
+    <List items={items} itemRender={(item) => <i>Function template for item <b>{item.text}</b></i>}/>,
+    document.getElementById('root')
+);
+```
+
+
+The template component can be specified using an option with the `Component` suffix:
+```jsx
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+import { List } from 'devextreme-react';
+
+import 'devextreme/dist/css/dx.common.css';
+import 'devextreme/dist/css/dx.light.compact.css';
+
+const items = [
+    { text: '123' },
+    { text: '234' },
+    { text: '567' }
+];
+
+class Item extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            counter: 0
+        };
+
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+    render() {
+        return (
+            <i onClick={this.handleClick}>
+                Component template for item {this.props.text}. <b>Clicks: {this.state.counter}</b>
+            </i>
+        );
+    }
+
+    handleClick() {
+        this.setState({
+            counter: this.state.counter + 1
+        });
+    }
+}
+
+ReactDOM.render(
+    <List items={items} itemComponent={Item} />,
+    document.getElementById('root')
+);
+```
+
+The components that displays content in an overlaying window (for example, [ScrollView](https://js.devexpress.com/Documentation/ApiReference/UI_Widgets/dxScrollView/)), allows to specify the content as component children:
+
+```jsx
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+import { Button, ScrollView } from 'devextreme-react';
+
+import 'devextreme/dist/css/dx.common.css';
+import 'devextreme/dist/css/dx.light.compact.css';
+
+class Example extends React.Component {
+
+    render() {
+        return (
+            <ScrollView height={200} width={200}>
+                <Button text='Show alert' onClick={() => alert('shown')} />
+                <br />
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent sed lacus
+                    egestas, facilisis urna nec, fringilla nibh. Maecenas enim felis, ultricies
+                    pretium aliquet ut, aliquam id urna. Lorem ipsum dolor sit amet, consectetur
+                    adipiscing elit. Nam viverra est at neque fringilla, non iaculis magna
+                    ultrices. Nunc posuere tincidunt elit a molestie. Nulla aliquet metus ex. Nunc
+                    aliquam volutpat libero, ac tincidunt felis consectetur id. Sed diam lectus,
+                    dictum non tempus fringilla, semper in dui. Donec at hendrerit massa. Aenean
+                    quis suscipit nisi. Cras sed eros tristique, venenatis diam in, rhoncus enim.
+                </p>
+                <p>
+                    Orci varius natoque penatibus et magnis dis parturient montes, nascetur
+                    ridiculus mus. Curabitur et ex sit amet odio efficitur fermentum.
+                    Donec lobortis hendrerit massa. Praesent tempus cursus tempus. Maecenas at
+                    dolor lacus. Vestibulum suscipit ac mi vitae posuere. Maecenas id urna eget
+                    sapien volutpat laoreet. Sed nulla purus, aliquam nec augue vel, consequat
+                    tincidunt erat. Phasellus hendrerit rhoncus erat, ut fermentum orci molestie a.
+                </p>
+            </ScrollView>
+        );
+    }
+}
+
+ReactDOM.render(
+    <Example />,
+    document.getElementById('root')
+);
+```
+
+
+## <a name="working-with-data"></a>Working with Data ##
+DevExtreme includes the [data layer](https://js.devexpress.com/Documentation/Guide/Data_Layer/Data_Layer/) that enables you to read and write data stored in different data sources.
+
+The example below demonstrates how to use a [DataSource](https://js.devexpress.com/Documentation/ApiReference/Data_Layer/DataSource/) with DevExtreme Components.
+
+```jsx
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+import DataSource from 'devextreme/data/data_source';
+import { List } from 'devextreme-react';
+
+import 'devextreme/dist/css/dx.common.css';
+import 'devextreme/dist/css/dx.light.compact.css';
+
+const items = [
+    { text: '123' },
+    { text: '234' },
+    { text: '567' }
+];
+
+class Example extends React.Component {
+
+    constructor(props) {
+        super(props);
+
+        this.dataSource = new DataSource({
+            store: {
+                type: 'array',
+                data: items
+            },
+            sort: [
+                { getter: 'text', desc: true }
+            ],
+            pageSize: 1
+        });
+    }
+
+    render() {
+        return (
+            <List dataSource={this.dataSource} />
+        );
+    }
+
+    componentWillUnmount() {
+        this.dataSource.dispose();
+    }
+}
+
+ReactDOM.render(
+    <Example />,
+    document.getElementById('root')
+);
+```
+
+Note that a DataSource is considered as a 'service'. So, modifying its properties does not cause component rerendering.
+
+
+## <a name="typescript-support"></a>Typescript Support ##
+
+We provide TypeScript declarations for DevExtreme Components. Strict typing allows you to catch many bugs and improve your workflow by adding features like auto-completion and automated refactoring.
+
+Below is an example of appearance customization using TypeScript:
+
+```ts
+import * as React from "react";
+import * as ReactDOM from "react-dom";
+import { List } from "devextreme-react";
+
 import "devextreme/dist/css/dx.common.css";
 import "devextreme/dist/css/dx.light.compact.css";
 
-const items = [
+interface IListItemProps {
+    text: string;
+}
+
+class Item extends React.Component<IListItemProps, { counter: number }> {
+
+    constructor(props: IListItemProps) {
+        super(props);
+        this.state = {
+            counter: 0
+        };
+
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+    public render() {
+        return (
+            <i onClick={this.handleClick}>
+                Component template for item {this.props.text}. <b>Clicks: {this.state.counter}</b>
+            </i>
+        );
+    }
+
+    private handleClick() {
+        this.setState({
+            counter: this.state.counter + 1
+        });
+    }
+}
+
+const items: IListItemProps[] = [
     { text: "123" },
     { text: "234" },
     { text: "567" }
 ];
 
-const itemRender = (it) => <i>This is function template for item <b>{it.text}</b></i>;
-
 ReactDOM.render(
-  <List items={items} itemRender={itemRender}/>,
-  document.getElementById('root')
+    <List items={items} itemComponent={Item} />,
+    document.getElementById("root")
 );
 ```
-
-## <a name="api-reference"></a>API Reference ##
-
-Each DevExtreme React component correspond widget condfiguration described in [DevExtreme API Reference](http://js.devexpress.com/Documentation/ApiReference/).
 
 
 ## <a name="license"></a>License ##
@@ -145,8 +437,8 @@ Each DevExtreme React component correspond widget condfiguration described in [D
 
 Familiarize yourself with the [DevExtreme License](https://js.devexpress.com/Licensing/).
 
-[Free trial is available!](http://js.devexpress.com/Buy/)
+[A free trial is available!](http://js.devexpress.com/Buy/)
 
 ## <a name="support-feedback"></a>Support & Feedback ##
 * For general React questions, check [React Docs](https://reactjs.org/docs)
-* For questions regarding DevExtreme libraries and JavaScript API, use [DevExpress Support Center](https://www.devexpress.com/Support/Center)
+* For questions regarding DevExtreme libraries and widgets' APIs, use [DevExpress Support Center](https://www.devexpress.com/Support/Center)
