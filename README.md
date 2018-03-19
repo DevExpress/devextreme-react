@@ -48,14 +48,14 @@ ReactDOM.render(
 );
 ```
 
-Note that one of the [predefined themes](https://js.devexpress.com/Documentation/Guide/Themes/Predefined_Themes/) is required.
+Note that a [predefined theme](https://js.devexpress.com/Documentation/Guide/Themes/Predefined_Themes/) is required.
 
 
 ## <a name="api-reference"></a>API Reference ##
 
-The complete list of components and their API described in the [DevExtreme API Reference](http://js.devexpress.com/Documentation/ApiReference/).
+The complete list of components and their APIs are described in the [DevExtreme API Reference](http://js.devexpress.com/Documentation/ApiReference/).
 
-To know how to implement and apply templates, see [Markup Customization](#markup-customization).
+See [Markup Customization](#markup-customization) for details on how to implement and apply templates.
 
 
 ## <a name="state-management"></a>State Management ##
@@ -64,12 +64,12 @@ DevExtreme React components support both [Controlled](https://reactjs.org/docs/f
 
 ### <a name="controlled-mode"></a>Controlled Mode ###
 
-In the controlled mode, a component state is passed via its props by its parent component. This mode provides the following capabilities:
+In the controlled mode, a parent component passes a component's state using its props. This mode provides the following capabilities:
 - Control component state externally (stateless behavior)
 - Share state between components in your app
 - Persist and restore state
 
-To control component state, provide the value for the required property and handle the event fired when it is changed (use the appropriate property with the `on` prefix):
+To control a component's state, provide the value for the required property and handle the event that is fired when it is changed (use the appropriate property with the `on` prefix):
 
 ```jsx
 import React from 'react';
@@ -119,9 +119,9 @@ ReactDOM.render(
 
 ### <a name="uncontrolled-mode"></a>Uncontrolled Mode ###
 
-Sometimes there is no need to handle all the component updates, thus DevExtreme components can manage their state internally. This helps you write less code and focus on your application business logic.
+Sometimes there is no need to handle all the component's updates, thus DevExtreme components can manage their state internally which reduces the amount of code required.
 
-Note that if you want to specify an initial value for an option in the uncontrolled mode, you should use appropriate property with the `default` prefix. In the example below the `currentView` option's initial value is defined using the `defaultCurrentView` property.
+Note that if you want to specify an initial value for an option in the uncontrolled mode, you should use an appropriate property with the `default` prefix. In the example below, the `currentView` option's initial value is defined using the `defaultCurrentView` property.
 
 ```jsx
 import React from 'react';
@@ -164,7 +164,7 @@ ReactDOM.render(
 
 
 ### <a name="getting-widget-instance"></a>Getting Widget Instance ###
-In some cases when you need to call a widget method a widget instance is required. You can get it by assigning of a callback function to the component's `ref` property. This function accepts the mounted DevExtreme Component as an argument, whose `instance` property holds the widget instance.
+In some cases, a widget instance is required when you need to call a widget method. You can get it by assigning a callback function to the component's `ref` property. This function accepts the mounted DevExtreme Component as an argument whose `instance` property stores the widget instance.
 
 ```jsx
 import React from 'react';
@@ -194,7 +194,7 @@ ReactDOM.render(
 ```
 
 ## <a name="markup-customization"></a>Markup Customization
-You can customize widget elements' appearance via the appropriate template properties. A template could be specified as a rendering function or as a React component.
+You can customize widget elements' appearance via the corresponding template properties. A template could be specified as a rendering function or as a React component.
 
 Use an option with the `Render` suffix to specify a rendering function:
 ```jsx
@@ -268,7 +268,7 @@ ReactDOM.render(
 );
 ```
 
-The components that display content in an overlaying window (e.g. [ScrollView](https://js.devexpress.com/Documentation/ApiReference/UI_Widgets/dxScrollView/)), allow to specify the content as component children:
+The components that displays content in an overlaying window (for example, [ScrollView](https://js.devexpress.com/Documentation/ApiReference/UI_Widgets/dxScrollView/)), allows to specify the content as component children:
 
 ```jsx
 import React from 'react';
@@ -317,9 +317,9 @@ ReactDOM.render(
 
 
 ## <a name="working-with-data"></a>Working with Data ##
-DevExtreme includes the [data layer](https://js.devexpress.com/Documentation/Guide/Data_Layer/Data_Layer/), that enables you to read and write data stored in different data sources.
+DevExtreme includes the [data layer](https://js.devexpress.com/Documentation/Guide/Data_Layer/Data_Layer/) that enables you to read and write data stored in different data sources.
 
-The example below demonstrates how to use [DataSource](https://js.devexpress.com/Documentation/ApiReference/Data_Layer/DataSource/) with DevExtreme Components.
+The example below demonstrates how to use a [DataSource](https://js.devexpress.com/Documentation/ApiReference/Data_Layer/DataSource/) with DevExtreme Components.
 
 ```jsx
 import React from 'react';
@@ -376,9 +376,9 @@ Note that a DataSource is considered as a 'service'. So, modifying its propertie
 
 ## <a name="typescript-support"></a>Typescript Support ##
 
-Strict typing allows you to catch a lot of bugs and improve your workflow by adding features like auto-completion and automated refactoring. This is why we provide TypeScript declarations for the DevExtreme Components.
+We provide TypeScript declarations for DevExtreme Components. Strict typing allows you to catch many bugs and improve your workflow by adding features like auto-completion and automated refactoring.
 
-Here is an example of appearance customization with using TypeScript:
+Below is an example of appearance customization using TypeScript:
 
 ```ts
 import * as React from "react";
@@ -437,8 +437,8 @@ ReactDOM.render(
 
 Familiarize yourself with the [DevExtreme License](https://js.devexpress.com/Licensing/).
 
-[Free trial is available!](http://js.devexpress.com/Buy/)
+[A free trial is available!](http://js.devexpress.com/Buy/)
 
 ## <a name="support-feedback"></a>Support & Feedback ##
 * For general React questions, check [React Docs](https://reactjs.org/docs)
-* For questions regarding DevExtreme libraries and widgets API, use [DevExpress Support Center](https://www.devexpress.com/Support/Center)
+* For questions regarding DevExtreme libraries and widgets' APIs, use [DevExpress Support Center](https://www.devexpress.com/Support/Center)
