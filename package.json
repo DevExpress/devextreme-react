@@ -1,4 +1,7 @@
 {
+  "author": {
+    "name": "Developer Express Inc."
+  },
   "name": "devextreme-react",
   "version": "18.1.1-alpha.1",
   "main": "index.js",
@@ -51,5 +54,10 @@
     "test-watch": "jest --watch",
     "pack": "gulp npm.build"
   },
+  "keywords": [
+    "react",
+    "devextreme",
+    "devexpress"
+  ],  
   "license": "MIT"
 }
