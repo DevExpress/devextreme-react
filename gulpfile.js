@@ -26,6 +26,7 @@ const
   NPM_CLEAN = 'npm.clean',
   NPM_PACKAGE = 'npm.package',
   NPM_LICENSE = 'npm.license',
+  NPM_README = 'npm.readme',
   NPM_BUILD = 'npm.build',
   NPM_PACK = 'npm.pack';
 
@@ -92,7 +93,12 @@ gulp.task(NPM_LICENSE, [NPM_CLEAN], () =>
     .pipe(gulp.dest(config.npm.dist))
 )
 
-gulp.task(NPM_BUILD, [NPM_LICENSE, NPM_PACKAGE, GENERATE], () => {
+gulp.task(NPM_README, [NPM_CLEAN], () =>
+  gulp.src(config.npm.readme)
+    .pipe(gulp.dest(config.npm.dist))
+)
+
+gulp.task(NPM_BUILD, [NPM_LICENSE, NPM_PACKAGE, NPM_README, GENERATE], () => {
   return gulp.src([
       config.src,
       "!" + config.testSrc
