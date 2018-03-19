@@ -1,4 +1,7 @@
 {
+  "author": {
+    "name": "Developer Express Inc."
+  },
   "name": "devextreme-react",
   "version": "18.1.1-alpha.1",
   "main": "index.js",
@@ -22,6 +25,7 @@
     "enzyme-adapter-react-16": "^1.1.1",
     "gulp": "^3.9.1",
     "gulp-clean": "^0.4.0",
+    "gulp-shell": "^0.6.5",
     "gulp-tslint": "^8.1.3",
     "gulp-typescript": "^4.0.0",
     "identity-obj-proxy": "^3.0.0",
@@ -49,7 +53,12 @@
     "clean": "gulp clean",
     "test": "jest",
     "test-watch": "jest --watch",
-    "pack": "gulp npm.build"
+    "pack": "gulp npm.pack"
   },
+  "keywords": [
+    "react",
+    "devextreme",
+    "devexpress"
+  ],  
   "license": "MIT"
 }

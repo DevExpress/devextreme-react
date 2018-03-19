@@ -12,7 +12,8 @@ module.exports = {
   },
   npm: {
     dist: './npm/',
-    package: 'package.json'
+    package: 'package.json',
+    license: 'LICENSE'
   },
   metadataPath: './tools/integration-data.json',
   componentFolder: './src/ui',
