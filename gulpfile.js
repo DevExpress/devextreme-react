@@ -4,6 +4,7 @@ const path = require('path');
 
 const gulp = require('gulp');
 const clean = require('gulp-clean');
+const shell = require('gulp-shell');
 const ts = require('gulp-typescript');
 const tslint = require("gulp-tslint");
 const runSequence = require('run-sequence');
@@ -25,7 +26,8 @@ const
   NPM_CLEAN = 'npm.clean',
   NPM_PACKAGE = 'npm.package',
   NPM_LICENSE = 'npm.license',
-  NPM_BUILD = 'npm.build';
+  NPM_BUILD = 'npm.build',
+  NPM_PACK = 'npm.pack';
 
 gulp.task(GENERATE, (done) =>
   runSequence(
@@ -98,6 +100,8 @@ gulp.task(NPM_BUILD, [NPM_LICENSE, NPM_PACKAGE, GENERATE], () => {
     .pipe(ts('tsconfig.json'))
     .pipe(gulp.dest(config.npm.dist))
 });
+
+gulp.task(NPM_PACK, [NPM_BUILD], shell.task(['npm pack'], { cwd: config.npm.dist }));
 
 gulp.task(LINT, () => {
   return gulp.src([config.src, config.generator.src, config.example.src])
