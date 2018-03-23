@@ -6,6 +6,7 @@ import "devextreme/dist/css/dx.light.compact.css";
 
 import ChartExample from "./chart-example";
 import Example from "./example-block";
+import FormExample from "./form-example";
 import ListExample from "./list-example";
 import PopupExample from "./popup-example";
 import ScrollViewExample from "./scroll-view-example";
@@ -31,6 +32,8 @@ ReactDOM.render(
     </Example>
 
     <ScrollViewExample />
+
+    <FormExample/>
 
     <ListExample />
 
