@@ -75,7 +75,7 @@ const items: any = ["ID", {
     dataField: "Phone",
     editorOptions: {
         mask: "+1 (X00) 000-0000",
-        maskRules: {"X": /[02-9]/}
+        maskRules: {X: /[02-9]/}
     }
 }];
 
