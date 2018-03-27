@@ -164,6 +164,10 @@
     "exportPath": "ui/data_grid",
     "subscribableOptions": [
       {
+        "name": "columns",
+        "type": "any"
+      },
+      {
         "name": "selectionFilter",
         "type": "any"
       },
@@ -843,6 +847,10 @@
     "name": "DxTreeList",
     "exportPath": "ui/tree_list",
     "subscribableOptions": [
+      {
+        "name": "columns",
+        "type": "any"
+      },
       {
         "name": "expandedRowKeys",
         "type": "any"
