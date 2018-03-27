@@ -848,6 +848,10 @@
     "exportPath": "ui/tree_list",
     "subscribableOptions": [
       {
+        "name": "columns",
+        "type": "any"
+      },
+      {
         "name": "expandedRowKeys",
         "type": "any"
       },
