@@ -431,7 +431,7 @@ const items: IListItemProps[] = [
 ];
 
 ReactDOM.render(
-    <List defaultItems={items} itemComponent={Item} />,
+    <List items={items} itemComponent={Item} />,
     document.getElementById("root")
 );
 ```
