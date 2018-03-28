@@ -8,6 +8,34 @@ import { sales } from "./data";
 
 export default class extends React.Component<any, { expandAll: boolean }> {
 
+    private columns = [
+        {
+            dataField: "orderId",
+            caption: "Order ID",
+            width: 90
+        },
+        {
+            dataField: "city"
+        },
+        {
+            dataField: "country",
+            width: 180,
+            groupIndex: 0
+        },
+        {
+            dataField: "region"
+        },
+        {
+            dataField: "date",
+            dataType: "date"
+        },
+        {
+            dataField: "amount",
+            dataType: "currency",
+            width: 90
+        }
+    ];
+
     constructor(props: any) {
         super(props);
         this.state = {
@@ -29,33 +57,7 @@ export default class extends React.Component<any, { expandAll: boolean }> {
                     paging={{ pageSize: 10 }}
                     selection={{ mode: "multiple" }}
                     filterRow={{ visible: true }}
-                    defaultColumns={[// tslint:disable-line:jsx-no-multiline-js
-                        {
-                            dataField: "orderId",
-                            caption: "Order ID",
-                            width: 90
-                        },
-                        {
-                            dataField: "city"
-                        },
-                        {
-                            dataField: "country",
-                            width: 180,
-                            groupIndex: 0
-                        },
-                        {
-                            dataField: "region"
-                        },
-                        {
-                            dataField: "date",
-                            dataType: "date"
-                        },
-                        {
-                            dataField: "amount",
-                            dataType: "currency",
-                            width: 90
-                        }
-                    ]}
+                    defaultColumns={this.columns}
                 />
                 <br />
                 <CheckBox
