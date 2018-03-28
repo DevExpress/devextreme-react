@@ -20,6 +20,10 @@ This project allows you to use [DevExtreme Widgets](http://js.devexpress.com/Dem
 
 ## <a name="getting-started"></a>Getting Started ##
 
+You can try this [live example](https://stackblitz.com/edit/devextreme-react) (no need to install anything).
+
+If you’d rather use a local development environment check out the sections below.
+
 ### <a name="prerequisites"></a>Prerequisites ###
 [Node.js and npm](https://docs.npmjs.com/getting-started/installing-node) are required
 
@@ -99,6 +103,7 @@ class Example extends React.Component {
                     onValueChanged={this.handleChange}
                     valueChangeEvent='input'
                 />
+                <br />
                 <div>{this.state.text}</div>
             </div>
         );
@@ -116,6 +121,7 @@ ReactDOM.render(
     document.getElementById('root')
 );
 ```
+[Live example](https://stackblitz.com/edit/devextreme-react-controlled-mode)
 
 ### <a name="uncontrolled-mode"></a>Uncontrolled Mode ###
 
@@ -425,7 +431,7 @@ const items: IListItemProps[] = [
 ];
 
 ReactDOM.render(
-    <List items={items} itemComponent={Item} />,
+    <List defaultItems={items} itemComponent={Item} />,
     document.getElementById("root")
 );
 ```
