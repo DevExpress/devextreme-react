@@ -5,6 +5,7 @@ import "devextreme/dist/css/dx.common.css";
 import "devextreme/dist/css/dx.light.compact.css";
 
 import ChartExample from "./chart-example";
+import DataGridExample from "./data-grid-example";
 import Example from "./example-block";
 import FormExample from "./form-example";
 import ListExample from "./list-example";
@@ -12,9 +13,9 @@ import PopupExample from "./popup-example";
 import ScrollViewExample from "./scroll-view-example";
 import TexBoxExample from "./text-box-example";
 
-import { Button, DataGrid, NumberBox, Scheduler } from "../src";
+import { Button, NumberBox, Scheduler } from "../src";
 
-import { appointments, orangesByDay } from "./data";
+import { appointments } from "./data";
 
 ReactDOM.render(
   <div>
@@ -37,9 +38,7 @@ ReactDOM.render(
 
     <ListExample />
 
-    <Example title="DxDataGrid">
-      <DataGrid dataSource={orangesByDay}/>
-    </Example>
+    <DataGridExample/>
 
     <Example title="DxScheduler">
       <Scheduler
