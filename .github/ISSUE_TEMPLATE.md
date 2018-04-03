@@ -5,8 +5,8 @@
 
 ### Issue Type
 <!-- Do you want to request a feature or report a bug? Check one option with "x" -->
-[ ] bug report
-[ ] feature request
+- [ ] bug report
+- [ ] feature request
 
 ### Current Behavior
 
