@@ -3,29 +3,24 @@ import * as ReactDOM from "react-dom";
 
 import * as events from "devextreme/events";
 
-const ROLLBACK_DELAY: number = 0;
 const DX_TEMPLATE_WRAPPER_CLASS = "dx-template-wrapper";
 const DX_REMOVE_EVENT = "dxremove";
 
-interface IDictionary<TValue = any> {
-  [index: string]: TValue;
-}
-
 export default class Component<P> extends React.PureComponent<P, any> {
 
-  protected _WidgetClass: any; // tslint:disable-line:variable-name
-  protected _instance: any; // tslint:disable-line:variable-name
-  protected readonly _defaults: { [index: string]: string }; // tslint:disable-line:variable-name
+  protected _WidgetClass: any;
+  protected _instance: any;
+  protected readonly _defaults: Record<string, string>;
 
-  protected _templateProps: Array<{ // tslint:disable-line:variable-name
+  protected _templateProps: Array<{
     tmplOption: string
     render: string
     component: string
   }> = [];
 
-  private readonly _guards: { [optionName: string]: number } = {}; // tslint:disable-line:variable-name
-  private _element: any; // tslint:disable-line:variable-name
-  private _updatingProps: boolean; // tslint:disable-line:variable-name
+  private readonly _guards: Record<string, number> = {};
+  private _element: any;
+  private _updatingProps: boolean;
 
   constructor(props: P) {
     super(props);
@@ -37,8 +32,8 @@ export default class Component<P> extends React.PureComponent<P, any> {
   }
 
   public componentWillUpdate(nextProps: P) {
-    const props: IDictionary = this._extractDefaultsValues(nextProps).options;
-    const prevProps: IDictionary = this.props;
+    const props: Record<string, any> = this._extractDefaultsValues(nextProps).options;
+    const prevProps: Record<string, any> = this.props;
 
     this._processChangedValues(props, prevProps);
   }
@@ -59,10 +54,10 @@ export default class Component<P> extends React.PureComponent<P, any> {
   }
 
   public componentDidMount() {
-    const props: IDictionary = this.props;
+    const props: Record<string, any> = this.props;
     const splitProps = this._extractDefaultsValues(props);
 
-    const options: any = {
+    const options: Record<string, any> = {
       ...splitProps.defaults,
       ...splitProps.options,
       ...this._getIntegrationOptions()
@@ -77,7 +72,7 @@ export default class Component<P> extends React.PureComponent<P, any> {
     this._instance.dispose();
   }
 
-  private _optionChangedHandler(e: any) {
+  private _optionChangedHandler(e: { name: string, value: any }) {
     const optionName = e.name;
     const optionValue = (this.props as any)[optionName];
 
@@ -97,14 +92,17 @@ export default class Component<P> extends React.PureComponent<P, any> {
       this._instance.option(optionName, optionValue);
       window.clearTimeout(guardId);
       delete this._guards[optionName];
-    }, ROLLBACK_DELAY);
+    });
 
     this._guards[optionName] = guardId;
   }
 
-  private _extractDefaultsValues(props: IDictionary): { defaults: IDictionary, options: IDictionary } {
-    const defaults: any = {};
-    const options: any = {};
+  private _extractDefaultsValues(props: Record<string, any>): {
+    defaults: Record<string, any>,
+    options: Record<string, any>
+  } {
+    const defaults: Record<string, any> = {};
+    const options: Record<string, any> = {};
 
     Object.keys(props).forEach((key) => {
       const gaurdedOptionName = this._defaults ? this._defaults[key] : false;
@@ -162,7 +160,7 @@ export default class Component<P> extends React.PureComponent<P, any> {
       }
     };
 
-    const options: IDictionary = this.props;
+    const options: Record<string, any> = this.props;
     this._templateProps.forEach((m) => {
       if (options[m.component]) {
         result[m.tmplOption] = m.tmplOption;
