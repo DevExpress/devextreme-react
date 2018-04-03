@@ -200,9 +200,12 @@ ReactDOM.render(
 ```
 
 ## <a name="markup-customization"></a>Markup Customization
-You can customize widget elements' appearance via the corresponding template properties. A template could be specified as a rendering function or as a React component.
+You can customize widget elements' appearance via the corresponding template properties. In the [DevExtreme API Reference](http://js.devexpress.com/Documentation/ApiReference/) such properties are named with the `Template` suffix (e.g. dxList [itemTemplate](https://js.devexpress.com/Documentation/ApiReference/UI_Widgets/dxList/Configuration/#itemTemplate)).
 
-Use an option with the `Render` suffix to specify a rendering function:
+To specify a DevExtreme React Components template use the `Render` suffix or the `Component` suffix instead.
+If a widget has the only template (e.g. Button template) the corresponding React Component properties are `render` and `component`.
+
+Use a property with the `Render` suffix to specify a rendering function:
 ```jsx
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -226,7 +229,7 @@ ReactDOM.render(
 ```
 
 
-The template component can be specified using an option with the `Component` suffix:
+The template component can be specified using a property with the `Component` suffix:
 ```jsx
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -274,7 +277,50 @@ ReactDOM.render(
 );
 ```
 
-The components that displays content in an overlaying window (for example, [ScrollView](https://js.devexpress.com/Documentation/ApiReference/UI_Widgets/dxScrollView/)), allows to specify the content as component children:
+Use the `render` property to specify a rendering function for a widget with the only template:
+```jsx
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+import { Button } from 'devextreme-react';
+
+import 'devextreme/dist/css/dx.common.css';
+import 'devextreme/dist/css/dx.light.compact.css';
+
+class CounterButton extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            counter: 0
+        };
+
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+    render() {
+        return (
+            <Button
+                text={this.props.text}
+                render={(btn) => <div style={{ padding: 20 }}>{btn.text} (<b>{this.state.counter}</b>)</div>}
+                onClick={this.handleClick}
+            />
+        );
+    }
+
+    handleClick() {
+        this.setState({
+            counter: this.state.counter + 1
+        });
+    }
+}
+
+ReactDOM.render(
+    <CounterButton text='Click me!' />,
+    document.getElementById('root')
+);
+```
+
+The components that displays content in an overlaying window (for example, [ScrollView](https://js.devexpress.com/Documentation/ApiReference/UI_Widgets/dxScrollView/)), allow to specify the content as component children:
 
 ```jsx
 import React from 'react';
