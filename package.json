@@ -4,6 +4,11 @@
   },
   "name": "devextreme-react",
   "version": "18.1.1-alpha.2",
+  "description": "DevExtreme React UI and Visualization Components",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DevExpress/devextreme-react.git"
+  },
   "main": "index.js",
   "types": "index.d.ts",
   "peerDependencies": {
