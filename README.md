@@ -200,10 +200,10 @@ ReactDOM.render(
 ```
 
 ## <a name="markup-customization"></a>Markup Customization
-You can customize widget elements' appearance via the corresponding template properties. In the [DevExtreme API Reference](http://js.devexpress.com/Documentation/ApiReference/) such properties are named with the `Template` suffix (e.g. dxList [itemTemplate](https://js.devexpress.com/Documentation/ApiReference/UI_Widgets/dxList/Configuration/#itemTemplate)).
+You can customize widget elements' appearance via the corresponding template properties. In the [DevExtreme API](http://js.devexpress.com/Documentation/ApiReference/), the corresponding options have the `Template` suffix (e.g. dxList's [itemTemplate](https://js.devexpress.com/Documentation/ApiReference/UI_Widgets/dxList/Configuration/#itemTemplate) option).
 
-To specify a DevExtreme React Components template use the `Render` suffix or the `Component` suffix instead.
-If a widget has the only template (e.g. Button template) the corresponding React Component properties are `render` and `component`.
+To specify a DevExtreme React Component template, use the `Render` or `Component` suffix instead.
+If a widget has an option called `template` (e.g. Button's [template](https://js.devexpress.com/Documentation/ApiReference/UI_Widgets/dxButton/Configuration/#template) option) the corresponding React Component properties are called `render` and `component`.
 
 Use a property with the `Render` suffix to specify a rendering function:
 ```jsx
@@ -277,7 +277,7 @@ ReactDOM.render(
 );
 ```
 
-Use the `render` property to specify a rendering function for a widget with the only template:
+Use the `render` property to specify a rendering function for a widget with `template` option:
 ```jsx
 import React from 'react';
 import ReactDOM from 'react-dom';
