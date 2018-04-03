@@ -74,7 +74,7 @@ describe("templates", () => {
 
     const DX_TEMPLATE_WRAPPER = "dx-template-wrapper";
 
-    const renderItemTemplate: (model: object) => Element = (model: object) => {
+    const renderItemTemplate: (model: any) => Element = (model: object) => {
         const render = WidgetClass.mock.calls[0][1].integrationOptions.templates.item.render;
         return render({
             container: document.createElement("div"), model
@@ -105,6 +105,17 @@ describe("templates", () => {
 
             expect(itemRender).toBeCalled();
             expect(renderedTemplate.className).toBe(DX_TEMPLATE_WRAPPER);
+            expect(renderedTemplate.innerHTML).toBe("<div>Template with data</div>");
+        });
+
+        it("renders simple item", () => {
+            const itemRender: any = jest.fn((text: any) => <div>Template {text}</div>);
+            mount(
+                <ComponentWithTemplates itemRender={itemRender} />
+            );
+            const renderedTemplate = renderItemTemplate("with data");
+
+            expect(itemRender).toBeCalled();
             expect(renderedTemplate.innerHTML).toBe("<div>Template with data</div>");
         });
 
