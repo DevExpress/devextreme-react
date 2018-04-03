@@ -69,17 +69,20 @@ export default class extends React.Component<any, { text: string; items: IListIt
     public render() {
         return (
             <Example title="DxList" state={this.state} >
-
+                <hr />
+                <h4>List with function template</h4>
                 <List
-                    items={this.state.items}
-                    itemRender={(item: IListItemProps) => <i>Function template for item {item.text}</i>}
+                    items={["orange", "apple", "potato"]}
+                    itemRender={(item: string) => <i>{item}</i>}
                 />
                 <hr />
+                <h4>List with component template</h4>
                 <List
                     items={this.state.items}
                     itemComponent={Item}
                 />
                 <hr />
+                <h4>List with dataSource</h4>
                 <List dataSource={this.dataSource} />
                 <hr />
                 <TextBox value={this.state.text} onValueChanged={this.updateText} valueChangeEvent="input" />

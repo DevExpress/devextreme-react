@@ -195,7 +195,7 @@ export default class Component<P> extends React.PureComponent<P, any> {
           });
         });
 
-        const portal: any = () => ReactDOM.createPortal(tmplFn({...data.model}), element);
+        const portal: any = () => ReactDOM.createPortal(tmplFn(data.model), element);
 
         this.setState((state: any) => {
           const updatedTemplates = {...state.templates};
