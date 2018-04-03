@@ -221,15 +221,13 @@ const items = [
     { text: '567' }
 ];
 
-
 ReactDOM.render(
     <List items={items} itemRender={(item) => <i>Function template for item <b>{item.text}</b></i>}/>,
     document.getElementById('root')
 );
 ```
 
-
-The template component can be specified using a property with the `Component` suffix:
+A template component can be specified using a property with the `Component` suffix:
 ```jsx
 import React from 'react';
 import ReactDOM from 'react-dom';
