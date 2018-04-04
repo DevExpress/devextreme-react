@@ -3,7 +3,7 @@
     "name": "Developer Express Inc."
   },
   "name": "devextreme-react",
-  "version": "18.1.1-alpha.2",
+  "version": "18.1.1-alpha.3",
   "description": "DevExtreme React UI and Visualization Components",
   "repository": {
     "type": "git",
@@ -14,7 +14,7 @@
   "peerDependencies": {
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
-    "devextreme": "18.1.1-pre-18086"
+    "devextreme": "18.1.1-pre-18093"
   },
   "devDependencies": {
     "@types/enzyme": "^3.1.9",
@@ -24,7 +24,7 @@
     "@types/react-dom": "^16.0.3",
     "css-loader": "^0.28.9",
     "dasherize": "^2.0.0",
-    "devextreme": "18.1.1-pre-18086",
+    "devextreme": "18.1.1-pre-18093",
     "dot": "^1.1.2",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
