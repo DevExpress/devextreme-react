@@ -1,5 +1,7 @@
 # DevExtreme React UI and Visualization Components #
 
+ [![Build Status](https://img.shields.io/shippable/5a9532d976382b0800e7a53c/master.svg)](https://app.shippable.com/github/DevExpress/devextreme-react) [![NPM](https://img.shields.io/npm/v/devextreme-react.svg)](https://www.npmjs.com/package/devextreme-react)
+
 This project allows you to use [DevExtreme Widgets](http://js.devexpress.com/Demos/WidgetsGallery/) as [React Components](https://reactjs.org).
 
 * [Getting started](#getting-started)
