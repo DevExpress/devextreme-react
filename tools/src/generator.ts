@@ -1,11 +1,12 @@
 import { writeFileSync as writeFile } from "fs";
 import { dirname as getDirName, join as joinPaths, relative as getRelativePath, sep as pathSeparator } from "path";
+import { ISubscribableOption, IWidget, } from "../integration-data-model";
 import generateComponent from "./component-generator";
 import { removeExtension, removePrefix, toKebabCase } from "./helpers";
 import generateIndex from "./index-generator";
 
 function generate(
-  rawData: any[],
+  rawData: IWidget[],
   baseComponent: string,
   out: {
     componentsDir: string,
@@ -28,7 +29,7 @@ function generate(
   writeFile(out.indexFileName, generateIndex(modulePaths), { encoding: "utf8" });
 }
 
-function mapWidget(raw: any, baseComponent: string) {
+function mapWidget(raw: IWidget, baseComponent: string) {
   const name = removePrefix(raw.name, "dx");
 
   return {
