@@ -486,7 +486,7 @@ ReactDOM.render(
 
 ## <a name="license"></a>License ##
 
-**DevExtreme React components are released as a MIT-licensed (free and open-source) add-on to DevExtreme.**
+**DevExtreme React components are released as an MIT-licensed (free and open-source) add-on to DevExtreme.**
 
 Familiarize yourself with the [DevExtreme License](https://js.devexpress.com/Licensing/).
 
