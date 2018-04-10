@@ -27,9 +27,11 @@ export { CLASS_NAME, ICLASS_NAMEOptions };
     ).toBe(EXPECTED);
 });
 
-it("generates widget with template", () => {
-    //#region EXPECTED
-    const EXPECTED = `
+describe("template-props generation", () => {
+
+    it("processes option", () => {
+        //#region EXPECTED
+        const EXPECTED = `
 import dxCLASS_NAME, { IOptions } from "devextreme/DX/WIDGET/PATH";
 import BaseComponent from "BASE_COMPONENT_PATH";
 
@@ -54,21 +56,21 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 }
 export { CLASS_NAME, ICLASS_NAMEOptions };
 `.trimLeft();
-    //#endregion
+        //#endregion
 
-    expect(
-        generate({
-            name: "CLASS_NAME",
-            baseComponentPath: "BASE_COMPONENT_PATH",
-            dxExportPath: "DX/WIDGET/PATH",
-            templates: ["optionTemplate"]
-        })
-    ).toBe(EXPECTED);
-});
+        expect(
+            generate({
+                name: "CLASS_NAME",
+                baseComponentPath: "BASE_COMPONENT_PATH",
+                dxExportPath: "DX/WIDGET/PATH",
+                templates: ["optionTemplate"]
+            })
+        ).toBe(EXPECTED);
+    });
 
-it("generates widget with several templates", () => {
-    //#region EXPECTED
-    const EXPECTED = `
+    it("processes several options", () => {
+        //#region EXPECTED
+        const EXPECTED = `
 import dxCLASS_NAME, { IOptions } from "devextreme/DX/WIDGET/PATH";
 import BaseComponent from "BASE_COMPONENT_PATH";
 
@@ -99,21 +101,21 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 }
 export { CLASS_NAME, ICLASS_NAMEOptions };
 `.trimLeft();
-    //#endregion
+        //#endregion
 
-    expect(
-        generate({
-            name: "CLASS_NAME",
-            baseComponentPath: "BASE_COMPONENT_PATH",
-            dxExportPath: "DX/WIDGET/PATH",
-            templates: ["optionTemplate", "anotherOptionTemplate"]
-        })
-    ).toBe(EXPECTED);
-});
+        expect(
+            generate({
+                name: "CLASS_NAME",
+                baseComponentPath: "BASE_COMPONENT_PATH",
+                dxExportPath: "DX/WIDGET/PATH",
+                templates: ["optionTemplate", "anotherOptionTemplate"]
+            })
+        ).toBe(EXPECTED);
+    });
 
-it("generates widget with single template", () => {
-    //#region EXPECTED
-    const EXPECTED = `
+    it("processes single widget-template option", () => {
+        //#region EXPECTED
+        const EXPECTED = `
 import dxCLASS_NAME, { IOptions } from "devextreme/DX/WIDGET/PATH";
 import BaseComponent from "BASE_COMPONENT_PATH";
 
@@ -138,21 +140,24 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 }
 export { CLASS_NAME, ICLASS_NAMEOptions };
 `.trimLeft();
-    //#endregion
+        //#endregion
 
-    expect(
-        generate({
-            name: "CLASS_NAME",
-            baseComponentPath: "BASE_COMPONENT_PATH",
-            dxExportPath: "DX/WIDGET/PATH",
-            templates: ["template"]
-        })
-    ).toBe(EXPECTED);
+        expect(
+            generate({
+                name: "CLASS_NAME",
+                baseComponentPath: "BASE_COMPONENT_PATH",
+                dxExportPath: "DX/WIDGET/PATH",
+                templates: ["template"]
+            })
+        ).toBe(EXPECTED);
+    });
 });
 
-it("generates widget with subscribable prop", () => {
-    //#region EXPECTED
-    const EXPECTED = `
+describe("props generation", () => {
+
+    it("processes subscribable option", () => {
+        //#region EXPECTED
+        const EXPECTED = `
 import dxCLASS_NAME, { IOptions } from "devextreme/DX/WIDGET/PATH";
 import BaseComponent from "BASE_COMPONENT_PATH";
 
@@ -174,23 +179,23 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 }
 export { CLASS_NAME, ICLASS_NAMEOptions };
 `.trimLeft();
-    //#endregion
+        //#endregion
 
-    expect(
-        generate({
-            name: "CLASS_NAME",
-            baseComponentPath: "BASE_COMPONENT_PATH",
-            dxExportPath: "DX/WIDGET/PATH",
-            subscribableOptions: [
-                { name: "option1", type: "someType" }
-            ]
-        })
-    ).toBe(EXPECTED);
-});
+        expect(
+            generate({
+                name: "CLASS_NAME",
+                baseComponentPath: "BASE_COMPONENT_PATH",
+                dxExportPath: "DX/WIDGET/PATH",
+                subscribableOptions: [
+                    { name: "option1", type: "someType" }
+                ]
+            })
+        ).toBe(EXPECTED);
+    });
 
-it("generates widget with several subscribable props", () => {
-    //#region EXPECTED
-    const EXPECTED = `
+    it("processes several subscribable options", () => {
+        //#region EXPECTED
+        const EXPECTED = `
 import dxCLASS_NAME, { IOptions } from "devextreme/DX/WIDGET/PATH";
 import BaseComponent from "BASE_COMPONENT_PATH";
 
@@ -214,17 +219,18 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 }
 export { CLASS_NAME, ICLASS_NAMEOptions };
 `.trimLeft();
-    //#endregion
+        //#endregion
 
-    expect(
-        generate({
-            name: "CLASS_NAME",
-            baseComponentPath: "BASE_COMPONENT_PATH",
-            dxExportPath: "DX/WIDGET/PATH",
-            subscribableOptions: [
-                { name: "option1", type: "someType" },
-                { name: "option2", type: "anotherType" }
-            ]
-        })
-    ).toBe(EXPECTED);
+        expect(
+            generate({
+                name: "CLASS_NAME",
+                baseComponentPath: "BASE_COMPONENT_PATH",
+                dxExportPath: "DX/WIDGET/PATH",
+                subscribableOptions: [
+                    { name: "option1", type: "someType" },
+                    { name: "option2", type: "anotherType" }
+                ]
+            })
+        ).toBe(EXPECTED);
+    });
 });
