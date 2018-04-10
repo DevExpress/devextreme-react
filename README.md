@@ -55,7 +55,7 @@ ReactDOM.render(
 );
 ```
 
-Note that a [predefined theme](https://js.devexpress.com/Documentation/Guide/Themes/Predefined_Themes/) is required.
+Note that [DevExtreme styles](https://js.devexpress.com/Documentation/Guide/Themes/Predefined_Themes/#Themes_in_Sites) are required.
 
 
 ## <a name="api-reference"></a>API Reference ##
