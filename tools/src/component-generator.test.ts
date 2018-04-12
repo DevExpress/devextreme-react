@@ -27,9 +27,11 @@ export { CLASS_NAME, ICLASS_NAMEOptions };
     ).toBe(EXPECTED);
 });
 
-it("generates widget with template", () => {
-    //#region EXPECTED
-    const EXPECTED = `
+describe("template-props generation", () => {
+
+    it("processes option", () => {
+        //#region EXPECTED
+        const EXPECTED = `
 import dxCLASS_NAME, { IOptions } from "devextreme/DX/WIDGET/PATH";
 import BaseComponent from "BASE_COMPONENT_PATH";
 
@@ -54,21 +56,21 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 }
 export { CLASS_NAME, ICLASS_NAMEOptions };
 `.trimLeft();
-    //#endregion
+        //#endregion
 
-    expect(
-        generate({
-            name: "CLASS_NAME",
-            baseComponentPath: "BASE_COMPONENT_PATH",
-            dxExportPath: "DX/WIDGET/PATH",
-            templates: ["optionTemplate"]
-        })
-    ).toBe(EXPECTED);
-});
+        expect(
+            generate({
+                name: "CLASS_NAME",
+                baseComponentPath: "BASE_COMPONENT_PATH",
+                dxExportPath: "DX/WIDGET/PATH",
+                templates: ["optionTemplate"]
+            })
+        ).toBe(EXPECTED);
+    });
 
-it("generates widget with several templates", () => {
-    //#region EXPECTED
-    const EXPECTED = `
+    it("processes several options", () => {
+        //#region EXPECTED
+        const EXPECTED = `
 import dxCLASS_NAME, { IOptions } from "devextreme/DX/WIDGET/PATH";
 import BaseComponent from "BASE_COMPONENT_PATH";
 
@@ -99,21 +101,21 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 }
 export { CLASS_NAME, ICLASS_NAMEOptions };
 `.trimLeft();
-    //#endregion
+        //#endregion
 
-    expect(
-        generate({
-            name: "CLASS_NAME",
-            baseComponentPath: "BASE_COMPONENT_PATH",
-            dxExportPath: "DX/WIDGET/PATH",
-            templates: ["optionTemplate", "anotherOptionTemplate"]
-        })
-    ).toBe(EXPECTED);
-});
+        expect(
+            generate({
+                name: "CLASS_NAME",
+                baseComponentPath: "BASE_COMPONENT_PATH",
+                dxExportPath: "DX/WIDGET/PATH",
+                templates: ["optionTemplate", "anotherOptionTemplate"]
+            })
+        ).toBe(EXPECTED);
+    });
 
-it("generates widget with single template", () => {
-    //#region EXPECTED
-    const EXPECTED = `
+    it("processes single widget-template option", () => {
+        //#region EXPECTED
+        const EXPECTED = `
 import dxCLASS_NAME, { IOptions } from "devextreme/DX/WIDGET/PATH";
 import BaseComponent from "BASE_COMPONENT_PATH";
 
@@ -138,21 +140,24 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 }
 export { CLASS_NAME, ICLASS_NAMEOptions };
 `.trimLeft();
-    //#endregion
+        //#endregion
 
-    expect(
-        generate({
-            name: "CLASS_NAME",
-            baseComponentPath: "BASE_COMPONENT_PATH",
-            dxExportPath: "DX/WIDGET/PATH",
-            templates: ["template"]
-        })
-    ).toBe(EXPECTED);
+        expect(
+            generate({
+                name: "CLASS_NAME",
+                baseComponentPath: "BASE_COMPONENT_PATH",
+                dxExportPath: "DX/WIDGET/PATH",
+                templates: ["template"]
+            })
+        ).toBe(EXPECTED);
+    });
 });
 
-it("generates widget with subscribable prop", () => {
-    //#region EXPECTED
-    const EXPECTED = `
+describe("props generation", () => {
+
+    it("processes subscribable option", () => {
+        //#region EXPECTED
+        const EXPECTED = `
 import dxCLASS_NAME, { IOptions } from "devextreme/DX/WIDGET/PATH";
 import BaseComponent from "BASE_COMPONENT_PATH";
 
@@ -174,23 +179,23 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 }
 export { CLASS_NAME, ICLASS_NAMEOptions };
 `.trimLeft();
-    //#endregion
+        //#endregion
 
-    expect(
-        generate({
-            name: "CLASS_NAME",
-            baseComponentPath: "BASE_COMPONENT_PATH",
-            dxExportPath: "DX/WIDGET/PATH",
-            subscribableOptions: [
-                { name: "option1", type: "someType" }
-            ]
-        })
-    ).toBe(EXPECTED);
-});
+        expect(
+            generate({
+                name: "CLASS_NAME",
+                baseComponentPath: "BASE_COMPONENT_PATH",
+                dxExportPath: "DX/WIDGET/PATH",
+                subscribableOptions: [
+                    { name: "option1", type: "someType" }
+                ]
+            })
+        ).toBe(EXPECTED);
+    });
 
-it("generates widget with several subscribable props", () => {
-    //#region EXPECTED
-    const EXPECTED = `
+    it("processes several subscribable options", () => {
+        //#region EXPECTED
+        const EXPECTED = `
 import dxCLASS_NAME, { IOptions } from "devextreme/DX/WIDGET/PATH";
 import BaseComponent from "BASE_COMPONENT_PATH";
 
@@ -214,17 +219,188 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 }
 export { CLASS_NAME, ICLASS_NAMEOptions };
 `.trimLeft();
-    //#endregion
+        //#endregion
 
-    expect(
-        generate({
-            name: "CLASS_NAME",
-            baseComponentPath: "BASE_COMPONENT_PATH",
-            dxExportPath: "DX/WIDGET/PATH",
-            subscribableOptions: [
-                { name: "option1", type: "someType" },
-                { name: "option2", type: "anotherType" }
-            ]
-        })
-    ).toBe(EXPECTED);
+        expect(
+            generate({
+                name: "CLASS_NAME",
+                baseComponentPath: "BASE_COMPONENT_PATH",
+                dxExportPath: "DX/WIDGET/PATH",
+                subscribableOptions: [
+                    { name: "option1", type: "someType" },
+                    { name: "option2", type: "anotherType" }
+                ]
+            })
+        ).toBe(EXPECTED);
+    });
+
+    it("adds check for single type", () => {
+        //#region EXPECTED
+        const EXPECTED = `
+import dxCLASS_NAME, { IOptions as ICLASS_NAMEOptions } from "devextreme/DX/WIDGET/PATH";
+import { PropTypes } from "prop-types";
+import BaseComponent from "BASE_COMPONENT_PATH";
+
+class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
+
+  public get instance(): dxCLASS_NAME {
+    return this._instance;
+  }
+
+  protected _WidgetClass = dxCLASS_NAME;
+}
+(CLASS_NAME as any).propTypes = {
+  PROP1: PropTypes.SOME_TYPE
+};
+export { CLASS_NAME, ICLASS_NAMEOptions };
+`.trimLeft();
+        //#endregion
+
+        expect(
+            generate({
+                name: "CLASS_NAME",
+                baseComponentPath: "BASE_COMPONENT_PATH",
+                dxExportPath: "DX/WIDGET/PATH",
+                propTypings: [
+                    {
+                        propName: "PROP1",
+                        types: ["SOME_TYPE"]
+                    }
+                ]
+            })
+        ).toBe(EXPECTED);
+    });
+
+    it("adds check for acceptable values", () => {
+        //#region EXPECTED
+        const EXPECTED = `
+import dxCLASS_NAME, { IOptions as ICLASS_NAMEOptions } from "devextreme/DX/WIDGET/PATH";
+import { PropTypes } from "prop-types";
+import BaseComponent from "BASE_COMPONENT_PATH";
+
+class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
+
+  public get instance(): dxCLASS_NAME {
+    return this._instance;
+  }
+
+  protected _WidgetClass = dxCLASS_NAME;
+}
+(CLASS_NAME as any).propTypes = {
+  PROP1: PropTypes.oneOf(["VALUE_1", "VALUE_2"])
+};
+export { CLASS_NAME, ICLASS_NAMEOptions };
+`.trimLeft();
+        //#endregion
+
+        expect(
+            generate({
+                name: "CLASS_NAME",
+                baseComponentPath: "BASE_COMPONENT_PATH",
+                dxExportPath: "DX/WIDGET/PATH",
+                propTypings: [
+                    {
+                        propName: "PROP1",
+                        types: [],
+                        acceptableValues: ["\"VALUE_1\"", "\"VALUE_2\""],
+                    }
+                ]
+            })
+        ).toBe(EXPECTED);
+    });
+
+    it("adds check for several types", () => {
+        //#region EXPECTED
+        const EXPECTED = `
+import dxCLASS_NAME, { IOptions as ICLASS_NAMEOptions } from "devextreme/DX/WIDGET/PATH";
+import { PropTypes } from "prop-types";
+import BaseComponent from "BASE_COMPONENT_PATH";
+
+class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
+
+  public get instance(): dxCLASS_NAME {
+    return this._instance;
+  }
+
+  protected _WidgetClass = dxCLASS_NAME;
+}
+(CLASS_NAME as any).propTypes = {
+  PROP1: PropTypes.oneOfType([
+    PropTypes.SOME_TYPE,
+    PropTypes.ANOTHER_TYPE
+  ])
+};
+export { CLASS_NAME, ICLASS_NAMEOptions };
+`.trimLeft();
+        //#endregion
+
+        expect(
+            generate({
+                name: "CLASS_NAME",
+                baseComponentPath: "BASE_COMPONENT_PATH",
+                dxExportPath: "DX/WIDGET/PATH",
+                propTypings: [
+                    {
+                        propName: "PROP1",
+                        types: ["SOME_TYPE", "ANOTHER_TYPE"]
+                    }
+                ]
+            })
+        ).toBe(EXPECTED);
+    });
+
+    it("adds typings in alphabetic order", () => {
+        //#region EXPECTED
+        const EXPECTED = `
+import dxCLASS_NAME, { IOptions as ICLASS_NAMEOptions } from "devextreme/DX/WIDGET/PATH";
+import { PropTypes } from "prop-types";
+import BaseComponent from "BASE_COMPONENT_PATH";
+
+class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
+
+  public get instance(): dxCLASS_NAME {
+    return this._instance;
+  }
+
+  protected _WidgetClass = dxCLASS_NAME;
+}
+(CLASS_NAME as any).propTypes = {
+  A-PROP: PropTypes.oneOfType([
+    PropTypes.TYPE_1,
+    PropTypes.TYPE_2
+  ]),
+  a-PROP: PropTypes.TYPE_3,
+  B-PROP: PropTypes.TYPE_4,
+  c-PROP: PropTypes.TYPE_2
+};
+export { CLASS_NAME, ICLASS_NAMEOptions };
+`.trimLeft();
+        //#endregion
+
+        expect(
+            generate({
+                name: "CLASS_NAME",
+                baseComponentPath: "BASE_COMPONENT_PATH",
+                dxExportPath: "DX/WIDGET/PATH",
+                propTypings: [
+                    {
+                        propName: "A-PROP",
+                        types: ["TYPE_1", "TYPE_2"]
+                    },
+                    {
+                        propName: "c-PROP",
+                        types: ["TYPE_2"]
+                    },
+                    {
+                        propName: "a-PROP",
+                        types: ["TYPE_3"]
+                    },
+                    {
+                        propName: "B-PROP",
+                        types: ["TYPE_4"]
+                    }
+                ]
+            })
+        ).toBe(EXPECTED);
+    });
 });

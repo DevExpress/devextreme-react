@@ -1,8 +1,9 @@
 import { writeFileSync as writeFile } from "fs";
 import { dirname as getDirName, join as joinPaths, relative as getRelativePath, sep as pathSeparator } from "path";
-import { ISubscribableOption, IWidget, } from "../integration-data-model";
-import generateComponent from "./component-generator";
-import { removeExtension, removePrefix, toKebabCase } from "./helpers";
+import { IOption as IRawOption, ISubscribableOption, IWidget, } from "../integration-data-model";
+import generateComponent, { IComponent, IPropTyping } from "./component-generator";
+import { convertTypes } from "./converter";
+import { removeElement, removeExtension, removePrefix, toKebabCase } from "./helpers";
 import generateIndex from "./index-generator";
 
 function generate(
@@ -29,7 +30,10 @@ function generate(
   writeFile(out.indexFileName, generateIndex(modulePaths), { encoding: "utf8" });
 }
 
-function mapWidget(raw: IWidget, baseComponent: string) {
+function mapWidget(raw: IWidget, baseComponent: string): {
+  fileName: string;
+  component: IComponent
+} {
   const name = removePrefix(raw.name, "dx");
 
   return {
@@ -39,8 +43,41 @@ function mapWidget(raw: IWidget, baseComponent: string) {
       baseComponentPath: baseComponent,
       dxExportPath: raw.exportPath,
       templates: raw.templates,
-      subscribableOptions: raw.subscribableOptions
+      subscribableOptions: raw.subscribableOptions,
+      propTypings: extractPropTypings(raw.options)
     }
+  };
+}
+
+function extractPropTypings(options: IRawOption[]): IPropTyping[]  {
+  return options
+    .map(createPropTyping)
+    .filter((t) => t != null);
+}
+
+function createPropTyping(option: IRawOption) {
+  const rawTypes = option.types;
+  if (option.valueRestriction) {
+    removeElement(rawTypes, option.valueRestriction.type);
+  }
+
+  const types = convertTypes(rawTypes);
+
+  if (option.valueRestriction) {
+    return {
+      propName: option.name,
+      types: types || [],
+      acceptableValues: option.valueRestriction.acceptableValues
+    };
+  }
+
+  if ((!types || types.length === 0)) {
+    return null;
+  }
+
+  return {
+    propName: option.name,
+    types
   };
 }
 

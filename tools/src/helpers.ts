@@ -20,3 +20,18 @@ export function uppercaseFirst(value: string): string {
 export function lowercaseFirst(value: string): string {
     return value[0].toLowerCase() + value.substr(1);
 }
+
+export function compareStrings(a: string, b: string) {
+    return a.localeCompare(b, undefined, { caseFirst: "upper" });
+}
+
+export function createKeyComparator<T>(keyGetter: (x: T) => string) {
+    return (a: T, b: T) => compareStrings(keyGetter(a), keyGetter(b));
+}
+
+export function removeElement<T>(array: T[], element: T) {
+    const index = array.indexOf(element);
+    if (index > -1) {
+        array.splice(index, 1);
+    }
+}

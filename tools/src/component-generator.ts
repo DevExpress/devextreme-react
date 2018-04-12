@@ -1,4 +1,4 @@
-import { lowercaseFirst, uppercaseFirst } from "./helpers";
+import { createKeyComparator, lowercaseFirst, uppercaseFirst } from "./helpers";
 import createTempate from "./template";
 
 interface IComponent {
@@ -7,11 +7,23 @@ interface IComponent {
     dxExportPath: string;
     subscribableOptions?: IOption[];
     templates?: string[];
+    propTypings?: IPropTyping[];
 }
 
 interface IOption {
     name: string;
     type: string;
+}
+
+interface IPropTyping {
+    propName: string;
+    types: string[];
+    acceptableValues?: string[];
+}
+
+interface IRenderedPropTyping {
+    propName: string;
+    renderedTypes: string[];
 }
 
 function generate(component: IComponent): string {
@@ -23,16 +35,24 @@ function generate(component: IComponent): string {
         ? component.subscribableOptions.map(createSubscribableOptionModel)
         : null;
 
-    const componentModel = {
-        ...component,
+    const renderedPropTypings = component.propTypings
+        ? component.propTypings
+            .sort(createKeyComparator<IPropTyping>((p) => p.propName))
+            .map((t) => renderPropTyping(createPropTypingModel(t)))
+        : null;
+
+    return renderComponent({
+        name: component.name,
+        baseComponentPath: component.baseComponentPath,
+        dxExportPath: component.dxExportPath,
+
         widgetName: `dx${uppercaseFirst(component.name)}`,
         optionsName: `I${component.name}Options`,
         hasExtraOptions: !!templates || !!subscribableOptions,
         subscribableOptions,
-        templates
-    };
-
-    return renderComponent(componentModel);
+        templates,
+        renderedPropTypings
+    });
 }
 
 function createTemplateModel(name: string) {
@@ -60,6 +80,18 @@ function createSubscribableOptionModel(option: IOption) {
     };
 }
 
+function createPropTypingModel(typing: IPropTyping): IRenderedPropTyping {
+    const types = typing.types.map((t) => "PropTypes." + t);
+    if (typing.acceptableValues && typing.acceptableValues.length > 0) {
+        types.push(`PropTypes.oneOf([${typing.acceptableValues.join(", ")}])`);
+    }
+    return {
+        propName: typing.propName,
+        renderedTypes: types
+    };
+}
+
+// tslint:disable:max-line-length
 const renderComponent: (model: {
     name: string;
     widgetName: string;
@@ -67,20 +99,21 @@ const renderComponent: (model: {
     baseComponentPath: string;
     dxExportPath: string;
     hasExtraOptions: boolean;
-    templates?: Array<{
+    templates: {
         render: string;
         component: string;
         renderedProp: string;
-    }>;
-    subscribableOptions?: Array<{
+    }[]; // tslint:disable-line:array-type
+    subscribableOptions: {
         name: string,
         type: string,
         renderedProp: string
-    }>;
+    }[]; // tslint:disable-line:array-type
+    renderedPropTypings: string[]
 }
-// tslint:disable:max-line-length
 ) => string = createTempate(`
-import <#= it.widgetName #>, { IOptions <#? !it.hasExtraOptions #>as <#= it.optionsName #> <#?#>} from "devextreme/<#= it.dxExportPath #>";
+import <#= it.widgetName #>, { IOptions <#? !it.hasExtraOptions #>as <#= it.optionsName #> <#?#>} from "devextreme/<#= it.dxExportPath #>";<#? it.renderedPropTypings #>
+import { PropTypes } from "prop-types";<#?#>
 import BaseComponent from "<#= it.baseComponentPath #>";
 <#? it.hasExtraOptions #>
 interface <#= it.optionsName #> extends IOptions {<#~ it.templates :template #>
@@ -101,10 +134,12 @@ class <#= it.name #> extends BaseComponent<<#= it.optionsName #>> {
   };
 <#?#><#? it.templates #>
   protected _templateProps = [<#= it.templates.map(t => t.renderedProp).join(', ') #>];
-<#?#>}
+<#?#>}<#? it.renderedPropTypings #>
+(<#= it.name #> as any).propTypes = {<#= it.renderedPropTypings.join(',') #>
+};<#?#>
 export { <#= it.name #>, <#= it.optionsName #> };
 `.trimLeft());
- // tslint:enable:max-line-length
+// tslint:enable:max-line-length
 
 const renderTemplateOption: (model: {
     name: string;
@@ -122,6 +157,19 @@ const renderObjectEntry: (model: {
     key: string;
     value: string;
 }) => string = createTempate(`
-    <#= it.key #>: "<#= it.value #>"`);
+    <#= it.key #>: "<#= it.value #>"
+`.trimRight());
+
+// tslint:disable:max-line-length
+const renderPropTyping: (model: IRenderedPropTyping) => string = createTempate(`
+  <#= it.propName #>: <#? it.renderedTypes.length === 1 #><#= it.renderedTypes[0] #><#??#>PropTypes.oneOfType([
+    <#= it.renderedTypes.join(',\\n    ') #>
+  ])<#?#>
+`.trimRight());
+// tslint:enable:max-line-length
 
 export default generate;
+export {
+    IComponent,
+    IPropTyping
+};
