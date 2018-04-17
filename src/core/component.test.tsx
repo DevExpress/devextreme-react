@@ -88,7 +88,11 @@ describe("templates", () => {
             mount(
                 <ComponentWithTemplates itemRender={itemRender} />
             );
-            const integrationOptions = WidgetClass.mock.calls[0][1].integrationOptions;
+            const options = WidgetClass.mock.calls[0][1];
+
+            expect(options.item).toBe("item");
+
+            const integrationOptions = options.integrationOptions;
 
             expect(integrationOptions).toBeDefined();
             expect(integrationOptions.templates).toBeDefined();
@@ -139,7 +143,11 @@ describe("templates", () => {
                 <ComponentWithTemplates itemComponent={ItemTemplate} />
             );
 
-            const integrationOptions = WidgetClass.mock.calls[0][1].integrationOptions;
+            const options = WidgetClass.mock.calls[0][1];
+
+            expect(options.item).toBe("item");
+
+            const integrationOptions = options.integrationOptions;
 
             expect(integrationOptions).toBeDefined();
             expect(integrationOptions.templates).toBeDefined();
@@ -168,6 +176,27 @@ describe("templates", () => {
             component.update();
             expect(component.find(".template").html()).toBe('<div class="template">Template is rendered</div>');
         });
+    });
+
+    it("pass component option changes to widget", () => {
+        const ItemTemplate = () => <div>First Template</div>;
+        const component = mount(
+            <ComponentWithTemplates itemComponent={ItemTemplate} />
+        );
+
+        const SecondItemTemplate = () => <div>Second Template</div>;
+        component.setProps({
+            itemComponent: SecondItemTemplate
+        });
+        jest.runAllTimers();
+        const optionCalls = Widget.option.mock.calls;
+        expect(optionCalls.length).toBe(2);
+
+        expect(optionCalls[0][0]).toBe("integrationOptions");
+        expect(typeof optionCalls[0][1].templates.item.render).toBe("function");
+
+        expect(optionCalls[1][0]).toBe("item");
+        expect(optionCalls[1][1]).toBe("item");
     });
 
     it("removes deleted nodes from state", () => {
