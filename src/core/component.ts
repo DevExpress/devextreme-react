@@ -6,6 +6,8 @@ import * as events from "devextreme/events";
 const DX_TEMPLATE_WRAPPER_CLASS = "dx-template-wrapper";
 const DX_REMOVE_EVENT = "dxremove";
 
+const generateID = () => Math.random().toString(36).substr(2);
+
 interface ITemplateMeta {
   tmplOption: string;
   render: string;
@@ -51,7 +53,7 @@ export default class Component<P> extends React.PureComponent<P, any> {
       if (!!this.props.children) {
         args.push(this.props.children);
       }
-      const templates = Object.getOwnPropertySymbols(this.state.templates);
+      const templates = Object.getOwnPropertyNames(this.state.templates);
       if (templates.length) {
         args.push(templates.map((m: any) => this.state.templates[m]()));
       }
@@ -199,11 +201,11 @@ export default class Component<P> extends React.PureComponent<P, any> {
         element.className = DX_TEMPLATE_WRAPPER_CLASS;
         data.container.appendChild(element);
 
-        const elementSymbol = Symbol();
+        const templateId = "__template_" + generateID();
         events.one(element, DX_REMOVE_EVENT, () => {
           this.setState((state: any) => {
             const updatedTemplates = {...state.templates};
-            delete updatedTemplates[elementSymbol];
+            delete updatedTemplates[templateId];
             return {
               templates : updatedTemplates
             };
@@ -214,7 +216,7 @@ export default class Component<P> extends React.PureComponent<P, any> {
 
         this.setState((state: any) => {
           const updatedTemplates = {...state.templates};
-          updatedTemplates[elementSymbol] = portal;
+          updatedTemplates[templateId] = portal;
           return {
             templates : updatedTemplates
           };

@@ -129,7 +129,7 @@ describe("templates", () => {
                 <ComponentWithTemplates itemRender={itemRender} />
             );
             renderItemTemplate({ text: "is rendered" });
-            expect(Object.getOwnPropertySymbols(component.state("templates")).length).toBe(1);
+            expect(Object.getOwnPropertyNames(component.state("templates")).length).toBe(1);
             component.update();
             expect(component.find(".template").html()).toBe('<div class="template">Template is rendered</div>');
         });
@@ -172,7 +172,7 @@ describe("templates", () => {
                 <ComponentWithTemplates itemComponent={ItemTemplate} />
             );
             renderItemTemplate({ text: "is rendered" });
-            expect(Object.getOwnPropertySymbols(component.state("templates")).length).toBe(1);
+            expect(Object.getOwnPropertyNames(component.state("templates")).length).toBe(1);
             component.update();
             expect(component.find(".template").html()).toBe('<div class="template">Template is rendered</div>');
         });
@@ -205,11 +205,11 @@ describe("templates", () => {
             <ComponentWithTemplates itemComponent={ItemTemplate} />
         );
         renderItemTemplate({});
-        expect(Object.getOwnPropertySymbols(component.state("templates")).length).toBe(1);
+        expect(Object.getOwnPropertyNames(component.state("templates")).length).toBe(1);
         component.update();
         events.triggerHandler(component.find(".template").getDOMNode().parentNode, "dxremove");
         component.update();
-        expect(Object.getOwnPropertySymbols(component.state("templates")).length).toBe(0);
+        expect(Object.getOwnPropertyNames(component.state("templates")).length).toBe(0);
     });
 
     // tslint:disable-next-line:max-classes-per-file
