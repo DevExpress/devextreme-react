@@ -6,17 +6,19 @@ import * as events from "devextreme/events";
 const DX_TEMPLATE_WRAPPER_CLASS = "dx-template-wrapper";
 const DX_REMOVE_EVENT = "dxremove";
 
+interface ITemplateMeta {
+  tmplOption: string;
+  render: string;
+  component: string;
+}
+
 export default class Component<P> extends React.PureComponent<P, any> {
 
   protected _WidgetClass: any;
   protected _instance: any;
   protected readonly _defaults: Record<string, string>;
 
-  protected _templateProps: Array<{
-    tmplOption: string
-    render: string
-    component: string
-  }> = [];
+  protected _templateProps: ITemplateMeta[] = [];
 
   private readonly _guards: Record<string, number> = {};
   private _element: any;
@@ -25,17 +27,20 @@ export default class Component<P> extends React.PureComponent<P, any> {
   constructor(props: P) {
     super(props);
     this._optionChangedHandler = this._optionChangedHandler.bind(this);
-    this._extractDefaultsValues = this._extractDefaultsValues.bind(this);
+    this._splitComponentProps = this._splitComponentProps.bind(this);
     this.state = {
       templates: {}
     };
   }
 
   public componentWillUpdate(nextProps: P) {
-    const props: Record<string, any> = this._extractDefaultsValues(nextProps).options;
-    const prevProps: Record<string, any> = this.props;
+    const splitProps = this._splitComponentProps(nextProps);
+    const options: Record<string, any> = {
+      ...splitProps.options,
+      ...this._getIntegrationOptions(splitProps.templates)
+    };
 
-    this._processChangedValues(props, prevProps);
+    this._processChangedValues(options, this.props);
   }
 
   public render() {
@@ -55,12 +60,12 @@ export default class Component<P> extends React.PureComponent<P, any> {
 
   public componentDidMount() {
     const props: Record<string, any> = this.props;
-    const splitProps = this._extractDefaultsValues(props);
+    const splitProps = this._splitComponentProps(props);
 
     const options: Record<string, any> = {
       ...splitProps.defaults,
       ...splitProps.options,
-      ...this._getIntegrationOptions()
+      ...this._getIntegrationOptions(splitProps.templates)
     };
 
     this._instance = new this._WidgetClass(this._element, options);
@@ -97,27 +102,34 @@ export default class Component<P> extends React.PureComponent<P, any> {
     this._guards[optionName] = guardId;
   }
 
-  private _extractDefaultsValues(props: Record<string, any>): {
+  private _splitComponentProps(props: Record<string, any>): {
     defaults: Record<string, any>,
-    options: Record<string, any>
+    options: Record<string, any>,
+    templates: Record<string, any>
   } {
     const defaults: Record<string, any> = {};
     const options: Record<string, any> = {};
+    const templates: Record<string, any> = {};
 
     Object.keys(props).forEach((key) => {
-      const gaurdedOptionName = this._defaults ? this._defaults[key] : false;
+      const gaurdedOptionName = this._defaults ? this._defaults[key] : null;
+      const templateFilter = (templateProp: ITemplateMeta) =>
+        templateProp.render === key || templateProp.component === key;
+      const templateOptionName = this._templateProps.filter(templateFilter).length ? key : null;
 
       if (gaurdedOptionName) {
         defaults[gaurdedOptionName] = props[key];
+      } else if (templateOptionName) {
+        templates[templateOptionName] = props[key];
       } else {
         options[key] = this._wrapEventHandler(props, key);
       }
     });
 
-    return { defaults, options };
+    return { defaults, options, templates };
   }
 
-  private _wrapEventHandler(options: any, key: string): any {
+  private _wrapEventHandler(options: Record<string, any>, key: string): any {
     if (key.substr(0, 2) === "on" && typeof options[key] === "function") {
       return (...args: any[]) => {
         if (!this._updatingProps) {
@@ -129,7 +141,7 @@ export default class Component<P> extends React.PureComponent<P, any> {
     return options[key];
   }
 
-  private _processChangedValues(props: any, prevProps: any): void {
+  private _processChangedValues(props: Record<string, any>, prevProps: Record<string, any>): void {
     this._updatingProps = false;
 
     for (const optionName of Object.keys(props)) {
@@ -153,26 +165,29 @@ export default class Component<P> extends React.PureComponent<P, any> {
     }
   }
 
-  private _getIntegrationOptions(): any {
-    const result: any = {
+  private _getIntegrationOptions(options: Record<string, any>): any {
+    const templates: Record<string, any> = {};
+    const result: Record<string, any> = {
       integrationOptions: {
-        templates: {}
+        templates
       }
     };
 
-    const options: Record<string, any> = this.props;
     this._templateProps.forEach((m) => {
       if (options[m.component]) {
         result[m.tmplOption] = m.tmplOption;
-        result.integrationOptions.templates[m.tmplOption] =
+        templates[m.tmplOption] =
           this._fillTemplate(React.createElement.bind(this, options[m.component]));
       }
       if (options[m.render]) {
         result[m.tmplOption] = m.tmplOption;
-        result.integrationOptions.templates[m.tmplOption] =
+        templates[m.tmplOption] =
           this._fillTemplate(options[m.render].bind(this));
       }
     });
+    if (Object.keys(templates).length === 0) {
+      return null;
+    }
 
     return result;
   }
