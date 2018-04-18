@@ -113,17 +113,25 @@ export default class Component<P> extends React.PureComponent<P, any> {
     const options: Record<string, any> = {};
     const templates: Record<string, any> = {};
 
-    Object.keys(props).forEach((key) => {
-      const gaurdedOptionName = this._defaults ? this._defaults[key] : null;
-      const templateFilter = (templateProp: ITemplateMeta) =>
-        templateProp.render === key || templateProp.component === key;
-      const templateOptionName = this._templateProps.filter(templateFilter).length ? key : null;
+    const knownTemplates: Record<string, any> = {};
 
-      if (gaurdedOptionName) {
-        defaults[gaurdedOptionName] = props[key];
-      } else if (templateOptionName) {
-        templates[templateOptionName] = props[key];
-      } else {
+    const reactProps: Record<string, any> = {
+      children: true
+    };
+
+    this._templateProps.forEach((value) => {
+      knownTemplates[value.component] = true;
+      knownTemplates[value.render] = true;
+    });
+
+    Object.keys(props).forEach((key) => {
+      const defaultOptionName = this._defaults ? this._defaults[key] : null;
+
+      if (defaultOptionName) {
+        defaults[defaultOptionName] = props[key];
+      } else if (knownTemplates[key]) {
+        templates[key] = props[key];
+      } else if (!reactProps[key]) {
         options[key] = this._wrapEventHandler(props, key);
       }
     });
@@ -187,11 +195,10 @@ export default class Component<P> extends React.PureComponent<P, any> {
           this._fillTemplate(options[m.render].bind(this));
       }
     });
-    if (Object.keys(templates).length === 0) {
-      return null;
-    }
 
-    return result;
+    if (Object.keys(templates).length > 0) {
+      return result;
+    }
   }
 
   private _fillTemplate(tmplFn: any): object {
