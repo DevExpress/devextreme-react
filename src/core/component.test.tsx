@@ -68,6 +68,16 @@ describe("component rendering", () => {
         expect(WidgetClass.mock.instances.length).toBe(2);
         expect(WidgetClass.mock.instances[1]).toEqual({});
     });
+
+    it("do not pass children to options", () => {
+        mount(
+            <TestComponent>
+                <TestComponent />
+            </TestComponent>
+        );
+
+        expect(WidgetClass.mock.calls[1][1]).toEqual({});
+    });
 });
 
 describe("templates", () => {
