@@ -115,7 +115,9 @@ export default class Component<P> extends React.PureComponent<P, any> {
 
     const knownTemplates: Record<string, any> = {};
 
-    const isReactProp = (propName: string) => propName === "children";
+    const reactProps: Record<string, any> = {
+      children: true
+    };
 
     this._templateProps.forEach((value) => {
       knownTemplates[value.component] = true;
@@ -129,7 +131,7 @@ export default class Component<P> extends React.PureComponent<P, any> {
         defaults[defaultOptionName] = props[key];
       } else if (knownTemplates[key]) {
         templates[key] = props[key];
-      } else if (!isReactProp(key)) {
+      } else if (!reactProps[key]) {
         options[key] = this._wrapEventHandler(props, key);
       }
     });
