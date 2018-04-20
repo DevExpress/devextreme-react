@@ -4,6 +4,7 @@ import * as ReactDOM from "react-dom";
 import "devextreme/dist/css/dx.common.css";
 import "devextreme/dist/css/dx.light.compact.css";
 
+import AccordionExample from "./accordion-example";
 import ChartExample from "./chart-example";
 import DataGridExample from "./data-grid-example";
 import Example from "./example-block";
@@ -11,7 +12,7 @@ import FormExample from "./form-example";
 import ListExample from "./list-example";
 import PopupExample from "./popup-example";
 import ScrollViewExample from "./scroll-view-example";
-import TexBoxExample from "./text-box-example";
+import TextBoxExample from "./text-box-example";
 
 import { Button, NumberBox, Scheduler } from "../src";
 
@@ -26,7 +27,7 @@ ReactDOM.render(
 
     <PopupExample />
 
-    <TexBoxExample />
+    <TextBoxExample />
 
     <Example title="DxNumberBox">
       <NumberBox step={50} min={50} showSpinButtons={true} />
@@ -37,6 +38,8 @@ ReactDOM.render(
     <FormExample/>
 
     <ListExample />
+
+    <AccordionExample />
 
     <DataGridExample/>
 

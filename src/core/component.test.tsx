@@ -50,6 +50,14 @@ describe("component rendering", () => {
         expect(WidgetClass.mock.instances.length).toBe(1);
     });
 
+    it("pass templatesRenderAsynchronously to widgets", () => {
+        shallow(
+            <TestComponent />
+        );
+
+        expect(WidgetClass.mock.calls[0][1]).toEqual({templatesRenderAsynchronously: true});
+    });
+
     it("does not create empty children prop", () => {
         const component = shallow(
             <TestComponent />
@@ -76,7 +84,7 @@ describe("component rendering", () => {
             </TestComponent>
         );
 
-        expect(WidgetClass.mock.calls[1][1]).toEqual({});
+        expect(WidgetClass.mock.calls[1][1].children).toBeUndefined();
     });
 });
 
