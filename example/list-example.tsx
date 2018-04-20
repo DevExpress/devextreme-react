@@ -1,7 +1,6 @@
 import * as React from "react";
 
 import DataSource from "devextreme/data/data_source";
-import { Template } from "../src/core/template";
 
 import { Button } from "../src/ui/button";
 import { List } from "../src/ui/list";
@@ -83,13 +82,7 @@ export default class extends React.Component<any, { text: string; items: IListIt
                     items={this.state.items}
                     itemComponent={Item}
                 />
-                <h4>List with standalone template</h4>
-                <List
-                    items={this.state.items}
-                >
-                    <Template name={"item"} component={Item}/>
-                </List>
-
+                
                 <hr />
                 <h4>List with dataSource</h4>
                 <List dataSource={this.dataSource} />
