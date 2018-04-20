@@ -89,15 +89,13 @@ describe("component rendering", () => {
 });
 
 describe("templates", () => {
-
-    const DX_TEMPLATE_WRAPPER = "dx-template-wrapper";
-
-    const renderItemTemplate: (model: any) => Element = (model: object) => {
+    function renderItemTemplate(model: any, container?: any): Element {
+        container = container || document.createElement("div");
         const render = WidgetClass.mock.calls[0][1].integrationOptions.templates.item.render;
         return render({
-            container: document.createElement("div"), model
+            container, model
         });
-    };
+    }
 
     describe("function template", () => {
 
@@ -128,6 +126,18 @@ describe("templates", () => {
             expect(itemRender).toBeCalled();
             component.update();
             expect(component.find(".template").html()).toBe('<div class="template">Template with data</div>');
+        });
+
+        it("renders inside unwrapped container", () => {
+            function itemRender() {
+                return <div className={"template"}>Template</div>;
+            }
+            const component = mount(
+                <ComponentWithTemplates itemRender={itemRender} />
+            );
+            renderItemTemplate({}, { get: () => document.createElement("div")});
+            component.update();
+            expect(component.find(".template").html()).toBe('<div class="template">Template</div>');
         });
 
         it("renders simple item", () => {
