@@ -82,7 +82,7 @@ export default class extends React.Component<any, { text: string; items: IListIt
                     items={this.state.items}
                     itemComponent={Item}
                 />
-                
+
                 <hr />
                 <h4>List with dataSource</h4>
                 <List dataSource={this.dataSource} />
