@@ -1,12 +1,10 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
 
 import * as events from "devextreme/events";
 
-const DX_TEMPLATE_WRAPPER_CLASS = "dx-template-wrapper";
-const DX_REMOVE_EVENT = "dxremove";
+import { prepareTemplate } from "./template-provider";
 
-const generateID = () => Math.random().toString(36).substr(2);
+const DX_REMOVE_EVENT = "dxremove";
 
 interface ITemplateMeta {
   tmplOption: string;
@@ -65,6 +63,7 @@ export default class Component<P> extends React.PureComponent<P, any> {
     const splitProps = this._splitComponentProps(props);
 
     const options: Record<string, any> = {
+      templatesRenderAsynchronously: true,
       ...splitProps.defaults,
       ...splitProps.options,
       ...this._getIntegrationOptions(splitProps.templates)
@@ -184,52 +183,18 @@ export default class Component<P> extends React.PureComponent<P, any> {
     };
 
     this._templateProps.forEach((m) => {
-      if (options[m.component]) {
+      if (options[m.component] || options[m.render]) {
         result[m.tmplOption] = m.tmplOption;
-        templates[m.tmplOption] =
-          this._fillTemplate(React.createElement.bind(this, options[m.component]));
-      }
-      if (options[m.render]) {
-        result[m.tmplOption] = m.tmplOption;
-        templates[m.tmplOption] =
-          this._fillTemplate(options[m.render].bind(this));
+        const templateProp = !!options[m.component] ?
+          React.createElement.bind(this, options[m.component]) :
+          options[m.render].bind(this);
+
+        templates[m.tmplOption] = prepareTemplate(templateProp, this);
       }
     });
 
     if (Object.keys(templates).length > 0) {
       return result;
     }
-  }
-
-  private _fillTemplate(tmplFn: any): object {
-    return {
-      render: (data: any) => {
-        const element = document.createElement("div");
-        element.className = DX_TEMPLATE_WRAPPER_CLASS;
-        data.container.appendChild(element);
-
-        const templateId = "__template_" + generateID();
-        events.one(element, DX_REMOVE_EVENT, () => {
-          this.setState((state: any) => {
-            const updatedTemplates = {...state.templates};
-            delete updatedTemplates[templateId];
-            return {
-              templates : updatedTemplates
-            };
-          });
-        });
-
-        const portal: any = () => ReactDOM.createPortal(tmplFn(data.model), element);
-
-        this.setState((state: any) => {
-          const updatedTemplates = {...state.templates};
-          updatedTemplates[templateId] = portal;
-          return {
-            templates : updatedTemplates
-          };
-        });
-        return element;
-      }
-    };
   }
 }
