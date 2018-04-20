@@ -2,6 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import Example from "./example-block";
 
+import { Template } from "../src/core/template";
 import { Form } from "../src/ui/form";
 import { TextArea } from "../src/ui/text-area";
 
@@ -68,9 +69,7 @@ const items: any = ["ID", {
 }, {
     colSpan: 2,
     dataField: "Notes",
-    template: (data: any, container: any) => {
-        ReactDOM.render(<TextArea/>, container);
-    }
+    template: "area",
 }, "Address", {
     dataField: "Phone",
     editorOptions: {
@@ -88,7 +87,9 @@ export default class extends React.Component<any, {}> {
                     colCount={2}
                     formData={employee}
                     items={items}
-                />
+                >
+                <Template name="area" component={TextArea}/>
+                </Form>
             </Example>
         );
     }
