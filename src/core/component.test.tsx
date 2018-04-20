@@ -89,15 +89,13 @@ describe("component rendering", () => {
 });
 
 describe("templates", () => {
-
-    const DX_TEMPLATE_WRAPPER = "dx-template-wrapper";
-
-    const renderItemTemplate: (model: any) => Element = (model: object) => {
+    function renderItemTemplate(model: any, container?: any): Element {
+        container = container || document.createElement("div");
         const render = WidgetClass.mock.calls[0][1].integrationOptions.templates.item.render;
         return render({
-            container: document.createElement("div"), model
+            container, model
         });
-    };
+    }
 
     describe("function template", () => {
 
@@ -119,26 +117,39 @@ describe("templates", () => {
         });
 
         it("renders", () => {
-            const itemRender: any = jest.fn((props: any) => <div>Template {props.text}</div>);
-            mount(
+            const itemRender: any = jest.fn((props: any) => <div className={"template"}>Template {props.text}</div>);
+            const component = mount(
                 <ComponentWithTemplates itemRender={itemRender} />
             );
-            const renderedTemplate = renderItemTemplate({ text: "with data" });
+            renderItemTemplate({ text: "with data" });
 
             expect(itemRender).toBeCalled();
-            expect(renderedTemplate.className).toBe(DX_TEMPLATE_WRAPPER);
-            expect(renderedTemplate.innerHTML).toBe("<div>Template with data</div>");
+            component.update();
+            expect(component.find(".template").html()).toBe('<div class="template">Template with data</div>');
+        });
+
+        it("renders inside unwrapped container", () => {
+            function itemRender() {
+                return <div className={"template"}>Template</div>;
+            }
+            const component = mount(
+                <ComponentWithTemplates itemRender={itemRender} />
+            );
+            renderItemTemplate({}, { get: () => document.createElement("div")});
+            component.update();
+            expect(component.find(".template").html()).toBe('<div class="template">Template</div>');
         });
 
         it("renders simple item", () => {
-            const itemRender: any = jest.fn((text: any) => <div>Template {text}</div>);
-            mount(
+            const itemRender: any = jest.fn((text: string) => <div className={"template"}>Template {text}</div>);
+            const component = mount(
                 <ComponentWithTemplates itemRender={itemRender} />
             );
-            const renderedTemplate = renderItemTemplate("with data");
+            renderItemTemplate("with data");
 
             expect(itemRender).toBeCalled();
-            expect(renderedTemplate.innerHTML).toBe("<div>Template with data</div>");
+            component.update();
+            expect(component.find(".template").html()).toBe('<div class="template">Template with data</div>');
         });
 
         it("renders inside component", () => {
@@ -174,14 +185,14 @@ describe("templates", () => {
         });
 
         it("renders", () => {
-            const ItemTemplate = (props: any) => <div>Template {props.text}</div>;
-            mount(
+            const ItemTemplate = (props: any) => <div className={"template"}>Template {props.text}</div>;
+            const component = mount(
                 <ComponentWithTemplates itemComponent={ItemTemplate} />
             );
 
-            const renderedTemplate = renderItemTemplate({ text: "with data" });
-            expect(renderedTemplate.className).toBe(DX_TEMPLATE_WRAPPER);
-            expect(renderedTemplate.innerHTML).toBe("<div>Template with data</div>");
+            renderItemTemplate({ text: "with data" });
+            component.update();
+            expect(component.find(".template").html()).toBe('<div class="template">Template with data</div>');
         });
 
         it("renders inside component", () => {
@@ -225,7 +236,7 @@ describe("templates", () => {
         renderItemTemplate({});
         expect(Object.getOwnPropertyNames(component.state("templates")).length).toBe(1);
         component.update();
-        events.triggerHandler(component.find(".template").getDOMNode().parentNode, "dxremove");
+        events.triggerHandler(component.find(".template").getDOMNode(), "dxremove");
         component.update();
         expect(Object.getOwnPropertyNames(component.state("templates")).length).toBe(0);
     });

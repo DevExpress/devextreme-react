@@ -1,40 +1,47 @@
-import * as ReactDOM from "react-dom";
+import * as React from "react";
 
-import * as events from "devextreme/events";
-
-const DX_TEMPLATE_WRAPPER_CLASS = "dx-template-wrapper";
-const DX_REMOVE_EVENT = "dxremove";
+import TemplateWrapper from "./template-wrapper";
 
 const generateID = () => Math.random().toString(36).substr(2);
 
-export function prepareTemplate(tmplFn: any, component: React.Component): object {
-  return {
-    render: (data: any) => {
-      const element = document.createElement("div");
-      element.className = DX_TEMPLATE_WRAPPER_CLASS;
-      data.container.appendChild(element);
+const unwrapElement = (element: any) =>  element.get ? element.get(0) : element;
 
+export interface ITemplateData {
+  container: any;
+  model?: any;
+  index?: any;
+}
+
+export function prepareTemplate(tmplFn: any, component: React.Component): { render: (data: ITemplateData) => any } {
+  return {
+    render: (data: ITemplateData) => {
       const templateId = "__template_" + generateID();
-      events.one(element, DX_REMOVE_EVENT, () => {
-        component.setState((state: any) => {
+      const removedHandler = () => {
+      component.setState((state: any) => {
           const updatedTemplates = {...state.templates};
           delete updatedTemplates[templateId];
           return {
-            templates : updatedTemplates
+            templates: updatedTemplates
           };
         });
-      });
+      };
 
-      const portal: any = () => ReactDOM.createPortal(tmplFn(data.model), element);
+      const templateWrapper: any = () =>
+        React.createElement(TemplateWrapper, {
+          render: tmplFn,
+          data: data.model,
+          container: unwrapElement(data.container),
+          onRemoved: removedHandler,
+          key: templateId
+        });
 
       component.setState((state: any) => {
         const updatedTemplates = {...state.templates};
-        updatedTemplates[templateId] = portal;
+        updatedTemplates[templateId] = templateWrapper;
         return {
-          templates : updatedTemplates
+          templates: updatedTemplates
         };
       });
-      return element;
     }
   };
 }
