@@ -28,8 +28,7 @@ export function prepareTemplate(tmplFn: any, component: React.Component): { rend
 
       const templateWrapper: any = () =>
         React.createElement(TemplateWrapper, {
-          render: tmplFn,
-          data: data.model,
+          content: tmplFn(data.model),
           container: unwrapElement(data.container),
           onRemoved: removedHandler,
           key: templateId

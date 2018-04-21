@@ -6,13 +6,12 @@ import * as events from "devextreme/events";
 const DX_REMOVE_EVENT = "dxremove";
 
 export default class TemplateWrapper extends React.PureComponent<{
-    render: any
-    data: any,
+    content: any
     container: Element,
     onRemoved: () => void
 }, any> {
     public render() {
-        return ReactDOM.createPortal(this.props.render(this.props.data), this.props.container);
+        return ReactDOM.createPortal(this.props.content, this.props.container);
     }
 
     public componentDidMount() {
