@@ -14,5 +14,5 @@ export class Template extends React.PureComponent<{
 (Template as any).propTypes = {
     name: PropTypes.string.isRequired,
     component: PropTypes.func,
-    render: PropTypes.func,
-}
+    render: PropTypes.func
+};

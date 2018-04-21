@@ -2,6 +2,7 @@ import * as React from "react";
 
 import * as events from "devextreme/events";
 
+import { Template } from "./template";
 import { prepareTemplate } from "./template-provider";
 
 const DX_REMOVE_EVENT = "dxremove";
@@ -37,7 +38,7 @@ export default class Component<P> extends React.PureComponent<P, any> {
     const splitProps = this._splitComponentProps(nextProps);
     const options: Record<string, any> = {
       ...splitProps.options,
-      ...this._getIntegrationOptions(splitProps.templates)
+      ...this._getIntegrationOptions(splitProps.templates, splitProps.nestedTemplates)
     };
 
     this._processChangedValues(options, this.props);
@@ -66,7 +67,7 @@ export default class Component<P> extends React.PureComponent<P, any> {
       templatesRenderAsynchronously: true,
       ...splitProps.defaults,
       ...splitProps.options,
-      ...this._getIntegrationOptions(splitProps.templates)
+      ...this._getIntegrationOptions(splitProps.templates, splitProps.nestedTemplates)
     };
 
     this._instance = new this._WidgetClass(this._element, options);
@@ -106,17 +107,15 @@ export default class Component<P> extends React.PureComponent<P, any> {
   private _splitComponentProps(props: Record<string, any>): {
     defaults: Record<string, any>,
     options: Record<string, any>,
-    templates: Record<string, any>
+    templates: Record<string, any>,
+    nestedTemplates: Record<string, any>
   } {
     const defaults: Record<string, any> = {};
     const options: Record<string, any> = {};
     const templates: Record<string, any> = {};
+    const nestedTemplates: Record<string, any> = {};
 
     const knownTemplates: Record<string, any> = {};
-
-    const reactProps: Record<string, any> = {
-      children: true
-    };
 
     this._templateProps.forEach((value) => {
       knownTemplates[value.component] = true;
@@ -130,12 +129,21 @@ export default class Component<P> extends React.PureComponent<P, any> {
         defaults[defaultOptionName] = props[key];
       } else if (knownTemplates[key]) {
         templates[key] = props[key];
-      } else if (!reactProps[key]) {
+      } else if (key === "children") {
+        React.Children.forEach(props[key], (child) => {
+            if (child.type === Template) {
+                nestedTemplates[child.props.name] = {
+                    render: child.props.render,
+                    component: child.props.component
+                };
+            }
+        });
+      } else {
         options[key] = this._wrapEventHandler(props, key);
       }
     });
 
-    return { defaults, options, templates };
+    return { defaults, options, templates, nestedTemplates };
   }
 
   private _wrapEventHandler(options: Record<string, any>, key: string): any {
@@ -174,7 +182,7 @@ export default class Component<P> extends React.PureComponent<P, any> {
     }
   }
 
-  private _getIntegrationOptions(options: Record<string, any>): any {
+  private _getIntegrationOptions(options: Record<string, any>, nestedOptions: Record<string, any>): any {
     const templates: Record<string, any> = {};
     const result: Record<string, any> = {
       integrationOptions: {
@@ -182,15 +190,23 @@ export default class Component<P> extends React.PureComponent<P, any> {
       }
     };
 
+    const getTemplate = (component: any, render: any) => {
+        const templateProp = !!component ?
+          React.createElement.bind(this, component) :
+          render.bind(this);
+
+        return prepareTemplate(templateProp, this);
+    };
+
     this._templateProps.forEach((m) => {
       if (options[m.component] || options[m.render]) {
         result[m.tmplOption] = m.tmplOption;
-        const templateProp = !!options[m.component] ?
-          React.createElement.bind(this, options[m.component]) :
-          options[m.render].bind(this);
-
-        templates[m.tmplOption] = prepareTemplate(templateProp, this);
+        templates[m.tmplOption] = getTemplate(options[m.component], options[m.render]);
       }
+    });
+
+    Object.keys(nestedOptions).forEach((name) => {
+        templates[name] = getTemplate(nestedOptions[name].component, nestedOptions[name].render);
     });
 
     if (Object.keys(templates).length > 0) {

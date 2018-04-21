@@ -3,6 +3,7 @@ import { configure as configureEnzyme, mount, shallow } from "enzyme";
 import * as Adapter from "enzyme-adapter-react-16";
 import * as React from "react";
 import Component from "../core/component";
+import { Template } from "../core/template";
 
 const eventHandlers: { [index: string]: (e?: any) => void}  = {};
 const Widget = {
@@ -204,6 +205,33 @@ describe("templates", () => {
             expect(Object.getOwnPropertyNames(component.state("templates")).length).toBe(1);
             component.update();
             expect(component.find(".template").html()).toBe('<div class="template">Template is rendered</div>');
+        });
+    });
+
+    describe("nested template", () => {
+        it("pass integrationOptions to widget", () => {
+            const ItemTemplate = () => <div>Template</div>;
+            mount(
+                <ComponentWithTemplates>
+                    <Template name={"item1"} render={ItemTemplate}/>
+                    <Template name={"item2"} component={ItemTemplate}/>
+                </ComponentWithTemplates >
+            );
+
+            const options = WidgetClass.mock.calls[0][1];
+
+            expect(options.item).toBeUndefined();
+
+            const integrationOptions = options.integrationOptions;
+
+            expect(integrationOptions).toBeDefined();
+            expect(integrationOptions.templates).toBeDefined();
+
+            expect(integrationOptions.templates.item1).toBeDefined();
+            expect(typeof integrationOptions.templates.item1.render).toBe("function");
+
+            expect(integrationOptions.templates.item2).toBeDefined();
+            expect(typeof integrationOptions.templates.item2.render).toBe("function");
         });
     });
 
