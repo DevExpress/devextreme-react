@@ -2,6 +2,7 @@ import * as React from "react";
 
 import * as events from "devextreme/events";
 
+import { ReactElement } from "react";
 import { Template } from "./template";
 import { prepareTemplate } from "./template-provider";
 
@@ -13,7 +14,7 @@ interface ITemplateMeta {
   component: string;
 }
 
-export default class Component<P> extends React.PureComponent<P, any> {
+class Component<P> extends React.PureComponent<P, any> {
 
   protected _WidgetClass: any;
   protected _instance: any;
@@ -130,7 +131,7 @@ export default class Component<P> extends React.PureComponent<P, any> {
       } else if (knownTemplates[key]) {
         templates[key] = props[key];
       } else if (key === "children") {
-        React.Children.forEach(props[key], (child) => {
+        React.Children.forEach(props[key], (child: ReactElement<any>) => {
             if (child.type === Template) {
                 nestedTemplates[child.props.name] = {
                     render: child.props.render,
@@ -214,3 +215,6 @@ export default class Component<P> extends React.PureComponent<P, any> {
     }
   }
 }
+
+export default Component;
+export { ITemplateMeta };
