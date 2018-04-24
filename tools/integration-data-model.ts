@@ -9,14 +9,13 @@ export interface IWidget {
 export interface IOption {
   name: string;
   options: IOption[];
-  types: string[];
-  valueRestriction: IValueRestriction;
+  types: ITypeDescriptor[];
+}
+export interface ITypeDescriptor {
+  acceptableValues: string[];
+  type: string;
 }
 export interface ISubscribableOption {
   name: string;
-  type: string;
-}
-export interface IValueRestriction {
-  acceptableValues: string[];
   type: string;
 }
