@@ -14,6 +14,7 @@ export interface IOption {
 export interface ITypeDescriptor {
   acceptableValues: string[];
   type: string;
+  typeParams: ITypeDescriptor[];
 }
 export interface ISubscribableOption {
   name: string;

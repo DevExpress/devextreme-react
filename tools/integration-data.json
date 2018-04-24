@@ -65,7 +65,15 @@
         "name": "dataSource",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              },
+              {
+                "type": "String"
+              }
+            ]
           },
           {
             "type": "Object"
@@ -149,7 +157,15 @@
         "name": "items",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              },
+              {
+                "type": "String"
+              }
+            ]
           }
         ]
       },
@@ -316,7 +332,12 @@
         "name": "selectedItemKeys",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Any"
+              }
+            ]
           }
         ]
       },
@@ -324,7 +345,12 @@
         "name": "selectedItems",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Any"
+              }
+            ]
           }
         ]
       },
@@ -385,7 +411,15 @@
         "name": "dataSource",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              },
+              {
+                "type": "String"
+              }
+            ]
           },
           {
             "type": "Object"
@@ -453,7 +487,15 @@
         "name": "items",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              },
+              {
+                "type": "String"
+              }
+            ]
           }
         ]
       },
@@ -660,7 +702,12 @@
         "name": "dataSource",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Any"
+              }
+            ]
           },
           {
             "type": "Object"
@@ -790,7 +837,12 @@
         "name": "items",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Any"
+              }
+            ]
           }
         ]
       },
@@ -1036,7 +1088,12 @@
         "name": "searchExpr",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Function"
+              }
+            ]
           },
           {
             "type": "Function"
@@ -1293,7 +1350,12 @@
             "name": "formats",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "String"
+                  }
+                ]
               }
             ]
           },
@@ -1575,7 +1637,12 @@
         "name": "palette",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "String"
+              }
+            ]
           },
           {
             "type": "String",
@@ -2056,7 +2123,12 @@
         "name": "values",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Number"
+              }
+            ]
           }
         ]
       }
@@ -2108,7 +2180,15 @@
         "name": "dataSource",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              },
+              {
+                "type": "String"
+              }
+            ]
           },
           {
             "type": "Object"
@@ -2180,7 +2260,15 @@
         "name": "items",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              },
+              {
+                "type": "String"
+              }
+            ]
           }
         ]
       },
@@ -3059,7 +3147,12 @@
         "name": "disabledDates",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Any"
+              }
+            ]
           },
           {
             "type": "Function"
@@ -3516,7 +3609,12 @@
             "name": "breaks",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "Object"
+                  }
+                ]
               }
             ]
           },
@@ -3562,7 +3660,18 @@
             "name": "categories",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "Any"
+                  },
+                  {
+                    "type": "Number"
+                  },
+                  {
+                    "type": "String"
+                  }
+                ]
               }
             ]
           },
@@ -3578,7 +3687,12 @@
             "name": "constantLines",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "Object"
+                  }
+                ]
               }
             ],
             "options": [
@@ -3902,7 +4016,23 @@
             "name": "holidays",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "Any"
+                  },
+                  {
+                    "type": "String"
+                  }
+                ]
+              },
+              {
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "Number"
+                  }
+                ]
               }
             ]
           },
@@ -4267,7 +4397,23 @@
             "name": "singleWorkdays",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "Any"
+                  },
+                  {
+                    "type": "String"
+                  }
+                ]
+              },
+              {
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "Number"
+                  }
+                ]
               }
             ]
           },
@@ -4275,7 +4421,12 @@
             "name": "strips",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "Object"
+                  }
+                ]
               }
             ],
             "options": [
@@ -4625,7 +4776,12 @@
             "name": "workWeek",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "Number"
+                  }
+                ]
               }
             ]
           }
@@ -5988,7 +6144,12 @@
         "name": "dataSource",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Any"
+              }
+            ]
           },
           {
             "type": "Object"
@@ -6050,7 +6211,12 @@
             "name": "formats",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "String"
+                  }
+                ]
               }
             ]
           },
@@ -6668,7 +6834,12 @@
         "name": "palette",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "String"
+              }
+            ]
           },
           {
             "type": "String",
@@ -6710,7 +6881,12 @@
         "name": "panes",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              }
+            ]
           },
           {
             "type": "Object"
@@ -6962,7 +7138,12 @@
         "name": "series",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              }
+            ]
           },
           {
             "type": "Object"
@@ -7497,7 +7678,12 @@
         "name": "valueAxis",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              }
+            ]
           },
           {
             "type": "Object"
@@ -7532,7 +7718,12 @@
             "name": "breaks",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "Object"
+                  }
+                ]
               }
             ]
           },
@@ -7578,7 +7769,18 @@
             "name": "categories",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "Any"
+                  },
+                  {
+                    "type": "Number"
+                  },
+                  {
+                    "type": "String"
+                  }
+                ]
               }
             ]
           },
@@ -7594,7 +7796,12 @@
             "name": "constantLines",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "Object"
+                  }
+                ]
               }
             ],
             "options": [
@@ -8303,7 +8510,12 @@
             "name": "strips",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "Object"
+                  }
+                ]
               }
             ],
             "options": [
@@ -8995,7 +9207,12 @@
             "name": "formats",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "String"
+                  }
+                ]
               }
             ]
           },
@@ -9256,7 +9473,12 @@
             "name": "palette",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "String"
+                  }
+                ]
               },
               {
                 "type": "String",
@@ -9298,7 +9520,12 @@
             "name": "ranges",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "Object"
+                  }
+                ]
               }
             ],
             "options": [
@@ -9374,7 +9601,12 @@
             "name": "customMinorTicks",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "Number"
+                  }
+                ]
               }
             ]
           },
@@ -9382,7 +9614,12 @@
             "name": "customTicks",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "Number"
+                  }
+                ]
               }
             ]
           },
@@ -9680,7 +9917,12 @@
         "name": "subvalues",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Number"
+              }
+            ]
           }
         ]
       },
@@ -10616,7 +10858,15 @@
         "name": "dataSource",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              },
+              {
+                "type": "String"
+              }
+            ]
           },
           {
             "type": "Object"
@@ -10706,7 +10956,12 @@
         "name": "items",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              }
+            ]
           }
         ]
       },
@@ -11276,7 +11531,12 @@
         "name": "columns",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              }
+            ]
           }
         ]
       },
@@ -11308,7 +11568,12 @@
         "name": "dataSource",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              }
+            ]
           },
           {
             "type": "Object"
@@ -12151,7 +12416,12 @@
         "name": "keyExpr",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "String"
+              }
+            ]
           },
           {
             "type": "String"
@@ -12551,7 +12821,12 @@
             "name": "allowedPageSizes",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "Number"
+                  }
+                ]
               }
             ]
           },
@@ -12882,7 +13157,12 @@
         "name": "selectedRowKeys",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Any"
+              }
+            ]
           }
         ]
       },
@@ -12995,7 +13275,12 @@
         "name": "sortByGroupSummaryInfo",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              }
+            ]
           }
         ],
         "options": [
@@ -13164,7 +13449,12 @@
             "name": "groupItems",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "Object"
+                  }
+                ]
               }
             ],
             "options": [
@@ -13352,7 +13642,12 @@
             "name": "totalItems",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "Object"
+                  }
+                ]
               }
             ],
             "options": [
@@ -13622,7 +13917,12 @@
         "name": "disabledDates",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Any"
+              }
+            ]
           },
           {
             "type": "Function"
@@ -14334,7 +14634,12 @@
         "name": "dataSource",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Any"
+              }
+            ]
           },
           {
             "type": "Object"
@@ -14467,7 +14772,12 @@
         "name": "items",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Any"
+              }
+            ]
           }
         ]
       },
@@ -15084,7 +15394,12 @@
         "name": "value",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Any"
+              }
+            ]
           }
         ]
       },
@@ -15150,7 +15465,12 @@
         "name": "customOperations",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              }
+            ]
           }
         ]
       },
@@ -15174,7 +15494,12 @@
         "name": "fields",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              }
+            ]
           }
         ]
       },
@@ -15606,7 +15931,24 @@
         "name": "items",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              },
+              {
+                "type": "Object"
+              },
+              {
+                "type": "Object"
+              },
+              {
+                "type": "Object"
+              },
+              {
+                "type": "Object"
+              }
+            ]
           }
         ]
       },
@@ -15877,7 +16219,12 @@
         "name": "dataSource",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Any"
+              }
+            ]
           },
           {
             "type": "Object"
@@ -15931,7 +16278,12 @@
             "name": "formats",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "String"
+                  }
+                ]
               }
             ]
           },
@@ -16861,7 +17213,12 @@
         "name": "palette",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "String"
+              }
+            ]
           },
           {
             "type": "String",
@@ -17402,7 +17759,15 @@
         "name": "dataSource",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              },
+              {
+                "type": "String"
+              }
+            ]
           },
           {
             "type": "Object"
@@ -17494,7 +17859,15 @@
         "name": "items",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              },
+              {
+                "type": "String"
+              }
+            ]
           }
         ]
       },
@@ -17790,7 +18163,12 @@
             "name": "formats",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "String"
+                  }
+                ]
               }
             ]
           },
@@ -18047,7 +18425,12 @@
             "name": "palette",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "String"
+                  }
+                ]
               },
               {
                 "type": "String",
@@ -18089,7 +18472,12 @@
             "name": "ranges",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "Object"
+                  }
+                ]
               }
             ],
             "options": [
@@ -18199,7 +18587,12 @@
             "name": "customMinorTicks",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "Number"
+                  }
+                ]
               }
             ]
           },
@@ -18207,7 +18600,12 @@
             "name": "customTicks",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "Number"
+                  }
+                ]
               }
             ]
           },
@@ -18506,7 +18904,12 @@
         "name": "subvalues",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Number"
+              }
+            ]
           }
         ]
       },
@@ -18999,7 +19402,15 @@
         "name": "dataSource",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              },
+              {
+                "type": "String"
+              }
+            ]
           },
           {
             "type": "Object"
@@ -19118,7 +19529,15 @@
         "name": "items",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              },
+              {
+                "type": "String"
+              }
+            ]
           }
         ]
       },
@@ -19148,7 +19567,12 @@
         "name": "menuItems",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              }
+            ]
           }
         ],
         "options": [
@@ -19449,7 +19873,12 @@
         "name": "searchExpr",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Function"
+              }
+            ]
           },
           {
             "type": "Function"
@@ -19500,7 +19929,12 @@
         "name": "selectedItemKeys",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Any"
+              }
+            ]
           }
         ]
       },
@@ -19508,7 +19942,12 @@
         "name": "selectedItems",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Any"
+              }
+            ]
           }
         ]
       },
@@ -20138,7 +20577,12 @@
         "name": "dataSource",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Any"
+              }
+            ]
           },
           {
             "type": "Object"
@@ -20298,7 +20742,12 @@
         "name": "items",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Any"
+              }
+            ]
           }
         ]
       },
@@ -20573,7 +21022,12 @@
         "name": "searchExpr",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Function"
+              }
+            ]
           },
           {
             "type": "Function"
@@ -20811,7 +21265,12 @@
         "name": "center",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Number"
+              }
+            ]
           },
           {
             "type": "Object"
@@ -20932,7 +21391,12 @@
         "name": "markers",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              }
+            ]
           }
         ],
         "options": [
@@ -20948,7 +21412,12 @@
             "name": "location",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "Number"
+                  }
+                ]
               },
               {
                 "type": "Object"
@@ -21089,7 +21558,12 @@
         "name": "routes",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              }
+            ]
           }
         ],
         "options": [
@@ -21105,7 +21579,12 @@
             "name": "locations",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "Object"
+                  }
+                ]
               }
             ]
           },
@@ -21279,7 +21758,15 @@
         "name": "dataSource",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              },
+              {
+                "type": "String"
+              }
+            ]
           },
           {
             "type": "Object"
@@ -21377,7 +21864,12 @@
         "name": "items",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              }
+            ]
           }
         ]
       },
@@ -21771,7 +22263,15 @@
         "name": "dataSource",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              },
+              {
+                "type": "String"
+              }
+            ]
           },
           {
             "type": "Object"
@@ -21855,7 +22355,15 @@
         "name": "items",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              },
+              {
+                "type": "String"
+              }
+            ]
           }
         ]
       },
@@ -22066,7 +22574,15 @@
         "name": "dataSource",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              },
+              {
+                "type": "String"
+              }
+            ]
           },
           {
             "type": "Object"
@@ -22142,7 +22658,15 @@
         "name": "items",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              },
+              {
+                "type": "String"
+              }
+            ]
           }
         ]
       },
@@ -22279,7 +22803,12 @@
         "name": "selectedItemKeys",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Any"
+              }
+            ]
           }
         ]
       },
@@ -22287,7 +22816,18 @@
         "name": "selectedItems",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Number"
+              },
+              {
+                "type": "Object"
+              },
+              {
+                "type": "String"
+              }
+            ]
           }
         ]
       },
@@ -22860,7 +23400,12 @@
         "name": "dataSource",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Any"
+              }
+            ]
           },
           {
             "type": "Object"
@@ -22922,7 +23467,12 @@
             "name": "formats",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "String"
+                  }
+                ]
               }
             ]
           },
@@ -23465,7 +24015,12 @@
         "name": "palette",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "String"
+              }
+            ]
           },
           {
             "type": "String",
@@ -23568,7 +24123,12 @@
         "name": "series",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              }
+            ]
           },
           {
             "type": "Object"
@@ -24109,7 +24669,12 @@
         "name": "dataSource",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              }
+            ]
           },
           {
             "type": "Object"
@@ -25397,7 +25962,18 @@
             "name": "categories",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "Any"
+                  },
+                  {
+                    "type": "Number"
+                  },
+                  {
+                    "type": "String"
+                  }
+                ]
               }
             ]
           },
@@ -25413,7 +25989,12 @@
             "name": "constantLines",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "Object"
+                  }
+                ]
               }
             ],
             "options": [
@@ -25903,7 +26484,12 @@
             "name": "strips",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "Object"
+                  }
+                ]
               }
             ],
             "options": [
@@ -26664,7 +27250,12 @@
         "name": "dataSource",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Any"
+              }
+            ]
           },
           {
             "type": "Object"
@@ -26718,7 +27309,12 @@
             "name": "formats",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "String"
+                  }
+                ]
               }
             ]
           },
@@ -27292,7 +27888,12 @@
         "name": "palette",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "String"
+              }
+            ]
           },
           {
             "type": "String",
@@ -27382,7 +27983,12 @@
         "name": "series",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              }
+            ]
           },
           {
             "type": "Object"
@@ -27911,7 +28517,18 @@
             "name": "categories",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "Any"
+                  },
+                  {
+                    "type": "Number"
+                  },
+                  {
+                    "type": "String"
+                  }
+                ]
               }
             ]
           },
@@ -27927,7 +28544,12 @@
             "name": "constantLines",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "Object"
+                  }
+                ]
               }
             ],
             "options": [
@@ -28397,7 +29019,12 @@
             "name": "strips",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "Object"
+                  }
+                ]
               }
             ],
             "options": [
@@ -29051,7 +29678,12 @@
         "name": "toolbarItems",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              }
+            ]
           }
         ],
         "options": [
@@ -29603,7 +30235,12 @@
         "name": "toolbarItems",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              }
+            ]
           }
         ],
         "options": [
@@ -29972,7 +30609,12 @@
         "name": "dataSource",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Any"
+              }
+            ]
           },
           {
             "type": "Object"
@@ -30059,7 +30701,12 @@
         "name": "items",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Any"
+              }
+            ]
           }
         ]
       },
@@ -30447,7 +31094,12 @@
             "name": "palette",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "String"
+                  }
+                ]
               },
               {
                 "type": "String",
@@ -30489,7 +31141,12 @@
             "name": "series",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "Object"
+                  }
+                ]
               },
               {
                 "type": "Object"
@@ -30611,7 +31268,12 @@
         "name": "dataSource",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Any"
+              }
+            ]
           },
           {
             "type": "Object"
@@ -30673,7 +31335,12 @@
             "name": "formats",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "String"
+                  }
+                ]
               }
             ]
           },
@@ -30963,7 +31630,12 @@
             "name": "breaks",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "Object"
+                  }
+                ]
               }
             ]
           },
@@ -31009,7 +31681,18 @@
             "name": "categories",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "Any"
+                  },
+                  {
+                    "type": "Number"
+                  },
+                  {
+                    "type": "String"
+                  }
+                ]
               }
             ]
           },
@@ -31039,7 +31722,23 @@
             "name": "holidays",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "Any"
+                  },
+                  {
+                    "type": "String"
+                  }
+                ]
+              },
+              {
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "Number"
+                  }
+                ]
               }
             ]
           },
@@ -31361,7 +32060,23 @@
             "name": "singleWorkdays",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "Any"
+                  },
+                  {
+                    "type": "String"
+                  }
+                ]
+              },
+              {
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "Number"
+                  }
+                ]
               }
             ]
           },
@@ -31486,7 +32201,12 @@
             "name": "workWeek",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "Number"
+                  }
+                ]
               }
             ]
           }
@@ -31838,7 +32558,18 @@
         "name": "value",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Any"
+              },
+              {
+                "type": "Number"
+              },
+              {
+                "type": "String"
+              }
+            ]
           }
         ]
       }
@@ -32180,7 +32911,12 @@
         "name": "value",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Number"
+              }
+            ]
           }
         ]
       },
@@ -32386,7 +33122,12 @@
         "name": "cols",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              }
+            ]
           }
         ],
         "options": [
@@ -32434,7 +33175,15 @@
         "name": "dataSource",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              },
+              {
+                "type": "String"
+              }
+            ]
           },
           {
             "type": "Object"
@@ -32494,7 +33243,15 @@
         "name": "items",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              },
+              {
+                "type": "String"
+              }
+            ]
           }
         ]
       },
@@ -32580,7 +33337,12 @@
         "name": "rows",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              }
+            ]
           }
         ],
         "options": [
@@ -32797,7 +33559,12 @@
         "name": "dataSource",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              }
+            ]
           },
           {
             "type": "Object"
@@ -32967,7 +33734,12 @@
         "name": "groups",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "String"
+              }
+            ]
           }
         ]
       },
@@ -33255,7 +34027,12 @@
         "name": "resources",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              }
+            ]
           }
         ],
         "options": [
@@ -33279,7 +34056,12 @@
             "name": "dataSource",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "Object"
+                  }
+                ]
               },
               {
                 "type": "Object"
@@ -33349,7 +34131,12 @@
         "name": "selectedCellData",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Any"
+              }
+            ]
           }
         ]
       },
@@ -33448,7 +34235,12 @@
         "name": "views",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "String"
+              }
+            ]
           },
           {
             "type": "String",
@@ -33587,7 +34379,12 @@
             "name": "groups",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "String"
+                  }
+                ]
               }
             ]
           },
@@ -33968,7 +34765,12 @@
         "name": "dataSource",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Any"
+              }
+            ]
           },
           {
             "type": "Object"
@@ -34120,7 +34922,12 @@
         "name": "items",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Any"
+              }
+            ]
           }
         ]
       },
@@ -34382,7 +35189,12 @@
         "name": "searchExpr",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Function"
+              }
+            ]
           },
           {
             "type": "Function"
@@ -34584,7 +35396,15 @@
         "name": "dataSource",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              },
+              {
+                "type": "String"
+              }
+            ]
           },
           {
             "type": "Object"
@@ -34652,7 +35472,15 @@
         "name": "items",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              },
+              {
+                "type": "String"
+              }
+            ]
           }
         ]
       },
@@ -35413,7 +36241,12 @@
         "name": "dataSource",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Any"
+              }
+            ]
           },
           {
             "type": "Object"
@@ -36274,7 +37107,15 @@
         "name": "dataSource",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              },
+              {
+                "type": "String"
+              }
+            ]
           },
           {
             "type": "Object"
@@ -36358,7 +37199,15 @@
         "name": "items",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              },
+              {
+                "type": "String"
+              }
+            ]
           }
         ]
       },
@@ -36631,7 +37480,15 @@
         "name": "dataSource",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              },
+              {
+                "type": "String"
+              }
+            ]
           },
           {
             "type": "Object"
@@ -36707,7 +37564,15 @@
         "name": "items",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              },
+              {
+                "type": "String"
+              }
+            ]
           }
         ]
       },
@@ -36852,7 +37717,12 @@
         "name": "selectedItemKeys",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Any"
+              }
+            ]
           }
         ]
       },
@@ -36860,7 +37730,18 @@
         "name": "selectedItems",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Number"
+              },
+              {
+                "type": "Object"
+              },
+              {
+                "type": "String"
+              }
+            ]
           }
         ]
       },
@@ -36977,7 +37858,12 @@
         "name": "dataSource",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Any"
+              }
+            ]
           },
           {
             "type": "Object"
@@ -37129,7 +38015,12 @@
         "name": "items",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Any"
+              }
+            ]
           }
         ]
       },
@@ -37388,7 +38279,12 @@
         "name": "searchExpr",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Function"
+              }
+            ]
           },
           {
             "type": "Function"
@@ -37431,7 +38327,18 @@
         "name": "selectedItems",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Number"
+              },
+              {
+                "type": "Object"
+              },
+              {
+                "type": "String"
+              }
+            ]
           }
         ]
       },
@@ -37518,7 +38425,18 @@
         "name": "value",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Number"
+              },
+              {
+                "type": "Object"
+              },
+              {
+                "type": "String"
+              }
+            ]
           }
         ]
       },
@@ -38417,7 +39335,15 @@
         "name": "dataSource",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              },
+              {
+                "type": "String"
+              }
+            ]
           },
           {
             "type": "Object"
@@ -38510,7 +39436,15 @@
         "name": "items",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              },
+              {
+                "type": "String"
+              }
+            ]
           }
         ]
       },
@@ -39031,7 +39965,15 @@
         "name": "dataSource",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              },
+              {
+                "type": "String"
+              }
+            ]
           },
           {
             "type": "Object"
@@ -39099,7 +40041,15 @@
         "name": "items",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              },
+              {
+                "type": "String"
+              }
+            ]
           }
         ]
       },
@@ -39884,7 +40834,12 @@
         "name": "columns",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              }
+            ]
           }
         ]
       },
@@ -39908,7 +40863,12 @@
         "name": "dataSource",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              }
+            ]
           },
           {
             "type": "Object"
@@ -40145,7 +41105,12 @@
         "name": "expandedRowKeys",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Any"
+              }
+            ]
           }
         ]
       },
@@ -40920,7 +41885,12 @@
             "name": "allowedPageSizes",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "Number"
+                  }
+                ]
               }
             ]
           },
@@ -41231,7 +42201,12 @@
         "name": "selectedRowKeys",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Any"
+              }
+            ]
           }
         ]
       },
@@ -41512,7 +42487,12 @@
             "name": "palette",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "String"
+                  }
+                ]
               },
               {
                 "type": "String",
@@ -41554,7 +42534,12 @@
             "name": "range",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "Number"
+                  }
+                ]
               }
             ]
           },
@@ -41578,7 +42563,12 @@
         "name": "dataSource",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Any"
+              }
+            ]
           },
           {
             "type": "Object"
@@ -41632,7 +42622,12 @@
             "name": "formats",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "String"
+                  }
+                ]
               }
             ]
           },
@@ -42728,7 +43723,15 @@
         "name": "dataSource",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              },
+              {
+                "type": "String"
+              }
+            ]
           },
           {
             "type": "Object"
@@ -42876,7 +43879,12 @@
         "name": "items",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              }
+            ]
           }
         ]
       },
@@ -43077,7 +44085,12 @@
         "name": "searchExpr",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Function"
+              }
+            ]
           },
           {
             "type": "Function"
@@ -43311,7 +44324,15 @@
         "name": "items",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              },
+              {
+                "type": "String"
+              }
+            ]
           }
         ]
       },
@@ -43435,7 +44456,12 @@
             "name": "validationRequestsCallbacks",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "Function"
+                  }
+                ]
               },
               {
                 "type": "Function"
@@ -43518,7 +44544,33 @@
         "name": "validationRules",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              },
+              {
+                "type": "Object"
+              },
+              {
+                "type": "Object"
+              },
+              {
+                "type": "Object"
+              },
+              {
+                "type": "Object"
+              },
+              {
+                "type": "Object"
+              },
+              {
+                "type": "Object"
+              },
+              {
+                "type": "Object"
+              }
+            ]
           }
         ]
       },
@@ -43572,7 +44624,12 @@
         "name": "bounds",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Number"
+              }
+            ]
           }
         ]
       },
@@ -43580,7 +44637,12 @@
         "name": "center",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Number"
+              }
+            ]
           }
         ]
       },
@@ -43703,7 +44765,12 @@
             "name": "formats",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "String"
+                  }
+                ]
               }
             ]
           },
@@ -43729,7 +44796,12 @@
         "name": "layers",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              }
+            ]
           },
           {
             "type": "Object"
@@ -43772,7 +44844,12 @@
             "name": "colorGroups",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "Number"
+                  }
+                ]
               }
             ]
           },
@@ -43919,7 +44996,12 @@
             "name": "palette",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "String"
+                  }
+                ]
               },
               {
                 "type": "String",
@@ -44009,7 +45091,12 @@
             "name": "sizeGroups",
             "types": [
               {
-                "type": "Array"
+                "type": "Array",
+                "typeParams": [
+                  {
+                    "type": "Number"
+                  }
+                ]
               }
             ]
           },
@@ -44032,7 +45119,12 @@
         "name": "legends",
         "types": [
           {
-            "type": "Array"
+            "type": "Array",
+            "typeParams": [
+              {
+                "type": "Object"
+              }
+            ]
           }
         ],
         "options": [
