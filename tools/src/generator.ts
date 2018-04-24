@@ -1,6 +1,6 @@
 import { writeFileSync as writeFile } from "fs";
 import { dirname as getDirName, join as joinPaths, relative as getRelativePath, sep as pathSeparator } from "path";
-import { IOption as IRawOption, ISubscribableOption, IWidget, } from "../integration-data-model";
+import { IOption as IRawOption, ISubscribableOption, ITypeDescriptor, IWidget } from "../integration-data-model";
 import generateComponent, { IComponent, IPropTyping } from "./component-generator";
 import { convertTypes } from "./converter";
 import { removeElement, removeExtension, removePrefix, toKebabCase } from "./helpers";
@@ -55,19 +55,19 @@ function extractPropTypings(options: IRawOption[]): IPropTyping[]  {
     .filter((t) => t != null);
 }
 
-function createPropTyping(option: IRawOption) {
-  const rawTypes = option.types;
-  if (option.valueRestriction) {
-    removeElement(rawTypes, option.valueRestriction.type);
-  }
+function createPropTyping(option: IRawOption): IPropTyping {
+  const isRestrictedType = (t: ITypeDescriptor): boolean => t.acceptableValues && t.acceptableValues.length > 0;
 
-  const types = convertTypes(rawTypes);
+  const rawTypes = option.types.filter((t) => !isRestrictedType(t));
+  const restrictedTypes = option.types.filter((t) => isRestrictedType(t));
 
-  if (option.valueRestriction) {
+  const types = convertTypes(rawTypes.map((t) => t.type));
+
+  if (restrictedTypes.length > 0) {
     return {
       propName: option.name,
       types: types || [],
-      acceptableValues: option.valueRestriction.acceptableValues
+      acceptableValues: restrictedTypes[0].acceptableValues
     };
   }
 
