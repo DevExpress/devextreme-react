@@ -3,6 +3,8 @@ import * as React from "react";
 import * as events from "devextreme/events";
 
 import { ReactElement } from "react";
+
+import { updateIsRequired } from "./comparer";
 import { Template } from "./template";
 import { prepareTemplate } from "./template-provider";
 
@@ -163,18 +165,21 @@ class Component<P> extends React.PureComponent<P, any> {
     this._updatingProps = false;
 
     for (const optionName of Object.keys(props)) {
-      if (props[optionName] !== prevProps[optionName]) {
-        if (this._guards[optionName]) {
-          window.clearTimeout(this._guards[optionName]);
-          delete this._guards[optionName];
-        }
-
-        if (!this._updatingProps) {
-          this._instance.beginUpdate();
-          this._updatingProps = true;
-        }
-        this._instance.option(optionName, props[optionName]);
+      if (!updateIsRequired(optionName, props, prevProps)) {
+        continue;
       }
+
+      if (this._guards[optionName]) {
+        window.clearTimeout(this._guards[optionName]);
+        delete this._guards[optionName];
+      }
+
+      if (!this._updatingProps) {
+        this._instance.beginUpdate();
+        this._updatingProps = true;
+      }
+
+      this._instance.option(optionName, props[optionName]);
     }
 
     if (this._updatingProps) {

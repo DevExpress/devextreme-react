@@ -322,6 +322,46 @@ describe("mutation detection", () => {
         expectNoPropsUpdate();
     });
 
+    it("prevents update if object-option replaced with similar object", () => {
+        const component = shallow(
+            <TestComponent prop={{ field: 123 }} />
+        );
+
+        component.setProps({ prop: { field: 123 } });
+
+        expectNoPropsUpdate();
+    });
+
+    it("prevents update if object-option replaced with object with extra field", () => {
+        const component = shallow(
+            <TestComponent prop={{ field: 123 }} />
+        );
+
+        component.setProps({ prop: { field: 123, field2: 456 } });
+
+        expectPropsUpdated("prop", { field: 123, field2: 456 });
+    });
+
+    it("triggers update if object-option replaced with object with changed field", () => {
+        const component = shallow(
+            <TestComponent prop={{ field: 123 }} />
+        );
+
+        component.setProps({ prop: { field: 456 } });
+
+        expectPropsUpdated("prop", { field: 456 });
+    });
+
+    it("triggers update if special-option replaced with another object", () => {
+        const component = shallow(
+            <TestComponent dataSource={{ field: 123 }} />
+        );
+
+        component.setProps({ dataSource: { field: 123 } });
+
+        expectPropsUpdated("dataSource", { field: 123 });
+    });
+
     it("triggers update if object-option replaced", () => {
         const component = shallow(
             <TestComponent prop={[1, 2, 3]} />
