@@ -1,7 +1,7 @@
 import { writeFileSync as writeFile } from "fs";
 import { dirname as getDirName, join as joinPaths, relative as getRelativePath, sep as pathSeparator } from "path";
-import { IOption as IRawOption, ISubscribableOption, ITypeDescriptor, IWidget } from "../integration-data-model";
-import generateComponent, { IComponent, IPropTyping } from "./component-generator";
+import { IOption as IRawOption, ITypeDescriptor, IWidget } from "../integration-data-model";
+import generateComponent, { IComponent, IOption, IPropTyping } from "./component-generator";
 import { convertTypes } from "./converter";
 import { removeElement, removeExtension, removePrefix, toKebabCase } from "./helpers";
 import generateIndex from "./index-generator";
@@ -35,6 +35,12 @@ function mapWidget(raw: IWidget, baseComponent: string): {
   component: IComponent
 } {
   const name = removePrefix(raw.name, "dx");
+  const subscribableOptions: IOption[] = raw.options
+    .filter((o) => o.isSubscribable)
+    .map((o) => ({
+      name: o.name,
+      type: "any"
+    }));
 
   return {
     fileName: `${toKebabCase(name)}.ts`,
@@ -43,7 +49,7 @@ function mapWidget(raw: IWidget, baseComponent: string): {
       baseComponentPath: baseComponent,
       dxExportPath: raw.exportPath,
       templates: raw.templates,
-      subscribableOptions: raw.subscribableOptions,
+      subscribableOptions:  subscribableOptions.length > 0 ? subscribableOptions : null,
       propTypings: extractPropTypings(raw.options)
     }
   };

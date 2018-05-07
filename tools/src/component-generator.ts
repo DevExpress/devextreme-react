@@ -171,5 +171,6 @@ const renderPropTyping: (model: IRenderedPropTyping) => string = createTempate(`
 export default generate;
 export {
     IComponent,
+    IOption,
     IPropTyping
 };

@@ -54,7 +54,16 @@ export default class extends React.Component<any, { expandAll: boolean }> {
                     allowColumnReordering={true}
                     grouping={{ autoExpandAll: this.state.expandAll }}
                     groupPanel={{ visible: true }}
-                    paging={{ pageSize: 10 }}
+                    defaultPaging={{ pageSize: 10 }}
+                    pager={{
+                        showPageSizeSelector: true,
+                        allowedPageSizes: [
+                            5,
+                            10,
+                            20
+                        ],
+                        showInfo: true
+                    }} // tslint:disable-line:jsx-no-multiline-js
                     selection={{ mode: "multiple" }}
                     filterRow={{ visible: true }}
                     defaultColumns={this.columns}
