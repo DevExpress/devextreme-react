@@ -15,9 +15,9 @@
     "prop-types": "^15.6.1"
   },
   "peerDependencies": {
+    "devextreme": "^18.1.1-pre-18103",
     "react": "^16.2.0",
-    "react-dom": "^16.2.0",
-    "devextreme": "^18.1.1-pre-18103"
+    "react-dom": "^16.2.0"
   },
   "devDependencies": {
     "@types/enzyme": "^3.1.9",
