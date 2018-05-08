@@ -11,6 +11,9 @@
   },
   "main": "index.js",
   "types": "index.d.ts",
+  "dependencies": {
+    "prop-types": "^15.6.1"
+  },
   "peerDependencies": {
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
