@@ -21,6 +21,7 @@ class Component<P> extends React.PureComponent<P, any> {
   protected readonly _defaults: Record<string, string>;
 
   protected _templateProps: ITemplateMeta[] = [];
+  protected _nestedOptionIdPrefix: string;
 
   private readonly _guards: Record<string, number> = {};
   private _element: any;
@@ -70,6 +71,16 @@ class Component<P> extends React.PureComponent<P, any> {
       ...splitProps.options,
       ...this._getIntegrationOptions(splitProps.templates, splitProps.nestedTemplates)
     };
+
+    if (!!this.props.children) {
+      const child = this.props.children as { type: { OptionId: string } , props: object };
+      if (child && child.type && child.type.OptionId) {
+        if (child.type.OptionId.indexOf(this._nestedOptionIdPrefix) === 0) {
+          const optionName = child.type.OptionId.substr(this._nestedOptionIdPrefix.length);
+          options[optionName] = child.props;
+        }
+      }
+    }
 
     this._instance = new this._WidgetClass(this._element, options);
     this._instance.on("optionChanged", this._optionChangedHandler);

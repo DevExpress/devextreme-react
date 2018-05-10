@@ -2,7 +2,7 @@ import * as React from "react";
 import Example from "./example-block";
 
 import { CheckBox } from "../src/ui/check-box";
-import { DataGrid } from "../src/ui/data-grid";
+import { DataGrid, DefaultPaging } from "../src/ui/data-grid";
 
 import { sales } from "./data";
 
@@ -67,7 +67,13 @@ export default class extends React.Component<any, { expandAll: boolean }> {
                     selection={{ mode: "multiple" }}
                     filterRow={{ visible: true }}
                     defaultColumns={this.columns}
-                />
+                >
+                    <DefaultPaging
+                        enabled={true}
+                        pageSize={6}
+                        pageIndex={1}
+                    />
+                </DataGrid>
                 <br />
                 <CheckBox
                     text="Expand All Groups"

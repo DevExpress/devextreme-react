@@ -20,6 +20,8 @@ const WidgetClass = jest.fn(() => Widget);
 
 class TestComponent<P = any> extends Component<P> {
 
+    public _nestedOptionIdPrefix: string = "abc-testComponent-";
+
     constructor(props: P) {
         super(props);
 
@@ -502,6 +504,33 @@ describe("disposing", () => {
 
         expect(handleDxRemove).toHaveBeenCalledTimes(1);
     });
+});
+
+describe("nested objects", () => {
+
+    class TestNestedComponent extends React.Component<{ a: number }, any> {
+        public static OptionId: string = "abc-testComponent-optionX";
+
+        public render() {
+            return null;
+        }
+    } // tslint:disable-line:max-classes-per-file
+
+    it("includes options from nested component", () => {
+        mount(
+            <TestComponent>
+                <TestNestedComponent a={123} />
+            </TestComponent>
+        );
+
+        expect(WidgetClass.mock.calls[0][1]).toEqual({
+            templatesRenderAsynchronously: true,
+            optionX: {
+                a: 123
+            }
+        });
+    });
+
 });
 
 it("calls option method on props update", () => {
