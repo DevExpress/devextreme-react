@@ -230,6 +230,7 @@ ReactDOM.render(
     document.getElementById('root')
 );
 ```
+Functional Components can cause unnecessary render calls. In such cases, consider using the [PureComponent](https://reactjs.org/docs/react-api.html#reactpurecomponent) or the [shouldComponentUpdate method](https://reactjs.org/docs/react-component.html#shouldcomponentupdate).
 
 A template component can be specified using a property with the `Component` suffix:
 ```jsx
@@ -247,29 +248,14 @@ const items = [
     { text: '567' }
 ];
 
-class Item extends React.Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            counter: 0
-        };
-
-        this.handleClick = this.handleClick.bind(this);
-    }
+class Item extends React.PureComponent {
 
     render() {
         return (
             <i onClick={this.handleClick}>
-                Component template for item {this.props.text}. <b>Clicks: {this.state.counter}</b>
+                Component template for item {this.props.text}.
             </i>
         );
-    }
-
-    handleClick() {
-        this.setState({
-            counter: this.state.counter + 1
-        });
     }
 }
 
