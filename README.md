@@ -230,7 +230,7 @@ ReactDOM.render(
     document.getElementById('root')
 );
 ```
-As React Functional Components are not pure they can cause unnecessary render calls. In such cases using the [PureComponent](https://reactjs.org/docs/react-api.html#reactpurecomponent) or [shouldComponentUpdate()](https://reactjs.org/docs/react-component.html#shouldcomponentupdate) could be helpful.
+Functional Components can cause unnecessary render calls. In such cases consider using the [PureComponent](https://reactjs.org/docs/react-api.html#reactpurecomponent) or the[shouldComponentUpdate method](https://reactjs.org/docs/react-component.html#shouldcomponentupdate).
 
 A template component can be specified using a property with the `Component` suffix:
 ```jsx
