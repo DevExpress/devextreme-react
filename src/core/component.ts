@@ -6,7 +6,7 @@ import { createConfigurationComponent } from "./configuration-component";
 import { addPrefixToKeys, getNestedValue } from "./helpers";
 import { splitProps } from "./props-preprocessor";
 import { ITemplateMeta } from "./template";
-import { prepareTemplate } from "./template-provider";
+import { ITemplateWrapper, wrapTemplate } from "./template-wrapper";
 
 const DX_REMOVE_EVENT = "dxremove";
 
@@ -40,6 +40,8 @@ class Component<P> extends React.PureComponent<P, IState> {
     super(props);
     this._optionChangedHandler = this._optionChangedHandler.bind(this);
     this._prepareProps = this._prepareProps.bind(this);
+    this._setTempaltesState = this._setTempaltesState.bind(this);
+
     this.state = {
       templates: {}
     };
@@ -190,35 +192,45 @@ class Component<P> extends React.PureComponent<P, IState> {
   }
 
   private _getIntegrationOptions(options: Record<string, any>, nestedOptions: Record<string, any>): any {
-    const templates: Record<string, any> = {};
-    const result: Record<string, any> = {
+    const templates: Record<string, ITemplateWrapper> = {};
+    const result = {
       integrationOptions: {
         templates
       }
     };
 
-    const getTemplate = (component: any, render: any) => {
-        const templateProp = !!component ?
-          React.createElement.bind(this, component) :
-          render.bind(this);
-
-        return prepareTemplate(templateProp, this);
-    };
-
     this._templateProps.forEach((m) => {
       if (options[m.component] || options[m.render]) {
         result[m.tmplOption] = m.tmplOption;
-        templates[m.tmplOption] = getTemplate(options[m.component], options[m.render]);
+        templates[m.tmplOption] = this._getTemplate(options[m.component], options[m.render]);
       }
     });
 
     Object.keys(nestedOptions).forEach((name) => {
-        templates[name] = getTemplate(nestedOptions[name].component, nestedOptions[name].render);
+        templates[name] = this._getTemplate(nestedOptions[name].component, nestedOptions[name].render);
     });
 
     if (Object.keys(templates).length > 0) {
       return result;
     }
+  }
+
+  private _getTemplate(component: any, render: any): ITemplateWrapper {
+    const templateProp = !!component
+      ? React.createElement.bind(this, component)
+      : render.bind(this);
+
+    return wrapTemplate(templateProp, this._setTempaltesState);
+  }
+
+  private _setTempaltesState(callback: (templates: Record<string, any>) => void) {
+    this.setState((state: IState) => {
+      const templates = { ...state.templates };
+      callback(templates);
+      return {
+        templates
+      };
+    });
   }
 
   private wrapConfigComponent(component: any): any {

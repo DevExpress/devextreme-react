@@ -15,3 +15,7 @@ export function addPrefixToKeys(obj: Record<string, any>, prefix: string): Recor
 
     return result;
 }
+
+export function generateID() {
+    Math.random().toString(36).substr(2);
+}
