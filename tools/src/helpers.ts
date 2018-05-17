@@ -35,3 +35,11 @@ export function removeElement<T>(array: T[], element: T) {
         array.splice(index, 1);
     }
 }
+
+export function isNotEmptyArray(array: any[]): boolean {
+    return !isEmptyArray(array);
+}
+
+export function isEmptyArray(array: any[]): boolean {
+    return array === undefined || array === null || array.length === 0;
+}

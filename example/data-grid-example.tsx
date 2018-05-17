@@ -2,11 +2,12 @@ import * as React from "react";
 import Example from "./example-block";
 
 import { CheckBox } from "../src/ui/check-box";
-import { DataGrid, DefaultPaging } from "../src/ui/data-grid";
+import { DataGrid, DataGridPaging as Paging } from "../src/ui/data-grid";
+import { NumberBox } from "../src/ui/number-box";
 
 import { sales } from "./data";
 
-export default class extends React.Component<any, { expandAll: boolean }> {
+export default class extends React.Component<any, { expandAll: boolean, pageIndex: number }> {
 
     private columns = [
         {
@@ -39,10 +40,12 @@ export default class extends React.Component<any, { expandAll: boolean }> {
     constructor(props: any) {
         super(props);
         this.state = {
-            expandAll: true
+            expandAll: true,
+            pageIndex: 1
         };
 
-        this.handleChange = this.handleChange.bind(this);
+        this.handleExpandAllChange = this.handleExpandAllChange.bind(this);
+        this.handlePageIndexChange = this.handlePageIndexChange.bind(this);
     }
 
     public render() {
@@ -54,7 +57,6 @@ export default class extends React.Component<any, { expandAll: boolean }> {
                     allowColumnReordering={true}
                     grouping={{ autoExpandAll: this.state.expandAll }}
                     groupPanel={{ visible: true }}
-                    defaultPaging={{ pageSize: 10 }}
                     pager={{
                         showPageSizeSelector: true,
                         allowedPageSizes: [
@@ -68,25 +70,36 @@ export default class extends React.Component<any, { expandAll: boolean }> {
                     filterRow={{ visible: true }}
                     defaultColumns={this.columns}
                 >
-                    <DefaultPaging
-                        enabled={true}
-                        pageSize={6}
-                        pageIndex={1}
+                    <Paging
+                        pageSize={5}
+                        pageIndex={this.state.pageIndex}
                     />
                 </DataGrid>
                 <br />
                 <CheckBox
                     text="Expand All Groups"
                     value={this.state.expandAll}
-                    onValueChanged={this.handleChange}
+                    onValueChanged={this.handleExpandAllChange}
+                />
+                <br/>
+                <br/>
+                <NumberBox
+                    showSpinButtons={true}
+                    value={this.state.pageIndex}
+                    onValueChanged={this.handlePageIndexChange}
                 />
             </Example>
         );
     }
 
-    private handleChange(e: any) {
+    private handleExpandAllChange(e: any) {
         this.setState({
             expandAll: e.value
+        });
+    }
+    private handlePageIndexChange(e: any) {
+        this.setState({
+            pageIndex: e.value
         });
     }
 }

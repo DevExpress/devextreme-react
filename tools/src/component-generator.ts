@@ -1,18 +1,22 @@
-import { createKeyComparator, lowercaseFirst, uppercaseFirst } from "./helpers";
+import { createKeyComparator, isNotEmptyArray, lowercaseFirst, uppercaseFirst } from "./helpers";
 import createTempate from "./template";
 
 interface IComponent {
     name: string;
     baseComponentPath: string;
+    configComponentPath: string;
     dxExportPath: string;
     subscribableOptions?: IOption[];
+    nestedOptions?: IOption[];
     templates?: string[];
     propTypings?: IPropTyping[];
 }
 
 interface IOption {
     name: string;
-    type: string;
+    type?: string;
+    nested?: IOption[];
+    isCollectionItem?: boolean;
 }
 
 interface IPropTyping {
@@ -41,17 +45,40 @@ function generate(component: IComponent): string {
             .map((t) => renderPropTyping(createPropTypingModel(t)))
         : null;
 
+    const nestedOptions = component.nestedOptions
+        ? component.nestedOptions
+            .sort(createKeyComparator<IOption>((o) => o.name))
+            .map((o) => ({
+                name: o.name,
+                className: component.name + uppercaseFirst(o.name),
+                interfaceName: `I${uppercaseFirst(o.name)}Options`,
+                rendered: renderObject(o.nested, 0),
+                isCollectionItem: o.isCollectionItem
+            }))
+        : null;
+
+    const optionsName = `I${component.name}Options`;
+    const exportNames = [ component.name, optionsName ];
+    if (isNotEmptyArray(nestedOptions)) {
+        nestedOptions.forEach((opt) => {
+            exportNames.push(opt.className);
+        });
+    }
+
     return renderComponent({
         name: component.name,
         baseComponentPath: component.baseComponentPath,
+        configComponentPath: component.configComponentPath,
         dxExportPath: component.dxExportPath,
 
         widgetName: `dx${uppercaseFirst(component.name)}`,
-        optionsName: `I${component.name}Options`,
+        optionsName,
         hasExtraOptions: !!templates || !!subscribableOptions,
         subscribableOptions,
         templates,
-        renderedPropTypings
+        nestedOptions,
+        renderedPropTypings,
+        renderedExports: renderExports(exportNames)
     });
 }
 
@@ -82,7 +109,7 @@ function createSubscribableOptionModel(option: IOption) {
 
 function createPropTypingModel(typing: IPropTyping): IRenderedPropTyping {
     const types = typing.types.map((t) => "PropTypes." + t);
-    if (typing.acceptableValues && typing.acceptableValues.length > 0) {
+    if (isNotEmptyArray(typing.acceptableValues)) {
         types.push(`PropTypes.oneOf([${typing.acceptableValues.join(", ")}])`);
     }
     return {
@@ -97,6 +124,7 @@ const renderComponent: (model: {
     widgetName: string;
     optionsName: string;
     baseComponentPath: string;
+    configComponentPath: string;
     dxExportPath: string;
     hasExtraOptions: boolean;
     templates: {
@@ -109,13 +137,22 @@ const renderComponent: (model: {
         type: string,
         renderedProp: string
     }[]; // tslint:disable-line:array-type
-    renderedPropTypings: string[]
+    nestedOptions: {
+        name: string;
+        className: string;
+        interfaceName: string;
+        rendered: string;
+        isCollectionItem: boolean;
+    }[]; // tslint:disable-line:array-type
+    renderedPropTypings: string[],
+    renderedExports: string
 }
 ) => string = createTempate(`
 import <#= it.widgetName #>, { IOptions <#? !it.hasExtraOptions #>as <#= it.optionsName #> <#?#>} from "devextreme/<#= it.dxExportPath #>";<#? it.renderedPropTypings #>
 import { PropTypes } from "prop-types";<#?#>
 import BaseComponent from "<#= it.baseComponentPath #>";
-<#? it.hasExtraOptions #>
+<#? it.nestedOptions #>import ConfigurationComponent from "<#= it.configComponentPath #>";
+<#?#><#? it.hasExtraOptions #>
 interface <#= it.optionsName #> extends IOptions {<#~ it.templates :template #>
   <#= template.render #>?: (props: any) => React.ReactNode;
   <#= template.component #>?: React.ComponentType<any>;<#~#><#~ it.subscribableOptions :option #>
@@ -136,8 +173,18 @@ class <#= it.name #> extends BaseComponent<<#= it.optionsName #>> {
   protected _templateProps = [<#= it.templates.map(t => t.renderedProp).join(', ') #>];
 <#?#>}<#? it.renderedPropTypings #>
 (<#= it.name #> as any).propTypes = {<#= it.renderedPropTypings.join(',') #>
-};<#?#>
-export { <#= it.name #>, <#= it.optionsName #> };
+};<#?#><#? it.nestedOptions #>
+// tslint:disable:max-classes-per-file<#~ it.nestedOptions :opt #>
+
+class <#= opt.className #> extends ConfigurationComponent<<#= opt.rendered #>> {<#? opt.isCollectionItem #>
+  public static IsCollectionItem = true;<#?#>
+  public static OwnerType = <#= it.name #>;
+  public static OptionName = "<#= opt.name #>";
+}<#~#>
+<#?#>
+export {
+<#= it.renderedExports #>
+};
 `.trimLeft());
 // tslint:enable:max-line-length
 
@@ -153,13 +200,6 @@ const renderTemplateOption: (model: {
   }
 `.trim());
 
-const renderObjectEntry: (model: {
-    key: string;
-    value: string;
-}) => string = createTempate(`
-    <#= it.key #>: "<#= it.value #>"
-`.trimRight());
-
 // tslint:disable:max-line-length
 const renderPropTyping: (model: IRenderedPropTyping) => string = createTempate(`
   <#= it.propName #>: <#? it.renderedTypes.length === 1 #><#= it.renderedTypes[0] #><#??#>PropTypes.oneOfType([
@@ -167,6 +207,43 @@ const renderPropTyping: (model: IRenderedPropTyping) => string = createTempate(`
   ])<#?#>
 `.trimRight());
 // tslint:enable:max-line-length
+
+const renderObjectEntry: (model: {
+    key: string;
+    value: string;
+}) => string = createTempate(`
+    <#= it.key #>: "<#= it.value #>"
+`.trimRight());
+
+function renderObject(props: IOption[], indent: number): string {
+    let result = "{";
+
+    indent += 1;
+
+    props.forEach((opt) => {
+        result += "\n" + getIndent(indent) + opt.name + "?: ";
+        if (isNotEmptyArray(opt.nested)) {
+            result += renderObject(opt.nested, indent);
+        } else {
+            result += opt.type;
+        }
+        result += ";";
+    });
+
+    indent -= 1;
+    result +=  "\n" + getIndent(indent) + "}";
+    return result;
+}
+
+function getIndent(indent: number) {
+    return Array(indent * 2 + 1).join(" ");
+}
+
+function renderExports(exportsNames: string[]) {
+    return exportsNames
+        .map((exportName) => getIndent(1) + exportName)
+        .join(",\n");
+}
 
 export default generate;
 export {

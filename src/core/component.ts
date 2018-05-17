@@ -2,25 +2,34 @@ import * as React from "react";
 
 import * as events from "devextreme/events";
 
-import { ReactElement } from "react";
-import { Template } from "./template";
+import { createConfigurationComponent } from "./configuration-component";
+import { getNestedValue } from "./helpers";
+import { splitProps } from "./props-preprocessor";
+import { ITemplateMeta } from "./template";
 import { prepareTemplate } from "./template-provider";
 
 const DX_REMOVE_EVENT = "dxremove";
 
-interface ITemplateMeta {
-  tmplOption: string;
-  render: string;
-  component: string;
+interface IChildComponent {
+  type: {
+    IsCollectionItem: boolean;
+    OwnerType: any;
+    OptionName: string;
+  };
+  props: object;
 }
 
-class Component<P> extends React.PureComponent<P, any> {
+interface IState {
+  templates: {};
+}
+
+class Component<P> extends React.PureComponent<P, IState> {
 
   protected _WidgetClass: any;
   protected _instance: any;
   protected readonly _defaults: Record<string, string>;
 
-  protected _templateProps: ITemplateMeta[] = [];
+  protected readonly _templateProps: ITemplateMeta[] = [];
   protected _nestedOptionIdPrefix: string;
 
   private readonly _guards: Record<string, number> = {};
@@ -30,20 +39,14 @@ class Component<P> extends React.PureComponent<P, any> {
   constructor(props: P) {
     super(props);
     this._optionChangedHandler = this._optionChangedHandler.bind(this);
-    this._splitComponentProps = this._splitComponentProps.bind(this);
+    this._prepareProps = this._prepareProps.bind(this);
     this.state = {
       templates: {}
     };
   }
 
   public componentWillUpdate(nextProps: P) {
-    const splitProps = this._splitComponentProps(nextProps);
-    const options: Record<string, any> = {
-      ...splitProps.options,
-      ...this._getIntegrationOptions(splitProps.templates, splitProps.nestedTemplates)
-    };
-
-    this._processChangedValues(options, this.props);
+    this.updateProps(nextProps);
   }
 
   public render() {
@@ -51,36 +54,43 @@ class Component<P> extends React.PureComponent<P, any> {
         "div",
         { ref: (element: any) => this._element = element }
       ];
+
       if (!!this.props.children) {
-        args.push(this.props.children);
+        if (Array.isArray(this.props.children)) {
+          this.props.children.forEach((c) => args.push(this.wrapConfigComponent(c)));
+        } else {
+          args.push(this.wrapConfigComponent(this.props.children));
+        }
       }
+
       const templates = Object.getOwnPropertyNames(this.state.templates);
       if (templates.length) {
-        args.push(templates.map((m: any) => this.state.templates[m]()));
+        templates.forEach((t) => args.push(this.state.templates[t]()));
       }
+
       return React.createElement.apply(this, args);
   }
 
+  public updateNested(prefix: string, newProps: Record<string, any>, prevProps: Record<string, any>): void {
+    const newProps2 = {};
+    const prevProps2 = {};
+    Object.keys(newProps).forEach((k) => newProps2[prefix + "." + k] = newProps[k]);
+    Object.keys(prevProps).forEach((k) => prevProps2[prefix + "." + k] = prevProps[k]);
+
+    this._processChangedValues(newProps2, prevProps2);
+  }
+
   public componentDidMount() {
-    const props: Record<string, any> = this.props;
-    const splitProps = this._splitComponentProps(props);
+    const props = this.getActualProps();
+
+    const preparedProps = this._prepareProps(props);
 
     const options: Record<string, any> = {
       templatesRenderAsynchronously: true,
-      ...splitProps.defaults,
-      ...splitProps.options,
-      ...this._getIntegrationOptions(splitProps.templates, splitProps.nestedTemplates)
+      ...preparedProps.defaults,
+      ...preparedProps.options,
+      ...this._getIntegrationOptions(preparedProps.templates, preparedProps.nestedTemplates)
     };
-
-    if (!!this.props.children) {
-      const child = this.props.children as { type: { OptionId: string } , props: object };
-      if (child && child.type && child.type.OptionId) {
-        if (child.type.OptionId.indexOf(this._nestedOptionIdPrefix) === 0) {
-          const optionName = child.type.OptionId.substr(this._nestedOptionIdPrefix.length);
-          options[optionName] = child.props;
-        }
-      }
-    }
 
     this._instance = new this._WidgetClass(this._element, options);
     this._instance.on("optionChanged", this._optionChangedHandler);
@@ -91,13 +101,13 @@ class Component<P> extends React.PureComponent<P, any> {
     this._instance.dispose();
   }
 
-  private _optionChangedHandler(e: { name: string, value: any }) {
-    const optionName = e.name;
-    const optionValue = (this.props as any)[optionName];
-
+  private _optionChangedHandler(e: { fullName: string, value: any }) {
     if (this._updatingProps) {
       return;
     }
+
+    const optionName = e.fullName;
+    const optionValue = getNestedValue(this.getActualProps(), optionName.split("."));
 
     if (optionValue === undefined || optionValue === null) {
       return;
@@ -116,65 +126,52 @@ class Component<P> extends React.PureComponent<P, any> {
     this._guards[optionName] = guardId;
   }
 
-  private _splitComponentProps(props: Record<string, any>): {
+  private _prepareProps(rawProps: Record<string, any>): {
     defaults: Record<string, any>,
     options: Record<string, any>,
     templates: Record<string, any>,
     nestedTemplates: Record<string, any>
   } {
-    const defaults: Record<string, any> = {};
-    const options: Record<string, any> = {};
-    const templates: Record<string, any> = {};
-    const nestedTemplates: Record<string, any> = {};
+    const props = splitProps(rawProps, this._defaults, this._templateProps);
+    const options = props.options;
+    props.options = {};
 
-    const knownTemplates: Record<string, any> = {};
+    if (options) {
+      Object.keys(options).forEach((key) => {
+        props.options[key] = this._wrapEventHandler(options[key], key);
+      });
+    }
 
-    this._templateProps.forEach((value) => {
-      knownTemplates[value.component] = true;
-      knownTemplates[value.render] = true;
-    });
-
-    Object.keys(props).forEach((key) => {
-      const defaultOptionName = this._defaults ? this._defaults[key] : null;
-
-      if (defaultOptionName) {
-        defaults[defaultOptionName] = props[key];
-      } else if (knownTemplates[key]) {
-        templates[key] = props[key];
-      } else if (key === "children") {
-        React.Children.forEach(props[key], (child: ReactElement<any>) => {
-            if (child.type === Template) {
-                nestedTemplates[child.props.name] = {
-                    render: child.props.render,
-                    component: child.props.component
-                };
-            }
-        });
-      } else {
-        options[key] = this._wrapEventHandler(props, key);
-      }
-    });
-
-    return { defaults, options, templates, nestedTemplates };
+    return props;
   }
 
-  private _wrapEventHandler(options: Record<string, any>, key: string): any {
-    if (key.substr(0, 2) === "on" && typeof options[key] === "function") {
+  private _wrapEventHandler(optionValue: any, optionName: string): any {
+    if (optionName.substr(0, 2) === "on" && typeof optionValue === "function") {
       return (...args: any[]) => {
         if (!this._updatingProps) {
-          options[key](...args);
+          optionValue(...args);
         }
       };
     }
 
-    return options[key];
+    return optionValue;
   }
 
-  private _processChangedValues(props: Record<string, any>, prevProps: Record<string, any>): void {
+  private updateProps(newProps: Record<string, any>): void {
+    const preparedProps = this._prepareProps(newProps);
+    const options: Record<string, any> = {
+      ...preparedProps.options,
+      ...this._getIntegrationOptions(preparedProps.templates, preparedProps.nestedTemplates)
+    };
+
+    this._processChangedValues(options, this.props);
+  }
+
+  private _processChangedValues(newProps: Record<string, any>, prevProps: Record<string, any>): void {
     this._updatingProps = false;
 
-    for (const optionName of Object.keys(props)) {
-      if (props[optionName] !== prevProps[optionName]) {
+    for (const optionName of Object.keys(newProps)) {
+      if (newProps[optionName] !== prevProps[optionName]) {
         if (this._guards[optionName]) {
           window.clearTimeout(this._guards[optionName]);
           delete this._guards[optionName];
@@ -184,7 +181,7 @@ class Component<P> extends React.PureComponent<P, any> {
           this._instance.beginUpdate();
           this._updatingProps = true;
         }
-        this._instance.option(optionName, props[optionName]);
+        this._instance.option(optionName, newProps[optionName]);
       }
     }
 
@@ -225,7 +222,57 @@ class Component<P> extends React.PureComponent<P, any> {
       return result;
     }
   }
+
+  private wrapConfigComponent(component: any): any {
+    const configComponent = component as IChildComponent;
+    if (
+      configComponent && configComponent.type &&
+      configComponent.type.OptionName &&
+      configComponent.type.OwnerType && this instanceof configComponent.type.OwnerType
+    ) {
+      const optionName = configComponent.type.OptionName;
+      return createConfigurationComponent(
+        component,
+        (newProps, prevProps) => this.updateNested(optionName, newProps, prevProps)
+      );
+    }
+
+    return component;
+  }
+
+  private getActualProps(): Record<string, any> {
+
+    const nestedOptions: Record<string, any> = {};
+    const children: any = this.props.children;
+    if (!!children) {
+
+      const nested: IChildComponent[] = Array.isArray(children)
+        ? children as IChildComponent[]
+        : [children as IChildComponent];
+
+      nested.forEach((child) => {
+        if (child && child.type && child.type.OwnerType && this instanceof child.type.OwnerType) {
+
+          if (child.type.IsCollectionItem) {
+
+            if (nestedOptions[child.type.OptionName] === null || nestedOptions[child.type.OptionName] === undefined) {
+              nestedOptions[child.type.OptionName] = [];
+            }
+
+            nestedOptions[child.type.OptionName].push(child.props);
+          } else {
+            nestedOptions[child.type.OptionName] = child.props;
+          }
+        }
+      });
+    }
+
+    return {
+      ...(this.props as Record<string, any>),
+      ...nestedOptions
+    };
+  }
 }
 
 export default Component;
-export { ITemplateMeta };
+export { IState, ITemplateMeta };

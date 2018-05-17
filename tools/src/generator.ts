@@ -3,12 +3,13 @@ import { dirname as getDirName, join as joinPaths, relative as getRelativePath, 
 import { IOption as IRawOption, ITypeDescriptor, IWidget } from "../integration-data-model";
 import generateComponent, { IComponent, IOption, IPropTyping } from "./component-generator";
 import { convertTypes } from "./converter";
-import { removeElement, removeExtension, removePrefix, toKebabCase } from "./helpers";
+import { isNotEmptyArray, removeElement, removeExtension, removePrefix, toKebabCase } from "./helpers";
 import generateIndex from "./index-generator";
 
 function generate(
   rawData: IWidget[],
   baseComponent: string,
+  configComponent: string,
   out: {
     componentsDir: string,
     indexFileName: string
@@ -17,7 +18,7 @@ function generate(
   const modulePaths: string[] = [];
 
   rawData.forEach((data) => {
-    const widgetFile = mapWidget(data, baseComponent);
+    const widgetFile = mapWidget(data, baseComponent, configComponent);
     const widgetFilePath = joinPaths(out.componentsDir, widgetFile.fileName);
     const indexFileDir = getDirName(out.indexFileName);
 
@@ -30,32 +31,49 @@ function generate(
   writeFile(out.indexFileName, generateIndex(modulePaths), { encoding: "utf8" });
 }
 
-function mapWidget(raw: IWidget, baseComponent: string): {
+function mapWidget(raw: IWidget, baseComponent: string, configComponent: string): {
   fileName: string;
   component: IComponent
 } {
   const name = removePrefix(raw.name, "dx");
   const subscribableOptions: IOption[] = raw.options
     .filter((o) => o.isSubscribable)
-    .map((o) => ({
-      name: o.name,
-      type: "any"
-    }));
+    .map(mapOption);
+
+  const nestedOptions: IOption[] = raw.options
+    .filter((o) => o.isSubscribable && isNotEmptyArray(o.options))
+    .map(mapOption);
 
   return {
     fileName: `${toKebabCase(name)}.ts`,
     component: {
       name,
       baseComponentPath: baseComponent,
+      configComponentPath: configComponent,
       dxExportPath: raw.exportPath,
       templates: raw.templates,
-      subscribableOptions:  subscribableOptions.length > 0 ? subscribableOptions : null,
+      subscribableOptions: subscribableOptions.length > 0 ? subscribableOptions : null,
+      nestedOptions: nestedOptions.length > 0 ? nestedOptions : null,
       propTypings: extractPropTypings(raw.options)
     }
   };
 }
 
-function extractPropTypings(options: IRawOption[]): IPropTyping[]  {
+function mapOption(opt: IRawOption): IOption {
+  const result: IOption = {
+    isCollectionItem: false,
+    name: opt.name,
+    type: "any"
+  };
+
+  if (isNotEmptyArray(opt.options)) {
+    result.nested = opt.options.map(mapOption);
+  }
+
+  return result;
+}
+
+function extractPropTypings(options: IRawOption[]): IPropTyping[] {
   return options
     .map(createPropTyping)
     .filter((t) => t != null);

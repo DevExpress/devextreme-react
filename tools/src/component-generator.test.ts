@@ -14,7 +14,10 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 
   protected _WidgetClass = dxCLASS_NAME;
 }
-export { CLASS_NAME, ICLASS_NAMEOptions };
+export {
+  CLASS_NAME,
+  ICLASS_NAMEOptions
+};
 `.trimLeft();
     //#endregion
 
@@ -22,6 +25,7 @@ export { CLASS_NAME, ICLASS_NAMEOptions };
         generate({
             name: "CLASS_NAME",
             baseComponentPath: "BASE_COMPONENT_PATH",
+            configComponentPath: null,
             dxExportPath: "DX/WIDGET/PATH"
         })
     ).toBe(EXPECTED);
@@ -54,7 +58,10 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
     component: "optionComponent"
   }];
 }
-export { CLASS_NAME, ICLASS_NAMEOptions };
+export {
+  CLASS_NAME,
+  ICLASS_NAMEOptions
+};
 `.trimLeft();
         //#endregion
 
@@ -62,6 +69,7 @@ export { CLASS_NAME, ICLASS_NAMEOptions };
             generate({
                 name: "CLASS_NAME",
                 baseComponentPath: "BASE_COMPONENT_PATH",
+                configComponentPath: null,
                 dxExportPath: "DX/WIDGET/PATH",
                 templates: ["optionTemplate"]
             })
@@ -99,7 +107,10 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
     component: "anotherOptionComponent"
   }];
 }
-export { CLASS_NAME, ICLASS_NAMEOptions };
+export {
+  CLASS_NAME,
+  ICLASS_NAMEOptions
+};
 `.trimLeft();
         //#endregion
 
@@ -107,6 +118,7 @@ export { CLASS_NAME, ICLASS_NAMEOptions };
             generate({
                 name: "CLASS_NAME",
                 baseComponentPath: "BASE_COMPONENT_PATH",
+                configComponentPath: null,
                 dxExportPath: "DX/WIDGET/PATH",
                 templates: ["optionTemplate", "anotherOptionTemplate"]
             })
@@ -138,7 +150,10 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
     component: "component"
   }];
 }
-export { CLASS_NAME, ICLASS_NAMEOptions };
+export {
+  CLASS_NAME,
+  ICLASS_NAMEOptions
+};
 `.trimLeft();
         //#endregion
 
@@ -146,6 +161,7 @@ export { CLASS_NAME, ICLASS_NAMEOptions };
             generate({
                 name: "CLASS_NAME",
                 baseComponentPath: "BASE_COMPONENT_PATH",
+                configComponentPath: null,
                 dxExportPath: "DX/WIDGET/PATH",
                 templates: ["template"]
             })
@@ -177,7 +193,10 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
     defaultOption1: "option1"
   };
 }
-export { CLASS_NAME, ICLASS_NAMEOptions };
+export {
+  CLASS_NAME,
+  ICLASS_NAMEOptions
+};
 `.trimLeft();
         //#endregion
 
@@ -185,6 +204,7 @@ export { CLASS_NAME, ICLASS_NAMEOptions };
             generate({
                 name: "CLASS_NAME",
                 baseComponentPath: "BASE_COMPONENT_PATH",
+                configComponentPath: null,
                 dxExportPath: "DX/WIDGET/PATH",
                 subscribableOptions: [
                     { name: "option1", type: "someType" }
@@ -217,7 +237,10 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
     defaultOption2: "option2"
   };
 }
-export { CLASS_NAME, ICLASS_NAMEOptions };
+export {
+  CLASS_NAME,
+  ICLASS_NAMEOptions
+};
 `.trimLeft();
         //#endregion
 
@@ -225,10 +248,143 @@ export { CLASS_NAME, ICLASS_NAMEOptions };
             generate({
                 name: "CLASS_NAME",
                 baseComponentPath: "BASE_COMPONENT_PATH",
+                configComponentPath: null,
                 dxExportPath: "DX/WIDGET/PATH",
                 subscribableOptions: [
                     { name: "option1", type: "someType" },
                     { name: "option2", type: "anotherType" }
+                ]
+            })
+        ).toBe(EXPECTED);
+    });
+
+    it("processes nested options", () => {
+        //#region EXPECTED
+        const EXPECTED = `
+import dxCLASS_NAME, { IOptions as ICLASS_NAMEOptions } from "devextreme/DX/WIDGET/PATH";
+import BaseComponent from "BASE_COMPONENT_PATH";
+import ConfigurationComponent from "CONFIG_COMPONENT_PATH";
+
+class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
+
+  public get instance(): dxCLASS_NAME {
+    return this._instance;
+  }
+
+  protected _WidgetClass = dxCLASS_NAME;
+}
+// tslint:disable:max-classes-per-file
+
+class CLASS_NAMEOpt_1 extends ConfigurationComponent<{
+  sub_opt_2?: TYPE_1;
+  sub_opt_3?: {
+    sub_sub_opt_4?: TYPE_2;
+    sub_sub_opt_5?: {
+      sub_sub_sub_opt_6?: TYPE_3;
+    };
+  };
+}> {
+  public static OwnerType = CLASS_NAME;
+  public static OptionName = "opt_1";
+}
+
+export {
+  CLASS_NAME,
+  ICLASS_NAMEOptions,
+  CLASS_NAMEOpt_1
+};
+`.trimLeft();
+        //#endregion
+
+        expect(
+            generate({
+                name: "CLASS_NAME",
+                baseComponentPath: "BASE_COMPONENT_PATH",
+                configComponentPath: "CONFIG_COMPONENT_PATH",
+                dxExportPath: "DX/WIDGET/PATH",
+                nestedOptions: [
+                    {
+                        name: "opt_1",
+                        nested: [
+                            {
+                                name: "sub_opt_2",
+                                type: "TYPE_1"
+                            },
+                            {
+                                name: "sub_opt_3",
+                                nested: [
+                                    {
+                                        name: "sub_sub_opt_4",
+                                        type: "TYPE_2"
+                                    },
+                                    {
+                                        name: "sub_sub_opt_5",
+                                        nested: [
+                                            {
+                                                name: "sub_sub_sub_opt_6",
+                                                type: "TYPE_3"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            })
+        ).toBe(EXPECTED);
+    });
+
+    it("processes nested array options", () => {
+        //#region EXPECTED
+        const EXPECTED = `
+import dxCLASS_NAME, { IOptions as ICLASS_NAMEOptions } from "devextreme/DX/WIDGET/PATH";
+import BaseComponent from "BASE_COMPONENT_PATH";
+import ConfigurationComponent from "CONFIG_COMPONENT_PATH";
+
+class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
+
+  public get instance(): dxCLASS_NAME {
+    return this._instance;
+  }
+
+  protected _WidgetClass = dxCLASS_NAME;
+}
+// tslint:disable:max-classes-per-file
+
+class CLASS_NAMEOpt_1 extends ConfigurationComponent<{
+  sub_opt_2?: TYPE_1;
+}> {
+  public static IsCollectionItem = true;
+  public static OwnerType = CLASS_NAME;
+  public static OptionName = "opt_1";
+}
+
+export {
+  CLASS_NAME,
+  ICLASS_NAMEOptions,
+  CLASS_NAMEOpt_1
+};
+`.trimLeft();
+        //#endregion
+
+        expect(
+            generate({
+                name: "CLASS_NAME",
+                baseComponentPath: "BASE_COMPONENT_PATH",
+                configComponentPath: "CONFIG_COMPONENT_PATH",
+                dxExportPath: "DX/WIDGET/PATH",
+                nestedOptions: [
+                    {
+                        name: "opt_1",
+                        nested: [
+                            {
+                                name: "sub_opt_2",
+                                type: "TYPE_1"
+                            }
+                        ],
+                        isCollectionItem: true
+                    }
                 ]
             })
         ).toBe(EXPECTED);
@@ -252,7 +408,10 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 (CLASS_NAME as any).propTypes = {
   PROP1: PropTypes.SOME_TYPE
 };
-export { CLASS_NAME, ICLASS_NAMEOptions };
+export {
+  CLASS_NAME,
+  ICLASS_NAMEOptions
+};
 `.trimLeft();
         //#endregion
 
@@ -260,6 +419,7 @@ export { CLASS_NAME, ICLASS_NAMEOptions };
             generate({
                 name: "CLASS_NAME",
                 baseComponentPath: "BASE_COMPONENT_PATH",
+                configComponentPath: null,
                 dxExportPath: "DX/WIDGET/PATH",
                 propTypings: [
                     {
@@ -289,7 +449,10 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 (CLASS_NAME as any).propTypes = {
   PROP1: PropTypes.oneOf(["VALUE_1", "VALUE_2"])
 };
-export { CLASS_NAME, ICLASS_NAMEOptions };
+export {
+  CLASS_NAME,
+  ICLASS_NAMEOptions
+};
 `.trimLeft();
         //#endregion
 
@@ -297,6 +460,7 @@ export { CLASS_NAME, ICLASS_NAMEOptions };
             generate({
                 name: "CLASS_NAME",
                 baseComponentPath: "BASE_COMPONENT_PATH",
+                configComponentPath: null,
                 dxExportPath: "DX/WIDGET/PATH",
                 propTypings: [
                     {
@@ -330,7 +494,10 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
     PropTypes.ANOTHER_TYPE
   ])
 };
-export { CLASS_NAME, ICLASS_NAMEOptions };
+export {
+  CLASS_NAME,
+  ICLASS_NAMEOptions
+};
 `.trimLeft();
         //#endregion
 
@@ -338,6 +505,7 @@ export { CLASS_NAME, ICLASS_NAMEOptions };
             generate({
                 name: "CLASS_NAME",
                 baseComponentPath: "BASE_COMPONENT_PATH",
+                configComponentPath: null,
                 dxExportPath: "DX/WIDGET/PATH",
                 propTypings: [
                     {
@@ -373,7 +541,10 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
   B-PROP: PropTypes.TYPE_4,
   c-PROP: PropTypes.TYPE_2
 };
-export { CLASS_NAME, ICLASS_NAMEOptions };
+export {
+  CLASS_NAME,
+  ICLASS_NAMEOptions
+};
 `.trimLeft();
         //#endregion
 
@@ -381,6 +552,7 @@ export { CLASS_NAME, ICLASS_NAMEOptions };
             generate({
                 name: "CLASS_NAME",
                 baseComponentPath: "BASE_COMPONENT_PATH",
+                configComponentPath: null,
                 dxExportPath: "DX/WIDGET/PATH",
                 propTypings: [
                     {
