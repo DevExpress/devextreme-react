@@ -8,3 +8,10 @@ export function getNestedValue(obj: object, keyParts: string[]): any {
 
     return current;
 }
+
+export function addPrefixToKeys(obj: Record<string, any>, prefix: string): Record<string, any> {
+    const result = {};
+    Object.keys(obj).forEach((key) => result[prefix + key] = obj[key]);
+
+    return result;
+}

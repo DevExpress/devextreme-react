@@ -459,17 +459,6 @@ describe("controlled mode", () => {
         expect(WidgetClass.mock.calls[0][1]).not.toHaveProperty("defaultControlledOption");
     });
 
-    // it("pass nested default values to widget", () => {
-    //     mount(
-    //         <ControlledComponent>
-    //             <NestedComponent defaultC="default" />
-    //         </ControlledComponent>
-    //     );
-
-    //     expect(WidgetClass.mock.calls[0][1].nestedOption.c).toBe("default");
-    //     expect(WidgetClass.mock.calls[0][1].nestedOption).not.toHaveProperty("defaultC");
-    // });
-
     it("pass nested default values to widget", () => {
         mount(
             <ControlledComponent defaultControlledOption={"default"}/>

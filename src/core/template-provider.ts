@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import Component from "./component";
+import Component, { IState } from "./component";
 import TemplateWrapper from "./template-wrapper";
 
 const generateID = () => Math.random().toString(36).substr(2);
@@ -18,7 +18,7 @@ export function prepareTemplate(tmplFn: any, component: Component<any>): { rende
     render: (data: ITemplateData) => {
       const templateId = "__template_" + generateID();
       const removedHandler = () => {
-      component.setState((state: any) => {
+      component.setState((state: IState) => {
           const updatedTemplates = {...state.templates};
           delete updatedTemplates[templateId];
           return {
@@ -35,7 +35,7 @@ export function prepareTemplate(tmplFn: any, component: Component<any>): { rende
           key: templateId
         });
 
-      component.setState((state: any) => {
+      component.setState((state: IState) => {
         const updatedTemplates = {...state.templates};
         updatedTemplates[templateId] = templateWrapper;
         return {

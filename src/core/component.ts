@@ -3,7 +3,7 @@ import * as React from "react";
 import * as events from "devextreme/events";
 
 import { createConfigurationComponent } from "./configuration-component";
-import { getNestedValue } from "./helpers";
+import { addPrefixToKeys, getNestedValue } from "./helpers";
 import { splitProps } from "./props-preprocessor";
 import { ITemplateMeta } from "./template";
 import { prepareTemplate } from "./template-provider";
@@ -46,7 +46,13 @@ class Component<P> extends React.PureComponent<P, IState> {
   }
 
   public componentWillUpdate(nextProps: P) {
-    this.updateProps(nextProps);
+    const preparedProps = this._prepareProps(nextProps);
+    const options: Record<string, any> = {
+      ...preparedProps.options,
+      ...this._getIntegrationOptions(preparedProps.templates, preparedProps.nestedTemplates)
+    };
+
+    this._processChangedValues(options, this.props);
   }
 
   public render() {
@@ -71,13 +77,15 @@ class Component<P> extends React.PureComponent<P, IState> {
       return React.createElement.apply(this, args);
   }
 
-  public updateNested(prefix: string, newProps: Record<string, any>, prevProps: Record<string, any>): void {
-    const newProps2 = {};
-    const prevProps2 = {};
-    Object.keys(newProps).forEach((k) => newProps2[prefix + "." + k] = newProps[k]);
-    Object.keys(prevProps).forEach((k) => prevProps2[prefix + "." + k] = prevProps[k]);
-
-    this._processChangedValues(newProps2, prevProps2);
+  public updateNested(
+    optionName: string,
+    newProps: Record<string, any>,
+    prevProps: Record<string, any>
+  ): void {
+    this._processChangedValues(
+      addPrefixToKeys(newProps, optionName + "."),
+      addPrefixToKeys(prevProps, optionName + ".")
+    );
   }
 
   public componentDidMount() {
@@ -155,16 +163,6 @@ class Component<P> extends React.PureComponent<P, IState> {
     }
 
     return optionValue;
-  }
-
-  private updateProps(newProps: Record<string, any>): void {
-    const preparedProps = this._prepareProps(newProps);
-    const options: Record<string, any> = {
-      ...preparedProps.options,
-      ...this._getIntegrationOptions(preparedProps.templates, preparedProps.nestedTemplates)
-    };
-
-    this._processChangedValues(options, this.props);
   }
 
   private _processChangedValues(newProps: Record<string, any>, prevProps: Record<string, any>): void {
