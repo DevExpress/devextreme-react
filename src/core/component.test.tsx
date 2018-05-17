@@ -3,6 +3,7 @@ import { configure as configureEnzyme, mount, shallow } from "enzyme";
 import * as Adapter from "enzyme-adapter-react-16";
 import * as React from "react";
 import Component from "../core/component";
+import ConfigurationComponent from "../core/configuration-component";
 import { Template } from "../core/template";
 
 const eventHandlers: { [index: string]: (e?: any) => void}  = {};
@@ -19,6 +20,8 @@ const Widget = {
 const WidgetClass = jest.fn(() => Widget);
 
 class TestComponent<P = any> extends Component<P> {
+
+    public _nestedOptionIdPrefix: string = "testComponent";
 
     constructor(props: P) {
         super(props);
@@ -272,14 +275,14 @@ describe("templates", () => {
     // tslint:disable-next-line:max-classes-per-file
     class ComponentWithTemplates extends TestComponent {
 
+        protected _templateProps = [{
+            tmplOption: "item",
+            render: "itemRender",
+            component: "itemComponent"
+        }];
+
         constructor(props: any) {
             super(props);
-
-            this._templateProps = [{
-                tmplOption: "item",
-                render: "itemRender",
-                component: "itemComponent"
-            }];
         }
     }
 });
@@ -372,10 +375,23 @@ describe("controlled mode", () => {
             <ControlledComponent everyOption={123} />
         );
 
-        eventHandlers.optionChanged({ name: "everyOption", value: 234});
+        eventHandlers.optionChanged({ fullName: "everyOption", value: 234});
         jest.runAllTimers();
         expect(Widget.option.mock.calls.length).toBe(1);
         expect(Widget.option.mock.calls[0]).toEqual([ "everyOption", 123 ]);
+    });
+
+    it("rolls nested option value back", () => {
+        mount(
+            <ControlledComponent>
+                <NestedComponent a={123} />
+            </ControlledComponent>
+        );
+
+        eventHandlers.optionChanged({ fullName: "nestedOption.a", value: 234});
+        jest.runAllTimers();
+        expect(Widget.option.mock.calls.length).toBe(1);
+        expect(Widget.option.mock.calls[0]).toEqual([ "nestedOption.a", 123 ]);
     });
 
     it("rolls option value back if value has no changes", () => {
@@ -383,26 +399,67 @@ describe("controlled mode", () => {
             <ControlledComponent everyOption={123} anotherOption={"const"}/>
         );
 
-        eventHandlers.optionChanged({ name: "anotherOption", value: "changed"});
+        eventHandlers.optionChanged({ fullName: "anotherOption", value: "changed"});
         component.setProps({everyOption: 234});
         jest.runAllTimers();
         expect(Widget.option.mock.calls.length).toBe(2);
+        expect(Widget.option.mock.calls[0]).toEqual([ "everyOption", 234 ]);
         expect(Widget.option.mock.calls[1]).toEqual([ "anotherOption", "const" ]);
     });
 
-    it("apply option change if option really change", () => {
+    it("rolls nested option value back if value has no changes", () => {
+        const component = shallow(
+            <ControlledComponent>
+                <NestedComponent a={123} b="const" />
+            </ControlledComponent>
+        );
+        const nested = component.find(NestedComponent).dive();
+
+        eventHandlers.optionChanged({ fullName: "nestedOption.b", value: "changed"});
+        nested.setProps({a: 234});
+        jest.runAllTimers();
+        expect(Widget.option.mock.calls.length).toBe(2);
+        expect(Widget.option.mock.calls[0]).toEqual([ "nestedOption.a", 234 ]);
+        expect(Widget.option.mock.calls[1]).toEqual([ "nestedOption.b", "const" ]);
+    });
+
+    it("apply option change if value really change", () => {
         const component = mount(
             <ControlledComponent everyOption={123}/>
         );
 
-        eventHandlers.optionChanged({ name: "everyOption", value: 234});
+        eventHandlers.optionChanged({ fullName: "everyOption", value: 234});
         component.setProps({everyOption: 234});
         jest.runAllTimers();
         expect(Widget.option.mock.calls.length).toBe(1);
         expect(Widget.option.mock.calls[0]).toEqual([ "everyOption", 234 ]);
     });
 
+    it("apply nested option change if value really change", () => {
+        const component = shallow(
+            <ControlledComponent>
+                <NestedComponent a={123} b="const" />
+            </ControlledComponent>
+        );
+        const nested = component.find(NestedComponent).dive();
+
+        eventHandlers.optionChanged({ fullName: "nestedOption.a", value: 234});
+        nested.setProps({a: 234});
+        jest.runAllTimers();
+        expect(Widget.option.mock.calls.length).toBe(1);
+        expect(Widget.option.mock.calls[0]).toEqual([ "nestedOption.a", 234 ]);
+    });
+
     it("pass default values to widget", () => {
+        mount(
+            <ControlledComponent defaultControlledOption={"default"}/>
+        );
+
+        expect(WidgetClass.mock.calls[0][1].controlledOption).toBe("default");
+        expect(WidgetClass.mock.calls[0][1]).not.toHaveProperty("defaultControlledOption");
+    });
+
+    it("pass nested default values to widget", () => {
         mount(
             <ControlledComponent defaultControlledOption={"default"}/>
         );
@@ -414,12 +471,12 @@ describe("controlled mode", () => {
         mount(
             <ControlledComponent defaultControlledOption={"default"}/>
         );
-        eventHandlers.optionChanged({ name: "controlledOption", value: "changed"});
+        eventHandlers.optionChanged({ fullName: "controlledOption", value: "changed"});
         jest.runAllTimers();
         expect(Widget.option.mock.calls.length).toBe(0);
     });
 
-    it("ignores changes in default props", () => {
+    it("ignores 3rd-party changes in default props", () => {
         const component = mount(
             <ControlledComponent defaultControlledOption={"default"}/>
         );
@@ -470,13 +527,22 @@ describe("controlled mode", () => {
         anotherOption?: string;
     }
 
-    // tslint:disable-next-line:max-classes-per-file
     class ControlledComponent extends TestComponent<IControlledComponentProps> {
 
         protected _defaults = { // tslint:disable-line:variable-name
             defaultControlledOption : "controlledOption"
         };
-    }
+    } // tslint:disable-line:max-classes-per-file
+
+    class NestedComponent extends ConfigurationComponent<{
+        a?: number;
+        b?: string;
+        c?: string;
+        defaultC?: string;
+    }> {
+        public static OwnerType = ControlledComponent;
+        public static OptionName = "nestedOption";
+    } // tslint:disable-line:max-classes-per-file
 });
 
 describe("disposing", () => {
@@ -502,6 +568,146 @@ describe("disposing", () => {
 
         expect(handleDxRemove).toHaveBeenCalledTimes(1);
     });
+});
+
+describe("nested objects", () => {
+
+    it("pulls options from a single nested component", () => {
+        mount(
+            <TestComponent>
+                <NestedComponent1 a={123} />
+            </TestComponent>
+        );
+
+        expect(WidgetClass.mock.calls[0][1]).toEqual({
+            templatesRenderAsynchronously: true,
+            option1: {
+                a: 123
+            }
+        });
+    });
+
+    it("doesn't pull options from wrong component", () => {
+        mount(
+            <TestComponent>
+                <NestedComponent1 a={123} />
+                <WrongNestedComponent x={456} />
+            </TestComponent>
+        );
+
+        expect(WidgetClass.mock.calls[0][1]).toEqual({
+            templatesRenderAsynchronously: true,
+            option1: {
+                a: 123
+            }
+        });
+    });
+
+    it("pulls overriden options from the same nested component", () => {
+        mount(
+            <TestComponent>
+                <NestedComponent1 a={123} />
+                <NestedComponent1 a={456} />
+            </TestComponent>
+        );
+
+        expect(WidgetClass.mock.calls[0][1]).toEqual({
+            templatesRenderAsynchronously: true,
+            option1: {
+                a: 456
+            }
+        });
+    });
+
+    it("pulls array options from a nested component", () => {
+        mount(
+            <TestComponent>
+                <CollectionNestedComponent c={123} d="abc" />
+            </TestComponent>
+        );
+
+        expect(WidgetClass.mock.calls[0][1]).toEqual({
+            templatesRenderAsynchronously: true,
+            itemOptions: [
+                { c: 123, d: "abc" }
+            ]
+        });
+    });
+
+    it("pulls array options from several nested components", () => {
+        mount(
+            <TestComponent>
+                <CollectionNestedComponent c={123} d="abc" />
+                <CollectionNestedComponent c={456} />
+                <CollectionNestedComponent d="def" />
+            </TestComponent>
+        );
+
+        expect(WidgetClass.mock.calls[0][1]).toEqual({
+            templatesRenderAsynchronously: true,
+            itemOptions: [
+                { c: 123, d: "abc" },
+                { c: 456 },
+                { d: "def" }
+            ]
+        });
+    });
+
+    it("pulls options from several nested components", () => {
+        mount(
+            <TestComponent>
+                <NestedComponent1 a={123} />
+                <WrongNestedComponent x={456} />
+                <NestedComponent2 b="abc" />
+            </TestComponent>
+        );
+
+        expect(WidgetClass.mock.calls[0][1]).toEqual({
+            templatesRenderAsynchronously: true,
+            option1: {
+                a: 123
+            },
+            option2: {
+                b: "abc"
+            }
+        });
+    });
+
+    it("pulls updated options", () => {
+
+        const component = shallow(
+            <TestComponent>
+                <NestedComponent1 a={123} />
+            </TestComponent>
+        );
+        const nested = component.find(NestedComponent1).dive();
+
+        nested.setProps({ a: 456 });
+        jest.runAllTimers();
+        expect(Widget.option.mock.calls.length).toBe(1);
+        expect(Widget.option.mock.calls[0]).toEqual(["option1.a", 456]);
+    });
+
+    class NestedComponent1 extends ConfigurationComponent<{ a: number }> {
+        public static OwnerType = TestComponent;
+        public static OptionName = "option1";
+    } // tslint:disable-line:max-classes-per-file
+
+    class NestedComponent2 extends ConfigurationComponent<{ b: string }> {
+        public static OwnerType = TestComponent;
+        public static OptionName = "option2";
+    } // tslint:disable-line:max-classes-per-file
+
+    class CollectionNestedComponent extends ConfigurationComponent<{ c?: number, d?: string }> {
+        public static IsCollectionItem = true;
+        public static OwnerType = TestComponent;
+        public static OptionName = "itemOptions";
+    } // tslint:disable-line:max-classes-per-file
+
+    class WrongNestedComponent extends ConfigurationComponent<{ x: number }> {
+        public static OwnerType = WrongNestedComponent;
+        public static OptionName = "optionW";
+    } // tslint:disable-line:max-classes-per-file
 });
 
 it("calls option method on props update", () => {
