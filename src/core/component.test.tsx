@@ -259,6 +259,19 @@ describe("templates", () => {
         expect(optionCalls[1][1]).toBe("item");
     });
 
+    it("has templates in state with unique ids", () => {
+        const ItemTemplate = (props: any) => <div className={"template"}>Template {props.text}</div>;
+        const component = mount(
+            <ComponentWithTemplates itemComponent={ItemTemplate} />
+        );
+        renderItemTemplate({text: 1});
+        renderItemTemplate({text: 2});
+
+        const templatesKeys = Object.getOwnPropertyNames(component.state("templates"));
+        expect(templatesKeys.length).toBe(2);
+        expect(templatesKeys[0]).not.toBe(templatesKeys[1]);
+    });
+
     it("removes deleted nodes from state", () => {
         const ItemTemplate = (props: any) => <div className={"template"}>Template {props.text}</div>;
         const component = mount(
