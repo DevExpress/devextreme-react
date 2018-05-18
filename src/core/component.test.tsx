@@ -280,7 +280,7 @@ describe("templates", () => {
         renderItemTemplate({});
         expect(Object.getOwnPropertyNames(component.state("templates")).length).toBe(1);
         component.update();
-        events.triggerHandler(component.find(".template").getDOMNode(), "dxremove");
+        events.triggerHandler(component.find(".template").getDOMNode().parentNode, "dxremove");
         component.update();
         expect(Object.getOwnPropertyNames(component.state("templates")).length).toBe(0);
     });
