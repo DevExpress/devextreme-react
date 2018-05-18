@@ -151,7 +151,7 @@ const renderComponent: (model: {
 import <#= it.widgetName #>, { IOptions <#? !it.hasExtraOptions #>as <#= it.optionsName #> <#?#>} from "devextreme/<#= it.dxExportPath #>";<#? it.renderedPropTypings #>
 import { PropTypes } from "prop-types";<#?#>
 import BaseComponent from "<#= it.baseComponentPath #>";
-<#? it.nestedOptions #>import ConfigurationComponent from "<#= it.configComponentPath #>";
+<#? it.nestedOptions #>import NestedOption from "<#= it.configComponentPath #>";
 <#?#><#? it.hasExtraOptions #>
 interface <#= it.optionsName #> extends IOptions {<#~ it.templates :template #>
   <#= template.render #>?: (props: any) => React.ReactNode;
@@ -176,7 +176,7 @@ class <#= it.name #> extends BaseComponent<<#= it.optionsName #>> {
 };<#?#><#? it.nestedOptions #>
 // tslint:disable:max-classes-per-file<#~ it.nestedOptions :opt #>
 
-class <#= opt.className #> extends ConfigurationComponent<<#= opt.rendered #>> {<#? opt.isCollectionItem #>
+class <#= opt.className #> extends NestedOption<<#= opt.rendered #>> {<#? opt.isCollectionItem #>
   public static IsCollectionItem = true;<#?#>
   public static OwnerType = <#= it.name #>;
   public static OptionName = "<#= opt.name #>";

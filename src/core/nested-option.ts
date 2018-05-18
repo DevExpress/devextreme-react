@@ -1,5 +1,4 @@
 import * as React from "react";
-// import { splitProps } from "./props-preprocessor";
 
 type UpdateFunc = (newProps, prevProps) => void;
 
@@ -7,7 +6,7 @@ interface IUpdater {
     update?: UpdateFunc;
 }
 
-class ConfigurationComponent<P> extends React.PureComponent<P & IUpdater, any> {
+class NestedOption<P> extends React.PureComponent<P & IUpdater, any> {
 
     public render() {
         return null;
@@ -19,6 +18,7 @@ class ConfigurationComponent<P> extends React.PureComponent<P & IUpdater, any> {
 
         const prevProps = { ...(this.props as {} & IUpdater) };
         delete prevProps.update;
+
         if (nextProps.update) {
             nextProps.update(newProps, prevProps);
         }
@@ -33,5 +33,5 @@ function createConfigurationComponent<P>(baseElement: React.ReactElement<P>, upd
     return React.cloneElement(baseElement, extraProps);
 }
 
-export default ConfigurationComponent;
+export default NestedOption;
 export { createConfigurationComponent, IUpdater, UpdateFunc };

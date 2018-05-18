@@ -263,7 +263,7 @@ export {
         const EXPECTED = `
 import dxCLASS_NAME, { IOptions as ICLASS_NAMEOptions } from "devextreme/DX/WIDGET/PATH";
 import BaseComponent from "BASE_COMPONENT_PATH";
-import ConfigurationComponent from "CONFIG_COMPONENT_PATH";
+import NestedOption from "CONFIG_COMPONENT_PATH";
 
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 
@@ -275,7 +275,7 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 }
 // tslint:disable:max-classes-per-file
 
-class CLASS_NAMEOpt_1 extends ConfigurationComponent<{
+class CLASS_NAMEOpt_1 extends NestedOption<{
   sub_opt_2?: TYPE_1;
   sub_opt_3?: {
     sub_sub_opt_4?: TYPE_2;
@@ -340,7 +340,7 @@ export {
         const EXPECTED = `
 import dxCLASS_NAME, { IOptions as ICLASS_NAMEOptions } from "devextreme/DX/WIDGET/PATH";
 import BaseComponent from "BASE_COMPONENT_PATH";
-import ConfigurationComponent from "CONFIG_COMPONENT_PATH";
+import NestedOption from "CONFIG_COMPONENT_PATH";
 
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 
@@ -352,7 +352,7 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 }
 // tslint:disable:max-classes-per-file
 
-class CLASS_NAMEOpt_1 extends ConfigurationComponent<{
+class CLASS_NAMEOpt_1 extends NestedOption<{
   sub_opt_2?: TYPE_1;
 }> {
   public static IsCollectionItem = true;
