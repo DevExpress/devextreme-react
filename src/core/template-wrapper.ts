@@ -30,7 +30,12 @@ class TemplateWrapper extends React.PureComponent<IWrapperProps, any> {
     }
 
     public componentDidMount() {
-        const element = ReactDOM.findDOMNode(this);
+        const templateElement = ReactDOM.findDOMNode(this);
+        const templateParent = templateElement.parentNode;
+
+        const isGridRow = templateParent && templateParent.nodeName !== "DIV";
+        const element = isGridRow ? templateElement : templateParent;
+
         events.one(element, DX_REMOVE_EVENT, this.props.onRemoved);
     }
 }
@@ -42,7 +47,6 @@ function wrapTemplate(
     return {
         render: (data: ITemplateData) => {
             const templateId = "__template_" + generateID();
-
             const wrapper = () =>
                 React.createElement(TemplateWrapper, {
                     content: tmplFn(data.model),
