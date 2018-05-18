@@ -3,7 +3,7 @@ import { configure as configureEnzyme, mount, shallow } from "enzyme";
 import * as Adapter from "enzyme-adapter-react-16";
 import * as React from "react";
 import Component from "../core/component";
-import ConfigurationComponent from "../core/configuration-component";
+import ConfigurationComponent from "../core/nested-option";
 import { Template } from "../core/template";
 
 const eventHandlers: { [index: string]: (e?: any) => void}  = {};
@@ -463,6 +463,18 @@ describe("controlled mode", () => {
         expect(Widget.option.mock.calls[0]).toEqual([ "nestedOption.a", 234 ]);
     });
 
+    it("does not control not specified nested option", () => {
+        shallow(
+            <ControlledComponent>
+                <NestedComponent a={123} />
+            </ControlledComponent>
+        );
+
+        eventHandlers.optionChanged({ fullName: "nestedOption.b", value: "abc"});
+        jest.runAllTimers();
+        expect(Widget.option.mock.calls.length).toBe(0);
+    });
+
     it("pass default values to widget", () => {
         mount(
             <ControlledComponent defaultControlledOption={"default"}/>
@@ -474,10 +486,13 @@ describe("controlled mode", () => {
 
     it("pass nested default values to widget", () => {
         mount(
-            <ControlledComponent defaultControlledOption={"default"}/>
+            <ControlledComponent>
+                <NestedComponent defaultC="default" />
+            </ControlledComponent>
         );
 
-        expect(WidgetClass.mock.calls[0][1].controlledOption).toBe("default");
+        expect(WidgetClass.mock.calls[0][1].nestedOption.c).toBe("default");
+        expect(WidgetClass.mock.calls[0][1].nestedOption).not.toHaveProperty("defaultC");
     });
 
     it("does not control option with default prefix", () => {
@@ -485,6 +500,17 @@ describe("controlled mode", () => {
             <ControlledComponent defaultControlledOption={"default"}/>
         );
         eventHandlers.optionChanged({ fullName: "controlledOption", value: "changed"});
+        jest.runAllTimers();
+        expect(Widget.option.mock.calls.length).toBe(0);
+    });
+
+    it("does not control nested option with default prefix", () => {
+        mount(
+            <ControlledComponent>
+                <NestedComponent defaultC="default" />
+            </ControlledComponent>
+        );
+        eventHandlers.optionChanged({ fullName: "nestedOption.c", value: "changed"});
         jest.runAllTimers();
         expect(Widget.option.mock.calls.length).toBe(0);
     });
@@ -500,12 +526,42 @@ describe("controlled mode", () => {
         expect(Widget.option.mock.calls.length).toBe(0);
     });
 
+    it("ignores 3rd-party changes in nested default props", () => {
+        const component = shallow(
+            <ControlledComponent>
+                <NestedComponent defaultC="default" />
+            </ControlledComponent>
+
+        );
+        const nested = component.find(NestedComponent).dive();
+
+        nested.setProps({
+            defaultC: "changed"
+        });
+        jest.runAllTimers();
+        expect(Widget.option.mock.calls.length).toBe(0);
+    });
+
     it("does not pass default values to widget if controlledOption set", () => {
         mount(
             <ControlledComponent defaultControlledOption={"default"} controlledOption={"controlled"}/>
         );
 
+        expect(Widget.option.mock.calls.length).toBe(0);
         expect(WidgetClass.mock.calls[0][1].controlledOption).toBe("controlled");
+        expect(WidgetClass.mock.calls[0][1]).not.toHaveProperty("defaultControlledOption");
+    });
+
+    it("does not pass nested default values to widget if controlledOption set", () => {
+        mount(
+            <ControlledComponent>
+                <NestedComponent defaultC="default" c="controlled" />
+            </ControlledComponent>
+        );
+
+        expect(Widget.option.mock.calls.length).toBe(0);
+        expect(WidgetClass.mock.calls[0][1].nestedOption.c).toBe("controlled");
+        expect(WidgetClass.mock.calls[0][1].nestedOption).not.toHaveProperty("defaultC");
     });
 
     it("does not fire events when option changed while props updating", () => {
@@ -542,7 +598,7 @@ describe("controlled mode", () => {
 
     class ControlledComponent extends TestComponent<IControlledComponentProps> {
 
-        protected _defaults = { // tslint:disable-line:variable-name
+        protected _defaults = {
             defaultControlledOption : "controlledOption"
         };
     } // tslint:disable-line:max-classes-per-file
@@ -555,6 +611,10 @@ describe("controlled mode", () => {
     }> {
         public static OwnerType = ControlledComponent;
         public static OptionName = "nestedOption";
+
+        public static DefaultsProps = {
+            defaultC : "c"
+        };
     } // tslint:disable-line:max-classes-per-file
 });
 
