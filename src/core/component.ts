@@ -4,9 +4,9 @@ import * as events from "devextreme/events";
 
 import { addPrefixToKeys, getNestedValue } from "./helpers";
 import { createConfigurationComponent } from "./nested-option";
-import { splitProps } from "./props-preprocessor";
 import { ITemplateMeta } from "./template";
 import { ITemplateWrapper, wrapTemplate } from "./template-wrapper";
+import { createWidgetConfig } from "./widget-config";
 
 const DX_REMOVE_EVENT = "dxremove";
 
@@ -132,17 +132,17 @@ class Component<P> extends React.PureComponent<P, IState> {
     templates: Record<string, any>,
     nestedTemplates: Record<string, any>
   } {
-    const props = splitProps(rawProps, this._defaults, this._templateProps);
-    const options = props.options;
-    props.options = {};
+    const widgetConfig = createWidgetConfig(rawProps, this._defaults, this._templateProps);
+    const options = widgetConfig.options;
+    widgetConfig.options = {};
 
     if (options) {
       Object.keys(options).forEach((key) => {
-        props.options[key] = this._wrapEventHandler(options[key], key);
+        widgetConfig.options[key] = this._wrapEventHandler(options[key], key);
       });
     }
 
-    return props;
+    return widgetConfig;
   }
 
   private _wrapEventHandler(optionValue: any, optionName: string): any {
@@ -234,7 +234,7 @@ class Component<P> extends React.PureComponent<P, IState> {
       return createConfigurationComponent(
         component,
         (newProps, prevProps) => {
-          const newOptions = splitProps(newProps, configComponent.type.DefaultsProps, []).options;
+          const newOptions = createWidgetConfig(newProps, configComponent.type.DefaultsProps, []).options;
           this._updateNested(optionName, newOptions, prevProps);
         }
       );
@@ -269,10 +269,10 @@ class Component<P> extends React.PureComponent<P, IState> {
       nested.forEach((child) => {
         if (child && child.type && child.type.OwnerType && this instanceof child.type.OwnerType) {
 
-          const props = splitProps(child.props, child.type.DefaultsProps, []);
+          const widgetConfig = createWidgetConfig(child.props, child.type.DefaultsProps, []);
           const childOptions = {
-            ...(options.includeDefaults ? props.defaults : undefined),
-            ...props.options
+            ...(options.includeDefaults ? widgetConfig.defaults : undefined),
+            ...widgetConfig.options
           };
 
           if (child.type.IsCollectionItem) {

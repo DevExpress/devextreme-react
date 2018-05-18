@@ -1,16 +1,18 @@
 import { Children, ReactElement } from "react";
 import { ITemplateMeta, Template } from "./template";
 
-function splitProps(
+interface IWidgetConfig {
+    defaults: Record<string, any>;
+    options: Record<string, any>;
+    templates: Record<string, any>;
+    nestedTemplates: Record<string, any>;
+}
+
+function createWidgetConfig(
     props: Record<string, any>,
     defaultsProps: Record<string, string>,
     templateProps: ITemplateMeta[]
-): {
-    defaults: Record<string, any>,
-    options: Record<string, any>,
-    templates: Record<string, any>,
-    nestedTemplates: Record<string, any>
-} {
+): IWidgetConfig {
     const defaults: Record<string, any> = {};
     const options: Record<string, any> = {};
     const templates: Record<string, any> = {};
@@ -47,4 +49,4 @@ function splitProps(
     return { defaults, options, templates, nestedTemplates };
 }
 
-export { splitProps };
+export { createWidgetConfig, IWidgetConfig };
