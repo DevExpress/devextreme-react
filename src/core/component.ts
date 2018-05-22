@@ -2,9 +2,10 @@ import * as React from "react";
 
 import * as events from "devextreme/events";
 
-import { addPrefixToKeys, getNestedValue } from "./helpers";
+import { addPrefixToKeys } from "./helpers";
 import { createConfigurationComponent } from "./nested-option";
 import { OptionCollection } from "./nested-option-collection";
+import { OptionsSyncer } from "./options-syncer";
 import { ITemplateMeta, Template } from "./template";
 import { ITemplateWrapper, wrapTemplate } from "./template-wrapper";
 import { separateProps } from "./widget-config";
@@ -39,23 +40,22 @@ class Component<P> extends React.PureComponent<P, IState> {
   protected readonly _defaults: Record<string, string>;
 
   protected readonly _templateProps: ITemplateMeta[] = [];
-  protected _nestedOptionIdPrefix: string;
 
-  private readonly _guards: Record<string, number> = {};
   private readonly _nestedOptions: OptionCollection = new OptionCollection();
+  private readonly _syncer: OptionsSyncer;
 
   private _element: any;
-  private _updatingProps: boolean;
 
   constructor(props: P) {
     super(props);
-    this._optionChangedHandler = this._optionChangedHandler.bind(this);
     this._prepareProps = this._prepareProps.bind(this);
     this._setTemplatesState = this._setTemplatesState.bind(this);
 
     this.state = {
       templates: {}
     };
+
+    this._syncer = new OptionsSyncer(this._nestedOptions, (name) => this.props[name]);
   }
 
   public componentWillUpdate(nextProps: P) {
@@ -65,7 +65,7 @@ class Component<P> extends React.PureComponent<P, IState> {
       ...this._getIntegrationOptions(preparedProps.templates, preparedProps.nestedTemplates)
     };
 
-    this._processChangedValues(options, this.props);
+    this._syncer.processChangedValues(options, this.props);
   }
 
   public render() {
@@ -105,44 +105,13 @@ class Component<P> extends React.PureComponent<P, IState> {
     };
 
     this._instance = new this._WidgetClass(this._element, options);
-    this._instance.on("optionChanged", this._optionChangedHandler);
+    this._syncer.instance = this._instance;
+    this._instance.on("optionChanged", this._syncer.optionChangedHandler);
   }
 
   public componentWillUnmount() {
     events.triggerHandler(this._element, DX_REMOVE_EVENT);
     this._instance.dispose();
-  }
-
-  private _optionChangedHandler(e: { name: string, fullName: string, value: any }) {
-    if (this._updatingProps) {
-      return;
-    }
-
-    const optionName = e.fullName;
-    let optionValue = this.props[e.name];
-
-    const nestedOption = this._nestedOptions.get(e.name);
-    if (nestedOption && !nestedOption.isCollectionItem) {
-        const separatedProps = separateProps(nestedOption.elements[0].props, nestedOption.defaults, []);
-
-        optionValue = getNestedValue(separatedProps.options, e.fullName.split(".").slice(1));
-    }
-
-    if (optionValue === undefined || optionValue === null) {
-      return;
-    }
-
-    if (this._guards[optionName] !== undefined) {
-      return;
-    }
-
-    const guardId = window.setTimeout(() => {
-      this._instance.option(optionName, optionValue);
-      window.clearTimeout(guardId);
-      delete this._guards[optionName];
-    });
-
-    this._guards[optionName] = guardId;
   }
 
   private _prepareProps(rawProps: Record<string, any>): IWidgetConfig {
@@ -152,7 +121,7 @@ class Component<P> extends React.PureComponent<P, IState> {
     if (separatedProps.options) {
         options = {};
         Object.keys(separatedProps.options).forEach((key) => {
-            options[key] = this._wrapEventHandler(separatedProps.options[key], key);
+            options[key] = this._syncer.wrapEventHandler(separatedProps.options[key], key);
         });
     }
 
@@ -175,30 +144,6 @@ class Component<P> extends React.PureComponent<P, IState> {
         options,
         nestedTemplates
     };
-  }
-
-  private _processChangedValues(newProps: Record<string, any>, prevProps: Record<string, any>): void {
-    this._updatingProps = false;
-
-    for (const optionName of Object.keys(newProps)) {
-      if (newProps[optionName] !== prevProps[optionName]) {
-        if (this._guards[optionName]) {
-          window.clearTimeout(this._guards[optionName]);
-          delete this._guards[optionName];
-        }
-
-        if (!this._updatingProps) {
-          this._instance.beginUpdate();
-          this._updatingProps = true;
-        }
-        this._instance.option(optionName, newProps[optionName]);
-      }
-    }
-
-    if (this._updatingProps) {
-      this._updatingProps = false;
-      this._instance.endUpdate();
-    }
   }
 
   private _getIntegrationOptions(options: Record<string, any>, nestedOptions: Record<string, any>): any {
@@ -263,35 +208,15 @@ class Component<P> extends React.PureComponent<P, IState> {
         component,
         (newProps, prevProps) => {
           const newOptions = separateProps(newProps, configComponent.type.DefaultsProps, []).options;
-          this._updateNested(optionName, newOptions, prevProps);
+          this._syncer.processChangedValues(
+            addPrefixToKeys(newOptions, optionName + "."),
+            addPrefixToKeys(prevProps, optionName + ".")
+          );
         }
       );
     }
 
     return component;
-  }
-
-  private _updateNested(
-    optionName: string,
-    newProps: Record<string, any>,
-    prevProps: Record<string, any>
-  ): void {
-    this._processChangedValues(
-      addPrefixToKeys(newProps, optionName + "."),
-      addPrefixToKeys(prevProps, optionName + ".")
-    );
-  }
-
-  private _wrapEventHandler(optionValue: any, optionName: string): any {
-    if (optionName.substr(0, 2) === "on" && typeof optionValue === "function") {
-      return (...args: any[]) => {
-        if (!this._updatingProps) {
-          optionValue(...args);
-        }
-      };
-    }
-
-    return optionValue;
   }
 
   private getNestedProps(): Record<string, any> {
@@ -307,11 +232,7 @@ class Component<P> extends React.PureComponent<P, IState> {
             };
         });
 
-        if (o.isCollectionItem) {
-            nestedOptions[o.name] = options;
-        } else {
-            nestedOptions[o.name] = options[options.length - 1];
-        }
+        nestedOptions[o.name] = o.isCollectionItem ? options : options[options.length - 1];
     });
 
     return nestedOptions;

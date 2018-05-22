@@ -21,8 +21,6 @@ const WidgetClass = jest.fn(() => Widget);
 
 class TestComponent<P = any> extends Component<P> {
 
-    public _nestedOptionIdPrefix: string = "testComponent";
-
     constructor(props: P) {
         super(props);
 
