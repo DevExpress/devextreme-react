@@ -21,8 +21,6 @@ const WidgetClass = jest.fn(() => Widget);
 
 class TestComponent<P = any> extends Component<P> {
 
-    public _nestedOptionIdPrefix: string = "testComponent";
-
     constructor(props: P) {
         super(props);
 
@@ -388,7 +386,7 @@ describe("controlled mode", () => {
             <ControlledComponent everyOption={123} />
         );
 
-        eventHandlers.optionChanged({ fullName: "everyOption", value: 234});
+        eventHandlers.optionChanged({ name: "everyOption", fullName: "everyOption", value: 234});
         jest.runAllTimers();
         expect(Widget.option.mock.calls.length).toBe(1);
         expect(Widget.option.mock.calls[0]).toEqual([ "everyOption", 123 ]);
@@ -401,7 +399,7 @@ describe("controlled mode", () => {
             </ControlledComponent>
         );
 
-        eventHandlers.optionChanged({ fullName: "nestedOption.a", value: 234});
+        eventHandlers.optionChanged({ name: "nestedOption", fullName: "nestedOption.a", value: 234});
         jest.runAllTimers();
         expect(Widget.option.mock.calls.length).toBe(1);
         expect(Widget.option.mock.calls[0]).toEqual([ "nestedOption.a", 123 ]);
@@ -412,7 +410,7 @@ describe("controlled mode", () => {
             <ControlledComponent everyOption={123} anotherOption={"const"}/>
         );
 
-        eventHandlers.optionChanged({ fullName: "anotherOption", value: "changed"});
+        eventHandlers.optionChanged({ name: "anotherOption", fullName: "anotherOption", value: "changed"});
         component.setProps({everyOption: 234});
         jest.runAllTimers();
         expect(Widget.option.mock.calls.length).toBe(2);
@@ -428,7 +426,7 @@ describe("controlled mode", () => {
         );
         const nested = component.find(NestedComponent).dive();
 
-        eventHandlers.optionChanged({ fullName: "nestedOption.b", value: "changed"});
+        eventHandlers.optionChanged({ name: "nestedOption", fullName: "nestedOption.b", value: "changed"});
         nested.setProps({a: 234});
         jest.runAllTimers();
         expect(Widget.option.mock.calls.length).toBe(2);
