@@ -43,3 +43,7 @@ export function isNotEmptyArray(array: any[]): boolean {
 export function isEmptyArray(array: any[]): boolean {
     return array === undefined || array === null || array.length === 0;
 }
+
+export function isPlainObject(value: any): boolean {
+    return value.constructor === Object;
+}

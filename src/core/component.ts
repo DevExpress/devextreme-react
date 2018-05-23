@@ -4,8 +4,7 @@ import * as events from "devextreme/events";
 
 import { addPrefixToKeys } from "./helpers";
 import { createConfigurationComponent } from "./nested-option";
-import { OptionCollection } from "./nested-option-collection";
-import { OptionsSyncer } from "./options-syncer";
+import { OptionsManager } from "./options-manager";
 import { ITemplateMeta, Template } from "./template";
 import { ITemplate, TemplateHelper } from "./template-helper";
 import { separateProps } from "./widget-config";
@@ -42,8 +41,7 @@ class Component<P> extends React.PureComponent<P, IState> {
   protected readonly _templateProps: ITemplateMeta[] = [];
 
   private readonly _templateHelper: TemplateHelper;
-  private readonly _nestedOptions: OptionCollection = new OptionCollection();
-  private readonly _syncer: OptionsSyncer;
+  private readonly _optionsManager: OptionsManager;
 
   private _element: any;
 
@@ -55,7 +53,7 @@ class Component<P> extends React.PureComponent<P, IState> {
       templates: {}
     };
 
-    this._syncer = new OptionsSyncer(this._nestedOptions, (name) => this.props[name]);
+    this._optionsManager = new OptionsManager((name) => this.props[name]);
     this._templateHelper = new TemplateHelper(this);
   }
 
@@ -66,7 +64,7 @@ class Component<P> extends React.PureComponent<P, IState> {
       ...this._getIntegrationOptions(preparedProps.templates, preparedProps.nestedTemplates)
     };
 
-    this._syncer.processChangedValues(options, this.props);
+    this._optionsManager.processChangedValues(options, this.props);
   }
 
   public render() {
@@ -77,7 +75,7 @@ class Component<P> extends React.PureComponent<P, IState> {
 
       if (!!this.props.children) {
           React.Children.forEach(this.props.children, (c) => {
-            args.push(this._registerNestedOption(c as React.ReactElement<any>));
+            args.push(this._registerNestedOption(c as React.ReactElement<any>) || c);
           });
       }
 
@@ -90,7 +88,7 @@ class Component<P> extends React.PureComponent<P, IState> {
   }
 
   public componentDidMount() {
-    const nestedProps = this.getNestedProps();
+    const nestedProps = this._optionsManager.getNestedOptionsObjects();
     const props = {
         ...(this.props as any),
         ...nestedProps
@@ -106,8 +104,8 @@ class Component<P> extends React.PureComponent<P, IState> {
     };
 
     this._instance = new this._WidgetClass(this._element, options);
-    this._syncer.instance = this._instance;
-    this._instance.on("optionChanged", this._syncer.optionChangedHandler);
+    this._optionsManager.setInstance(this._instance);
+    this._instance.on("optionChanged", this._optionsManager.handleOptionChange);
   }
 
   public componentWillUnmount() {
@@ -122,7 +120,7 @@ class Component<P> extends React.PureComponent<P, IState> {
     if (separatedProps.options) {
         options = {};
         Object.keys(separatedProps.options).forEach((key) => {
-            options[key] = this._syncer.wrapEventHandler(separatedProps.options[key], key);
+            options[key] = this._wrapEventHandler(separatedProps.options[key], key);
         });
     }
 
@@ -146,6 +144,18 @@ class Component<P> extends React.PureComponent<P, IState> {
         nestedTemplates
     };
   }
+
+    private _wrapEventHandler(optionValue: any, optionName: string): any {
+        if (optionName.substr(0, 2) === "on" && typeof optionValue === "function") {
+            return (...args: any[]) => {
+                if (!this._optionsManager.updatingProps) {
+                    optionValue(...args);
+                }
+            };
+        }
+
+        return optionValue;
+    }
 
   private _getIntegrationOptions(options: Record<string, any>, nestedOptions: Record<string, any>): any {
     const templates: Record<string, ITemplate> = {};
@@ -180,7 +190,7 @@ class Component<P> extends React.PureComponent<P, IState> {
     ) {
       const optionName = configComponent.type.OptionName;
 
-      this._nestedOptions.add(
+      this._optionsManager.addNestedOption(
           optionName,
           component,
           configComponent.type.DefaultsProps,
@@ -191,7 +201,7 @@ class Component<P> extends React.PureComponent<P, IState> {
         component,
         (newProps, prevProps) => {
           const newOptions = separateProps(newProps, configComponent.type.DefaultsProps, []).options;
-          this._syncer.processChangedValues(
+          this._optionsManager.processChangedValues(
             addPrefixToKeys(newOptions, optionName + "."),
             addPrefixToKeys(prevProps, optionName + ".")
           );
@@ -199,26 +209,7 @@ class Component<P> extends React.PureComponent<P, IState> {
       );
     }
 
-    return component;
-  }
-
-  private getNestedProps(): Record<string, any> {
-
-    const nestedOptions: Record<string, any> = {};
-
-    this._nestedOptions.forEach((o) => {
-        const options = o.elements.map((e) => {
-            const props = separateProps(e.props, o.defaults, []);
-            return {
-                ...props.defaults,
-                ...props.options
-            };
-        });
-
-        nestedOptions[o.name] = o.isCollectionItem ? options : options[options.length - 1];
-    });
-
-    return nestedOptions;
+    return null;
   }
 }
 
