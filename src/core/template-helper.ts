@@ -24,7 +24,7 @@ interface IWrapperProps {
     key: string;
 }
 
-class TemplateWrapper {
+class TemplateHelper {
     private readonly _component: Component<any>;
 
     constructor(component: Component<any>) {
@@ -43,7 +43,7 @@ class TemplateWrapper {
             render: (data: ITemplateData) => {
                 const templateId = "__template_" + generateID();
                 const wrapper = () =>
-                    React.createElement(WrappedTemplate, {
+                    React.createElement(TemplateWrapper, {
                         content: tmplFn(data.model),
                         container: unwrapElement(data.container),
                         onRemoved: () => this._updateState((t) => delete t[templateId]),
@@ -70,7 +70,7 @@ function unwrapElement(element: any) {
     return element.get ? element.get(0) : element;
 }
 
-class WrappedTemplate extends React.PureComponent<IWrapperProps, any> {
+class TemplateWrapper extends React.PureComponent<IWrapperProps, any> {
 
     public render() {
         return ReactDOM.createPortal(this.props.content, this.props.container);
@@ -90,5 +90,5 @@ class WrappedTemplate extends React.PureComponent<IWrapperProps, any> {
 export {
     ITemplate,
     ITemplateData,
-    TemplateWrapper
+    TemplateHelper
 };

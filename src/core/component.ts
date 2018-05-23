@@ -7,7 +7,7 @@ import { createConfigurationComponent } from "./nested-option";
 import { OptionCollection } from "./nested-option-collection";
 import { OptionsSyncer } from "./options-syncer";
 import { ITemplateMeta, Template } from "./template";
-import { ITemplate, TemplateWrapper } from "./template-wrapper";
+import { ITemplate, TemplateHelper } from "./template-helper";
 import { separateProps } from "./widget-config";
 
 const DX_REMOVE_EVENT = "dxremove";
@@ -41,7 +41,7 @@ class Component<P> extends React.PureComponent<P, IState> {
 
   protected readonly _templateProps: ITemplateMeta[] = [];
 
-  private readonly _templateWrapper: TemplateWrapper;
+  private readonly _templateHelper: TemplateHelper;
   private readonly _nestedOptions: OptionCollection = new OptionCollection();
   private readonly _syncer: OptionsSyncer;
 
@@ -56,7 +56,7 @@ class Component<P> extends React.PureComponent<P, IState> {
     };
 
     this._syncer = new OptionsSyncer(this._nestedOptions, (name) => this.props[name]);
-    this._templateWrapper = new TemplateWrapper(this);
+    this._templateHelper = new TemplateHelper(this);
   }
 
   public componentWillUpdate(nextProps: P) {
@@ -158,12 +158,12 @@ class Component<P> extends React.PureComponent<P, IState> {
     this._templateProps.forEach((m) => {
       if (options[m.component] || options[m.render]) {
         result[m.tmplOption] = m.tmplOption;
-        templates[m.tmplOption] = this._templateWrapper.wrapTemplate(options[m.component], options[m.render]);
+        templates[m.tmplOption] = this._templateHelper.wrapTemplate(options[m.component], options[m.render]);
       }
     });
 
     Object.keys(nestedOptions).forEach((name) => {
-        templates[name] = this._templateWrapper.wrapTemplate(nestedOptions[name].component, nestedOptions[name].render);
+        templates[name] = this._templateHelper.wrapTemplate(nestedOptions[name].component, nestedOptions[name].render);
     });
 
     if (Object.keys(templates).length > 0) {
