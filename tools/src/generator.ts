@@ -1,13 +1,13 @@
 import { writeFileSync as writeFile } from "fs";
 import { dirname as getDirName, join as joinPaths, relative as getRelativePath, sep as pathSeparator } from "path";
-import { IOption as IRawOption, ITypeDescriptor, IWidget } from "../integration-data-model";
+import { IModel, IProp, ITypeDescr, IWidget } from "../integration-data-model";
 import generateComponent, { IComponent, IOption, IPropTyping } from "./component-generator";
 import { convertTypes } from "./converter";
 import { isNotEmptyArray, removeElement, removeExtension, removePrefix, toKebabCase } from "./helpers";
 import generateIndex from "./index-generator";
 
 function generate(
-  rawData: IWidget[],
+  rawData: IModel,
   baseComponent: string,
   configComponent: string,
   out: {
@@ -17,7 +17,7 @@ function generate(
 ) {
   const modulePaths: string[] = [];
 
-  rawData.forEach((data) => {
+  rawData.widgets.forEach((data) => {
     const widgetFile = mapWidget(data, baseComponent, configComponent);
     const widgetFilePath = joinPaths(out.componentsDir, widgetFile.fileName);
     const indexFileDir = getDirName(out.indexFileName);
@@ -41,7 +41,7 @@ function mapWidget(raw: IWidget, baseComponent: string, configComponent: string)
     .map(mapOption);
 
   const nestedOptions: IOption[] = raw.options
-    .filter((o) => o.isSubscribable && isNotEmptyArray(o.options))
+    .filter((o) => o.isSubscribable && isNotEmptyArray(o.props))
     .map(mapOption);
 
   return {
@@ -59,33 +59,33 @@ function mapWidget(raw: IWidget, baseComponent: string, configComponent: string)
   };
 }
 
-function mapOption(opt: IRawOption): IOption {
+function mapOption(opt: IProp): IOption {
   const result: IOption = {
     isCollectionItem: false,
     name: opt.name,
     type: "any"
   };
 
-  if (isNotEmptyArray(opt.options)) {
-    result.nested = opt.options.map(mapOption);
+  if (isNotEmptyArray(opt.props)) {
+    result.nested = opt.props.map(mapOption);
   }
 
   return result;
 }
 
-function extractPropTypings(options: IRawOption[]): IPropTyping[] {
+function extractPropTypings(options: IProp[]): IPropTyping[] {
   return options
     .map(createPropTyping)
     .filter((t) => t != null);
 }
 
-function createPropTyping(option: IRawOption): IPropTyping {
-  const isRestrictedType = (t: ITypeDescriptor): boolean => t.acceptableValues && t.acceptableValues.length > 0;
+function createPropTyping(option: IProp): IPropTyping {
+  const isRestrictedType = (t: ITypeDescr): boolean => t.acceptableValues && t.acceptableValues.length > 0;
 
   const rawTypes = option.types.filter((t) => !isRestrictedType(t));
   const restrictedTypes = option.types.filter((t) => isRestrictedType(t));
 
-  const types = convertTypes(rawTypes.map((t) => t.type));
+  const types = convertTypes(rawTypes.map((t) => t.isCustomType ? "Object" : t.type));
 
   if (restrictedTypes.length > 0) {
     return {
