@@ -118,7 +118,7 @@ function createSubscribableOptionModel(option: IOption) {
 function createPropTypingModel(typing: IPropTyping): IRenderedPropTyping {
     const types = typing.types.map((t) => "PropTypes." + t);
     if (isNotEmptyArray(typing.acceptableValues)) {
-        types.push(`PropTypes.oneOf([${typing.acceptableValues.join(", ")}])`);
+        types.push(`PropTypes.oneOf([\n    ${typing.acceptableValues.join(",\n    ")}\n  ])`);
     }
     return {
         propName: typing.propName,
@@ -126,7 +126,6 @@ function createPropTypingModel(typing: IPropTyping): IRenderedPropTyping {
     };
 }
 
-// tslint:disable:max-line-length
 const renderComponent: (model: {
     className: string;
     widgetName: string;
@@ -135,31 +134,34 @@ const renderComponent: (model: {
     configComponentPath: string;
     dxExportPath: string;
     hasExtraOptions: boolean;
-    templates: {
+    templates: Array<{
         render: string;
         component: string;
         renderedProp: string;
-    }[]; // tslint:disable-line:array-type
-    subscribableOptions: {
+    }>;
+    subscribableOptions: Array<{
         name: string,
         type: string,
         renderedProp: string
-    }[]; // tslint:disable-line:array-type
-    nestedComponents: {
+    }>;
+    nestedComponents: Array<{
         optionName: string;
         className: string;
         ownerName: string;
         interfaceName: string;
         rendered: string;
         isCollectionItem: boolean;
-    }[]; // tslint:disable-line:array-type
+    }>;
     renderedPropTypings: string[],
     renderedExports: string
 }
 ) => string = createTempate(`
-import <#= it.widgetName #>, { IOptions <#? !it.hasExtraOptions #>as <#= it.optionsName #> <#?#>} from "devextreme/<#= it.dxExportPath #>";<#? it.renderedPropTypings #>
-import { PropTypes } from "prop-types";<#?#>
-import BaseComponent from "<#= it.baseComponentPath #>";
+import <#= it.widgetName #>, {
+    IOptions<#? !it.hasExtraOptions #> as <#= it.optionsName #><#?#>
+} from "devextreme/<#= it.dxExportPath #>";
+
+<#? it.renderedPropTypings #>import { PropTypes } from "prop-types";
+<#?#>import BaseComponent from "<#= it.baseComponentPath #>";
 <#? it.nestedComponents #>import NestedOption from "<#= it.configComponentPath #>";
 <#?#><#? it.hasExtraOptions #>
 interface <#= it.optionsName #> extends IOptions {<#~ it.templates :template #>
