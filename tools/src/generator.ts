@@ -1,9 +1,23 @@
 import { writeFileSync as writeFile } from "fs";
 import { dirname as getDirName, join as joinPaths, relative as getRelativePath, sep as pathSeparator } from "path";
-import { IModel, IProp, ITypeDescr, IWidget } from "../integration-data-model";
-import generateComponent, { IComponent, IOption, IPropTyping } from "./component-generator";
-import { convertTypes } from "./converter";
-import { isNotEmptyArray, removeElement, removeExtension, removePrefix, toKebabCase } from "./helpers";
+import { IArrayDescr, ICustomType, IModel, IProp, ITypeDescr, IWidget } from "../integration-data-model";
+import generateComponent, {
+    IComponent,
+    INestedComponent,
+    IOption,
+    IPropTyping
+} from "./component-generator";
+import { convertTypes, findCustomTypeRef } from "./converter";
+import {
+  isEmptyArray,
+  isNotEmptyArray,
+  removeElement,
+  removeExtension,
+  removePrefix,
+  toKebabCase,
+  toSingularName,
+  uppercaseFirst
+} from "./helpers";
 import generateIndex from "./index-generator";
 
 function generate(
@@ -16,9 +30,11 @@ function generate(
   }
 ) {
   const modulePaths: string[] = [];
+  const customTypes: Record<string, ICustomType> = {};
+  rawData.customTypes.forEach((t) => customTypes[t.name] = t);
 
   rawData.widgets.forEach((data) => {
-    const widgetFile = mapWidget(data, baseComponent, configComponent);
+    const widgetFile = mapWidget(data, baseComponent, configComponent, (t) => customTypes[t]);
     const widgetFilePath = joinPaths(out.componentsDir, widgetFile.fileName);
     const indexFileDir = getDirName(out.indexFileName);
 
@@ -31,7 +47,12 @@ function generate(
   writeFile(out.indexFileName, generateIndex(modulePaths), { encoding: "utf8" });
 }
 
-function mapWidget(raw: IWidget, baseComponent: string, configComponent: string): {
+function mapWidget(
+  raw: IWidget,
+  baseComponent: string,
+  configComponent: string,
+  getCustomType: (name: string) => ICustomType
+): {
   fileName: string;
   component: IComponent
 } {
@@ -40,9 +61,8 @@ function mapWidget(raw: IWidget, baseComponent: string, configComponent: string)
     .filter((o) => o.isSubscribable)
     .map(mapOption);
 
-  const nestedOptions: IOption[] = raw.options
-    .filter((o) => o.isSubscribable && isNotEmptyArray(o.props))
-    .map(mapOption);
+  const nestedOptions = extractNestedComponents(name, raw.options, getCustomType);
+  const propTypings = extractPropTypings(raw.options);
 
   return {
     fileName: `${toKebabCase(name)}.ts`,
@@ -53,22 +73,46 @@ function mapWidget(raw: IWidget, baseComponent: string, configComponent: string)
       dxExportPath: raw.exportPath,
       templates: raw.templates,
       subscribableOptions: subscribableOptions.length > 0 ? subscribableOptions : null,
-      nestedOptions: nestedOptions.length > 0 ? nestedOptions : null,
-      propTypings: extractPropTypings(raw.options)
+      nestedComponents: nestedOptions.length > 0 ? nestedOptions : null,
+      propTypings: propTypings.length > 0 ? propTypings : null
     }
   };
 }
 
-function mapOption(opt: IProp): IOption {
-  const result: IOption = {
-    isCollectionItem: false,
-    name: opt.name,
-    type: "any"
-  };
+function extractNestedComponents(
+  owner: string,
+  props: IProp[],
+  getCustomType: (name: string) => ICustomType
+): INestedComponent[] {
+  const result: INestedComponent[] = [];
+  props.forEach((p) => {
+    let isCollectionItem = false;
 
-  if (isNotEmptyArray(opt.props)) {
-    result.nested = opt.props.map(mapOption);
-  }
+    let nestedProps: IProp[];
+    const customTypeRef = findCustomTypeRef(p.types);
+    if (customTypeRef) {
+      nestedProps = getCustomType(customTypeRef.type).props;
+      isCollectionItem = customTypeRef.isCollectionItem;
+    } else {
+      nestedProps = p.props;
+    }
+
+    if (!(p.isSubscribable && isNotEmptyArray(nestedProps))) {
+      return;
+    }
+
+    const className = `${owner}${uppercaseFirst(isCollectionItem ? toSingularName(p.name) : p.name)}`;
+
+    result.push({
+      owner,
+      className,
+      optionName: p.name,
+      nested: nestedProps.map(mapOption),
+      isCollectionItem
+    });
+
+    result.push(...extractNestedComponents(className, nestedProps, getCustomType));
+  });
 
   return result;
 }
@@ -103,6 +147,20 @@ function createPropTyping(option: IProp): IPropTyping {
     propName: option.name,
     types
   };
+}
+
+function mapOption(prop: IProp): IOption {
+  const types = convertTypes(prop.types.map((t) => t.isCustomType ? "Object" : t.type));
+  const result: IOption = {
+    name: prop.name,
+    type: "any" // types && types.length > 0 ? types.join("|") : null
+  };
+
+  if (isNotEmptyArray(prop.props)) {
+    result.nested = prop.props.map(mapOption);
+  }
+
+  return result;
 }
 
 export default generate;

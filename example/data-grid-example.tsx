@@ -2,40 +2,12 @@ import * as React from "react";
 import Example from "./example-block";
 
 import { CheckBox } from "../src/ui/check-box";
-import { DataGrid, DataGridPaging as Paging } from "../src/ui/data-grid";
+import { DataGrid, DataGridColumn as Columns, DataGridPaging as Paging } from "../src/ui/data-grid";
 import { NumberBox } from "../src/ui/number-box";
 
 import { sales } from "./data";
 
 export default class extends React.Component<any, { expandAll: boolean, pageIndex: number }> {
-
-    private columns = [
-        {
-            dataField: "orderId",
-            caption: "Order ID",
-            width: 90
-        },
-        {
-            dataField: "city"
-        },
-        {
-            dataField: "country",
-            width: 180,
-            groupIndex: 0
-        },
-        {
-            dataField: "region"
-        },
-        {
-            dataField: "date",
-            dataType: "date"
-        },
-        {
-            dataField: "amount",
-            dataType: "currency",
-            width: 90
-        }
-    ];
 
     constructor(props: any) {
         super(props);
@@ -68,12 +40,18 @@ export default class extends React.Component<any, { expandAll: boolean, pageInde
                     }} // tslint:disable-line:jsx-no-multiline-js
                     selection={{ mode: "multiple" }}
                     filterRow={{ visible: true }}
-                    defaultColumns={this.columns}
                 >
                     <Paging
                         pageSize={5}
                         pageIndex={this.state.pageIndex}
                     />
+                    <Columns dataField="orderId"  caption="Order ID" width={90} />
+                    <Columns dataField="city" />
+                    <Columns dataField="country" groupIndex={0} width={180} />
+                    <Columns dataField="region" />
+                    <Columns dataField="date" dataType="date" />
+                    <Columns dataField="amount" dataType="currency" width={90} />
+
                 </DataGrid>
                 <br />
                 <CheckBox
