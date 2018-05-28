@@ -3,8 +3,10 @@ import generate from "./component-generator";
 it("generates", () => {
     //#region EXPECTED
     const EXPECTED = `
-import dxCLASS_NAME,
-       { IOptions as ICLASS_NAMEOptions } from "devextreme/DX/WIDGET/PATH";
+import dxCLASS_NAME, {
+    IOptions as ICLASS_NAMEOptions
+} from "devextreme/DX/WIDGET/PATH";
+
 import BaseComponent from "BASE_COMPONENT_PATH";
 
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
@@ -37,8 +39,10 @@ describe("template-props generation", () => {
     it("processes option", () => {
         //#region EXPECTED
         const EXPECTED = `
-import dxCLASS_NAME,
-       { IOptions } from "devextreme/DX/WIDGET/PATH";
+import dxCLASS_NAME, {
+    IOptions
+} from "devextreme/DX/WIDGET/PATH";
+
 import BaseComponent from "BASE_COMPONENT_PATH";
 
 interface ICLASS_NAMEOptions extends IOptions {
@@ -81,8 +85,10 @@ export {
     it("processes several options", () => {
         //#region EXPECTED
         const EXPECTED = `
-import dxCLASS_NAME,
-       { IOptions } from "devextreme/DX/WIDGET/PATH";
+import dxCLASS_NAME, {
+    IOptions
+} from "devextreme/DX/WIDGET/PATH";
+
 import BaseComponent from "BASE_COMPONENT_PATH";
 
 interface ICLASS_NAMEOptions extends IOptions {
@@ -131,8 +137,10 @@ export {
     it("processes single widget-template option", () => {
         //#region EXPECTED
         const EXPECTED = `
-import dxCLASS_NAME,
-       { IOptions } from "devextreme/DX/WIDGET/PATH";
+import dxCLASS_NAME, {
+    IOptions
+} from "devextreme/DX/WIDGET/PATH";
+
 import BaseComponent from "BASE_COMPONENT_PATH";
 
 interface ICLASS_NAMEOptions extends IOptions {
@@ -178,8 +186,10 @@ describe("props generation", () => {
     it("processes subscribable option", () => {
         //#region EXPECTED
         const EXPECTED = `
-import dxCLASS_NAME,
-       { IOptions } from "devextreme/DX/WIDGET/PATH";
+import dxCLASS_NAME, {
+    IOptions
+} from "devextreme/DX/WIDGET/PATH";
+
 import BaseComponent from "BASE_COMPONENT_PATH";
 
 interface ICLASS_NAMEOptions extends IOptions {
@@ -221,8 +231,10 @@ export {
     it("processes several subscribable options", () => {
         //#region EXPECTED
         const EXPECTED = `
-import dxCLASS_NAME,
-       { IOptions } from "devextreme/DX/WIDGET/PATH";
+import dxCLASS_NAME, {
+    IOptions
+} from "devextreme/DX/WIDGET/PATH";
+
 import BaseComponent from "BASE_COMPONENT_PATH";
 
 interface ICLASS_NAMEOptions extends IOptions {
@@ -267,8 +279,10 @@ export {
     it("processes nested options", () => {
         //#region EXPECTED
         const EXPECTED = `
-import dxCLASS_NAME,
-       { IOptions as ICLASS_NAMEOptions } from "devextreme/DX/WIDGET/PATH";
+import dxCLASS_NAME, {
+    IOptions as ICLASS_NAMEOptions
+} from "devextreme/DX/WIDGET/PATH";
+
 import BaseComponent from "BASE_COMPONENT_PATH";
 import NestedOption from "CONFIG_COMPONENT_PATH";
 
@@ -345,8 +359,10 @@ export {
     it("processes nested array options", () => {
         //#region EXPECTED
         const EXPECTED = `
-import dxCLASS_NAME,
-       { IOptions as ICLASS_NAMEOptions } from "devextreme/DX/WIDGET/PATH";
+import dxCLASS_NAME, {
+    IOptions as ICLASS_NAMEOptions
+} from "devextreme/DX/WIDGET/PATH";
+
 import BaseComponent from "BASE_COMPONENT_PATH";
 import NestedOption from "CONFIG_COMPONENT_PATH";
 
@@ -401,8 +417,10 @@ export {
     it("adds check for single type", () => {
         //#region EXPECTED
         const EXPECTED = `
-import dxCLASS_NAME,
-       { IOptions as ICLASS_NAMEOptions } from "devextreme/DX/WIDGET/PATH";
+import dxCLASS_NAME, {
+    IOptions as ICLASS_NAMEOptions
+} from "devextreme/DX/WIDGET/PATH";
+
 import { PropTypes } from "prop-types";
 import BaseComponent from "BASE_COMPONENT_PATH";
 
@@ -443,8 +461,10 @@ export {
     it("adds check for acceptable values", () => {
         //#region EXPECTED
         const EXPECTED = `
-import dxCLASS_NAME,
-       { IOptions as ICLASS_NAMEOptions } from "devextreme/DX/WIDGET/PATH";
+import dxCLASS_NAME, {
+    IOptions as ICLASS_NAMEOptions
+} from "devextreme/DX/WIDGET/PATH";
+
 import { PropTypes } from "prop-types";
 import BaseComponent from "BASE_COMPONENT_PATH";
 
@@ -489,8 +509,10 @@ export {
     it("adds check for several types", () => {
         //#region EXPECTED
         const EXPECTED = `
-import dxCLASS_NAME,
-       { IOptions as ICLASS_NAMEOptions } from "devextreme/DX/WIDGET/PATH";
+import dxCLASS_NAME, {
+    IOptions as ICLASS_NAMEOptions
+} from "devextreme/DX/WIDGET/PATH";
+
 import { PropTypes } from "prop-types";
 import BaseComponent from "BASE_COMPONENT_PATH";
 
@@ -534,8 +556,10 @@ export {
     it("adds typings in alphabetic order", () => {
         //#region EXPECTED
         const EXPECTED = `
-import dxCLASS_NAME,
-       { IOptions as ICLASS_NAMEOptions } from "devextreme/DX/WIDGET/PATH";
+import dxCLASS_NAME, {
+    IOptions as ICLASS_NAMEOptions
+} from "devextreme/DX/WIDGET/PATH";
+
 import { PropTypes } from "prop-types";
 import BaseComponent from "BASE_COMPONENT_PATH";
 
