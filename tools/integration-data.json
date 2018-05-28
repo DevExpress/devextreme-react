@@ -1808,6 +1808,7 @@
         ]
       },
       {
+        "isSubscribable": true,
         "name": "visible",
         "types": [
           {
@@ -19765,6 +19766,14 @@
             ]
           },
           {
+            "name": "searchTimeout",
+            "types": [
+              {
+                "type": "Number"
+              }
+            ]
+          },
+          {
             "name": "title",
             "types": [
               {
@@ -20756,6 +20765,14 @@
           },
           {
             "name": "height",
+            "types": [
+              {
+                "type": "Number"
+              }
+            ]
+          },
+          {
+            "name": "searchTimeout",
             "types": [
               {
                 "type": "Number"
@@ -48021,6 +48038,14 @@
             ]
           },
           {
+            "name": "searchTimeout",
+            "types": [
+              {
+                "type": "Number"
+              }
+            ]
+          },
+          {
             "name": "texts",
             "types": [
               {
@@ -48206,6 +48231,14 @@
           },
           {
             "name": "height",
+            "types": [
+              {
+                "type": "Number"
+              }
+            ]
+          },
+          {
+            "name": "searchTimeout",
             "types": [
               {
                 "type": "Number"
@@ -49556,6 +49589,14 @@
             ]
           },
           {
+            "name": "searchTimeout",
+            "types": [
+              {
+                "type": "Number"
+              }
+            ]
+          },
+          {
             "name": "texts",
             "types": [
               {
@@ -49947,6 +49988,14 @@
         "types": [
           {
             "type": "Boolean"
+          }
+        ]
+      },
+      {
+        "name": "searchTimeout",
+        "types": [
+          {
+            "type": "Number"
           }
         ]
       },
@@ -59737,7 +59786,7 @@
             ]
           },
           {
-            "name": "showBoundaryTicks",
+            "name": "showCustomBoundaryTicks",
             "types": [
               {
                 "type": "Boolean"
@@ -80340,6 +80389,14 @@
             ]
           },
           {
+            "name": "searchTimeout",
+            "types": [
+              {
+                "type": "Number"
+              }
+            ]
+          },
+          {
             "name": "title",
             "types": [
               {
@@ -81113,6 +81170,14 @@
           },
           {
             "name": "height",
+            "types": [
+              {
+                "type": "Number"
+              }
+            ]
+          },
+          {
+            "name": "searchTimeout",
             "types": [
               {
                 "type": "Number"
