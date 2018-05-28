@@ -110,7 +110,7 @@ function createSubscribableOptionModel(option: IOption) {
 function createPropTypingModel(typing: IPropTyping): IRenderedPropTyping {
     const types = typing.types.map((t) => "PropTypes." + t);
     if (isNotEmptyArray(typing.acceptableValues)) {
-        types.push(`PropTypes.oneOf([${typing.acceptableValues.join(", ")}])`);
+        types.push(`PropTypes.oneOf([\n    ${typing.acceptableValues.join(",\n    ")}\n  ])`);
     }
     return {
         propName: typing.propName,
@@ -148,7 +148,8 @@ const renderComponent: (model: {
     renderedExports: string
 }
 ) => string = createTempate(`
-import <#= it.widgetName #>, { IOptions <#? !it.hasExtraOptions #>as <#= it.optionsName #> <#?#>} from "devextreme/<#= it.dxExportPath #>";<#? it.renderedPropTypings #>
+import <#= it.widgetName #>,
+       { IOptions <#? !it.hasExtraOptions #>as <#= it.optionsName #> <#?#>} from "devextreme/<#= it.dxExportPath #>";<#? it.renderedPropTypings #>
 import { PropTypes } from "prop-types";<#?#>
 import BaseComponent from "<#= it.baseComponentPath #>";
 <#? it.nestedOptions #>import NestedOption from "<#= it.configComponentPath #>";
