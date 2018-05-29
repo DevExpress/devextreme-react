@@ -7,13 +7,13 @@ import { NumberBox } from "../src/ui/number-box";
 
 import { sales } from "./data";
 
-export default class extends React.Component<any, { expandAll: boolean, pageIndex: number }> {
+export default class extends React.Component<any, { expandAll: boolean, pageSize: number }> {
 
     constructor(props: any) {
         super(props);
         this.state = {
             expandAll: true,
-            pageIndex: 1
+            pageSize: 5
         };
 
         this.handleExpandAllChange = this.handleExpandAllChange.bind(this);
@@ -42,8 +42,8 @@ export default class extends React.Component<any, { expandAll: boolean, pageInde
                     filterRow={{ visible: true }}
                 >
                     <Paging
-                        pageSize={5}
-                        pageIndex={this.state.pageIndex}
+                        pageSize={this.state.pageSize}
+                        defaultPageIndex={2}
                     />
 
                     <Column dataField="orderId" caption="Order ID" width={90} />
@@ -64,7 +64,7 @@ export default class extends React.Component<any, { expandAll: boolean, pageInde
                 <br/>
                 <NumberBox
                     showSpinButtons={true}
-                    value={this.state.pageIndex}
+                    value={this.state.pageSize}
                     onValueChanged={this.handlePageIndexChange}
                 />
             </Example>
@@ -78,7 +78,7 @@ export default class extends React.Component<any, { expandAll: boolean, pageInde
     }
     private handlePageIndexChange(e: any) {
         this.setState({
-            pageIndex: e.value
+            pageSize: e.value
         });
     }
 }

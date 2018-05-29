@@ -336,7 +336,7 @@ export {
                         className: "Opt_1_Component",
                         owner: "CLASS_NAME",
                         optionName: "opt_1",
-                        nested: [
+                        options: [
                             {
                                 name: "sub_opt_2",
                                 type: "TYPE_1"
@@ -361,12 +361,11 @@ export {
                             }
                         ]
                     },
-
                     {
                         className: "Opt_6_SubComponent",
                         owner: "Opt_1_Component",
                         optionName: "sub_sub_opt_7",
-                        nested: [
+                        options: [
                             {
                                 name: "sub_sub_sub_opt_8",
                                 type: "TYPE_4"
@@ -434,19 +433,18 @@ export {
                         owner: "CLASS_NAME",
                         optionName: "opt_1",
                         isCollectionItem: true,
-                        nested: [
+                        options: [
                             {
                                 name: "sub_opt_2",
                                 type: "TYPE_1"
                             }
                         ]
                     },
-
                     {
                         className: "Opt_6_SubComponent",
                         owner: "Opt_1_Component",
                         optionName: "sub_sub_opt_7",
-                        nested: [
+                        options: [
                             {
                                 name: "sub_sub_sub_opt_8",
                                 type: "TYPE_4"
@@ -457,6 +455,83 @@ export {
             })
         ).toBe(EXPECTED);
     });
+
+    it("gerates default props for nested options", () => {
+        //#region EXPECTED
+        const EXPECTED = `
+import dxCLASS_NAME, {
+    IOptions as ICLASS_NAMEOptions
+} from "devextreme/DX/WIDGET/PATH";
+
+import BaseComponent from "BASE_COMPONENT_PATH";
+import NestedOption from "CONFIG_COMPONENT_PATH";
+
+class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
+
+  public get instance(): dxCLASS_NAME {
+    return this._instance;
+  }
+
+  protected _WidgetClass = dxCLASS_NAME;
+}
+// tslint:disable:max-classes-per-file
+
+class Opt_1_Component extends NestedOption<{
+  sub_opt_2?: TYPE_1;
+  sub_opt_3?: {
+    sub_sub_opt_4?: TYPE_2;
+  };
+  defaultSub_opt_2?: TYPE_1;
+}> {
+  public static OwnerType = CLASS_NAME;
+  public static OptionName = "opt_1";
+  public static DefaultsProps = {
+    defaultSub_opt_2: "sub_opt_2"
+  };
+}
+
+export {
+  CLASS_NAME,
+  ICLASS_NAMEOptions,
+  Opt_1_Component
+};
+`.trimLeft();
+        //#endregion
+
+        expect(
+            generate({
+                name: "CLASS_NAME",
+                baseComponentPath: "BASE_COMPONENT_PATH",
+                configComponentPath: "CONFIG_COMPONENT_PATH",
+                dxExportPath: "DX/WIDGET/PATH",
+                nestedComponents: [
+                    {
+                        className: "Opt_1_Component",
+                        owner: "CLASS_NAME",
+                        optionName: "opt_1",
+                        options: [
+                            {
+                                name: "sub_opt_2",
+                                type: "TYPE_1",
+                                isSubscribable: true
+                            },
+                            {
+                                name: "sub_opt_3",
+                                nested: [
+                                    {
+                                        name: "sub_sub_opt_4",
+                                        type: "TYPE_2",
+                                        isSubscribable: true // should not be rendered
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            })
+        ).toBe(EXPECTED);
+    });
+
 });
 
 describe("prop typings", () => {
