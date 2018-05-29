@@ -377,6 +377,9 @@ export {
             })
         ).toBe(EXPECTED);
     });
+});
+
+describe("prop typings", () => {
 
     it("adds check for single type", () => {
         //#region EXPECTED
