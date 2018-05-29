@@ -1,5 +1,5 @@
 import { IArrayDescr, ITypeDescr } from "../integration-data-model";
-import { convertTypes, findCustomTypeRef } from "./converter";
+import { findCustomTypeRef, toPropTypingType } from "./converter";
 
 it("deduplicates", () => {
     const types = [
@@ -20,24 +20,24 @@ it("deduplicates", () => {
         "string"
     ];
 
-    expect(convertTypes(types)).toEqual(expected);
+    expect(toPropTypingType(types)).toEqual(expected);
 });
 
 it("returns undefiend if finds Any", () => {
-    expect(convertTypes(["Any"])).toBeUndefined();
-    expect(convertTypes(["String", "Any", "Number"])).toBeUndefined();
+    expect(toPropTypingType(["Any"])).toBeUndefined();
+    expect(toPropTypingType(["String", "Any", "Number"])).toBeUndefined();
 });
 
 it("returns undefined if array is empty", () => {
-    expect(convertTypes([])).toBeUndefined();
+    expect(toPropTypingType([])).toBeUndefined();
 });
 
 it("returns undefined if array is undefined", () => {
-    expect(convertTypes([])).toBeUndefined();
+    expect(toPropTypingType([])).toBeUndefined();
 });
 
 it("returns undefined if array is null", () => {
-    expect(convertTypes([])).toBeUndefined();
+    expect(toPropTypingType([])).toBeUndefined();
 });
 
 it("finds custom type", () => {

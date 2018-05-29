@@ -7,7 +7,7 @@ import generateComponent, {
     IOption,
     IPropTyping
 } from "./component-generator";
-import { convertTypes, findCustomTypeRef } from "./converter";
+import { findCustomTypeRef, toPropTypingType } from "./converter";
 import {
   isEmptyArray,
   isNotEmptyArray,
@@ -129,7 +129,7 @@ function createPropTyping(option: IProp): IPropTyping {
   const rawTypes = option.types.filter((t) => !isRestrictedType(t));
   const restrictedTypes = option.types.filter((t) => isRestrictedType(t));
 
-  const types = convertTypes(rawTypes.map((t) => t.isCustomType ? "Object" : t.type));
+  const types = toPropTypingType(rawTypes.map((t) => t.isCustomType ? "Object" : t.type));
 
   if (restrictedTypes.length > 0) {
     return {

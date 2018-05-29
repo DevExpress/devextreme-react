@@ -1,7 +1,7 @@
 import { IArrayDescr, ITypeDescr } from "../integration-data-model";
 import { lowercaseFirst } from "./helpers";
 
-function convertTypes(types: string[]): string[] {
+function toPropTypingType(types: string[]): string[] {
     if (types === undefined || types === null || types.length === 0) {
         return;
     }
@@ -73,6 +73,6 @@ const inputTypes = {
 };
 
 export {
-    convertTypes,
+    toPropTypingType,
     findCustomTypeRef
 };
