@@ -97,7 +97,7 @@ function extractNestedComponents(
       nestedProps = p.props;
     }
 
-    if (!(p.isSubscribable && isNotEmptyArray(nestedProps))) {
+    if (!p.isSubscribable || !isNotEmptyArray(nestedProps)) {
       return;
     }
 
@@ -150,10 +150,9 @@ function createPropTyping(option: IProp): IPropTyping {
 }
 
 function mapOption(prop: IProp): IOption {
-  const types = convertTypes(prop.types.map((t) => t.isCustomType ? "Object" : t.type));
   const result: IOption = {
     name: prop.name,
-    type: "any" // types && types.length > 0 ? types.join("|") : null
+    type: "any"
   };
 
   if (isNotEmptyArray(prop.props)) {

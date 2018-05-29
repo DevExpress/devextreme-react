@@ -2,7 +2,7 @@ import * as React from "react";
 import Example from "./example-block";
 
 import { CheckBox } from "../src/ui/check-box";
-import { DataGrid, DataGridColumn as Columns, DataGridPaging as Paging } from "../src/ui/data-grid";
+import { DataGrid, DataGridColumn as Column, DataGridPaging as Paging } from "../src/ui/data-grid";
 import { NumberBox } from "../src/ui/number-box";
 
 import { sales } from "./data";
@@ -45,12 +45,13 @@ export default class extends React.Component<any, { expandAll: boolean, pageInde
                         pageSize={5}
                         pageIndex={this.state.pageIndex}
                     />
-                    <Columns dataField="orderId"  caption="Order ID" width={90} />
-                    <Columns dataField="city" />
-                    <Columns dataField="country" groupIndex={0} width={180} />
-                    <Columns dataField="region" />
-                    <Columns dataField="date" dataType="date" />
-                    <Columns dataField="amount" dataType="currency" width={90} />
+
+                    <Column dataField="orderId" caption="Order ID" width={90} />
+                    <Column dataField="city" />
+                    <Column dataField="country" groupIndex={0} width={180} />
+                    <Column dataField="region" />
+                    <Column dataField="date" dataType="date" />
+                    <Column dataField="amount" dataType="currency" width={90} />
 
                 </DataGrid>
                 <br />
