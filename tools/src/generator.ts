@@ -97,7 +97,7 @@ function extractNestedComponents(
       nestedProps = p.props;
     }
 
-    if (!p.isSubscribable || !isNotEmptyArray(nestedProps)) {
+    if (!p.isSubscribable || isEmptyArray(nestedProps)) {
       return;
     }
 
