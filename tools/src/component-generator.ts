@@ -7,16 +7,23 @@ interface IComponent {
     configComponentPath: string;
     dxExportPath: string;
     subscribableOptions?: IOption[];
-    nestedOptions?: IOption[];
+    nestedComponents?: INestedComponent[];
     templates?: string[];
     propTypings?: IPropTyping[];
+}
+
+interface INestedComponent {
+    className: string;
+    optionName: string;
+    owner: string;
+    nested: IOption[];
+    isCollectionItem?: boolean;
 }
 
 interface IOption {
     name: string;
     type?: string;
     nested?: IOption[];
-    isCollectionItem?: boolean;
 }
 
 interface IPropTyping {
@@ -45,28 +52,29 @@ function generate(component: IComponent): string {
             .map((t) => renderPropTyping(createPropTypingModel(t)))
         : null;
 
-    const nestedOptions = component.nestedOptions
-        ? component.nestedOptions
-            .sort(createKeyComparator<IOption>((o) => o.name))
-            .map((o) => ({
-                name: o.name,
-                className: component.name + uppercaseFirst(o.name),
-                interfaceName: `I${uppercaseFirst(o.name)}Options`,
-                rendered: renderObject(o.nested, 0),
-                isCollectionItem: o.isCollectionItem
+    const nestedComponents = component.nestedComponents
+        ? component.nestedComponents
+            .sort(createKeyComparator<INestedComponent>((o) => o.optionName))
+            .map((c) => ({
+                className: c.className,
+                optionName: c.optionName,
+                ownerName: c.owner,
+                interfaceName: `I${uppercaseFirst(c.optionName)}Options`,
+                rendered: renderObject(c.nested, 0),
+                isCollectionItem: c.isCollectionItem
             }))
         : null;
 
     const optionsName = `I${component.name}Options`;
     const exportNames = [ component.name, optionsName ];
-    if (isNotEmptyArray(nestedOptions)) {
-        nestedOptions.forEach((opt) => {
+    if (isNotEmptyArray(nestedComponents)) {
+        nestedComponents.forEach((opt) => {
             exportNames.push(opt.className);
         });
     }
 
     return renderComponent({
-        name: component.name,
+        className: component.name,
         baseComponentPath: component.baseComponentPath,
         configComponentPath: component.configComponentPath,
         dxExportPath: component.dxExportPath,
@@ -76,7 +84,7 @@ function generate(component: IComponent): string {
         hasExtraOptions: !!templates || !!subscribableOptions,
         subscribableOptions,
         templates,
-        nestedOptions,
+        nestedComponents,
         renderedPropTypings,
         renderedExports: renderExports(exportNames)
     });
@@ -119,7 +127,7 @@ function createPropTypingModel(typing: IPropTyping): IRenderedPropTyping {
 }
 
 const renderComponent: (model: {
-    name: string;
+    className: string;
     widgetName: string;
     optionsName: string;
     baseComponentPath: string;
@@ -135,10 +143,11 @@ const renderComponent: (model: {
         name: string,
         type: string,
         renderedProp: string
-    }>
-    nestedOptions: Array<{
-        name: string;
+    }>;
+    nestedComponents: Array<{
+        optionName: string;
         className: string;
+        ownerName: string;
         interfaceName: string;
         rendered: string;
         isCollectionItem: boolean;
@@ -153,7 +162,7 @@ import <#= it.widgetName #>, {
 
 <#? it.renderedPropTypings #>import { PropTypes } from "prop-types";
 <#?#>import BaseComponent from "<#= it.baseComponentPath #>";
-<#? it.nestedOptions #>import NestedOption from "<#= it.configComponentPath #>";
+<#? it.nestedComponents #>import NestedOption from "<#= it.configComponentPath #>";
 <#?#><#? it.hasExtraOptions #>
 interface <#= it.optionsName #> extends IOptions {<#~ it.templates :template #>
   <#= template.render #>?: (props: any) => React.ReactNode;
@@ -161,7 +170,7 @@ interface <#= it.optionsName #> extends IOptions {<#~ it.templates :template #>
   <#= option.name #>?: <#= option.type #>;<#~#>
 }
 <#?#>
-class <#= it.name #> extends BaseComponent<<#= it.optionsName #>> {
+class <#= it.className #> extends BaseComponent<<#= it.optionsName #>> {
 
   public get instance(): <#= it.widgetName #> {
     return this._instance;
@@ -174,14 +183,14 @@ class <#= it.name #> extends BaseComponent<<#= it.optionsName #>> {
 <#?#><#? it.templates #>
   protected _templateProps = [<#= it.templates.map(t => t.renderedProp).join(', ') #>];
 <#?#>}<#? it.renderedPropTypings #>
-(<#= it.name #> as any).propTypes = {<#= it.renderedPropTypings.join(',') #>
-};<#?#><#? it.nestedOptions #>
-// tslint:disable:max-classes-per-file<#~ it.nestedOptions :opt #>
+(<#= it.className #> as any).propTypes = {<#= it.renderedPropTypings.join(',') #>
+};<#?#><#? it.nestedComponents #>
+// tslint:disable:max-classes-per-file<#~ it.nestedComponents :nested #>
 
-class <#= opt.className #> extends NestedOption<<#= opt.rendered #>> {<#? opt.isCollectionItem #>
+class <#= nested.className #> extends NestedOption<<#= nested.rendered #>> {<#? nested.isCollectionItem #>
   public static IsCollectionItem = true;<#?#>
-  public static OwnerType = <#= it.name #>;
-  public static OptionName = "<#= opt.name #>";
+  public static OwnerType = <#= nested.ownerName #>;
+  public static OptionName = "<#= nested.optionName #>";
 }<#~#>
 <#?#>
 export {
@@ -250,6 +259,7 @@ function renderExports(exportsNames: string[]) {
 export default generate;
 export {
     IComponent,
+    INestedComponent,
     IOption,
     IPropTyping
 };

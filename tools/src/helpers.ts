@@ -47,3 +47,7 @@ export function isEmptyArray(array: any[]): boolean {
 export function isPlainObject(value: any): boolean {
     return value.constructor === Object;
 }
+
+export function toSingularName(value: string): string {
+    return value.replace(/s$/, "");
+}

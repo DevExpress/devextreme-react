@@ -296,7 +296,7 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 }
 // tslint:disable:max-classes-per-file
 
-class CLASS_NAMEOpt_1 extends NestedOption<{
+class Opt_1_Component extends NestedOption<{
   sub_opt_2?: TYPE_1;
   sub_opt_3?: {
     sub_sub_opt_4?: TYPE_2;
@@ -309,10 +309,18 @@ class CLASS_NAMEOpt_1 extends NestedOption<{
   public static OptionName = "opt_1";
 }
 
+class Opt_6_SubComponent extends NestedOption<{
+  sub_sub_sub_opt_8?: TYPE_4;
+}> {
+  public static OwnerType = Opt_1_Component;
+  public static OptionName = "sub_sub_opt_7";
+}
+
 export {
   CLASS_NAME,
   ICLASS_NAMEOptions,
-  CLASS_NAMEOpt_1
+  Opt_1_Component,
+  Opt_6_SubComponent
 };
 `.trimLeft();
         //#endregion
@@ -323,9 +331,11 @@ export {
                 baseComponentPath: "BASE_COMPONENT_PATH",
                 configComponentPath: "CONFIG_COMPONENT_PATH",
                 dxExportPath: "DX/WIDGET/PATH",
-                nestedOptions: [
+                nestedComponents: [
                     {
-                        name: "opt_1",
+                        className: "Opt_1_Component",
+                        owner: "CLASS_NAME",
+                        optionName: "opt_1",
                         nested: [
                             {
                                 name: "sub_opt_2",
@@ -350,64 +360,18 @@ export {
                                 ]
                             }
                         ]
-                    }
-                ]
-            })
-        ).toBe(EXPECTED);
-    });
+                    },
 
-    it("processes nested array options", () => {
-        //#region EXPECTED
-        const EXPECTED = `
-import dxCLASS_NAME, {
-    IOptions as ICLASS_NAMEOptions
-} from "devextreme/DX/WIDGET/PATH";
-
-import BaseComponent from "BASE_COMPONENT_PATH";
-import NestedOption from "CONFIG_COMPONENT_PATH";
-
-class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
-
-  public get instance(): dxCLASS_NAME {
-    return this._instance;
-  }
-
-  protected _WidgetClass = dxCLASS_NAME;
-}
-// tslint:disable:max-classes-per-file
-
-class CLASS_NAMEOpt_1 extends NestedOption<{
-  sub_opt_2?: TYPE_1;
-}> {
-  public static IsCollectionItem = true;
-  public static OwnerType = CLASS_NAME;
-  public static OptionName = "opt_1";
-}
-
-export {
-  CLASS_NAME,
-  ICLASS_NAMEOptions,
-  CLASS_NAMEOpt_1
-};
-`.trimLeft();
-        //#endregion
-
-        expect(
-            generate({
-                name: "CLASS_NAME",
-                baseComponentPath: "BASE_COMPONENT_PATH",
-                configComponentPath: "CONFIG_COMPONENT_PATH",
-                dxExportPath: "DX/WIDGET/PATH",
-                nestedOptions: [
                     {
-                        name: "opt_1",
+                        className: "Opt_6_SubComponent",
+                        owner: "Opt_1_Component",
+                        optionName: "sub_sub_opt_7",
                         nested: [
                             {
-                                name: "sub_opt_2",
-                                type: "TYPE_1"
+                                name: "sub_sub_sub_opt_8",
+                                type: "TYPE_4"
                             }
-                        ],
-                        isCollectionItem: true
+                        ]
                     }
                 ]
             })

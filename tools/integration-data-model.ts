@@ -1,38 +1,49 @@
+export interface IModel {
+  customTypes: ICustomType[];
+  widgets: IWidget[];
+}
+
 export interface IWidget {
   exportPath: string;
   isEditor: boolean;
   name: string;
-  options: IOption[];
+  options: IProp[];
   templates: string[];
 }
 
-export interface IOption {
+export interface IProp {
   isSubscribable: boolean;
   name: string;
-  options: IOption[];
-  types: ITypeDescriptor[];
+  props: IProp[];
+  types: ITypeDescr[];
 }
 
-export interface ITypeDescriptor {
+export interface ICustomType {
+  name: string;
+  props: IProp[];
+}
+
+export interface ITypeDescr {
   acceptableValues: string[];
+  isCustomType: boolean;
   type: string;
 }
 
-export interface IArrayDescriptor extends ITypeDescriptor {
-  itemTypes: ITypeDescriptor[];
+export interface IArrayDescr extends ITypeDescr {
+  itemTypes: ITypeDescr[];
 }
 
-export interface IFunctionDescriptor extends ITypeDescriptor {
+export interface IFunctionDescr extends ITypeDescr {
   params: {
     name: string;
-    types: ITypeDescriptor[];
+    types: ITypeDescr[];
   }[]; // tslint:disable-line:array-type
-  returnValueType: ITypeDescriptor;
+  returnValueType: ITypeDescr;
 }
 
-export interface IObjectDescriptor extends ITypeDescriptor {
+export interface IObjectDescr extends ITypeDescr {
   fields: {
     name: string;
-    types: ITypeDescriptor[];
+    types: ITypeDescr[];
   }[]; // tslint:disable-line:array-type
 }
