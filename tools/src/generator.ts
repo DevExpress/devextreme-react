@@ -107,7 +107,7 @@ function extractNestedComponents(
       owner,
       className,
       optionName: p.name,
-      nested: nestedProps.map(mapOption),
+      options: nestedProps.map(mapOption),
       isCollectionItem
     });
 
@@ -152,7 +152,8 @@ function createPropTyping(option: IProp): IPropTyping {
 function mapOption(prop: IProp): IOption {
   const result: IOption = {
     name: prop.name,
-    type: "any"
+    type: "any",
+    isSubscribable: prop.isSubscribable
   };
 
   if (isNotEmptyArray(prop.props)) {

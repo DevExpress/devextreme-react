@@ -16,7 +16,7 @@ interface INestedComponent {
     className: string;
     optionName: string;
     owner: string;
-    nested: IOption[];
+    options: IOption[];
     isCollectionItem?: boolean;
 }
 
@@ -24,6 +24,7 @@ interface IOption {
     name: string;
     type?: string;
     nested?: IOption[];
+    isSubscribable?: boolean;
 }
 
 interface IPropTyping {
@@ -55,14 +56,34 @@ function generate(component: IComponent): string {
     const nestedComponents = component.nestedComponents
         ? component.nestedComponents
             .sort(createKeyComparator<INestedComponent>((o) => o.optionName))
-            .map((c) => ({
-                className: c.className,
-                optionName: c.optionName,
-                ownerName: c.owner,
-                interfaceName: `I${uppercaseFirst(c.optionName)}Options`,
-                rendered: renderObject(c.nested, 0),
-                isCollectionItem: c.isCollectionItem
-            }))
+            .map((c) => {
+                const options = [...c.options];
+                const nestedSubscribableOptions = options.filter((o) => o.isSubscribable);
+                let renderedSubscribableOptions = null;
+                if (isNotEmptyArray(nestedSubscribableOptions)) {
+
+                    options.push(...nestedSubscribableOptions.map((o) => ({
+                        ...o,
+                        name: `default${uppercaseFirst(o.name)}`
+                    })));
+
+                    renderedSubscribableOptions = nestedSubscribableOptions.map((o) =>
+                        renderObjectEntry({
+                            key: `default${uppercaseFirst(o.name)}`,
+                            value: o.name
+                        })
+                    );
+                }
+                return {
+                    className: c.className,
+                    optionName: c.optionName,
+                    ownerName: c.owner,
+                    interfaceName: `I${uppercaseFirst(c.optionName)}Options`,
+                    rendered: renderObject(options, 0),
+                    renderedSubscribableOptions,
+                    isCollectionItem: c.isCollectionItem
+                };
+            })
         : null;
 
     const optionsName = `I${component.name}Options`;
@@ -78,7 +99,6 @@ function generate(component: IComponent): string {
         baseComponentPath: component.baseComponentPath,
         configComponentPath: component.configComponentPath,
         dxExportPath: component.dxExportPath,
-
         widgetName: `dx${uppercaseFirst(component.name)}`,
         optionsName,
         hasExtraOptions: !!templates || !!subscribableOptions,
@@ -126,6 +146,7 @@ function createPropTypingModel(typing: IPropTyping): IRenderedPropTyping {
     };
 }
 
+// tslint:disable:max-line-length
 const renderComponent: (model: {
     className: string;
     widgetName: string;
@@ -140,9 +161,9 @@ const renderComponent: (model: {
         renderedProp: string;
     }>;
     subscribableOptions: Array<{
-        name: string,
-        type: string,
-        renderedProp: string
+        name: string;
+        type: string;
+        renderedProp: string;
     }>;
     nestedComponents: Array<{
         optionName: string;
@@ -150,6 +171,7 @@ const renderComponent: (model: {
         ownerName: string;
         interfaceName: string;
         rendered: string;
+        renderedSubscribableOptions: string;
         isCollectionItem: boolean;
     }>;
     renderedPropTypings: string[],
@@ -190,7 +212,9 @@ class <#= it.className #> extends BaseComponent<<#= it.optionsName #>> {
 class <#= nested.className #> extends NestedOption<<#= nested.rendered #>> {<#? nested.isCollectionItem #>
   public static IsCollectionItem = true;<#?#>
   public static OwnerType = <#= nested.ownerName #>;
-  public static OptionName = "<#= nested.optionName #>";
+  public static OptionName = "<#= nested.optionName #>";<#? nested.renderedSubscribableOptions #>
+  public static DefaultsProps = {<#= nested.renderedSubscribableOptions.join(',') #>
+  };<#?#>
 }<#~#>
 <#?#>
 export {
