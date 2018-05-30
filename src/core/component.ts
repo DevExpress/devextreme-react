@@ -6,7 +6,7 @@ import { addPrefixToKeys } from "./helpers";
 import { createConfigurationComponent } from "./nested-option";
 import { OptionsManager } from "./options-manager";
 import { ITemplateMeta, Template } from "./template";
-import { ITemplate, TemplateHelper } from "./template-helper";
+import { IDxTemplate, TemplateHelper } from "./template-helper";
 import { separateProps } from "./widget-config";
 
 const DX_REMOVE_EVENT = "dxremove";
@@ -158,7 +158,7 @@ class Component<P> extends React.PureComponent<P, IState> {
     }
 
   private _getIntegrationOptions(options: Record<string, any>, nestedOptions: Record<string, any>): any {
-    const templates: Record<string, ITemplate> = {};
+    const templates: Record<string, IDxTemplate> = {};
     const result = {
       integrationOptions: {
         templates

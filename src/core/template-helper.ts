@@ -1,27 +1,17 @@
-import * as events from "devextreme/events";
 import * as React from "react";
-import * as ReactDOM from "react-dom";
 
 import Component, { IState } from "./component";
 import { generateID } from "./helpers";
+import { ITemplateWrapperProps, TemplateWrapper } from "./template-wrapper";
 
-const DX_REMOVE_EVENT = "dxremove";
-
-interface ITemplateData {
+interface IDxTemplateData {
     container: any;
     model?: any;
     index?: any;
 }
 
-interface ITemplate {
-    render: (data: ITemplateData) => any;
-}
-
-interface IWrapperProps {
-    content: any;
-    container: Element;
-    onRemoved: () => void;
-    key: string;
+interface IDxTemplate {
+    render: (data: IDxTemplateData) => any;
 }
 
 class TemplateHelper {
@@ -34,16 +24,16 @@ class TemplateHelper {
         this._updateState = this._updateState.bind(this);
     }
 
-    public wrapTemplate(component: any, render: any): ITemplate {
+    public wrapTemplate(component: any, render: any): IDxTemplate {
         const tmplFn = !!component
             ? React.createElement.bind(this, component)
             : render.bind(this);
 
         return {
-            render: (data: ITemplateData) => {
+            render: (data: IDxTemplateData) => {
                 const templateId = "__template_" + generateID();
                 const wrapper = () =>
-                    React.createElement(TemplateWrapper, {
+                    React.createElement<ITemplateWrapperProps>(TemplateWrapper, {
                         content: tmplFn(data.model),
                         container: unwrapElement(data.container),
                         onRemoved: () => this._updateState((t) => delete t[templateId]),
@@ -70,25 +60,8 @@ function unwrapElement(element: any) {
     return element.get ? element.get(0) : element;
 }
 
-class TemplateWrapper extends React.PureComponent<IWrapperProps, any> {
-
-    public render() {
-        return ReactDOM.createPortal(this.props.content, this.props.container);
-    }
-
-    public componentDidMount() {
-        const templateElement = ReactDOM.findDOMNode(this);
-        const templateParent = templateElement.parentNode;
-
-        const isGridRow = templateParent && templateParent.nodeName !== "DIV";
-        const element = isGridRow ? templateElement : templateParent;
-
-        events.one(element, DX_REMOVE_EVENT, this.props.onRemoved);
-    }
-} // tslint:disable-line:max-classes-per-file
-
 export {
-    ITemplate,
-    ITemplateData,
+    IDxTemplate,
+    IDxTemplateData,
     TemplateHelper
 };
