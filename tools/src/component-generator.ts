@@ -1,5 +1,16 @@
-import { createKeyComparator, isNotEmptyArray, lowercaseFirst, uppercaseFirst } from "./helpers";
-import createTempate from "./template";
+import {
+    createKeyComparator,
+    isNotEmptyArray,
+    lowercaseFirst,
+    uppercaseFirst
+} from "./helpers";
+
+import {
+    createStrictTemplate,
+    createTempate,
+    NEWLINE as NL,
+    TAB
+} from "./template";
 
 interface IComponent {
     name: string;
@@ -94,14 +105,31 @@ function generate(component: IComponent): string {
         });
     }
 
-    return renderComponent({
+    const hasExtraOptions = !!templates || !!subscribableOptions;
+    const widgetName =  `dx${uppercaseFirst(component.name)}`;
+
+    return renderModule({
+        renderedImports: renderImports({
+            dxExportPath: component.dxExportPath,
+            baseComponentPath: component.baseComponentPath,
+            configComponentPath: component.configComponentPath,
+            widgetName,
+            optionsAliasName: hasExtraOptions ? undefined : optionsName,
+            hasExtraOptions,
+            hasNestedComponents: isNotEmptyArray(nestedComponents),
+            hasPropTypings: isNotEmptyArray(renderedPropTypings)
+        }),
+
+        renderedOptionsInterface: !hasExtraOptions ? undefined :  renderOptionsInterface({
+            optionsName,
+            subscribableOptions,
+            templates
+        }),
         className: component.name,
-        baseComponentPath: component.baseComponentPath,
-        configComponentPath: component.configComponentPath,
-        dxExportPath: component.dxExportPath,
-        widgetName: `dx${uppercaseFirst(component.name)}`,
+
+        widgetName,
         optionsName,
-        hasExtraOptions: !!templates || !!subscribableOptions,
+        hasExtraOptions,
         subscribableOptions,
         templates,
         nestedComponents,
@@ -146,14 +174,60 @@ function createPropTypingModel(typing: IPropTyping): IRenderedPropTyping {
     };
 }
 
+const renderImports: (model: {
+    dxExportPath: string;
+    configComponentPath: string;
+    baseComponentPath: string;
+    widgetName: string;
+    optionsAliasName: string;
+    hasExtraOptions: boolean;
+    hasPropTypings: boolean;
+    hasNestedComponents: boolean;
+}) => string = createStrictTemplate(
+`
+import <#= it.widgetName #>, {${NL}
+${TAB}${TAB}IOptions<#? it.optionsAliasName #> as <#= it.optionsAliasName #><#?#>${NL}
+} from "devextreme/<#= it.dxExportPath #>";${NL}
+
+<#? it.hasPropTypings #>
+${NL}import { PropTypes } from "prop-types";
+<#?#>
+
+${NL}import BaseComponent from "<#= it.baseComponentPath #>";
+
+<#? it.hasNestedComponents #>
+${NL}import NestedOption from "<#= it.configComponentPath #>";
+<#?#>
+
+${NL}
+`);
+
+const renderOptionsInterface: (model: {
+    optionsName: string;
+    templates: Array<{
+        render: string;
+        component: string;
+    }>;
+    subscribableOptions: Array<{
+        name: string;
+        type: string;
+    }>;
+}) => string = createTempate(`
+interface <#= it.optionsName #> extends IOptions {<#~ it.templates :template #>
+  <#= template.render #>?: (props: any) => React.ReactNode;
+  <#= template.component #>?: React.ComponentType<any>;<#~#><#~ it.subscribableOptions :option #>
+  <#= option.name #>?: <#= option.type #>;<#~#>
+}
+`.trim());
+
 // tslint:disable:max-line-length
-const renderComponent: (model: {
+const renderModule: (model: {
+    renderedImports: string;
+    renderedOptionsInterface: string;
+    renderedExports: string;
     className: string;
     widgetName: string;
     optionsName: string;
-    baseComponentPath: string;
-    configComponentPath: string;
-    dxExportPath: string;
     hasExtraOptions: boolean;
     templates: Array<{
         render: string;
@@ -174,23 +248,10 @@ const renderComponent: (model: {
         renderedSubscribableOptions: string;
         isCollectionItem: boolean;
     }>;
-    renderedPropTypings: string[],
-    renderedExports: string
-}
-) => string = createTempate(`
-import <#= it.widgetName #>, {
-    IOptions<#? !it.hasExtraOptions #> as <#= it.optionsName #><#?#>
-} from "devextreme/<#= it.dxExportPath #>";
-
-<#? it.renderedPropTypings #>import { PropTypes } from "prop-types";
-<#?#>import BaseComponent from "<#= it.baseComponentPath #>";
-<#? it.nestedComponents #>import NestedOption from "<#= it.configComponentPath #>";
-<#?#><#? it.hasExtraOptions #>
-interface <#= it.optionsName #> extends IOptions {<#~ it.templates :template #>
-  <#= template.render #>?: (props: any) => React.ReactNode;
-  <#= template.component #>?: React.ComponentType<any>;<#~#><#~ it.subscribableOptions :option #>
-  <#= option.name #>?: <#= option.type #>;<#~#>
-}
+    renderedPropTypings: string[];
+}) => string = createTempate(`
+<#= it.renderedImports #><#? it.renderedOptionsInterface #>
+<#= it.renderedOptionsInterface #>
 <#?#>
 class <#= it.className #> extends BaseComponent<<#= it.optionsName #>> {
 

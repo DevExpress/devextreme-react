@@ -1,6 +1,17 @@
 import { template, templateSettings } from "dot";
 
-const settings = {
+interface ISettings {
+    strip: boolean;
+}
+
+const TAB = "<#= this.__tab #>";
+const NEWLINE = "<#= this.__newLine #>";
+const symbols = {
+    __newLine: "\n",
+    __tab: "  "
+};
+
+const defaultSettings: ISettings = {
     ...templateSettings,
     conditional: /\<#\?(\?)?\s*([\s\S]*?)\s*#\>/g,
     define: /\<###\s*([\w\.$]+)\s*(\:|=)([\s\S]+?)##\>/g,
@@ -13,6 +24,17 @@ const settings = {
     varname: "it"
 };
 
-const createTempate = (templateStr: string): ((model: any) => string) => template(templateStr, settings);
+function createTempate(templateStr: string, settings?: ISettings): ((model: any) => string) {
+    return template(templateStr, { ...defaultSettings, ...settings });
+}
 
-export default createTempate;
+function createStrictTemplate(templateStr: string): ((model: any) => string) {
+    return template(templateStr, { ...defaultSettings, strip: true }).bind(symbols);
+}
+
+export {
+    createTempate,
+    createStrictTemplate,
+    TAB,
+    NEWLINE
+};

@@ -1,4 +1,4 @@
-import createTempate from "./template";
+import { createTempate } from "./template";
 
 function generate(paths: string[]): string {
   return render(paths);
