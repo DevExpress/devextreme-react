@@ -50,12 +50,21 @@ interface IRenderedPropTyping {
 }
 
 function generate(component: IComponent): string {
+
     const templates = component.templates
-        ? component.templates.map(createTemplateModel)
+        ? component.templates.map((actualOptionName) => ({
+            actualOptionName,
+            render: formatTemplatePropName(actualOptionName, "Render"),
+            component: formatTemplatePropName(actualOptionName, "Component")
+        }))
         : null;
 
-    const subscribableOptions = component.subscribableOptions
-        ? component.subscribableOptions.map(createSubscribableOptionModel)
+    const defaultProps = component.subscribableOptions
+        ? component.subscribableOptions.map((o) => ({
+            name: `default${uppercaseFirst(o.name)}`,
+            type: o.type,
+            actualOptionName: o.name
+        }))
         : null;
 
     const renderedPropTypings = component.propTypings
@@ -104,7 +113,7 @@ function generate(component: IComponent): string {
         });
     }
 
-    const hasExtraOptions = !!templates || !!subscribableOptions;
+    const hasExtraOptions = !!templates || !!defaultProps;
     const widgetName =  `dx${uppercaseFirst(component.name)}`;
 
     return renderModule({
@@ -120,9 +129,9 @@ function generate(component: IComponent): string {
             hasPropTypings: isNotEmptyArray(renderedPropTypings)
         }),
 
-        renderedOptionsInterface: !hasExtraOptions ? undefined :  renderOptionsInterface({
+        renderedOptionsInterface: !hasExtraOptions ? undefined : renderOptionsInterface({
             optionsName,
-            subscribableOptions,
+            defaultProps,
             templates
         }),
 
@@ -130,8 +139,13 @@ function generate(component: IComponent): string {
             className: component.name,
             widgetName,
             optionsName,
-            renderedTemplateProps: templates && templates.map((t) => t.renderedProp),
-            renderedDefaultProps: subscribableOptions && subscribableOptions.map((o) => o.renderedProp),
+            renderedTemplateProps: templates && templates.map(renderTemplateOption),
+            renderedDefaultProps: defaultProps && defaultProps.map((o) =>
+                renderObjectEntry({
+                    key: o.name,
+                    value: o.actualOptionName
+                })
+            ),
             renderedPropTypings,
         }),
 
@@ -140,29 +154,8 @@ function generate(component: IComponent): string {
     });
 }
 
-function createTemplateModel(name: string) {
-    const model = {
-        render: formatTemplatePropName(name, "Render"),
-        component: formatTemplatePropName(name, "Component"),
-    };
-
-    return { ...model, renderedProp: renderTemplateOption({ name, ...model }) };
-}
-
 function formatTemplatePropName(name: string, suffix: string): string {
     return lowercaseFirst(name.replace(/template$/i, suffix));
-}
-
-function createSubscribableOptionModel(option: IOption) {
-    const name = `default${uppercaseFirst(option.name)}`;
-    return {
-        name,
-        type: option.type,
-        renderedProp: renderObjectEntry({
-            key: name,
-            value: option.name
-        })
-    };
 }
 
 function createPropTypingModel(typing: IPropTyping): IRenderedPropTyping {
@@ -236,7 +229,7 @@ const renderOptionsInterface: (model: {
         render: string;
         component: string;
     }>;
-    subscribableOptions: Array<{
+    defaultProps: Array<{
         name: string;
         type: string;
     }>;
@@ -248,8 +241,8 @@ const renderOptionsInterface: (model: {
     `  <#= template.component #>?: React.ComponentType<any>;` + `\n` +
 `<#~#>` +
 
-`<#~ it.subscribableOptions :option #>` +
-    `  <#= option.name #>?: <#= option.type #>;` + `\n` +
+`<#~ it.defaultProps :prop #>` +
+    `  <#= prop.name #>?: <#= prop.type #>;` + `\n` +
 `<#~#>` +
 
 `}`
@@ -307,12 +300,12 @@ const renderNestedComponent: (model: {
 );
 
 const renderTemplateOption: (model: {
-    name: string;
+    actualOptionName: string;
     render: string;
     component: string;
 }) => string = createTempate(`
   {
-    tmplOption: "<#= it.name #>",
+    tmplOption: "<#= it.actualOptionName #>",
     render: "<#= it.render #>",
     component: "<#= it.component #>"
   }
