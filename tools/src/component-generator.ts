@@ -89,8 +89,7 @@ function generate(component: IComponent): string {
                     className: c.className,
                     optionName: c.optionName,
                     ownerName: c.owner,
-                    interfaceName: `I${uppercaseFirst(c.optionName)}Options`,
-                    rendered: renderObject(options, 0),
+                    renderedType: renderObject(options, 0),
                     renderedSubscribableOptions,
                     isCollectionItem: c.isCollectionItem
                 };
@@ -109,6 +108,7 @@ function generate(component: IComponent): string {
     const widgetName =  `dx${uppercaseFirst(component.name)}`;
 
     return renderModule({
+
         renderedImports: renderImports({
             dxExportPath: component.dxExportPath,
             baseComponentPath: component.baseComponentPath,
@@ -125,15 +125,17 @@ function generate(component: IComponent): string {
             subscribableOptions,
             templates
         }),
-        className: component.name,
 
-        widgetName,
-        optionsName,
-        hasExtraOptions,
-        subscribableOptions,
-        templates,
-        nestedComponents,
-        renderedPropTypings,
+        renderedComponent: renderComponent({
+            className: component.name,
+            widgetName,
+            optionsName,
+            renderedTemplateProps: templates && templates.map((t) => t.renderedProp),
+            renderedDefaultProps: subscribableOptions && subscribableOptions.map((o) => o.renderedProp),
+            renderedPropTypings,
+        }),
+
+        renderedNestedComponents: nestedComponents && nestedComponents.map(renderNestedComponent),
         renderedExports: renderExports(exportNames)
     });
 }
@@ -173,6 +175,35 @@ function createPropTypingModel(typing: IPropTyping): IRenderedPropTyping {
         renderedTypes: types
     };
 }
+
+// tslint:disable:max-line-length
+const renderModule: (model: {
+    renderedImports: string;
+    renderedOptionsInterface: string;
+    renderedComponent: string;
+    renderedNestedComponents: string[];
+    renderedExports: string;
+}) => string = createTempate(
+`<#= it.renderedImports #>` + `\n` +
+
+`<#? it.renderedOptionsInterface #>` +
+    `<#= it.renderedOptionsInterface #>` + `\n` + `\n` +
+`<#?#>` +
+
+`<#= it.renderedComponent #>` +
+
+`<#? it.renderedNestedComponents #>` +
+    `// tslint:disable:max-classes-per-file` +
+    `<#~ it.renderedNestedComponents :nestedComponent #>` + `\n` + `\n` +
+        `<#= nestedComponent #>` +
+    `}<#~#>` + `\n` + `\n` +
+`<#?#>` +
+
+`export {
+<#= it.renderedExports #>
+};
+`);
+// tslint:enable:max-line-length
 
 const renderImports: (model: {
     dxExportPath: string;
@@ -224,42 +255,14 @@ const renderOptionsInterface: (model: {
 `}`
 );
 
-// tslint:disable:max-line-length
-const renderModule: (model: {
-    renderedImports: string;
-    renderedOptionsInterface: string;
-    renderedExports: string;
+const renderComponent: (model: {
     className: string;
     widgetName: string;
     optionsName: string;
-    hasExtraOptions: boolean;
-    templates: Array<{
-        render: string;
-        component: string;
-        renderedProp: string;
-    }>;
-    subscribableOptions: Array<{
-        name: string;
-        type: string;
-        renderedProp: string;
-    }>;
-    nestedComponents: Array<{
-        optionName: string;
-        className: string;
-        ownerName: string;
-        interfaceName: string;
-        rendered: string;
-        renderedSubscribableOptions: string;
-        isCollectionItem: boolean;
-    }>;
+    renderedDefaultProps: string[];
+    renderedTemplateProps: string[];
     renderedPropTypings: string[];
 }) => string = createTempate(
-`<#= it.renderedImports #>` + `\n` +
-
-`<#? it.renderedOptionsInterface #>` +
-    `<#= it.renderedOptionsInterface #>` + `\n` + `\n` +
-`<#?#>` +
-
 `class <#= it.className #> extends BaseComponent<<#= it.optionsName #>> {
 
   public get instance(): <#= it.widgetName #> {
@@ -267,43 +270,41 @@ const renderModule: (model: {
   }
 
   protected _WidgetClass = <#= it.widgetName #>;
-<#? it.subscribableOptions #>
-  protected _defaults = {<#= it.subscribableOptions.map(t => t.renderedProp).join(',') #>
+<#? it.renderedDefaultProps #>
+  protected _defaults = {<#= it.renderedDefaultProps.join(',') #>
   };
-<#?#><#? it.templates #>
-  protected _templateProps = [<#= it.templates.map(t => t.renderedProp).join(', ') #>];
+<#?#><#? it.renderedTemplateProps #>
+  protected _templateProps = [<#= it.renderedTemplateProps.join(', ') #>];
 <#?#>}` + `\n` +
 
 `<#? it.renderedPropTypings #>` +
     `(<#= it.className #> as any).propTypes = {` + `\n` +
         `<#= it.renderedPropTypings.join(',\\n') #>` + `\n` +
     `};` + `\n` +
+`<#?#>`
+);
+
+const renderNestedComponent: (model: {
+    className: string;
+    ownerName: string;
+    optionName: string;
+    isCollectionItem: boolean;
+    renderedType: string;
+    renderedSubscribableOptions: string[];
+}) => string = createTempate(
+`class <#= it.className #> extends NestedOption<<#= it.renderedType #>> {` + `\n` +
+`  public static OwnerType = <#= it.ownerName #>;` + `\n` +
+`  public static OptionName = "<#= it.optionName #>";` + `\n` +
+
+`<#? it.isCollectionItem #>` +
+`  public static IsCollectionItem = true;` + `\n` +
 `<#?#>` +
 
-`<#? it.nestedComponents #>` +
-    `// tslint:disable:max-classes-per-file` +
-    `<#~ it.nestedComponents :nested #>` + `\n` + `\n` +
-        `class <#= nested.className #> extends NestedOption<<#= nested.rendered #>> {` + `\n` +
-        `  public static OwnerType = <#= nested.ownerName #>;` + `\n` +
-        `  public static OptionName = "<#= nested.optionName #>";` + `\n` +
-
-        `<#? nested.isCollectionItem #>` +
-        `  public static IsCollectionItem = true;` + `\n` +
-        `<#?#>` +
-
-        `<#? nested.renderedSubscribableOptions #>` +
-        `  public static DefaultsProps = {<#= nested.renderedSubscribableOptions.join(',') #>` + `\n` +
-        `  };` + `\n` +
-        `<#?#>` +
-
-    `}<#~#>` + `\n` + `\n` +
-`<#?#>` +
-
-`export {
-<#= it.renderedExports #>
-};
-`);
-// tslint:enable:max-line-length
+`<#? it.renderedSubscribableOptions #>` +
+`  public static DefaultsProps = {<#= it.renderedSubscribableOptions.join(',') #>` + `\n` +
+`  };` + `\n` +
+`<#?#>`
+);
 
 const renderTemplateOption: (model: {
     name: string;
@@ -320,9 +321,12 @@ const renderTemplateOption: (model: {
 // tslint:disable:max-line-length
 const renderPropTyping: (model: IRenderedPropTyping) => string = createTempate(
 `  <#= it.propName #>: ` +
+
 `<#? it.renderedTypes.length === 1 #>` +
     `<#= it.renderedTypes[0] #>` +
+
 `<#??#>` +
+
     `PropTypes.oneOfType([` + `\n` +
     `    <#= it.renderedTypes.join(',\\n    ') #>` + `\n` +
     `  ])` +
