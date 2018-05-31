@@ -6,7 +6,7 @@ import { addPrefixToKeys } from "./helpers";
 import { createConfigurationComponent } from "./nested-option";
 import { OptionsManager } from "./options-manager";
 import { ITemplateMeta, Template } from "./template";
-import { IDxTemplate, TemplateHelper } from "./template-helper";
+import { IDxTemplate, ITemplateInfo, IWrappedTemplateInfo, TemplateHelper } from "./template-helper";
 import { separateProps } from "./widget-config";
 
 const DX_REMOVE_EVENT = "dxremove";
@@ -29,7 +29,7 @@ interface IWidgetConfig {
 }
 
 interface IState {
-  templates: {};
+  templates: Record<string, IWrappedTemplateInfo>;
 }
 
 class Component<P> extends React.PureComponent<P, IState> {
@@ -73,15 +73,28 @@ class Component<P> extends React.PureComponent<P, IState> {
         { ref: (element: any) => this._element = element }
       ];
 
+      let nestedTemplates: Record<string, any> = {};
       if (!!this.props.children) {
-          React.Children.forEach(this.props.children, (c) => {
-            args.push(this._registerNestedOption(c as React.ReactElement<any>) || c);
+          React.Children.forEach(this.props.children, (child: React.ReactElement<any>) => {
+            nestedTemplates = {
+              ...nestedTemplates,
+              ...this.findNestedTemplate(child)
+            };
+            args.push(this._registerNestedOption(child) || child);
           });
       }
 
       const templates = Object.getOwnPropertyNames(this.state.templates);
       if (templates.length) {
-        templates.forEach((t) => args.push(this.state.templates[t]()));
+        templates.forEach((t) => {
+          const templateDto = this.state.templates[t];
+          const targetProps: Record<string, any> = templateDto.isNested
+            ? nestedTemplates[templateDto.name]
+            : this.props;
+          args.push(templateDto.createWrapper(
+            this._templateHelper.getContentProvider(targetProps[templateDto.prop], templateDto.isComponent)
+          ));
+        });
       }
 
       return React.createElement.apply(this, args);
@@ -124,16 +137,12 @@ class Component<P> extends React.PureComponent<P, IState> {
         });
     }
 
-    const nestedTemplates: Record<string, any> = {};
+    let nestedTemplates: Record<string, any> = {};
     if (rawProps.children) {
         React.Children.forEach(rawProps.children, (child: React.ReactElement<any>) => {
-            if (child.type !== Template) {
-                return;
-            }
-
-            nestedTemplates[child.props.name] = {
-                render: child.props.render,
-                component: child.props.component
+            nestedTemplates = {
+              ...nestedTemplates,
+              ...this.findNestedTemplate(child)
             };
         });
     }
@@ -145,17 +154,31 @@ class Component<P> extends React.PureComponent<P, IState> {
     };
   }
 
-    private _wrapEventHandler(optionValue: any, optionName: string): any {
-        if (optionName.substr(0, 2) === "on" && typeof optionValue === "function") {
-            return (...args: any[]) => {
-                if (!this._optionsManager.updatingProps) {
-                    optionValue(...args);
-                }
-            };
-        }
-
-        return optionValue;
+  private findNestedTemplate(child: React.ReactElement<any>): Record<string, { render: any, component: any }> {
+    if (child.type !== Template) {
+        return {};
     }
+    const result: Record<string, any> = {};
+
+    result[child.props.name] = {
+        render: child.props.render,
+        component: child.props.component
+    };
+
+    return result;
+  }
+
+  private _wrapEventHandler(optionValue: any, optionName: string): any {
+      if (optionName.substr(0, 2) === "on" && typeof optionValue === "function") {
+          return (...args: any[]) => {
+              if (!this._optionsManager.updatingProps) {
+                  optionValue(...args);
+              }
+          };
+      }
+
+      return optionValue;
+  }
 
   private _getIntegrationOptions(options: Record<string, any>, nestedOptions: Record<string, any>): any {
     const templates: Record<string, IDxTemplate> = {};
@@ -167,13 +190,25 @@ class Component<P> extends React.PureComponent<P, IState> {
 
     this._templateProps.forEach((m) => {
       if (options[m.component] || options[m.render]) {
+        const templateInfo: ITemplateInfo = {
+          name: m.tmplOption,
+          prop: options[m.component] ? m.component : m.render,
+          isComponent: !!options[m.component],
+          isNested: false
+        };
         result[m.tmplOption] = m.tmplOption;
-        templates[m.tmplOption] = this._templateHelper.wrapTemplate(options[m.component], options[m.render]);
+        templates[m.tmplOption] = this._templateHelper.wrapTemplate(templateInfo);
       }
     });
 
     Object.keys(nestedOptions).forEach((name) => {
-        templates[name] = this._templateHelper.wrapTemplate(nestedOptions[name].component, nestedOptions[name].render);
+        const templateInfo: ITemplateInfo = {
+          name,
+          prop: !!nestedOptions[name].component ? "component" : "render",
+          isComponent: !!nestedOptions[name].component,
+          isNested: true
+        };
+        templates[name] = this._templateHelper.wrapTemplate(templateInfo);
     });
 
     if (Object.keys(templates).length > 0) {

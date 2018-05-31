@@ -99,12 +99,17 @@ describe("component rendering", () => {
 });
 
 describe("templates", () => {
-    function renderItemTemplate(model: any, container?: any): Element {
+    function renderTemplate(name: string, model?: any, container?: any): Element {
+        model = model || {};
         container = container || document.createElement("div");
-        const render = WidgetClass.mock.calls[0][1].integrationOptions.templates.item.render;
+        const render = WidgetClass.mock.calls[0][1].integrationOptions.templates[name].render;
         return render({
             container, model
         });
+    }
+
+    function renderItemTemplate(model?: any, container?: any): Element {
+        return renderTemplate("item", model, container);
     }
 
     describe("function template", () => {
@@ -172,6 +177,22 @@ describe("templates", () => {
             component.update();
             expect(component.find(".template").html()).toBe('<div class="template">Template is rendered</div>');
         });
+
+        it("renders new template after component change", () => {
+            const ItemTemplate = () => <div className={"template"}>First Template</div>;
+            const component = mount(
+                <ComponentWithTemplates itemRender={ItemTemplate} />
+            );
+
+            const SecondItemTemplate = () => <div className={"template"}>Second Template</div>;
+            component.setProps({
+                itemRender: SecondItemTemplate
+            });
+
+            renderItemTemplate();
+            component.update();
+            expect(component.find(".template").html()).toBe('<div class="template">Second Template</div>');
+        });
     });
 
     describe("component template", () => {
@@ -215,6 +236,22 @@ describe("templates", () => {
             component.update();
             expect(component.find(".template").html()).toBe('<div class="template">Template is rendered</div>');
         });
+
+        it("renders new template after component change", () => {
+            const ItemTemplate = () => <div className={"template"}>First Template</div>;
+            const component = mount(
+                <ComponentWithTemplates itemComponent={ItemTemplate} />
+            );
+
+            const SecondItemTemplate = () => <div className={"template"}>Second Template</div>;
+            component.setProps({
+                itemComponent: SecondItemTemplate
+            });
+
+            renderItemTemplate();
+            component.update();
+            expect(component.find(".template").html()).toBe('<div class="template">Second Template</div>');
+        });
     });
 
     describe("nested template", () => {
@@ -242,6 +279,38 @@ describe("templates", () => {
             expect(integrationOptions.templates.item2).toBeDefined();
             expect(typeof integrationOptions.templates.item2.render).toBe("function");
         });
+
+        it("renders nested templates", () => {
+            const FirstTemplate = () => <div className={"template"}>Template</div>;
+            const component = mount(
+                <ComponentWithTemplates>
+                    <Template name={"item1"} render={FirstTemplate}/>
+                </ComponentWithTemplates >
+            );
+            renderTemplate("item1");
+            component.update();
+            expect(component.find(".template").html()).toBe('<div class="template">Template</div>');
+        });
+
+        it("renders nested templates", () => {
+            const FirstTemplate = () => <div className={"template"}>First Template</div>;
+            const component = mount(
+                <ComponentWithTemplates>
+                    <Template name={"item1"} render={FirstTemplate}/>
+                </ComponentWithTemplates >
+            );
+            renderTemplate("item1");
+            component.update();
+            expect(component.find(".template").html()).toBe('<div class="template">First Template</div>');
+
+            const SecondTemplate = () => <div className={"template"}>Second Template</div>;
+            component.setProps({
+                children: <Template name={"item1"} render={SecondTemplate}/>
+            });
+            component.update();
+            expect(component.find(".template").html()).toBe('<div class="template">Second Template</div>');
+        });
+
     });
 
     it("pass component option changes to widget", () => {
@@ -283,7 +352,7 @@ describe("templates", () => {
         const component = mount(
             <ComponentWithTemplates itemComponent={ItemTemplate} />
         );
-        renderItemTemplate({});
+        renderItemTemplate();
         expect(Object.getOwnPropertyNames(component.state("templates")).length).toBe(1);
         component.update();
         events.triggerHandler(component.find(".template").getDOMNode().parentNode, "dxremove");
