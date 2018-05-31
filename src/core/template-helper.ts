@@ -22,7 +22,7 @@ interface ITemplateInfo {
 }
 
 interface IWrappedTemplateInfo extends ITemplateInfo {
-    wrapper: (Function) => any;
+    createWrapper: (contentProvider: (model: object) => any) => any;
 }
 
 class TemplateHelper {
@@ -35,16 +35,15 @@ class TemplateHelper {
         this._updateState = this._updateState.bind(this);
     }
 
-    public getContentProvider(templateInfo: ITemplateInfo, props: any) {
-        const templateSource = props[templateInfo.prop];
-        return templateInfo.isComponent ? React.createElement.bind(this, templateSource) : templateSource.bind(this);
+    public getContentProvider(templateSource: any, isComponent: boolean)  {
+        return isComponent ? React.createElement.bind(this, templateSource) : templateSource.bind(this);
     }
 
     public wrapTemplate(templateInfo: ITemplateInfo): IDxTemplate {
         return {
             render: (data: IDxTemplateData) => {
                 const templateId = "__template_" + generateID();
-                const wrapper = (contentProvider: any) =>
+                const createWrapper = (contentProvider) =>
                     React.createElement<ITemplateWrapperProps>(TemplateWrapper, {
                         content: contentProvider(data.model),
                         container: unwrapElement(data.container),
@@ -52,7 +51,7 @@ class TemplateHelper {
                         key: templateId
                     });
 
-                this._updateState((t) => t[templateId] = { ...templateInfo, wrapper });
+                this._updateState((t) => t[templateId] = { ...templateInfo, createWrapper });
             }
         };
     }

@@ -75,24 +75,24 @@ class Component<P> extends React.PureComponent<P, IState> {
 
       let nestedTemplates: Record<string, any> = {};
       if (!!this.props.children) {
-          React.Children.forEach(this.props.children, (c: React.ReactElement<any>) => {
+          React.Children.forEach(this.props.children, (child: React.ReactElement<any>) => {
             nestedTemplates = {
               ...nestedTemplates,
-              ...this.findNestedTemplate(c)
+              ...this.findNestedTemplate(child)
             };
-            args.push(this._registerNestedOption(c) || c);
+            args.push(this._registerNestedOption(child) || child);
           });
       }
 
       const templates = Object.getOwnPropertyNames(this.state.templates);
       if (templates.length) {
         templates.forEach((t) => {
-          const templateInfo: IWrappedTemplateInfo = this.state.templates[t];
-          const targetProps: Record<string, any> = templateInfo.isNested ?
-            nestedTemplates[templateInfo.name] :
-            this.props;
-          args.push(templateInfo.wrapper(
-            this._templateHelper.getContentProvider(templateInfo, targetProps)
+          const templateDto = this.state.templates[t];
+          const targetProps: Record<string, any> = templateDto.isNested
+            ? nestedTemplates[templateDto.name]
+            : this.props;
+          args.push(templateDto.createWrapper(
+            this._templateHelper.getContentProvider(targetProps[templateDto.prop], templateDto.isComponent)
           ));
         });
       }
@@ -139,10 +139,10 @@ class Component<P> extends React.PureComponent<P, IState> {
 
     let nestedTemplates: Record<string, any> = {};
     if (rawProps.children) {
-        React.Children.forEach(rawProps.children, (c: React.ReactElement<any>) => {
+        React.Children.forEach(rawProps.children, (child: React.ReactElement<any>) => {
             nestedTemplates = {
               ...nestedTemplates,
-              ...this.findNestedTemplate(c)
+              ...this.findNestedTemplate(child)
             };
         });
     }
@@ -154,9 +154,9 @@ class Component<P> extends React.PureComponent<P, IState> {
     };
   }
 
-  private findNestedTemplate(child: React.ReactElement<any>) {
+  private findNestedTemplate(child: React.ReactElement<any>): Record<string, { render: any, component: any }> {
     if (child.type !== Template) {
-        return;
+        return {};
     }
     const result: Record<string, any> = {};
 
