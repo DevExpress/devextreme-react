@@ -1,5 +1,16 @@
-import { createKeyComparator, isNotEmptyArray, lowercaseFirst, uppercaseFirst } from "./helpers";
-import createTempate from "./template";
+import {
+    createKeyComparator,
+    isNotEmptyArray,
+    lowercaseFirst,
+    uppercaseFirst
+} from "./helpers";
+
+import {
+    createStrictTemplate,
+    createTempate,
+    NEWLINE as NL,
+    TAB
+} from "./template";
 
 interface IComponent {
     name: string;
@@ -39,12 +50,21 @@ interface IRenderedPropTyping {
 }
 
 function generate(component: IComponent): string {
+
     const templates = component.templates
-        ? component.templates.map(createTemplateModel)
+        ? component.templates.map((actualOptionName) => ({
+            actualOptionName,
+            render: formatTemplatePropName(actualOptionName, "Render"),
+            component: formatTemplatePropName(actualOptionName, "Component")
+        }))
         : null;
 
-    const subscribableOptions = component.subscribableOptions
-        ? component.subscribableOptions.map(createSubscribableOptionModel)
+    const defaultProps = component.subscribableOptions
+        ? component.subscribableOptions.map((o) => ({
+            name: `default${uppercaseFirst(o.name)}`,
+            type: o.type,
+            actualOptionName: o.name
+        }))
         : null;
 
     const renderedPropTypings = component.propTypings
@@ -78,8 +98,7 @@ function generate(component: IComponent): string {
                     className: c.className,
                     optionName: c.optionName,
                     ownerName: c.owner,
-                    interfaceName: `I${uppercaseFirst(c.optionName)}Options`,
-                    rendered: renderObject(options, 0),
+                    renderedType: renderObject(options, 0),
                     renderedSubscribableOptions,
                     isCollectionItem: c.isCollectionItem
                 };
@@ -94,45 +113,49 @@ function generate(component: IComponent): string {
         });
     }
 
-    return renderComponent({
-        className: component.name,
-        baseComponentPath: component.baseComponentPath,
-        configComponentPath: component.configComponentPath,
-        dxExportPath: component.dxExportPath,
-        widgetName: `dx${uppercaseFirst(component.name)}`,
-        optionsName,
-        hasExtraOptions: !!templates || !!subscribableOptions,
-        subscribableOptions,
-        templates,
-        nestedComponents,
-        renderedPropTypings,
+    const hasExtraOptions = !!templates || !!defaultProps;
+    const widgetName =  `dx${uppercaseFirst(component.name)}`;
+
+    return renderModule({
+
+        renderedImports: renderImports({
+            dxExportPath: component.dxExportPath,
+            baseComponentPath: component.baseComponentPath,
+            configComponentPath: component.configComponentPath,
+            widgetName,
+            optionsAliasName: hasExtraOptions ? undefined : optionsName,
+            hasExtraOptions,
+            hasNestedComponents: isNotEmptyArray(nestedComponents),
+            hasPropTypings: isNotEmptyArray(renderedPropTypings)
+        }),
+
+        renderedOptionsInterface: !hasExtraOptions ? undefined : renderOptionsInterface({
+            optionsName,
+            defaultProps,
+            templates
+        }),
+
+        renderedComponent: renderComponent({
+            className: component.name,
+            widgetName,
+            optionsName,
+            renderedTemplateProps: templates && templates.map(renderTemplateOption),
+            renderedDefaultProps: defaultProps && defaultProps.map((o) =>
+                renderObjectEntry({
+                    key: o.name,
+                    value: o.actualOptionName
+                })
+            ),
+            renderedPropTypings,
+        }),
+
+        renderedNestedComponents: nestedComponents && nestedComponents.map(renderNestedComponent),
         renderedExports: renderExports(exportNames)
     });
 }
 
-function createTemplateModel(name: string) {
-    const model = {
-        render: formatTemplatePropName(name, "Render"),
-        component: formatTemplatePropName(name, "Component"),
-    };
-
-    return { ...model, renderedProp: renderTemplateOption({ name, ...model }) };
-}
-
 function formatTemplatePropName(name: string, suffix: string): string {
     return lowercaseFirst(name.replace(/template$/i, suffix));
-}
-
-function createSubscribableOptionModel(option: IOption) {
-    const name = `default${uppercaseFirst(option.name)}`;
-    return {
-        name,
-        type: option.type,
-        renderedProp: renderObjectEntry({
-            key: name,
-            value: option.name
-        })
-    };
 }
 
 function createPropTypingModel(typing: IPropTyping): IRenderedPropTyping {
@@ -147,100 +170,161 @@ function createPropTypingModel(typing: IPropTyping): IRenderedPropTyping {
 }
 
 // tslint:disable:max-line-length
+const renderModule: (model: {
+    renderedImports: string;
+    renderedOptionsInterface: string;
+    renderedComponent: string;
+    renderedNestedComponents: string[];
+    renderedExports: string;
+}) => string = createTempate(
+`<#= it.renderedImports #>` + `\n` +
+
+`<#? it.renderedOptionsInterface #>` +
+    `<#= it.renderedOptionsInterface #>` + `\n` + `\n` +
+`<#?#>` +
+
+`<#= it.renderedComponent #>` +
+
+`<#? it.renderedNestedComponents #>` +
+    `// tslint:disable:max-classes-per-file` +
+    `<#~ it.renderedNestedComponents :nestedComponent #>` + `\n` + `\n` +
+        `<#= nestedComponent #>` +
+    `}<#~#>` + `\n` + `\n` +
+`<#?#>` +
+
+`export {
+<#= it.renderedExports #>
+};
+`);
+// tslint:enable:max-line-length
+
+const renderImports: (model: {
+    dxExportPath: string;
+    configComponentPath: string;
+    baseComponentPath: string;
+    widgetName: string;
+    optionsAliasName: string;
+    hasExtraOptions: boolean;
+    hasPropTypings: boolean;
+    hasNestedComponents: boolean;
+}) => string = createTempate(
+`import <#= it.widgetName #>, {
+    IOptions` + `<#? it.optionsAliasName #> as <#= it.optionsAliasName #><#?#>` + `\n` +
+`} from "devextreme/<#= it.dxExportPath #>";` + `\n` + `\n` +
+
+`<#? it.hasPropTypings #>` +
+    `import { PropTypes } from "prop-types";` + `\n` +
+`<#?#>` +
+
+`import BaseComponent from "<#= it.baseComponentPath #>";` + `\n` +
+
+`<#? it.hasNestedComponents #>` +
+    `import NestedOption from "<#= it.configComponentPath #>";` + `\n` +
+`<#?#>`
+);
+
+const renderOptionsInterface: (model: {
+    optionsName: string;
+    templates: Array<{
+        render: string;
+        component: string;
+    }>;
+    defaultProps: Array<{
+        name: string;
+        type: string;
+    }>;
+}) => string = createTempate(
+`interface <#= it.optionsName #> extends IOptions {` + `\n` +
+
+`<#~ it.templates :template #>` +
+    `  <#= template.render #>?: (props: any) => React.ReactNode;` + `\n` +
+    `  <#= template.component #>?: React.ComponentType<any>;` + `\n` +
+`<#~#>` +
+
+`<#~ it.defaultProps :prop #>` +
+    `  <#= prop.name #>?: <#= prop.type #>;` + `\n` +
+`<#~#>` +
+
+`}`
+);
+
 const renderComponent: (model: {
     className: string;
     widgetName: string;
     optionsName: string;
-    baseComponentPath: string;
-    configComponentPath: string;
-    dxExportPath: string;
-    hasExtraOptions: boolean;
-    templates: Array<{
-        render: string;
-        component: string;
-        renderedProp: string;
-    }>;
-    subscribableOptions: Array<{
-        name: string;
-        type: string;
-        renderedProp: string;
-    }>;
-    nestedComponents: Array<{
-        optionName: string;
-        className: string;
-        ownerName: string;
-        interfaceName: string;
-        rendered: string;
-        renderedSubscribableOptions: string;
-        isCollectionItem: boolean;
-    }>;
-    renderedPropTypings: string[],
-    renderedExports: string
-}
-) => string = createTempate(`
-import <#= it.widgetName #>, {
-    IOptions<#? !it.hasExtraOptions #> as <#= it.optionsName #><#?#>
-} from "devextreme/<#= it.dxExportPath #>";
-
-<#? it.renderedPropTypings #>import { PropTypes } from "prop-types";
-<#?#>import BaseComponent from "<#= it.baseComponentPath #>";
-<#? it.nestedComponents #>import NestedOption from "<#= it.configComponentPath #>";
-<#?#><#? it.hasExtraOptions #>
-interface <#= it.optionsName #> extends IOptions {<#~ it.templates :template #>
-  <#= template.render #>?: (props: any) => React.ReactNode;
-  <#= template.component #>?: React.ComponentType<any>;<#~#><#~ it.subscribableOptions :option #>
-  <#= option.name #>?: <#= option.type #>;<#~#>
-}
-<#?#>
-class <#= it.className #> extends BaseComponent<<#= it.optionsName #>> {
+    renderedDefaultProps: string[];
+    renderedTemplateProps: string[];
+    renderedPropTypings: string[];
+}) => string = createTempate(
+`class <#= it.className #> extends BaseComponent<<#= it.optionsName #>> {
 
   public get instance(): <#= it.widgetName #> {
     return this._instance;
   }
 
   protected _WidgetClass = <#= it.widgetName #>;
-<#? it.subscribableOptions #>
-  protected _defaults = {<#= it.subscribableOptions.map(t => t.renderedProp).join(',') #>
+<#? it.renderedDefaultProps #>
+  protected _defaults = {<#= it.renderedDefaultProps.join(',') #>
   };
-<#?#><#? it.templates #>
-  protected _templateProps = [<#= it.templates.map(t => t.renderedProp).join(', ') #>];
-<#?#>}<#? it.renderedPropTypings #>
-(<#= it.className #> as any).propTypes = {<#= it.renderedPropTypings.join(',') #>
-};<#?#><#? it.nestedComponents #>
-// tslint:disable:max-classes-per-file<#~ it.nestedComponents :nested #>
+<#?#><#? it.renderedTemplateProps #>
+  protected _templateProps = [<#= it.renderedTemplateProps.join(', ') #>];
+<#?#>}` + `\n` +
 
-class <#= nested.className #> extends NestedOption<<#= nested.rendered #>> {<#? nested.isCollectionItem #>
-  public static IsCollectionItem = true;<#?#>
-  public static OwnerType = <#= nested.ownerName #>;
-  public static OptionName = "<#= nested.optionName #>";<#? nested.renderedSubscribableOptions #>
-  public static DefaultsProps = {<#= nested.renderedSubscribableOptions.join(',') #>
-  };<#?#>
-}<#~#>
-<#?#>
-export {
-<#= it.renderedExports #>
-};
-`.trimLeft());
-// tslint:enable:max-line-length
+`<#? it.renderedPropTypings #>` +
+    `(<#= it.className #> as any).propTypes = {` + `\n` +
+        `<#= it.renderedPropTypings.join(',\\n') #>` + `\n` +
+    `};` + `\n` +
+`<#?#>`
+);
+
+const renderNestedComponent: (model: {
+    className: string;
+    ownerName: string;
+    optionName: string;
+    isCollectionItem: boolean;
+    renderedType: string;
+    renderedSubscribableOptions: string[];
+}) => string = createTempate(
+`class <#= it.className #> extends NestedOption<<#= it.renderedType #>> {` + `\n` +
+`  public static OwnerType = <#= it.ownerName #>;` + `\n` +
+`  public static OptionName = "<#= it.optionName #>";` + `\n` +
+
+`<#? it.isCollectionItem #>` +
+`  public static IsCollectionItem = true;` + `\n` +
+`<#?#>` +
+
+`<#? it.renderedSubscribableOptions #>` +
+`  public static DefaultsProps = {<#= it.renderedSubscribableOptions.join(',') #>` + `\n` +
+`  };` + `\n` +
+`<#?#>`
+);
 
 const renderTemplateOption: (model: {
-    name: string;
+    actualOptionName: string;
     render: string;
     component: string;
 }) => string = createTempate(`
   {
-    tmplOption: "<#= it.name #>",
+    tmplOption: "<#= it.actualOptionName #>",
     render: "<#= it.render #>",
     component: "<#= it.component #>"
   }
 `.trim());
 
 // tslint:disable:max-line-length
-const renderPropTyping: (model: IRenderedPropTyping) => string = createTempate(`
-  <#= it.propName #>: <#? it.renderedTypes.length === 1 #><#= it.renderedTypes[0] #><#??#>PropTypes.oneOfType([
-    <#= it.renderedTypes.join(',\\n    ') #>
-  ])<#?#>
-`.trimRight());
+const renderPropTyping: (model: IRenderedPropTyping) => string = createTempate(
+`  <#= it.propName #>: ` +
+
+`<#? it.renderedTypes.length === 1 #>` +
+    `<#= it.renderedTypes[0] #>` +
+
+`<#??#>` +
+
+    `PropTypes.oneOfType([` + `\n` +
+    `    <#= it.renderedTypes.join(',\\n    ') #>` + `\n` +
+    `  ])` +
+`<#?#>`
+);
 // tslint:enable:max-line-length
 
 const renderObjectEntry: (model: {

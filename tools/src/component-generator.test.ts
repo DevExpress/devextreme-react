@@ -400,9 +400,9 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 class Opt_1_Component extends NestedOption<{
   sub_opt_2?: TYPE_1;
 }> {
-  public static IsCollectionItem = true;
   public static OwnerType = CLASS_NAME;
   public static OptionName = "opt_1";
+  public static IsCollectionItem = true;
 }
 
 class Opt_6_SubComponent extends NestedOption<{
