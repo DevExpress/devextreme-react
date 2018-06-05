@@ -91348,7 +91348,8 @@
             }
           ]
         }
-      ]
+      ],
+      "isExtension": true
     },
     {
       "name": "DxVectorMap",

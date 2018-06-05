@@ -2,7 +2,7 @@ import * as events from "devextreme/events";
 import { configure as configureEnzyme, mount, shallow } from "enzyme";
 import * as Adapter from "enzyme-adapter-react-16";
 import * as React from "react";
-import Component from "../core/component";
+import { Component, ExtensionComponent } from "../core/component";
 import ConfigurationComponent from "../core/nested-option";
 import { Template } from "../core/template";
 
@@ -52,7 +52,7 @@ describe("component rendering", () => {
         expect(component.type()).toBe("div");
     });
 
-    it("create widget then on componnetDidMount", () => {
+    it("create widget then on componentDidMount", () => {
         shallow(
             <TestComponent />
         );
@@ -95,6 +95,47 @@ describe("component rendering", () => {
         );
 
         expect(WidgetClass.mock.calls[1][1].children).toBeUndefined();
+    });
+});
+
+describe("extension component", () => {
+    const ExtensionWidgetClass = jest.fn(() => Widget);
+
+    // tslint:disable-next-line:max-classes-per-file
+    class ExtensionTestComponent<P = any> extends ExtensionComponent<P> {
+
+        constructor(props: P) {
+            super(props);
+
+            this._WidgetClass = ExtensionWidgetClass;
+        }
+    }
+
+    it("does not create widget then on componentDidMount", () => {
+        shallow(
+            <ExtensionTestComponent />
+        );
+
+        expect(ExtensionWidgetClass).toHaveBeenCalledTimes(0);
+    });
+
+    it("creates widget on componentDidMount inside another component on same element", () => {
+        mount(
+            <TestComponent>
+                <ExtensionTestComponent />
+            </TestComponent>
+        );
+
+        expect(ExtensionWidgetClass).toHaveBeenCalledTimes(1);
+        expect(ExtensionWidgetClass.mock.calls[0][0]).toBe(WidgetClass.mock.calls[0][0]);
+    });
+
+    it("unmounts without errors", () => {
+        const component = shallow(
+            <ExtensionTestComponent/>
+        );
+
+        expect(component.unmount.bind(component)).not.toThrow();
     });
 });
 

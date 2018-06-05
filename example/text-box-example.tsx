@@ -4,10 +4,16 @@ import Example from "./example-block";
 import dxTextBox from "devextreme/ui/text_box";
 import { Button } from "../src/ui/button";
 import { TextBox } from "../src/ui/text-box";
+import { Validator } from "../src/ui/validator";
 
 export default class extends React.Component<any, { text: string; uncontrolledText: string; }> {
 
     private textBox: dxTextBox;
+
+    private validationRules = [{
+        type: "required",
+        message: "this is required"
+    }];
 
     constructor(props: any) {
         super(props);
@@ -39,6 +45,11 @@ export default class extends React.Component<any, { text: string; uncontrolledTe
                 <br />
                 controlled state value with change handling
                 <TextBox value={this.state.text} onValueChanged={this.handleChange} valueChangeEvent="input" />
+                <br />
+                validation (required)
+                <TextBox valueChangeEvent="input" defaultValue={"required text"}>
+                    <Validator validationRules={this.validationRules} />
+                </TextBox>
             </Example>
         );
     }

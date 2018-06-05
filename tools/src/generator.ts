@@ -71,6 +71,7 @@ function mapWidget(
       baseComponentPath: baseComponent,
       configComponentPath: configComponent,
       dxExportPath: raw.exportPath,
+      isExtension: raw.isExtension,
       templates: raw.templates,
       subscribableOptions: subscribableOptions.length > 0 ? subscribableOptions : null,
       nestedComponents: nestedOptions.length > 0 ? nestedOptions : null,
