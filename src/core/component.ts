@@ -32,18 +32,17 @@ interface IState {
   templates: Record<string, IWrappedTemplateInfo>;
 }
 
-class Component<P> extends React.PureComponent<P, IState> {
-
+abstract class ComponentBase<P> extends React.PureComponent<P, IState> {
   protected _WidgetClass: any;
   protected _instance: any;
+  protected _element: any;
+
   protected readonly _defaults: Record<string, string>;
 
   protected readonly _templateProps: ITemplateMeta[] = [];
 
   private readonly _templateHelper: TemplateHelper;
   private readonly _optionsManager: OptionsManager;
-
-  private _element: any;
 
   constructor(props: P) {
     super(props);
@@ -80,7 +79,7 @@ class Component<P> extends React.PureComponent<P, IState> {
               ...nestedTemplates,
               ...this.findNestedTemplate(child)
             };
-            args.push(this._registerNestedOption(child) || child);
+            args.push(this._preprocessChild(child) || child);
           });
       }
 
@@ -100,7 +99,17 @@ class Component<P> extends React.PureComponent<P, IState> {
       return React.createElement.apply(this, args);
   }
 
-  public componentDidMount() {
+  public componentWillUnmount() {
+    if (this._instance) {
+      events.triggerHandler(this._element, DX_REMOVE_EVENT);
+      this._instance.dispose();
+    }
+  }
+
+  protected abstract _preprocessChild(component: React.ReactElement<any>): React.ReactElement<any>;
+
+  protected _createWidget(element?: Element) {
+    element = element || this._element;
     const nestedProps = this._optionsManager.getNestedOptionsObjects();
     const props = {
         ...(this.props as any),
@@ -116,14 +125,40 @@ class Component<P> extends React.PureComponent<P, IState> {
       ...this._getIntegrationOptions(preparedProps.templates, preparedProps.nestedTemplates)
     };
 
-    this._instance = new this._WidgetClass(this._element, options);
+    this._instance = new this._WidgetClass(element, options);
     this._optionsManager.setInstance(this._instance);
     this._instance.on("optionChanged", this._optionsManager.handleOptionChange);
   }
 
-  public componentWillUnmount() {
-    events.triggerHandler(this._element, DX_REMOVE_EVENT);
-    this._instance.dispose();
+  protected _registerNestedOption(component: React.ReactElement<any>): any {
+    const configComponent = component as any as INestedOption;
+    if (
+      configComponent && configComponent.type &&
+      configComponent.type.OptionName &&
+      configComponent.type.OwnerType && this instanceof configComponent.type.OwnerType
+    ) {
+      const optionName = configComponent.type.OptionName;
+
+      this._optionsManager.addNestedOption(
+          optionName,
+          component,
+          configComponent.type.DefaultsProps,
+          configComponent.type.IsCollectionItem
+      );
+
+      return createConfigurationComponent(
+        component,
+        (newProps, prevProps) => {
+          const newOptions = separateProps(newProps, configComponent.type.DefaultsProps, []).options;
+          this._optionsManager.processChangedValues(
+            addPrefixToKeys(newOptions, optionName + "."),
+            addPrefixToKeys(prevProps, optionName + ".")
+          );
+        }
+      );
+    }
+
+    return null;
   }
 
   private _prepareProps(rawProps: Record<string, any>): IWidgetConfig {
@@ -215,38 +250,48 @@ class Component<P> extends React.PureComponent<P, IState> {
       return result;
     }
   }
+}
 
-  private _registerNestedOption(component: React.ReactElement<any>): any {
-    const configComponent = component as any as INestedOption;
-    if (
-      configComponent && configComponent.type &&
-      configComponent.type.OptionName &&
-      configComponent.type.OwnerType && this instanceof configComponent.type.OwnerType
-    ) {
-      const optionName = configComponent.type.OptionName;
+// tslint:disable-next-line:max-classes-per-file
+class Component<P> extends ComponentBase<P> {
+  private readonly _extensions: Array<(element: Element) => void> = [];
 
-      this._optionsManager.addNestedOption(
-          optionName,
-          component,
-          configComponent.type.DefaultsProps,
-          configComponent.type.IsCollectionItem
-      );
+  public componentDidMount() {
+    this._createWidget();
+    this._extensions.forEach((extension) => extension.call(this, this._element));
+  }
 
-      return createConfigurationComponent(
-        component,
-        (newProps, prevProps) => {
-          const newOptions = separateProps(newProps, configComponent.type.DefaultsProps, []).options;
-          this._optionsManager.processChangedValues(
-            addPrefixToKeys(newOptions, optionName + "."),
-            addPrefixToKeys(prevProps, optionName + ".")
-          );
-        }
-      );
+  protected _preprocessChild(component: React.ReactElement<any>) {
+    return this._registerExtension(component) || this._registerNestedOption(component) || component;
+  }
+
+  private _registerExtension(component: React.ReactElement<any>) {
+    if (!ExtensionComponent.isPrototypeOf(component.type)) {
+      return null;
     }
 
-    return null;
+    return React.cloneElement(component, {
+      onMounted: (callback: any) => {
+        this._extensions.push(callback);
+      }
+    });
   }
 }
 
-export default Component;
-export { IState, ITemplateMeta };
+// tslint:disable-next-line:max-classes-per-file
+class ExtensionComponent<P> extends ComponentBase<P> {
+  public componentDidMount() {
+    const onMounted = (this.props as Record<string, any>).onMounted;
+    if (onMounted) {
+      onMounted((element) => {
+        this._createWidget(element);
+      });
+    }
+  }
+
+  protected _preprocessChild(component: React.ReactElement<any>) {
+    return component;
+  }
+}
+
+export { IState, ITemplateMeta, ComponentBase, Component, ExtensionComponent };

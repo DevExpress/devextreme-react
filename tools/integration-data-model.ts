@@ -6,6 +6,7 @@ export interface IModel {
 export interface IWidget {
   exportPath: string;
   isEditor: boolean;
+  isExtension: boolean;
   name: string;
   options: IProp[];
   templates: string[];

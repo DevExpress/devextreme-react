@@ -17,6 +17,7 @@ interface IComponent {
     baseComponentPath: string;
     configComponentPath: string;
     dxExportPath: string;
+    isExtension?: boolean;
     subscribableOptions?: IOption[];
     nestedComponents?: INestedComponent[];
     templates?: string[];
@@ -121,6 +122,7 @@ function generate(component: IComponent): string {
         renderedImports: renderImports({
             dxExportPath: component.dxExportPath,
             baseComponentPath: component.baseComponentPath,
+            baseComponentName: component.isExtension ? "ExtensionComponent" : "Component",
             configComponentPath: component.configComponentPath,
             widgetName,
             optionsAliasName: hasExtraOptions ? undefined : optionsName,
@@ -202,6 +204,7 @@ const renderImports: (model: {
     dxExportPath: string;
     configComponentPath: string;
     baseComponentPath: string;
+    baseComponentName: string;
     widgetName: string;
     optionsAliasName: string;
     hasExtraOptions: boolean;
@@ -216,7 +219,7 @@ const renderImports: (model: {
     `import { PropTypes } from "prop-types";` + `\n` +
 `<#?#>` +
 
-`import BaseComponent from "<#= it.baseComponentPath #>";` + `\n` +
+`import { <#= it.baseComponentName #> as BaseComponent } from "<#= it.baseComponentPath #>";` + `\n` +
 
 `<#? it.hasNestedComponents #>` +
     `import NestedOption from "<#= it.configComponentPath #>";` + `\n` +

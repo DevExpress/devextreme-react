@@ -7,7 +7,7 @@ import dxCLASS_NAME, {
     IOptions as ICLASS_NAMEOptions
 } from "devextreme/DX/WIDGET/PATH";
 
-import BaseComponent from "BASE_COMPONENT_PATH";
+import { Component as BaseComponent } from "BASE_COMPONENT_PATH";
 
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 
@@ -34,6 +34,41 @@ export {
     ).toBe(EXPECTED);
 });
 
+it("generates extension component", () => {
+    //#region EXPECTED
+    const EXPECTED = `
+import dxCLASS_NAME, {
+    IOptions as ICLASS_NAMEOptions
+} from "devextreme/DX/WIDGET/PATH";
+
+import { ExtensionComponent as BaseComponent } from "BASE_COMPONENT_PATH";
+
+class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
+
+  public get instance(): dxCLASS_NAME {
+    return this._instance;
+  }
+
+  protected _WidgetClass = dxCLASS_NAME;
+}
+export {
+  CLASS_NAME,
+  ICLASS_NAMEOptions
+};
+`.trimLeft();
+    //#endregion
+
+    expect(
+        generate({
+            name: "CLASS_NAME",
+            baseComponentPath: "BASE_COMPONENT_PATH",
+            configComponentPath: null,
+            dxExportPath: "DX/WIDGET/PATH",
+            isExtension: true
+        })
+    ).toBe(EXPECTED);
+});
+
 describe("template-props generation", () => {
 
     it("processes option", () => {
@@ -43,7 +78,7 @@ import dxCLASS_NAME, {
     IOptions
 } from "devextreme/DX/WIDGET/PATH";
 
-import BaseComponent from "BASE_COMPONENT_PATH";
+import { Component as BaseComponent } from "BASE_COMPONENT_PATH";
 
 interface ICLASS_NAMEOptions extends IOptions {
   optionRender?: (props: any) => React.ReactNode;
@@ -89,7 +124,7 @@ import dxCLASS_NAME, {
     IOptions
 } from "devextreme/DX/WIDGET/PATH";
 
-import BaseComponent from "BASE_COMPONENT_PATH";
+import { Component as BaseComponent } from "BASE_COMPONENT_PATH";
 
 interface ICLASS_NAMEOptions extends IOptions {
   optionRender?: (props: any) => React.ReactNode;
@@ -141,7 +176,7 @@ import dxCLASS_NAME, {
     IOptions
 } from "devextreme/DX/WIDGET/PATH";
 
-import BaseComponent from "BASE_COMPONENT_PATH";
+import { Component as BaseComponent } from "BASE_COMPONENT_PATH";
 
 interface ICLASS_NAMEOptions extends IOptions {
   render?: (props: any) => React.ReactNode;
@@ -190,7 +225,7 @@ import dxCLASS_NAME, {
     IOptions
 } from "devextreme/DX/WIDGET/PATH";
 
-import BaseComponent from "BASE_COMPONENT_PATH";
+import { Component as BaseComponent } from "BASE_COMPONENT_PATH";
 
 interface ICLASS_NAMEOptions extends IOptions {
   defaultOption1?: someType;
@@ -235,7 +270,7 @@ import dxCLASS_NAME, {
     IOptions
 } from "devextreme/DX/WIDGET/PATH";
 
-import BaseComponent from "BASE_COMPONENT_PATH";
+import { Component as BaseComponent } from "BASE_COMPONENT_PATH";
 
 interface ICLASS_NAMEOptions extends IOptions {
   defaultOption1?: someType;
@@ -283,7 +318,7 @@ import dxCLASS_NAME, {
     IOptions as ICLASS_NAMEOptions
 } from "devextreme/DX/WIDGET/PATH";
 
-import BaseComponent from "BASE_COMPONENT_PATH";
+import { Component as BaseComponent } from "BASE_COMPONENT_PATH";
 import NestedOption from "CONFIG_COMPONENT_PATH";
 
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
@@ -384,7 +419,7 @@ import dxCLASS_NAME, {
     IOptions as ICLASS_NAMEOptions
 } from "devextreme/DX/WIDGET/PATH";
 
-import BaseComponent from "BASE_COMPONENT_PATH";
+import { Component as BaseComponent } from "BASE_COMPONENT_PATH";
 import NestedOption from "CONFIG_COMPONENT_PATH";
 
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
@@ -463,7 +498,7 @@ import dxCLASS_NAME, {
     IOptions as ICLASS_NAMEOptions
 } from "devextreme/DX/WIDGET/PATH";
 
-import BaseComponent from "BASE_COMPONENT_PATH";
+import { Component as BaseComponent } from "BASE_COMPONENT_PATH";
 import NestedOption from "CONFIG_COMPONENT_PATH";
 
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
@@ -544,7 +579,7 @@ import dxCLASS_NAME, {
 } from "devextreme/DX/WIDGET/PATH";
 
 import { PropTypes } from "prop-types";
-import BaseComponent from "BASE_COMPONENT_PATH";
+import { Component as BaseComponent } from "BASE_COMPONENT_PATH";
 
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 
@@ -588,7 +623,7 @@ import dxCLASS_NAME, {
 } from "devextreme/DX/WIDGET/PATH";
 
 import { PropTypes } from "prop-types";
-import BaseComponent from "BASE_COMPONENT_PATH";
+import { Component as BaseComponent } from "BASE_COMPONENT_PATH";
 
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 
@@ -636,7 +671,7 @@ import dxCLASS_NAME, {
 } from "devextreme/DX/WIDGET/PATH";
 
 import { PropTypes } from "prop-types";
-import BaseComponent from "BASE_COMPONENT_PATH";
+import { Component as BaseComponent } from "BASE_COMPONENT_PATH";
 
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 
@@ -683,7 +718,7 @@ import dxCLASS_NAME, {
 } from "devextreme/DX/WIDGET/PATH";
 
 import { PropTypes } from "prop-types";
-import BaseComponent from "BASE_COMPONENT_PATH";
+import { Component as BaseComponent } from "BASE_COMPONENT_PATH";
 
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 
