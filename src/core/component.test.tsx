@@ -52,7 +52,7 @@ describe("component rendering", () => {
         expect(component.type()).toBe("div");
     });
 
-    it("create widget then on componentDidMount", () => {
+    it("create widget on componentDidMount", () => {
         shallow(
             <TestComponent />
         );
@@ -102,7 +102,7 @@ describe("extension component", () => {
     const ExtensionWidgetClass = jest.fn(() => Widget);
 
     // tslint:disable-next-line:max-classes-per-file
-    class ExtensionTestComponent<P = any> extends ExtensionComponent<P> {
+    class TestExtensionComponent<P = any> extends ExtensionComponent<P> {
 
         constructor(props: P) {
             super(props);
@@ -111,9 +111,9 @@ describe("extension component", () => {
         }
     }
 
-    it("does not create widget then on componentDidMount", () => {
+    it("does not create widget on componentDidMount", () => {
         shallow(
-            <ExtensionTestComponent />
+            <TestExtensionComponent />
         );
 
         expect(ExtensionWidgetClass).toHaveBeenCalledTimes(0);
@@ -122,7 +122,7 @@ describe("extension component", () => {
     it("creates widget on componentDidMount inside another component on same element", () => {
         mount(
             <TestComponent>
-                <ExtensionTestComponent />
+                <TestExtensionComponent />
             </TestComponent>
         );
 
@@ -132,7 +132,7 @@ describe("extension component", () => {
 
     it("unmounts without errors", () => {
         const component = shallow(
-            <ExtensionTestComponent/>
+            <TestExtensionComponent/>
         );
 
         expect(component.unmount.bind(component)).not.toThrow();
