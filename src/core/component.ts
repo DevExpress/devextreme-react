@@ -32,7 +32,7 @@ interface IState {
   templates: Record<string, IWrappedTemplateInfo>;
 }
 
-abstract class BaseComponent<P> extends React.PureComponent<P, IState> {
+abstract class ComponentBase<P> extends React.PureComponent<P, IState> {
   protected _WidgetClass: any;
   protected _instance: any;
   protected _element: any;
@@ -253,7 +253,7 @@ abstract class BaseComponent<P> extends React.PureComponent<P, IState> {
 }
 
 // tslint:disable-next-line:max-classes-per-file
-class Component<P> extends BaseComponent<P> {
+class Component<P> extends ComponentBase<P> {
   private readonly _extensions: Array<(element: Element) => void> = [];
 
   public componentDidMount() {
@@ -279,7 +279,7 @@ class Component<P> extends BaseComponent<P> {
 }
 
 // tslint:disable-next-line:max-classes-per-file
-class ExtensionComponent<P> extends BaseComponent<P> {
+class ExtensionComponent<P> extends ComponentBase<P> {
   public componentDidMount() {
     const onMounted = (this.props as Record<string, any>).onMounted;
     if (onMounted) {
@@ -294,4 +294,4 @@ class ExtensionComponent<P> extends BaseComponent<P> {
   }
 }
 
-export { IState, ITemplateMeta, BaseComponent, Component, ExtensionComponent };
+export { IState, ITemplateMeta, ComponentBase, Component, ExtensionComponent };

@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { BaseComponent, IState } from "./component";
+import { ComponentBase, IState } from "./component";
 import { generateID } from "./helpers";
 import { ITemplateWrapperProps, TemplateWrapper } from "./template-wrapper";
 
@@ -26,9 +26,9 @@ interface IWrappedTemplateInfo extends ITemplateInfo {
 }
 
 class TemplateHelper {
-    private readonly _component: BaseComponent<any>;
+    private readonly _component: ComponentBase<any>;
 
-    constructor(component: BaseComponent<any>) {
+    constructor(component: ComponentBase<any>) {
         this._component = component;
 
         this.wrapTemplate = this.wrapTemplate.bind(this);
