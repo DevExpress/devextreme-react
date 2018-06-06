@@ -37,32 +37,6 @@ interface ICustomTypeRef {
     isCollectionItem: boolean;
 }
 
-function findCustomTypeRef(types: ITypeDescr[]): ICustomTypeRef {
-    let result: ICustomTypeRef = null;
-    types.some((t) => {
-        if (t.isCustomType) {
-            result = {
-                type: t.type,
-                isCollectionItem: false
-            };
-            return true;
-        }
-
-        if (t.type === inputTypes.array) {
-            const itemCustomType = findCustomTypeRef((t as IArrayDescr).itemTypes);
-            if (itemCustomType) {
-                result = {
-                    type: itemCustomType.type,
-                    isCollectionItem: true
-                };
-                return true;
-            }
-        }
-    });
-
-    return result;
-}
-
 const inputTypes = {
     array: "Array",
     string: "String",
@@ -73,6 +47,5 @@ const inputTypes = {
 };
 
 export {
-    toPropTypingType,
-    findCustomTypeRef
+    toPropTypingType
 };

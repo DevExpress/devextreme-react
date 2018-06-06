@@ -17,6 +17,7 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 
   protected _WidgetClass = dxCLASS_NAME;
 }
+export default CLASS_NAME;
 export {
   CLASS_NAME,
   ICLASS_NAMEOptions
@@ -51,6 +52,7 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 
   protected _WidgetClass = dxCLASS_NAME;
 }
+export default CLASS_NAME;
 export {
   CLASS_NAME,
   ICLASS_NAMEOptions
@@ -99,6 +101,7 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
     component: "optionComponent"
   }];
 }
+export default CLASS_NAME;
 export {
   CLASS_NAME,
   ICLASS_NAMEOptions
@@ -151,6 +154,7 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
     component: "anotherOptionComponent"
   }];
 }
+export default CLASS_NAME;
 export {
   CLASS_NAME,
   ICLASS_NAMEOptions
@@ -197,6 +201,7 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
     component: "component"
   }];
 }
+export default CLASS_NAME;
 export {
   CLASS_NAME,
   ICLASS_NAMEOptions
@@ -243,6 +248,7 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
     defaultOption1: "option1"
   };
 }
+export default CLASS_NAME;
 export {
   CLASS_NAME,
   ICLASS_NAMEOptions
@@ -290,6 +296,7 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
     defaultOption2: "option2"
   };
 }
+export default CLASS_NAME;
 export {
   CLASS_NAME,
   ICLASS_NAMEOptions
@@ -340,17 +347,19 @@ class Opt_1_Component extends NestedOption<{
     };
   };
 }> {
-  public static OwnerType = CLASS_NAME;
   public static OptionName = "opt_1";
 }
 
 class Opt_6_SubComponent extends NestedOption<{
   sub_sub_sub_opt_8?: TYPE_4;
 }> {
-  public static OwnerType = Opt_1_Component;
   public static OptionName = "sub_sub_opt_7";
 }
 
+(Opt_1_Component as any).OwnerType = CLASS_NAME;
+(Opt_6_SubComponent as any).OwnerType = Opt_1_Component;
+
+export default CLASS_NAME;
 export {
   CLASS_NAME,
   ICLASS_NAMEOptions,
@@ -369,7 +378,7 @@ export {
                 nestedComponents: [
                     {
                         className: "Opt_1_Component",
-                        owner: "CLASS_NAME",
+                        ownerClassName: "CLASS_NAME",
                         optionName: "opt_1",
                         options: [
                             {
@@ -398,7 +407,7 @@ export {
                     },
                     {
                         className: "Opt_6_SubComponent",
-                        owner: "Opt_1_Component",
+                        ownerClassName: "Opt_1_Component",
                         optionName: "sub_sub_opt_7",
                         options: [
                             {
@@ -435,7 +444,6 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 class Opt_1_Component extends NestedOption<{
   sub_opt_2?: TYPE_1;
 }> {
-  public static OwnerType = CLASS_NAME;
   public static OptionName = "opt_1";
   public static IsCollectionItem = true;
 }
@@ -443,10 +451,13 @@ class Opt_1_Component extends NestedOption<{
 class Opt_6_SubComponent extends NestedOption<{
   sub_sub_sub_opt_8?: TYPE_4;
 }> {
-  public static OwnerType = Opt_1_Component;
   public static OptionName = "sub_sub_opt_7";
 }
 
+(Opt_1_Component as any).OwnerType = CLASS_NAME;
+(Opt_6_SubComponent as any).OwnerType = Opt_1_Component;
+
+export default CLASS_NAME;
 export {
   CLASS_NAME,
   ICLASS_NAMEOptions,
@@ -465,7 +476,7 @@ export {
                 nestedComponents: [
                     {
                         className: "Opt_1_Component",
-                        owner: "CLASS_NAME",
+                        ownerClassName: "CLASS_NAME",
                         optionName: "opt_1",
                         isCollectionItem: true,
                         options: [
@@ -477,7 +488,7 @@ export {
                     },
                     {
                         className: "Opt_6_SubComponent",
-                        owner: "Opt_1_Component",
+                        ownerClassName: "Opt_1_Component",
                         optionName: "sub_sub_opt_7",
                         options: [
                             {
@@ -491,7 +502,7 @@ export {
         ).toBe(EXPECTED);
     });
 
-    it("gerates default props for nested options", () => {
+    it("generates default props for nested options", () => {
         //#region EXPECTED
         const EXPECTED = `
 import dxCLASS_NAME, {
@@ -518,13 +529,15 @@ class Opt_1_Component extends NestedOption<{
   };
   defaultSub_opt_2?: TYPE_1;
 }> {
-  public static OwnerType = CLASS_NAME;
   public static OptionName = "opt_1";
   public static DefaultsProps = {
     defaultSub_opt_2: "sub_opt_2"
   };
 }
 
+(Opt_1_Component as any).OwnerType = CLASS_NAME;
+
+export default CLASS_NAME;
 export {
   CLASS_NAME,
   ICLASS_NAMEOptions,
@@ -542,7 +555,7 @@ export {
                 nestedComponents: [
                     {
                         className: "Opt_1_Component",
-                        owner: "CLASS_NAME",
+                        ownerClassName: "CLASS_NAME",
                         optionName: "opt_1",
                         options: [
                             {
@@ -592,6 +605,7 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 (CLASS_NAME as any).propTypes = {
   PROP1: PropTypes.SOME_TYPE
 };
+export default CLASS_NAME;
 export {
   CLASS_NAME,
   ICLASS_NAMEOptions
@@ -639,6 +653,7 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
     "VALUE_2"
   ])
 };
+export default CLASS_NAME;
 export {
   CLASS_NAME,
   ICLASS_NAMEOptions
@@ -687,6 +702,7 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
     PropTypes.ANOTHER_TYPE
   ])
 };
+export default CLASS_NAME;
 export {
   CLASS_NAME,
   ICLASS_NAMEOptions
@@ -737,6 +753,7 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
   B-PROP: PropTypes.TYPE_4,
   c-PROP: PropTypes.TYPE_2
 };
+export default CLASS_NAME;
 export {
   CLASS_NAME,
   ICLASS_NAMEOptions

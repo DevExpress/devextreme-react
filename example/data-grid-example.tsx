@@ -1,9 +1,12 @@
 import * as React from "react";
 import Example from "./example-block";
 
-import { CheckBox } from "../src/ui/check-box";
-import { DataGrid, DataGridColumn as Column, DataGridPaging as Paging } from "../src/ui/data-grid";
-import { NumberBox } from "../src/ui/number-box";
+import CheckBox from "../src/ui/check-box";
+import DataGrid, {
+    Column,
+    Paging
+} from "../src/ui/data-grid";
+import NumberBox from "../src/ui/number-box";
 
 import { sales } from "./data";
 
