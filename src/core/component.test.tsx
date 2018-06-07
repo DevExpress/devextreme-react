@@ -299,7 +299,7 @@ describe("templates", () => {
     describe("nested template", () => {
         it("pass integrationOptions to widget", () => {
             const ItemTemplate = () => <div>Template</div>;
-            shallow(
+            mount(
                 <ComponentWithTemplates>
                     <Template name={"item1"} render={ItemTemplate}/>
                     <Template name={"item2"} component={ItemTemplate}/>
@@ -536,7 +536,7 @@ describe("controlled mode", () => {
     });
 
     it("rolls nested option value back", () => {
-        shallow(
+        mount(
             <ControlledComponent>
                 <NestedComponent a={123} />
             </ControlledComponent>
@@ -549,7 +549,7 @@ describe("controlled mode", () => {
     });
 
     it("rolls nested option value if parent object changes another field", () => {
-        shallow(
+        mount(
             <ControlledComponent>
                 <NestedComponent a={123} />
             </ControlledComponent>
@@ -562,7 +562,7 @@ describe("controlled mode", () => {
     });
 
     it("rolls nested option value and preserves parent object", () => {
-        shallow(
+        mount(
             <ControlledComponent>
                 <NestedComponent a={123} />
             </ControlledComponent>
@@ -654,7 +654,7 @@ describe("controlled mode", () => {
         });
 
         it("pass nested default values to widget", () => {
-            shallow(
+            mount(
                 <ControlledComponent>
                     <NestedComponent defaultC="default" />
                 </ControlledComponent>
@@ -675,7 +675,7 @@ describe("controlled mode", () => {
         });
 
         it("ignores nested option with default prefix", () => {
-            shallow(
+            mount(
                 <ControlledComponent>
                     <NestedComponent defaultC="default" />
                 </ControlledComponent>
@@ -714,7 +714,7 @@ describe("controlled mode", () => {
         });
 
         it("ignores 3rd-party changes in nested default props if parent object changes", () => {
-            shallow(
+            mount(
                 <ControlledComponent>
                     <NestedComponent defaultC="default" />
                 </ControlledComponent>
@@ -736,7 +736,7 @@ describe("controlled mode", () => {
         });
 
         it("does not pass nested default values to widget if controlledOption set", () => {
-            shallow(
+            mount(
                 <ControlledComponent>
                     <NestedComponent defaultC="default" c="controlled" />
                 </ControlledComponent>
@@ -808,7 +808,7 @@ describe("disposing", () => {
 describe("nested options", () => {
 
     it("pulls options from a single nested component", () => {
-        shallow(
+        mount(
             <TestComponent>
                 <NestedComponent1 a={123} />
             </TestComponent>
@@ -823,7 +823,7 @@ describe("nested options", () => {
     });
 
     it("doesn't pull options from wrong component", () => {
-        shallow(
+        mount(
             <TestComponent>
                 <NestedComponent1 a={123} />
                 <WrongNestedComponent x={456} />
@@ -839,7 +839,7 @@ describe("nested options", () => {
     });
 
     it("pulls overriden options from the same nested component", () => {
-        shallow(
+        mount(
             <TestComponent>
                 <NestedComponent1 a={123} />
                 <NestedComponent1 a={456} />
@@ -855,7 +855,7 @@ describe("nested options", () => {
     });
 
     it("pulls array options from a nested component", () => {
-        shallow(
+        mount(
             <TestComponent>
                 <CollectionNestedComponent c={123} d="abc" />
             </TestComponent>
@@ -870,7 +870,7 @@ describe("nested options", () => {
     });
 
     it("pulls array options from several nested components", () => {
-        shallow(
+        mount(
             <TestComponent>
                 <CollectionNestedComponent c={123} d="abc" />
                 <CollectionNestedComponent c={456} />
@@ -889,7 +889,7 @@ describe("nested options", () => {
     });
 
     it("pulls options from several nested components", () => {
-        shallow(
+        mount(
             <TestComponent>
                 <NestedComponent1 a={123} />
                 <WrongNestedComponent x={456} />
