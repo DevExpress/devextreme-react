@@ -2,7 +2,7 @@ import * as React from "react";
 
 import DataSource from "devextreme/data/data_source";
 
-import { Accordion } from "../src/ui/accordion";
+import Accordion from "../src/ui/accordion";
 
 import Example from "./example-block";
 

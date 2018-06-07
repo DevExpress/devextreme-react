@@ -769,13 +769,14 @@ describe("controlled mode", () => {
         c?: string;
         defaultC?: string;
     }> {
-        public static OwnerType = ControlledComponent;
-        public static OptionName = "nestedOption";
 
         public static DefaultsProps = {
             defaultC : "c"
         };
     } // tslint:disable-line:max-classes-per-file
+
+    (NestedComponent as any).OwnerType = ControlledComponent;
+    (NestedComponent as any).OptionName = "nestedOption";
 });
 
 describe("disposing", () => {

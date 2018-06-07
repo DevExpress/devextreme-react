@@ -3,8 +3,8 @@ import * as ReactDOM from "react-dom";
 import Example from "./example-block";
 
 import { Template } from "../src/core/template";
-import { Form } from "../src/ui/form";
-import { TextArea } from "../src/ui/text-area";
+import Form from "../src/ui/form";
+import TextArea from "../src/ui/text-area";
 
 const employee: any = {
     ID: 1,

@@ -27,7 +27,7 @@ interface IComponent {
 interface INestedComponent {
     className: string;
     optionName: string;
-    owner: string;
+    ownerClassName: string;
     options: IOption[];
     isCollectionItem?: boolean;
 }
@@ -98,7 +98,7 @@ function generate(component: IComponent): string {
                 return {
                     className: c.className,
                     optionName: c.optionName,
-                    ownerName: c.owner,
+                    ownerName: c.ownerClassName,
                     renderedType: renderObject(options, 0),
                     renderedSubscribableOptions,
                     isCollectionItem: c.isCollectionItem
@@ -107,10 +107,14 @@ function generate(component: IComponent): string {
         : null;
 
     const optionsName = `I${component.name}Options`;
-    const exportNames = [ component.name, optionsName ];
-    if (isNotEmptyArray(nestedComponents)) {
-        nestedComponents.forEach((opt) => {
-            exportNames.push(opt.className);
+    const exportNames: string[] = [
+        component.name,
+        optionsName
+    ];
+
+    if (isNotEmptyArray(component.nestedComponents)) {
+        component.nestedComponents.forEach((c) => {
+            exportNames.push(c.className);
         });
     }
 
@@ -152,6 +156,12 @@ function generate(component: IComponent): string {
         }),
 
         renderedNestedComponents: nestedComponents && nestedComponents.map(renderNestedComponent),
+        nestedComponentLinks: nestedComponents && nestedComponents.map((c) => ({
+            className: c.className,
+            ownerClassName: c.ownerName
+        })),
+
+        defaultExport: component.name,
         renderedExports: renderExports(exportNames)
     });
 }
@@ -177,6 +187,11 @@ const renderModule: (model: {
     renderedOptionsInterface: string;
     renderedComponent: string;
     renderedNestedComponents: string[];
+    nestedComponentLinks: Array<{
+        className: string;
+        ownerClassName: string;
+    }>;
+    defaultExport: string;
     renderedExports: string;
 }) => string = createTempate(
 `<#= it.renderedImports #>` + `\n` +
@@ -192,8 +207,12 @@ const renderModule: (model: {
     `<#~ it.renderedNestedComponents :nestedComponent #>` + `\n` + `\n` +
         `<#= nestedComponent #>` +
     `}<#~#>` + `\n` + `\n` +
+    `<#~ it.nestedComponentLinks :link #>` +
+    `(<#= link.className #> as any).OwnerType = <#= link.ownerClassName #>;` + `\n` +
+    `<#~#>` + `\n` +
 `<#?#>` +
 
+`export default <#= it.defaultExport #>;` + `\n` +
 `export {
 <#= it.renderedExports #>
 };
@@ -282,14 +301,12 @@ const renderComponent: (model: {
 
 const renderNestedComponent: (model: {
     className: string;
-    ownerName: string;
     optionName: string;
     isCollectionItem: boolean;
     renderedType: string;
     renderedSubscribableOptions: string[];
 }) => string = createTempate(
 `class <#= it.className #> extends NestedOption<<#= it.renderedType #>> {` + `\n` +
-`  public static OwnerType = <#= it.ownerName #>;` + `\n` +
 `  public static OptionName = "<#= it.optionName #>";` + `\n` +
 
 `<#? it.isCollectionItem #>` +
