@@ -1,13 +1,25 @@
+import * as events from "devextreme/events";
 import * as React from "react";
 
-import * as events from "devextreme/events";
-
-import { addPrefixToKeys } from "./helpers";
 import { createConfigurationComponent } from "./nested-option";
-import { OptionsManager } from "./options-manager";
-import { ITemplateMeta, Template } from "./template";
-import { IDxTemplate, ITemplateInfo, IWrappedTemplateInfo, TemplateHelper } from "./template-helper";
+import OptionsManager from "./options-manager";
 import { separateProps } from "./widget-config";
+
+import {
+  ITemplateMeta,
+  Template
+} from "./template";
+
+import {
+  IDxTemplate,
+  ITemplateInfo,
+  IWrappedTemplateInfo,
+  TemplateHelper
+} from "./template-helper";
+
+import {
+  addPrefixToKeys
+} from "./helpers";
 
 const DX_REMOVE_EVENT = "dxremove";
 
@@ -294,4 +306,9 @@ class ExtensionComponent<P> extends ComponentBase<P> {
   }
 }
 
-export { IState, ITemplateMeta, ComponentBase, Component, ExtensionComponent };
+export {
+  IState,
+  ComponentBase,
+  Component,
+  ExtensionComponent
+};

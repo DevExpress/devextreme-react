@@ -5,14 +5,14 @@ import * as events from "devextreme/events";
 
 const DX_REMOVE_EVENT = "dxremove";
 
-export interface ITemplateWrapperProps {
+interface ITemplateWrapperProps {
     content: any;
     container: Element;
     onRemoved: () => void;
     key: string;
 }
 
-export class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps, object> {
+class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps, object> {
 
     public render() {
         return ReactDOM.createPortal(this.props.content, this.props.container);
@@ -28,3 +28,8 @@ export class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps, 
         events.one(element, DX_REMOVE_EVENT, this.props.onRemoved);
     }
 }
+
+export {
+    ITemplateWrapperProps,
+    TemplateWrapper
+};

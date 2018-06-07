@@ -39,4 +39,6 @@ function separateProps(
     return { options, defaults, templates };
 }
 
-export { separateProps };
+export {
+    separateProps
+};

@@ -1,5 +1,11 @@
-import { IArrayDescr, ITypeDescr } from "../integration-data-model";
-import { lowercaseFirst } from "./helpers";
+import {
+    IArrayDescr,
+    ITypeDescr
+} from "../integration-data-model";
+
+import {
+    lowercaseFirst
+} from "./helpers";
 
 function toPropTypingType(types: string[]): string[] {
     if (types === undefined || types === null || types.length === 0) {

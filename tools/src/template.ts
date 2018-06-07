@@ -1,4 +1,7 @@
-import { template, templateSettings } from "dot";
+import {
+    template,
+    templateSettings
+} from "dot";
 
 interface ISettings {
     strip: boolean;
