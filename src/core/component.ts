@@ -1,14 +1,11 @@
 import * as events from "devextreme/events";
 import * as React from "react";
 
+import { addPrefixToKeys } from "./helpers";
 import { createConfigurationComponent } from "./nested-option";
 import OptionsManager from "./options-manager";
+import { ITemplateMeta, Template } from "./template";
 import { separateProps } from "./widget-config";
-
-import {
-  ITemplateMeta,
-  Template
-} from "./template";
 
 import {
   IDxTemplate,
@@ -16,10 +13,6 @@ import {
   IWrappedTemplateInfo,
   TemplateHelper
 } from "./template-helper";
-
-import {
-  addPrefixToKeys
-} from "./helpers";
 
 const DX_REMOVE_EVENT = "dxremove";
 

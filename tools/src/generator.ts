@@ -1,6 +1,4 @@
-import {
-  writeFileSync as writeFile
-} from "fs";
+import { writeFileSync as writeFile } from "fs";
 
 import {
   dirname as getDirName,
@@ -27,7 +25,7 @@ import generateComponent, {
 } from "./component-generator";
 
 import { toPropTypingType } from "./converter";
-import generateIndex, { IReExport} from "./index-generator";
+import generateIndex, { IReExport } from "./index-generator";
 
 import {
   isEmptyArray,
