@@ -1,13 +1,13 @@
 import { PropTypes } from "prop-types";
 import * as React from "react";
 
-export interface ITemplateMeta {
+interface ITemplateMeta {
     tmplOption: string;
     component: string;
     render: string;
 }
 
-export class Template extends React.PureComponent<{
+class Template extends React.PureComponent<{
     name: string;
     component?: any;
     render?: any;
@@ -21,4 +21,9 @@ export class Template extends React.PureComponent<{
     name: PropTypes.string.isRequired,
     component: PropTypes.func,
     render: PropTypes.func
+};
+
+export {
+    ITemplateMeta,
+    Template
 };

@@ -1,13 +1,32 @@
 import { writeFileSync as writeFile } from "fs";
-import { dirname as getDirName, join as joinPaths, relative as getRelativePath, sep as pathSeparator } from "path";
-import { IArrayDescr, IComplexProp, ICustomType, IModel, IProp, ITypeDescr, IWidget } from "../integration-data-model";
-import generateComponent, {
-    IComponent,
-    INestedComponent,
-    IOption,
-    IPropTyping
-} from "./component-generator";
+
+import {
+  dirname as getDirName,
+  join as joinPaths,
+  relative as getRelativePath,
+  sep as pathSeparator
+} from "path";
+
+import {
+  IArrayDescr,
+  IComplexProp,
+  ICustomType,
+  IModel,
+  IProp,
+  ITypeDescr,
+  IWidget
+} from "../integration-data-model";
+
 import { toPropTypingType } from "./converter";
+import generateIndex, { IReExport } from "./index-generator";
+
+import generateComponent, {
+  IComponent,
+  INestedComponent,
+  IOption,
+  IPropTyping
+} from "./component-generator";
+
 import {
   isEmptyArray,
   isNotEmptyArray,
@@ -18,9 +37,6 @@ import {
   toSingularName,
   uppercaseFirst
 } from "./helpers";
-import generateIndex, {
-  IReExport
-} from "./index-generator";
 
 function generate(
   rawData: IModel,

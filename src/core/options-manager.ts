@@ -152,4 +152,4 @@ class OptionsManager {
     }
 }
 
-export { INestedOptionDescr, OptionsManager };
+export default OptionsManager;

@@ -1,16 +1,11 @@
+import { createStrictTemplate, createTempate } from "./template";
+
 import {
     createKeyComparator,
     isNotEmptyArray,
     lowercaseFirst,
     uppercaseFirst
 } from "./helpers";
-
-import {
-    createStrictTemplate,
-    createTempate,
-    NEWLINE as NL,
-    TAB
-} from "./template";
 
 interface IComponent {
     name: string;

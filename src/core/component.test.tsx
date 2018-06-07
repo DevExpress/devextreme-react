@@ -2,6 +2,7 @@ import * as events from "devextreme/events";
 import { configure as configureEnzyme, mount, shallow } from "enzyme";
 import * as Adapter from "enzyme-adapter-react-16";
 import * as React from "react";
+
 import { Component, ExtensionComponent } from "../core/component";
 import ConfigurationComponent from "../core/nested-option";
 import { Template } from "../core/template";
