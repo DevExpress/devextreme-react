@@ -158,7 +158,7 @@ describe("templates", () => {
 
         it("pass integrationOptions to widget", () => {
             const itemRender: any = () => <div>Template</div>;
-            mount(
+            shallow(
                 <ComponentWithTemplates itemRender={itemRender} />
             );
             const options = WidgetClass.mock.calls[0][1];
@@ -241,7 +241,7 @@ describe("templates", () => {
 
         it("pass integrationOptions to widget", () => {
             const ItemTemplate = () => <div>Template</div>;
-            mount(
+            shallow(
                 <ComponentWithTemplates itemComponent={ItemTemplate} />
             );
 
@@ -357,7 +357,7 @@ describe("templates", () => {
 
     it("pass component option changes to widget", () => {
         const ItemTemplate = () => <div>First Template</div>;
-        const component = mount(
+        const component = shallow(
             <ComponentWithTemplates itemComponent={ItemTemplate} />
         );
 
@@ -378,7 +378,7 @@ describe("templates", () => {
 
     it("has templates in state with unique ids", () => {
         const ItemTemplate = (props: any) => <div className={"template"}>Template {props.text}</div>;
-        const component = mount(
+        const component = shallow(
             <ComponentWithTemplates itemComponent={ItemTemplate} />
         );
         renderItemTemplate({text: 1});
@@ -493,7 +493,7 @@ describe("mutation detection", () => {
 describe("controlled mode", () => {
 
     it("binds callback for optionChanged", () => {
-        mount(
+        shallow(
             <ControlledComponent everyOption={123} />
         );
 
@@ -502,7 +502,7 @@ describe("controlled mode", () => {
 
     it("does not fire events when option changed while props updating", () => {
         const controlledOptionChanged = jest.fn();
-        const component = mount(
+        const component = shallow(
             <ControlledComponent controlledOption={"controlled"} onControlledOptionChanged={controlledOptionChanged}/>
         );
         Widget.option.mockImplementation(
@@ -525,7 +525,7 @@ describe("controlled mode", () => {
     });
 
     it("rolls option value back", () => {
-        mount(
+        shallow(
             <ControlledComponent everyOption={123} />
         );
 
@@ -575,7 +575,7 @@ describe("controlled mode", () => {
     });
 
     it("rolls option value back if value has no changes", () => {
-        const component = mount(
+        const component = shallow(
             <ControlledComponent everyOption={123} anotherOption={"const"}/>
         );
 
@@ -604,7 +604,7 @@ describe("controlled mode", () => {
     });
 
     it("apply option change if value really change", () => {
-        const component = mount(
+        const component = shallow(
             <ControlledComponent everyOption={123}/>
         );
 
@@ -645,7 +645,7 @@ describe("controlled mode", () => {
     describe("default values", () => {
 
         it("pass default values to widget", () => {
-            mount(
+            shallow(
                 <ControlledComponent defaultControlledOption={"default"}/>
             );
 
@@ -665,7 +665,7 @@ describe("controlled mode", () => {
         });
 
         it("ignores option with default prefix", () => {
-            mount(
+            shallow(
                 <ControlledComponent defaultControlledOption={"default"}/>
             );
 
@@ -687,7 +687,7 @@ describe("controlled mode", () => {
         });
 
         it("ignores 3rd-party changes in default props", () => {
-            const component = mount(
+            const component = shallow(
                 <ControlledComponent defaultControlledOption={"default"}/>
             );
             component.setProps({
@@ -726,7 +726,7 @@ describe("controlled mode", () => {
         });
 
         it("does not pass default values to widget if controlledOption set", () => {
-            mount(
+            shallow(
                 <ControlledComponent defaultControlledOption={"default"} controlledOption={"controlled"}/>
             );
 
@@ -783,7 +783,7 @@ describe("controlled mode", () => {
 describe("disposing", () => {
 
     it("call dispose", () => {
-        const component = mount(
+        const component = shallow(
             <TestComponent/>
         );
 
