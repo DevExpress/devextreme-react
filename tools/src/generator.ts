@@ -17,15 +17,15 @@ import {
   IWidget
 } from "../integration-data-model";
 
+import { toPropTypingType } from "./converter";
+import generateIndex, { IReExport } from "./index-generator";
+
 import generateComponent, {
   IComponent,
   INestedComponent,
   IOption,
   IPropTyping
 } from "./component-generator";
-
-import { toPropTypingType } from "./converter";
-import generateIndex, { IReExport } from "./index-generator";
 
 import {
   isEmptyArray,

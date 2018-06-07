@@ -1,8 +1,4 @@
-import {
-    IArrayDescr,
-    ITypeDescr
-} from "../integration-data-model";
-
+import { IArrayDescr, ITypeDescr } from "../integration-data-model";
 import { toPropTypingType } from "./converter";
 
 it("deduplicates", () => {

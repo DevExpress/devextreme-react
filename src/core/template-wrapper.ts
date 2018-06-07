@@ -1,7 +1,6 @@
+import * as events from "devextreme/events";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-
-import * as events from "devextreme/events";
 
 const DX_REMOVE_EVENT = "dxremove";
 

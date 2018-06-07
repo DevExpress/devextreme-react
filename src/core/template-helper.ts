@@ -3,10 +3,7 @@ import * as React from "react";
 import { ComponentBase, IState } from "./component";
 import { generateID } from "./helpers";
 
-import {
-    ITemplateWrapperProps,
-    TemplateWrapper
-} from "./template-wrapper";
+import { ITemplateWrapperProps, TemplateWrapper } from "./template-wrapper";
 
 interface IDxTemplateData {
     container: any;
