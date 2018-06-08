@@ -4,7 +4,12 @@ import Example from "./example-block";
 import CheckBox from "../src/ui/check-box";
 import DataGrid, {
     Column,
-    Paging
+    FilterRow,
+    Grouping,
+    GroupPanel,
+    Pager,
+    Paging,
+    Selection
 } from "../src/ui/data-grid";
 import NumberBox from "../src/ui/number-box";
 
@@ -27,27 +32,30 @@ export default class extends React.Component<any, { expandAll: boolean, pageSize
         return (
             <Example title="DxDataGrid" state={this.state}>
                 <br />
+                <CheckBox
+                    text="Expand All Groups"
+                    value={this.state.expandAll}
+                    onValueChanged={this.handleExpandAllChange}
+                />
+                <br />
+                <br />
+                Page size:
+                <br />
+                <NumberBox
+                    showSpinButtons={true}
+                    step={5}
+                    value={this.state.pageSize}
+                    onValueChanged={this.handlePageIndexChange}
+                />
+                <br />
                 <DataGrid
                     dataSource={sales}
                     allowColumnReordering={true}
-                    grouping={{ autoExpandAll: this.state.expandAll }}
-                    groupPanel={{ visible: true }}
-                    pager={{
-                        showPageSizeSelector: true,
-                        allowedPageSizes: [
-                            5,
-                            10,
-                            20
-                        ],
-                        showInfo: true
-                    }} // tslint:disable-line:jsx-no-multiline-js
-                    selection={{ mode: "multiple" }}
-                    filterRow={{ visible: true }}
                 >
-                    <Paging
-                        pageSize={this.state.pageSize}
-                        defaultPageIndex={2}
-                    />
+                    <GroupPanel visible={true} />
+                    <Grouping autoExpandAll={this.state.expandAll} />
+                    <FilterRow visible={true} />
+                    <Selection mode="multiple" />
 
                     <Column dataField="orderId" caption="Order ID" width={90} />
                     <Column dataField="city" />
@@ -56,20 +64,16 @@ export default class extends React.Component<any, { expandAll: boolean, pageSize
                     <Column dataField="date" dataType="date" />
                     <Column dataField="amount" dataType="currency" width={90} />
 
+                    <Pager
+                        allowedPageSizes={[5, 10, 15, 20]}
+                        showPageSizeSelector={true}
+                        showInfo={true}
+                    />
+                    <Paging
+                        defaultPageIndex={2}
+                        pageSize={this.state.pageSize}
+                    />
                 </DataGrid>
-                <br />
-                <CheckBox
-                    text="Expand All Groups"
-                    value={this.state.expandAll}
-                    onValueChanged={this.handleExpandAllChange}
-                />
-                <br/>
-                <br/>
-                <NumberBox
-                    showSpinButtons={true}
-                    value={this.state.pageSize}
-                    onValueChanged={this.handlePageIndexChange}
-                />
             </Example>
         );
     }
