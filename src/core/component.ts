@@ -111,7 +111,9 @@ abstract class ComponentBase<P> extends React.PureComponent<P, IState> {
     }
   }
 
-  protected abstract _preprocessChild(component: React.ReactElement<any>): React.ReactElement<any>;
+  protected _preprocessChild(component: React.ReactElement<any>): React.ReactElement<any> {
+    return this._registerNestedOption(component) || component;
+  }
 
   protected _createWidget(element?: Element) {
     element = element || this._element;
@@ -267,7 +269,7 @@ class Component<P> extends ComponentBase<P> {
   }
 
   protected _preprocessChild(component: React.ReactElement<any>) {
-    return this._registerExtension(component) || this._registerNestedOption(component) || component;
+    return this._registerExtension(component) || super._preprocessChild(component);
   }
 
   private _registerExtension(component: React.ReactElement<any>) {
@@ -292,10 +294,6 @@ class ExtensionComponent<P> extends ComponentBase<P> {
         this._createWidget(element);
       });
     }
-  }
-
-  protected _preprocessChild(component: React.ReactElement<any>) {
-    return component;
   }
 }
 
