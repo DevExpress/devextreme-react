@@ -5,8 +5,11 @@ interface IReExport {
   path: string;
 }
 
+const constParts = `export { Template } from "./core/template";
+`;
+
 function generate(paths: IReExport[]): string {
-  return render(paths);
+  return constParts.concat(render(paths));
 }
 
 const render: (model: IReExport[]) => string = createTempate(`
