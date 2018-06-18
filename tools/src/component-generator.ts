@@ -71,7 +71,7 @@ function generate(component: IComponent): string {
 
     const nestedComponents = component.nestedComponents
         ? component.nestedComponents
-            .sort(createKeyComparator<INestedComponent>((o) => o.optionName))
+            .sort(createKeyComparator<INestedComponent>((o) => o.className))
             .map((c) => {
                 const options = [...c.options];
                 const nestedSubscribableOptions = options.filter((o) => o.isSubscribable);
