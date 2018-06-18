@@ -30,22 +30,17 @@ class WrongNestedComponent extends ConfigurationComponent<{ x: number }> {
 }
 // tslint:enable:max-classes-per-file
 
-it("pulls options from a sub-nested component", () => {
+it("pulls options from a single nested component", () => {
     mount(
         <TestComponent>
-            <NestedComponent a={123} >
-                <SubNestedComponent d={"abc"} />
-            </NestedComponent>
+            <NestedComponent a={123} />
         </TestComponent>
     );
 
     expect(WidgetClass.mock.calls[0][1]).toEqual({
         templatesRenderAsynchronously: true,
         option: {
-            a: 123,
-            subOption: {
-                d: "abc"
-            }
+            a: 123
         }
     });
 });
