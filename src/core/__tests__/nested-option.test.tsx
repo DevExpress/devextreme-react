@@ -3,14 +3,19 @@ import { mount, React, shallow } from "./setup";
 import { TestComponent, Widget, WidgetClass } from "./test-component";
 
 // tslint:disable:max-classes-per-file
-class NestedComponent1 extends ConfigurationComponent<{ a: number }> {
+class NestedComponent extends ConfigurationComponent<{ a: number }> {
     public static OwnerType = TestComponent;
-    public static OptionName = "option1";
+    public static OptionName = "option";
 }
 
-class NestedComponent2 extends ConfigurationComponent<{ b: string }> {
+class SubNestedComponent extends ConfigurationComponent<{ d: string }> {
+    public static OwnerType = NestedComponent;
+    public static OptionName = "subOption";
+}
+
+class AnotherNestedComponent extends ConfigurationComponent<{ b: string }> {
     public static OwnerType = TestComponent;
-    public static OptionName = "option2";
+    public static OptionName = "anotherOption";
 }
 
 class CollectionNestedComponent extends ConfigurationComponent<{ c?: number, d?: string }> {
@@ -25,17 +30,22 @@ class WrongNestedComponent extends ConfigurationComponent<{ x: number }> {
 }
 // tslint:enable:max-classes-per-file
 
-it("pulls options from a single nested component", () => {
+it("pulls options from a sub-nested component", () => {
     mount(
         <TestComponent>
-            <NestedComponent1 a={123} />
+            <NestedComponent a={123} >
+                <SubNestedComponent d={"abc"} />
+            </NestedComponent>
         </TestComponent>
     );
 
     expect(WidgetClass.mock.calls[0][1]).toEqual({
         templatesRenderAsynchronously: true,
-        option1: {
-            a: 123
+        option: {
+            a: 123,
+            subOption: {
+                d: "abc"
+            }
         }
     });
 });
@@ -43,14 +53,14 @@ it("pulls options from a single nested component", () => {
 it("doesn't pull options from wrong component", () => {
     mount(
         <TestComponent>
-            <NestedComponent1 a={123} />
+            <NestedComponent a={123} />
             <WrongNestedComponent x={456} />
         </TestComponent>
     );
 
     expect(WidgetClass.mock.calls[0][1]).toEqual({
         templatesRenderAsynchronously: true,
-        option1: {
+        option: {
             a: 123
         }
     });
@@ -59,14 +69,14 @@ it("doesn't pull options from wrong component", () => {
 it("pulls overriden options from the same nested component", () => {
     mount(
         <TestComponent>
-            <NestedComponent1 a={123} />
-            <NestedComponent1 a={456} />
+            <NestedComponent a={123} />
+            <NestedComponent a={456} />
         </TestComponent>
     );
 
     expect(WidgetClass.mock.calls[0][1]).toEqual({
         templatesRenderAsynchronously: true,
-        option1: {
+        option: {
             a: 456
         }
     });
@@ -109,18 +119,18 @@ it("pulls array options from several nested components", () => {
 it("pulls options from several nested components", () => {
     mount(
         <TestComponent>
-            <NestedComponent1 a={123} />
+            <NestedComponent a={123} />
             <WrongNestedComponent x={456} />
-            <NestedComponent2 b="abc" />
+            <AnotherNestedComponent b="abc" />
         </TestComponent>
     );
 
     expect(WidgetClass.mock.calls[0][1]).toEqual({
         templatesRenderAsynchronously: true,
-        option1: {
+        option: {
             a: 123
         },
-        option2: {
+        anotherOption: {
             b: "abc"
         }
     });
@@ -130,13 +140,13 @@ it("pulls updated options", () => {
 
     const component = shallow(
         <TestComponent>
-            <NestedComponent1 a={123} />
+            <NestedComponent a={123} />
         </TestComponent>
     );
-    const nested = component.find(NestedComponent1).dive();
+    const nested = component.find(NestedComponent).dive();
 
     nested.setProps({ a: 456 });
     jest.runAllTimers();
     expect(Widget.option.mock.calls.length).toBe(1);
-    expect(Widget.option.mock.calls[0]).toEqual(["option1.a", 456]);
+    expect(Widget.option.mock.calls[0]).toEqual(["option.a", 456]);
 });
