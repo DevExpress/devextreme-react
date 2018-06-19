@@ -1,14 +1,15 @@
 import { IArrayDescr, ITypeDescr } from "../integration-data-model";
-import { toPropTypingType } from "./converter";
+import { convertTypes } from "./converter";
 
 it("deduplicates", () => {
     const types = [
-        "Array",
-        "Boolean",
-        "Function",
-        "Number",
-        "Object",
-        "String"
+        { type: "Array", isCustomType: false, acceptableValues: [] },
+        { type: "Boolean", isCustomType: false, acceptableValues: [] },
+        { type: "Function", isCustomType: false, acceptableValues: [] },
+        { type: "Boolean", isCustomType: false, acceptableValues: [] },
+        { type: "Number", isCustomType: false, acceptableValues: [] },
+        { type: "Object", isCustomType: false, acceptableValues: [] },
+        { type: "String", isCustomType: false, acceptableValues: [] }
     ];
 
     const expected = [
@@ -20,22 +21,47 @@ it("deduplicates", () => {
         "string"
     ];
 
-    expect(toPropTypingType(types)).toEqual(expected);
+    expect(convertTypes(types)).toEqual(expected);
 });
 
 it("returns undefiend if finds Any", () => {
-    expect(toPropTypingType(["Any"])).toBeUndefined();
-    expect(toPropTypingType(["String", "Any", "Number"])).toBeUndefined();
+    expect(convertTypes([{ type: "Any", isCustomType: false, acceptableValues: [] }])).toBeUndefined();
+    expect(convertTypes([
+        { type: "String", isCustomType: false, acceptableValues: [] },
+        { type: "Any", isCustomType: false, acceptableValues: [] },
+        { type: "Number", isCustomType: false, acceptableValues: [] }
+    ])).toBeUndefined();
+});
+
+it("returns object if finds isCustomType", () => {
+    expect(convertTypes([
+        { type: "CustomType", isCustomType: true, acceptableValues: [] }
+    ])).toEqual(["object"]);
 });
 
 it("returns undefined if array is empty", () => {
-    expect(toPropTypingType([])).toBeUndefined();
+    expect(convertTypes([])).toBeUndefined();
 });
 
 it("returns undefined if array is undefined", () => {
-    expect(toPropTypingType([])).toBeUndefined();
+    expect(convertTypes(undefined)).toBeUndefined();
 });
 
 it("returns undefined if array is null", () => {
-    expect(toPropTypingType([])).toBeUndefined();
+    expect(convertTypes(null)).toBeUndefined();
+});
+
+it("expands custom types", () => {
+    expect(convertTypes([
+        { type: "CustomType", isCustomType: true, acceptableValues: [] },
+    ], {
+        CustomType: {
+            name: "CustomType",
+            types: [
+                { type: "String", isCustomType: false, acceptableValues: []},
+                { type: "Number", isCustomType: false, acceptableValues: []}
+            ],
+            props: []
+        }
+    })).toEqual(["object", "string", "number"]);
 });

@@ -8,7 +8,6 @@ import {
 } from "path";
 
 import {
-  IArrayDescr,
   IComplexProp,
   ICustomType,
   IModel,
@@ -17,7 +16,7 @@ import {
   IWidget
 } from "../integration-data-model";
 
-import { toPropTypingType } from "./converter";
+import { convertTypes } from "./converter";
 import generateIndex, { IReExport } from "./index-generator";
 
 import generateComponent, {
@@ -50,7 +49,7 @@ function generate(
   const modulePaths: IReExport[] = [];
 
   rawData.widgets.forEach((data) => {
-    const widgetFile = mapWidget(data, baseComponent, configComponent);
+    const widgetFile = mapWidget(data, baseComponent, configComponent, rawData.customTypes);
     const widgetFilePath = joinPaths(out.componentsDir, widgetFile.fileName);
     const indexFileDir = getDirName(out.indexFileName);
 
@@ -67,7 +66,8 @@ function generate(
 function mapWidget(
   raw: IWidget,
   baseComponent: string,
-  configComponent: string
+  configComponent: string,
+  customTypes: ICustomType[]
 ): {
   fileName: string;
   component: IComponent
@@ -81,7 +81,11 @@ function mapWidget(
     ? extractNestedComponents(raw.complexOptions, raw.name, name)
     : null;
 
-  const propTypings = extractPropTypings(raw.options);
+  const customTypeHash = customTypes.reduce((result, type) => {
+    result[type.name] = type;
+    return result;
+  }, {});
+  const propTypings = extractPropTypings(raw.options, customTypeHash);
 
   return {
     fileName: `${toKebabCase(name)}.ts`,
@@ -119,19 +123,19 @@ function extractNestedComponents(props: IComplexProp[], rawWidgetName: string, w
   });
 }
 
-function extractPropTypings(options: IProp[]): IPropTyping[] {
+function extractPropTypings(options: IProp[], customTypes: Record<string, ICustomType>): IPropTyping[] {
   return options
-    .map(createPropTyping)
+    .map((o) => createPropTyping(o, customTypes))
     .filter((t) => t != null);
 }
 
-function createPropTyping(option: IProp): IPropTyping {
+function createPropTyping(option: IProp, customTypes: Record<string, ICustomType>): IPropTyping {
   const isRestrictedType = (t: ITypeDescr): boolean => t.acceptableValues && t.acceptableValues.length > 0;
 
   const rawTypes = option.types.filter((t) => !isRestrictedType(t));
   const restrictedTypes = option.types.filter((t) => isRestrictedType(t));
 
-  const types = toPropTypingType(rawTypes.map((t) => t.isCustomType ? "Object" : t.type));
+  const types = convertTypes(rawTypes, customTypes);
 
   if (restrictedTypes.length > 0) {
     return {
