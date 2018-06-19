@@ -56,7 +56,7 @@ it("calls option method on props update", () => {
     expect(Widget.option.mock.calls[0][1]).toEqual("1");
 });
 
-describe("controlled mode", () => {
+describe("option control", () => {
 
     it("binds callback for optionChanged", () => {
         shallow(
@@ -101,6 +101,69 @@ describe("controlled mode", () => {
         expect(Widget.option.mock.calls[0]).toEqual(["everyOption", 123]);
     });
 
+    it("rolls option value back if value has no changes", () => {
+        const component = shallow(
+            <ControlledComponent everyOption={123} anotherOption={"const"} />
+        );
+
+        fireOptionChange("anotherOption", "changed");
+        component.setProps({ everyOption: 234 });
+        jest.runAllTimers();
+        expect(Widget.option.mock.calls.length).toBe(2);
+        expect(Widget.option.mock.calls[0]).toEqual(["everyOption", 234]);
+        expect(Widget.option.mock.calls[1]).toEqual(["anotherOption", "const"]);
+    });
+
+    it("apply option change if value really change", () => {
+        const component = shallow(
+            <ControlledComponent everyOption={123} />
+        );
+
+        fireOptionChange("everyOption", 234);
+        component.setProps({ everyOption: 234 });
+        jest.runAllTimers();
+        expect(Widget.option.mock.calls.length).toBe(1);
+        expect(Widget.option.mock.calls[0]).toEqual(["everyOption", 234]);
+    });
+
+});
+
+describe("option defaults control", () => {
+
+    it("pass default values to widget", () => {
+        shallow(
+            <ControlledComponent defaultControlledOption={"default"} />
+        );
+
+        expect(WidgetClass.mock.calls[0][1].controlledOption).toBe("default");
+        expect(WidgetClass.mock.calls[0][1]).not.toHaveProperty("defaultControlledOption");
+    });
+
+    it("ignores option with default prefix", () => {
+        shallow(
+            <ControlledComponent defaultControlledOption={"default"} />
+        );
+
+        fireOptionChange("controlledOption", "changed");
+        jest.runAllTimers();
+        expect(Widget.option.mock.calls.length).toBe(0);
+    });
+
+    it("ignores 3rd-party changes in default props", () => {
+        const component = shallow(
+            <ControlledComponent defaultControlledOption={"default"} />
+        );
+        component.setProps({
+            defaultControlledOption: "changed"
+        });
+        jest.runAllTimers();
+        expect(Widget.option.mock.calls.length).toBe(0);
+    });
+
+});
+
+describe("nested option control", () => {
+
     it("rolls nested option value back", () => {
         mount(
             <ControlledComponent>
@@ -140,19 +203,6 @@ describe("controlled mode", () => {
         expect(Widget.option.mock.calls[0]).toEqual(["nestedOption.a", 123]);
     });
 
-    it("rolls option value back if value has no changes", () => {
-        const component = shallow(
-            <ControlledComponent everyOption={123} anotherOption={"const"} />
-        );
-
-        fireOptionChange("anotherOption", "changed");
-        component.setProps({ everyOption: 234 });
-        jest.runAllTimers();
-        expect(Widget.option.mock.calls.length).toBe(2);
-        expect(Widget.option.mock.calls[0]).toEqual(["everyOption", 234]);
-        expect(Widget.option.mock.calls[1]).toEqual(["anotherOption", "const"]);
-    });
-
     it("rolls nested option value back if value has no changes", () => {
         const component = shallow(
             <ControlledComponent>
@@ -167,18 +217,6 @@ describe("controlled mode", () => {
         expect(Widget.option.mock.calls.length).toBe(2);
         expect(Widget.option.mock.calls[0]).toEqual(["nestedOption.a", 234]);
         expect(Widget.option.mock.calls[1]).toEqual(["nestedOption.b", "const"]);
-    });
-
-    it("apply option change if value really change", () => {
-        const component = shallow(
-            <ControlledComponent everyOption={123} />
-        );
-
-        fireOptionChange("everyOption", 234);
-        component.setProps({ everyOption: 234 });
-        jest.runAllTimers();
-        expect(Widget.option.mock.calls.length).toBe(1);
-        expect(Widget.option.mock.calls[0]).toEqual(["everyOption", 234]);
     });
 
     it("apply nested option change if value really change", () => {
@@ -208,112 +246,83 @@ describe("controlled mode", () => {
         expect(Widget.option.mock.calls.length).toBe(0);
     });
 
-    describe("default values", () => {
+});
 
-        it("pass default values to widget", () => {
-            shallow(
-                <ControlledComponent defaultControlledOption={"default"} />
-            );
+describe("nested option defaults control", () => {
 
-            expect(WidgetClass.mock.calls[0][1].controlledOption).toBe("default");
-            expect(WidgetClass.mock.calls[0][1]).not.toHaveProperty("defaultControlledOption");
-        });
+    it("pass nested default values to widget", () => {
+        mount(
+            <ControlledComponent>
+                <NestedComponent defaultC="default" />
+            </ControlledComponent>
+        );
 
-        it("pass nested default values to widget", () => {
-            mount(
-                <ControlledComponent>
-                    <NestedComponent defaultC="default" />
-                </ControlledComponent>
-            );
-
-            expect(WidgetClass.mock.calls[0][1].nestedOption.c).toBe("default");
-            expect(WidgetClass.mock.calls[0][1].nestedOption).not.toHaveProperty("defaultC");
-        });
-
-        it("ignores option with default prefix", () => {
-            shallow(
-                <ControlledComponent defaultControlledOption={"default"} />
-            );
-
-            fireOptionChange("controlledOption", "changed");
-            jest.runAllTimers();
-            expect(Widget.option.mock.calls.length).toBe(0);
-        });
-
-        it("ignores nested option with default prefix", () => {
-            mount(
-                <ControlledComponent>
-                    <NestedComponent defaultC="default" />
-                </ControlledComponent>
-            );
-
-            fireOptionChange("nestedOption.c", "changed");
-            jest.runAllTimers();
-            expect(Widget.option.mock.calls.length).toBe(0);
-        });
-
-        it("ignores 3rd-party changes in default props", () => {
-            const component = shallow(
-                <ControlledComponent defaultControlledOption={"default"} />
-            );
-            component.setProps({
-                defaultControlledOption: "changed"
-            });
-            jest.runAllTimers();
-            expect(Widget.option.mock.calls.length).toBe(0);
-        });
-
-        it("ignores 3rd-party changes in nested default props", () => {
-            const component = shallow(
-                <ControlledComponent>
-                    <NestedComponent defaultC="default" />
-                </ControlledComponent>
-
-            );
-            const nested = component.find(NestedComponent).dive();
-
-            nested.setProps({
-                defaultC: "changed"
-            });
-            jest.runAllTimers();
-            expect(Widget.option.mock.calls.length).toBe(0);
-        });
-
-        it("ignores 3rd-party changes in nested default props if parent object changes", () => {
-            mount(
-                <ControlledComponent>
-                    <NestedComponent defaultC="default" />
-                </ControlledComponent>
-            );
-
-            fireOptionChange("nestedOption", { a: 456, b: "abc" });
-            jest.runAllTimers();
-            expect(Widget.option.mock.calls.length).toBe(0);
-        });
-
-        it("does not pass default values to widget if controlledOption set", () => {
-            shallow(
-                <ControlledComponent defaultControlledOption={"default"} controlledOption={"controlled"} />
-            );
-
-            expect(Widget.option.mock.calls.length).toBe(0);
-            expect(WidgetClass.mock.calls[0][1].controlledOption).toBe("controlled");
-            expect(WidgetClass.mock.calls[0][1]).not.toHaveProperty("defaultControlledOption");
-        });
-
-        it("does not pass nested default values to widget if controlledOption set", () => {
-            mount(
-                <ControlledComponent>
-                    <NestedComponent defaultC="default" c="controlled" />
-                </ControlledComponent>
-            );
-
-            expect(Widget.option.mock.calls.length).toBe(0);
-            expect(WidgetClass.mock.calls[0][1].nestedOption.c).toBe("controlled");
-            expect(WidgetClass.mock.calls[0][1].nestedOption).not.toHaveProperty("defaultC");
-        });
-
+        expect(WidgetClass.mock.calls[0][1].nestedOption.c).toBe("default");
+        expect(WidgetClass.mock.calls[0][1].nestedOption).not.toHaveProperty("defaultC");
     });
+
+    it("does not pass default values to widget if controlledOption set", () => {
+        shallow(
+            <ControlledComponent defaultControlledOption={"default"} controlledOption={"controlled"} />
+        );
+
+        expect(Widget.option.mock.calls.length).toBe(0);
+        expect(WidgetClass.mock.calls[0][1].controlledOption).toBe("controlled");
+        expect(WidgetClass.mock.calls[0][1]).not.toHaveProperty("defaultControlledOption");
+    });
+
+    it("ignores nested option with default prefix", () => {
+        mount(
+            <ControlledComponent>
+                <NestedComponent defaultC="default" />
+            </ControlledComponent>
+        );
+
+        fireOptionChange("nestedOption.c", "changed");
+        jest.runAllTimers();
+        expect(Widget.option.mock.calls.length).toBe(0);
+    });
+
+    it("ignores 3rd-party changes in nested default props", () => {
+        const component = shallow(
+            <ControlledComponent>
+                <NestedComponent defaultC="default" />
+            </ControlledComponent>
+
+        );
+        const nested = component.find(NestedComponent).dive();
+
+        nested.setProps({
+            defaultC: "changed"
+        });
+        jest.runAllTimers();
+        expect(Widget.option.mock.calls.length).toBe(0);
+    });
+
+    it("ignores 3rd-party changes in nested default props if parent object changes", () => {
+        mount(
+            <ControlledComponent>
+                <NestedComponent defaultC="default" />
+            </ControlledComponent>
+        );
+
+        fireOptionChange("nestedOption", { a: 456, b: "abc" });
+        jest.runAllTimers();
+        expect(Widget.option.mock.calls.length).toBe(0);
+    });
+
+    it("does not pass nested default values to widget if controlledOption set", () => {
+        mount(
+            <ControlledComponent>
+                <NestedComponent defaultC="default" c="controlled" />
+            </ControlledComponent>
+        );
+
+        expect(Widget.option.mock.calls.length).toBe(0);
+        expect(WidgetClass.mock.calls[0][1].nestedOption.c).toBe("controlled");
+        expect(WidgetClass.mock.calls[0][1].nestedOption).not.toHaveProperty("defaultC");
+    });
+
 });
 
 describe("mutation detection", () => {
