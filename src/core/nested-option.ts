@@ -40,7 +40,7 @@ class NestedOption<P> extends React.PureComponent<P, any> {
 
         return children.length === 0
             ? null
-            : React.createElement("div", {}, ...children);
+            : React.createElement(React.Fragment, {}, ...children);
     }
 
     public componentWillUpdate(nextProps: P) {
