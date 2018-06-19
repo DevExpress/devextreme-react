@@ -30,7 +30,13 @@ ReactDOM.render(
     <TextBoxExample />
 
     <Example title="DxNumberBox">
-      <NumberBox step={50} min={50} showSpinButtons={true} />
+      <NumberBox
+        defaultValue={102.453}
+        step={10}
+        min={50}
+        format={"$ #0.##"}
+        showSpinButtons={true}
+      />
     </Example>
 
     <ScrollViewExample />

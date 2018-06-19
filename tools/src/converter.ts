@@ -1,9 +1,13 @@
-import { IArrayDescr, ITypeDescr } from "../integration-data-model";
+import { ICustomType, ITypeDescr } from "../integration-data-model";
 import { lowercaseFirst } from "./helpers";
 
-function toPropTypingType(types: string[]): string[] {
+function convertTypes(types: ITypeDescr[], customTypes?: Record<string, ICustomType>): string[] {
     if (types === undefined || types === null || types.length === 0) {
         return;
+    }
+
+    if (customTypes) {
+        types.push(...expandTypes(types, customTypes));
     }
 
     const convertedTypes = new Set(types.map(convertType));
@@ -14,7 +18,21 @@ function toPropTypingType(types: string[]): string[] {
     return Array.from(convertedTypes);
 }
 
-function convertType(type: string): string {
+function expandTypes(types: ITypeDescr[], customTypes: Record<string, ICustomType>): ITypeDescr[] {
+    const expandedTypes = [];
+    types.forEach((t) => {
+      if (t.isCustomType) {
+        const aliases = customTypes[t.type].types;
+        if (aliases) {
+            expandedTypes.push(...aliases);
+        }
+      }
+    });
+    return expandedTypes;
+}
+
+function convertType(typeDescr: ITypeDescr): string {
+    const type = typeDescr.type;
     switch (type) {
         case inputTypes.string:
         case inputTypes.number:
@@ -29,12 +47,11 @@ function convertType(type: string): string {
             return "func";
     }
 
-    return "Any";
-}
+    if (typeDescr.isCustomType) {
+        return "object";
+    }
 
-interface ICustomTypeRef {
-    type: string;
-    isCollectionItem: boolean;
+    return "Any";
 }
 
 const inputTypes = {
@@ -47,5 +64,5 @@ const inputTypes = {
 };
 
 export {
-    toPropTypingType
+    convertTypes
 };
