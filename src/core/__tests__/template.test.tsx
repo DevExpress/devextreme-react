@@ -266,6 +266,14 @@ it("has templates in state with unique ids", () => {
     expect(templatesKeys[0]).not.toBe(templatesKeys[1]);
 });
 
+it("mounts empty template without errors", () => {
+    const component = mount(
+        <ComponentWithTemplates itemRender={() => null}/>
+    );
+    renderItemTemplate({ text: 1 });
+    expect(component.update.bind(component)).not.toThrow();
+});
+
 it("removes deleted nodes from state", () => {
     const ItemTemplate = (props: any) => <div className={"template"}>Template {props.text}</div>;
     const component = mount(
