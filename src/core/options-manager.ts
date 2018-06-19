@@ -186,7 +186,7 @@ class OptionsManager {
 
             const entry = this.ensureNestedOption(
                 optionName,
-                owningCollection && owningCollection || this._nestedOptions,
+                owningCollection || this._nestedOptions,
                 nestedOptionClass.type.DefaultsProps,
                 nestedOptionClass.type.IsCollectionItem
             );

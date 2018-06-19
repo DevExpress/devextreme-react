@@ -294,4 +294,22 @@ describe("nested sub-option", () => {
         });
     });
 
+    it("is pulled after update", () => {
+
+        const component = shallow(
+            <TestComponent>
+                <NestedComponent a={123} >
+                    <SubNestedComponent d={"abc"} />
+                </NestedComponent>
+            </TestComponent>
+        );
+        const nested = component.find(NestedComponent).dive();
+        const subNested = nested.find(SubNestedComponent).dive();
+
+        subNested.setProps({ d: "def" });
+        jest.runAllTimers();
+        expect(Widget.option.mock.calls.length).toBe(1);
+        expect(Widget.option.mock.calls[0]).toEqual(["option.subOption.d", "def"]);
+    });
+
 });
