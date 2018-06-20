@@ -391,12 +391,10 @@ class Example extends React.Component {
                 <TextBox defaultValue={'email@mail.com'}>
                     <Validator validationRules={this.validationRules.email} />
                 </TextBox>
-                <br />
                 <TextBox defaultValue={'password'}>
                     <Validator validationRules={this.validationRules.password} />
                 </TextBox>
                 <ValidationSummary />
-                <br />
                 <Button
                     text={'Submit'}
                     onClick={this.validate}
