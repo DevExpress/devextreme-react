@@ -21,7 +21,7 @@ export function lowercaseFirst(value: string): string {
     return value[0].toLowerCase() + value.substr(1);
 }
 
-export function compareStrings(a: string, b: string) {
+export function compareStrings(a: string, b: string): number {
     return a.localeCompare(b, undefined, { caseFirst: "upper" });
 }
 
@@ -46,8 +46,4 @@ export function isEmptyArray(array: any[]): boolean {
 
 export function isPlainObject(value: any): boolean {
     return value.constructor === Object;
-}
-
-export function toSingularName(value: string): string {
-    return value.replace(/s$/, "");
 }
