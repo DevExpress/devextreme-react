@@ -16,6 +16,7 @@ This project allows you to use [DevExtreme Widgets](http://js.devexpress.com/Dem
   * [Uncontrolled Mode](#uncontrolled-mode)
   * [Getting Widget Instance](#getting-widget-instance)
 * [Markup Customization](#markup-customization)
+* [DevExtreme Validation](#devextreme-validation)
 * [Working With Data](#working-with-data)
 * [Typescript Support](#typescript-support)
 * [License](#license)
@@ -349,6 +350,69 @@ class Example extends React.Component {
     }
 }
 
+ReactDOM.render(
+    <Example />,
+    document.getElementById('root')
+);
+```
+
+## <a name="devextreme-validation"></a>DevExtreme Validation ##
+You can use the built-in [validation rules](https://js.devexpress.com/Documentation/ApiReference/UI_Widgets/dxValidator/Validation_Rules/), validation summary and other DevExtreme validation features with React DevExtreme editors.
+```jsx
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+import { Button, TextBox, ValidationGroup, ValidationSummary } from 'devextreme-react';
+
+import 'devextreme/dist/css/dx.common.css';
+import 'devextreme/dist/css/dx.light.compact.css';
+
+class Example extends React.Component {
+
+    validationRules = {
+        email: [
+            { type: 'required', message: 'Email is required.' },
+            { type: 'email', message: 'Email is invalid.' }
+        ],
+        password: [
+            { type: 'required', message: 'Password is required.' }
+        ]
+    };
+
+    constructor(props) {
+        super(props);
+
+        this.validate = this.validate.bind(this);
+    }
+
+    render() {
+        return (
+            <ValidationGroup>
+                <TextBox defaultValue={'email@mail.com'}>
+                    <Validator validationRules={this.validationRules.email} />
+                </TextBox>
+                <br />
+                <TextBox defaultValue={'password'}>
+                    <Validator validationRules={this.validationRules.password} />
+                </TextBox>
+                <ValidationSummary />
+                <br />
+                <Button
+                    text={'Submit'}
+                    onClick={this.validate}
+                />
+            </ValidationGroup>
+        );
+    }
+
+    validate(params) {
+        const result = params.validationGroup.validate();
+        if (result.isValid) {
+            // form data is valid
+            //params.validationGroup.reset();
+        }
+    }
+}
 ReactDOM.render(
     <Example />,
     document.getElementById('root')
