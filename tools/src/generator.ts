@@ -27,13 +27,10 @@ import generateComponent, {
 } from "./component-generator";
 
 import {
-  isEmptyArray,
   isNotEmptyArray,
-  removeElement,
   removeExtension,
   removePrefix,
   toKebabCase,
-  toSingularName,
   uppercaseFirst
 } from "./helpers";
 
@@ -109,7 +106,7 @@ function extractNestedComponents(props: IComplexProp[], rawWidgetName: string, w
 
   nameClassMap[rawWidgetName] = widgetName;
   props.forEach((p) => {
-    nameClassMap[p.name] = uppercaseFirst(p.isCollectionItem ? toSingularName(p.name) : p.name);
+    nameClassMap[p.name] = uppercaseFirst(p.name);
   });
 
   return props.map((p) => {
