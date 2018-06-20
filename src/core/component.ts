@@ -1,8 +1,6 @@
 import * as events from "devextreme/events";
 import * as React from "react";
 
-import { addPrefixToKeys } from "./helpers";
-import { createConfigurationComponent } from "./nested-option";
 import OptionsManager from "./options-manager";
 import { ITemplateMeta, Template } from "./template";
 import { separateProps } from "./widget-config";
@@ -15,16 +13,6 @@ import {
 } from "./template-helper";
 
 const DX_REMOVE_EVENT = "dxremove";
-
-interface INestedOption {
-  type: {
-    IsCollectionItem: boolean;
-    OwnerType: any;
-    OptionName: string;
-    DefaultsProps: Record<string, string>;
-  };
-  props: object;
-}
 
 interface IWidgetConfig {
     defaults: Record<string, any>;
@@ -112,7 +100,7 @@ abstract class ComponentBase<P> extends React.PureComponent<P, IState> {
   }
 
   protected _preprocessChild(component: React.ReactElement<any>): React.ReactElement<any> {
-    return this._registerNestedOption(component) || component;
+    return this._optionsManager.registerNestedOption(component, this) || component;
   }
 
   protected _createWidget(element?: Element) {
@@ -135,37 +123,6 @@ abstract class ComponentBase<P> extends React.PureComponent<P, IState> {
     this._instance = new this._WidgetClass(element, options);
     this._optionsManager.setInstance(this._instance);
     this._instance.on("optionChanged", this._optionsManager.handleOptionChange);
-  }
-
-  protected _registerNestedOption(component: React.ReactElement<any>): any {
-    const configComponent = component as any as INestedOption;
-    if (
-      configComponent && configComponent.type &&
-      configComponent.type.OptionName &&
-      configComponent.type.OwnerType && this instanceof configComponent.type.OwnerType
-    ) {
-      const optionName = configComponent.type.OptionName;
-
-      this._optionsManager.addNestedOption(
-          optionName,
-          component,
-          configComponent.type.DefaultsProps,
-          configComponent.type.IsCollectionItem
-      );
-
-      return createConfigurationComponent(
-        component,
-        (newProps, prevProps) => {
-          const newOptions = separateProps(newProps, configComponent.type.DefaultsProps, []).options;
-          this._optionsManager.processChangedValues(
-            addPrefixToKeys(newOptions, optionName + "."),
-            addPrefixToKeys(prevProps, optionName + ".")
-          );
-        }
-      );
-    }
-
-    return null;
   }
 
   private _prepareProps(rawProps: Record<string, any>): IWidgetConfig {

@@ -3,14 +3,24 @@ import { mount, React, shallow } from "./setup";
 import { TestComponent, Widget, WidgetClass } from "./test-component";
 
 // tslint:disable:max-classes-per-file
-class NestedComponent1 extends ConfigurationComponent<{ a: number }> {
+class NestedComponent extends ConfigurationComponent<{ a: number }> {
     public static OwnerType = TestComponent;
-    public static OptionName = "option1";
+    public static OptionName = "option";
 }
 
-class NestedComponent2 extends ConfigurationComponent<{ b: string }> {
+class SubNestedComponent extends ConfigurationComponent<{ d: string }> {
+    public static OwnerType = NestedComponent;
+    public static OptionName = "subOption";
+}
+
+class AnotherSubNestedComponent extends ConfigurationComponent<{ e: string }> {
+    public static OwnerType = NestedComponent;
+    public static OptionName = "anotherSubOption";
+}
+
+class AnotherNestedComponent extends ConfigurationComponent<{ b: string }> {
     public static OwnerType = TestComponent;
-    public static OptionName = "option2";
+    public static OptionName = "anotherOption";
 }
 
 class CollectionNestedComponent extends ConfigurationComponent<{ c?: number, d?: string }> {
@@ -19,124 +29,287 @@ class CollectionNestedComponent extends ConfigurationComponent<{ c?: number, d?:
     public static OptionName = "itemOptions";
 }
 
+class CollectionSubNestedComponent extends ConfigurationComponent<{ c?: number, d?: string }> {
+    public static IsCollectionItem = true;
+    public static OwnerType = NestedComponent;
+    public static OptionName = "subItemsOptions";
+}
+
 class WrongNestedComponent extends ConfigurationComponent<{ x: number }> {
     public static OwnerType = WrongNestedComponent;
     public static OptionName = "optionW";
 }
 // tslint:enable:max-classes-per-file
 
-it("pulls options from a single nested component", () => {
-    mount(
-        <TestComponent>
-            <NestedComponent1 a={123} />
-        </TestComponent>
-    );
+describe("nested option", () => {
 
-    expect(WidgetClass.mock.calls[0][1]).toEqual({
-        templatesRenderAsynchronously: true,
-        option1: {
-            a: 123
-        }
+    it("is pulled", () => {
+        mount(
+            <TestComponent>
+                <NestedComponent a={123} />
+            </TestComponent>
+        );
+
+        expect(WidgetClass.mock.calls[0][1]).toEqual({
+            templatesRenderAsynchronously: true,
+            option: {
+                a: 123
+            }
+        });
     });
+
+    it("is pulled (several options)", () => {
+        mount(
+            <TestComponent>
+                <NestedComponent a={123} />
+                <WrongNestedComponent x={456} />
+                <AnotherNestedComponent b="abc" />
+            </TestComponent>
+        );
+
+        expect(WidgetClass.mock.calls[0][1]).toEqual({
+            templatesRenderAsynchronously: true,
+            option: {
+                a: 123
+            },
+            anotherOption: {
+                b: "abc"
+            }
+        });
+    });
+
+    it("isn't pulled by wrong parent", () => {
+        mount(
+            <TestComponent>
+                <NestedComponent a={123} />
+                <WrongNestedComponent x={456} />
+            </TestComponent>
+        );
+
+        expect(WidgetClass.mock.calls[0][1]).toEqual({
+            templatesRenderAsynchronously: true,
+            option: {
+                a: 123
+            }
+        });
+    });
+
+    it("is pulled overriden if not a collection item", () => {
+        mount(
+            <TestComponent>
+                <NestedComponent a={123} />
+                <NestedComponent a={456} />
+            </TestComponent>
+        );
+
+        expect(WidgetClass.mock.calls[0][1]).toEqual({
+            templatesRenderAsynchronously: true,
+            option: {
+                a: 456
+            }
+        });
+    });
+
+    it("is pulled as a collection item", () => {
+        mount(
+            <TestComponent>
+                <CollectionNestedComponent c={123} d="abc" />
+            </TestComponent>
+        );
+
+        expect(WidgetClass.mock.calls[0][1]).toEqual({
+            templatesRenderAsynchronously: true,
+            itemOptions: [
+                { c: 123, d: "abc" }
+            ]
+        });
+    });
+
+    it("is pulled as a collection item (several items)", () => {
+        mount(
+            <TestComponent>
+                <CollectionNestedComponent c={123} d="abc" />
+                <CollectionNestedComponent c={456} />
+                <CollectionNestedComponent d="def" />
+            </TestComponent>
+        );
+
+        expect(WidgetClass.mock.calls[0][1]).toEqual({
+            templatesRenderAsynchronously: true,
+            itemOptions: [
+                { c: 123, d: "abc" },
+                { c: 456 },
+                { d: "def" }
+            ]
+        });
+    });
+
+    it("is pulled after update", () => {
+
+        const component = shallow(
+            <TestComponent>
+                <NestedComponent a={123} />
+            </TestComponent>
+        );
+        const nested = component.find(NestedComponent).dive();
+
+        nested.setProps({ a: 456 });
+        jest.runAllTimers();
+        expect(Widget.option.mock.calls.length).toBe(1);
+        expect(Widget.option.mock.calls[0]).toEqual(["option.a", 456]);
+    });
+
 });
 
-it("doesn't pull options from wrong component", () => {
-    mount(
-        <TestComponent>
-            <NestedComponent1 a={123} />
-            <WrongNestedComponent x={456} />
-        </TestComponent>
-    );
+describe("nested sub-option", () => {
 
-    expect(WidgetClass.mock.calls[0][1]).toEqual({
-        templatesRenderAsynchronously: true,
-        option1: {
-            a: 123
-        }
+    it("is pulled", () => {
+        mount(
+            <TestComponent>
+                <NestedComponent a={123} >
+                    <SubNestedComponent d={"abc"} />
+                </NestedComponent>
+            </TestComponent>
+        );
+
+        expect(WidgetClass.mock.calls[0][1]).toEqual({
+            templatesRenderAsynchronously: true,
+            option: {
+                a: 123,
+                subOption: {
+                    d: "abc"
+                }
+            }
+        });
     });
-});
 
-it("pulls overriden options from the same nested component", () => {
-    mount(
-        <TestComponent>
-            <NestedComponent1 a={123} />
-            <NestedComponent1 a={456} />
-        </TestComponent>
-    );
+    it("is pulled (several options)", () => {
+        mount(
+            <TestComponent>
+                <NestedComponent a={123} >
+                    <SubNestedComponent d={"abc"} />
+                    <WrongNestedComponent x={456} />
+                    <AnotherSubNestedComponent e={"def"} />
+                </NestedComponent>
+            </TestComponent>
+        );
 
-    expect(WidgetClass.mock.calls[0][1]).toEqual({
-        templatesRenderAsynchronously: true,
-        option1: {
-            a: 456
-        }
+        expect(WidgetClass.mock.calls[0][1]).toEqual({
+            templatesRenderAsynchronously: true,
+            option: {
+                a: 123,
+                subOption: {
+                    d: "abc"
+                },
+                anotherSubOption: {
+                    e: "def"
+                }
+            }
+        });
     });
-});
 
-it("pulls array options from a nested component", () => {
-    mount(
-        <TestComponent>
-            <CollectionNestedComponent c={123} d="abc" />
-        </TestComponent>
-    );
+    it("isn't pulled by wrong parent", () => {
+        mount(
+            <TestComponent>
+                <NestedComponent a={123} >
+                    <SubNestedComponent d={"abc"} />
+                    <WrongNestedComponent x={456} />
+                </NestedComponent>
+            </TestComponent>
+        );
 
-    expect(WidgetClass.mock.calls[0][1]).toEqual({
-        templatesRenderAsynchronously: true,
-        itemOptions: [
-            { c: 123, d: "abc" }
-        ]
+        expect(WidgetClass.mock.calls[0][1]).toEqual({
+            templatesRenderAsynchronously: true,
+            option: {
+                a: 123,
+                subOption: {
+                    d: "abc"
+                }
+            }
+        });
     });
-});
 
-it("pulls array options from several nested components", () => {
-    mount(
-        <TestComponent>
-            <CollectionNestedComponent c={123} d="abc" />
-            <CollectionNestedComponent c={456} />
-            <CollectionNestedComponent d="def" />
-        </TestComponent>
-    );
+    it("is pulled overriden if not a collection item", () => {
+        mount(
+            <TestComponent>
+                <NestedComponent a={123} >
+                    <SubNestedComponent d={"abc"} />
+                    <SubNestedComponent d={"def"} />
+                </NestedComponent>
+            </TestComponent>
+        );
 
-    expect(WidgetClass.mock.calls[0][1]).toEqual({
-        templatesRenderAsynchronously: true,
-        itemOptions: [
-            { c: 123, d: "abc" },
-            { c: 456 },
-            { d: "def" }
-        ]
+        expect(WidgetClass.mock.calls[0][1]).toEqual({
+            templatesRenderAsynchronously: true,
+            option: {
+                a: 123,
+                subOption: {
+                    d: "def"
+                }
+            }
+        });
     });
-});
 
-it("pulls options from several nested components", () => {
-    mount(
-        <TestComponent>
-            <NestedComponent1 a={123} />
-            <WrongNestedComponent x={456} />
-            <NestedComponent2 b="abc" />
-        </TestComponent>
-    );
+    it("is pulled as a collection item", () => {
+        mount(
+            <TestComponent>
+                <NestedComponent a={123} >
+                    <CollectionSubNestedComponent c={123} d={"abc"} />
+                </NestedComponent>
+            </TestComponent>
+        );
 
-    expect(WidgetClass.mock.calls[0][1]).toEqual({
-        templatesRenderAsynchronously: true,
-        option1: {
-            a: 123
-        },
-        option2: {
-            b: "abc"
-        }
+        expect(WidgetClass.mock.calls[0][1]).toEqual({
+            templatesRenderAsynchronously: true,
+            option: {
+                a: 123,
+                subItemsOptions: [
+                    { c: 123, d: "abc" }
+                ]
+            }
+        });
     });
-});
 
-it("pulls updated options", () => {
+    it("is pulled as a collection item (several items)", () => {
+        mount(
+            <TestComponent>
+                <NestedComponent a={123} >
+                    <CollectionSubNestedComponent c={123} d="abc" />
+                    <CollectionSubNestedComponent c={456} />
+                    <CollectionSubNestedComponent d="def" />
+                </NestedComponent>
+            </TestComponent>
+        );
 
-    const component = shallow(
-        <TestComponent>
-            <NestedComponent1 a={123} />
-        </TestComponent>
-    );
-    const nested = component.find(NestedComponent1).dive();
+        expect(WidgetClass.mock.calls[0][1]).toEqual({
+            templatesRenderAsynchronously: true,
+            option: {
+                a: 123,
+                subItemsOptions: [
+                    { c: 123, d: "abc" },
+                    { c: 456 },
+                    { d: "def" }
+                ]
+            }
+        });
+    });
 
-    nested.setProps({ a: 456 });
-    jest.runAllTimers();
-    expect(Widget.option.mock.calls.length).toBe(1);
-    expect(Widget.option.mock.calls[0]).toEqual(["option1.a", 456]);
+    it("is pulled after update", () => {
+
+        const component = shallow(
+            <TestComponent>
+                <NestedComponent a={123} >
+                    <SubNestedComponent d={"abc"} />
+                </NestedComponent>
+            </TestComponent>
+        );
+        const nested = component.find(NestedComponent).dive();
+        const subNested = nested.find(SubNestedComponent).dive();
+
+        subNested.setProps({ d: "def" });
+        jest.runAllTimers();
+        expect(Widget.option.mock.calls.length).toBe(1);
+        expect(Widget.option.mock.calls[0]).toEqual(["option.subOption.d", "def"]);
+    });
+
 });

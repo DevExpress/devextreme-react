@@ -1,13 +1,25 @@
-import { ReactElement } from "react";
-
-import { getNestedValue } from "./helpers";
+import { addPrefixToKeys, getNestedValue } from "./helpers";
+import { createOptionComponent } from "./nested-option";
 import { separateProps } from "./widget-config";
 
 interface INestedOptionDescr {
     name: string;
     defaults: Record<string, any>;
-    elements: Array<React.ReactElement<any>>;
+    elementEntries: Array<{
+        element: React.ReactElement<any>;
+        children: Record<string, INestedOptionDescr>;
+    }>;
     isCollectionItem: boolean;
+}
+
+interface INestedOptionClass {
+    type: {
+        IsCollectionItem: boolean;
+        OwnerType: any;
+        OptionName: string;
+        DefaultsProps: Record<string, string>;
+    };
+    props: object;
 }
 
 class OptionsManager {
@@ -22,8 +34,10 @@ class OptionsManager {
 
     constructor(optionValueGetter: (name: string) => any) {
         this._optionValueGetter = optionValueGetter;
+        this._registerNestedOption = this._registerNestedOption.bind(this);
 
-        this.addNestedOption = this.addNestedOption.bind(this);
+        this.registerNestedOption = this.registerNestedOption.bind(this);
+        this.ensureNestedOption = this.ensureNestedOption.bind(this);
         this.handleOptionChange = this.handleOptionChange.bind(this);
         this.processChangedValues = this.processChangedValues.bind(this);
     }
@@ -45,7 +59,11 @@ class OptionsManager {
 
         const nestedOption = this._nestedOptions[e.name];
         if (nestedOption) {
-            const nestedOptionObj = separateProps(nestedOption.elements[0].props, nestedOption.defaults, []).options;
+            const nestedOptionObj = separateProps(
+                nestedOption.elementEntries[0].element.props,
+                nestedOption.defaults,
+                []
+            ).options;
 
             if (e.name === e.fullName) {
                 Object.keys(nestedOptionObj).forEach((key) => this.handleOptionChange({
@@ -97,37 +115,29 @@ class OptionsManager {
         }
     }
 
-    public addNestedOption(
-        name: string,
-        element: ReactElement<any>,
-        defaults: Record<string, any>,
-        isCollectionItem: boolean
-    ): void {
-        if (this._nestedOptions[name] === null ||
-            this._nestedOptions[name] === undefined
-        ) {
-            this._nestedOptions[name] = {
-                name,
-                defaults,
-                elements: [],
-                isCollectionItem
-            };
-        }
-
-        this._nestedOptions[name].elements.push(element);
+    public getNestedOptionsObjects(): Record<string, any> {
+        return this._getNestedOptionsObjects(this._nestedOptions);
     }
 
-    public getNestedOptionsObjects(): Record<string, any> {
+    public registerNestedOption(
+        component: React.ReactElement<any>,
+        owner: any
+    ): any {
+        return this._registerNestedOption(component, owner, null, null);
+    }
+
+    private _getNestedOptionsObjects(optionsCollection: Record<string, INestedOptionDescr>): Record<string, any> {
 
         const nestedOptions: Record<string, any> = {};
 
-        Object.keys(this._nestedOptions).forEach((key) => {
-            const nestedOption = this._nestedOptions[key];
-            const options = nestedOption.elements.map((e) => {
-                const props = separateProps(e.props, nestedOption.defaults, []);
+        Object.keys(optionsCollection).forEach((key) => {
+            const nestedOption = optionsCollection[key];
+            const options = nestedOption.elementEntries.map((e) => {
+                const props = separateProps(e.element.props, nestedOption.defaults, []);
                 return {
                     ...props.defaults,
-                    ...props.options
+                    ...props.options,
+                    ...this._getNestedOptionsObjects(e.children)
                 };
             });
 
@@ -135,6 +145,82 @@ class OptionsManager {
         });
 
         return nestedOptions;
+    }
+
+    private _registerNestedOption(
+        element: React.ReactElement<any>,
+        owner: any,
+        ownerFullName: string|null,
+        owningCollection: Record<string, INestedOptionDescr>|null
+    ): any {
+        const nestedOptionClass = element as any as INestedOptionClass;
+        if (
+            nestedOptionClass && nestedOptionClass.type &&
+            nestedOptionClass.type.OptionName &&
+            nestedOptionClass.type.OwnerType && owner instanceof nestedOptionClass.type.OwnerType
+        ) {
+            const nestedOptionsCollection: Record<string, INestedOptionDescr> = {};
+            const optionName = nestedOptionClass.type.OptionName;
+
+            let optionFullName = nestedOptionClass.type.OptionName;
+            if (ownerFullName) {
+                optionFullName = `${ownerFullName}.${optionName}`;
+            }
+
+            const optionComponent = createOptionComponent(
+                element,
+                {
+                    optionName,
+                    registerNestedOption: (c: React.ReactElement<any>, o: any) => {
+                        return this._registerNestedOption(c, o, optionName, nestedOptionsCollection);
+                    },
+                    updateFunc: (newProps, prevProps) => {
+                        const newOptions = separateProps(newProps, nestedOptionClass.type.DefaultsProps, []).options;
+                        this.processChangedValues(
+                            addPrefixToKeys(newOptions, optionFullName + "."),
+                            addPrefixToKeys(prevProps, optionFullName + ".")
+                        );
+                    }
+                }
+            );
+
+            const entry = this.ensureNestedOption(
+                optionName,
+                owningCollection || this._nestedOptions,
+                nestedOptionClass.type.DefaultsProps,
+                nestedOptionClass.type.IsCollectionItem
+            );
+
+            entry.elementEntries.push({
+                element,
+                children: nestedOptionsCollection
+            });
+
+            return optionComponent;
+        }
+
+        return null;
+    }
+
+    private ensureNestedOption(
+        name: string,
+        optionsCollection: Record<string, INestedOptionDescr>,
+        defaults: Record<string, any>,
+        isCollectionItem: boolean
+    ): INestedOptionDescr {
+
+        if (optionsCollection[name] === null ||
+            optionsCollection[name] === undefined
+        ) {
+            optionsCollection[name] = {
+                name,
+                defaults,
+                elementEntries: [],
+                isCollectionItem
+            };
+        }
+
+        return optionsCollection[name];
     }
 
     private _setGuard(optionName, optionValue): void {

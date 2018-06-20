@@ -116,7 +116,7 @@ function extractNestedComponents(props: IComplexProp[], rawWidgetName: string, w
     return {
       className: nameClassMap[p.name],
       ownerClassName: nameClassMap[p.owner],
-      optionName: p.name,
+      optionName: p.optionName,
       options: p.props.map(mapOption),
       isCollectionItem: p.isCollectionItem
     };
