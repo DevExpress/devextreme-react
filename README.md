@@ -357,7 +357,8 @@ ReactDOM.render(
 ```
 
 ## <a name="devextreme-validation"></a>DevExtreme Validation ##
-You can use the built-in [validation rules](https://js.devexpress.com/Documentation/ApiReference/UI_Widgets/dxValidator/Validation_Rules/), validation summary and other DevExtreme validation features with React DevExtreme editors.
+DevExtreme React editors support built-in [data validation](https://js.devexpress.com/Documentation/Guide/Widgets/Common/UI_Widgets/Data_Validation/).
+
 ```jsx
 import React from 'react';
 import ReactDOM from 'react-dom';
