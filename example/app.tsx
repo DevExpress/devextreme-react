@@ -13,6 +13,7 @@ import ListExample from "./list-example";
 import PopupExample from "./popup-example";
 import ScrollViewExample from "./scroll-view-example";
 import TextBoxExample from "./text-box-example";
+import ValidationExample from "./validation-example";
 
 import { Button, NumberBox, Scheduler } from "../src";
 
@@ -40,6 +41,8 @@ ReactDOM.render(
     </Example>
 
     <ScrollViewExample />
+
+    <ValidationExample />
 
     <FormExample/>
 
