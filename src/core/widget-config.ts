@@ -1,5 +1,7 @@
 import { ITemplateMeta } from "./template";
 
+const DX_PREFIX: string = "_dx";
+
 function separateProps(
     props: Record<string, any>,
     defaultsProps: Record<string, string>,
@@ -23,7 +25,7 @@ function separateProps(
     Object.keys(props).forEach((key) => {
         const defaultOptionName = defaultsProps ? defaultsProps[key] : null;
 
-        if (key === "children") {
+        if (key === "children" || key.startsWith(DX_PREFIX)) {
             return;
         }
 

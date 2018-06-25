@@ -5,8 +5,8 @@ type UpdateFunc = (newProps, prevProps) => void;
 
 interface INestedOptionMeta {
     optionName: string;
-    registerNestedOption: RegisterNestedOptionFunc;
-    updateFunc: UpdateFunc;
+    _dxRegisterNestedOption: RegisterNestedOptionFunc;
+    _dxUpdateFunc: UpdateFunc;
 }
 
 class NestedOption<P> extends React.PureComponent<P, any> {
@@ -20,8 +20,8 @@ class NestedOption<P> extends React.PureComponent<P, any> {
         super(props);
         const meta = this.props as any as INestedOptionMeta;
         this._optionFullName = meta.optionName;
-        this._registerNestedOption = meta.registerNestedOption;
-        this._updateFunc = meta.updateFunc;
+        this._registerNestedOption = meta._dxRegisterNestedOption;
+        this._updateFunc = meta._dxUpdateFunc;
 
         this._isAttached = !!this._registerNestedOption && !!this._updateFunc && !!this._optionFullName;
 

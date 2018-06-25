@@ -37,7 +37,7 @@ class OptionsManager {
         this._registerNestedOption = this._registerNestedOption.bind(this);
 
         this.registerNestedOption = this.registerNestedOption.bind(this);
-        this.ensureNestedOption = this.ensureNestedOption.bind(this);
+        this._ensureNestedOption = this._ensureNestedOption.bind(this);
         this.handleOptionChange = this.handleOptionChange.bind(this);
         this.processChangedValues = this.processChangedValues.bind(this);
     }
@@ -171,10 +171,10 @@ class OptionsManager {
                 element,
                 {
                     optionName,
-                    registerNestedOption: (c: React.ReactElement<any>, o: any) => {
+                    _dxRegisterNestedOption: (c: React.ReactElement<any>, o: any) => {
                         return this._registerNestedOption(c, o, optionName, nestedOptionsCollection);
                     },
-                    updateFunc: (newProps, prevProps) => {
+                    _dxUpdateFunc: (newProps, prevProps) => {
                         const newOptions = separateProps(newProps, nestedOptionClass.type.DefaultsProps, []).options;
                         this.processChangedValues(
                             addPrefixToKeys(newOptions, optionFullName + "."),
@@ -184,7 +184,7 @@ class OptionsManager {
                 }
             );
 
-            const entry = this.ensureNestedOption(
+            const entry = this._ensureNestedOption(
                 optionName,
                 owningCollection || this._nestedOptions,
                 nestedOptionClass.type.DefaultsProps,
@@ -202,7 +202,7 @@ class OptionsManager {
         return null;
     }
 
-    private ensureNestedOption(
+    private _ensureNestedOption(
         name: string,
         optionsCollection: Record<string, INestedOptionDescr>,
         defaults: Record<string, any>,

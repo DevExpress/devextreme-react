@@ -57,6 +57,14 @@ describe("rendering", () => {
         expect(WidgetClass.mock.calls[1][1].children).toBeUndefined();
     });
 
+    it("do not pass props with special prefix to options", () => {
+        shallow(
+            <TestComponent _dxProp={12}/>
+        );
+
+        expect(WidgetClass.mock.calls[0][1]._dxProp).toBeUndefined();
+    });
+
 });
 
 describe("disposing", () => {

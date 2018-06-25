@@ -312,4 +312,20 @@ describe("nested sub-option", () => {
         expect(Widget.option.mock.calls[0]).toEqual(["option.subOption.d", "def"]);
     });
 
+    describe("special props", () => {
+        it("has names with special prefix", () => {
+            const component = mount(
+                <TestComponent>
+                    <NestedComponent a={123} />
+                </TestComponent>
+            );
+            const nested = component.find(NestedComponent);
+            expect(Object.keys(nested.props())).toEqual([
+                "a",
+                "optionName",
+                "_dxRegisterNestedOption",
+                "_dxUpdateFunc"
+            ]);
+        });
+    });
 });
