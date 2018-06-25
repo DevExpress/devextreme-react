@@ -159,6 +159,20 @@ describe("nested option", () => {
         expect(Widget.option.mock.calls[0]).toEqual(["option.a", 456]);
     });
 
+    it("is pulled after update without rubbish", () => {
+
+        const component = mount(
+            <TestComponent>
+                <NestedComponent a={123} />
+            </TestComponent>
+        );
+
+        component.setProps({ children: <NestedComponent a={456} />});
+        jest.runAllTimers();
+        expect(Widget.option.mock.calls.length).toBe(1);
+        expect(Widget.option.mock.calls[0]).toEqual(["option.a", 456]);
+    });
+
 });
 
 describe("nested sub-option", () => {
@@ -310,22 +324,5 @@ describe("nested sub-option", () => {
         jest.runAllTimers();
         expect(Widget.option.mock.calls.length).toBe(1);
         expect(Widget.option.mock.calls[0]).toEqual(["option.subOption.d", "def"]);
-    });
-
-    describe("special props", () => {
-        it("has names with special prefix", () => {
-            const component = mount(
-                <TestComponent>
-                    <NestedComponent a={123} />
-                </TestComponent>
-            );
-            const nested = component.find(NestedComponent);
-            expect(Object.keys(nested.props())).toEqual([
-                "a",
-                "optionName",
-                "_dxRegisterNestedOption",
-                "_dxUpdateFunc"
-            ]);
-        });
     });
 });

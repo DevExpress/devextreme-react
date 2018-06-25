@@ -171,10 +171,10 @@ class OptionsManager {
                 element,
                 {
                     optionName,
-                    _dxRegisterNestedOption: (c: React.ReactElement<any>, o: any) => {
+                    registerNestedOption: (c: React.ReactElement<any>, o: any) => {
                         return this._registerNestedOption(c, o, optionName, nestedOptionsCollection);
                     },
-                    _dxUpdateFunc: (newProps, prevProps) => {
+                    updateFunc: (newProps, prevProps) => {
                         const newOptions = separateProps(newProps, nestedOptionClass.type.DefaultsProps, []).options;
                         this.processChangedValues(
                             addPrefixToKeys(newOptions, optionFullName + "."),
