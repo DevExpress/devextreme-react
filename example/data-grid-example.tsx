@@ -1,12 +1,15 @@
 import * as React from "react";
 import Example from "./example-block";
 
+import { Template } from "../src/core/template";
+
 import CheckBox from "../src/ui/check-box";
 import DataGrid, {
     Column,
     FilterRow,
     Grouping,
     GroupPanel,
+    MasterDetail,
     Pager,
     Paging,
     Selection
@@ -14,6 +17,15 @@ import DataGrid, {
 import NumberBox from "../src/ui/number-box";
 
 import { sales } from "./data";
+
+const DetailComponent = (props: any) => {
+    return (
+        <p>Row data:
+            <br/>
+            {JSON.stringify(props.data)}
+        </p>
+    );
+};
 
 export default class extends React.Component<any, { expandAll: boolean, pageSize: number }> {
 
@@ -73,6 +85,8 @@ export default class extends React.Component<any, { expandAll: boolean, pageSize
                         defaultPageIndex={2}
                         pageSize={this.state.pageSize}
                     />
+                    <MasterDetail enabled={true} template={"detail"} />
+                    <Template name={"detail"} component={DetailComponent} />
                 </DataGrid>
             </Example>
         );

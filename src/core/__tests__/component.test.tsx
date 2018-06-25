@@ -56,7 +56,6 @@ describe("rendering", () => {
 
         expect(WidgetClass.mock.calls[1][1].children).toBeUndefined();
     });
-
 });
 
 describe("disposing", () => {

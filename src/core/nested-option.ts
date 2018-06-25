@@ -45,9 +45,16 @@ class NestedOption<P> extends React.PureComponent<P, any> {
 
     public componentWillUpdate(nextProps: P) {
         if (this._isAttached) {
-            this._updateFunc(nextProps, this.props);
+            this._updateFunc(clearProps(nextProps), this.props);
         }
     }
+}
+
+function clearProps(props) {
+    const result = { ...props };
+    delete result.registerNestedOption;
+    delete result.updateFunc;
+    return result;
 }
 
 function createOptionComponent<P>(rawElement: React.ReactElement<P>, metaData: INestedOptionMeta) {
