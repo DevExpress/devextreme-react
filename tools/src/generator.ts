@@ -115,7 +115,8 @@ function extractNestedComponents(props: IComplexProp[], rawWidgetName: string, w
       ownerClassName: nameClassMap[p.owner],
       optionName: p.optionName,
       options: p.props.map(mapOption),
-      isCollectionItem: p.isCollectionItem
+      isCollectionItem: p.isCollectionItem,
+      templates: p.templates
     };
   });
 }

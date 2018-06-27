@@ -35,9 +35,9 @@ class OptionsManager {
     constructor(optionValueGetter: (name: string) => any) {
         this._optionValueGetter = optionValueGetter;
         this._registerNestedOption = this._registerNestedOption.bind(this);
+        this._ensureNestedOption = this._ensureNestedOption.bind(this);
 
         this.registerNestedOption = this.registerNestedOption.bind(this);
-        this._ensureNestedOption = this._ensureNestedOption.bind(this);
         this.handleOptionChange = this.handleOptionChange.bind(this);
         this.processChangedValues = this.processChangedValues.bind(this);
     }

@@ -24,6 +24,7 @@ interface INestedComponent {
     optionName: string;
     ownerClassName: string;
     options: IOption[];
+    templates: string[];
     isCollectionItem?: boolean;
 }
 
@@ -45,30 +46,10 @@ interface IRenderedPropTyping {
     renderedTypes: string[];
 }
 
+const TYPE_RENDER = "(props: any) => React.ReactNode";
+const TYPE_COMPONENT = "React.ComponentType<any>";
+
 function generate(component: IComponent): string {
-
-    const templates = component.templates
-        ? component.templates.map((actualOptionName) => ({
-            actualOptionName,
-            render: formatTemplatePropName(actualOptionName, "Render"),
-            component: formatTemplatePropName(actualOptionName, "Component")
-        }))
-        : null;
-
-    const defaultProps = component.subscribableOptions
-        ? component.subscribableOptions.map((o) => ({
-            name: `default${uppercaseFirst(o.name)}`,
-            type: o.type,
-            actualOptionName: o.name
-        }))
-        : null;
-
-    const renderedPropTypings = component.propTypings
-        ? component.propTypings
-            .sort(createKeyComparator<IPropTyping>((p) => p.propName))
-            .map((t) => renderPropTyping(createPropTypingModel(t)))
-        : null;
-
     const nestedComponents = component.nestedComponents
         ? component.nestedComponents
             .sort(createKeyComparator<INestedComponent>((o) => o.className))
@@ -90,12 +71,25 @@ function generate(component: IComponent): string {
                         })
                     );
                 }
+                const nestedTemplates = createTemplateDto(c.templates);
+                if (nestedTemplates) {
+                    nestedTemplates.forEach((t) => {
+                        options.push({
+                            name: t.render,
+                            type: TYPE_RENDER
+                        }, {
+                            name: t.component,
+                            type: TYPE_COMPONENT
+                        });
+                    });
+                }
                 return {
                     className: c.className,
                     optionName: c.optionName,
                     ownerName: c.ownerClassName,
                     renderedType: renderObject(options, 0),
                     renderedSubscribableOptions,
+                    renderedTemplateProps: nestedTemplates && nestedTemplates.map(renderTemplateOption),
                     isCollectionItem: c.isCollectionItem
                 };
             })
@@ -113,8 +107,23 @@ function generate(component: IComponent): string {
         });
     }
 
+    const templates = createTemplateDto(component.templates);
+    const defaultProps = component.subscribableOptions
+        ? component.subscribableOptions.map((o) => ({
+            name: `default${uppercaseFirst(o.name)}`,
+            type: o.type,
+            actualOptionName: o.name
+        }))
+        : null;
+
     const hasExtraOptions = !!templates || !!defaultProps;
     const widgetName =  `dx${uppercaseFirst(component.name)}`;
+
+    const renderedPropTypings = component.propTypings
+        ? component.propTypings
+            .sort(createKeyComparator<IPropTyping>((p) => p.propName))
+            .map((t) => renderPropTyping(createPropTypingModel(t)))
+        : null;
 
     return renderModule({
 
@@ -159,6 +168,16 @@ function generate(component: IComponent): string {
         defaultExport: component.name,
         renderedExports: renderExports(exportNames)
     });
+}
+
+function createTemplateDto(templates: string[]) {
+    return templates
+    ? templates.map((actualOptionName) => ({
+        actualOptionName,
+        render: formatTemplatePropName(actualOptionName, "Render"),
+        component: formatTemplatePropName(actualOptionName, "Component")
+    }))
+    : null;
 }
 
 function formatTemplatePropName(name: string, suffix: string): string {
@@ -300,6 +319,7 @@ const renderNestedComponent: (model: {
     isCollectionItem: boolean;
     renderedType: string;
     renderedSubscribableOptions: string[];
+    renderedTemplateProps: string[];
 }) => string = createTempate(
 `class <#= it.className #> extends NestedOption<<#= it.renderedType #>> {` + `\n` +
 `  public static OptionName = "<#= it.optionName #>";` + `\n` +
@@ -311,6 +331,9 @@ const renderNestedComponent: (model: {
 `<#? it.renderedSubscribableOptions #>` +
 `  public static DefaultsProps = {<#= it.renderedSubscribableOptions.join(',') #>` + `\n` +
 `  };` + `\n` +
+`<#?#>` +
+`<#? it.renderedTemplateProps #>` +
+`  protected _templateProps = [<#= it.renderedTemplateProps.join(', ') #>];` + `\n` +
 `<#?#>`
 );
 
