@@ -2,9 +2,8 @@ import { ITemplateMeta } from "./template";
 
 import { addPrefixToKeys, getNestedValue } from "./helpers";
 import { createOptionComponent } from "./nested-option";
-import { separateProps } from "./widget-config";
 import { getIntegrationOptions } from "./template-helper";
-import { callbackify } from "util";
+import { separateProps } from "./widget-config";
 
 interface INestedOptionDescr {
     name: string;
@@ -164,7 +163,7 @@ class OptionsManager {
                 return {
                     ...props.defaults,
                     ...props.options,
-                    ...allIntegrationOptions
+                    ...allIntegrationOptions,
                     ...this._getNestedOptionsObjects(e.children, stateUpdater)
                 };
             });

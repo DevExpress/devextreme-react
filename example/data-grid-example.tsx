@@ -1,8 +1,6 @@
 import * as React from "react";
 import Example from "./example-block";
 
-import { Template } from "../src/core/template";
-
 import CheckBox from "../src/ui/check-box";
 import DataGrid, {
     Column,
@@ -85,8 +83,7 @@ export default class extends React.Component<any, { expandAll: boolean, pageSize
                         defaultPageIndex={2}
                         pageSize={this.state.pageSize}
                     />
-                    <MasterDetail enabled={true} template={"detail"} />
-                    <Template name={"detail"} component={DetailComponent} />
+                    <MasterDetail enabled={true} component={DetailComponent} />
                 </DataGrid>
             </Example>
         );
