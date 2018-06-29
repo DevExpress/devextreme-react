@@ -614,7 +614,7 @@ class Opt_1_Component extends NestedOption<{
   optionComponent?: React.ComponentType<any>;
 }> {
   public static OptionName = "opt_1";
-  protected _templateProps = [{
+  public static TemplateProps = [{
     tmplOption: "optionTemplate",
     render: "optionRender",
     component: "optionComponent"

@@ -23,7 +23,22 @@ class Template extends React.PureComponent<{
     render: PropTypes.func
 };
 
+function findProps(child: React.ReactElement<any>): Record<string, { render: any, component: any }> {
+    if (child.type !== Template) {
+        return {};
+    }
+    const result: Record<string, { render: any, component: any }> = {};
+
+    result[child.props.name] = {
+        render: child.props.render,
+        component: child.props.component
+    };
+
+    return result;
+}
+
 export {
     ITemplateMeta,
-    Template
+    Template,
+    findProps
 };

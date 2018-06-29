@@ -1,5 +1,6 @@
 import * as events from "devextreme/events";
 
+import ConfigurationComponent from "../../core/nested-option";
 import { Template } from "../../core/template";
 import { mount, React, shallow } from "./setup";
 import { TestComponent, Widget, WidgetClass } from "./test-component";
@@ -228,6 +229,45 @@ describe("nested template", () => {
         });
         component.update();
         expect(component.find(".template").html()).toBe('<div class="template">Second Template</div>');
+    });
+
+});
+
+describe("component/render in nested options", () => {
+
+    // tslint:disable-next-line:max-classes-per-file
+    class NestedComponentWithTemplates extends ConfigurationComponent<{
+        item?: any;
+        itemRender?: any;
+        itemComponent?: any;
+    }> {
+        public static OwnerType = TestComponent;
+        public static OptionName = "option";
+        public static TemplateProps = [{
+            tmplOption: "item",
+            render: "itemRender",
+            component: "itemComponent"
+        }];
+    }
+
+    it("pass integrationOptions options to widget", () => {
+        const ItemTemplate = () => <div>Template</div>;
+        mount(
+            <TestComponent>
+                <NestedComponentWithTemplates itemComponent={ItemTemplate} />
+            </TestComponent>
+        );
+
+        const options = WidgetClass.mock.calls[0][1];
+
+        expect(options.option.item).toBe("item");
+
+        const integrationOptions = options.integrationOptions;
+
+        expect(integrationOptions).toBeDefined();
+        expect(integrationOptions.templates).toBeDefined();
+        expect(integrationOptions.templates.item).toBeDefined();
+        expect(typeof integrationOptions.templates.item.render).toBe("function");
     });
 
 });

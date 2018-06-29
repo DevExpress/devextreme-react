@@ -1,3 +1,5 @@
+import { ITemplateMeta } from "./template";
+
 import { addPrefixToKeys, getNestedValue } from "./helpers";
 import { createOptionComponent } from "./nested-option";
 import { separateProps } from "./widget-config";
@@ -5,6 +7,7 @@ import { separateProps } from "./widget-config";
 interface INestedOptionDescr {
     name: string;
     defaults: Record<string, any>;
+    templates: ITemplateMeta[];
     elementEntries: Array<{
         element: React.ReactElement<any>;
         children: Record<string, INestedOptionDescr>;
@@ -18,6 +21,7 @@ interface INestedOptionClass {
         OwnerType: any;
         OptionName: string;
         DefaultsProps: Record<string, string>;
+        TemplateProps: ITemplateMeta[]
     };
     props: object;
 }
@@ -35,19 +39,26 @@ class OptionsManager {
     constructor(optionValueGetter: (name: string) => any) {
         this._optionValueGetter = optionValueGetter;
         this._registerNestedOption = this._registerNestedOption.bind(this);
-        this._ensureNestedOption = this._ensureNestedOption.bind(this);
 
         this.registerNestedOption = this.registerNestedOption.bind(this);
         this.handleOptionChange = this.handleOptionChange.bind(this);
         this.processChangedValues = this.processChangedValues.bind(this);
     }
 
-    public get updatingProps(): boolean {
-        return this._updatingProps;
-    }
-
     public setInstance(instance: any) {
         this._instance = instance;
+    }
+
+    public wrapEventHandler(optionValue: any, optionName: string): any {
+        if (optionName.substr(0, 2) === "on" && typeof optionValue === "function") {
+            return (...args: any[]) => {
+                if (!this._updatingProps) {
+                    optionValue(...args);
+                }
+            };
+        }
+
+        return optionValue;
     }
 
     public handleOptionChange(e: { name: string, fullName: string, value: any }) {
@@ -119,11 +130,8 @@ class OptionsManager {
         return this._getNestedOptionsObjects(this._nestedOptions);
     }
 
-    public registerNestedOption(
-        component: React.ReactElement<any>,
-        owner: any
-    ): any {
-        return this._registerNestedOption(component, owner, null, null);
+    public registerNestedOption(component: React.ReactElement<any>, owner: any): any {
+        return this._registerNestedOption(component, owner, this._nestedOptions);
     }
 
     private _getNestedOptionsObjects(optionsCollection: Record<string, INestedOptionDescr>): Record<string, any> {
@@ -133,7 +141,9 @@ class OptionsManager {
         Object.keys(optionsCollection).forEach((key) => {
             const nestedOption = optionsCollection[key];
             const options = nestedOption.elementEntries.map((e) => {
-                const props = separateProps(e.element.props, nestedOption.defaults, []);
+                const props = separateProps(e.element.props,
+                    nestedOption.defaults,
+                    nestedOption.templates || []);
                 return {
                     ...props.defaults,
                     ...props.options,
@@ -150,77 +160,58 @@ class OptionsManager {
     private _registerNestedOption(
         element: React.ReactElement<any>,
         owner: any,
-        ownerFullName: string|null,
-        owningCollection: Record<string, INestedOptionDescr>|null
+        owningCollection: Record<string, INestedOptionDescr>,
+        ownerFullName?: string
     ): any {
         const nestedOptionClass = element as any as INestedOptionClass;
-        if (
+        if (!(
             nestedOptionClass && nestedOptionClass.type &&
             nestedOptionClass.type.OptionName &&
             nestedOptionClass.type.OwnerType && owner instanceof nestedOptionClass.type.OwnerType
-        ) {
-            const nestedOptionsCollection: Record<string, INestedOptionDescr> = {};
-            const optionName = nestedOptionClass.type.OptionName;
+        )) {
+            return null;
+        }
 
-            let optionFullName = nestedOptionClass.type.OptionName;
-            if (ownerFullName) {
-                optionFullName = `${ownerFullName}.${optionName}`;
-            }
+        const nestedOptionsCollection: Record<string, INestedOptionDescr> = {};
+        const optionName = nestedOptionClass.type.OptionName;
 
-            const optionComponent = createOptionComponent(
-                element,
-                {
-                    optionName,
-                    registerNestedOption: (c: React.ReactElement<any>, o: any) => {
-                        return this._registerNestedOption(c, o, optionName, nestedOptionsCollection);
-                    },
-                    updateFunc: (newProps, prevProps) => {
-                        const newOptions = separateProps(newProps, nestedOptionClass.type.DefaultsProps, []).options;
-                        this.processChangedValues(
-                            addPrefixToKeys(newOptions, optionFullName + "."),
-                            addPrefixToKeys(prevProps, optionFullName + ".")
-                        );
-                    }
-                }
-            );
+        let optionFullName = nestedOptionClass.type.OptionName;
+        if (ownerFullName) {
+            optionFullName = `${ownerFullName}.${optionName}`;
+        }
 
-            const entry = this._ensureNestedOption(
+        const optionComponent = createOptionComponent(
+            element,
+            {
                 optionName,
-                owningCollection || this._nestedOptions,
-                nestedOptionClass.type.DefaultsProps,
-                nestedOptionClass.type.IsCollectionItem
-            );
+                registerNestedOption: (c: React.ReactElement<any>, o: any) => {
+                    return this._registerNestedOption(c, o, nestedOptionsCollection, optionName);
+                },
+                updateFunc: (newProps, prevProps) => {
+                    const newOptions = separateProps(newProps,
+                        nestedOptionClass.type.DefaultsProps,
+                        nestedOptionClass.type.TemplateProps || []).options;
+                    this.processChangedValues(
+                        addPrefixToKeys(newOptions, optionFullName + "."),
+                        addPrefixToKeys(prevProps, optionFullName + ".")
+                    );
+                }
+            }
+        );
+        const entry = ensureNestedOption(
+            optionName,
+            owningCollection,
+            nestedOptionClass.type.DefaultsProps,
+            nestedOptionClass.type.TemplateProps,
+            nestedOptionClass.type.IsCollectionItem
+        );
 
-            entry.elementEntries.push({
-                element,
-                children: nestedOptionsCollection
-            });
+        entry.elementEntries.push({
+            element,
+            children: nestedOptionsCollection
+        });
 
-            return optionComponent;
-        }
-
-        return null;
-    }
-
-    private _ensureNestedOption(
-        name: string,
-        optionsCollection: Record<string, INestedOptionDescr>,
-        defaults: Record<string, any>,
-        isCollectionItem: boolean
-    ): INestedOptionDescr {
-
-        if (optionsCollection[name] === null ||
-            optionsCollection[name] === undefined
-        ) {
-            optionsCollection[name] = {
-                name,
-                defaults,
-                elementEntries: [],
-                isCollectionItem
-            };
-        }
-
-        return optionsCollection[name];
+        return optionComponent;
     }
 
     private _setGuard(optionName, optionValue): void {
@@ -236,6 +227,29 @@ class OptionsManager {
 
         this._guards[optionName] = guardId;
     }
+}
+
+function ensureNestedOption(
+    name: string,
+    optionsCollection: Record<string, INestedOptionDescr>,
+    defaults: Record<string, any>,
+    templates: ITemplateMeta[],
+    isCollectionItem: boolean
+): INestedOptionDescr {
+
+    if (optionsCollection[name] === null ||
+        optionsCollection[name] === undefined
+    ) {
+        optionsCollection[name] = {
+            name,
+            defaults,
+            templates,
+            elementEntries: [],
+            isCollectionItem
+        };
+    }
+
+    return optionsCollection[name];
 }
 
 export default OptionsManager;

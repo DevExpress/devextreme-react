@@ -1,4 +1,4 @@
-import { createStrictTemplate, createTempate } from "./template";
+import { createTempate } from "./template";
 
 import {
     createKeyComparator,
@@ -273,8 +273,8 @@ const renderOptionsInterface: (model: {
 `interface <#= it.optionsName #> extends IOptions {` + `\n` +
 
 `<#~ it.templates :template #>` +
-    `  <#= template.render #>?: (props: any) => React.ReactNode;` + `\n` +
-    `  <#= template.component #>?: React.ComponentType<any>;` + `\n` +
+    `  <#= template.render #>?: ${TYPE_RENDER};` + `\n` +
+    `  <#= template.component #>?: ${TYPE_COMPONENT};` + `\n` +
 `<#~#>` +
 
 `<#~ it.defaultProps :prop #>` +
@@ -333,7 +333,7 @@ const renderNestedComponent: (model: {
 `  };` + `\n` +
 `<#?#>` +
 `<#? it.renderedTemplateProps #>` +
-`  protected _templateProps = [<#= it.renderedTemplateProps.join(', ') #>];` + `\n` +
+`  public static TemplateProps = [<#= it.renderedTemplateProps.join(', ') #>];` + `\n` +
 `<#?#>`
 );
 

@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import { ITemplateMeta } from "./template";
+
 import { ComponentBase, IState } from "./component";
 import { generateID } from "./helpers";
 import { ITemplateWrapperProps, TemplateWrapper } from "./template-wrapper";
@@ -35,11 +37,47 @@ class TemplateHelper {
         this._updateState = this._updateState.bind(this);
     }
 
-    public getContentProvider(templateSource: any, isComponent: boolean)  {
-        return isComponent ? React.createElement.bind(this, templateSource) : templateSource.bind(this);
+    public getIntegrationOptions(
+        options: Record<string, any>,
+        nestedOptions: Record<string, any>,
+        templateProps: ITemplateMeta[]
+    ): any {
+        const templates: Record<string, IDxTemplate> = {};
+        const result = {
+            integrationOptions: {
+                templates
+            }
+        };
+
+        templateProps.forEach((m) => {
+            if (options[m.component] || options[m.render]) {
+                const templateInfo: ITemplateInfo = {
+                    name: m.tmplOption,
+                    prop: options[m.component] ? m.component : m.render,
+                    isComponent: !!options[m.component],
+                    isNested: false
+                };
+                result[m.tmplOption] = m.tmplOption;
+                templates[m.tmplOption] = this.wrapTemplate(templateInfo);
+            }
+        });
+
+        Object.keys(nestedOptions).forEach((name) => {
+            const templateInfo: ITemplateInfo = {
+                name,
+                prop: !!nestedOptions[name].component ? "component" : "render",
+                isComponent: !!nestedOptions[name].component,
+                isNested: true
+            };
+            templates[name] = this.wrapTemplate(templateInfo);
+        });
+
+        if (Object.keys(templates).length > 0) {
+            return result;
+        }
     }
 
-    public wrapTemplate(templateInfo: ITemplateInfo): IDxTemplate {
+    private wrapTemplate(templateInfo: ITemplateInfo): IDxTemplate {
         return {
             render: (data: IDxTemplateData) => {
                 const templateId = "__template_" + generateID();
