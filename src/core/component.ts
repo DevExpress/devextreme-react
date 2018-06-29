@@ -6,8 +6,8 @@ import { findProps as findTemplateProps, ITemplateMeta } from "./template";
 import { separateProps } from "./widget-config";
 
 import {
-  IWrappedTemplateInfo,
-  TemplateHelper
+  getIntegrationOptions,
+  ITemplateDto
 } from "./template-helper";
 
 const DX_REMOVE_EVENT = "dxremove";
@@ -19,7 +19,7 @@ interface IWidgetConfig {
 }
 
 interface IState {
-  templates: Record<string, IWrappedTemplateInfo>;
+  templates: Record<string, ITemplateDto>;
 }
 
 abstract class ComponentBase<P> extends React.PureComponent<P, IState> {
@@ -31,19 +31,18 @@ abstract class ComponentBase<P> extends React.PureComponent<P, IState> {
 
   protected readonly _templateProps: ITemplateMeta[] = [];
 
-  private readonly _templateHelper: TemplateHelper;
   private readonly _optionsManager: OptionsManager;
 
   constructor(props: P) {
     super(props);
     this._prepareProps = this._prepareProps.bind(this);
+    this._updateState = this._updateState.bind(this);
 
     this.state = {
       templates: {}
     };
 
     this._optionsManager = new OptionsManager((name) => this.props[name]);
-    this._templateHelper = new TemplateHelper(this);
   }
 
   public componentWillUpdate(nextProps: P) {
@@ -102,7 +101,7 @@ abstract class ComponentBase<P> extends React.PureComponent<P, IState> {
 
   protected _createWidget(element?: Element) {
     element = element || this._element;
-    const nestedProps = this._optionsManager.getNestedOptionsObjects();
+    const nestedProps = this._optionsManager.getNestedOptionsObjects(this._updateState.bind(this));
     const props = {
         ...(this.props as any),
         ...nestedProps
@@ -122,6 +121,16 @@ abstract class ComponentBase<P> extends React.PureComponent<P, IState> {
     this._instance.on("optionChanged", this._optionsManager.handleOptionChange);
   }
 
+  private _updateState(callback) {
+    this.setState((state: IState) => {
+        const templates = { ...state.templates };
+        callback(templates);
+        return {
+            templates
+        };
+    });
+  }
+
   private _prepareProps(
     rawProps: Record<string, any>,
     defaults: Record<string, string>,
@@ -129,7 +138,7 @@ abstract class ComponentBase<P> extends React.PureComponent<P, IState> {
   ): IWidgetConfig {
     const separatedProps = separateProps(rawProps, defaults, templateProps);
 
-    const options = {};
+    const options: Record<string, any> = {};
     Object.keys(separatedProps.options).forEach((key) => {
         options[key] = this._optionsManager.wrapEventHandler(separatedProps.options[key], key);
     });
@@ -137,11 +146,12 @@ abstract class ComponentBase<P> extends React.PureComponent<P, IState> {
     return {
         options,
         defaults: separatedProps.defaults,
-        integrationOptions: this._templateHelper.getIntegrationOptions(
-          separatedProps.templates,
-          getNestedTemplates(rawProps),
-          templateProps
-        )
+        integrationOptions: getIntegrationOptions({
+          templateProps,
+          options: separatedProps.templates,
+          nestedOptions: getNestedTemplates(rawProps),
+          stateUpdater: this._updateState.bind(this)
+        })
     };
   }
 }

@@ -2,9 +2,10 @@ import * as React from "react";
 
 import { ITemplateMeta } from "./template";
 
-import { ComponentBase, IState } from "./component";
 import { generateID } from "./helpers";
 import { ITemplateWrapperProps, TemplateWrapper } from "./template-wrapper";
+
+type StateUpdater = (callback: (templates: Record<string, ITemplateDto>) => void) => void;
 
 interface IDxTemplateData {
     container: any;
@@ -16,93 +17,78 @@ interface IDxTemplate {
     render: (data: IDxTemplateData) => any;
 }
 
-interface ITemplateInfo {
+interface ITemplateBaseDto {
     name: string;
     prop: string;
     isNested: boolean;
     isComponent: boolean;
 }
 
-interface IWrappedTemplateInfo extends ITemplateInfo {
+interface ITemplateDto extends ITemplateBaseDto {
     createWrapper: (contentProvider: (model: object) => any) => any;
 }
 
-class TemplateHelper {
-    private readonly _component: ComponentBase<any>;
+interface IIntegrationMeta {
+    options: Record<string, any>;
+    nestedOptions: Record<string, any>;
+    templateProps: ITemplateMeta[];
+    stateUpdater: StateUpdater;
+}
 
-    constructor(component: ComponentBase<any>) {
-        this._component = component;
-
-        this.wrapTemplate = this.wrapTemplate.bind(this);
-        this._updateState = this._updateState.bind(this);
-    }
-
-    public getIntegrationOptions(
-        options: Record<string, any>,
-        nestedOptions: Record<string, any>,
-        templateProps: ITemplateMeta[]
-    ): any {
-        const templates: Record<string, IDxTemplate> = {};
-        const result = {
-            integrationOptions: {
-                templates
-            }
-        };
-
-        templateProps.forEach((m) => {
-            if (options[m.component] || options[m.render]) {
-                const templateInfo: ITemplateInfo = {
-                    name: m.tmplOption,
-                    prop: options[m.component] ? m.component : m.render,
-                    isComponent: !!options[m.component],
-                    isNested: false
-                };
-                result[m.tmplOption] = m.tmplOption;
-                templates[m.tmplOption] = this.wrapTemplate(templateInfo);
-            }
-        });
-
-        Object.keys(nestedOptions).forEach((name) => {
-            const templateInfo: ITemplateInfo = {
-                name,
-                prop: !!nestedOptions[name].component ? "component" : "render",
-                isComponent: !!nestedOptions[name].component,
-                isNested: true
-            };
-            templates[name] = this.wrapTemplate(templateInfo);
-        });
-
-        if (Object.keys(templates).length > 0) {
-            return result;
+function getIntegrationOptions(meta: IIntegrationMeta): any {
+    const templates: Record<string, IDxTemplate> = {};
+    const result = {
+        integrationOptions: {
+            templates
         }
-    }
+    };
+    const options = meta.options;
+    const stateUpdater = meta.stateUpdater;
 
-    private wrapTemplate(templateInfo: ITemplateInfo): IDxTemplate {
-        return {
-            render: (data: IDxTemplateData) => {
-                const templateId = "__template_" + generateID();
-                const createWrapper = (contentProvider) =>
-                    React.createElement<ITemplateWrapperProps>(TemplateWrapper, {
-                        content: contentProvider(data.model),
-                        container: unwrapElement(data.container),
-                        onRemoved: () => this._updateState((t) => delete t[templateId]),
-                        key: templateId
-                    });
-
-                this._updateState((t) => t[templateId] = { ...templateInfo, createWrapper });
-            }
-        };
-    }
-
-    private _updateState(callback: (templates: Record<string, IWrappedTemplateInfo>) => void) {
-        this._component.setState((state: IState) => {
-            const templates = { ...state.templates };
-            callback(templates);
-            return {
-                templates
+    meta.templateProps.forEach((m) => {
+        if (options[m.component] || options[m.render]) {
+            const templateInfo: ITemplateBaseDto = {
+                name: m.tmplOption,
+                prop: options[m.component] ? m.component : m.render,
+                isComponent: !!options[m.component],
+                isNested: false
             };
-        });
+            result[m.tmplOption] = m.tmplOption;
+            templates[m.tmplOption] = wrapTemplate(templateInfo, stateUpdater);
+        }
+    });
+
+    const nestedOptions = meta.nestedOptions;
+    Object.keys(nestedOptions).forEach((name) => {
+        const templateInfo: ITemplateBaseDto = {
+            name,
+            prop: !!nestedOptions[name].component ? "component" : "render",
+            isComponent: !!nestedOptions[name].component,
+            isNested: true
+        };
+        templates[name] = wrapTemplate(templateInfo, stateUpdater);
+    });
+
+    if (Object.keys(templates).length > 0) {
+        return result;
     }
+}
+
+function wrapTemplate(templateInfo: ITemplateBaseDto, stateUpdater: StateUpdater): IDxTemplate {
+    return {
+        render: (data: IDxTemplateData) => {
+            const templateId = "__template_" + generateID();
+            const createWrapper = (contentProvider) =>
+                React.createElement<ITemplateWrapperProps>(TemplateWrapper, {
+                    content: contentProvider(data.model),
+                    container: unwrapElement(data.container),
+                    onRemoved: () => stateUpdater((t) => delete t[templateId]),
+                    key: templateId
+                });
+
+            stateUpdater((t) => t[templateId] = { ...templateInfo, createWrapper });
+        }
+    };
 }
 
 function unwrapElement(element: any) {
@@ -112,7 +98,9 @@ function unwrapElement(element: any) {
 export {
     IDxTemplate,
     IDxTemplateData,
-    ITemplateInfo,
-    IWrappedTemplateInfo,
-    TemplateHelper
+    ITemplateBaseDto,
+    ITemplateDto,
+    IIntegrationMeta,
+    StateUpdater,
+    getIntegrationOptions
 };

@@ -3,6 +3,8 @@ import { ITemplateMeta } from "./template";
 import { addPrefixToKeys, getNestedValue } from "./helpers";
 import { createOptionComponent } from "./nested-option";
 import { separateProps } from "./widget-config";
+import { getIntegrationOptions } from "./template-helper";
+import { callbackify } from "util";
 
 interface INestedOptionDescr {
     name: string;
@@ -126,30 +128,49 @@ class OptionsManager {
         }
     }
 
-    public getNestedOptionsObjects(): Record<string, any> {
-        return this._getNestedOptionsObjects(this._nestedOptions);
+    public getNestedOptionsObjects(stateUpdater: any): Record<string, any> {
+        return this._getNestedOptionsObjects(this._nestedOptions, stateUpdater);
     }
 
     public registerNestedOption(component: React.ReactElement<any>, owner: any): any {
         return this._registerNestedOption(component, owner, this._nestedOptions);
     }
 
-    private _getNestedOptionsObjects(optionsCollection: Record<string, INestedOptionDescr>): Record<string, any> {
-
+    private _getNestedOptionsObjects(
+        optionsCollection: Record<string, INestedOptionDescr>,
+        stateUpdater: any
+    ): Record<string, any> {
         const nestedOptions: Record<string, any> = {};
 
         Object.keys(optionsCollection).forEach((key) => {
             const nestedOption = optionsCollection[key];
+            let integrationOptions = {};
             const options = nestedOption.elementEntries.map((e) => {
                 const props = separateProps(e.element.props,
                     nestedOption.defaults,
                     nestedOption.templates || []);
+                const allIntegrationOptions = getIntegrationOptions({
+                    options: props.templates,
+                    nestedOptions: {},
+                    templateProps: nestedOption.templates || [],
+                    stateUpdater
+                }) || {};
+
+                integrationOptions = {
+                    ...integrationOptions,
+                    ...allIntegrationOptions.integrationOptions
+                };
+                delete allIntegrationOptions.integrationOptions;
                 return {
                     ...props.defaults,
                     ...props.options,
-                    ...this._getNestedOptionsObjects(e.children)
+                    ...allIntegrationOptions
+                    ...this._getNestedOptionsObjects(e.children, stateUpdater)
                 };
             });
+            if (Object.keys(integrationOptions).length) {
+                nestedOptions.integrationOptions = integrationOptions;
+            }
 
             nestedOptions[nestedOption.name] = nestedOption.isCollectionItem ? options : options[options.length - 1];
         });
