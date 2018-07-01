@@ -76,7 +76,7 @@ abstract class ComponentBase<P> extends React.PureComponent<P, IState> {
         const templateDto = this.state.templates[t];
         const targetProps: Record<string, any> = templateDto.isNested
           ? nestedTemplates[templateDto.name]
-          : this.props;
+          : templateDto.component.props;
 
         const contentProvider = templateDto.isComponent
           ? React.createElement.bind(this, targetProps[templateDto.prop])
@@ -150,7 +150,8 @@ abstract class ComponentBase<P> extends React.PureComponent<P, IState> {
           templateProps,
           options: separatedProps.templates,
           nestedOptions: getNestedTemplates(rawProps),
-          stateUpdater: this._updateState.bind(this)
+          stateUpdater: this._updateState.bind(this),
+          component: this
         })
     };
   }

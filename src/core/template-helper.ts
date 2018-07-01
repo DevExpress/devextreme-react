@@ -22,6 +22,7 @@ interface ITemplateBaseDto {
     prop: string;
     isNested: boolean;
     isComponent: boolean;
+    component: any;
 }
 
 interface ITemplateDto extends ITemplateBaseDto {
@@ -32,6 +33,7 @@ interface IIntegrationMeta {
     options: Record<string, any>;
     nestedOptions: Record<string, any>;
     templateProps: ITemplateMeta[];
+    component: any;
     stateUpdater: StateUpdater;
 }
 
@@ -51,7 +53,8 @@ function getIntegrationOptions(meta: IIntegrationMeta): any {
                 name: m.tmplOption,
                 prop: options[m.component] ? m.component : m.render,
                 isComponent: !!options[m.component],
-                isNested: false
+                isNested: false,
+                component: meta.component
             };
             result[m.tmplOption] = m.tmplOption;
             templates[m.tmplOption] = wrapTemplate(templateInfo, stateUpdater);
@@ -64,7 +67,8 @@ function getIntegrationOptions(meta: IIntegrationMeta): any {
             name,
             prop: !!nestedOptions[name].component ? "component" : "render",
             isComponent: !!nestedOptions[name].component,
-            isNested: true
+            isNested: true,
+            component: meta.component
         };
         templates[name] = wrapTemplate(templateInfo, stateUpdater);
     });

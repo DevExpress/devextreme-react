@@ -152,7 +152,8 @@ class OptionsManager {
                     options: props.templates,
                     nestedOptions: {},
                     templateProps: nestedOption.templates || [],
-                    stateUpdater
+                    stateUpdater,
+                    component: e.element
                 }) || {};
 
                 integrationOptions = {
