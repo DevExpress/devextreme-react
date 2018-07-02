@@ -7,6 +7,8 @@
 <!-- E.g. 'question', 'bug report', 'feature request' -->
 
 ### Description
+<!-- Specify what exactly the issue is related to (e.g. a component name) -->
+The issue is related to ...
 
 #### Steps to Reproduce
 <!-- If the current behavior is a bug, please provide the steps to reproduce -->
@@ -25,3 +27,6 @@
 <!--
 Specify DevExtreme version, DevExtreme React Components version, React version and other environment details or notes you consider important.
 -->
+- devextreme version:
+- devextreme-react version:
+- react version:

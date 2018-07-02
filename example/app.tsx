@@ -56,9 +56,9 @@ ReactDOM.render(
       <Scheduler
         dataSource={appointments}
         height={400}
-        currentView={"week"}
-        currentDate={new Date(2017, 4, 25)}
         startDayHour={9}
+        defaultCurrentView={"week"}
+        defaultCurrentDate={new Date(2017, 4, 25)}
       />
     </Example>
     <ChartExample />
