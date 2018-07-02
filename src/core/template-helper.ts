@@ -22,18 +22,18 @@ interface ITemplateBaseDto {
     prop: string;
     isNested: boolean;
     isComponent: boolean;
-    component: any;
+    propsGetter: (prop: string) => any;
 }
 
 interface ITemplateDto extends ITemplateBaseDto {
-    createWrapper: (contentProvider: (model: object) => any) => any;
+    createWrapper: (propsGetter: (prop: string) => any) => any;
 }
 
 interface IIntegrationMeta {
     options: Record<string, any>;
     nestedOptions: Record<string, any>;
     templateProps: ITemplateMeta[];
-    component: any;
+    propsGetter: (prop: string) => any;
     stateUpdater: StateUpdater;
 }
 
@@ -48,28 +48,28 @@ function getTemplateOptions(meta: IIntegrationMeta): {
 
     meta.templateProps.forEach((m) => {
         if (options[m.component] || options[m.render]) {
-            const templateInfo: ITemplateBaseDto = {
+            const templateDto: ITemplateBaseDto = {
                 name: m.tmplOption,
                 prop: options[m.component] ? m.component : m.render,
                 isComponent: !!options[m.component],
                 isNested: false,
-                component: meta.component
+                propsGetter: meta.propsGetter
             };
             templateStubs[m.tmplOption] = m.tmplOption;
-            templates[m.tmplOption] = wrapTemplate(templateInfo, stateUpdater);
+            templates[m.tmplOption] = wrapTemplate(templateDto, stateUpdater);
         }
     });
 
     const nestedOptions = meta.nestedOptions;
     Object.keys(nestedOptions).forEach((name) => {
-        const templateInfo: ITemplateBaseDto = {
+        const templateDto: ITemplateBaseDto = {
             name,
             prop: !!nestedOptions[name].component ? "component" : "render",
             isComponent: !!nestedOptions[name].component,
             isNested: true,
-            component: meta.component
+            propsGetter: meta.propsGetter
         };
-        templates[name] = wrapTemplate(templateInfo, stateUpdater);
+        templates[name] = wrapTemplate(templateDto, stateUpdater);
     });
 
     return {
@@ -82,14 +82,18 @@ function wrapTemplate(templateInfo: ITemplateBaseDto, stateUpdater: StateUpdater
     return {
         render: (data: IDxTemplateData) => {
             const templateId = "__template_" + generateID();
-            const createWrapper = (contentProvider) =>
-                React.createElement<ITemplateWrapperProps>(TemplateWrapper, {
+            const createWrapper = (propsGetter) => {
+                const contentProvider = templateInfo.isComponent
+                ? React.createElement.bind(null, propsGetter(templateInfo.prop))
+                : propsGetter(templateInfo.prop);
+
+                return React.createElement<ITemplateWrapperProps>(TemplateWrapper, {
                     content: contentProvider(data.model),
                     container: unwrapElement(data.container),
                     onRemoved: () => stateUpdater((t) => delete t[templateId]),
                     key: templateId
                 });
-
+            };
             stateUpdater((t) => t[templateId] = { ...templateInfo, createWrapper });
         }
     };

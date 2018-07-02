@@ -154,7 +154,7 @@ class OptionsManager {
                     nestedOptions: {},
                     templateProps: nestedOption.templates || [],
                     stateUpdater,
-                    component: e.element
+                    propsGetter: (prop) => e.element.props[prop]
                 });
 
                 templates = {

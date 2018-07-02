@@ -74,15 +74,11 @@ abstract class ComponentBase<P> extends React.PureComponent<P, IState> {
 
       templates.forEach((t) => {
         const templateDto = this.state.templates[t];
-        const targetProps: Record<string, any> = templateDto.isNested
-          ? nestedTemplates[templateDto.name]
-          : templateDto.component.props;
+        const propsGetter: (prop: string) => any = templateDto.isNested
+          ? (prop) => nestedTemplates[templateDto.name][prop]
+          : templateDto.propsGetter;
 
-        const contentProvider = templateDto.isComponent
-          ? React.createElement.bind(this, targetProps[templateDto.prop])
-          : targetProps[templateDto.prop].bind(this);
-
-        args.push(templateDto.createWrapper(contentProvider));
+        args.push(templateDto.createWrapper(propsGetter));
       });
 
       return React.createElement.apply(this, args);
@@ -148,7 +144,7 @@ abstract class ComponentBase<P> extends React.PureComponent<P, IState> {
       options: separatedProps.templates,
       nestedOptions: getNestedTemplates(rawProps),
       stateUpdater: this._updateState.bind(this),
-      component: this
+      propsGetter: (prop) => this.props[prop]
     });
 
     const integrationOptions = Object.keys(templateOptions.templates).length ? {
