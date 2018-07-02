@@ -5,7 +5,7 @@ import { ITemplateMeta } from "./template";
 import { generateID } from "./helpers";
 import { ITemplateWrapperProps, TemplateWrapper } from "./template-wrapper";
 
-type StateUpdater = (callback: (templates: Record<string, ITemplateDto>) => void) => void;
+type StateUpdater = (callback: (templates: Record<string, ITemplateDescr>) => void) => void;
 
 interface IDxTemplateData {
     container: any;
@@ -17,19 +17,19 @@ interface IDxTemplate {
     render: (data: IDxTemplateData) => any;
 }
 
-interface ITemplateBaseDto {
+interface ITemplateBaseDescr {
     name: string;
-    prop: string;
+    propName: string;
     isNested: boolean;
     isComponent: boolean;
     propsGetter: (prop: string) => any;
 }
 
-interface ITemplateDto extends ITemplateBaseDto {
+interface ITemplateDescr extends ITemplateBaseDescr {
     createWrapper: (propsGetter: (prop: string) => any) => any;
 }
 
-interface IIntegrationMeta {
+interface IIntegrationDescr {
     options: Record<string, any>;
     nestedOptions: Record<string, any>;
     templateProps: ITemplateMeta[];
@@ -37,7 +37,7 @@ interface IIntegrationMeta {
     stateUpdater: StateUpdater;
 }
 
-function getTemplateOptions(meta: IIntegrationMeta): {
+function getTemplateOptions(meta: IIntegrationDescr): {
     templates: any;
     templateStubs: any;
 } {
@@ -47,29 +47,31 @@ function getTemplateOptions(meta: IIntegrationMeta): {
     const stateUpdater = meta.stateUpdater;
 
     meta.templateProps.forEach((m) => {
-        if (options[m.component] || options[m.render]) {
-            const templateDto: ITemplateBaseDto = {
-                name: m.tmplOption,
-                prop: options[m.component] ? m.component : m.render,
-                isComponent: !!options[m.component],
-                isNested: false,
-                propsGetter: meta.propsGetter
-            };
-            templateStubs[m.tmplOption] = m.tmplOption;
-            templates[m.tmplOption] = wrapTemplate(templateDto, stateUpdater);
+        if (!options[m.component] && !options[m.render]) {
+            return;
         }
+
+        const templateDescr: ITemplateBaseDescr = {
+            name: m.tmplOption,
+            propName: options[m.component] ? m.component : m.render,
+            isComponent: !!options[m.component],
+            isNested: false,
+            propsGetter: meta.propsGetter
+        };
+        templateStubs[m.tmplOption] = m.tmplOption;
+        templates[m.tmplOption] = wrapTemplate(templateDescr, stateUpdater);
     });
 
     const nestedOptions = meta.nestedOptions;
     Object.keys(nestedOptions).forEach((name) => {
-        const templateDto: ITemplateBaseDto = {
+        const templateDescr: ITemplateBaseDescr = {
             name,
-            prop: !!nestedOptions[name].component ? "component" : "render",
+            propName: !!nestedOptions[name].component ? "component" : "render",
             isComponent: !!nestedOptions[name].component,
             isNested: true,
             propsGetter: meta.propsGetter
         };
-        templates[name] = wrapTemplate(templateDto, stateUpdater);
+        templates[name] = wrapTemplate(templateDescr, stateUpdater);
     });
 
     return {
@@ -78,14 +80,14 @@ function getTemplateOptions(meta: IIntegrationMeta): {
     };
 }
 
-function wrapTemplate(templateInfo: ITemplateBaseDto, stateUpdater: StateUpdater): IDxTemplate {
+function wrapTemplate(templateDescr: ITemplateBaseDescr, stateUpdater: StateUpdater): IDxTemplate {
     return {
         render: (data: IDxTemplateData) => {
             const templateId = "__template_" + generateID();
             const createWrapper = (propsGetter) => {
-                const contentProvider = templateInfo.isComponent
-                ? React.createElement.bind(null, propsGetter(templateInfo.prop))
-                : propsGetter(templateInfo.prop);
+                const contentProvider = templateDescr.isComponent
+                ? React.createElement.bind(null, propsGetter(templateDescr.propName))
+                : propsGetter(templateDescr.propName);
 
                 return React.createElement<ITemplateWrapperProps>(TemplateWrapper, {
                     content: contentProvider(data.model),
@@ -94,7 +96,7 @@ function wrapTemplate(templateInfo: ITemplateBaseDto, stateUpdater: StateUpdater
                     key: templateId
                 });
             };
-            stateUpdater((t) => t[templateId] = { ...templateInfo, createWrapper });
+            stateUpdater((t) => t[templateId] = { ...templateDescr, createWrapper });
         }
     };
 }
@@ -106,9 +108,9 @@ function unwrapElement(element: any) {
 export {
     IDxTemplate,
     IDxTemplateData,
-    ITemplateBaseDto,
-    ITemplateDto,
-    IIntegrationMeta,
+    ITemplateBaseDescr,
+    ITemplateDescr,
+    IIntegrationDescr,
     StateUpdater,
     getTemplateOptions
 };

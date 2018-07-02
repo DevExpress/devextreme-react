@@ -7,7 +7,7 @@ import { separateProps } from "./widget-config";
 
 import {
   getTemplateOptions,
-  ITemplateDto
+  ITemplateDescr
 } from "./template-helper";
 
 const DX_REMOVE_EVENT = "dxremove";
@@ -19,7 +19,7 @@ interface IWidgetConfig {
 }
 
 interface IState {
-  templates: Record<string, ITemplateDto>;
+  templates: Record<string, ITemplateDescr>;
 }
 
 abstract class ComponentBase<P> extends React.PureComponent<P, IState> {
@@ -36,7 +36,7 @@ abstract class ComponentBase<P> extends React.PureComponent<P, IState> {
   constructor(props: P) {
     super(props);
     this._prepareProps = this._prepareProps.bind(this);
-    this._updateState = this._updateState.bind(this);
+    this._updateTemplatesState = this._updateTemplatesState.bind(this);
 
     this.state = {
       templates: {}
@@ -46,7 +46,7 @@ abstract class ComponentBase<P> extends React.PureComponent<P, IState> {
   }
 
   public componentWillUpdate(nextProps: P) {
-    const preparedProps = this._prepareProps(nextProps, this._defaults, this._templateProps);
+    const preparedProps = this._prepareProps(nextProps);
     const options: Record<string, any> = {
       ...preparedProps.options,
       ...preparedProps.integrationOptions
@@ -73,12 +73,12 @@ abstract class ComponentBase<P> extends React.PureComponent<P, IState> {
       const templates = Object.getOwnPropertyNames(this.state.templates) || [];
 
       templates.forEach((t) => {
-        const templateDto = this.state.templates[t];
-        const propsGetter: (prop: string) => any = templateDto.isNested
-          ? (prop) => nestedTemplates[templateDto.name][prop]
-          : templateDto.propsGetter;
+        const templateDescr = this.state.templates[t];
+        const propsGetter: (prop: string) => any = templateDescr.isNested
+          ? (prop) => nestedTemplates[templateDescr.name][prop]
+          : templateDescr.propsGetter;
 
-        args.push(templateDto.createWrapper(propsGetter));
+        args.push(templateDescr.createWrapper(propsGetter));
       });
 
       return React.createElement.apply(this, args);
@@ -97,13 +97,13 @@ abstract class ComponentBase<P> extends React.PureComponent<P, IState> {
 
   protected _createWidget(element?: Element) {
     element = element || this._element;
-    const nestedProps = this._optionsManager.getNestedOptionsObjects(this._updateState.bind(this));
+    const nestedProps = this._optionsManager.getNestedOptionsObjects(this._updateTemplatesState);
     const props = {
         ...(this.props as any),
         ...nestedProps
     };
 
-    const preparedProps = this._prepareProps(props, this._defaults, this._templateProps);
+    const preparedProps = this._prepareProps(props);
 
     const options: Record<string, any> = {
       templatesRenderAsynchronously: true,
@@ -117,7 +117,7 @@ abstract class ComponentBase<P> extends React.PureComponent<P, IState> {
     this._instance.on("optionChanged", this._optionsManager.handleOptionChange);
   }
 
-  private _updateState(callback) {
+  private _updateTemplatesState(callback) {
     this.setState((state: IState) => {
         const templates = { ...state.templates };
         callback(templates);
@@ -127,12 +127,8 @@ abstract class ComponentBase<P> extends React.PureComponent<P, IState> {
     });
   }
 
-  private _prepareProps(
-    rawProps: Record<string, any>,
-    defaults: Record<string, string>,
-    templateProps: ITemplateMeta[]
-  ): IWidgetConfig {
-    const separatedProps = separateProps(rawProps, defaults, templateProps);
+  private _prepareProps(rawProps: Record<string, any>): IWidgetConfig {
+    const separatedProps = separateProps(rawProps, this._defaults, this._templateProps);
 
     const options: Record<string, any> = {};
     Object.keys(separatedProps.options).forEach((key) => {
@@ -140,10 +136,10 @@ abstract class ComponentBase<P> extends React.PureComponent<P, IState> {
     });
 
     const templateOptions = getTemplateOptions({
-      templateProps,
+      templateProps: this._templateProps,
       options: separatedProps.templates,
       nestedOptions: getNestedTemplates(rawProps),
-      stateUpdater: this._updateState.bind(this),
+      stateUpdater: this._updateTemplatesState,
       propsGetter: (prop) => this.props[prop]
     });
 
@@ -164,14 +160,13 @@ abstract class ComponentBase<P> extends React.PureComponent<P, IState> {
 
 function getNestedTemplates(rawProps: Record<string, any>): Record<string, any> {
   let nestedTemplates: Record<string, any> = {};
-  if (rawProps.children) {
-      React.Children.forEach(rawProps.children, (child: React.ReactElement<any>) => {
-          nestedTemplates = {
-            ...nestedTemplates,
-            ...findTemplateProps(child)
-          };
-      });
-  }
+  React.Children.forEach(rawProps.children, (child: React.ReactElement<any>) => {
+      nestedTemplates = {
+        ...nestedTemplates,
+        ...findTemplateProps(child)
+      };
+  });
+
   return nestedTemplates;
 }
 
