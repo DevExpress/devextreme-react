@@ -2,7 +2,7 @@ import { ITemplateMeta } from "./template";
 
 import { addPrefixToKeys, getNestedValue } from "./helpers";
 import { createOptionComponent } from "./nested-option";
-import { getIntegrationOptions } from "./template-helper";
+import { getTemplateOptions } from "./template-helper";
 import { separateProps } from "./widget-config";
 
 interface INestedOptionDescr {
@@ -143,33 +143,35 @@ class OptionsManager {
 
         Object.keys(optionsCollection).forEach((key) => {
             const nestedOption = optionsCollection[key];
-            let integrationOptions = {};
+            let templates = {};
             const options = nestedOption.elementEntries.map((e) => {
                 const props = separateProps(e.element.props,
                     nestedOption.defaults,
                     nestedOption.templates || []);
-                const allIntegrationOptions = getIntegrationOptions({
+
+                const templateOptions = getTemplateOptions({
                     options: props.templates,
                     nestedOptions: {},
                     templateProps: nestedOption.templates || [],
                     stateUpdater,
                     component: e.element
-                }) || {};
+                });
 
-                integrationOptions = {
-                    ...integrationOptions,
-                    ...allIntegrationOptions.integrationOptions
+                templates = {
+                    ...templates,
+                    ...templateOptions.templates
                 };
-                delete allIntegrationOptions.integrationOptions;
                 return {
                     ...props.defaults,
                     ...props.options,
-                    ...allIntegrationOptions,
+                    ...templateOptions.templateStubs,
                     ...this._getNestedOptionsObjects(e.children, stateUpdater)
                 };
             });
-            if (Object.keys(integrationOptions).length) {
-                nestedOptions.integrationOptions = integrationOptions;
+            if (Object.keys(templates).length) {
+                nestedOptions.integrationOptions = {
+                    templates
+                };
             }
 
             nestedOptions[nestedOption.name] = nestedOption.isCollectionItem ? options : options[options.length - 1];

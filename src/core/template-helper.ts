@@ -37,13 +37,12 @@ interface IIntegrationMeta {
     stateUpdater: StateUpdater;
 }
 
-function getIntegrationOptions(meta: IIntegrationMeta): any {
+function getTemplateOptions(meta: IIntegrationMeta): {
+    templates: any;
+    templateStubs: any;
+} {
     const templates: Record<string, IDxTemplate> = {};
-    const result = {
-        integrationOptions: {
-            templates
-        }
-    };
+    const templateStubs: Record<string, any> = {};
     const options = meta.options;
     const stateUpdater = meta.stateUpdater;
 
@@ -56,7 +55,7 @@ function getIntegrationOptions(meta: IIntegrationMeta): any {
                 isNested: false,
                 component: meta.component
             };
-            result[m.tmplOption] = m.tmplOption;
+            templateStubs[m.tmplOption] = m.tmplOption;
             templates[m.tmplOption] = wrapTemplate(templateInfo, stateUpdater);
         }
     });
@@ -73,9 +72,10 @@ function getIntegrationOptions(meta: IIntegrationMeta): any {
         templates[name] = wrapTemplate(templateInfo, stateUpdater);
     });
 
-    if (Object.keys(templates).length > 0) {
-        return result;
-    }
+    return {
+        templates,
+        templateStubs
+    };
 }
 
 function wrapTemplate(templateInfo: ITemplateBaseDto, stateUpdater: StateUpdater): IDxTemplate {
@@ -106,5 +106,5 @@ export {
     ITemplateDto,
     IIntegrationMeta,
     StateUpdater,
-    getIntegrationOptions
+    getTemplateOptions
 };

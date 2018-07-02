@@ -6,7 +6,7 @@ import { findProps as findTemplateProps, ITemplateMeta } from "./template";
 import { separateProps } from "./widget-config";
 
 import {
-  getIntegrationOptions,
+  getTemplateOptions,
   ITemplateDto
 } from "./template-helper";
 
@@ -143,16 +143,25 @@ abstract class ComponentBase<P> extends React.PureComponent<P, IState> {
         options[key] = this._optionsManager.wrapEventHandler(separatedProps.options[key], key);
     });
 
+    const templateOptions = getTemplateOptions({
+      templateProps,
+      options: separatedProps.templates,
+      nestedOptions: getNestedTemplates(rawProps),
+      stateUpdater: this._updateState.bind(this),
+      component: this
+    });
+
+    const integrationOptions = Object.keys(templateOptions.templates).length ? {
+      integrationOptions: {
+        templates: templateOptions.templates
+      },
+      ...templateOptions.templateStubs
+    } : undefined;
+
     return {
         options,
         defaults: separatedProps.defaults,
-        integrationOptions: getIntegrationOptions({
-          templateProps,
-          options: separatedProps.templates,
-          nestedOptions: getNestedTemplates(rawProps),
-          stateUpdater: this._updateState.bind(this),
-          component: this
-        })
+        integrationOptions
     };
   }
 }
