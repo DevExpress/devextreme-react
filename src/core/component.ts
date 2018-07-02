@@ -7,7 +7,7 @@ import { separateProps } from "./widget-config";
 
 import {
   getTemplateOptions,
-  ITemplateDescr
+  TemplateGetter
 } from "./template-helper";
 
 const DX_REMOVE_EVENT = "dxremove";
@@ -19,7 +19,7 @@ interface IWidgetConfig {
 }
 
 interface IState {
-  templates: Record<string, ITemplateDescr>;
+  templates: Record<string, TemplateGetter>;
 }
 
 abstract class ComponentBase<P> extends React.PureComponent<P, IState> {
@@ -73,12 +73,7 @@ abstract class ComponentBase<P> extends React.PureComponent<P, IState> {
       const templates = Object.getOwnPropertyNames(this.state.templates) || [];
 
       templates.forEach((t) => {
-        const templateDescr = this.state.templates[t];
-        const propsGetter: (prop: string) => any = templateDescr.isNested
-          ? (prop) => nestedTemplates[templateDescr.name][prop]
-          : templateDescr.propsGetter;
-
-        args.push(templateDescr.createWrapper(propsGetter));
+        args.push(this.state.templates[t](nestedTemplates));
       });
 
       return React.createElement.apply(this, args);

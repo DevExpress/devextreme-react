@@ -5,7 +5,9 @@ import { ITemplateMeta } from "./template";
 import { generateID } from "./helpers";
 import { ITemplateWrapperProps, TemplateWrapper } from "./template-wrapper";
 
-type StateUpdater = (callback: (templates: Record<string, ITemplateDescr>) => void) => void;
+type TemplateGetter = (nestedTemplates: Record<string, any>) => React.ReactElement<ITemplateWrapperProps>;
+type StateUpdater = (callback: (templates: TemplateGetter) => void) => void;
+type PropsGetter = (propName: string) => any;
 
 interface IDxTemplateData {
     container: any;
@@ -17,23 +19,19 @@ interface IDxTemplate {
     render: (data: IDxTemplateData) => any;
 }
 
-interface ITemplateBaseDescr {
+interface ITemplateDescr {
     name: string;
     propName: string;
     isNested: boolean;
     isComponent: boolean;
-    propsGetter: (prop: string) => any;
-}
-
-interface ITemplateDescr extends ITemplateBaseDescr {
-    createWrapper: (propsGetter: (prop: string) => any) => any;
+    propsGetter: PropsGetter;
 }
 
 interface IIntegrationDescr {
     options: Record<string, any>;
     nestedOptions: Record<string, any>;
     templateProps: ITemplateMeta[];
-    propsGetter: (prop: string) => any;
+    propsGetter: PropsGetter;
     stateUpdater: StateUpdater;
 }
 
@@ -51,7 +49,7 @@ function getTemplateOptions(meta: IIntegrationDescr): {
             return;
         }
 
-        const templateDescr: ITemplateBaseDescr = {
+        const templateDescr: ITemplateDescr = {
             name: m.tmplOption,
             propName: options[m.component] ? m.component : m.render,
             isComponent: !!options[m.component],
@@ -64,7 +62,7 @@ function getTemplateOptions(meta: IIntegrationDescr): {
 
     const nestedOptions = meta.nestedOptions;
     Object.keys(nestedOptions).forEach((name) => {
-        const templateDescr: ITemplateBaseDescr = {
+        const templateDescr: ITemplateDescr = {
             name,
             propName: !!nestedOptions[name].component ? "component" : "render",
             isComponent: !!nestedOptions[name].component,
@@ -80,14 +78,18 @@ function getTemplateOptions(meta: IIntegrationDescr): {
     };
 }
 
-function wrapTemplate(templateDescr: ITemplateBaseDescr, stateUpdater: StateUpdater): IDxTemplate {
+function wrapTemplate(templateDescr: ITemplateDescr, stateUpdater: StateUpdater): IDxTemplate {
     return {
         render: (data: IDxTemplateData) => {
             const templateId = "__template_" + generateID();
-            const createWrapper = (propsGetter) => {
+            const createWrapper = (nestedTemplates) => {
+                const propsGetter = templateDescr.isNested
+                    ? (prop) => nestedTemplates[templateDescr.name][prop]
+                    : templateDescr.propsGetter;
+
                 const contentProvider = templateDescr.isComponent
-                ? React.createElement.bind(null, propsGetter(templateDescr.propName))
-                : propsGetter(templateDescr.propName);
+                    ? React.createElement.bind(null, propsGetter(templateDescr.propName))
+                    : propsGetter(templateDescr.propName);
 
                 return React.createElement<ITemplateWrapperProps>(TemplateWrapper, {
                     content: contentProvider(data.model),
@@ -96,7 +98,7 @@ function wrapTemplate(templateDescr: ITemplateBaseDescr, stateUpdater: StateUpda
                     key: templateId
                 });
             };
-            stateUpdater((t) => t[templateId] = { ...templateDescr, createWrapper });
+            stateUpdater((t) => t[templateId] = createWrapper);
         }
     };
 }
@@ -106,11 +108,9 @@ function unwrapElement(element: any) {
 }
 
 export {
-    IDxTemplate,
-    IDxTemplateData,
-    ITemplateBaseDescr,
-    ITemplateDescr,
-    IIntegrationDescr,
+    PropsGetter,
     StateUpdater,
+    TemplateGetter,
+    IIntegrationDescr,
     getTemplateOptions
 };
