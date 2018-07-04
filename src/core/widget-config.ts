@@ -9,6 +9,7 @@ function separateProps(
     defaults: Record<string, any>;
     templates: Record<string, any>;
 } {
+    templateProps = templateProps || [];
     const defaults: Record<string, any> = {};
     const options: Record<string, any> = {};
     const templates: Record<string, any> = {};

@@ -1,8 +1,13 @@
 import * as React from "react";
 
-import { ComponentBase, IState } from "./component";
+import { ITemplateMeta } from "./template";
+
 import { generateID } from "./helpers";
 import { ITemplateWrapperProps, TemplateWrapper } from "./template-wrapper";
+
+type TemplateGetter = (nestedTemplates: Record<string, any>) => React.ReactElement<ITemplateWrapperProps>;
+type StateUpdater = (callback: (templates: TemplateGetter) => void) => void;
+type PropsGetter = (propName: string) => any;
 
 interface IDxTemplateData {
     container: any;
@@ -14,57 +19,89 @@ interface IDxTemplate {
     render: (data: IDxTemplateData) => any;
 }
 
-interface ITemplateInfo {
+interface ITemplateDescr {
     name: string;
-    prop: string;
+    propName: string;
     isNested: boolean;
     isComponent: boolean;
+    propsGetter: PropsGetter;
 }
 
-interface IWrappedTemplateInfo extends ITemplateInfo {
-    createWrapper: (contentProvider: (model: object) => any) => any;
+interface IIntegrationDescr {
+    options: Record<string, any>;
+    nestedOptions: Record<string, any>;
+    templateProps: ITemplateMeta[];
+    propsGetter: PropsGetter;
+    stateUpdater: StateUpdater;
 }
 
-class TemplateHelper {
-    private readonly _component: ComponentBase<any>;
+function getTemplateOptions(meta: IIntegrationDescr): {
+    templates: any;
+    templateStubs: any;
+} {
+    const templates: Record<string, IDxTemplate> = {};
+    const templateStubs: Record<string, any> = {};
+    const options = meta.options;
+    const stateUpdater = meta.stateUpdater;
+    const templateProps = meta.templateProps || [];
 
-    constructor(component: ComponentBase<any>) {
-        this._component = component;
+    templateProps.forEach((m) => {
+        if (!options[m.component] && !options[m.render]) {
+            return;
+        }
 
-        this.wrapTemplate = this.wrapTemplate.bind(this);
-        this._updateState = this._updateState.bind(this);
-    }
-
-    public getContentProvider(templateSource: any, isComponent: boolean)  {
-        return isComponent ? React.createElement.bind(this, templateSource) : templateSource.bind(this);
-    }
-
-    public wrapTemplate(templateInfo: ITemplateInfo): IDxTemplate {
-        return {
-            render: (data: IDxTemplateData) => {
-                const templateId = "__template_" + generateID();
-                const createWrapper = (contentProvider) =>
-                    React.createElement<ITemplateWrapperProps>(TemplateWrapper, {
-                        content: contentProvider(data.model),
-                        container: unwrapElement(data.container),
-                        onRemoved: () => this._updateState((t) => delete t[templateId]),
-                        key: templateId
-                    });
-
-                this._updateState((t) => t[templateId] = { ...templateInfo, createWrapper });
-            }
+        const templateDescr: ITemplateDescr = {
+            name: m.tmplOption,
+            propName: options[m.component] ? m.component : m.render,
+            isComponent: !!options[m.component],
+            isNested: false,
+            propsGetter: meta.propsGetter
         };
-    }
+        templateStubs[m.tmplOption] = m.tmplOption;
+        templates[m.tmplOption] = wrapTemplate(templateDescr, stateUpdater);
+    });
 
-    private _updateState(callback: (templates: Record<string, IWrappedTemplateInfo>) => void) {
-        this._component.setState((state: IState) => {
-            const templates = { ...state.templates };
-            callback(templates);
-            return {
-                templates
+    const nestedOptions = meta.nestedOptions;
+    Object.keys(nestedOptions).forEach((name) => {
+        const templateDescr: ITemplateDescr = {
+            name,
+            propName: !!nestedOptions[name].component ? "component" : "render",
+            isComponent: !!nestedOptions[name].component,
+            isNested: true,
+            propsGetter: meta.propsGetter
+        };
+        templates[name] = wrapTemplate(templateDescr, stateUpdater);
+    });
+
+    return {
+        templates,
+        templateStubs
+    };
+}
+
+function wrapTemplate(templateDescr: ITemplateDescr, stateUpdater: StateUpdater): IDxTemplate {
+    return {
+        render: (data: IDxTemplateData) => {
+            const templateId = "__template_" + generateID();
+            const createWrapper = (nestedTemplates) => {
+                const propsGetter = templateDescr.isNested
+                    ? (prop) => nestedTemplates[templateDescr.name][prop]
+                    : templateDescr.propsGetter;
+
+                const contentProvider = templateDescr.isComponent
+                    ? React.createElement.bind(null, propsGetter(templateDescr.propName))
+                    : propsGetter(templateDescr.propName);
+
+                return React.createElement<ITemplateWrapperProps>(TemplateWrapper, {
+                    content: contentProvider(data.model),
+                    container: unwrapElement(data.container),
+                    onRemoved: () => stateUpdater((t) => delete t[templateId]),
+                    key: templateId
+                });
             };
-        });
-    }
+            stateUpdater((t) => t[templateId] = createWrapper);
+        }
+    };
 }
 
 function unwrapElement(element: any) {
@@ -72,9 +109,9 @@ function unwrapElement(element: any) {
 }
 
 export {
-    IDxTemplate,
-    IDxTemplateData,
-    ITemplateInfo,
-    IWrappedTemplateInfo,
-    TemplateHelper
+    PropsGetter,
+    StateUpdater,
+    TemplateGetter,
+    IIntegrationDescr,
+    getTemplateOptions
 };

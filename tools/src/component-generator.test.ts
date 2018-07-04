@@ -317,7 +317,9 @@ export {
             })
         ).toBe(EXPECTED);
     });
+});
 
+describe("nested options", () => {
     it("processes nested options", () => {
         //#region EXPECTED
         const EXPECTED = `
@@ -380,6 +382,7 @@ export {
                         className: "Opt_1_Component",
                         ownerClassName: "CLASS_NAME",
                         optionName: "opt_1",
+                        templates: null,
                         options: [
                             {
                                 name: "sub_opt_2",
@@ -409,6 +412,7 @@ export {
                         className: "Opt_6_SubComponent",
                         ownerClassName: "Opt_1_Component",
                         optionName: "sub_sub_opt_7",
+                        templates: null,
                         options: [
                             {
                                 name: "sub_sub_sub_opt_8",
@@ -479,6 +483,7 @@ export {
                         ownerClassName: "CLASS_NAME",
                         optionName: "opt_1",
                         isCollectionItem: true,
+                        templates: null,
                         options: [
                             {
                                 name: "sub_opt_2",
@@ -490,6 +495,7 @@ export {
                         className: "Opt_6_SubComponent",
                         ownerClassName: "Opt_1_Component",
                         optionName: "sub_sub_opt_7",
+                        templates: null,
                         options: [
                             {
                                 name: "sub_sub_sub_opt_8",
@@ -552,11 +558,13 @@ export {
                 baseComponentPath: "BASE_COMPONENT_PATH",
                 configComponentPath: "CONFIG_COMPONENT_PATH",
                 dxExportPath: "DX/WIDGET/PATH",
+                templates: null,
                 nestedComponents: [
                     {
                         className: "Opt_1_Component",
                         ownerClassName: "CLASS_NAME",
                         optionName: "opt_1",
+                        templates: null,
                         options: [
                             {
                                 name: "sub_opt_2",
@@ -580,6 +588,74 @@ export {
         ).toBe(EXPECTED);
     });
 
+    it("generates component/render props for nested options", () => {
+        //#region EXPECTED
+        const EXPECTED = `
+import dxCLASS_NAME, {
+    IOptions as ICLASS_NAMEOptions
+} from "devextreme/DX/WIDGET/PATH";
+
+import { Component as BaseComponent } from "BASE_COMPONENT_PATH";
+import NestedOption from "CONFIG_COMPONENT_PATH";
+
+class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
+
+  public get instance(): dxCLASS_NAME {
+    return this._instance;
+  }
+
+  protected _WidgetClass = dxCLASS_NAME;
+}
+// tslint:disable:max-classes-per-file
+
+class Opt_1_Component extends NestedOption<{
+  optionTemplate?: TYPE_1;
+  optionRender?: (props: any) => React.ReactNode;
+  optionComponent?: React.ComponentType<any>;
+}> {
+  public static OptionName = "opt_1";
+  public static TemplateProps = [{
+    tmplOption: "optionTemplate",
+    render: "optionRender",
+    component: "optionComponent"
+  }];
+}
+
+(Opt_1_Component as any).OwnerType = CLASS_NAME;
+
+export default CLASS_NAME;
+export {
+  CLASS_NAME,
+  ICLASS_NAMEOptions,
+  Opt_1_Component
+};
+`.trimLeft();
+        //#endregion
+
+        expect(
+            generate({
+                name: "CLASS_NAME",
+                baseComponentPath: "BASE_COMPONENT_PATH",
+                configComponentPath: "CONFIG_COMPONENT_PATH",
+                dxExportPath: "DX/WIDGET/PATH",
+                templates: null,
+                nestedComponents: [
+                    {
+                        className: "Opt_1_Component",
+                        ownerClassName: "CLASS_NAME",
+                        optionName: "opt_1",
+                        templates: ["optionTemplate"],
+                        options: [
+                            {
+                                name: "optionTemplate",
+                                type: "TYPE_1"
+                            }
+                        ]
+                    }
+                ]
+            })
+        ).toBe(EXPECTED);
+    });
 });
 
 describe("prop typings", () => {
