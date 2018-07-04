@@ -2,7 +2,7 @@ import * as events from "devextreme/events";
 import * as React from "react";
 
 import OptionsManager from "./options-manager";
-import { findProps as findTemplateProps, ITemplateMeta } from "./template";
+import { findProps as findNestedTemplateProps, ITemplateMeta } from "./template";
 import { separateProps } from "./widget-config";
 
 import {
@@ -65,7 +65,7 @@ abstract class ComponentBase<P> extends React.PureComponent<P, IState> {
       React.Children.forEach(this.props.children, (child: React.ReactElement<any>) => {
         nestedTemplates = {
           ...nestedTemplates,
-          ...findTemplateProps(child)
+          ...findNestedTemplateProps(child)
         };
         args.push(this._preprocessChild(child) || child);
       });
@@ -158,7 +158,7 @@ function getNestedTemplates(rawProps: Record<string, any>): Record<string, any> 
   React.Children.forEach(rawProps.children, (child: React.ReactElement<any>) => {
       nestedTemplates = {
         ...nestedTemplates,
-        ...findTemplateProps(child)
+        ...findNestedTemplateProps(child)
       };
   });
 

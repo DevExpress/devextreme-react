@@ -147,14 +147,15 @@ class OptionsManager {
             const options = nestedOption.elementEntries.map((e) => {
                 const props = separateProps(e.element.props,
                     nestedOption.defaults,
-                    nestedOption.templates || []);
+                    nestedOption.templates);
 
                 const templateOptions = getTemplateOptions({
                     options: props.templates,
                     nestedOptions: {},
-                    templateProps: nestedOption.templates || [],
+                    templateProps: nestedOption.templates,
                     stateUpdater,
-                    propsGetter: (prop) => e.element.props[prop]
+                    propsGetter: (prop) =>
+                      nestedOption.elementEntries[nestedOption.elementEntries.length - 1].element.props[prop]
                 });
 
                 templates = {

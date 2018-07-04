@@ -43,8 +43,9 @@ function getTemplateOptions(meta: IIntegrationDescr): {
     const templateStubs: Record<string, any> = {};
     const options = meta.options;
     const stateUpdater = meta.stateUpdater;
+    const templateProps = meta.templateProps || [];
 
-    meta.templateProps.forEach((m) => {
+    templateProps.forEach((m) => {
         if (!options[m.component] && !options[m.render]) {
             return;
         }

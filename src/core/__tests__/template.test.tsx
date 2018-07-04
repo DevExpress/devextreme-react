@@ -270,6 +270,24 @@ describe("component/render in nested options", () => {
         expect(typeof integrationOptions.templates.item.render).toBe("function");
     });
 
+    it("renders templates", () => {
+        const FirstTemplate = () => <div className={"template"}>First Template</div>;
+        const component = mount(
+            <TestComponent>
+                <NestedComponentWithTemplates itemComponent={FirstTemplate} />
+            </TestComponent >
+        );
+        renderItemTemplate();
+        component.update();
+        expect(component.find(".template").html()).toBe('<div class="template">First Template</div>');
+
+        const SecondTemplate = () => <div className={"template"}>Second Template</div>;
+        component.setProps({
+            children: <NestedComponentWithTemplates itemComponent={SecondTemplate} />
+        });
+        component.update();
+        expect(component.find(".template").html()).toBe('<div class="template">Second Template</div>');
+    });
 });
 
 it("pass component option changes to widget", () => {
