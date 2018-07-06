@@ -39,6 +39,12 @@ Install the **devextreme** and **devextreme-react** npm packages:
 ```console
 npm install --save devextreme@18.1-unstable devextreme-react
 ```
+#### <a name="additional-configuration"></a>Additional Configuration ####
+
+The further configuration steps depend on which build tool, bundler or module loader you are using. Please choose the one you need:
+
+* [Configuring Webpack](https://github.com/DevExpress/devextreme-react/blob/master/docs/using-webpack.md)
+* [Using Create React App](https://github.com/DevExpress/devextreme-react/blob/master/docs/using-create-react-app.md)
 
 ### <a name="use-components"></a>Use DevExtreme Components  ####
 
