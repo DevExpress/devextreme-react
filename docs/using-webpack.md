@@ -10,7 +10,7 @@ Follow the [installation](https://github.com/DevExpress/devextreme-react#install
 
 ## <a name="configuration"></a>Configure Webpack Loaders for DevExtreme Stylesheets ##
 
-You need to make sure that all the necessary extensions are processed by the corresponding 
+Make sure that all the necessary extensions are processed by the corresponding 
 [loaders](https://webpack.github.io/docs/loaders.html) as described below.
 
 Go to *webpack.config.js* and configure loaders for css and fonts as follows:
