@@ -46,6 +46,12 @@ class OptionsManager {
         this.processChangedValues = this.processChangedValues.bind(this);
     }
 
+    public resetNestedElements() {
+        Object.keys(this._nestedOptions).forEach((optionName) => {
+            this._nestedOptions[optionName].elementEntries.length = 0;
+        });
+    }
+
     public setInstance(instance: any) {
         this._instance = instance;
     }
@@ -144,7 +150,7 @@ class OptionsManager {
         Object.keys(optionsCollection).forEach((key) => {
             const nestedOption = optionsCollection[key];
             let templates = {};
-            const options = nestedOption.elementEntries.map((e) => {
+            const options = nestedOption.elementEntries.map((e, index) => {
                 const props = separateProps(e.element.props,
                     nestedOption.defaults,
                     nestedOption.templates);
@@ -154,8 +160,7 @@ class OptionsManager {
                     nestedOptions: {},
                     templateProps: nestedOption.templates,
                     stateUpdater,
-                    propsGetter: (prop) =>
-                      nestedOption.elementEntries[nestedOption.elementEntries.length - 1].element.props[prop]
+                    propsGetter: (prop) => nestedOption.elementEntries[index].element.props[prop]
                 });
 
                 templates = {

@@ -60,7 +60,7 @@ abstract class ComponentBase<P> extends React.PureComponent<P, IState> {
         "div",
         { ref: (element: any) => this._element = element }
       ];
-
+      this._optionsManager.resetNestedElements();
       let nestedTemplates: Record<string, any> = {};
       React.Children.forEach(this.props.children, (child: React.ReactElement<any>) => {
         nestedTemplates = {
