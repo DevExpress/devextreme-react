@@ -37,7 +37,7 @@ If you’d rather use a local development environment check out the sections bel
 Install the **devextreme** and **devextreme-react** npm packages:
 
 ```console
-npm install --save devextreme@18.1-unstable devextreme-react
+npm install --save devextreme@18.1 devextreme-react
 ```
 #### <a name="additional-configuration"></a>Additional Configuration ####
 
