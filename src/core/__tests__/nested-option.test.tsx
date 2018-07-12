@@ -144,6 +144,26 @@ describe("nested option", () => {
         });
     });
 
+    it("is pulled as a collection item after update", () => {
+        const component = mount(
+            <TestComponent>
+                <CollectionNestedComponent key={1} c={123} d="abc" />
+                <CollectionNestedComponent key={2} c={456} />
+                <CollectionNestedComponent key={3} d="def" />
+            </TestComponent>
+        );
+        component.setProps({
+            children: [
+                <CollectionNestedComponent key={1} c={123} d="abc" />,
+                <CollectionNestedComponent key={2} c={999} />,
+                <CollectionNestedComponent key={3} d="def" />
+            ]});
+        jest.runAllTimers();
+
+        expect(Widget.option.mock.calls.length).toBe(1);
+        expect(Widget.option.mock.calls[0]).toEqual(["itemOptions[1].c", 999]);
+    });
+
     it("is pulled after update", () => {
 
         const component = shallow(

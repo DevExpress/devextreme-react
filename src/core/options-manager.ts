@@ -199,9 +199,18 @@ class OptionsManager {
         const nestedOptionsCollection: Record<string, INestedOptionDescr> = {};
         const optionName = nestedOptionClass.type.OptionName;
 
-        let optionFullName = nestedOptionClass.type.OptionName;
+        const entry = ensureNestedOption(
+            optionName,
+            owningCollection,
+            nestedOptionClass.type.DefaultsProps,
+            nestedOptionClass.type.TemplateProps,
+            nestedOptionClass.type.IsCollectionItem
+        );
+
+        const index = nestedOptionClass.type.IsCollectionItem ? `[${entry.elementEntries.length}]` : "";
+        let optionFullName = `${optionName}${index}`;
         if (ownerFullName) {
-            optionFullName = `${ownerFullName}.${optionName}`;
+            optionFullName = `${ownerFullName}.${optionFullName}`;
         }
 
         const optionComponent = createOptionComponent(
@@ -214,20 +223,13 @@ class OptionsManager {
                 updateFunc: (newProps, prevProps) => {
                     const newOptions = separateProps(newProps,
                         nestedOptionClass.type.DefaultsProps,
-                        nestedOptionClass.type.TemplateProps || []).options;
+                        nestedOptionClass.type.TemplateProps).options;
                     this.processChangedValues(
                         addPrefixToKeys(newOptions, optionFullName + "."),
                         addPrefixToKeys(prevProps, optionFullName + ".")
                     );
                 }
             }
-        );
-        const entry = ensureNestedOption(
-            optionName,
-            owningCollection,
-            nestedOptionClass.type.DefaultsProps,
-            nestedOptionClass.type.TemplateProps,
-            nestedOptionClass.type.IsCollectionItem
         );
 
         entry.elementEntries.push({
