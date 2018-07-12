@@ -328,6 +328,31 @@ describe("nested sub-option", () => {
         });
     });
 
+    it("is pulled as a collection item after update inside another option", () => {
+        const component = mount(
+            <TestComponent>
+                <NestedComponent a={123} >
+                    <CollectionSubNestedComponent key={1} c={123} d="abc" />
+                    <CollectionSubNestedComponent key={2} c={456} />
+                    <CollectionSubNestedComponent key={3} d="def" />
+                </NestedComponent>
+            </TestComponent>
+        );
+        component.setProps({
+            children: (
+                <NestedComponent a={123} >
+                    <CollectionSubNestedComponent key={1} c={123} d="abc" />
+                    <CollectionSubNestedComponent key={2} c={999} />
+                    <CollectionSubNestedComponent key={3} d="def" />
+                </NestedComponent>
+            )
+        });
+        jest.runAllTimers();
+
+        expect(Widget.option.mock.calls.length).toBe(1);
+        expect(Widget.option.mock.calls[0]).toEqual(["option.subItemsOptions[1].c", 999]);
+    });
+
     it("is pulled after update", () => {
 
         const component = shallow(
