@@ -102,8 +102,6 @@ function mapWidget(
 
 function extractNestedComponents(props: IComplexProp[], rawWidgetName: string, widgetName: string): INestedComponent[] {
   const nameClassMap: Record<string, string> = {};
-  const result: INestedComponent[] = [];
-
   nameClassMap[rawWidgetName] = widgetName;
   props.forEach((p) => {
     nameClassMap[p.name] = uppercaseFirst(p.name);

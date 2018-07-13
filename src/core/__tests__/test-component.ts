@@ -15,12 +15,7 @@ const Widget = {
 const WidgetClass = jest.fn(() => Widget);
 
 class TestComponent<P = any> extends Component<P> {
-
-    constructor(props: P) {
-        super(props);
-
-        this._WidgetClass = WidgetClass;
-    }
+    protected _WidgetClass = WidgetClass;
 }
 
 function fireOptionChange(fullName: string, value: any) {
