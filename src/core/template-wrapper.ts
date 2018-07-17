@@ -23,7 +23,7 @@ class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps, object>
 
         const isGridRow = templateParent && templateParent.nodeName !== "DIV";
         const element: Element = (isGridRow ? templateElement : templateParent) as Element;
-
+      
         events.one(element, DX_REMOVE_EVENT, this.props.onRemoved);
     }
 }
