@@ -19,10 +19,10 @@ class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps, object>
 
     public componentDidMount() {
         const templateElement = ReactDOM.findDOMNode(this);
-        const templateParent = templateElement && templateElement.parentNode as Element;
+        const templateParent = templateElement && templateElement.parentNode;
 
         const isGridRow = templateParent && templateParent.nodeName !== "DIV";
-        const element: Element = isGridRow ? templateElement : templateParent;
+        const element: Element = (isGridRow ? templateElement : templateParent) as Element;
 
         events.one(element, DX_REMOVE_EVENT, this.props.onRemoved);
     }
