@@ -25,6 +25,10 @@ const DetailComponent = (props: any) => {
     );
 };
 
+const CityComponent = (props: any) => {
+    return <i>{props.displayValue}</i>;
+};
+
 export default class extends React.Component<any, { expandAll: boolean, pageSize: number }> {
 
     constructor(props: any) {
@@ -68,7 +72,7 @@ export default class extends React.Component<any, { expandAll: boolean, pageSize
                     <Selection mode="multiple" />
 
                     <Column dataField="orderId" caption="Order ID" width={90} />
-                    <Column dataField="city" />
+                    <Column dataField="city" cellComponent={CityComponent}/>
                     <Column dataField="country" groupIndex={0} width={180} />
                     <Column dataField="region" />
                     <Column dataField="date" dataType="date" />

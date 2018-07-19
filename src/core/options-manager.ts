@@ -147,9 +147,9 @@ class OptionsManager {
     ): Record<string, any> {
         const nestedOptions: Record<string, any> = {};
 
+        let templates = {};
         Object.keys(optionsCollection).forEach((key) => {
             const nestedOption = optionsCollection[key];
-            let templates = {};
             const options = nestedOption.elementEntries.map((e, index) => {
                 const props = separateProps(e.element.props,
                     nestedOption.defaults,
@@ -174,14 +174,14 @@ class OptionsManager {
                     ...this._getNestedOptionsObjects(e.children, stateUpdater)
                 };
             });
-            if (Object.keys(templates).length) {
-                nestedOptions.integrationOptions = {
-                    templates
-                };
-            }
-
             nestedOptions[nestedOption.name] = nestedOption.isCollectionItem ? options : options[options.length - 1];
         });
+
+        if (Object.keys(templates).length) {
+            nestedOptions.integrationOptions = {
+                templates
+            };
+        }
 
         return nestedOptions;
     }
