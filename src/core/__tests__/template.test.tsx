@@ -251,17 +251,18 @@ describe("component/render in nested options", () => {
     }
 
     // tslint:disable-next-line:max-classes-per-file
-    class AnotherNestedComponent extends ConfigurationComponent<{
-        content?: any;
-        contentRender?: any;
-        contentComponent?: any;
+    class CollectionNestedComponent extends ConfigurationComponent<{
+        template?: any;
+        render?: any;
+        component?: any;
     }> {
+        public static IsCollectionItem = true;
         public static OwnerType = TestComponent;
-        public static OptionName = "contentOption";
+        public static OptionName = "collection";
         public static TemplateProps = [{
-            tmplOption: "content",
-            render: "contentRender",
-            component: "contentComponent"
+            tmplOption: "template",
+            render: "render",
+            component: "component"
         }];
     }
 
@@ -275,14 +276,14 @@ describe("component/render in nested options", () => {
 
         const options = WidgetClass.mock.calls[0][1];
 
-        expect(options.option.item).toBe("item");
+        expect(options.option.item).toBe("optionitem");
 
         const integrationOptions = options.integrationOptions;
 
         expect(integrationOptions).toBeDefined();
         expect(integrationOptions.templates).toBeDefined();
-        expect(integrationOptions.templates.item).toBeDefined();
-        expect(typeof integrationOptions.templates.item.render).toBe("function");
+        expect(integrationOptions.templates.optionitem).toBeDefined();
+        expect(typeof integrationOptions.templates.optionitem.render).toBe("function");
     });
 
     it("pass integrationOptions options to widget with several templates", () => {
@@ -290,18 +291,37 @@ describe("component/render in nested options", () => {
         mount(
             <TestComponent>
                 <NestedComponent itemComponent={UserTemplate} />
-                <AnotherNestedComponent contentRender={UserTemplate} />
+                <CollectionNestedComponent render={UserTemplate} />
             </TestComponent>
         );
 
         const options = WidgetClass.mock.calls[0][1];
 
-        expect(options.option.item).toBe("item");
-        expect(options.contentOption.content).toBe("content");
+        expect(options.option.item).toBe("optionitem");
+        expect(options.collection[0].template).toBe("collection[0]template");
 
         const integrationOptions = options.integrationOptions;
 
-        expect(Object.keys(integrationOptions.templates)).toEqual(["item", "content"]);
+        expect(Object.keys(integrationOptions.templates)).toEqual(["optionitem", "collection[0]template"]);
+    });
+
+    it("pass integrationOptions options for collection nested components", () => {
+        const UserTemplate = () => <div>Template</div>;
+        mount(
+            <TestComponent>
+                <CollectionNestedComponent render={UserTemplate} />
+                <CollectionNestedComponent render={UserTemplate} />
+            </TestComponent>
+        );
+
+        const options = WidgetClass.mock.calls[0][1];
+
+        expect(options.collection[0].template).toBe("collection[0]template");
+        expect(options.collection[1].template).toBe("collection[1]template");
+
+        const integrationOptions = options.integrationOptions;
+
+        expect(Object.keys(integrationOptions.templates)).toEqual(["collection[0]template", "collection[1]template"]);
     });
 
     it("renders templates", () => {
@@ -311,7 +331,7 @@ describe("component/render in nested options", () => {
                 <NestedComponent itemComponent={FirstTemplate} />
             </TestComponent >
         );
-        renderItemTemplate();
+        renderTemplate("optionitem");
         component.update();
         expect(component.find(".template").html()).toBe('<div class="template">First Template</div>');
 
