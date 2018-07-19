@@ -236,7 +236,7 @@ describe("nested template", () => {
 describe("component/render in nested options", () => {
 
     // tslint:disable-next-line:max-classes-per-file
-    class NestedComponentWithTemplates extends ConfigurationComponent<{
+    class NestedComponent extends ConfigurationComponent<{
         item?: any;
         itemRender?: any;
         itemComponent?: any;
@@ -250,11 +250,26 @@ describe("component/render in nested options", () => {
         }];
     }
 
+    // tslint:disable-next-line:max-classes-per-file
+    class AnotherNestedComponent extends ConfigurationComponent<{
+        content?: any;
+        contentRender?: any;
+        contentComponent?: any;
+    }> {
+        public static OwnerType = TestComponent;
+        public static OptionName = "contentOption";
+        public static TemplateProps = [{
+            tmplOption: "content",
+            render: "contentRender",
+            component: "contentComponent"
+        }];
+    }
+
     it("pass integrationOptions options to widget", () => {
         const ItemTemplate = () => <div>Template</div>;
         mount(
             <TestComponent>
-                <NestedComponentWithTemplates itemComponent={ItemTemplate} />
+                <NestedComponent itemComponent={ItemTemplate} />
             </TestComponent>
         );
 
@@ -270,11 +285,30 @@ describe("component/render in nested options", () => {
         expect(typeof integrationOptions.templates.item.render).toBe("function");
     });
 
+    it("pass integrationOptions options to widget with several templates", () => {
+        const UserTemplate = () => <div>Template</div>;
+        mount(
+            <TestComponent>
+                <NestedComponent itemComponent={UserTemplate} />
+                <AnotherNestedComponent contentRender={UserTemplate} />
+            </TestComponent>
+        );
+
+        const options = WidgetClass.mock.calls[0][1];
+
+        expect(options.option.item).toBe("item");
+        expect(options.contentOption.content).toBe("content");
+
+        const integrationOptions = options.integrationOptions;
+
+        expect(Object.keys(integrationOptions.templates)).toEqual(["item", "content"]);
+    });
+
     it("renders templates", () => {
         const FirstTemplate = () => <div className={"template"}>First Template</div>;
         const component = mount(
             <TestComponent>
-                <NestedComponentWithTemplates itemComponent={FirstTemplate} />
+                <NestedComponent itemComponent={FirstTemplate} />
             </TestComponent >
         );
         renderItemTemplate();
@@ -283,7 +317,7 @@ describe("component/render in nested options", () => {
 
         const SecondTemplate = () => <div className={"template"}>Second Template</div>;
         component.setProps({
-            children: <NestedComponentWithTemplates itemComponent={SecondTemplate} />
+            children: <NestedComponent itemComponent={SecondTemplate} />
         });
         component.update();
         expect(component.find(".template").html()).toBe('<div class="template">Second Template</div>');
