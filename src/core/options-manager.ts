@@ -154,11 +154,11 @@ class OptionsManager {
                 const props = separateProps(e.element.props,
                     nestedOption.defaults,
                     nestedOption.templates);
-
                 const templateOptions = getTemplateOptions({
                     options: props.templates,
                     nestedOptions: {},
                     templateProps: nestedOption.templates,
+                    ownerName: `${nestedOption.name}${nestedOption.isCollectionItem ? `[${index}]` : ""}`,
                     stateUpdater,
                     propsGetter: (prop) => nestedOption.elementEntries[index].element.props[prop]
                 });

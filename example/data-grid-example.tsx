@@ -29,6 +29,10 @@ const CityComponent = (props: any) => {
     return <i>{props.displayValue}</i>;
 };
 
+const RegionComponent = (props: any) => {
+    return <b>{props.displayValue}</b>;
+};
+
 export default class extends React.Component<any, { expandAll: boolean, pageSize: number }> {
 
     constructor(props: any) {
@@ -74,7 +78,7 @@ export default class extends React.Component<any, { expandAll: boolean, pageSize
                     <Column dataField="orderId" caption="Order ID" width={90} />
                     <Column dataField="city" cellComponent={CityComponent}/>
                     <Column dataField="country" groupIndex={0} width={180} />
-                    <Column dataField="region" />
+                    <Column dataField="region" cellComponent={RegionComponent}/>
                     <Column dataField="date" dataType="date" />
                     <Column dataField="amount" dataType="currency" width={90} />
 

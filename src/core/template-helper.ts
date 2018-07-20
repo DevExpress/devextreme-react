@@ -31,6 +31,7 @@ interface IIntegrationDescr {
     options: Record<string, any>;
     nestedOptions: Record<string, any>;
     templateProps: ITemplateMeta[];
+    ownerName?: string;
     propsGetter: PropsGetter;
     stateUpdater: StateUpdater;
 }
@@ -45,20 +46,22 @@ function getTemplateOptions(meta: IIntegrationDescr): {
     const stateUpdater = meta.stateUpdater;
     const templateProps = meta.templateProps || [];
 
+    const prefix = meta.ownerName || "";
     templateProps.forEach((m) => {
         if (!options[m.component] && !options[m.render]) {
             return;
         }
+        const name = `${prefix}${m.tmplOption}`;
 
         const templateDescr: ITemplateDescr = {
-            name: m.tmplOption,
+            name,
             propName: options[m.component] ? m.component : m.render,
             isComponent: !!options[m.component],
             isNested: false,
             propsGetter: meta.propsGetter
         };
-        templateStubs[m.tmplOption] = m.tmplOption;
-        templates[m.tmplOption] = wrapTemplate(templateDescr, stateUpdater);
+        templateStubs[m.tmplOption] = name;
+        templates[name] = wrapTemplate(templateDescr, stateUpdater);
     });
 
     const nestedOptions = meta.nestedOptions;
