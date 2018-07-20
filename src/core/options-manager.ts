@@ -158,7 +158,7 @@ class OptionsManager {
                     options: props.templates,
                     nestedOptions: {},
                     templateProps: nestedOption.templates,
-                    parentName: `${nestedOption.name}${nestedOption.isCollectionItem ? `[${index}]` : ""}`,
+                    ownerName: `${nestedOption.name}${nestedOption.isCollectionItem ? `[${index}]` : ""}`,
                     stateUpdater,
                     propsGetter: (prop) => nestedOption.elementEntries[index].element.props[prop]
                 });
