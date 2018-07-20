@@ -31,7 +31,7 @@ interface IIntegrationDescr {
     options: Record<string, any>;
     nestedOptions: Record<string, any>;
     templateProps: ITemplateMeta[];
-    templatePrefix?: string;
+    parentName?: string;
     propsGetter: PropsGetter;
     stateUpdater: StateUpdater;
 }
@@ -46,7 +46,7 @@ function getTemplateOptions(meta: IIntegrationDescr): {
     const stateUpdater = meta.stateUpdater;
     const templateProps = meta.templateProps || [];
 
-    const prefix = meta.templatePrefix || "";
+    const prefix = meta.parentName || "";
     templateProps.forEach((m) => {
         if (!options[m.component] && !options[m.render]) {
             return;
