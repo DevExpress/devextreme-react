@@ -369,7 +369,7 @@ DevExtreme React editors support built-in [data validation](https://js.devexpres
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { Button, TextBox, ValidationGroup, ValidationSummary } from 'devextreme-react';
+import { Button, TextBox, ValidationGroup, ValidationSummary, Validator } from 'devextreme-react';
 
 import 'devextreme/dist/css/dx.common.css';
 import 'devextreme/dist/css/dx.light.compact.css';
