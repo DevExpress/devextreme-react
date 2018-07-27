@@ -7,12 +7,15 @@ import "devextreme/dist/css/dx.light.compact.css";
 import AccordionExample from "./accordion-example";
 import ChartExample from "./chart-example";
 import DataGridExample from "./data-grid-example";
+import EditorExample from "./editor-example";
 import Example from "./example-block";
 import FormExample from "./form-example";
 import ListExample from "./list-example";
 import PopupExample from "./popup-example";
 import ScrollViewExample from "./scroll-view-example";
+import SlideOutViewExample from "./slide-out-view-example";
 import TextBoxExample from "./text-box-example";
+import ToolbarExample from "./toolbar-example";
 import ValidationExample from "./validation-example";
 
 import { Button, NumberBox, Scheduler } from "../src";
@@ -29,6 +32,8 @@ ReactDOM.render(
     <PopupExample />
 
     <TextBoxExample />
+    <ToolbarExample />
+    <EditorExample />
 
     <Example title="DxNumberBox">
       <NumberBox
@@ -39,6 +44,8 @@ ReactDOM.render(
         showSpinButtons={true}
       />
     </Example>
+
+    <SlideOutViewExample />
 
     <ScrollViewExample />
 
