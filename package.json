@@ -15,7 +15,7 @@
     "prop-types": "^15.6.1"
   },
   "peerDependencies": {
-    "devextreme": "^18.1.4",
+    "devextreme": "^18.1.6-pre-18220",
     "react": "^16.2.0",
     "react-dom": "^16.2.0"
   },
@@ -27,7 +27,7 @@
     "@types/react-dom": "^16.0.3",
     "css-loader": "^0.28.9",
     "dasherize": "^2.0.0",
-    "devextreme": "^18.1.4",
+    "devextreme": "^18.1.6-pre-18220",
     "dot": "^1.1.2",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
