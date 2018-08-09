@@ -87,7 +87,7 @@ describe("function template", () => {
         expect(component.find(".template").html()).toBe('<div class="template">Template with data</div>');
     });
 
-    it("call onRendered callback", () => {
+    it("calls onRendered callback", () => {
         const itemRender: any = (text: string) => <div className={"template"}>Template {text}</div>;
         const onRendered: () => void = jest.fn();
         const component = mount(

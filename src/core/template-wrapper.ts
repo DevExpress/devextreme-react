@@ -20,11 +20,8 @@ class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps, object>
 
     public componentDidMount() {
         if (this.props.onRendered) {
-            setTimeout(() => {
-                if (this.props.onRendered) {
-                    this.props.onRendered();
-                }
-            });
+            const onRendered: () => void = this.props.onRendered;
+            setTimeout(() => onRendered());
         }
 
         const templateElement = ReactDOM.findDOMNode(this);
