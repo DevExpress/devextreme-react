@@ -19,17 +19,17 @@ class ComponentWithTemplates extends TestComponent {
     }
 }
 
-function renderTemplate(name: string, model?: any, container?: any): Element {
+function renderTemplate(name: string, model?: any, container?: any, onRendered?: () => void): Element {
     model = model || {};
     container = container || document.createElement("div");
     const render = WidgetClass.mock.calls[0][1].integrationOptions.templates[name].render;
     return render({
-        container, model
+        container, model, onRendered
     });
 }
 
-function renderItemTemplate(model?: any, container?: any): Element {
-    return renderTemplate("item", model, container);
+function renderItemTemplate(model?: any, container?: any, onRendered?: () => void): Element {
+    return renderTemplate("item", model, container, onRendered);
 }
 
 describe("function template", () => {
@@ -85,6 +85,18 @@ describe("function template", () => {
         expect(itemRender).toBeCalled();
         component.update();
         expect(component.find(".template").html()).toBe('<div class="template">Template with data</div>');
+    });
+
+    it("calls onRendered callback", () => {
+        const itemRender: any = (text: string) => <div className={"template"}>Template {text}</div>;
+        const onRendered: () => void = jest.fn();
+        const component = mount(
+            <ComponentWithTemplates itemRender={itemRender} />
+        );
+        renderItemTemplate("with data", undefined, onRendered);
+        component.update();
+        jest.runAllTimers();
+        expect(onRendered).toBeCalled();
     });
 
     it("renders inside component", () => {

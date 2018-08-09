@@ -8,6 +8,7 @@ interface ITemplateWrapperProps {
     content: any;
     container: Element;
     onRemoved: () => void;
+    onRendered?: () => void;
     key: string;
 }
 
@@ -18,6 +19,11 @@ class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps, object>
     }
 
     public componentDidMount() {
+        if (this.props.onRendered) {
+            const onRendered: () => void = this.props.onRendered;
+            setTimeout(() => onRendered());
+        }
+
         const templateElement = ReactDOM.findDOMNode(this);
         const templateParent = templateElement && templateElement.parentNode;
 

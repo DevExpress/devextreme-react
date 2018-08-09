@@ -13,6 +13,7 @@ interface IDxTemplateData {
     container: any;
     model?: any;
     index?: any;
+    onRendered?: () => void;
 }
 
 interface IDxTemplate {
@@ -99,6 +100,7 @@ function wrapTemplate(templateDescr: ITemplateDescr, stateUpdater: StateUpdater)
                     content: contentProvider(data.model),
                     container: unwrapElement(data.container),
                     onRemoved: () => stateUpdater((t) => delete t[templateId]),
+                    onRendered: data.onRendered,
                     key: templateId
                 });
             };
