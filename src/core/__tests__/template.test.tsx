@@ -87,7 +87,7 @@ describe("function template", () => {
         expect(component.find(".template").html()).toBe('<div class="template">Template with data</div>');
     });
 
-    it("renders template wrapper around simple item", () => {
+    it("renders template wrapper for simple item", () => {
         const itemRender: any = jest.fn((text: string) => <div>Template {text}</div>);
         const component = mount(
             <ComponentWithTemplates itemRender={itemRender} />
