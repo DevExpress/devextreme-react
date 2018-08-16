@@ -87,6 +87,29 @@ describe("function template", () => {
         expect(component.find(".template").html()).toBe('<div class="template">Template with data</div>');
     });
 
+    it("renders template wrapper", () => {
+        const itemRender: any = jest.fn((text: string) => <div>Template {text}</div>);
+        const component = mount(
+            <ComponentWithTemplates itemRender={itemRender} />
+        );
+        const container = document.createElement("div");
+        renderItemTemplate("with data", container);
+        component.update();
+        expect(container.innerHTML).toBe('<div class="dx-template-wrapper"><div>Template with data</div></div>');
+    });
+
+    it("renders template for table", () => {
+        const itemRender: any = (text: string) => <tbody><tr><td>Template {text}</td></tr></tbody>;
+        const component = mount(
+            <ComponentWithTemplates itemRender={itemRender} />
+        );
+        const container = document.createElement("table");
+        renderItemTemplate("with data", container);
+        component.update();
+        expect(container.innerHTML)
+            .toBe("<tbody><tr><td>Template with data</td></tr></tbody>");
+    });
+
     it("calls onRendered callback", () => {
         const itemRender: any = (text: string) => <div className={"template"}>Template {text}</div>;
         const onRendered: () => void = jest.fn();
@@ -406,7 +429,10 @@ it("removes deleted nodes from state", () => {
     renderItemTemplate();
     expect(Object.getOwnPropertyNames(component.state("templates")).length).toBe(1);
     component.update();
-    events.triggerHandler(component.find(".template").getDOMNode().parentNode, "dxremove");
+    const templateContent = component.find(".template").getDOMNode();
+    const parentNode = templateContent.parentNode;
+    parentNode!.removeChild(templateContent);
+    events.triggerHandler(parentNode, "dxremove");
     component.update();
     expect(Object.getOwnPropertyNames(component.state("templates")).length).toBe(0);
 });

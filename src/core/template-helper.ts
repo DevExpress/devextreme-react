@@ -86,6 +86,16 @@ function getTemplateOptions(meta: IIntegrationDescr): {
 function wrapTemplate(templateDescr: ITemplateDescr, stateUpdater: StateUpdater): IDxTemplate {
     return {
         render: (data: IDxTemplateData) => {
+            const parentContainer = unwrapElement(data.container);
+            let container;
+            if (parentContainer.nodeName !== "TABLE" ) {
+                container = document.createElement("div");
+                container.classList.add("dx-template-wrapper");
+                parentContainer.appendChild(container);
+            } else {
+                container = parentContainer;
+            }
+
             const templateId = "__template_" + generateID();
             const createWrapper = (nestedTemplates) => {
                 const propsGetter = templateDescr.isNested
@@ -98,13 +108,14 @@ function wrapTemplate(templateDescr: ITemplateDescr, stateUpdater: StateUpdater)
 
                 return React.createElement<ITemplateWrapperProps>(TemplateWrapper, {
                     content: contentProvider(data.model),
-                    container: unwrapElement(data.container),
+                    container,
                     onRemoved: () => stateUpdater((t) => delete t[templateId]),
                     onRendered: data.onRendered,
                     key: templateId
                 });
             };
             stateUpdater((t) => t[templateId] = createWrapper);
+            return container;
         }
     };
 }
