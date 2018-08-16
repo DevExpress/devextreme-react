@@ -83,10 +83,25 @@ function getTemplateOptions(meta: IIntegrationDescr): {
     };
 }
 
+function prepareContainer(container: Element): Element {
+    container = unwrapElement(container);
+
+    if (container.nodeName === "TABLE" ) {
+        return container;
+    }
+
+    const result = document.createElement("div");
+    result.classList.add("dx-template-wrapper");
+    container.appendChild(result);
+
+    return result;
+}
+
 function wrapTemplate(templateDescr: ITemplateDescr, stateUpdater: StateUpdater): IDxTemplate {
     return {
         render: (data: IDxTemplateData) => {
             const templateId = "__template_" + generateID();
+            const container = prepareContainer(data.container);
             const createWrapper = (nestedTemplates) => {
                 const propsGetter = templateDescr.isNested
                     ? (prop) => nestedTemplates[templateDescr.name][prop]
@@ -98,13 +113,14 @@ function wrapTemplate(templateDescr: ITemplateDescr, stateUpdater: StateUpdater)
 
                 return React.createElement<ITemplateWrapperProps>(TemplateWrapper, {
                     content: contentProvider(data.model),
-                    container: unwrapElement(data.container),
+                    container,
                     onRemoved: () => stateUpdater((t) => delete t[templateId]),
                     onRendered: data.onRendered,
                     key: templateId
                 });
             };
             stateUpdater((t) => t[templateId] = createWrapper);
+            return container;
         }
     };
 }
