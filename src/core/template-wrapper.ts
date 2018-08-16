@@ -24,7 +24,7 @@ class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps, object>
             setTimeout(() => onRendered());
         }
         const restoreRemovedContent = () => {
-            //Let React remove it itself
+            // Let React remove it itself
             this.props.container.appendChild(ReactDOM.findDOMNode(this));
         };
         events.one(this.props.container, DX_REMOVE_EVENT, () => {
