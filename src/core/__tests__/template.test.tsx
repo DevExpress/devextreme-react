@@ -87,7 +87,7 @@ describe("function template", () => {
         expect(component.find(".template").html()).toBe('<div class="template">Template with data</div>');
     });
 
-    it("renders template wrapper", () => {
+    it("renders template wrapper around simple item", () => {
         const itemRender: any = jest.fn((text: string) => <div>Template {text}</div>);
         const component = mount(
             <ComponentWithTemplates itemRender={itemRender} />
@@ -247,7 +247,7 @@ describe("nested template", () => {
         expect(component.find(".template").html()).toBe('<div class="template">Template</div>');
     });
 
-    it("renders nested templates", () => {
+    it("renders new templates after component change", () => {
         const FirstTemplate = () => <div className={"template"}>First Template</div>;
         const component = mount(
             <ComponentWithTemplates>

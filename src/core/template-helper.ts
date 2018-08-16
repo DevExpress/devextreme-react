@@ -83,20 +83,25 @@ function getTemplateOptions(meta: IIntegrationDescr): {
     };
 }
 
+function prepareContainer(container: Element): Element {
+    container = unwrapElement(container);
+
+    if (container.nodeName === "TABLE" ) {
+        return container;
+    }
+
+    const result = document.createElement("div");
+    result.classList.add("dx-template-wrapper");
+    container.appendChild(result);
+
+    return result;
+}
+
 function wrapTemplate(templateDescr: ITemplateDescr, stateUpdater: StateUpdater): IDxTemplate {
     return {
         render: (data: IDxTemplateData) => {
-            const parentContainer = unwrapElement(data.container);
-            let container;
-            if (parentContainer.nodeName !== "TABLE" ) {
-                container = document.createElement("div");
-                container.classList.add("dx-template-wrapper");
-                parentContainer.appendChild(container);
-            } else {
-                container = parentContainer;
-            }
-
             const templateId = "__template_" + generateID();
+            const container = prepareContainer(data.container);
             const createWrapper = (nestedTemplates) => {
                 const propsGetter = templateDescr.isNested
                     ? (prop) => nestedTemplates[templateDescr.name][prop]
