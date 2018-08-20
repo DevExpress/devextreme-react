@@ -25,7 +25,10 @@ class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps, object>
         }
         const restoreRemovedContent = () => {
             // Let React remove it itself
-            this.props.container.appendChild(ReactDOM.findDOMNode(this));
+            const node = ReactDOM.findDOMNode(this);
+            if (node) {
+                this.props.container.appendChild(node);
+            }
         };
         events.one(this.props.container, DX_REMOVE_EVENT, () => {
             restoreRemovedContent();
