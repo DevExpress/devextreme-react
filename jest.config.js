@@ -6,6 +6,7 @@ module.exports = {
     "transform": {
       "^.+\\.(j|t)sx?$": "ts-jest"
     },
+    "testURL": "http://localhost",
     "testRegex": "test\\.(jsx?|tsx?)$",
     "moduleFileExtensions": [
       "ts",
