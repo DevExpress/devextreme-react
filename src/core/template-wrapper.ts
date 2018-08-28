@@ -12,7 +12,7 @@ interface ITemplateWrapperProps {
     key: string;
 }
 
-class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps, object> {
+class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps> {
 
     public render() {
         return ReactDOM.createPortal(this.props.content, this.props.container);

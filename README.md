@@ -272,6 +272,8 @@ ReactDOM.render(
 );
 ```
 
+**Note: You cannot use the `key` prop in template components because it is a special [React prop](https://reactjs.org/warnings/special-props.html ). Use `dxkey` instead.**
+
 Use the `render` property to specify a rendering function for a widget with `template` option:
 ```jsx
 import React from 'react';
