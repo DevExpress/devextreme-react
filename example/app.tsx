@@ -12,15 +12,14 @@ import Example from "./example-block";
 import FormExample from "./form-example";
 import ListExample from "./list-example";
 import PopupExample from "./popup-example";
+import SchedulerExample from "./scheduler-example";
 import ScrollViewExample from "./scroll-view-example";
 import SlideOutViewExample from "./slide-out-view-example";
 import TextBoxExample from "./text-box-example";
 import ToolbarExample from "./toolbar-example";
 import ValidationExample from "./validation-example";
 
-import { Button, NumberBox, Scheduler } from "../src";
-
-import { appointments } from "./data";
+import { Button, NumberBox } from "../src";
 
 ReactDOM.render(
   <div>
@@ -59,15 +58,8 @@ ReactDOM.render(
 
     <DataGridExample/>
 
-    <Example title="DxScheduler">
-      <Scheduler
-        dataSource={appointments}
-        height={400}
-        startDayHour={9}
-        defaultCurrentView={"week"}
-        defaultCurrentDate={new Date(2017, 4, 25)}
-      />
-    </Example>
+    <SchedulerExample />
+
     <ChartExample />
 
     <Example title="Element attributes">
