@@ -181,6 +181,17 @@ describe("component template", () => {
         expect(component.find(".template").html()).toBe('<div class="template">Template with data</div>');
     });
 
+    it("renders key prop", () => {
+        const ItemTemplate = (props: any) => <div className={"template"}>key: {props.key}, dxkey: {props.dxkey}</div>;
+        const component = mount(
+            <ComponentWithTemplates itemComponent={ItemTemplate} />
+        );
+
+        renderItemTemplate({ key: "key_1" });
+        component.update();
+        expect(component.find(".template").html()).toBe('<div class="template">key: , dxkey: key_1</div>');
+    });
+
     it("renders inside component", () => {
         const ItemTemplate = (props: any) => <div className={"template"}>Template {props.text}</div>;
         const component = mount(

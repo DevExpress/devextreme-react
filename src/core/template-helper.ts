@@ -111,8 +111,12 @@ function wrapTemplate(templateDescr: ITemplateDescr, stateUpdater: StateUpdater)
                     ? React.createElement.bind(null, propsGetter(templateDescr.propName))
                     : propsGetter(templateDescr.propName);
 
+                const model = data.model;
+                if (model && model.hasOwnProperty("key")) {
+                    model.dxkey = model.key;
+                }
                 return React.createElement<ITemplateWrapperProps>(TemplateWrapper, {
-                    content: contentProvider(data.model),
+                    content: contentProvider(model),
                     container,
                     onRemoved: () => stateUpdater((t) => delete t[templateId]),
                     onRendered: data.onRendered,
