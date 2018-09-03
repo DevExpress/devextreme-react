@@ -253,7 +253,10 @@ const renderImports: (model: {
 `<#?#>` +
 
 `import { <#= it.baseComponentName #> as BaseComponent` +
-    `<#? it.hasExtraOptions #>, IHtmlOptions<#?#> } from "<#= it.baseComponentPath #>";` + `\n` +
+    `<#? it.hasExtraOptions #>` +
+        `, IHtmlOptions` +
+    `<#?#>` +
+` } from "<#= it.baseComponentPath #>";` + `\n` +
 
 `<#? it.hasNestedComponents #>` +
     `import NestedOption from "<#= it.configComponentPath #>";` + `\n` +
