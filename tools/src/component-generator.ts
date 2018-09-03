@@ -116,7 +116,7 @@ function generate(component: IComponent): string {
         }))
         : null;
 
-    const hasExtraOptions = !!templates || !!defaultProps;
+    const hasExtraOptions = !component.isExtension;
     const widgetName =  `dx${uppercaseFirst(component.name)}`;
 
     const renderedPropTypings = component.propTypings
@@ -252,7 +252,11 @@ const renderImports: (model: {
     `import { PropTypes } from "prop-types";` + `\n` +
 `<#?#>` +
 
-`import { <#= it.baseComponentName #> as BaseComponent } from "<#= it.baseComponentPath #>";` + `\n` +
+`import { <#= it.baseComponentName #> as BaseComponent` +
+    `<#? it.hasExtraOptions #>` +
+        `, IHtmlOptions` +
+    `<#?#>` +
+` } from "<#= it.baseComponentPath #>";` + `\n` +
 
 `<#? it.hasNestedComponents #>` +
     `import NestedOption from "<#= it.configComponentPath #>";` + `\n` +
@@ -270,7 +274,7 @@ const renderOptionsInterface: (model: {
         type: string;
     }>;
 }) => string = createTempate(
-`interface <#= it.optionsName #> extends IOptions {` + `\n` +
+`interface <#= it.optionsName #> extends IOptions, IHtmlOptions {` + `\n` +
 
 `<#~ it.templates :template #>` +
     `  <#= template.render #>?: ${TYPE_RENDER};` + `\n` +
