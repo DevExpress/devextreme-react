@@ -3,7 +3,7 @@ import * as React from "react";
 
 import OptionsManager from "./options-manager";
 import { findProps as findNestedTemplateProps, ITemplateMeta } from "./template";
-import { separateProps } from "./widget-config";
+import { elementPropNames, separateProps } from "./widget-config";
 
 import {
   getTemplateOptions,
@@ -22,7 +22,13 @@ interface IState {
   templates: Record<string, TemplateGetter>;
 }
 
-abstract class ComponentBase<P> extends React.PureComponent<P, IState> {
+interface IHtmlOptions {
+  id?: string;
+  className?: string;
+  style?: any;
+}
+
+abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent<P, IState> {
   protected _WidgetClass: any;
   protected _instance: any;
   protected _element: any;
@@ -56,9 +62,15 @@ abstract class ComponentBase<P> extends React.PureComponent<P, IState> {
   }
 
   public render() {
+      const elementProps = { ref: (element: any) => this._element = element };
+      elementPropNames.forEach((name) => {
+        if (name in this.props) {
+          elementProps[name] = this.props[name];
+        }
+      });
       const args: any[] = [
         "div",
-        { ref: (element: any) => this._element = element }
+        elementProps
       ];
       this._optionsManager.resetNestedElements();
       let nestedTemplates: Record<string, any> = {};
@@ -166,7 +178,7 @@ function getNestedTemplates(rawProps: Record<string, any>): Record<string, any> 
 }
 
 // tslint:disable-next-line:max-classes-per-file
-class Component<P> extends ComponentBase<P> {
+class Component<P extends IHtmlOptions> extends ComponentBase<P> {
   private readonly _extensions: Array<(element: Element) => void> = [];
 
   public componentDidMount() {
@@ -205,6 +217,7 @@ class ExtensionComponent<P> extends ComponentBase<P> {
 
 export {
   IState,
+  IHtmlOptions,
   ComponentBase,
   Component,
   ExtensionComponent

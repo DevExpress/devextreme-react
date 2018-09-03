@@ -36,6 +36,18 @@ describe("rendering", () => {
         expect(Object.keys(component.props())).toEqual([]);
     });
 
+    it("passes id, className and style to element", () => {
+        const component = mount(
+            <TestComponent id={"id1"} className={"class1"} style={{ background: "red" }} />
+        );
+
+        const node = component.getDOMNode();
+
+        expect(node.id).toBe("id1");
+        expect(node.className).toBe("class1");
+        expect((node as HTMLElement).style.background).toEqual("red");
+    });
+
     it("creates nested component", () => {
         mount(
             <TestComponent>
