@@ -1,5 +1,7 @@
 import { ITemplateMeta } from "./template";
 
+const elementPropNames = ["style", "className", "id"];
+
 function separateProps(
     props: Record<string, any>,
     defaultsProps: Record<string, string>,
@@ -24,7 +26,7 @@ function separateProps(
     Object.keys(props).forEach((key) => {
         const defaultOptionName = defaultsProps ? defaultsProps[key] : null;
 
-        if (key === "children") {
+        if (isIgnoredProp(key)) {
             return;
         }
 
@@ -40,6 +42,11 @@ function separateProps(
     return { options, defaults, templates };
 }
 
+function isIgnoredProp(name) {
+    return name === "children" || elementPropNames.indexOf(name) > 0;
+}
+
 export {
+    elementPropNames,
     separateProps
 };
