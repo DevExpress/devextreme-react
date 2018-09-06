@@ -4,10 +4,13 @@ it("generates", () => {
     //#region EXPECTED
     const EXPECTED = `
 import dxCLASS_NAME, {
-    IOptions as ICLASS_NAMEOptions
+    IOptions
 } from "devextreme/DX/WIDGET/PATH";
 
-import { Component as BaseComponent } from "BASE_COMPONENT_PATH";
+import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
+
+interface ICLASS_NAMEOptions extends IOptions, IHtmlOptions {
+}
 
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 
@@ -80,9 +83,9 @@ import dxCLASS_NAME, {
     IOptions
 } from "devextreme/DX/WIDGET/PATH";
 
-import { Component as BaseComponent } from "BASE_COMPONENT_PATH";
+import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 
-interface ICLASS_NAMEOptions extends IOptions {
+interface ICLASS_NAMEOptions extends IOptions, IHtmlOptions {
   optionRender?: (props: any) => React.ReactNode;
   optionComponent?: React.ComponentType<any>;
 }
@@ -127,9 +130,9 @@ import dxCLASS_NAME, {
     IOptions
 } from "devextreme/DX/WIDGET/PATH";
 
-import { Component as BaseComponent } from "BASE_COMPONENT_PATH";
+import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 
-interface ICLASS_NAMEOptions extends IOptions {
+interface ICLASS_NAMEOptions extends IOptions, IHtmlOptions {
   optionRender?: (props: any) => React.ReactNode;
   optionComponent?: React.ComponentType<any>;
   anotherOptionRender?: (props: any) => React.ReactNode;
@@ -180,9 +183,9 @@ import dxCLASS_NAME, {
     IOptions
 } from "devextreme/DX/WIDGET/PATH";
 
-import { Component as BaseComponent } from "BASE_COMPONENT_PATH";
+import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 
-interface ICLASS_NAMEOptions extends IOptions {
+interface ICLASS_NAMEOptions extends IOptions, IHtmlOptions {
   render?: (props: any) => React.ReactNode;
   component?: React.ComponentType<any>;
 }
@@ -230,9 +233,9 @@ import dxCLASS_NAME, {
     IOptions
 } from "devextreme/DX/WIDGET/PATH";
 
-import { Component as BaseComponent } from "BASE_COMPONENT_PATH";
+import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 
-interface ICLASS_NAMEOptions extends IOptions {
+interface ICLASS_NAMEOptions extends IOptions, IHtmlOptions {
   defaultOption1?: someType;
 }
 
@@ -276,9 +279,9 @@ import dxCLASS_NAME, {
     IOptions
 } from "devextreme/DX/WIDGET/PATH";
 
-import { Component as BaseComponent } from "BASE_COMPONENT_PATH";
+import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 
-interface ICLASS_NAMEOptions extends IOptions {
+interface ICLASS_NAMEOptions extends IOptions, IHtmlOptions {
   defaultOption1?: someType;
   defaultOption2?: anotherType;
 }
@@ -324,11 +327,14 @@ describe("nested options", () => {
         //#region EXPECTED
         const EXPECTED = `
 import dxCLASS_NAME, {
-    IOptions as ICLASS_NAMEOptions
+    IOptions
 } from "devextreme/DX/WIDGET/PATH";
 
-import { Component as BaseComponent } from "BASE_COMPONENT_PATH";
+import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 import NestedOption from "CONFIG_COMPONENT_PATH";
+
+interface ICLASS_NAMEOptions extends IOptions, IHtmlOptions {
+}
 
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 
@@ -429,11 +435,14 @@ export {
         //#region EXPECTED
         const EXPECTED = `
 import dxCLASS_NAME, {
-    IOptions as ICLASS_NAMEOptions
+    IOptions
 } from "devextreme/DX/WIDGET/PATH";
 
-import { Component as BaseComponent } from "BASE_COMPONENT_PATH";
+import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 import NestedOption from "CONFIG_COMPONENT_PATH";
+
+interface ICLASS_NAMEOptions extends IOptions, IHtmlOptions {
+}
 
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 
@@ -512,11 +521,14 @@ export {
         //#region EXPECTED
         const EXPECTED = `
 import dxCLASS_NAME, {
-    IOptions as ICLASS_NAMEOptions
+    IOptions
 } from "devextreme/DX/WIDGET/PATH";
 
-import { Component as BaseComponent } from "BASE_COMPONENT_PATH";
+import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 import NestedOption from "CONFIG_COMPONENT_PATH";
+
+interface ICLASS_NAMEOptions extends IOptions, IHtmlOptions {
+}
 
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 
@@ -592,11 +604,14 @@ export {
         //#region EXPECTED
         const EXPECTED = `
 import dxCLASS_NAME, {
-    IOptions as ICLASS_NAMEOptions
+    IOptions
 } from "devextreme/DX/WIDGET/PATH";
 
-import { Component as BaseComponent } from "BASE_COMPONENT_PATH";
+import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 import NestedOption from "CONFIG_COMPONENT_PATH";
+
+interface ICLASS_NAMEOptions extends IOptions, IHtmlOptions {
+}
 
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 
@@ -664,11 +679,14 @@ describe("prop typings", () => {
         //#region EXPECTED
         const EXPECTED = `
 import dxCLASS_NAME, {
-    IOptions as ICLASS_NAMEOptions
+    IOptions
 } from "devextreme/DX/WIDGET/PATH";
 
 import { PropTypes } from "prop-types";
-import { Component as BaseComponent } from "BASE_COMPONENT_PATH";
+import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
+
+interface ICLASS_NAMEOptions extends IOptions, IHtmlOptions {
+}
 
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 
@@ -709,11 +727,14 @@ export {
         //#region EXPECTED
         const EXPECTED = `
 import dxCLASS_NAME, {
-    IOptions as ICLASS_NAMEOptions
+    IOptions
 } from "devextreme/DX/WIDGET/PATH";
 
 import { PropTypes } from "prop-types";
-import { Component as BaseComponent } from "BASE_COMPONENT_PATH";
+import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
+
+interface ICLASS_NAMEOptions extends IOptions, IHtmlOptions {
+}
 
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 
@@ -758,11 +779,14 @@ export {
         //#region EXPECTED
         const EXPECTED = `
 import dxCLASS_NAME, {
-    IOptions as ICLASS_NAMEOptions
+    IOptions
 } from "devextreme/DX/WIDGET/PATH";
 
 import { PropTypes } from "prop-types";
-import { Component as BaseComponent } from "BASE_COMPONENT_PATH";
+import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
+
+interface ICLASS_NAMEOptions extends IOptions, IHtmlOptions {
+}
 
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 
@@ -806,11 +830,14 @@ export {
         //#region EXPECTED
         const EXPECTED = `
 import dxCLASS_NAME, {
-    IOptions as ICLASS_NAMEOptions
+    IOptions
 } from "devextreme/DX/WIDGET/PATH";
 
 import { PropTypes } from "prop-types";
-import { Component as BaseComponent } from "BASE_COMPONENT_PATH";
+import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
+
+interface ICLASS_NAMEOptions extends IOptions, IHtmlOptions {
+}
 
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 
