@@ -42,11 +42,7 @@ function separateProps(
         options[key] = props[key];
     });
 
-    return {
-        options,
-        defaults,
-        templates
-    };
+    return { options, defaults, templates };
 }
 
 function getClassName(props: Record<string, any>): string | undefined {
