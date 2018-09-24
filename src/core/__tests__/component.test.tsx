@@ -91,6 +91,50 @@ describe("element attrs management", () => {
         expect((node as HTMLElement).style.background).toEqual("blue");
     });
 
+    it("sets id, className and style after init", () => {
+        const component = mount(
+            <TestComponent />
+        );
+
+        const node = component.getDOMNode();
+        component.setProps({
+            id: "id1",
+            className: "class1",
+            style: {
+                background: "red"
+            }
+        });
+
+        expect(node.id).toBe("id1");
+        expect(node.className).toBe("class1");
+        expect((node as HTMLElement).style.background).toEqual("red");
+    });
+
+    it("cleans className (empty string)", () => {
+        const component = mount(
+            <TestComponent className={"class1"} />
+        );
+
+        const node = component.getDOMNode();
+        component.setProps({
+            className: "",
+        });
+
+        expect(node.className).toBe("");
+    });
+
+    it("cleans className (undefined)", () => {
+        const component = mount(
+            <TestComponent className={"class1"} />
+        );
+
+        const node = component.getDOMNode();
+        component.setProps({
+            className: undefined,
+        });
+
+        expect(node.className).toBe("");
+    });
 });
 
 describe("disposing", () => {

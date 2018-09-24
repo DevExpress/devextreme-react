@@ -1,6 +1,7 @@
 import { ITemplateMeta } from "./template";
 
 const elementPropNames = ["style", "id"];
+const classNamePropName = "className";
 
 function separateProps(
     props: Record<string, any>,
@@ -10,13 +11,11 @@ function separateProps(
     options: Record<string, any>;
     defaults: Record<string, any>;
     templates: Record<string, any>;
-    classNames: string[] | null;
 } {
     templateProps = templateProps || [];
     const defaults: Record<string, any> = {};
     const options: Record<string, any> = {};
     const templates: Record<string, any> = {};
-    let classNames: string[] | null = null;
 
     const knownTemplates: Record<string, any> = {};
 
@@ -28,13 +27,7 @@ function separateProps(
     Object.keys(props).forEach((key) => {
         const defaultOptionName = defaultsProps ? defaultsProps[key] : null;
 
-        if (isIgnoredProp(key)) {
-            if (key === "className") {
-                classNames = props[key].split(" ");
-            }
-
-            return;
-        }
+        if (isIgnoredProp(key)) { return; }
 
         if (defaultOptionName) {
             defaults[defaultOptionName] = props[key];
@@ -49,14 +42,23 @@ function separateProps(
         options[key] = props[key];
     });
 
-    return { options, defaults, templates, classNames };
+    return {
+        options,
+        defaults,
+        templates
+    };
+}
+
+function getClassName(props: Record<string, any>): string | undefined {
+    return props[classNamePropName];
 }
 
 function isIgnoredProp(name: string) {
-    return name === "children" || name === "className" || elementPropNames.indexOf(name) > -1;
+    return name === "children" || name === classNamePropName || elementPropNames.indexOf(name) > -1;
 }
 
 export {
     elementPropNames,
+    getClassName,
     separateProps
 };
