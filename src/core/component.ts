@@ -3,7 +3,7 @@ import * as React from "react";
 
 import OptionsManager from "./options-manager";
 import { findProps as findNestedTemplateProps, ITemplateMeta } from "./template";
-import { elementPropNames, separateProps } from "./widget-config";
+import { elementPropNames, getClassName, separateProps } from "./widget-config";
 
 import {
   getTemplateOptions,
@@ -146,20 +146,24 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
   }
 
   private _updateCssClasses(prevProps: P | null, newProps: P) {
-    const prevClasses = prevProps ? this._getCssClasses(prevProps) : null;
-    const newClasses = this._getCssClasses(newProps);
+    const prevClassName = prevProps ? getClassName(prevProps) : undefined;
+    const newClassName = getClassName(newProps);
 
-    if (!newClasses) { return; }
+    if (prevClassName === newClassName) { return; }
 
-    if (prevClasses) {
-      this._element.classList.remove(...prevClasses);
+    if (prevClassName) {
+      const classNames = prevClassName.split(" ").filter((c) => c);
+      if (classNames.length) {
+        this._element.classList.remove(...classNames);
+      }
     }
 
-    this._element.classList.add(...newClasses);
-  }
-
-  private _getCssClasses(props: Record<string, any>): string[] | null {
-    return separateProps(props, this._defaults, this._templateProps).classNames;
+    if (newClassName) {
+      const classNames = newClassName.split(" ").filter((c) => c);
+      if (classNames.length) {
+        this._element.classList.add(...classNames);
+      }
+    }
   }
 
   private _prepareProps(rawProps: Record<string, any>): IWidgetConfig {
