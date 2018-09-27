@@ -7,13 +7,13 @@ interface ITemplateMeta {
     render: string;
 }
 
-interface TemplateProps {
+interface ITemplateProps {
     name: string;
     component?: any;
     render?: any;
 }
 
-class Template extends React.PureComponent<TemplateProps, any> {
+class Template extends React.PureComponent<ITemplateProps, any> {
     public render() {
         return null;
     }
