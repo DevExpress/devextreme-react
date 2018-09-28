@@ -7,20 +7,29 @@ interface ITemplateMeta {
     render: string;
 }
 
-class Template extends React.PureComponent<{
+interface ITemplateProps {
     name: string;
     component?: any;
     render?: any;
-}, any> {
+}
+
+class Template extends React.PureComponent<ITemplateProps, any> {
     public render() {
         return null;
     }
 }
 
+const requiredPropsCheck = (props: Record<string, any>) => {
+    if (!props.component && !props.render) {
+        return new Error("The Template component requires 'component' or 'render' property");
+    }
+    return null;
+};
+
 (Template as any).propTypes = {
     name: PropTypes.string.isRequired,
-    component: PropTypes.func,
-    render: PropTypes.func
+    component: requiredPropsCheck,
+    render: requiredPropsCheck
 };
 
 function findProps(child: React.ReactElement<any>): Record<string, { render: any, component: any }> {
