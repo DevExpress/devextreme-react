@@ -21,7 +21,7 @@ class Template extends React.PureComponent<ITemplateProps, any> {
 
 const requiredPropsCheck = (props: Record<string, any>) => {
     if (!props.component && !props.render) {
-        return new Error("One of 'component' or 'render' is required by Template component.");
+        return new Error("The Template component requires 'component' or 'render' property");
     }
     return null;
 };
