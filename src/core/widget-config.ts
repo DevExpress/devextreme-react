@@ -1,11 +1,12 @@
 import { ITemplateMeta } from "./template";
 
-const elementPropNames = ["style", "className", "id"];
+const elementPropNames = ["style", "id"];
+const classNamePropName = "className";
 
 function separateProps(
     props: Record<string, any>,
     defaultsProps: Record<string, string>,
-    templateProps: ITemplateMeta[]
+    templateProps: ITemplateMeta[],
 ): {
     options: Record<string, any>;
     defaults: Record<string, any>;
@@ -26,27 +27,34 @@ function separateProps(
     Object.keys(props).forEach((key) => {
         const defaultOptionName = defaultsProps ? defaultsProps[key] : null;
 
-        if (isIgnoredProp(key)) {
-            return;
-        }
+        if (isIgnoredProp(key)) { return; }
 
         if (defaultOptionName) {
             defaults[defaultOptionName] = props[key];
-        } else if (knownTemplates[key]) {
-            templates[key] = props[key];
-        } else {
-            options[key] = props[key];
+            return;
         }
+
+        if (knownTemplates[key]) {
+            templates[key] = props[key];
+            return;
+        }
+
+        options[key] = props[key];
     });
 
     return { options, defaults, templates };
 }
 
-function isIgnoredProp(name) {
-    return name === "children" || elementPropNames.indexOf(name) > 0;
+function getClassName(props: Record<string, any>): string | undefined {
+    return props[classNamePropName];
+}
+
+function isIgnoredProp(name: string) {
+    return name === "children" || name === classNamePropName || elementPropNames.indexOf(name) > -1;
 }
 
 export {
     elementPropNames,
+    getClassName,
     separateProps
 };
