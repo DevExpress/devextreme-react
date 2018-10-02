@@ -3,7 +3,7 @@ import * as React from "react";
 
 import OptionsManager from "./options-manager";
 import { findProps as findNestedTemplateProps, ITemplateMeta } from "./template";
-import { elementPropNames, separateProps } from "./widget-config";
+import { elementPropNames, getClassName, separateProps } from "./widget-config";
 
 import {
   getTemplateOptions,
@@ -31,7 +31,7 @@ interface IHtmlOptions {
 abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent<P, IState> {
   protected _WidgetClass: any;
   protected _instance: any;
-  protected _element: any;
+  protected _element: HTMLDivElement;
 
   protected readonly _defaults: Record<string, string>;
 
@@ -62,7 +62,10 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
   }
 
   public render() {
-      const elementProps = { ref: (element: any) => this._element = element };
+      const elementProps: Record<string, any> = {
+        ref: (element: HTMLDivElement) => this._element = element
+      };
+
       elementPropNames.forEach((name) => {
         if (name in this.props) {
           elementProps[name] = this.props[name];
@@ -89,6 +92,14 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
       });
 
       return React.createElement.apply(this, args);
+  }
+
+  public componentDidMount() {
+    this._updateCssClasses(null, this.props);
+  }
+
+  public componentDidUpdate(prevProps: P) {
+    this._updateCssClasses(prevProps, this.props);
   }
 
   public componentWillUnmount() {
@@ -132,6 +143,27 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
             templates
         };
     });
+  }
+
+  private _updateCssClasses(prevProps: P | null, newProps: P) {
+    const prevClassName = prevProps ? getClassName(prevProps) : undefined;
+    const newClassName = getClassName(newProps);
+
+    if (prevClassName === newClassName) { return; }
+
+    if (prevClassName) {
+      const classNames = prevClassName.split(" ").filter((c) => c);
+      if (classNames.length) {
+        this._element.classList.remove(...classNames);
+      }
+    }
+
+    if (newClassName) {
+      const classNames = newClassName.split(" ").filter((c) => c);
+      if (classNames.length) {
+        this._element.classList.add(...classNames);
+      }
+    }
   }
 
   private _prepareProps(rawProps: Record<string, any>): IWidgetConfig {
@@ -182,6 +214,7 @@ class Component<P extends IHtmlOptions> extends ComponentBase<P> {
   private readonly _extensions: Array<(element: Element) => void> = [];
 
   public componentDidMount() {
+    super.componentDidMount();
     this._createWidget();
     this._extensions.forEach((extension) => extension.call(this, this._element));
   }
