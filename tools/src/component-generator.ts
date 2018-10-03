@@ -1,4 +1,4 @@
-import { createTempate } from "./template";
+import { createTempate, L1, L2, L3, L4 } from "./template";
 
 import {
     createKeyComparator,
@@ -25,6 +25,7 @@ interface INestedComponent {
     ownerClassName: string;
     options: IOption[];
     templates: string[];
+    predefinedProps?: Record<string, any>;
     isCollectionItem?: boolean;
 }
 
@@ -83,6 +84,15 @@ function generate(component: IComponent): string {
                         });
                     });
                 }
+
+                let predefinedProps;
+                if (c.predefinedProps) {
+                    predefinedProps = Object.keys(c.predefinedProps).map((name) => ({
+                        name,
+                        value: c.predefinedProps[name]
+                    }));
+                }
+
                 return {
                     className: c.className,
                     optionName: c.optionName,
@@ -90,7 +100,8 @@ function generate(component: IComponent): string {
                     renderedType: renderObject(options, 0),
                     renderedSubscribableOptions,
                     renderedTemplateProps: nestedTemplates && nestedTemplates.map(renderTemplateOption),
-                    isCollectionItem: c.isCollectionItem
+                    isCollectionItem: c.isCollectionItem,
+                    predefinedProps
                 };
             })
         : null;
@@ -196,6 +207,7 @@ function createPropTypingModel(typing: IPropTyping): IRenderedPropTyping {
 }
 
 // tslint:disable:max-line-length
+
 const renderModule: (model: {
     renderedImports: string;
     renderedOptionsInterface: string;
@@ -220,7 +232,7 @@ const renderModule: (model: {
     `// tslint:disable:max-classes-per-file` +
     `<#~ it.renderedNestedComponents :nestedComponent #>` + `\n` + `\n` +
         `<#= nestedComponent #>` +
-    `}<#~#>` + `\n` + `\n` +
+    `<#~#>` + `\n` + `\n` +
     `<#~ it.nestedComponentLinks :link #>` +
     `(<#= link.className #> as any).OwnerType = <#= link.ownerClassName #>;` + `\n` +
     `<#~#>` + `\n` +
@@ -321,24 +333,39 @@ const renderNestedComponent: (model: {
     className: string;
     optionName: string;
     isCollectionItem: boolean;
+    predefinedProps: Array<{
+        name: string;
+        value: any;
+    }>;
     renderedType: string;
     renderedSubscribableOptions: string[];
     renderedTemplateProps: string[];
 }) => string = createTempate(
-`class <#= it.className #> extends NestedOption<<#= it.renderedType #>> {` + `\n` +
-`  public static OptionName = "<#= it.optionName #>";` + `\n` +
+`class <#= it.className #> extends NestedOption<<#= it.renderedType #>> {` +
+L1 + `public static OptionName = "<#= it.optionName #>";` +
 
 `<#? it.isCollectionItem #>` +
-`  public static IsCollectionItem = true;` + `\n` +
+    L1 + `public static IsCollectionItem = true;` +
 `<#?#>` +
 
 `<#? it.renderedSubscribableOptions #>` +
-`  public static DefaultsProps = {<#= it.renderedSubscribableOptions.join(',') #>` + `\n` +
-`  };` + `\n` +
+    L1 + `public static DefaultsProps = {<#= it.renderedSubscribableOptions.join(',') #>` +
+    L1 + `};` +
 `<#?#>` +
+
 `<#? it.renderedTemplateProps #>` +
-`  public static TemplateProps = [<#= it.renderedTemplateProps.join(', ') #>];` + `\n` +
-`<#?#>`
+    L1 + `public static TemplateProps = [<#= it.renderedTemplateProps.join(', ') #>];` +
+`<#?#>` +
+
+`<#? it.predefinedProps #>` +
+    L1 + `public static PredefinedProps = {` +
+        `<#~ it.predefinedProps : prop #>` +
+            L2 + `<#= prop.name #>: "<#= prop.value #>",` +
+        `<#~#>` + `\b` +
+    L1 + `};` +
+`<#?#>` +
+
+`\n}`
 );
 
 const renderTemplateOption: (model: {

@@ -8,6 +8,32 @@ class NestedComponent extends ConfigurationComponent<{ a: number }> {
     public static OptionName = "option";
 }
 
+class NestedComponentWithPredfeinedProps extends ConfigurationComponent<{ a: number }> {
+    public static OwnerType = TestComponent;
+    public static OptionName = "option";
+    public static PredefinedProps = {
+        predefinedProp: "predefined-value"
+    };
+}
+
+class CollectionNestedWithPredfeinedProps1 extends ConfigurationComponent<{ a: number }> {
+    public static IsCollectionItem = true;
+    public static OwnerType = TestComponent;
+    public static OptionName = "option";
+    public static PredefinedProps = {
+        predefinedProp: "predefined-value-1"
+    };
+}
+
+class CollectionNestedWithPredfeinedProps2 extends ConfigurationComponent<{ a: number }> {
+    public static IsCollectionItem = true;
+    public static OwnerType = TestComponent;
+    public static OptionName = "option";
+    public static PredefinedProps = {
+        predefinedProp: "predefined-value-2"
+    };
+}
+
 class SubNestedComponent extends ConfigurationComponent<{ d: string }> {
     public static OwnerType = NestedComponent;
     public static OptionName = "subOption";
@@ -142,6 +168,34 @@ describe("nested option", () => {
                 { d: "def" }
             ]
         });
+    });
+
+    it("is pulled with predefined props", () => {
+        mount(
+            <TestComponent>
+                <NestedComponentWithPredfeinedProps a={123} />
+            </TestComponent>
+        );
+
+        const actualProps = WidgetClass.mock.calls[0][1];
+        expect(actualProps.option).toHaveProperty("predefinedProp");
+        expect(actualProps.option.predefinedProp).toBe("predefined-value");
+    });
+
+
+    it("is pulled with predefined props (several)", () => {
+        mount(
+            <TestComponent>
+                <CollectionNestedWithPredfeinedProps1 a={123} />
+                <CollectionNestedWithPredfeinedProps2 a={456} />
+            </TestComponent>
+        );
+
+        const actualProps = WidgetClass.mock.calls[0][1];
+        expect(actualProps.option).toEqual([
+            { predefinedProp: "predefined-value-1", a: 123 },
+            { predefinedProp: "predefined-value-2", a: 456 }
+        ]);
     });
 
     it("is pulled as a collection item after update", () => {

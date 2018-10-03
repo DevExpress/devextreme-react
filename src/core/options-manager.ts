@@ -12,6 +12,7 @@ interface INestedOptionDescr {
     elementEntries: Array<{
         element: React.ReactElement<any>;
         children: Record<string, INestedOptionDescr>;
+        predefinedProps: Record<string, any>;
     }>;
     isCollectionItem: boolean;
 }
@@ -22,7 +23,8 @@ interface INestedOptionClass {
         OwnerType: any;
         OptionName: string;
         DefaultsProps: Record<string, string>;
-        TemplateProps: ITemplateMeta[]
+        TemplateProps: ITemplateMeta[];
+        PredefinedProps: Record<string, any>;
     };
     props: object;
 }
@@ -167,7 +169,9 @@ class OptionsManager {
                     ...templates,
                     ...templateOptions.templates
                 };
+
                 return {
+                    ...e.predefinedProps,
                     ...props.defaults,
                     ...props.options,
                     ...templateOptions.templateStubs,
@@ -239,7 +243,8 @@ class OptionsManager {
 
         entry.elementEntries.push({
             element,
-            children: nestedOptionsCollection
+            children: nestedOptionsCollection,
+            predefinedProps: nestedOptionClass.type.PredefinedProps
         });
 
         return optionComponent;
