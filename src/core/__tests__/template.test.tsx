@@ -287,7 +287,6 @@ describe("component/render in nested options", () => {
         itemRender?: any;
         itemComponent?: any;
     }> {
-        public static OwnerType = TestComponent;
         public static OptionName = "option";
         public static TemplateProps = [{
             tmplOption: "item",
@@ -303,7 +302,6 @@ describe("component/render in nested options", () => {
         component?: any;
     }> {
         public static IsCollectionItem = true;
-        public static OwnerType = TestComponent;
         public static OptionName = "collection";
         public static TemplateProps = [{
             tmplOption: "template",
