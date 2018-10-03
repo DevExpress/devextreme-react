@@ -182,7 +182,6 @@ describe("nested option", () => {
         expect(actualProps.option.predefinedProp).toBe("predefined-value");
     });
 
-
     it("is pulled with predefined props (several)", () => {
         mount(
             <TestComponent>
