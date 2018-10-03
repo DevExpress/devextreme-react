@@ -147,22 +147,22 @@ class OptionsManager {
         optionsCollection: Record<string, INestedOptionDescr>,
         stateUpdater: any
     ): Record<string, any> {
-        const nestedOptions: Record<string, any> = {};
+        const configComponents: Record<string, any> = {};
 
         let templates = {};
         Object.keys(optionsCollection).forEach((key) => {
-            const nestedOption = optionsCollection[key];
-            const options = nestedOption.elementEntries.map((e, index) => {
+            const configComponent = optionsCollection[key];
+            const options = configComponent.elementEntries.map((e, index) => {
                 const props = separateProps(e.element.props,
-                    nestedOption.defaults,
-                    nestedOption.templates);
+                    configComponent.defaults,
+                    configComponent.templates);
                 const templateOptions = getTemplateOptions({
                     options: props.templates,
                     nestedOptions: {},
-                    templateProps: nestedOption.templates,
-                    ownerName: `${nestedOption.name}${nestedOption.isCollectionItem ? `[${index}]` : ""}`,
+                    templateProps: configComponent.templates,
+                    ownerName: `${configComponent.name}${configComponent.isCollectionItem ? `[${index}]` : ""}`,
                     stateUpdater,
-                    propsGetter: (prop) => nestedOption.elementEntries[index].element.props[prop]
+                    propsGetter: (prop) => configComponent.elementEntries[index].element.props[prop]
                 });
 
                 templates = {
@@ -178,16 +178,18 @@ class OptionsManager {
                     ...this._getNestedOptionsObjects(e.children, stateUpdater)
                 };
             });
-            nestedOptions[nestedOption.name] = nestedOption.isCollectionItem ? options : options[options.length - 1];
+            configComponents[configComponent.name] = configComponent.isCollectionItem
+                ? options
+                : options[options.length - 1];
         });
 
         if (Object.keys(templates).length) {
-            nestedOptions.integrationOptions = {
+            configComponents.integrationOptions = {
                 templates
             };
         }
 
-        return nestedOptions;
+        return configComponents;
     }
 
     private _registerNestedOption(
