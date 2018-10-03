@@ -52,16 +52,19 @@ it("returns undefined if array is null", () => {
 });
 
 it("expands custom types", () => {
-    expect(convertTypes([
-        { type: "CustomType", isCustomType: true, acceptableValues: [] },
-    ], {
-        CustomType: {
-            name: "CustomType",
-            types: [
-                { type: "String", isCustomType: false, acceptableValues: []},
-                { type: "Number", isCustomType: false, acceptableValues: []}
-            ],
-            props: []
+    expect(convertTypes(
+        [
+            { type: "CustomType", isCustomType: true, acceptableValues: [] },
+        ], {
+            CustomType: {
+                name: "CustomType",
+                types: [
+                    { type: "String", isCustomType: false, acceptableValues: []},
+                    { type: "Number", isCustomType: false, acceptableValues: []}
+                ],
+                props: [],
+                templates: []
+            }
         }
-    })).toEqual(["object", "string", "number"]);
+    )).toEqual(["object", "string", "number"]);
 });

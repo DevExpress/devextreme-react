@@ -441,9 +441,11 @@ it("removes deleted nodes from state", () => {
     expect(Object.getOwnPropertyNames(component.state("templates")).length).toBe(1);
     component.update();
     const templateContent = component.find(".template").getDOMNode();
-    const parentNode = templateContent.parentNode;
-    parentNode!.removeChild(templateContent);
-    events.triggerHandler(parentNode, "dxremove");
+    const parentElement = templateContent.parentElement;
+    if (!parentElement) { throw new Error(); }
+
+    parentElement.removeChild(templateContent);
+    events.triggerHandler(parentElement, "dxremove");
     component.update();
     expect(Object.getOwnPropertyNames(component.state("templates")).length).toBe(0);
 });
