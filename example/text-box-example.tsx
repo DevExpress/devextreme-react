@@ -4,7 +4,7 @@ import Example from "./example-block";
 import dxTextBox from "devextreme/ui/text_box";
 import { Button } from "../src/ui/button";
 import { TextBox } from "../src/ui/text-box";
-import { ValidationRule, Validator } from "../src/ui/validator";
+import { RequiredRule, Validator } from "../src/ui/validator";
 
 export default class extends React.Component<any, { text: string; uncontrolledText: string; }> {
 
@@ -44,7 +44,7 @@ export default class extends React.Component<any, { text: string; uncontrolledTe
                 validation (required)
                 <TextBox valueChangeEvent="input" defaultValue={"required text"}>
                     <Validator >
-                        <ValidationRule type="required" message="this is required" />
+                        <RequiredRule message="this is required" />
                     </Validator>
                 </TextBox>
             </Example>
