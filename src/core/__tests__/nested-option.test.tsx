@@ -4,12 +4,10 @@ import { TestComponent, Widget, WidgetClass } from "./test-component";
 
 // tslint:disable:max-classes-per-file
 class NestedComponent extends ConfigurationComponent<{ a: number }> {
-    public static OwnerType = TestComponent;
     public static OptionName = "option";
 }
 
 class NestedComponentWithPredfeinedProps extends ConfigurationComponent<{ a: number }> {
-    public static OwnerType = TestComponent;
     public static OptionName = "option";
     public static PredefinedProps = {
         predefinedProp: "predefined-value"
@@ -18,7 +16,6 @@ class NestedComponentWithPredfeinedProps extends ConfigurationComponent<{ a: num
 
 class CollectionNestedWithPredfeinedProps1 extends ConfigurationComponent<{ a: number }> {
     public static IsCollectionItem = true;
-    public static OwnerType = TestComponent;
     public static OptionName = "option";
     public static PredefinedProps = {
         predefinedProp: "predefined-value-1"
@@ -27,7 +24,6 @@ class CollectionNestedWithPredfeinedProps1 extends ConfigurationComponent<{ a: n
 
 class CollectionNestedWithPredfeinedProps2 extends ConfigurationComponent<{ a: number }> {
     public static IsCollectionItem = true;
-    public static OwnerType = TestComponent;
     public static OptionName = "option";
     public static PredefinedProps = {
         predefinedProp: "predefined-value-2"
@@ -35,36 +31,27 @@ class CollectionNestedWithPredfeinedProps2 extends ConfigurationComponent<{ a: n
 }
 
 class SubNestedComponent extends ConfigurationComponent<{ d: string }> {
-    public static OwnerType = NestedComponent;
     public static OptionName = "subOption";
 }
 
 class AnotherSubNestedComponent extends ConfigurationComponent<{ e: string }> {
-    public static OwnerType = NestedComponent;
     public static OptionName = "anotherSubOption";
 }
 
 class AnotherNestedComponent extends ConfigurationComponent<{ b: string }> {
-    public static OwnerType = TestComponent;
     public static OptionName = "anotherOption";
 }
 
 class CollectionNestedComponent extends ConfigurationComponent<{ c?: number, d?: string }> {
     public static IsCollectionItem = true;
-    public static OwnerType = TestComponent;
     public static OptionName = "itemOptions";
 }
 
 class CollectionSubNestedComponent extends ConfigurationComponent<{ c?: number, d?: string }> {
     public static IsCollectionItem = true;
-    public static OwnerType = NestedComponent;
     public static OptionName = "subItemsOptions";
 }
 
-class WrongNestedComponent extends ConfigurationComponent<{ x: number }> {
-    public static OwnerType = WrongNestedComponent;
-    public static OptionName = "optionW";
-}
 // tslint:enable:max-classes-per-file
 
 describe("nested option", () => {
@@ -88,7 +75,6 @@ describe("nested option", () => {
         mount(
             <TestComponent>
                 <NestedComponent a={123} />
-                <WrongNestedComponent x={456} />
                 <AnotherNestedComponent b="abc" />
             </TestComponent>
         );
@@ -100,22 +86,6 @@ describe("nested option", () => {
             },
             anotherOption: {
                 b: "abc"
-            }
-        });
-    });
-
-    it("isn't pulled by wrong parent", () => {
-        mount(
-            <TestComponent>
-                <NestedComponent a={123} />
-                <WrongNestedComponent x={456} />
-            </TestComponent>
-        );
-
-        expect(WidgetClass.mock.calls[0][1]).toEqual({
-            templatesRenderAsynchronously: true,
-            option: {
-                a: 123
             }
         });
     });
@@ -275,7 +245,6 @@ describe("nested sub-option", () => {
             <TestComponent>
                 <NestedComponent a={123} >
                     <SubNestedComponent d={"abc"} />
-                    <WrongNestedComponent x={456} />
                     <AnotherSubNestedComponent e={"def"} />
                 </NestedComponent>
             </TestComponent>
@@ -290,27 +259,6 @@ describe("nested sub-option", () => {
                 },
                 anotherSubOption: {
                     e: "def"
-                }
-            }
-        });
-    });
-
-    it("isn't pulled by wrong parent", () => {
-        mount(
-            <TestComponent>
-                <NestedComponent a={123} >
-                    <SubNestedComponent d={"abc"} />
-                    <WrongNestedComponent x={456} />
-                </NestedComponent>
-            </TestComponent>
-        );
-
-        expect(WidgetClass.mock.calls[0][1]).toEqual({
-            templatesRenderAsynchronously: true,
-            option: {
-                a: 123,
-                subOption: {
-                    d: "abc"
                 }
             }
         });

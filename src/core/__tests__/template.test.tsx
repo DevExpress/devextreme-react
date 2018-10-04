@@ -287,7 +287,6 @@ describe("component/render in nested options", () => {
         itemRender?: any;
         itemComponent?: any;
     }> {
-        public static OwnerType = TestComponent;
         public static OptionName = "option";
         public static TemplateProps = [{
             tmplOption: "item",
@@ -303,7 +302,6 @@ describe("component/render in nested options", () => {
         component?: any;
     }> {
         public static IsCollectionItem = true;
-        public static OwnerType = TestComponent;
         public static OptionName = "collection";
         public static TemplateProps = [{
             tmplOption: "template",
@@ -441,9 +439,11 @@ it("removes deleted nodes from state", () => {
     expect(Object.getOwnPropertyNames(component.state("templates")).length).toBe(1);
     component.update();
     const templateContent = component.find(".template").getDOMNode();
-    const parentNode = templateContent.parentNode;
-    parentNode!.removeChild(templateContent);
-    events.triggerHandler(parentNode, "dxremove");
+    const parentElement = templateContent.parentElement;
+    if (!parentElement) { throw new Error(); }
+
+    parentElement.removeChild(templateContent);
+    events.triggerHandler(parentElement, "dxremove");
     component.update();
     expect(Object.getOwnPropertyNames(component.state("templates")).length).toBe(0);
 });

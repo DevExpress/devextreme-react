@@ -101,7 +101,8 @@ function generate(component: IComponent): string {
                     renderedSubscribableOptions,
                     renderedTemplateProps: nestedTemplates && nestedTemplates.map(renderTemplateOption),
                     isCollectionItem: c.isCollectionItem,
-                    predefinedProps
+                    predefinedProps,
+                    ownerClassName: c.ownerClassName
                 };
             })
         : null;
@@ -171,10 +172,6 @@ function generate(component: IComponent): string {
         }),
 
         renderedNestedComponents: nestedComponents && nestedComponents.map(renderNestedComponent),
-        nestedComponentLinks: nestedComponents && nestedComponents.map((c) => ({
-            className: c.className,
-            ownerClassName: c.ownerName
-        })),
 
         defaultExport: component.name,
         renderedExports: renderExports(exportNames)
@@ -213,10 +210,6 @@ const renderModule: (model: {
     renderedOptionsInterface: string;
     renderedComponent: string;
     renderedNestedComponents: string[];
-    nestedComponentLinks: Array<{
-        className: string;
-        ownerClassName: string;
-    }>;
     defaultExport: string;
     renderedExports: string;
 }) => string = createTempate(
@@ -230,12 +223,9 @@ const renderModule: (model: {
 
 `<#? it.renderedNestedComponents #>` +
     `// tslint:disable:max-classes-per-file` +
-    `<#~ it.renderedNestedComponents :nestedComponent #>` + `\n` + `\n` +
+    `<#~ it.renderedNestedComponents :nestedComponent #>` + `\n\n` +
         `<#= nestedComponent #>` +
-    `<#~#>` + `\n` + `\n` +
-    `<#~ it.nestedComponentLinks :link #>` +
-    `(<#= link.className #> as any).OwnerType = <#= link.ownerClassName #>;` + `\n` +
-    `<#~#>` + `\n` +
+    `<#~#>` + `\n\n` +
 `<#?#>` +
 
 `export default <#= it.defaultExport #>;` + `\n` +
@@ -340,7 +330,9 @@ const renderNestedComponent: (model: {
     renderedType: string;
     renderedSubscribableOptions: string[];
     renderedTemplateProps: string[];
+    ownerClassName: string;
 }) => string = createTempate(
+`// owner class name: <#= it.ownerClassName #>\n` +
 `class <#= it.className #> extends NestedOption<<#= it.renderedType #>> {` +
 L1 + `public static OptionName = "<#= it.optionName #>";` +
 
