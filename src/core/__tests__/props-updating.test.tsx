@@ -35,7 +35,6 @@ class NestedComponent extends ConfigurationComponent<{
     };
 } // tslint:disable-line:max-classes-per-file
 
-(NestedComponent as any).OwnerType = ControlledComponent;
 (NestedComponent as any).OptionName = "nestedOption";
 
 it("calls option method on props update", () => {

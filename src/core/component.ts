@@ -110,7 +110,7 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
   }
 
   protected _preprocessChild(component: React.ReactElement<any>): React.ReactElement<any> {
-    return this._optionsManager.registerNestedOption(component, this) || component;
+    return this._optionsManager.registerNestedOption(component) || component;
   }
 
   protected _createWidget(element?: Element) {

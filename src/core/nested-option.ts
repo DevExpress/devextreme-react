@@ -1,6 +1,6 @@
 import * as React from "react";
 
-type RegisterNestedOptionFunc = (component: React.ReactElement<any>, owner: any) => any;
+type RegisterNestedOptionFunc = (component: React.ReactElement<any>) => any;
 type UpdateFunc = (newProps, prevProps) => void;
 
 interface INestedOptionMeta {
@@ -32,7 +32,7 @@ class NestedOption<P> extends React.PureComponent<P, any> {
 
         const children: any[] = [];
         React.Children.forEach(this.props.children, (c: React.ReactElement<any>) => {
-            const processedChild = this._registerNestedOption(c, this);
+            const processedChild = this._registerNestedOption(c);
             if (processedChild) {
                 children.push(processedChild);
             }

@@ -1,7 +1,7 @@
 import { ITemplateMeta } from "./template";
 
 import { addPrefixToKeys, getNestedValue } from "./helpers";
-import { createOptionComponent } from "./nested-option";
+import { createOptionComponent, INestedOptionMeta } from "./nested-option";
 import { getTemplateOptions } from "./template-helper";
 import { separateProps } from "./widget-config";
 
@@ -20,7 +20,6 @@ interface INestedOptionDescr {
 interface INestedOptionClass {
     type: {
         IsCollectionItem: boolean;
-        OwnerType: any;
         OptionName: string;
         DefaultsProps: Record<string, string>;
         TemplateProps: ITemplateMeta[];
@@ -139,8 +138,8 @@ class OptionsManager {
         return this._getNestedOptionsObjects(this._nestedOptions, stateUpdater);
     }
 
-    public registerNestedOption(component: React.ReactElement<any>, owner: any): any {
-        return this._registerNestedOption(component, owner, this._nestedOptions);
+    public registerNestedOption(component: React.ReactElement<any>): any {
+        return this._registerNestedOption(component, this._nestedOptions);
     }
 
     private _getNestedOptionsObjects(
@@ -194,16 +193,11 @@ class OptionsManager {
 
     private _registerNestedOption(
         element: React.ReactElement<any>,
-        owner: any,
         owningCollection: Record<string, INestedOptionDescr>,
         ownerFullName?: string
     ): any {
         const nestedOptionClass = element as any as INestedOptionClass;
-        if (!(
-            nestedOptionClass && nestedOptionClass.type &&
-            nestedOptionClass.type.OptionName &&
-            nestedOptionClass.type.OwnerType && owner instanceof nestedOptionClass.type.OwnerType
-        )) {
+        if (!(nestedOptionClass && nestedOptionClass.type && nestedOptionClass.type.OptionName)) {
             return null;
         }
 
@@ -224,24 +218,23 @@ class OptionsManager {
             optionFullName = `${ownerFullName}.${optionFullName}`;
         }
 
-        const optionComponent = createOptionComponent(
-            element,
-            {
-                optionName,
-                registerNestedOption: (c: React.ReactElement<any>, o: any) => {
-                    return this._registerNestedOption(c, o, nestedOptionsCollection, optionName);
-                },
-                updateFunc: (newProps, prevProps) => {
-                    const newOptions = separateProps(newProps,
-                        nestedOptionClass.type.DefaultsProps,
-                        nestedOptionClass.type.TemplateProps).options;
-                    this.processChangedValues(
-                        addPrefixToKeys(newOptions, optionFullName + "."),
-                        addPrefixToKeys(prevProps, optionFullName + ".")
-                    );
-                }
+        const nestedOptionMeta: INestedOptionMeta = {
+            optionName,
+            registerNestedOption: (c: React.ReactElement<any>) => {
+                return this._registerNestedOption(c, nestedOptionsCollection, optionName);
+            },
+            updateFunc: (newProps, prevProps) => {
+                const newOptions = separateProps(newProps,
+                    nestedOptionClass.type.DefaultsProps,
+                    nestedOptionClass.type.TemplateProps).options;
+                this.processChangedValues(
+                    addPrefixToKeys(newOptions, optionFullName + "."),
+                    addPrefixToKeys(prevProps, optionFullName + ".")
+                );
             }
-        );
+        };
+
+        const optionComponent = createOptionComponent(element, nestedOptionMeta);
 
         entry.elementEntries.push({
             element,
