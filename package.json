@@ -39,6 +39,7 @@
     "gulp-typescript": "^4.0.0",
     "hoek": "^5.0.3",
     "jest": "^22.2.2",
+    "minimatch": "^3.0.2",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "run-sequence": "^2.2.1",
