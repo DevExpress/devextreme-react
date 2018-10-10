@@ -16,6 +16,9 @@ This project allows you to use [DevExtreme Widgets](http://js.devexpress.com/Dem
   * [Uncontrolled Mode](#uncontrolled-mode)
   * [Getting Widget Instance](#getting-widget-instance)
 * [Markup Customization](#markup-customization)
+* [Configuration Components](#configuration-components)
+  * [Basic usage](#configuration-components-basic)
+  * [Collection Options](#configuration-components-collection)
 * [DevExtreme Validation](#devextreme-validation)
 * [Working With Data](#working-with-data)
 * [Typescript Support](#typescript-support)
@@ -363,6 +366,98 @@ ReactDOM.render(
     document.getElementById('root')
 );
 ```
+
+## <a name="configuration-components"></a>Configuration Components ##
+You can use special components to configure complex nested options for widgets. Each widget that have complex nested option has corresponding configuration component in DevExtreme React Components. 
+Use named import to get a required configuration component.
+```js
+import Chart, { Tooltip } from "devextreme-react/ui/chart"; 
+```
+You can use markup customization props (with `Render` or `Component` suffix) and uncontrolled props in your nested configuration components.
+
+### <a name="configuration-components-basic"></a>Basic Usage ###
+The following example demonstrates how to configure the [tooltip](https://js.devexpress.com/Documentation/ApiReference/Data_Visualization_Widgets/dxChart/Configuration/tooltip/) option of the dxChart widget:
+
+
+```jsx
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+import Button from "devextreme-react/ui/button"; 
+import Chart, { Tooltip } from "devextreme-react/ui/chart"; 
+
+import { complaintsData } from './data.js';
+
+class Example extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            showTooltip: false
+        };
+
+        this.toggleTooltip = this.toggleTooltip.bind(this);
+    }
+    
+    toggleTooltip() {
+        this.setState({
+            showTooltip: !this.state.showTooltip
+        });
+    }
+
+    render() {
+        return (
+            <React.Fragment>
+                <Chart
+                    dataSource={ complaintsData }
+                    title="Pizza Shop Complaints">
+                    <Tooltip enabled={ this.state.showTooltip }/>
+                </Chart>
+                <Button text="Toggle tooltip" onClick={ this.toggleTooltip }/>
+            </React.Fragment>
+        );
+    }
+}
+
+ReactDOM.render(
+    <Example />,
+    document.getElementById('root')
+);
+```
+
+### <a name="configuration-components-collection"></a>Collection Options ###
+You can also use configuration components for complex collection options.
+The following example demonstrates how to configure the [columns](https://js.devexpress.com/Documentation/ApiReference/UI_Widgets/dxDataGrid/Configuration/columns/) option of the dxDataGrid widget:
+
+```jsx
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+import DataGrid, { Column } from "devextreme-react/ui/data-grid"; 
+
+import { data } from './data.js';
+
+class Example extends React.Component {
+    render() {
+        return (
+            <React.Fragment>
+                <DataGrid dataSource={ data }>
+                    <Column dataField="firstName"/>
+                    <Column dataField="lastName" caption="Last Name" defaultVisible={true}/>
+                </DataGrid>
+            </React.Fragment>
+        );
+    }
+}
+
+ReactDOM.render(
+    <Example />,
+    document.getElementById('root')
+);
+```
+
+Note that some options with an object type are not implemented as nested components - for example,
+[editorOptions of dxDataGrid](https://js.devexpress.com/Documentation/ApiReference/UI_Widgets/dxDataGrid/Configuration/columns/#editorOptions), [editorOptions of dxForm](https://js.devexpress.com/Documentation/ApiReference/UI_Widgets/dxForm/Item_Types/SimpleItem/#editorOptions), [the widget option of dxToolbar](https://js.devexpress.com/Documentation/ApiReference/UI_Widgets/dxToolbar/Default_Item_Template/#options).
+
 
 ## <a name="devextreme-validation"></a>DevExtreme Validation ##
 DevExtreme React editors support built-in [data validation](https://js.devexpress.com/Documentation/Guide/Widgets/Common/UI_Widgets/Data_Validation/).
