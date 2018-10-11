@@ -443,8 +443,9 @@ it("removes deleted nodes from state", () => {
     const parentElement = templateContent.parentElement;
     if (!parentElement) { throw new Error(); }
 
-    const removeListener = parentElement.children.item(1);
+    const removeListener = parentElement.getElementsByTagName("SPAN")[0];
 
+    parentElement.removeChild(removeListener);
     parentElement.removeChild(templateContent);
     events.triggerHandler(removeListener, "dxremove");
     component.update();
