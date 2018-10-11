@@ -95,7 +95,7 @@ describe("function template", () => {
         const container = document.createElement("div");
         renderItemTemplate("with data", container);
         component.update();
-        expect(container.innerHTML).toBe('<div class="dx-template-wrapper"><div>Template with data</div></div>');
+        expect(container.innerHTML).toBe('<div>Template with data</div><span style=\"display: none;\"></span>');
     });
 
     it("renders template for table", () => {
@@ -107,7 +107,7 @@ describe("function template", () => {
         renderItemTemplate("with data", container);
         component.update();
         expect(container.innerHTML)
-            .toBe("<tbody><tr><td>Template with data</td></tr></tbody>");
+            .toBe("<tbody><tr><td>Template with data</td></tr></tbody><tbody style=\"display: none;\"></tbody>");
     });
 
     it("calls onRendered callback", () => {
@@ -439,11 +439,14 @@ it("removes deleted nodes from state", () => {
     expect(Object.getOwnPropertyNames(component.state("templates")).length).toBe(1);
     component.update();
     const templateContent = component.find(".template").getDOMNode();
+
     const parentElement = templateContent.parentElement;
     if (!parentElement) { throw new Error(); }
 
+    const removeListener = parentElement.children.item(1);
+
     parentElement.removeChild(templateContent);
-    events.triggerHandler(parentElement, "dxremove");
+    events.triggerHandler(removeListener, "dxremove");
     component.update();
     expect(Object.getOwnPropertyNames(component.state("templates")).length).toBe(0);
 });
