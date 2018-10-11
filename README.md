@@ -368,12 +368,13 @@ ReactDOM.render(
 ```
 
 ## <a name="configuration-components"></a>Configuration Components ##
-You can use special components to configure complex nested options for widgets. Each widget that have complex nested option has corresponding configuration component in DevExtreme React Components. 
-Use named import to get a required configuration component.
+DevExtreme React Components provide configuration components for complex nested options of the underlying widget.
+
+Use a named import to get a required configuration component.
 ```js
 import Chart, { Tooltip } from "devextreme-react/ui/chart"; 
 ```
-You can use markup customization props (with `Render` or `Component` suffix) and uncontrolled props in your nested configuration components.
+Configuration components support markup customization props (with `Render` or `Component` suffix) and uncontrolled props.
 
 ### <a name="configuration-components-basic"></a>Basic Usage ###
 The following example demonstrates how to configure the [tooltip](https://js.devexpress.com/Documentation/ApiReference/Data_Visualization_Widgets/dxChart/Configuration/tooltip/) option of the dxChart widget:
@@ -456,7 +457,7 @@ ReactDOM.render(
 ```
 
 Note that some options with an object type are not implemented as nested components - for example,
-[editorOptions of dxDataGrid](https://js.devexpress.com/Documentation/ApiReference/UI_Widgets/dxDataGrid/Configuration/columns/#editorOptions), [editorOptions of dxForm](https://js.devexpress.com/Documentation/ApiReference/UI_Widgets/dxForm/Item_Types/SimpleItem/#editorOptions), [the widget option of dxToolbar](https://js.devexpress.com/Documentation/ApiReference/UI_Widgets/dxToolbar/Default_Item_Template/#options).
+the DataGrid's [editorOptions](https://js.devexpress.com/Documentation/ApiReference/UI_Widgets/dxDataGrid/Configuration/columns/#editorOptions), Form's [editorOptions](https://js.devexpress.com/Documentation/ApiReference/UI_Widgets/dxForm/Item_Types/SimpleItem/#editorOptions), Toolbar's [widget](https://js.devexpress.com/Documentation/ApiReference/UI_Widgets/dxToolbar/Default_Item_Template/#options) options.
 
 
 ## <a name="devextreme-validation"></a>DevExtreme Validation ##
