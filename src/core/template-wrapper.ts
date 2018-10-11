@@ -13,7 +13,7 @@ interface ITemplateWrapperProps {
 }
 
 class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps> {
-    private _removeListener: HTMLDivElement;
+    private _removalListener: HTMLDivElement;
 
     public render() {
         return ReactDOM.createPortal(
@@ -22,7 +22,7 @@ class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps> {
                 this.props.content,
                 React.createElement(this.props.container.nodeName === "TABLE" ? "tbody" : "span", {
                     style: { display: "none" },
-                    ref: (element: HTMLDivElement) => this._removeListener = element
+                    ref: (element: HTMLDivElement) => this._removalListener = element
                 }),
             )
         , this.props.container);
@@ -39,9 +39,9 @@ class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps> {
             if (node) {
                 this.props.container.appendChild(node);
             }
-            this.props.container.appendChild(this._removeListener);
+            this.props.container.appendChild(this._removalListener);
         };
-        events.one(this._removeListener, DX_REMOVE_EVENT, () => {
+        events.one(this._removalListener, DX_REMOVE_EVENT, () => {
             restoreRemovedContent();
             this.props.onRemoved();
         });
