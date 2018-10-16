@@ -5,19 +5,9 @@ import { Button } from "../src/ui/button";
 import { TextBox } from "../src/ui/text-box";
 import { ValidationGroup } from "../src/ui/validation-group";
 import { ValidationSummary } from "../src/ui/validation-summary";
-import { Validator } from "../src/ui/validator";
+import { EmailRule, RequiredRule, Validator } from "../src/ui/validator";
 
 export default class extends React.Component<any, any> {
-
-    private validationRules: Record<string, any> = {
-        email: [
-            { type: "required", message: "Email is required." },
-            { type: "email", message: "Email is invalid." }
-        ],
-        password: [
-            { type: "required", message: "Password is required." }
-        ]
-    };
 
     constructor(props: any) {
         super(props);
@@ -30,11 +20,16 @@ export default class extends React.Component<any, any> {
             <Example title="Validation" state={this.state}>
                 <ValidationGroup>
                     <TextBox defaultValue={"email@mail.com"}>
-                        <Validator validationRules={this.validationRules.email} />
+                        <Validator>
+                            <EmailRule message={"Email is invalid."} />
+                            <RequiredRule message={"Email is required."} />
+                        </Validator>
                     </TextBox>
                     <br />
                     <TextBox defaultValue={"password"}>
-                        <Validator validationRules={this.validationRules.password} />
+                        <Validator>
+                            <RequiredRule message={"Password is required."} />
+                        </Validator>
                     </TextBox>
                     <ValidationSummary />
                     <br />

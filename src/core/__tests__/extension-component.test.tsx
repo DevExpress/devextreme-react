@@ -16,7 +16,6 @@ class TestExtensionComponent<P = any> extends ExtensionComponent<P> {
 }
 
 class NestedComponent extends ConfigurationComponent<{ a: number }> {
-    public static OwnerType = TestExtensionComponent;
     public static OptionName = "option1";
 }
 

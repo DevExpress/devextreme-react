@@ -95,7 +95,7 @@ describe("function template", () => {
         const container = document.createElement("div");
         renderItemTemplate("with data", container);
         component.update();
-        expect(container.innerHTML).toBe('<div class="dx-template-wrapper"><div>Template with data</div></div>');
+        expect(container.innerHTML).toBe('<div>Template with data</div><span style=\"display: none;\"></span>');
     });
 
     it("renders template for table", () => {
@@ -107,7 +107,7 @@ describe("function template", () => {
         renderItemTemplate("with data", container);
         component.update();
         expect(container.innerHTML)
-            .toBe("<tbody><tr><td>Template with data</td></tr></tbody>");
+            .toBe("<tbody><tr><td>Template with data</td></tr></tbody><tbody style=\"display: none;\"></tbody>");
     });
 
     it("calls onRendered callback", () => {
@@ -287,7 +287,6 @@ describe("component/render in nested options", () => {
         itemRender?: any;
         itemComponent?: any;
     }> {
-        public static OwnerType = TestComponent;
         public static OptionName = "option";
         public static TemplateProps = [{
             tmplOption: "item",
@@ -303,7 +302,6 @@ describe("component/render in nested options", () => {
         component?: any;
     }> {
         public static IsCollectionItem = true;
-        public static OwnerType = TestComponent;
         public static OptionName = "collection";
         public static TemplateProps = [{
             tmplOption: "template",
@@ -441,9 +439,15 @@ it("removes deleted nodes from state", () => {
     expect(Object.getOwnPropertyNames(component.state("templates")).length).toBe(1);
     component.update();
     const templateContent = component.find(".template").getDOMNode();
-    const parentNode = templateContent.parentNode;
-    parentNode!.removeChild(templateContent);
-    events.triggerHandler(parentNode, "dxremove");
+
+    const parentElement = templateContent.parentElement;
+    if (!parentElement) { throw new Error(); }
+
+    const removeListener = parentElement.getElementsByTagName("SPAN")[0];
+
+    parentElement.removeChild(removeListener);
+    parentElement.removeChild(templateContent);
+    events.triggerHandler(removeListener, "dxremove");
     component.update();
     expect(Object.getOwnPropertyNames(component.state("templates")).length).toBe(0);
 });
