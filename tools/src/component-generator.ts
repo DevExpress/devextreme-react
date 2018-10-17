@@ -22,7 +22,7 @@ interface IComponent {
 interface INestedComponent {
     className: string;
     optionName: string;
-    ownerClassName: string;
+    owners: string[];
     options: IOption[];
     templates: string[];
     predefinedProps?: Record<string, any>;
@@ -96,13 +96,13 @@ function generate(component: IComponent): string {
                 return {
                     className: c.className,
                     optionName: c.optionName,
-                    ownerName: c.ownerClassName,
+                    ownerName: c.owners,
                     renderedType: renderObject(options, 0),
                     renderedSubscribableOptions,
                     renderedTemplateProps: nestedTemplates && nestedTemplates.map(renderTemplateOption),
                     isCollectionItem: c.isCollectionItem,
                     predefinedProps,
-                    ownerClassName: c.ownerClassName
+                    owners: c.owners
                 };
             })
         : null;
@@ -330,9 +330,9 @@ const renderNestedComponent: (model: {
     renderedType: string;
     renderedSubscribableOptions: string[];
     renderedTemplateProps: string[];
-    ownerClassName: string;
+    owners: string[];
 }) => string = createTempate(
-`// owner class name: <#= it.ownerClassName #>\n` +
+`// owners: <#= it.owners.join(', ') #>\n` +
 `class <#= it.className #> extends NestedOption<<#= it.renderedType #>> {` +
 L1 + `public static OptionName = "<#= it.optionName #>";` +
 
