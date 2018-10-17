@@ -87,7 +87,7 @@ In the controlled mode, a parent component passes a component's state using its 
 - Share state between components in your app
 - Persist and restore state
 
-To control a component's state, provide the value for the required property and handle the event that is fired when it is changed (use the appropriate property with the `on` prefix):
+To manage a component's state, provide the value for the required property and handle the event that is fired when it is changed (use the appropriate property with the `on` prefix):
 
 ```jsx
 import React from 'react';
@@ -139,9 +139,9 @@ ReactDOM.render(
 
 ### <a name="uncontrolled-mode"></a>Uncontrolled Mode ###
 
-Sometimes there is no need to handle all the component's updates, thus DevExtreme components can manage their state internally which reduces the amount of code required.
+Sometimes there is no need to handle all the component's updates, thus DevExtreme components can manage their state internally. This reduces the amount of code required.
 
-Note that if you want to specify an initial value for an option in the uncontrolled mode, you should use an appropriate property with the `default` prefix. In the example below, the `currentView` option's initial value is defined using the `defaultCurrentView` property.
+Note that if you want to specify an initial value for an option in the uncontrolled mode, use an appropriate property with the `default` prefix. In the example below, the `currentView` option's initial value is defined using the `defaultCurrentView` property.
 
 ```jsx
 import React from 'react';
@@ -184,7 +184,7 @@ ReactDOM.render(
 
 
 ### <a name="getting-widget-instance"></a>Getting Widget Instance ###
-In some cases, a widget instance is required when you need to call a widget method. You can get it by assigning a callback function to the component's `ref` property. This function accepts the mounted DevExtreme Component as an argument whose `instance` property stores the widget instance.
+In some cases, you need a widget instance to call a widget method. You can get it by assigning a callback function to the component's `ref` property. This function accepts the mounted DevExtreme Component as an argument whose `instance` property stores the widget instance.
 
 ```jsx
 import React from 'react';
