@@ -28,7 +28,7 @@ This project allows you to use [DevExtreme Widgets](http://js.devexpress.com/Dem
 
 ## <a name="getting-started"></a>Getting Started ##
 
-You can try this [live example](https://stackblitz.com/edit/devextreme-react) (no need to install anything).
+You can try this [live example](https://stackblitz.com/edit/devextreme-react).
 
 If you’d rather use a local development environment check out the sections below.
 
@@ -44,7 +44,7 @@ npm install --save devextreme@18.1 devextreme-react@18.1-unstable
 ```
 #### <a name="additional-configuration"></a>Additional Configuration ####
 
-The further configuration steps depend on which build tool, bundler or module loader you are using. Please choose the one you need:
+The following configuration steps depend on the build tool, bundler or module loader you are using:
 
 * [Configuring Webpack](https://github.com/DevExpress/devextreme-react/blob/master/docs/using-webpack.md)
 * [Using Create React App](https://github.com/DevExpress/devextreme-react/blob/master/docs/using-create-react-app.md)
@@ -78,7 +78,7 @@ See [Markup Customization](#markup-customization) for details on how to implemen
 
 ## <a name="state-management"></a>State Management ##
 
-DevExtreme React components support both [Controlled](https://reactjs.org/docs/forms.html#controlled-components) and [Uncontrolled](https://reactjs.org/docs/uncontrolled-components.html) state modes.
+DevExtreme React components support [Controlled](https://reactjs.org/docs/forms.html#controlled-components) and [Uncontrolled](https://reactjs.org/docs/uncontrolled-components.html) states.
 
 ### <a name="controlled-mode"></a>Controlled Mode ###
 
