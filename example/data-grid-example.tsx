@@ -1,7 +1,8 @@
 import * as React from "react";
 import Example from "./example-block";
 
-import CheckBox from "../src/ui/check-box";
+import { Template } from "../src/core/template";
+
 import DataGrid, {
     Column,
     FilterRow,
@@ -33,6 +34,10 @@ const RegionComponent = (props: any) => {
     return <b>{props.displayValue}</b>;
 };
 
+const ToolbarItemRender = () => {
+    return <b>Collapse or Expand Groups:</b>;
+};
+
 export default class extends React.Component<any, { expandAll: boolean, pageSize: number }> {
 
     constructor(props: any) {
@@ -42,7 +47,7 @@ export default class extends React.Component<any, { expandAll: boolean, pageSize
             pageSize: 5
         };
 
-        this.handleExpandAllChange = this.handleExpandAllChange.bind(this);
+        this.handleToolbarPreparing = this.handleToolbarPreparing.bind(this);
         this.handlePageIndexChange = this.handlePageIndexChange.bind(this);
     }
 
@@ -50,11 +55,6 @@ export default class extends React.Component<any, { expandAll: boolean, pageSize
         return (
             <Example title="DxDataGrid" state={this.state}>
                 <br />
-                <CheckBox
-                    text="Expand All Groups"
-                    value={this.state.expandAll}
-                    onValueChanged={this.handleExpandAllChange}
-                />
                 <br />
                 <br />
                 Page size:
@@ -69,6 +69,7 @@ export default class extends React.Component<any, { expandAll: boolean, pageSize
                 <DataGrid
                     dataSource={sales}
                     allowColumnReordering={true}
+                    onToolbarPreparing={this.handleToolbarPreparing}
                 >
                     <GroupPanel visible={true} />
                     <Grouping autoExpandAll={this.state.expandAll} />
@@ -92,16 +93,35 @@ export default class extends React.Component<any, { expandAll: boolean, pageSize
                         pageSize={this.state.pageSize}
                     />
                     <MasterDetail enabled={true} component={DetailComponent} />
+
+                    <Template name={"toolbarLabel"} render={ToolbarItemRender} />
                 </DataGrid>
             </Example>
         );
     }
 
-    private handleExpandAllChange(e: any) {
-        this.setState({
-            expandAll: e.value
+    private handleToolbarPreparing(args: any) {
+        args.toolbarOptions.items.unshift({
+            location: "after",
+            template: "toolbarLabel"
+          },
+          {
+            location: "after",
+            widget: "dxButton",
+            options: {
+                icon: "chevronup",
+                onClick: (e: any) => {
+                  this.setState((state) => {
+                    e.component.option("icon", state.expandAll ? "chevrondown" : "chevronup");
+                    return {
+                        expandAll: !state.expandAll
+                    };
+                  });
+                }
+            }
         });
-    }
+      }
+
     private handlePageIndexChange(e: any) {
         this.setState({
             pageSize: e.value
