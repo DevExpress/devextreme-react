@@ -332,7 +332,11 @@ const renderNestedComponent: (model: {
     renderedTemplateProps: string[];
     owners: string[];
 }) => string = createTempate(
-`// owners: <#= it.owners.join(', ') #>\n` +
+`// owners:\n` +
+`<#~ it.owners : owner #>` +
+    `// <#= owner #>\n` +
+`<#~#>` +
+
 `class <#= it.className #> extends NestedOption<<#= it.renderedType #>> {` +
 L1 + `public static OptionName = "<#= it.optionName #>";` +
 
