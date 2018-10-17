@@ -171,7 +171,6 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
   private _prepareProps(rawProps: Record<string, any>): IWidgetConfig {
     const separatedProps = separateProps(rawProps, this._defaults, this._templateProps);
 
-
     const templateOptions = getTemplateOptions({
       templateProps: this._templateProps,
       options: separatedProps.templates,
