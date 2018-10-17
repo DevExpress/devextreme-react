@@ -28,6 +28,10 @@ interface INestedOptionClass {
     props: object;
 }
 
+function isEventHanlder(optionName: string, optionValue: any) {
+    return optionName.substr(0, 2) === "on" && typeof optionValue === "function";
+}
+
 class OptionsManager {
 
     private readonly _guards: Record<string, number> = {};
@@ -40,6 +44,7 @@ class OptionsManager {
 
     constructor(optionValueGetter: (name: string) => any) {
         this._optionValueGetter = optionValueGetter;
+        this._setOption = this._setOption.bind(this);
         this._registerNestedOption = this._registerNestedOption.bind(this);
 
         this.registerNestedOption = this.registerNestedOption.bind(this);
@@ -57,16 +62,13 @@ class OptionsManager {
         this._instance = instance;
     }
 
-    public wrapEventHandler(optionValue: any, optionName: string): any {
-        if (optionName.substr(0, 2) === "on" && typeof optionValue === "function") {
-            return (...args: any[]) => {
-                if (!this._updatingProps) {
-                    optionValue(...args);
-                }
-            };
-        }
-
-        return optionValue;
+    public wrapEventHandlers(options: Record<string, any>) {
+        Object.keys(options).forEach((name) => {
+            const value = options[name];
+            if (isEventHanlder(name, value)) {
+                options[name] = this._wrapEventHandler(value);
+            }
+        });
     }
 
     public handleOptionChange(e: { name: string, fullName: string, value: any }) {
@@ -125,7 +127,7 @@ class OptionsManager {
                 this._instance.beginUpdate();
                 this._updatingProps = true;
             }
-            this._instance.option(optionName, newProps[optionName]);
+            this._setOption(optionName, newProps[optionName]);
         }
 
         if (this._updatingProps) {
@@ -140,6 +142,22 @@ class OptionsManager {
 
     public registerNestedOption(component: React.ReactElement<any>): any {
         return this._registerNestedOption(component, this._nestedOptions);
+    }
+
+    private _setOption(name: string, value: any): void {
+        let actualValue = value;
+        if (isEventHanlder(name, value)) {
+            actualValue = this._wrapEventHandler(value);
+        }
+        this._instance.option(name, actualValue);
+    }
+
+    private _wrapEventHandler(handler: any) {
+        return (...args: any[]) => {
+            if (!this._updatingProps) {
+                handler(...args);
+            }
+        };
     }
 
     private _getNestedOptionsObjects(
@@ -245,13 +263,13 @@ class OptionsManager {
         return optionComponent;
     }
 
-    private _setGuard(optionName, optionValue): void {
+    private _setGuard(optionName: string, optionValue: any): void {
         if (this._guards[optionName] !== undefined) {
             return;
         }
 
         const guardId = window.setTimeout(() => {
-            this._instance.option(optionName, optionValue);
+            this._setOption(optionName, optionValue);
             window.clearTimeout(guardId);
             delete this._guards[optionName];
         });

@@ -130,12 +130,14 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
       ...preparedProps.integrationOptions
     };
 
+    this._optionsManager.wrapEventHandlers(options);
+
     this._instance = new this._WidgetClass(element, options);
     this._optionsManager.setInstance(this._instance);
     this._instance.on("optionChanged", this._optionsManager.handleOptionChange);
   }
 
-  private _updateTemplatesState(callback) {
+  private _updateTemplatesState(callback: any) {
     this.setState((state: IState) => {
         const templates = { ...state.templates };
         callback(templates);
@@ -169,10 +171,6 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
   private _prepareProps(rawProps: Record<string, any>): IWidgetConfig {
     const separatedProps = separateProps(rawProps, this._defaults, this._templateProps);
 
-    const options: Record<string, any> = {};
-    Object.keys(separatedProps.options).forEach((key) => {
-        options[key] = this._optionsManager.wrapEventHandler(separatedProps.options[key], key);
-    });
 
     const templateOptions = getTemplateOptions({
       templateProps: this._templateProps,
@@ -190,7 +188,7 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
     } : undefined;
 
     return {
-        options,
+        options: separatedProps.options,
         defaults: separatedProps.defaults,
         integrationOptions
     };
