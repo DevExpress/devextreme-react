@@ -65,28 +65,82 @@ describe("option control", () => {
         expect(eventHandlers).toHaveProperty("optionChanged");
     });
 
-    it("does not fire events when option changed while props updating", () => {
-        const controlledOptionChanged = jest.fn();
-        const component = shallow(
-            <ControlledComponent controlledOption={"controlled"} onControlledOptionChanged={controlledOptionChanged} />
-        );
-        Widget.option.mockImplementation(
-            (name: string) => {
-                if (name === "controlledOption") {
-                    WidgetClass.mock.calls[0][1].onControlledOptionChanged();
+    describe("handler option", () => {
+
+        it("is not fired when option changed on props updating", () => {
+            const handler = jest.fn();
+            const component = shallow(
+                <ControlledComponent
+                    controlledOption={"controlled"}
+                    onControlledOptionChanged={handler}
+                />
+            );
+            Widget.option.mockImplementation(
+                (name: string) => {
+                    if (name === "controlledOption") {
+                        WidgetClass.mock.calls[0][1].onControlledOptionChanged();
+                    }
                 }
-            }
-        );
-        component.setProps({
-            controlledOption: "changed"
+            );
+            component.setProps({
+                controlledOption: "changed"
+            });
+
+            expect(handler.mock.calls.length).toBe(0);
+
+            Widget.option("controlledOption", "controlled");
+
+            expect(handler.mock.calls.length).toBe(1);
+
         });
 
-        expect(controlledOptionChanged.mock.calls.length).toBe(0);
+        it("is not fired when option changed on props updating (handler updated)", () => {
+            const handler = jest.fn();
+            const component = shallow(
+                <ControlledComponent
+                    controlledOption={"controlled"}
+                    onControlledOptionChanged={jest.fn()}
+                />
+            );
+            Widget.option.mockImplementation(
+                (name: string) => {
+                    if (name === "controlledOption") {
+                        Widget.option.mock.calls[0][1]();
+                    }
+                }
+            );
 
-        Widget.option("controlledOption", "controlled");
+            component.setProps({
+                onControlledOptionChanged: handler
+            });
 
-        expect(controlledOptionChanged.mock.calls.length).toBe(1);
+            component.setProps({
+                controlledOption: "changed"
+            });
 
+            expect(handler.mock.calls.length).toBe(0);
+
+            Widget.option("controlledOption", "controlled");
+
+            expect(handler.mock.calls.length).toBe(1);
+        });
+
+        it("is not updated on other prop updating", () => {
+            const controlledOptionChanged = jest.fn();
+            const component = shallow(
+                <ControlledComponent
+                    anotherOption={"abc"}
+                    onControlledOptionChanged={controlledOptionChanged}
+                />
+            );
+
+            component.setProps({
+                anotherOption: "def"
+            });
+
+            expect(Widget.option.mock.calls.length).toBe(1);
+            expect(Widget.option.mock.calls[0]).toEqual(["anotherOption", "def"]);
+        });
     });
 
     it("rolls option value back", () => {
