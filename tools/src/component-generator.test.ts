@@ -347,7 +347,8 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 }
 // tslint:disable:max-classes-per-file
 
-// owner class name: CLASS_NAME
+// owners:
+// CLASS_NAME
 class Opt_1_Component extends NestedOption<{
   sub_opt_2?: TYPE_1;
   sub_opt_3?: {
@@ -360,7 +361,8 @@ class Opt_1_Component extends NestedOption<{
   public static OptionName = "opt_1";
 }
 
-// owner class name: Opt_1_Component
+// owners:
+// Opt_1_Component
 class Opt_6_SubComponent extends NestedOption<{
   sub_sub_sub_opt_8?: TYPE_4;
 }> {
@@ -386,7 +388,7 @@ export {
                 nestedComponents: [
                     {
                         className: "Opt_1_Component",
-                        ownerClassName: "CLASS_NAME",
+                        owners: [ "CLASS_NAME" ],
                         optionName: "opt_1",
                         templates: null,
                         options: [
@@ -416,7 +418,7 @@ export {
                     },
                     {
                         className: "Opt_6_SubComponent",
-                        ownerClassName: "Opt_1_Component",
+                        owners: [ "Opt_1_Component" ],
                         optionName: "sub_sub_opt_7",
                         templates: null,
                         options: [
@@ -454,7 +456,8 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 }
 // tslint:disable:max-classes-per-file
 
-// owner class name: CLASS_NAME
+// owners:
+// CLASS_NAME
 class Opt_1_Component extends NestedOption<{
   sub_opt_2?: TYPE_1;
 }> {
@@ -480,7 +483,7 @@ export {
                 nestedComponents: [
                     {
                         className: "Opt_1_Component",
-                        ownerClassName: "CLASS_NAME",
+                        owners: [ "CLASS_NAME" ],
                         optionName: "opt_1",
                         isCollectionItem: true,
                         templates: null,
@@ -519,7 +522,8 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 }
 // tslint:disable:max-classes-per-file
 
-// owner class name: CLASS_NAME
+// owners:
+// CLASS_NAME
 class Opt_1_Component extends NestedOption<{
   sub_opt_2?: TYPE_1;
   sub_opt_3?: {
@@ -552,7 +556,7 @@ export {
                 nestedComponents: [
                     {
                         className: "Opt_1_Component",
-                        ownerClassName: "CLASS_NAME",
+                        owners: [ "CLASS_NAME" ],
                         optionName: "opt_1",
                         templates: null,
                         options: [
@@ -601,7 +605,8 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 }
 // tslint:disable:max-classes-per-file
 
-// owner class name: CLASS_NAME
+// owners:
+// CLASS_NAME
 class Opt_1_Component extends NestedOption<{
   optionTemplate?: TYPE_1;
   optionRender?: (props: any) => React.ReactNode;
@@ -634,7 +639,7 @@ export {
                 nestedComponents: [
                     {
                         className: "Opt_1_Component",
-                        ownerClassName: "CLASS_NAME",
+                        owners: [ "CLASS_NAME" ],
                         optionName: "opt_1",
                         templates: ["optionTemplate"],
                         options: [
@@ -672,7 +677,8 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 }
 // tslint:disable:max-classes-per-file
 
-// owner class name: CLASS_NAME
+// owners:
+// CLASS_NAME
 class Opt_1_Component extends NestedOption<{
   sub_opt_2?: TYPE_1;
 }> {
@@ -701,7 +707,7 @@ export {
                 nestedComponents: [
                     {
                         className: "Opt_1_Component",
-                        ownerClassName: "CLASS_NAME",
+                        owners: [ "CLASS_NAME" ],
                         optionName: "opt_1",
                         isCollectionItem: true,
                         templates: null,
