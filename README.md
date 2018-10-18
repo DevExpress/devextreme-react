@@ -28,9 +28,7 @@ This project allows you to use [DevExtreme Widgets](http://js.devexpress.com/Dem
 
 ## <a name="getting-started"></a>Getting Started ##
 
-You can try this [live example](https://stackblitz.com/edit/devextreme-react).
-
-If you’d rather use a local development environment check out the sections below.
+You can try this [live example](https://stackblitz.com/edit/devextreme-react) or configure a local development environment as described below.
 
 ### <a name="prerequisites"></a>Prerequisites ###
 [Node.js and npm](https://docs.npmjs.com/getting-started/installing-node) are required
@@ -87,7 +85,7 @@ In the controlled mode, a parent component passes a component's state using its 
 - Share state between components in your app
 - Persist and restore state
 
-To manage a component's state, provide the value for the required property and handle the event that is fired when it is changed (use the appropriate property with the `on` prefix):
+To manage a component's state, provide the value for a related property and handle the event that is fired when the value changes:
 
 ```jsx
 import React from 'react';
@@ -139,9 +137,9 @@ ReactDOM.render(
 
 ### <a name="uncontrolled-mode"></a>Uncontrolled Mode ###
 
-Sometimes there is no need to handle all the component's updates, thus DevExtreme components can manage their state internally. This reduces the amount of code required.
+In the uncontrolled mode, DevExtreme components manage the state internally.
 
-Note that if you want to specify an initial value for an option in the uncontrolled mode, use an appropriate property with the `default` prefix. In the example below, the `currentView` option's initial value is defined using the `defaultCurrentView` property.
+Note that if you want to specify an initial value for an option in the uncontrolled mode, use the property with the `default` prefix. In the example below, the `defaultCurrentView` property is used to define the `currentView` option's initial value.
 
 ```jsx
 import React from 'react';
@@ -184,7 +182,7 @@ ReactDOM.render(
 
 
 ### <a name="getting-widget-instance"></a>Getting Widget Instance ###
-In some cases, you need a widget instance to call a widget method. You can get it by assigning a callback function to the component's `ref` property. This function accepts the mounted DevExtreme Component as an argument whose `instance` property stores the widget instance.
+A widget instance is required to call methods. You can get it by assigning a callback function to the component's `ref` property. This function accepts the mounted DevExtreme Component as an argument whose `instance` field stores the widget instance.
 
 ```jsx
 import React from 'react';
@@ -368,16 +366,16 @@ ReactDOM.render(
 ```
 
 ## <a name="configuration-components"></a>Configuration Components ##
-DevExtreme React Components provide configuration components for complex nested options of the underlying widget.
+DevExtreme React Components provide configuration components for the underlying widget's complex nested options.
 
-Use a named import to get a required configuration component.
+Use a named import to get a configuration component.
 ```js
 import Chart, { Tooltip } from "devextreme-react/ui/chart"; 
 ```
 Configuration components support markup customization props (with `Render` or `Component` suffix) and uncontrolled props.
 
 ### <a name="configuration-components-basic"></a>Basic Usage ###
-The following example demonstrates how to configure the [tooltip](https://js.devexpress.com/Documentation/ApiReference/Data_Visualization_Widgets/dxChart/Configuration/tooltip/) option of the dxChart widget:
+The following example demonstrates how to configure the dxChart widget's [tooltip](https://js.devexpress.com/Documentation/ApiReference/Data_Visualization_Widgets/dxChart/Configuration/tooltip/) option:
 
 
 ```jsx
@@ -427,7 +425,7 @@ ReactDOM.render(
 
 ### <a name="configuration-components-collection"></a>Collection Options ###
 You can also use configuration components for complex collection options.
-The following example demonstrates how to configure the [columns](https://js.devexpress.com/Documentation/ApiReference/UI_Widgets/dxDataGrid/Configuration/columns/) option of the dxDataGrid widget:
+The following example demonstrates how to configure the the dxDataGrid widget's [columns](https://js.devexpress.com/Documentation/ApiReference/UI_Widgets/dxDataGrid/Configuration/columns/) option:
 
 ```jsx
 import React from 'react';
@@ -456,7 +454,7 @@ ReactDOM.render(
 );
 ```
 
-Note that some options with an object type are not implemented as nested components - for example,
+Note that configuration components are not provided for options that accept a type that depends on another option's value. For example,
 the DataGrid's [editorOptions](https://js.devexpress.com/Documentation/ApiReference/UI_Widgets/dxDataGrid/Configuration/columns/#editorOptions), Form's [editorOptions](https://js.devexpress.com/Documentation/ApiReference/UI_Widgets/dxForm/Item_Types/SimpleItem/#editorOptions), Toolbar's [widget](https://js.devexpress.com/Documentation/ApiReference/UI_Widgets/dxToolbar/Default_Item_Template/#options) options.
 
 
