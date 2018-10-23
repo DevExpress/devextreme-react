@@ -3,9 +3,9 @@ import * as React from "react";
 import { orangesByDay } from "./data";
 import Example from "./example-block";
 
-import Button from "../src/ui/button";
-import Chart from "../src/ui/chart";
-import TextBox from "../src/ui/text-box";
+import Button from "../src/button";
+import Chart from "../src/chart";
+import TextBox from "../src/text-box";
 
 interface IState {
     currentTime: string;

@@ -20,6 +20,7 @@ import { convertTypes } from "./converter";
 import generateIndex, { IReExport } from "./index-generator";
 
 import generateComponent, {
+  generateReExport,
   IComponent,
   INestedComponent,
   IOption,
@@ -40,6 +41,7 @@ function generate(
   configComponent: string,
   out: {
     componentsDir: string,
+    oldComponentsDir: string,
     indexFileName: string
   }
 ) {
@@ -55,6 +57,13 @@ function generate(
       name: widgetFile.component.name,
       path: "./" + removeExtension(getRelativePath(indexFileDir, widgetFilePath)).replace(pathSeparator, "/")
     });
+
+    writeFile(
+      joinPaths(out.oldComponentsDir, widgetFile.fileName),
+      generateReExport(
+        "./" + removeExtension(getRelativePath(out.oldComponentsDir, widgetFilePath)).replace(pathSeparator, "/")
+      )
+    );
   });
 
   writeFile(out.indexFileName, generateIndex(modulePaths), { encoding: "utf8" });

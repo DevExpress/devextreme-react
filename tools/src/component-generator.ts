@@ -50,6 +50,15 @@ interface IRenderedPropTyping {
 const TYPE_RENDER = "(props: any) => React.ReactNode";
 const TYPE_COMPONENT = "React.ComponentType<any>";
 
+function generateReExport(path: string): string {
+    return renderReExport({ path });
+}
+
+const renderReExport: (model: {path: string}) => string = createTempate(
+`export * from "<#= it.path #>";\n` +
+`export { default } from "<#= it.path #>";\n`
+);
+
 function generate(component: IComponent): string {
     const nestedComponents = component.nestedComponents
         ? component.nestedComponents
@@ -434,5 +443,6 @@ export {
     IComponent,
     INestedComponent,
     IOption,
-    IPropTyping
+    IPropTyping,
+    generateReExport
 };

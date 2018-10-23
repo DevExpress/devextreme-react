@@ -1,8 +1,8 @@
 import * as React from "react";
 import Example from "./example-block";
 
-import { Button } from "../src/ui/button";
-import { Toolbar } from "../src/ui/toolbar";
+import { Button } from "../src/button";
+import { Toolbar } from "../src/toolbar";
 
 const ItemComponent  = (data: {text: string}) => {
     return (

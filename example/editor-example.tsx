@@ -1,9 +1,9 @@
 import * as React from "react";
 import Example from "./example-block";
 
-import { SelectBox } from "../src/ui/select-box";
-import { TagBox } from "../src/ui/tag-box";
-import { TextBox } from "../src/ui/text-box";
+import { SelectBox } from "../src/select-box";
+import { TagBox } from "../src/tag-box";
+import { TextBox } from "../src/text-box";
 
 function fieldRender() {
     return <TextBox value="123"/>;
