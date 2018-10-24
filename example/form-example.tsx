@@ -2,8 +2,8 @@ import * as React from "react";
 import Example from "./example-block";
 
 import { Template } from "../src/core/template";
-import Form, { RequiredRule, SimpleItem, } from "../src/ui/form";
-import TextArea from "../src/ui/text-area";
+import Form, { RequiredRule, SimpleItem, } from "../src/form";
+import TextArea from "../src/text-area";
 
 const employee: any = {
     ID: 1,
