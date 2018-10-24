@@ -2,9 +2,9 @@ import * as React from "react";
 
 import DataSource from "devextreme/data/data_source";
 
-import Button from "../src/ui/button";
-import List from "../src/ui/list";
-import TextBox from "../src/ui/text-box";
+import Button from "../src/button";
+import List from "../src/list";
+import TextBox from "../src/text-box";
 
 import Example from "./example-block";
 

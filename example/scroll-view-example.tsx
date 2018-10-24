@@ -2,9 +2,9 @@ import * as React from "react";
 
 import Example from "./example-block";
 
-import Button from "../src/ui/button";
-import ScrollView from "../src/ui/scroll-view";
-import TextBox from "../src/ui/text-box";
+import Button from "../src/button";
+import ScrollView from "../src/scroll-view";
+import TextBox from "../src/text-box";
 
 export default class extends React.Component<any, { text: string }> {
 

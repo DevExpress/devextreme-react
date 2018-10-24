@@ -12,8 +12,8 @@ import DataGrid, {
     Pager,
     Paging,
     Selection
-} from "../src/ui/data-grid";
-import NumberBox from "../src/ui/number-box";
+} from "../src/data-grid";
+import NumberBox from "../src/number-box";
 
 import { sales } from "./data";
 

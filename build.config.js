@@ -18,8 +18,10 @@ module.exports = {
     readme: 'README.md'
   },
   metadataPath: './tools/integration-data.json',
-  componentFolder: './src/ui',
+  generatedComponentsDir: './src',
+  coreComponentsDir: './src/core',
+  oldComponentsDir: './src/ui',
   indexFileName: './src/index.ts',
-  baseComponent: '../core/component',
-  configComponent: '../core/nested-option'
+  baseComponent: './core/component',
+  configComponent: './core/nested-option'
 }

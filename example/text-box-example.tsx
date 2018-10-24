@@ -2,9 +2,9 @@ import * as React from "react";
 import Example from "./example-block";
 
 import dxTextBox from "devextreme/ui/text_box";
-import { Button } from "../src/ui/button";
-import { TextBox } from "../src/ui/text-box";
-import { RequiredRule, Validator } from "../src/ui/validator";
+import { Button } from "../src/button";
+import { TextBox } from "../src/text-box";
+import { RequiredRule, Validator } from "../src/validator";
 
 export default class extends React.Component<any, { text: string; uncontrolledText: string; }> {
 
