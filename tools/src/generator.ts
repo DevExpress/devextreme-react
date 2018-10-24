@@ -3,6 +3,7 @@ import { writeFileSync as writeFile } from "fs";
 import {
   dirname as getDirName,
   join as joinPaths,
+  normalize as normalizePath,
   relative as getRelativePath,
   sep as pathSeparator
 } from "path";
@@ -20,6 +21,7 @@ import { convertTypes } from "./converter";
 import generateIndex, { IReExport } from "./index-generator";
 
 import generateComponent, {
+  generateReExport,
   IComponent,
   INestedComponent,
   IOption,
@@ -40,6 +42,7 @@ function generate(
   configComponent: string,
   out: {
     componentsDir: string,
+    oldComponentsDir: string,
     indexFileName: string
   }
 ) {
@@ -55,6 +58,15 @@ function generate(
       name: widgetFile.component.name,
       path: "./" + removeExtension(getRelativePath(indexFileDir, widgetFilePath)).replace(pathSeparator, "/")
     });
+
+    writeFile(
+      joinPaths(out.oldComponentsDir, widgetFile.fileName),
+      generateReExport(
+        normalizePath("./" + removeExtension(getRelativePath(out.oldComponentsDir, widgetFilePath)))
+          .replace(pathSeparator, "/"),
+        removeExtension(widgetFile.fileName)
+      )
+    );
   });
 
   writeFile(out.indexFileName, generateIndex(modulePaths), { encoding: "utf8" });
