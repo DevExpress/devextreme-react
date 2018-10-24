@@ -16,6 +16,9 @@ This project allows you to use [DevExtreme Widgets](http://js.devexpress.com/Dem
   * [Uncontrolled Mode](#uncontrolled-mode)
   * [Getting Widget Instance](#getting-widget-instance)
 * [Markup Customization](#markup-customization)
+* [Configuration Components](#configuration-components)
+  * [Basic usage](#configuration-components-basic)
+  * [Collection Options](#configuration-components-collection)
 * [DevExtreme Validation](#devextreme-validation)
 * [Working With Data](#working-with-data)
 * [Typescript Support](#typescript-support)
@@ -25,9 +28,7 @@ This project allows you to use [DevExtreme Widgets](http://js.devexpress.com/Dem
 
 ## <a name="getting-started"></a>Getting Started ##
 
-You can try this [live example](https://stackblitz.com/edit/devextreme-react) (no need to install anything).
-
-If you’d rather use a local development environment check out the sections below.
+You can try this [live example](https://stackblitz.com/edit/devextreme-react) or configure a local development environment as described below.
 
 ### <a name="prerequisites"></a>Prerequisites ###
 [Node.js and npm](https://docs.npmjs.com/getting-started/installing-node) are required
@@ -41,7 +42,7 @@ npm install --save devextreme@18.2-unstable devextreme-react@18.2-unstable
 ```
 #### <a name="additional-configuration"></a>Additional Configuration ####
 
-The further configuration steps depend on which build tool, bundler or module loader you are using. Please choose the one you need:
+The following configuration steps depend on the build tool, bundler or module loader you are using:
 
 * [Configuring Webpack](https://github.com/DevExpress/devextreme-react/blob/master/docs/using-webpack.md)
 * [Using Create React App](https://github.com/DevExpress/devextreme-react/blob/master/docs/using-create-react-app.md)
@@ -75,7 +76,7 @@ See [Markup Customization](#markup-customization) for details on how to implemen
 
 ## <a name="state-management"></a>State Management ##
 
-DevExtreme React components support both [Controlled](https://reactjs.org/docs/forms.html#controlled-components) and [Uncontrolled](https://reactjs.org/docs/uncontrolled-components.html) state modes.
+DevExtreme React components support [Controlled](https://reactjs.org/docs/forms.html#controlled-components) and [Uncontrolled](https://reactjs.org/docs/uncontrolled-components.html) states.
 
 ### <a name="controlled-mode"></a>Controlled Mode ###
 
@@ -84,7 +85,7 @@ In the controlled mode, a parent component passes a component's state using its 
 - Share state between components in your app
 - Persist and restore state
 
-To control a component's state, provide the value for the required property and handle the event that is fired when it is changed (use the appropriate property with the `on` prefix):
+To manage a component's state, provide the value for a related property and handle the event that is fired when the value changes:
 
 ```jsx
 import React from 'react';
@@ -136,9 +137,9 @@ ReactDOM.render(
 
 ### <a name="uncontrolled-mode"></a>Uncontrolled Mode ###
 
-Sometimes there is no need to handle all the component's updates, thus DevExtreme components can manage their state internally which reduces the amount of code required.
+In the uncontrolled mode, DevExtreme components manage the state internally.
 
-Note that if you want to specify an initial value for an option in the uncontrolled mode, you should use an appropriate property with the `default` prefix. In the example below, the `currentView` option's initial value is defined using the `defaultCurrentView` property.
+Note that if you want to specify an initial value for an option in the uncontrolled mode, use the property with the `default` prefix. In the example below, the `defaultCurrentView` property is used to define the `currentView` option's initial value.
 
 ```jsx
 import React from 'react';
@@ -181,7 +182,7 @@ ReactDOM.render(
 
 
 ### <a name="getting-widget-instance"></a>Getting Widget Instance ###
-In some cases, a widget instance is required when you need to call a widget method. You can get it by assigning a callback function to the component's `ref` property. This function accepts the mounted DevExtreme Component as an argument whose `instance` property stores the widget instance.
+A widget instance is required to call methods. You can get it by assigning a callback function to the component's `ref` property. This function accepts the mounted DevExtreme Component as an argument whose `instance` field stores the widget instance.
 
 ```jsx
 import React from 'react';
@@ -363,6 +364,99 @@ ReactDOM.render(
     document.getElementById('root')
 );
 ```
+
+## <a name="configuration-components"></a>Configuration Components ##
+DevExtreme React Components provide configuration components for the underlying widget's complex nested options.
+
+Use a named import to get a configuration component.
+```js
+import Chart, { Tooltip } from "devextreme-react/ui/chart"; 
+```
+Configuration components support markup customization props (with `Render` or `Component` suffix) and uncontrolled props.
+
+### <a name="configuration-components-basic"></a>Basic Usage ###
+The following example demonstrates how to configure the dxChart widget's [tooltip](https://js.devexpress.com/Documentation/ApiReference/Data_Visualization_Widgets/dxChart/Configuration/tooltip/) option:
+
+
+```jsx
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+import Button from "devextreme-react/ui/button"; 
+import Chart, { Tooltip } from "devextreme-react/ui/chart"; 
+
+import { complaintsData } from './data.js';
+
+class Example extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            showTooltip: false
+        };
+
+        this.toggleTooltip = this.toggleTooltip.bind(this);
+    }
+    
+    toggleTooltip() {
+        this.setState({
+            showTooltip: !this.state.showTooltip
+        });
+    }
+
+    render() {
+        return (
+            <React.Fragment>
+                <Chart
+                    dataSource={ complaintsData }
+                    title="Pizza Shop Complaints">
+                    <Tooltip enabled={ this.state.showTooltip }/>
+                </Chart>
+                <Button text="Toggle tooltip" onClick={ this.toggleTooltip }/>
+            </React.Fragment>
+        );
+    }
+}
+
+ReactDOM.render(
+    <Example />,
+    document.getElementById('root')
+);
+```
+
+### <a name="configuration-components-collection"></a>Collection Options ###
+You can also use configuration components for complex collection options.
+The following example demonstrates how to configure the the dxDataGrid widget's [columns](https://js.devexpress.com/Documentation/ApiReference/UI_Widgets/dxDataGrid/Configuration/columns/) option:
+
+```jsx
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+import DataGrid, { Column } from "devextreme-react/ui/data-grid"; 
+
+import { data } from './data.js';
+
+class Example extends React.Component {
+    render() {
+        return (
+            <React.Fragment>
+                <DataGrid dataSource={ data }>
+                    <Column dataField="firstName"/>
+                    <Column dataField="lastName" caption="Last Name" defaultVisible={true}/>
+                </DataGrid>
+            </React.Fragment>
+        );
+    }
+}
+
+ReactDOM.render(
+    <Example />,
+    document.getElementById('root')
+);
+```
+
+Note that configuration components are not provided for options that accept a type that depends on another option's value. For example,
+the DataGrid's [editorOptions](https://js.devexpress.com/Documentation/ApiReference/UI_Widgets/dxDataGrid/Configuration/columns/#editorOptions), Form's [editorOptions](https://js.devexpress.com/Documentation/ApiReference/UI_Widgets/dxForm/Item_Types/SimpleItem/#editorOptions), Toolbar's [widget](https://js.devexpress.com/Documentation/ApiReference/UI_Widgets/dxToolbar/Default_Item_Template/#options) options.
+
 
 ## <a name="devextreme-validation"></a>DevExtreme Validation ##
 DevExtreme React editors support built-in [data validation](https://js.devexpress.com/Documentation/Guide/Widgets/Common/UI_Widgets/Data_Validation/).
