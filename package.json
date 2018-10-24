@@ -3,7 +3,7 @@
     "name": "Developer Express Inc."
   },
   "name": "devextreme-react",
-  "version": "18.1.6-alpha.11",
+  "version": "18.1.7-alpha.12",
   "description": "DevExtreme React UI and Visualization Components",
   "repository": {
     "type": "git",
@@ -15,7 +15,7 @@
     "prop-types": "^15.6.1"
   },
   "peerDependencies": {
-    "devextreme": "^18.1.6",
+    "devextreme": "^18.1.7-pre-18291",
     "react": "^16.2.0",
     "react-dom": "^16.2.0"
   },
