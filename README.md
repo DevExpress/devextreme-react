@@ -1,7 +1,7 @@
 # DevExtreme React UI and Visualization Components #
 
 [![Build Status](https://img.shields.io/shippable/5a9532d976382b0800e7a53c/master.svg?maxAge=43200)](https://app.shippable.com/github/DevExpress/devextreme-react)
-![Project Status](https://img.shields.io/badge/Project%20Status-alpha-orange.svg?maxAge=43200)
+![Project Status](https://img.shields.io/badge/Project%20Status-beta-orange.svg?maxAge=43200)
 [![NPM](https://img.shields.io/npm/v/devextreme-react.svg?maxAge=43200)](https://www.npmjs.com/package/devextreme-react)
 
 This project allows you to use [DevExtreme Widgets](http://js.devexpress.com/Demos/WidgetsGallery/) as [React Components](https://reactjs.org).
@@ -53,7 +53,7 @@ The following configuration steps depend on the build tool, bundler or module lo
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { Button } from 'devextreme-react';
+import Button from 'devextreme-react/button';
 
 import 'devextreme/dist/css/dx.common.css';
 import 'devextreme/dist/css/dx.light.compact.css';
@@ -91,7 +91,7 @@ To manage a component's state, provide the value for a related property and hand
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { TextBox } from 'devextreme-react';
+import TextBox from 'devextreme-react/text-box';
 
 import 'devextreme/dist/css/dx.common.css';
 import 'devextreme/dist/css/dx.light.compact.css';
@@ -145,7 +145,7 @@ Note that if you want to specify an initial value for an option in the uncontrol
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { Scheduler } from 'devextreme-react';
+import Scheduler from 'devextreme-react/scheduler';
 
 import 'devextreme/dist/css/dx.common.css';
 import 'devextreme/dist/css/dx.light.compact.css';
@@ -222,7 +222,7 @@ Use a property with the `Render` suffix to specify a rendering function:
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { List } from 'devextreme-react';
+import List from 'devextreme-react/list';
 
 import 'devextreme/dist/css/dx.common.css';
 import 'devextreme/dist/css/dx.light.compact.css';
@@ -245,7 +245,7 @@ A template component can be specified using a property with the `Component` suff
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { List } from 'devextreme-react';
+import List from 'devextreme-react/list';
 
 import 'devextreme/dist/css/dx.common.css';
 import 'devextreme/dist/css/dx.light.compact.css';
@@ -280,7 +280,7 @@ Use the `render` property to specify a rendering function for a widget with `tem
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { Button } from 'devextreme-react';
+import Button from 'devextreme-react/button';
 
 import 'devextreme/dist/css/dx.common.css';
 import 'devextreme/dist/css/dx.light.compact.css';
@@ -370,7 +370,7 @@ DevExtreme React Components provide configuration components for the underlying 
 
 Use a named import to get a configuration component.
 ```js
-import Chart, { Tooltip } from "devextreme-react/ui/chart"; 
+import Chart, { Tooltip } from "devextreme-react/chart"; 
 ```
 Configuration components support markup customization props (with `Render` or `Component` suffix) and uncontrolled props.
 
@@ -382,8 +382,8 @@ The following example demonstrates how to configure the dxChart widget's [toolti
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import Button from "devextreme-react/ui/button"; 
-import Chart, { Tooltip } from "devextreme-react/ui/chart"; 
+import Button from "devextreme-react/button"; 
+import Chart, { Tooltip } from "devextreme-react/chart"; 
 
 import { complaintsData } from './data.js';
 
@@ -431,7 +431,7 @@ The following example demonstrates how to configure the the dxDataGrid widget's 
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import DataGrid, { Column } from "devextreme-react/ui/data-grid"; 
+import DataGrid, { Column } from "devextreme-react/data-grid"; 
 
 import { data } from './data.js';
 
@@ -531,7 +531,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import DataSource from 'devextreme/data/data_source';
-import { List } from 'devextreme-react';
+import List from 'devextreme-react/list';
 
 import 'devextreme/dist/css/dx.common.css';
 import 'devextreme/dist/css/dx.light.compact.css';
@@ -588,7 +588,7 @@ Below is an example of appearance customization using TypeScript:
 ```ts
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { List } from "devextreme-react";
+import List from "devextreme-react/list";
 
 import "devextreme/dist/css/dx.common.css";
 import "devextreme/dist/css/dx.light.compact.css";
