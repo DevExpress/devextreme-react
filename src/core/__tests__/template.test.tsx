@@ -32,13 +32,12 @@ function renderItemTemplate(model?: any, container?: any, onRendered?: () => voi
     return renderTemplate("item", model, container, onRendered);
 }
 
-describe("function template", () => {
-
+function commonTemplateTests(checkedOption: string) {
     it("pass integrationOptions to widget", () => {
-        const itemRender: any = () => <div>Template</div>;
-        shallow(
-            <ComponentWithTemplates itemRender={itemRender} />
-        );
+        const elementOptions: Record<string, any> = {};
+        elementOptions[checkedOption] = () => <div>Template</div>;
+        shallow(React.createElement(ComponentWithTemplates, elementOptions));
+
         const options = WidgetClass.mock.calls[0][1];
 
         expect(options.item).toBe("item");
@@ -52,28 +51,154 @@ describe("function template", () => {
     });
 
     it("renders", () => {
-        const itemRender: any = jest.fn((props: any) => <div className={"template"}>Template {props.text}</div>);
-        const component = mount(
-            <ComponentWithTemplates itemRender={itemRender} />
-        );
-        renderItemTemplate({ text: "with data" });
+        const elementOptions: Record<string, any> = {};
+        elementOptions[checkedOption] = (props: any) => <div className={"template"}>Template {props.text}</div>;
 
-        expect(itemRender).toBeCalled();
+        const component = mount(React.createElement(ComponentWithTemplates, elementOptions));
+
+        renderItemTemplate({ text: "with data" });
+        expect(Object.getOwnPropertyNames(component.state("templates")).length).toBe(1);
         component.update();
         expect(component.find(".template").html()).toBe('<div class="template">Template with data</div>');
     });
 
+    it("renders with text child inside component", () => {
+        const elementOptions: Record<string, any> = {};
+        elementOptions[checkedOption] = (props: any) => <div className={"template"}>Template {props.text}</div>;
+
+        const component = mount(React.createElement(ComponentWithTemplates, elementOptions));
+
+        renderItemTemplate({ text: "with data" });
+        component.update();
+        expect(component.html()).toBe('<div class="template">Template with data</div>');
+    });
+
+    it("renders new template after component change", () => {
+        const elementOptions: Record<string, any> = {};
+        elementOptions[checkedOption] = () => <div className={"template"}>First Template</div>;
+        const component = mount(React.createElement(ComponentWithTemplates, elementOptions));
+
+        const changedElementOptions: Record<string, any> = {};
+        changedElementOptions[checkedOption] = () => <div className={"template"}>Second Template</div>;;
+        component.setProps(changedElementOptions);
+
+        renderItemTemplate();
+        component.update();
+        expect(component.find(".template").html()).toBe('<div class="template">Second Template</div>');
+    });
+
+    it("passes component option changes to widget", () => {
+        const elementOptions: Record<string, any> = {};
+        elementOptions[checkedOption] = () => <div className={"template"}>First Template</div>;
+        const component = mount(React.createElement(ComponentWithTemplates, elementOptions));
+
+        const changedElementOptions: Record<string, any> = {};
+        changedElementOptions[checkedOption] = () => <div className={"template"}>Second Template</div>;
+        component.setProps(changedElementOptions);
+        jest.runAllTimers();
+        const optionCalls = Widget.option.mock.calls;
+        expect(optionCalls.length).toBe(2);
+
+        expect(optionCalls[0][0]).toBe("integrationOptions");
+        expect(typeof optionCalls[0][1].templates.item.render).toBe("function");
+
+        expect(optionCalls[1][0]).toBe("item");
+        expect(optionCalls[1][1]).toBe("item");
+    });
+
     it("renders inside unwrapped container", () => {
-        function itemRender() {
-            return <div className={"template"}>Template</div>;
-        }
-        const component = mount(
-            <ComponentWithTemplates itemRender={itemRender} />
-        );
+        const elementOptions: Record<string, any> = {};
+        elementOptions[checkedOption] = () => <div className={"template"}>Template</div>;
+        const component = mount(React.createElement(ComponentWithTemplates, elementOptions));
+
         renderItemTemplate({}, { get: () => document.createElement("div") });
         component.update();
         expect(component.find(".template").html()).toBe('<div class="template">Template</div>');
     });
+
+    it("renders template removeEvent listener", () => {
+        const elementOptions: Record<string, any> = {};
+        elementOptions[checkedOption] = (props: any) => <div>Template {props.text}</div>;
+        const component = mount(React.createElement(ComponentWithTemplates, elementOptions));
+
+        const container = document.createElement("div");
+        renderItemTemplate({ text: "with data"}, container);
+        component.update();
+        expect(container.innerHTML).toBe('<div>Template with data</div><span style=\"display: none;\"></span>');
+    });
+
+    it("renders template removeEvent listener for table", () => {
+        const elementOptions: Record<string, any> = {};
+        elementOptions[checkedOption] = (props: any) => <tbody><tr><td>Template {props.text}</td></tr></tbody>;
+        const component = mount(React.createElement(ComponentWithTemplates, elementOptions));
+
+        const container = document.createElement("table");
+        renderItemTemplate({ text: "with data"}, container);
+
+        component.update();
+        expect(container.innerHTML)
+            .toBe("<tbody><tr><td>Template with data</td></tr></tbody><tbody style=\"display: none;\"></tbody>");
+    });
+
+    it("calls onRendered callback", () => {
+        const elementOptions: Record<string, any> = {};
+        elementOptions[checkedOption] = (props: any) => <div className={"template"}>Template {props.text}</div>;
+        const component = mount(React.createElement(ComponentWithTemplates, elementOptions));
+        const onRendered: () => void = jest.fn();
+
+        renderItemTemplate({ text: "with data" }, undefined, onRendered);
+        component.update();
+        jest.runAllTimers();
+        expect(onRendered).toBeCalled();
+    });
+
+    it("mounts empty template without errors", () => {
+        const elementOptions: Record<string, any> = {};
+        elementOptions[checkedOption] = () => null;
+        const component = mount(React.createElement(ComponentWithTemplates, elementOptions));
+
+        renderItemTemplate({ text: 1 });
+        expect(component.update.bind(component)).not.toThrow();
+    });
+
+    it("has templates in state with unique ids", () => {
+        const elementOptions: Record<string, any> = {};
+        elementOptions[checkedOption] = (props: any) => <div className={"template"}>Template {props.text}</div>;
+        const component = shallow(React.createElement(ComponentWithTemplates, elementOptions));
+
+        renderItemTemplate({ text: 1 });
+        renderItemTemplate({ text: 2 });
+
+        const templatesKeys = Object.getOwnPropertyNames(component.state("templates"));
+        expect(templatesKeys.length).toBe(2);
+        expect(templatesKeys[0]).not.toBe(templatesKeys[1]);
+    });
+
+    it("removes deleted nodes from state", () => {
+        const elementOptions: Record<string, any> = {};
+        elementOptions[checkedOption] = (props: any) => <div className={"template"}>Template {props.text}</div>;
+        const component = mount(React.createElement(ComponentWithTemplates, elementOptions));
+
+        renderItemTemplate();
+        expect(Object.getOwnPropertyNames(component.state("templates")).length).toBe(1);
+        component.update();
+        const templateContent = component.find(".template").getDOMNode();
+
+        const parentElement = templateContent.parentElement;
+        if (!parentElement) { throw new Error(); }
+
+        const removeListener = parentElement.getElementsByTagName("SPAN")[0];
+
+        parentElement.removeChild(removeListener);
+        parentElement.removeChild(templateContent);
+        events.triggerHandler(removeListener, "dxremove");
+        component.update();
+        expect(Object.getOwnPropertyNames(component.state("templates")).length).toBe(0);
+    });
+}
+
+describe("function template", () => {
+    commonTemplateTests("itemRender");
 
     it("renders simple item", () => {
         const itemRender: any = jest.fn((text: string) => <div className={"template"}>Template {text}</div>);
@@ -86,100 +211,10 @@ describe("function template", () => {
         component.update();
         expect(component.find(".template").html()).toBe('<div class="template">Template with data</div>');
     });
-
-    it("renders template wrapper for simple item", () => {
-        const itemRender: any = jest.fn((text: string) => <div>Template {text}</div>);
-        const component = mount(
-            <ComponentWithTemplates itemRender={itemRender} />
-        );
-        const container = document.createElement("div");
-        renderItemTemplate("with data", container);
-        component.update();
-        expect(container.innerHTML).toBe('<div>Template with data</div><span style=\"display: none;\"></span>');
-    });
-
-    it("renders template for table", () => {
-        const itemRender: any = (text: string) => <tbody><tr><td>Template {text}</td></tr></tbody>;
-        const component = mount(
-            <ComponentWithTemplates itemRender={itemRender} />
-        );
-        const container = document.createElement("table");
-        renderItemTemplate("with data", container);
-        component.update();
-        expect(container.innerHTML)
-            .toBe("<tbody><tr><td>Template with data</td></tr></tbody><tbody style=\"display: none;\"></tbody>");
-    });
-
-    it("calls onRendered callback", () => {
-        const itemRender: any = (text: string) => <div className={"template"}>Template {text}</div>;
-        const onRendered: () => void = jest.fn();
-        const component = mount(
-            <ComponentWithTemplates itemRender={itemRender} />
-        );
-        renderItemTemplate("with data", undefined, onRendered);
-        component.update();
-        jest.runAllTimers();
-        expect(onRendered).toBeCalled();
-    });
-
-    it("renders inside component", () => {
-        const itemRender: any = jest.fn((props: any) => <div className={"template"}>Template {props.text}</div>);
-        const component = mount(
-            <ComponentWithTemplates itemRender={itemRender} />
-        );
-        renderItemTemplate({ text: "is rendered" });
-        expect(Object.getOwnPropertyNames(component.state("templates")).length).toBe(1);
-        component.update();
-        expect(component.find(".template").html()).toBe('<div class="template">Template is rendered</div>');
-    });
-
-    it("renders new template after component change", () => {
-        const ItemTemplate = () => <div className={"template"}>First Template</div>;
-        const component = mount(
-            <ComponentWithTemplates itemRender={ItemTemplate} />
-        );
-
-        const SecondItemTemplate = () => <div className={"template"}>Second Template</div>;
-        component.setProps({
-            itemRender: SecondItemTemplate
-        });
-
-        renderItemTemplate();
-        component.update();
-        expect(component.find(".template").html()).toBe('<div class="template">Second Template</div>');
-    });
 });
 
 describe("component template", () => {
-
-    it("pass integrationOptions to widget", () => {
-        const ItemTemplate = () => <div>Template</div>;
-        shallow(
-            <ComponentWithTemplates itemComponent={ItemTemplate} />
-        );
-
-        const options = WidgetClass.mock.calls[0][1];
-
-        expect(options.item).toBe("item");
-
-        const integrationOptions = options.integrationOptions;
-
-        expect(integrationOptions).toBeDefined();
-        expect(integrationOptions.templates).toBeDefined();
-        expect(integrationOptions.templates.item).toBeDefined();
-        expect(typeof integrationOptions.templates.item.render).toBe("function");
-    });
-
-    it("renders", () => {
-        const ItemTemplate = (props: any) => <div className={"template"}>Template {props.text}</div>;
-        const component = mount(
-            <ComponentWithTemplates itemComponent={ItemTemplate} />
-        );
-
-        renderItemTemplate({ text: "with data" });
-        component.update();
-        expect(component.find(".template").html()).toBe('<div class="template">Template with data</div>');
-    });
+    commonTemplateTests("itemComponent");
 
     it("renders key prop", () => {
         const ItemTemplate = (props: any) => <div className={"template"}>key: {props.key}, dxkey: {props.dxkey}</div>;
@@ -190,33 +225,6 @@ describe("component template", () => {
         renderItemTemplate({ key: "key_1" });
         component.update();
         expect(component.find(".template").html()).toBe('<div class="template">key: , dxkey: key_1</div>');
-    });
-
-    it("renders inside component", () => {
-        const ItemTemplate = (props: any) => <div className={"template"}>Template {props.text}</div>;
-        const component = mount(
-            <ComponentWithTemplates itemComponent={ItemTemplate} />
-        );
-        renderItemTemplate({ text: "is rendered" });
-        expect(Object.getOwnPropertyNames(component.state("templates")).length).toBe(1);
-        component.update();
-        expect(component.find(".template").html()).toBe('<div class="template">Template is rendered</div>');
-    });
-
-    it("renders new template after component change", () => {
-        const ItemTemplate = () => <div className={"template"}>First Template</div>;
-        const component = mount(
-            <ComponentWithTemplates itemComponent={ItemTemplate} />
-        );
-
-        const SecondItemTemplate = () => <div className={"template"}>Second Template</div>;
-        component.setProps({
-            itemComponent: SecondItemTemplate
-        });
-
-        renderItemTemplate();
-        component.update();
-        expect(component.find(".template").html()).toBe('<div class="template">Second Template</div>');
     });
 });
 
@@ -386,68 +394,4 @@ describe("component/render in nested options", () => {
         component.update();
         expect(component.find(".template").html()).toBe('<div class="template">Second Template</div>');
     });
-});
-
-it("pass component option changes to widget", () => {
-    const ItemTemplate = () => <div>First Template</div>;
-    const component = shallow(
-        <ComponentWithTemplates itemComponent={ItemTemplate} />
-    );
-
-    const SecondItemTemplate = () => <div>Second Template</div>;
-    component.setProps({
-        itemComponent: SecondItemTemplate
-    });
-    jest.runAllTimers();
-    const optionCalls = Widget.option.mock.calls;
-    expect(optionCalls.length).toBe(2);
-
-    expect(optionCalls[0][0]).toBe("integrationOptions");
-    expect(typeof optionCalls[0][1].templates.item.render).toBe("function");
-
-    expect(optionCalls[1][0]).toBe("item");
-    expect(optionCalls[1][1]).toBe("item");
-});
-
-it("has templates in state with unique ids", () => {
-    const ItemTemplate = (props: any) => <div className={"template"}>Template {props.text}</div>;
-    const component = shallow(
-        <ComponentWithTemplates itemComponent={ItemTemplate} />
-    );
-    renderItemTemplate({ text: 1 });
-    renderItemTemplate({ text: 2 });
-
-    const templatesKeys = Object.getOwnPropertyNames(component.state("templates"));
-    expect(templatesKeys.length).toBe(2);
-    expect(templatesKeys[0]).not.toBe(templatesKeys[1]);
-});
-
-it("mounts empty template without errors", () => {
-    const component = mount(
-        <ComponentWithTemplates itemRender={() => null}/>
-    );
-    renderItemTemplate({ text: 1 });
-    expect(component.update.bind(component)).not.toThrow();
-});
-
-it("removes deleted nodes from state", () => {
-    const ItemTemplate = (props: any) => <div className={"template"}>Template {props.text}</div>;
-    const component = mount(
-        <ComponentWithTemplates itemComponent={ItemTemplate} />
-    );
-    renderItemTemplate();
-    expect(Object.getOwnPropertyNames(component.state("templates")).length).toBe(1);
-    component.update();
-    const templateContent = component.find(".template").getDOMNode();
-
-    const parentElement = templateContent.parentElement;
-    if (!parentElement) { throw new Error(); }
-
-    const removeListener = parentElement.getElementsByTagName("SPAN")[0];
-
-    parentElement.removeChild(removeListener);
-    parentElement.removeChild(templateContent);
-    events.triggerHandler(removeListener, "dxremove");
-    component.update();
-    expect(Object.getOwnPropertyNames(component.state("templates")).length).toBe(0);
 });
