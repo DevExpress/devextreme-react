@@ -62,36 +62,17 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
   }
 
   public render() {
-      const elementProps: Record<string, any> = {
-        ref: (element: HTMLDivElement) => this._element = element
-      };
+    const elementProps: Record<string, any> = {
+      ref: (element: HTMLDivElement) => this._element = element
+    };
 
-      elementPropNames.forEach((name) => {
-        if (name in this.props) {
-          elementProps[name] = this.props[name];
-        }
-      });
-      const args: any[] = [
-        "div",
-        elementProps
-      ];
-      this._optionsManager.resetNestedElements();
-      let nestedTemplates: Record<string, any> = {};
-      React.Children.forEach(this.props.children, (child: React.ReactElement<any>) => {
-        nestedTemplates = {
-          ...nestedTemplates,
-          ...findNestedTemplateProps(child)
-        };
-        args.push(this._preprocessChild(child) || child);
-      });
+    elementPropNames.forEach((name) => {
+      if (name in this.props) {
+        elementProps[name] = this.props[name];
+      }
+    });
 
-      const templates = Object.getOwnPropertyNames(this.state.templates) || [];
-
-      templates.forEach((t) => {
-        args.push(this.state.templates[t](nestedTemplates));
-      });
-
-      return React.createElement.apply(this, args);
+    return React.createElement("div", elementProps, ...this._prepareChildren());
   }
 
   public componentDidMount() {
@@ -107,6 +88,26 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
       events.triggerHandler(this._element, DX_REMOVE_EVENT);
       this._instance.dispose();
     }
+  }
+
+  protected _prepareChildren(args: any[] = []): any[] {
+    this._optionsManager.resetNestedElements();
+    let nestedTemplates: Record<string, any> = {};
+    React.Children.forEach(this.props.children, (child: React.ReactElement<any>) => {
+      nestedTemplates = {
+        ...nestedTemplates,
+        ...findNestedTemplateProps(child)
+      };
+      args.push(this._preprocessChild(child) || child);
+    });
+
+    const templates = Object.getOwnPropertyNames(this.state.templates) || [];
+
+    templates.forEach((t) => {
+      args.push(this.state.templates[t](nestedTemplates));
+    });
+
+    return args;
   }
 
   protected _preprocessChild(component: React.ReactElement<any>): React.ReactElement<any> {
@@ -214,6 +215,16 @@ class Component<P extends IHtmlOptions> extends ComponentBase<P> {
     super.componentDidMount();
     this._createWidget();
     this._extensions.forEach((extension) => extension.call(this, this._element));
+  }
+
+  protected _prepareChildren(): any[] {
+    const args: any[] = [];
+    const children = React.Children.toArray(this.props.children);
+    if (children.length === 1 && typeof children[0] === "string") {
+      args.push(React.Fragment);
+    }
+
+    return super._prepareChildren(args);
   }
 
   protected _preprocessChild(component: React.ReactElement<any>) {
