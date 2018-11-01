@@ -62,24 +62,13 @@ function commonTemplateTests(checkedOption: string) {
         expect(component.find(".template").html()).toBe('<div class="template">Template with data</div>');
     });
 
-    it("renders with text child inside component", () => {
-        const elementOptions: Record<string, any> = {};
-        elementOptions[checkedOption] = (props: any) => <div className={"template"}>Template {props.text}</div>;
-
-        const component = mount(React.createElement(ComponentWithTemplates, elementOptions));
-
-        renderItemTemplate({ text: "with data" });
-        component.update();
-        expect(component.html()).toBe('<div class="template">Template with data</div>');
-    });
-
     it("renders new template after component change", () => {
         const elementOptions: Record<string, any> = {};
         elementOptions[checkedOption] = () => <div className={"template"}>First Template</div>;
         const component = mount(React.createElement(ComponentWithTemplates, elementOptions));
 
         const changedElementOptions: Record<string, any> = {};
-        changedElementOptions[checkedOption] = () => <div className={"template"}>Second Template</div>;;
+        changedElementOptions[checkedOption] = () => <div className={"template"}>Second Template</div>;
         component.setProps(changedElementOptions);
 
         renderItemTemplate();
