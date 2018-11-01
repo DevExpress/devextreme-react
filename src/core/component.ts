@@ -220,7 +220,8 @@ class Component<P extends IHtmlOptions> extends ComponentBase<P> {
   protected _prepareChildren(): any[] {
     const args: any[] = [];
     const children = React.Children.toArray(this.props.children);
-    if (children.length === 1 && typeof children[0] === "string") {
+    const hasOnlyTextNode = children.length === 1 && typeof children[0] === "string";
+    if (hasOnlyTextNode) {
       args.push(React.Fragment);
     }
 
