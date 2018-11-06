@@ -32,10 +32,10 @@ function renderItemTemplate(model?: any, container?: any, onRendered?: () => voi
     return renderTemplate("item", model, container, onRendered);
 }
 
-function commonTemplateTests(checkedOption: string) {
+function testTemplateOption(testedOption: string) {
     it("pass integrationOptions to widget", () => {
         const elementOptions: Record<string, any> = {};
-        elementOptions[checkedOption] = () => <div>Template</div>;
+        elementOptions[testedOption] = () => <div>Template</div>;
         shallow(React.createElement(ComponentWithTemplates, elementOptions));
 
         const options = WidgetClass.mock.calls[0][1];
@@ -52,7 +52,7 @@ function commonTemplateTests(checkedOption: string) {
 
     it("renders", () => {
         const elementOptions: Record<string, any> = {};
-        elementOptions[checkedOption] = (props: any) => <div className={"template"}>Template {props.text}</div>;
+        elementOptions[testedOption] = (props: any) => <div className={"template"}>Template {props.text}</div>;
 
         const component = mount(React.createElement(ComponentWithTemplates, elementOptions));
 
@@ -62,13 +62,33 @@ function commonTemplateTests(checkedOption: string) {
         expect(component.find(".template").html()).toBe('<div class="template">Template with data</div>');
     });
 
+    it("renders with text node inside component", () => {
+        const elementOptions: Record<string, any> = {};
+        elementOptions[testedOption] = () => <div>Template</div>;
+        const component = mount(
+            React.createElement(
+                ComponentWithTemplates,
+                elementOptions,
+                "Text"
+            )
+        );
+        const templateHolder = document.createElement("div");
+        component.getDOMNode().appendChild(templateHolder);
+
+        renderItemTemplate({ text: "with data" }, templateHolder);
+        component.update();
+
+        expect(component.html())
+            .toBe("<div>Text<div><div>Template</div><span style=\"display: none;\"></span></div></div>");
+    });
+
     it("renders new template after component change", () => {
         const elementOptions: Record<string, any> = {};
-        elementOptions[checkedOption] = () => <div className={"template"}>First Template</div>;
+        elementOptions[testedOption] = () => <div className={"template"}>First Template</div>;
         const component = mount(React.createElement(ComponentWithTemplates, elementOptions));
 
         const changedElementOptions: Record<string, any> = {};
-        changedElementOptions[checkedOption] = () => <div className={"template"}>Second Template</div>;
+        changedElementOptions[testedOption] = () => <div className={"template"}>Second Template</div>;
         component.setProps(changedElementOptions);
 
         renderItemTemplate();
@@ -78,11 +98,11 @@ function commonTemplateTests(checkedOption: string) {
 
     it("passes component option changes to widget", () => {
         const elementOptions: Record<string, any> = {};
-        elementOptions[checkedOption] = () => <div className={"template"}>First Template</div>;
+        elementOptions[testedOption] = () => <div className={"template"}>First Template</div>;
         const component = mount(React.createElement(ComponentWithTemplates, elementOptions));
 
         const changedElementOptions: Record<string, any> = {};
-        changedElementOptions[checkedOption] = () => <div className={"template"}>Second Template</div>;
+        changedElementOptions[testedOption] = () => <div className={"template"}>Second Template</div>;
         component.setProps(changedElementOptions);
         jest.runAllTimers();
         const optionCalls = Widget.option.mock.calls;
@@ -97,7 +117,7 @@ function commonTemplateTests(checkedOption: string) {
 
     it("renders inside unwrapped container", () => {
         const elementOptions: Record<string, any> = {};
-        elementOptions[checkedOption] = () => <div className={"template"}>Template</div>;
+        elementOptions[testedOption] = () => <div className={"template"}>Template</div>;
         const component = mount(React.createElement(ComponentWithTemplates, elementOptions));
 
         renderItemTemplate({}, { get: () => document.createElement("div") });
@@ -107,7 +127,7 @@ function commonTemplateTests(checkedOption: string) {
 
     it("renders template removeEvent listener", () => {
         const elementOptions: Record<string, any> = {};
-        elementOptions[checkedOption] = (props: any) => <div>Template {props.text}</div>;
+        elementOptions[testedOption] = (props: any) => <div>Template {props.text}</div>;
         const component = mount(React.createElement(ComponentWithTemplates, elementOptions));
 
         const container = document.createElement("div");
@@ -118,7 +138,7 @@ function commonTemplateTests(checkedOption: string) {
 
     it("renders template removeEvent listener for table", () => {
         const elementOptions: Record<string, any> = {};
-        elementOptions[checkedOption] = (props: any) => <tbody><tr><td>Template {props.text}</td></tr></tbody>;
+        elementOptions[testedOption] = (props: any) => <tbody><tr><td>Template {props.text}</td></tr></tbody>;
         const component = mount(React.createElement(ComponentWithTemplates, elementOptions));
 
         const container = document.createElement("table");
@@ -131,7 +151,7 @@ function commonTemplateTests(checkedOption: string) {
 
     it("calls onRendered callback", () => {
         const elementOptions: Record<string, any> = {};
-        elementOptions[checkedOption] = (props: any) => <div className={"template"}>Template {props.text}</div>;
+        elementOptions[testedOption] = (props: any) => <div className={"template"}>Template {props.text}</div>;
         const component = mount(React.createElement(ComponentWithTemplates, elementOptions));
         const onRendered: () => void = jest.fn();
 
@@ -143,7 +163,7 @@ function commonTemplateTests(checkedOption: string) {
 
     it("mounts empty template without errors", () => {
         const elementOptions: Record<string, any> = {};
-        elementOptions[checkedOption] = () => null;
+        elementOptions[testedOption] = () => null;
         const component = mount(React.createElement(ComponentWithTemplates, elementOptions));
 
         renderItemTemplate({ text: 1 });
@@ -152,7 +172,7 @@ function commonTemplateTests(checkedOption: string) {
 
     it("has templates in state with unique ids", () => {
         const elementOptions: Record<string, any> = {};
-        elementOptions[checkedOption] = (props: any) => <div className={"template"}>Template {props.text}</div>;
+        elementOptions[testedOption] = (props: any) => <div className={"template"}>Template {props.text}</div>;
         const component = shallow(React.createElement(ComponentWithTemplates, elementOptions));
 
         renderItemTemplate({ text: 1 });
@@ -165,7 +185,7 @@ function commonTemplateTests(checkedOption: string) {
 
     it("removes deleted nodes from state", () => {
         const elementOptions: Record<string, any> = {};
-        elementOptions[checkedOption] = (props: any) => <div className={"template"}>Template {props.text}</div>;
+        elementOptions[testedOption] = (props: any) => <div className={"template"}>Template {props.text}</div>;
         const component = mount(React.createElement(ComponentWithTemplates, elementOptions));
 
         renderItemTemplate();
@@ -187,7 +207,7 @@ function commonTemplateTests(checkedOption: string) {
 }
 
 describe("function template", () => {
-    commonTemplateTests("itemRender");
+    testTemplateOption("itemRender");
 
     it("renders simple item", () => {
         const itemRender: any = jest.fn((text: string) => <div className={"template"}>Template {text}</div>);
@@ -203,7 +223,7 @@ describe("function template", () => {
 });
 
 describe("component template", () => {
-    commonTemplateTests("itemComponent");
+    testTemplateOption("itemComponent");
 
     it("renders key prop", () => {
         const ItemTemplate = (props: any) => <div className={"template"}>key: {props.key}, dxkey: {props.dxkey}</div>;
