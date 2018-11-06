@@ -11,6 +11,7 @@ import EditorExample from "./editor-example";
 import Example from "./example-block";
 import FormExample from "./form-example";
 import ListExample from "./list-example";
+import MapExample from "./map-example";
 import PopupExample from "./popup-example";
 import SchedulerExample from "./scheduler-example";
 import ScrollViewExample from "./scroll-view-example";
@@ -53,6 +54,8 @@ ReactDOM.render(
     <FormExample/>
 
     <ListExample />
+
+    <MapExample />
 
     <AccordionExample />
 

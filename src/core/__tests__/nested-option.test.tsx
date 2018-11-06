@@ -1,3 +1,4 @@
+import { Component } from "../../core/component";
 import ConfigurationComponent from "../../core/nested-option";
 import { mount, React, shallow } from "./setup";
 import { TestComponent, Widget, WidgetClass } from "./test-component";
@@ -51,8 +52,6 @@ class CollectionSubNestedComponent extends ConfigurationComponent<{ c?: number, 
     public static IsCollectionItem = true;
     public static OptionName = "subItemsOptions";
 }
-
-// tslint:enable:max-classes-per-file
 
 describe("nested option", () => {
 
@@ -137,6 +136,40 @@ describe("nested option", () => {
                 { c: 456 },
                 { d: "def" }
             ]
+        });
+    });
+
+    it("is pulled according to expectations", () => {
+
+        class TestComponentWithExpectation<P = any> extends Component<P> {
+
+            protected _expectedChildren = {
+                option: {
+                    optionName: "expectedItemOptions",
+                    isCollectionItem: true
+                },
+                itemOptions: {
+                    optionName: "expectedOption",
+                    isCollectionItem: false
+                }
+            };
+
+            protected _WidgetClass = WidgetClass;
+        }
+
+        mount(
+            <TestComponentWithExpectation>
+                <NestedComponent a={123} />
+                <CollectionNestedComponent c={456} d="abc" />
+            </TestComponentWithExpectation>
+        );
+
+        expect(WidgetClass.mock.calls[0][1]).toEqual({
+            templatesRenderAsynchronously: true,
+            expectedItemOptions: [
+                { a: 123 }
+            ],
+            expectedOption: { c: 456, d: "abc" }
         });
     });
 
@@ -370,5 +403,42 @@ describe("nested sub-option", () => {
         jest.runAllTimers();
         expect(Widget.option.mock.calls.length).toBe(1);
         expect(Widget.option.mock.calls[0]).toEqual(["option.subOption.d", "def"]);
+    });
+
+    it("is pulled according to expectations", () => {
+
+        class NestedComponentWithExpectations extends ConfigurationComponent<{ a: number }> {
+            public static OptionName = "option";
+            public static ExpectedChildren = {
+                subOption: {
+                    optionName: "expectedSubItemOptions",
+                    isCollectionItem: true
+                },
+                subItemsOptions: {
+                    optionName: "expectedSubOption",
+                    isCollectionItem: false
+                }
+            };
+        }
+
+        mount(
+            <TestComponent>
+                <NestedComponentWithExpectations a={123}>
+                    <SubNestedComponent d={"abc"} />
+                    <CollectionSubNestedComponent c={456} d={"def"} />
+                </NestedComponentWithExpectations>
+            </TestComponent>
+        );
+
+        expect(WidgetClass.mock.calls[0][1]).toEqual({
+            templatesRenderAsynchronously: true,
+            option: {
+                a: 123,
+                expectedSubItemOptions: [
+                    { d: "abc" }
+                ],
+                expectedSubOption: { c: 456, d: "def" }
+            }
+        });
     });
 });
