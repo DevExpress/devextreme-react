@@ -40,6 +40,7 @@ export default class extends React.Component<any, any> {
     public render() {
         return (
             <Example title="DxSlideOutView" state={this.state}>
+                <Button text={"toggle"} onClick={this.toggle}/>
                 <SlideOutView
                     height={200}
                     swipeEnabled={true}
@@ -47,8 +48,7 @@ export default class extends React.Component<any, any> {
                     menuRender={renderMenuTemplate}
                     onOptionChanged={this._optionChangeHandler}
                 >
-                    <div>This is SlideOutView content</div>
-                    <Button text={"toggle"} onClick={this.toggle}/>
+                    This is SlideOutView content
                 </SlideOutView>
             </Example>
         );
