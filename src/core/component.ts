@@ -1,7 +1,7 @@
 import * as events from "devextreme/events";
 import * as React from "react";
 
-import OptionsManager from "./options-manager";
+import OptionsManager, { INestedOption } from "./options-manager";
 import { findProps as findNestedTemplateProps, ITemplateMeta } from "./template";
 import { elementPropNames, getClassName, separateProps } from "./widget-config";
 
@@ -34,8 +34,8 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
   protected _element: HTMLDivElement;
 
   protected readonly _defaults: Record<string, string>;
-
   protected readonly _templateProps: ITemplateMeta[] = [];
+  protected readonly _expectedChildren: Record<string, INestedOption>;
 
   private readonly _optionsManager: OptionsManager;
 
@@ -111,7 +111,7 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
   }
 
   protected _preprocessChild(component: React.ReactElement<any>): React.ReactElement<any> {
-    return this._optionsManager.registerNestedOption(component) || component;
+    return this._optionsManager.registerNestedOption(component, this._expectedChildren) || component;
   }
 
   protected _createWidget(element?: Element) {
