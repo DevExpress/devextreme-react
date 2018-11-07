@@ -347,6 +347,29 @@ describe("component/render in nested options", () => {
         expect(typeof integrationOptions.templates.optionitem.render).toBe("function");
     });
 
+    it("pass integrationOptions to widget with Template component", () => {
+        const ItemTemplate = () => <div>Template</div>;
+        mount(
+            <ComponentWithTemplates itemComponent={ItemTemplate}>
+                <NestedComponent itemComponent={ItemTemplate} />
+                <Template name={"nested"} render={ItemTemplate} />
+            </ComponentWithTemplates >
+        );
+
+        const options = WidgetClass.mock.calls[0][1];
+
+        const integrationOptions = options.integrationOptions;
+
+        expect(integrationOptions.templates.nested).toBeDefined();
+        expect(typeof integrationOptions.templates.nested.render).toBe("function");
+
+        expect(integrationOptions.templates.item).toBeDefined();
+        expect(typeof integrationOptions.templates.item.render).toBe("function");
+
+        expect(integrationOptions.templates.optionitem).toBeDefined();
+        expect(typeof integrationOptions.templates.optionitem.render).toBe("function");
+    });
+
     it("pass integrationOptions options to widget with several templates", () => {
         const UserTemplate = () => <div>Template</div>;
         mount(
