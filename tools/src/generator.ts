@@ -107,6 +107,7 @@ function mapWidget(
       templates: raw.templates,
       subscribableOptions: subscribableOptions.length > 0 ? subscribableOptions : null,
       nestedComponents: nestedOptions && nestedOptions.length > 0 ? nestedOptions : null,
+      expectedChildren: raw.nesteds,
       propTypings: propTypings.length > 0 ? propTypings : null
     }
   };
@@ -127,7 +128,8 @@ function extractNestedComponents(props: IComplexProp[], rawWidgetName: string, w
       options: p.props.map(mapOption),
       isCollectionItem: p.isCollectionItem,
       templates: p.templates,
-      predefinedProps: p.predefinedProps
+      predefinedProps: p.predefinedProps,
+      expectedChildren: p.nesteds
     };
   });
 }

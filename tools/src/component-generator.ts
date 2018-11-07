@@ -12,6 +12,7 @@ interface IComponent {
     baseComponentPath: string;
     configComponentPath: string;
     dxExportPath: string;
+    expectedChildren: IExpectedChild[];
     isExtension?: boolean;
     subscribableOptions?: IOption[];
     nestedComponents?: INestedComponent[];
@@ -25,6 +26,7 @@ interface INestedComponent {
     owners: string[];
     options: IOption[];
     templates: string[];
+    expectedChildren: IExpectedChild[];
     predefinedProps?: Record<string, any>;
     isCollectionItem?: boolean;
 }
@@ -40,6 +42,12 @@ interface IPropTyping {
     propName: string;
     types: string[];
     acceptableValues?: string[];
+}
+
+interface IExpectedChild {
+    componentName: string;
+    optionName: string;
+    isCollectionItem: boolean;
 }
 
 interface IRenderedPropTyping {
@@ -112,6 +120,7 @@ function generate(component: IComponent): string {
                     renderedTemplateProps: nestedTemplates && nestedTemplates.map(renderTemplateOption),
                     isCollectionItem: c.isCollectionItem,
                     predefinedProps,
+                    expectedChildren: c.expectedChildren,
                     owners: c.owners
                 };
             })
@@ -179,6 +188,7 @@ function generate(component: IComponent): string {
                 })
             ),
             renderedPropTypings,
+            expectedChildren: component.expectedChildren
         }),
 
         renderedNestedComponents: nestedComponents && nestedComponents.map(renderNestedComponent),
@@ -304,6 +314,7 @@ const renderComponent: (model: {
     className: string;
     widgetName: string;
     optionsName: string;
+    expectedChildren: IExpectedChild[];
     renderedDefaultProps: string[];
     renderedTemplateProps: string[];
     renderedPropTypings: string[];
@@ -314,11 +325,25 @@ const renderComponent: (model: {
     return this._instance;
   }
 
-  protected _WidgetClass = <#= it.widgetName #>;
-<#? it.renderedDefaultProps #>
-  protected _defaults = {<#= it.renderedDefaultProps.join(',') #>
-  };
-<#?#><#? it.renderedTemplateProps #>
+  protected _WidgetClass = <#= it.widgetName #>;\n` +
+
+`<#? it.renderedDefaultProps #>` +
+L1 + `protected _defaults = {<#= it.renderedDefaultProps.join(',') #>` +
+L1 +  `};\n` +
+`<#?#>` +
+
+`<#? it.expectedChildren #>` +
+L1 + `protected _expectedChildren = {` +
+
+`<#~ it.expectedChildren : child #>` +
+L2 + `<#= child.componentName #>:` +
+    ` { optionName: "<#= child.optionName #>", isCollectionItem: <#= !!child.isCollectionItem #> },` +
+`<#~#>` + `\b` +
+
+L1 +  `};\n` +
+`<#?#>` +
+
+`<#? it.renderedTemplateProps #>
   protected _templateProps = [<#= it.renderedTemplateProps.join(', ') #>];
 <#?#>}` + `\n` +
 
@@ -337,6 +362,7 @@ const renderNestedComponent: (model: {
         name: string;
         value: any;
     }>;
+    expectedChildren: IExpectedChild[];
     renderedType: string;
     renderedSubscribableOptions: string[];
     renderedTemplateProps: string[];
@@ -357,6 +383,17 @@ L1 + `public static OptionName = "<#= it.optionName #>";` +
 `<#? it.renderedSubscribableOptions #>` +
     L1 + `public static DefaultsProps = {<#= it.renderedSubscribableOptions.join(',') #>` +
     L1 + `};` +
+`<#?#>` +
+
+`<#? it.expectedChildren #>` +
+    L1 + `public static ExpectedChildren = {` +
+
+    `<#~ it.expectedChildren : child #>` +
+    L2 + `<#= child.componentName #>:` +
+        ` { optionName: "<#= child.optionName #>", isCollectionItem: <#= !!child.isCollectionItem #> },` +
+    `<#~#>` + `\b` +
+
+    L1 +  `};` +
 `<#?#>` +
 
 `<#? it.renderedTemplateProps #>` +
