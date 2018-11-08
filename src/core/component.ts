@@ -180,9 +180,14 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
       propsGetter: (prop) => this.props[prop]
     });
 
-    const integrationOptions = Object.keys(templateOptions.templates).length ? {
+    const templates = {
+      ...rawProps.integrationOptions && rawProps.integrationOptions.templates,
+      ...templateOptions.templates
+    };
+
+    const integrationOptions = Object.keys(templates).length ? {
       integrationOptions: {
-        templates: templateOptions.templates
+        templates
       },
       ...templateOptions.templateStubs
     } : undefined;
