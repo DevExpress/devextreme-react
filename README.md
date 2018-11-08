@@ -1,10 +1,9 @@
 # DevExtreme React UI and Visualization Components #
 
 [![Build Status](https://img.shields.io/shippable/5a9532d976382b0800e7a53c/master.svg?maxAge=43200)](https://app.shippable.com/github/DevExpress/devextreme-react)
-![Project Status](https://img.shields.io/badge/Project%20Status-beta-orange.svg?maxAge=43200)
 [![NPM](https://img.shields.io/npm/v/devextreme-react.svg?maxAge=43200)](https://www.npmjs.com/package/devextreme-react)
 
-This project allows you to use [DevExtreme Widgets](http://js.devexpress.com/Demos/WidgetsGallery/) as [React Components](https://reactjs.org).
+This project allows you to use [DevExtreme](http://js.devexpress.com) [React](https://reactjs.org) Components.
 
 * [Getting started](#getting-started)
   * [Prerequisites](#prerequisites)
@@ -28,7 +27,7 @@ This project allows you to use [DevExtreme Widgets](http://js.devexpress.com/Dem
 
 ## <a name="getting-started"></a>Getting Started ##
 
-You can try this [live example](https://stackblitz.com/edit/devextreme-react) or configure a local development environment as described below.
+You can try this [live example](https://stackblitz.com/edit/devextreme-react), [feature-based examples](https://js.devexpress.com/Demos/WidgetsGallery/Demo/Data_Grid/LocalDataSource/React/Light/) or configure local development environment as described below.
 
 ### <a name="prerequisites"></a>Prerequisites ###
 [Node.js and npm](https://docs.npmjs.com/getting-started/installing-node) are required
@@ -38,7 +37,7 @@ You can try this [live example](https://stackblitz.com/edit/devextreme-react) or
 Install the **devextreme** and **devextreme-react** npm packages:
 
 ```console
-npm install --save devextreme@18.2-unstable devextreme-react@18.2-unstable
+npm install --save devextreme devextreme-react
 ```
 #### <a name="additional-configuration"></a>Additional Configuration ####
 
