@@ -193,12 +193,25 @@ import 'devextreme/dist/css/dx.common.css';
 import 'devextreme/dist/css/dx.light.compact.css';
 
 class Example extends React.Component {
+    constructor(props) {
+      super(props);
+      
+      this.textBox = null;
+
+      this.setTextBox = (ref) => {
+          this.textBox = ref.instance;
+      };
+      
+      this.onClick = () => {
+          this.textBox.focus()
+      };
+    }
 
     render() {
         return (
             <div>
-                <TextBox ref={(ref) => this.textBox = ref.instance}/>
-                <Button text='Go to the TextBox' onClick={() => this.textBox.focus()} />
+                <TextBox ref={this.setTextBox}/>
+                <Button text='Go to the TextBox' onClick={this.onClick} />
             </div>
         );
     }
