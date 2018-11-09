@@ -3,7 +3,7 @@
     "name": "Developer Express Inc."
   },
   "name": "devextreme-react",
-  "version": "18.1.7-alpha.12",
+  "version": "18.2.3",
   "description": "DevExtreme React UI and Visualization Components",
   "repository": {
     "type": "git",
@@ -15,7 +15,7 @@
     "prop-types": "^15.6.1"
   },
   "peerDependencies": {
-    "devextreme": "^18.1.7-pre-18291",
+    "devextreme": "^18.2.3",
     "react": "^16.2.0",
     "react-dom": "^16.2.0"
   },
@@ -28,7 +28,7 @@
     "css-loader": "^0.28.9",
     "dasherize": "^2.0.0",
     "del": "^3.0.0",
-    "devextreme": "^18.1.7-pre-18291",
+    "devextreme": "^18.2.3",
     "dot": "^1.1.2",
     "enzyme": "^3.7.0",
     "enzyme-adapter-react-16": "^1.6.0",
@@ -53,7 +53,7 @@
     "typescript": "^2.7.1",
     "url-loader": "^0.6.2",
     "webpack": "^3.10.0",
-    "webpack-dev-server": "^2.11.1"
+    "webpack-dev-server": "^2.11.3"
   },
   "scripts": {
     "start": "npm run build && npm run serve",
