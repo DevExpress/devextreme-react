@@ -119,7 +119,6 @@ describe("option update", () => {
         expect(Widget.option.mock.calls[0]).toEqual(["items[0].subItems[0].a", 234]);
     });
 
-
 });
 
 describe("option control", () => {
