@@ -258,7 +258,7 @@ class OptionsManager {
                     c,
                     nestedOptionClass.type.ExpectedChildren,
                     nestedOptionsCollection,
-                    optionName
+                    optionFullName
                 );
             },
             updateFunc: (newProps, prevProps) => {
