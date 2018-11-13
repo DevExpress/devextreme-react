@@ -1,3 +1,4 @@
+import { Component } from "../../core/component";
 import ConfigurationComponent from "../../core/nested-option";
 import { mount, React, shallow } from "./setup";
 import {
@@ -16,12 +17,14 @@ interface IControlledComponentProps {
     anotherOption?: string;
 }
 
+// tslint:disable:max-classes-per-file
+
 class ControlledComponent extends TestComponent<IControlledComponentProps> {
 
     protected _defaults = {
         defaultControlledOption: "controlledOption"
     };
-} // tslint:disable-line:max-classes-per-file
+}
 
 class NestedComponent extends ConfigurationComponent<{
     a?: number;
@@ -33,26 +36,89 @@ class NestedComponent extends ConfigurationComponent<{
     public static DefaultsProps = {
         defaultC: "c"
     };
-} // tslint:disable-line:max-classes-per-file
+}
 
 (NestedComponent as any).OptionName = "nestedOption";
 
-it("calls option method on props update", () => {
-    const component = mount(
-        <TestComponent />
-    );
-    expect(Widget.option.mock.calls.length).toBe(0);
+class CollectionNestedComponent extends ConfigurationComponent<{ a?: number; }> { }
+(CollectionNestedComponent as any).OptionName = "items";
+(CollectionNestedComponent as any).ExpectedChildren = {
+    subItems: {
+        optionName: "subItems",
+        isCollectionItem: true
+    }
+};
 
-    component.mount();
+class CollectionSubNestedComponent extends ConfigurationComponent<{ a?: number; }> { }
+(CollectionSubNestedComponent as any).OptionName = "subItems";
 
-    expect(Widget.option.mock.calls.length).toBe(0);
+class TestComponentWithExpectation<P = any> extends Component<P> {
 
-    const sampleProps = { text: "1" };
-    component.setProps(sampleProps);
+    protected _expectedChildren = {
+        items: {
+            optionName: "items",
+            isCollectionItem: true
+        }
+    };
 
-    expect(Widget.option.mock.calls.length).toBe(1);
-    expect(Widget.option.mock.calls[0][0]).toEqual("text");
-    expect(Widget.option.mock.calls[0][1]).toEqual("1");
+    protected _WidgetClass = WidgetClass;
+}
+
+describe("option update", () => {
+
+    it("calls option method on props update", () => {
+        const component = mount(
+            <TestComponent />
+        );
+        expect(Widget.option.mock.calls.length).toBe(0);
+
+        component.mount();
+
+        expect(Widget.option.mock.calls.length).toBe(0);
+
+        const sampleProps = { text: "1" };
+        component.setProps(sampleProps);
+
+        expect(Widget.option.mock.calls.length).toBe(1);
+        expect(Widget.option.mock.calls[0][0]).toEqual("text");
+        expect(Widget.option.mock.calls[0][1]).toEqual("1");
+    });
+
+    it("updates nested collection item", () => {
+        const node = shallow(
+            <TestComponentWithExpectation>
+                <CollectionNestedComponent a={123}/>
+            </TestComponentWithExpectation>
+        );
+
+        const nested = node
+            .find(CollectionNestedComponent).dive();
+
+        nested.setProps({ a: 234 });
+        jest.runAllTimers();
+        expect(Widget.option.mock.calls.length).toBe(1);
+        expect(Widget.option.mock.calls[0]).toEqual(["items[0].a", 234]);
+    });
+
+    it("updates sub-nested collection item", () => {
+        const node = shallow(
+            <TestComponentWithExpectation>
+                <CollectionNestedComponent>
+                    <CollectionSubNestedComponent a={123}/>
+                </CollectionNestedComponent>
+            </TestComponentWithExpectation>
+        );
+
+        const nested = node
+            .find(CollectionNestedComponent).dive()
+            .find(CollectionSubNestedComponent).dive();
+
+        nested.setProps({ a: 234 });
+        jest.runAllTimers();
+        expect(Widget.option.mock.calls.length).toBe(1);
+        expect(Widget.option.mock.calls[0]).toEqual(["items[0].subItems[0].a", 234]);
+    });
+
 });
 
 describe("option control", () => {
