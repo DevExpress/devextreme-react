@@ -32,7 +32,7 @@ export default class extends React.Component<any, { text: string; pos: IPosition
                 <button onClick={this.updatePos}>Move!</button>
                 <Map
                     provider={"bing"}
-                    zoom={11}
+                    defaultZoom={11}
                     height={440}
                     controls={true}
                 >
