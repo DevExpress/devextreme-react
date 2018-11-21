@@ -63,7 +63,7 @@ function generateReExport(path: string, fileName: string): string {
 }
 
 const renderReExport: (model: {path: string, fileName: string}) => string = createTempate(
-`/** @deprecated Use 'devextreme-vue/<#= it.fileName #>' file instead */\n` +
+`/** @deprecated Use 'devextreme-react/<#= it.fileName #>' file instead */\n` +
 `export * from "<#= it.path #>";\n` +
 `export { default } from "<#= it.path #>";\n`
 );
