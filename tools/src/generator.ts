@@ -39,6 +39,7 @@ import {
 function generate(
   rawData: IModel,
   baseComponent: string,
+  extensionComponent: string,
   configComponent: string,
   out: {
     componentsDir: string,
@@ -49,7 +50,7 @@ function generate(
   const modulePaths: IReExport[] = [];
 
   rawData.widgets.forEach((data) => {
-    const widgetFile = mapWidget(data, baseComponent, configComponent, rawData.customTypes);
+    const widgetFile = mapWidget(data, baseComponent, extensionComponent, configComponent, rawData.customTypes);
     const widgetFilePath = joinPaths(out.componentsDir, widgetFile.fileName);
     const indexFileDir = getDirName(out.indexFileName);
 
@@ -75,6 +76,7 @@ function generate(
 function mapWidget(
   raw: IWidget,
   baseComponent: string,
+  extensionComponent: string,
   configComponent: string,
   customTypes: ICustomType[]
 ): {
@@ -101,6 +103,7 @@ function mapWidget(
     component: {
       name,
       baseComponentPath: baseComponent,
+      extensionComponentPath: extensionComponent,
       configComponentPath: configComponent,
       dxExportPath: raw.exportPath,
       isExtension: raw.isExtension,
