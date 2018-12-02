@@ -23,5 +23,6 @@ module.exports = {
   oldComponentsDir: './src/ui',
   indexFileName: './src/index.ts',
   baseComponent: './core/component',
+  extensionComponent: './core/extension-component',
   configComponent: './core/nested-option'
 }

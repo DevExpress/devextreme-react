@@ -1,4 +1,4 @@
-import { ExtensionComponent } from "../../core/component";
+import { ExtensionComponent } from "../../core/extension-component";
 import ConfigurationComponent from "../../core/nested-option";
 import { mount, React, shallow } from "./setup";
 import { TestComponent, Widget, WidgetClass } from "./test-component";
