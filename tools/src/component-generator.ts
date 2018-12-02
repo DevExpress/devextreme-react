@@ -10,6 +10,7 @@ import {
 interface IComponent {
     name: string;
     baseComponentPath: string;
+    extensionComponentPath: string;
     configComponentPath: string;
     dxExportPath: string;
     expectedChildren: IExpectedChild[];
@@ -160,7 +161,7 @@ function generate(component: IComponent): string {
 
         renderedImports: renderImports({
             dxExportPath: component.dxExportPath,
-            baseComponentPath: component.baseComponentPath,
+            baseComponentPath: component.isExtension ? component.extensionComponentPath : component.baseComponentPath,
             baseComponentName: component.isExtension ? "ExtensionComponent" : "Component",
             configComponentPath: component.configComponentPath,
             widgetName,
