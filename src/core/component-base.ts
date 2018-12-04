@@ -51,16 +51,6 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
     this._optionsManager = new OptionsManager((name) => this.props[name]);
   }
 
-  public componentWillUpdate(nextProps: P) {
-    const preparedProps = this._prepareProps(nextProps);
-    const options: Record<string, any> = {
-      ...preparedProps.options,
-      ...preparedProps.integrationOptions
-    };
-
-    this._optionsManager.processChangedValues(options, this.props);
-  }
-
   public render() {
     return React.createElement("div", this._getElementProps(), ...this._prepareChildren());
   }
@@ -71,6 +61,14 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
 
   public componentDidUpdate(prevProps: P) {
     this._updateCssClasses(prevProps, this.props);
+
+    const preparedProps = this._prepareProps(this.props);
+    const options: Record<string, any> = {
+      ...preparedProps.options,
+      ...preparedProps.integrationOptions
+    };
+
+    this._optionsManager.processChangedValues(options, prevProps);
   }
 
   public componentWillUnmount() {
