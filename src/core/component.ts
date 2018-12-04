@@ -1,15 +1,9 @@
 import * as React from "react";
 
-import { ComponentBase } from "./component-base";
+import { ComponentBase, IHtmlOptions } from "./component-base";
 import { ExtensionComponent } from "./extension-component";
 
-interface IHtmlOptions {
-  id?: string;
-  className?: string;
-  style?: any;
-}
-
-class Component<P extends IHtmlOptions> extends ComponentBase<P> {
+class Component<P> extends ComponentBase<P> {
   private readonly _extensions: Array<(element: Element) => void> = [];
 
   public componentDidMount() {
