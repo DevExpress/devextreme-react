@@ -78,19 +78,6 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
     }
   }
 
-  protected _getElementProps(): Record<string, any> {
-    const elementProps: Record<string, any> = {
-      ref: (element: HTMLDivElement) => this._element = element
-    };
-
-    elementPropNames.forEach((name) => {
-      if (name in this.props) {
-        elementProps[name] = this.props[name];
-      }
-    });
-    return elementProps;
-  }
-
   protected _prepareChildren(args: any[] = []): any[] {
     this._optionsManager.resetNestedElements();
     let nestedTemplates: Record<string, any> = {};
@@ -147,6 +134,19 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
             templates
         };
     });
+  }
+
+  private _getElementProps(): Record<string, any> {
+    const elementProps: Record<string, any> = {
+      ref: (element: HTMLDivElement) => this._element = element
+    };
+
+    elementPropNames.forEach((name) => {
+      if (name in this.props) {
+        elementProps[name] = this.props[name];
+      }
+    });
+    return elementProps;
   }
 
   private _updateCssClasses(prevProps: P | null, newProps: P) {
