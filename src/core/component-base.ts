@@ -62,17 +62,7 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
   }
 
   public render() {
-    const elementProps: Record<string, any> = {
-      ref: (element: HTMLDivElement) => this._element = element
-    };
-
-    elementPropNames.forEach((name) => {
-      if (name in this.props) {
-        elementProps[name] = this.props[name];
-      }
-    });
-
-    return React.createElement("div", elementProps, ...this._prepareChildren());
+    return React.createElement("div", this._getElementProps(), ...this._prepareChildren());
   }
 
   public componentDidMount() {
@@ -88,6 +78,19 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
       events.triggerHandler(this._element, DX_REMOVE_EVENT);
       this._instance.dispose();
     }
+  }
+
+  protected _getElementProps(): Record<string, any> {
+    const elementProps: Record<string, any> = {
+      ref: (element: HTMLDivElement) => this._element = element
+    };
+
+    elementPropNames.forEach((name) => {
+      if (name in this.props) {
+        elementProps[name] = this.props[name];
+      }
+    });
+    return elementProps;
   }
 
   protected _prepareChildren(args: any[] = []): any[] {
