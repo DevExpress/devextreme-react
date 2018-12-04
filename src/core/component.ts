@@ -20,9 +20,7 @@ class Component<P extends IHtmlOptions> extends ComponentBase<P> {
 
   protected _prepareChildren(): any[] {
     const args: any[] = [];
-    const children = React.Children.toArray(this.props.children);
-    const hasOnlyTextNode = children.length === 1 && typeof children[0] === "string";
-    if (hasOnlyTextNode) {
+    if (isOneTextNode(this.props.children)) {
       args.push(React.Fragment);
     }
 
@@ -44,6 +42,11 @@ class Component<P extends IHtmlOptions> extends ComponentBase<P> {
       }
     });
   }
+}
+
+function isOneTextNode(input: React.ReactNode) {
+  const children = React.Children.toArray(input);
+  return children.length === 1 && typeof children[0] === "string";
 }
 
 export {
