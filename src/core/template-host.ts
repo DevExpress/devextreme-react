@@ -1,6 +1,6 @@
-import * as React from "react";
-
 import { ITemplateMeta } from "./template";
+
+import * as React from "react";
 
 import { generateID } from "./helpers";
 import { ITemplateWrapperProps, TemplateWrapper } from "./template-wrapper";
@@ -34,10 +34,54 @@ interface IIntegrationDescr {
     templateProps: ITemplateMeta[];
     ownerName?: string;
     propsGetter: PropsGetter;
-    stateUpdater: StateUpdater;
 }
 
-function getTemplateOptions(meta: IIntegrationDescr): {
+class TemplateHost {
+    private readonly _stateUpdater: StateUpdater;
+
+    private _templates: Record<string, any> = {};
+    private _stubs: Record<string, any> = {};
+
+    constructor(stateUpdater: StateUpdater) {
+        this._stateUpdater = stateUpdater;
+    }
+
+    public add(meta: IIntegrationDescr) {
+        const templateOptions = getTemplateOptions({
+            ownerName: meta.ownerName,
+            templateProps: meta.templateProps,
+            options: meta.options,
+            nestedOptions: meta.nestedOptions,
+            stateUpdater: this._stateUpdater,
+            propsGetter: meta.propsGetter
+        });
+
+        this._templates = {
+            ...this._templates,
+            ...templateOptions.templates
+        };
+
+        this._stubs = {
+            ...this._stubs,
+            ...templateOptions.templateStubs
+        };
+    }
+
+    public get options(): Record<string, any> | undefined {
+        if (!Object.keys(this._templates).length) {
+            return;
+        }
+
+        return {
+            integrationOptions: {
+                templates: this._templates
+            },
+            ...this._stubs
+        };
+    }
+}
+
+function getTemplateOptions(meta: IIntegrationDescr & { stateUpdater: StateUpdater }): {
     templates: any;
     templateStubs: any;
 } {
@@ -61,7 +105,7 @@ function getTemplateOptions(meta: IIntegrationDescr): {
             isNested: false,
             propsGetter: meta.propsGetter
         };
-        templateStubs[m.tmplOption] = name;
+        templateStubs[meta.ownerName ? prefix + "." + m.tmplOption : m.tmplOption] = name;
         templates[name] = wrapTemplate(templateDescr, stateUpdater);
     });
 
@@ -120,9 +164,7 @@ function unwrapElement(element: any) {
 }
 
 export {
-    PropsGetter,
-    StateUpdater,
-    TemplateGetter,
-    IIntegrationDescr,
-    getTemplateOptions
+    TemplateGetter
 };
+
+export default TemplateHost;

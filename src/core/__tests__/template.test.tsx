@@ -336,8 +336,7 @@ describe("component/render in nested options", () => {
         );
 
         const options = WidgetClass.mock.calls[0][1];
-
-        expect(options.option.item).toBe("optionitem");
+        expect(options["option.item"]).toBe("optionitem");
 
         const integrationOptions = options.integrationOptions;
 
@@ -381,8 +380,8 @@ describe("component/render in nested options", () => {
 
         const options = WidgetClass.mock.calls[0][1];
 
-        expect(options.option.item).toBe("optionitem");
-        expect(options.collection[0].template).toBe("collection[0]template");
+        expect(options["option.item"]).toBe("optionitem");
+        expect(options["collection[0].template"]).toBe("collection[0]template");
 
         const integrationOptions = options.integrationOptions;
 
@@ -400,8 +399,8 @@ describe("component/render in nested options", () => {
 
         const options = WidgetClass.mock.calls[0][1];
 
-        expect(options.collection[0].template).toBe("collection[0]template");
-        expect(options.collection[1].template).toBe("collection[1]template");
+        expect(options["collection[0].template"]).toBe("collection[0]template");
+        expect(options["collection[1].template"]).toBe("collection[1]template");
 
         const integrationOptions = options.integrationOptions;
 

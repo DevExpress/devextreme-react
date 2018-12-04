@@ -2,7 +2,7 @@ import { ITemplateMeta } from "./template";
 
 import { addPrefixToKeys, getNestedValue } from "./helpers";
 import { createOptionComponent, INestedOptionMeta } from "./nested-option";
-import { getTemplateOptions } from "./template-helper";
+import TemplateHost from "./template-host";
 import { separateProps } from "./widget-config";
 
 interface INestedOption {
@@ -41,13 +41,15 @@ class OptionsManager {
     private readonly _guards: Record<string, number> = {};
     private readonly _nestedOptions: Record<string, INestedConfigDescr> = {};
     private readonly _optionValueGetter: (name: string) => any;
+    private readonly _templateHost: TemplateHost;
 
     private _instance: any;
 
     private _updatingProps: boolean;
 
-    constructor(optionValueGetter: (name: string) => any) {
+    constructor(optionValueGetter: (name: string) => any, templateHost: TemplateHost) {
         this._optionValueGetter = optionValueGetter;
+        this._templateHost = templateHost;
         this._setOption = this._setOption.bind(this);
         this._registerNestedOption = this._registerNestedOption.bind(this);
 
@@ -140,8 +142,8 @@ class OptionsManager {
         }
     }
 
-    public getNestedOptionsObjects(stateUpdater: any): Record<string, any> {
-        return this._getNestedOptionsObjects(this._nestedOptions, stateUpdater);
+    public getNestedOptionsObjects(): Record<string, any> {
+        return this._getNestedOptionsObjects(this._nestedOptions);
     }
 
     public registerNestedOption(
@@ -168,50 +170,36 @@ class OptionsManager {
     }
 
     private _getNestedOptionsObjects(
-        optionsCollection: Record<string, INestedConfigDescr>,
-        stateUpdater: any
+        optionsCollection: Record<string, INestedConfigDescr>
     ): Record<string, any> {
         const configComponents: Record<string, any> = {};
 
-        let templates = {};
         Object.keys(optionsCollection).forEach((key) => {
             const configComponent = optionsCollection[key];
             const options = configComponent.elementEntries.map((e, index) => {
                 const props = separateProps(e.element.props,
                     configComponent.defaults,
                     configComponent.templates);
-                const templateOptions = getTemplateOptions({
+
+                this._templateHost.add({
                     options: props.templates,
                     nestedOptions: {},
                     templateProps: configComponent.templates,
                     ownerName: `${configComponent.optionName}${configComponent.isCollectionItem ? `[${index}]` : ""}`,
-                    stateUpdater,
                     propsGetter: (prop) => configComponent.elementEntries[index].element.props[prop]
                 });
-
-                templates = {
-                    ...templates,
-                    ...templateOptions.templates
-                };
 
                 return {
                     ...e.predefinedProps,
                     ...props.defaults,
                     ...props.options,
-                    ...templateOptions.templateStubs,
-                    ...this._getNestedOptionsObjects(e.children, stateUpdater)
+                    ...this._getNestedOptionsObjects(e.children)
                 };
             });
             configComponents[configComponent.optionName] = configComponent.isCollectionItem
                 ? options
                 : options[options.length - 1];
         });
-
-        if (Object.keys(templates).length) {
-            configComponents.integrationOptions = {
-                templates
-            };
-        }
 
         return configComponents;
     }

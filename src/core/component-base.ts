@@ -6,16 +6,15 @@ import { findProps as findNestedTemplateProps, ITemplateMeta } from "./template"
 import { elementPropNames, getClassName, separateProps } from "./widget-config";
 
 import {
-  getTemplateOptions,
   TemplateGetter
-} from "./template-helper";
+} from "./template-host";
+import TemplateHost from "./template-host";
 
 const DX_REMOVE_EVENT = "dxremove";
 
 interface IWidgetConfig {
     defaults: Record<string, any>;
     options: Record<string, any>;
-    integrationOptions: Record<string, any>;
 }
 
 interface IState {
@@ -37,6 +36,7 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
   protected readonly _templateProps: ITemplateMeta[] = [];
   protected readonly _expectedChildren: Record<string, INestedOption>;
 
+  private readonly _templateHost: TemplateHost;
   private readonly _optionsManager: OptionsManager;
 
   constructor(props: P) {
@@ -48,7 +48,8 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
       templates: {}
     };
 
-    this._optionsManager = new OptionsManager((name) => this.props[name]);
+    this._templateHost = new TemplateHost(this._updateTemplatesState);
+    this._optionsManager = new OptionsManager((name) => this.props[name], this._templateHost);
   }
 
   public render() {
@@ -65,7 +66,7 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
     const preparedProps = this._prepareProps(this.props);
     const options: Record<string, any> = {
       ...preparedProps.options,
-      ...preparedProps.integrationOptions
+      ...this._templateHost.options
     };
 
     this._optionsManager.processChangedValues(options, prevProps);
@@ -80,6 +81,7 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
 
   protected _prepareChildren(args: any[] = []): any[] {
     this._optionsManager.resetNestedElements();
+
     let nestedTemplates: Record<string, any> = {};
     React.Children.forEach(this.props.children, (child: React.ReactElement<any>) => {
       nestedTemplates = {
@@ -104,7 +106,7 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
 
   protected _createWidget(element?: Element) {
     element = element || this._element;
-    const nestedProps = this._optionsManager.getNestedOptionsObjects(this._updateTemplatesState);
+    const nestedProps = this._optionsManager.getNestedOptionsObjects();
     const props = {
         ...(this.props as any),
         ...nestedProps
@@ -116,7 +118,7 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
       templatesRenderAsynchronously: true,
       ...preparedProps.defaults,
       ...preparedProps.options,
-      ...preparedProps.integrationOptions
+      ...this._templateHost.options
     };
 
     this._optionsManager.wrapEventHandlers(options);
@@ -173,30 +175,16 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
   private _prepareProps(rawProps: Record<string, any>): IWidgetConfig {
     const separatedProps = separateProps(rawProps, this._defaults, this._templateProps);
 
-    const templateOptions = getTemplateOptions({
+    this._templateHost.add({
       templateProps: this._templateProps,
       options: separatedProps.templates,
       nestedOptions: getNestedTemplates(rawProps),
-      stateUpdater: this._updateTemplatesState,
       propsGetter: (prop) => this.props[prop]
     });
 
-    const templates = {
-      ...rawProps.integrationOptions && rawProps.integrationOptions.templates,
-      ...templateOptions.templates
-    };
-
-    const integrationOptions = Object.keys(templates).length ? {
-      integrationOptions: {
-        templates
-      },
-      ...templateOptions.templateStubs
-    } : undefined;
-
     return {
         options: separatedProps.options,
-        defaults: separatedProps.defaults,
-        integrationOptions
+        defaults: separatedProps.defaults
     };
   }
 }
