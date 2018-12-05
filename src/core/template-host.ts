@@ -29,7 +29,6 @@ interface ITemplateDescr {
 
 interface IIntegrationDescr {
     props: Record<string, any>;
-    nestedProps: Record<string, any>;
     templateProps: ITemplateMeta[];
     ownerName?: string;
     propsGetter: PropsGetter;
@@ -54,7 +53,6 @@ class TemplateHost {
             ownerName: meta.ownerName,
             templateProps: meta.templateProps,
             props: meta.props,
-            nestedProps: meta.nestedProps,
             stateUpdater: this._stateUpdater,
             propsGetter: meta.propsGetter
         });

@@ -174,7 +174,6 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
     this._templateHost.add({
       templateProps: this._templateProps,
       props: separatedProps.templates,
-      nestedProps: {},
       propsGetter: (prop) => this.props[prop]
     });
 
