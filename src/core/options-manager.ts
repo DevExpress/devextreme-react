@@ -182,8 +182,8 @@ class OptionsManager {
                     configComponent.templates);
 
                 this._templateHost.add({
-                    options: props.templates,
-                    nestedOptions: {},
+                    props: props.templates,
+                    nestedProps: {},
                     templateProps: configComponent.templates,
                     ownerName: `${configComponent.optionName}${configComponent.isCollectionItem ? `[${index}]` : ""}`,
                     propsGetter: (prop) => configComponent.elementEntries[index].element.props[prop]

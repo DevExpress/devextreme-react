@@ -23,14 +23,13 @@ interface IDxTemplate {
 interface ITemplateDescr {
     name: string;
     propName: string;
-    isNested: boolean;
     isComponent: boolean;
     propsGetter: PropsGetter;
 }
 
 interface IIntegrationDescr {
-    options: Record<string, any>;
-    nestedOptions: Record<string, any>;
+    props: Record<string, any>;
+    nestedProps: Record<string, any>;
     templateProps: ITemplateMeta[];
     ownerName?: string;
     propsGetter: PropsGetter;
@@ -41,6 +40,10 @@ class TemplateHost {
 
     private _templates: Record<string, any> = {};
     private _stubs: Record<string, any> = {};
+    private _nestedTemplateProps: Record<string, {
+        render: any;
+        component: any;
+    }> = {};
 
     constructor(stateUpdater: StateUpdater) {
         this._stateUpdater = stateUpdater;
@@ -50,8 +53,8 @@ class TemplateHost {
         const templateOptions = getTemplateOptions({
             ownerName: meta.ownerName,
             templateProps: meta.templateProps,
-            options: meta.options,
-            nestedOptions: meta.nestedOptions,
+            props: meta.props,
+            nestedProps: meta.nestedProps,
             stateUpdater: this._stateUpdater,
             propsGetter: meta.propsGetter
         });
@@ -63,8 +66,30 @@ class TemplateHost {
 
         this._stubs = {
             ...this._stubs,
-            ...templateOptions.templateStubs
+            ...templateOptions.optionStubs
         };
+    }
+
+    public addNested(props: {
+        name: string;
+        render: any;
+        component: any;
+    }): void {
+        const name: string = props.name;
+        this._nestedTemplateProps[name] = {
+            component: props.component,
+            render: props.render
+        };
+        const propsGetter = (prop) => this._nestedTemplateProps[name][prop];
+
+        const templateDescr: ITemplateDescr = {
+            name,
+            propName: !!props.component ? "component" : "render",
+            isComponent: !!props.component,
+            propsGetter
+        };
+
+        this._templates[name] = wrapTemplate(templateDescr, this._stateUpdater);
     }
 
     public get options(): Record<string, any> | undefined {
@@ -83,47 +108,34 @@ class TemplateHost {
 
 function getTemplateOptions(meta: IIntegrationDescr & { stateUpdater: StateUpdater }): {
     templates: any;
-    templateStubs: any;
+    optionStubs: any;
 } {
     const templates: Record<string, IDxTemplate> = {};
-    const templateStubs: Record<string, any> = {};
-    const options = meta.options;
+    const optionStubs: Record<string, any> = {};
+    const props = meta.props;
     const stateUpdater = meta.stateUpdater;
     const templateProps = meta.templateProps || [];
 
     const prefix = meta.ownerName || "";
     templateProps.forEach((m) => {
-        if (!options[m.component] && !options[m.render]) {
+        if (!props[m.component] && !props[m.render]) {
             return;
         }
         const name = `${prefix}${m.tmplOption}`;
 
         const templateDescr: ITemplateDescr = {
             name,
-            propName: options[m.component] ? m.component : m.render,
-            isComponent: !!options[m.component],
-            isNested: false,
+            propName: props[m.component] ? m.component : m.render,
+            isComponent: !!props[m.component],
             propsGetter: meta.propsGetter
         };
-        templateStubs[meta.ownerName ? prefix + "." + m.tmplOption : m.tmplOption] = name;
-        templates[name] = wrapTemplate(templateDescr, stateUpdater);
-    });
-
-    const nestedOptions = meta.nestedOptions;
-    Object.keys(nestedOptions).forEach((name) => {
-        const templateDescr: ITemplateDescr = {
-            name,
-            propName: !!nestedOptions[name].component ? "component" : "render",
-            isComponent: !!nestedOptions[name].component,
-            isNested: true,
-            propsGetter: meta.propsGetter
-        };
+        optionStubs[meta.ownerName ? prefix + "." + m.tmplOption : m.tmplOption] = name;
         templates[name] = wrapTemplate(templateDescr, stateUpdater);
     });
 
     return {
         templates,
-        templateStubs
+        optionStubs
     };
 }
 
@@ -132,10 +144,8 @@ function wrapTemplate(templateDescr: ITemplateDescr, stateUpdater: StateUpdater)
         render: (data: IDxTemplateData) => {
             const templateId = "__template_" + generateID();
             const container = unwrapElement(data.container);
-            const createWrapper = (nestedTemplates) => {
-                const propsGetter = templateDescr.isNested
-                    ? (prop) => nestedTemplates[templateDescr.name][prop]
-                    : templateDescr.propsGetter;
+            const createWrapper = () => {
+                const propsGetter = templateDescr.propsGetter;
 
                 const contentProvider = templateDescr.isComponent
                     ? React.createElement.bind(null, propsGetter(templateDescr.propName))
@@ -162,9 +172,5 @@ function wrapTemplate(templateDescr: ITemplateDescr, stateUpdater: StateUpdater)
 function unwrapElement(element: any) {
     return element.get ? element.get(0) : element;
 }
-
-export {
-    TemplateGetter
-};
 
 export default TemplateHost;

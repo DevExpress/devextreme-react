@@ -5,9 +5,6 @@ import OptionsManager, { INestedOption } from "./options-manager";
 import { findProps as findNestedTemplateProps, ITemplateMeta } from "./template";
 import { elementPropNames, getClassName, separateProps } from "./widget-config";
 
-import {
-  TemplateGetter
-} from "./template-host";
 import TemplateHost from "./template-host";
 
 const DX_REMOVE_EVENT = "dxremove";
@@ -18,7 +15,7 @@ interface IWidgetConfig {
 }
 
 interface IState {
-  templates: Record<string, TemplateGetter>;
+  templates: Record<string, () => void>;
 }
 
 interface IHtmlOptions {
@@ -82,25 +79,24 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
   protected _prepareChildren(args: any[] = []): any[] {
     this._optionsManager.resetNestedElements();
 
-    let nestedTemplates: Record<string, any> = {};
     React.Children.forEach(this.props.children, (child: React.ReactElement<any>) => {
-      nestedTemplates = {
-        ...nestedTemplates,
-        ...findNestedTemplateProps(child)
-      };
       args.push(this._preprocessChild(child) || child);
     });
 
     const templates = Object.getOwnPropertyNames(this.state.templates) || [];
 
     templates.forEach((t) => {
-      args.push(this.state.templates[t](nestedTemplates));
+      args.push(this.state.templates[t]());
     });
 
     return args;
   }
 
   protected _preprocessChild(component: React.ReactElement<any>): React.ReactElement<any> {
+    const nestedTemplate = findNestedTemplateProps(component);
+    if (nestedTemplate) {
+      this._templateHost.addNested(nestedTemplate);
+    }
     return this._optionsManager.registerNestedOption(component, this._expectedChildren) || component;
   }
 
@@ -177,8 +173,8 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
 
     this._templateHost.add({
       templateProps: this._templateProps,
-      options: separatedProps.templates,
-      nestedOptions: getNestedTemplates(rawProps),
+      props: separatedProps.templates,
+      nestedProps: {},
       propsGetter: (prop) => this.props[prop]
     });
 
@@ -187,18 +183,6 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
         defaults: separatedProps.defaults
     };
   }
-}
-
-function getNestedTemplates(rawProps: Record<string, any>): Record<string, any> {
-  let nestedTemplates: Record<string, any> = {};
-  React.Children.forEach(rawProps.children, (child: React.ReactElement<any>) => {
-      nestedTemplates = {
-        ...nestedTemplates,
-        ...findNestedTemplateProps(child)
-      };
-  });
-
-  return nestedTemplates;
 }
 
 export {
