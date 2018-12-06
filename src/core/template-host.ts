@@ -30,7 +30,7 @@ interface ITemplateDescr {
 interface IIntegrationDescr {
     props: Record<string, any>;
     templateProps: ITemplateMeta[];
-    ownerName?: string;
+    ownerName: string;
     propsGetter: PropsGetter;
 }
 
@@ -49,11 +49,10 @@ class TemplateHost {
     }
 
     public add(meta: IIntegrationDescr) {
-        const templateOptions = getTemplateOptions({
+        const templateOptions = this._getTemplateOptions({
             ownerName: meta.ownerName,
             templateProps: meta.templateProps,
             props: meta.props,
-            stateUpdater: this._stateUpdater,
             propsGetter: meta.propsGetter
         });
 
@@ -102,39 +101,38 @@ class TemplateHost {
             ...this._stubs
         };
     }
-}
 
-function getTemplateOptions(meta: IIntegrationDescr & { stateUpdater: StateUpdater }): {
-    templates: any;
-    optionStubs: any;
-} {
-    const templates: Record<string, IDxTemplate> = {};
-    const optionStubs: Record<string, any> = {};
-    const props = meta.props;
-    const stateUpdater = meta.stateUpdater;
-    const templateProps = meta.templateProps || [];
+    private _getTemplateOptions(meta: IIntegrationDescr): {
+        templates: any;
+        optionStubs: any;
+    } {
+        const templates: Record<string, IDxTemplate> = {};
+        const optionStubs: Record<string, any> = {};
+        const props = meta.props;
+        const templateProps = meta.templateProps || [];
 
-    const prefix = meta.ownerName || "";
-    templateProps.forEach((m) => {
-        if (!props[m.component] && !props[m.render]) {
-            return;
-        }
-        const name = `${prefix}${m.tmplOption}`;
+        const ownerName = meta.ownerName;
+        templateProps.forEach((m) => {
+            if (!props[m.component] && !props[m.render]) {
+                return;
+            }
+            const name = ownerName ? `${ownerName}.${m.tmplOption}` : m.tmplOption;
 
-        const templateDescr: ITemplateDescr = {
-            name,
-            propName: props[m.component] ? m.component : m.render,
-            isComponent: !!props[m.component],
-            propsGetter: meta.propsGetter
+            const templateDescr: ITemplateDescr = {
+                name,
+                propName: props[m.component] ? m.component : m.render,
+                isComponent: !!props[m.component],
+                propsGetter: meta.propsGetter
+            };
+            optionStubs[name] = name;
+            templates[name] = wrapTemplate(templateDescr, this._stateUpdater);
+        });
+
+        return {
+            templates,
+            optionStubs
         };
-        optionStubs[meta.ownerName ? prefix + "." + m.tmplOption : m.tmplOption] = name;
-        templates[name] = wrapTemplate(templateDescr, stateUpdater);
-    });
-
-    return {
-        templates,
-        optionStubs
-    };
+    }
 }
 
 function wrapTemplate(templateDescr: ITemplateDescr, stateUpdater: StateUpdater): IDxTemplate {
