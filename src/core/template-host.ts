@@ -1,4 +1,4 @@
-import { ITemplateMeta } from "./template";
+import { ITemplateMeta, ITemplateProps } from "./template";
 
 import * as React from "react";
 
@@ -42,6 +42,7 @@ class TemplateHost {
     private _nestedTemplateProps: Record<string, {
         render: any;
         component: any;
+        children: any;
     }> = {};
 
     constructor(stateUpdater: StateUpdater) {
@@ -83,21 +84,18 @@ class TemplateHost {
         };
     }
 
-    public addNested(props: {
-        name: string;
-        render: any;
-        component: any;
-    }): void {
+    public addNested(props: ITemplateProps): void {
         const name: string = props.name;
         this._nestedTemplateProps[name] = {
             component: props.component,
-            render: props.render
+            render: props.render,
+            children: () => props.children
         };
         const propsGetter = (prop) => this._nestedTemplateProps[name][prop];
 
         const templateDescr: ITemplateDescr = {
             name,
-            propName: !!props.component ? "component" : "render",
+            propName: !!props.component ? "component" : !!props.render ? "render" : "children",
             isComponent: !!props.component,
             propsGetter
         };
