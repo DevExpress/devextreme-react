@@ -32,18 +32,15 @@ const requiredPropsCheck = (props: Record<string, any>) => {
     render: requiredPropsCheck
 };
 
-function findProps(child: React.ReactElement<any>): Record<string, { render: any, component: any }> {
+function findProps(child: React.ReactElement<any>): { name: string, render: any, component: any } | undefined {
     if (child.type !== Template) {
-        return {};
+        return;
     }
-    const result: Record<string, { render: any, component: any }> = {};
-
-    result[child.props.name] = {
+    return {
+        name: child.props.name,
         render: child.props.render,
         component: child.props.component
     };
-
-    return result;
 }
 
 export {

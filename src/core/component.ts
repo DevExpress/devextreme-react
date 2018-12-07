@@ -1,15 +1,9 @@
 import * as React from "react";
 
-import { ComponentBase } from "./component-base";
+import { ComponentBase, IHtmlOptions } from "./component-base";
 import { ExtensionComponent } from "./extension-component";
 
-interface IHtmlOptions {
-  id?: string;
-  className?: string;
-  style?: any;
-}
-
-class Component<P extends IHtmlOptions> extends ComponentBase<P> {
+class Component<P> extends ComponentBase<P> {
   private readonly _extensions: Array<(element: Element) => void> = [];
 
   public componentDidMount() {
@@ -20,9 +14,7 @@ class Component<P extends IHtmlOptions> extends ComponentBase<P> {
 
   protected _prepareChildren(): any[] {
     const args: any[] = [];
-    const children = React.Children.toArray(this.props.children);
-    const hasOnlyTextNode = children.length === 1 && typeof children[0] === "string";
-    if (hasOnlyTextNode) {
+    if (isSingleTextNode(this.props.children)) {
       args.push(React.Fragment);
     }
 
@@ -44,6 +36,11 @@ class Component<P extends IHtmlOptions> extends ComponentBase<P> {
       }
     });
   }
+}
+
+function isSingleTextNode(input: React.ReactNode) {
+  const children = React.Children.toArray(input);
+  return children.length === 1 && typeof children[0] === "string";
 }
 
 export {
