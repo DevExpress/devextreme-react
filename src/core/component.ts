@@ -14,7 +14,7 @@ class Component<P> extends ComponentBase<P> {
 
   protected _prepareChildren(): any[] {
     const args: any[] = [];
-    if (isOneTextNode(this.props.children)) {
+    if (isSingleTextNode(this.props.children)) {
       args.push(React.Fragment);
     }
 
@@ -38,7 +38,7 @@ class Component<P> extends ComponentBase<P> {
   }
 }
 
-function isOneTextNode(input: React.ReactNode) {
+function isSingleTextNode(input: React.ReactNode) {
   const children = React.Children.toArray(input);
   return children.length === 1 && typeof children[0] === "string";
 }
