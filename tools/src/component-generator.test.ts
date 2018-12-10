@@ -32,6 +32,7 @@ export {
         generate({
             name: "CLASS_NAME",
             baseComponentPath: "BASE_COMPONENT_PATH",
+            extensionComponentPath: "EXTENSION_COMPONENT_PATH",
             configComponentPath: null,
             dxExportPath: "DX/WIDGET/PATH",
             expectedChildren: undefined
@@ -46,7 +47,7 @@ import dxCLASS_NAME, {
     IOptions as ICLASS_NAMEOptions
 } from "devextreme/DX/WIDGET/PATH";
 
-import { ExtensionComponent as BaseComponent } from "BASE_COMPONENT_PATH";
+import { ExtensionComponent as BaseComponent } from "EXTENSION_COMPONENT_PATH";
 
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 
@@ -68,6 +69,7 @@ export {
         generate({
             name: "CLASS_NAME",
             baseComponentPath: "BASE_COMPONENT_PATH",
+            extensionComponentPath: "EXTENSION_COMPONENT_PATH",
             configComponentPath: null,
             dxExportPath: "DX/WIDGET/PATH",
             isExtension: true,
@@ -118,6 +120,7 @@ export {
             generate({
                 name: "CLASS_NAME",
                 baseComponentPath: "BASE_COMPONENT_PATH",
+                extensionComponentPath: "EXTENSION_COMPONENT_PATH",
                 configComponentPath: null,
                 dxExportPath: "DX/WIDGET/PATH",
                 templates: ["optionTemplate"],
@@ -172,6 +175,7 @@ export {
             generate({
                 name: "CLASS_NAME",
                 baseComponentPath: "BASE_COMPONENT_PATH",
+                extensionComponentPath: "EXTENSION_COMPONENT_PATH",
                 configComponentPath: null,
                 dxExportPath: "DX/WIDGET/PATH",
                 templates: ["optionTemplate", "anotherOptionTemplate"],
@@ -220,6 +224,7 @@ export {
             generate({
                 name: "CLASS_NAME",
                 baseComponentPath: "BASE_COMPONENT_PATH",
+                extensionComponentPath: "EXTENSION_COMPONENT_PATH",
                 configComponentPath: null,
                 dxExportPath: "DX/WIDGET/PATH",
                 templates: ["template"],
@@ -268,6 +273,7 @@ export {
             generate({
                 name: "CLASS_NAME",
                 baseComponentPath: "BASE_COMPONENT_PATH",
+                extensionComponentPath: "EXTENSION_COMPONENT_PATH",
                 configComponentPath: null,
                 dxExportPath: "DX/WIDGET/PATH",
                 subscribableOptions: [
@@ -317,6 +323,7 @@ export {
             generate({
                 name: "CLASS_NAME",
                 baseComponentPath: "BASE_COMPONENT_PATH",
+                extensionComponentPath: "EXTENSION_COMPONENT_PATH",
                 configComponentPath: null,
                 dxExportPath: "DX/WIDGET/PATH",
                 subscribableOptions: [
@@ -390,6 +397,7 @@ export {
             generate({
                 name: "CLASS_NAME",
                 baseComponentPath: "BASE_COMPONENT_PATH",
+                extensionComponentPath: "EXTENSION_COMPONENT_PATH",
                 configComponentPath: "CONFIG_COMPONENT_PATH",
                 dxExportPath: "DX/WIDGET/PATH",
                 expectedChildren: undefined,
@@ -488,6 +496,7 @@ export {
             generate({
                 name: "CLASS_NAME",
                 baseComponentPath: "BASE_COMPONENT_PATH",
+                extensionComponentPath: "EXTENSION_COMPONENT_PATH",
                 configComponentPath: "CONFIG_COMPONENT_PATH",
                 dxExportPath: "DX/WIDGET/PATH",
                 expectedChildren: undefined,
@@ -562,6 +571,7 @@ export {
             generate({
                 name: "CLASS_NAME",
                 baseComponentPath: "BASE_COMPONENT_PATH",
+                extensionComponentPath: "EXTENSION_COMPONENT_PATH",
                 configComponentPath: "CONFIG_COMPONENT_PATH",
                 dxExportPath: "DX/WIDGET/PATH",
                 templates: null,
@@ -647,6 +657,7 @@ export {
             generate({
                 name: "CLASS_NAME",
                 baseComponentPath: "BASE_COMPONENT_PATH",
+                extensionComponentPath: "EXTENSION_COMPONENT_PATH",
                 configComponentPath: "CONFIG_COMPONENT_PATH",
                 dxExportPath: "DX/WIDGET/PATH",
                 templates: null,
@@ -718,6 +729,7 @@ export {
             generate({
                 name: "CLASS_NAME",
                 baseComponentPath: "BASE_COMPONENT_PATH",
+                extensionComponentPath: "EXTENSION_COMPONENT_PATH",
                 configComponentPath: "CONFIG_COMPONENT_PATH",
                 dxExportPath: "DX/WIDGET/PATH",
                 expectedChildren: undefined,
@@ -783,6 +795,7 @@ export {
             generate({
                 name: "CLASS_NAME",
                 baseComponentPath: "BASE_COMPONENT_PATH",
+                extensionComponentPath: "EXTENSION_COMPONENT_PATH",
                 configComponentPath: null,
                 dxExportPath: "DX/WIDGET/PATH",
                 propTypings: [
@@ -835,6 +848,7 @@ export {
             generate({
                 name: "CLASS_NAME",
                 baseComponentPath: "BASE_COMPONENT_PATH",
+                extensionComponentPath: "EXTENSION_COMPONENT_PATH",
                 configComponentPath: null,
                 dxExportPath: "DX/WIDGET/PATH",
                 propTypings: [
@@ -888,6 +902,7 @@ export {
             generate({
                 name: "CLASS_NAME",
                 baseComponentPath: "BASE_COMPONENT_PATH",
+                extensionComponentPath: "EXTENSION_COMPONENT_PATH",
                 configComponentPath: null,
                 dxExportPath: "DX/WIDGET/PATH",
                 propTypings: [
@@ -943,6 +958,7 @@ export {
             generate({
                 name: "CLASS_NAME",
                 baseComponentPath: "BASE_COMPONENT_PATH",
+                extensionComponentPath: "EXTENSION_COMPONENT_PATH",
                 configComponentPath: null,
                 dxExportPath: "DX/WIDGET/PATH",
                 propTypings: [
@@ -1008,6 +1024,7 @@ export {
         generate({
             name: "CLASS_NAME",
             baseComponentPath: "BASE_COMPONENT_PATH",
+            extensionComponentPath: "EXTENSION_COMPONENT_PATH",
             configComponentPath: null,
             dxExportPath: "DX/WIDGET/PATH",
             expectedChildren: [
@@ -1065,6 +1082,7 @@ export {
             generate({
                 name: "CLASS_NAME",
                 baseComponentPath: "BASE_COMPONENT_PATH",
+                extensionComponentPath: "EXTENSION_COMPONENT_PATH",
                 configComponentPath: "CONFIG_COMPONENT_PATH",
                 dxExportPath: "DX/WIDGET/PATH",
                 expectedChildren: undefined,

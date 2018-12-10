@@ -43,9 +43,9 @@ class NestedOption<P> extends React.PureComponent<P, any> {
             : React.createElement(React.Fragment, {}, ...children);
     }
 
-    public componentWillUpdate(nextProps: P) {
+    public componentDidUpdate(prevProps: P) {
         if (this._isAttached) {
-            this._updateFunc(clearProps(nextProps), this.props);
+            this._updateFunc(clearProps(this.props), prevProps);
         }
     }
 }
