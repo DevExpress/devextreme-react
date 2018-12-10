@@ -244,6 +244,9 @@ describe("nested template", () => {
             <ComponentWithTemplates>
                 <Template name={"item1"} render={ItemTemplate} />
                 <Template name={"item2"} component={ItemTemplate} />
+                <Template name={"item3"}>
+                    <ItemTemplate/>
+                </Template>
             </ComponentWithTemplates >
         );
 
@@ -261,6 +264,9 @@ describe("nested template", () => {
 
         expect(integrationOptions.templates.item2).toBeDefined();
         expect(typeof integrationOptions.templates.item2.render).toBe("function");
+
+        expect(integrationOptions.templates.item3).toBeDefined();
+        expect(typeof integrationOptions.templates.item3.render).toBe("function");
     });
 
     it("renders nested templates", () => {
@@ -268,6 +274,19 @@ describe("nested template", () => {
         const component = mount(
             <ComponentWithTemplates>
                 <Template name={"item1"} render={FirstTemplate} />
+            </ComponentWithTemplates >
+        );
+        renderTemplate("item1");
+        component.update();
+        expect(component.find(".template").html()).toBe('<div class="template">Template</div>');
+    });
+
+    it("renders children of nested template", () => {
+        const component = mount(
+            <ComponentWithTemplates>
+                <Template name={"item1"}>
+                    <div className={"template"}>Template</div>
+                </Template>
             </ComponentWithTemplates >
         );
         renderTemplate("item1");
@@ -289,6 +308,29 @@ describe("nested template", () => {
         const SecondTemplate = () => <div className={"template"}>Second Template</div>;
         component.setProps({
             children: <Template name={"item1"} render={SecondTemplate} />
+        });
+        component.update();
+        expect(component.find(".template").html()).toBe('<div class="template">Second Template</div>');
+    });
+
+    it("renders new templates after children change", () => {
+        const component = mount(
+            <ComponentWithTemplates>
+                <Template name={"item1"}>
+                    <div className={"template"}>First Template</div>
+                </Template>
+            </ComponentWithTemplates >
+        );
+        renderTemplate("item1");
+        component.update();
+        expect(component.find(".template").html()).toBe('<div class="template">First Template</div>');
+
+        component.setProps({
+            children: (
+                <Template name={"item1"}>
+                    <div className={"template"}>Second Template</div>
+                </Template>
+            )
         });
         component.update();
         expect(component.find(".template").html()).toBe('<div class="template">Second Template</div>');

@@ -34,10 +34,6 @@ const RegionComponent = (props: any) => {
     return <b>{props.displayValue}</b>;
 };
 
-const ToolbarItemRender = () => {
-    return <b>Collapse or Expand Groups:</b>;
-};
-
 export default class extends React.Component<any, { expandAll: boolean, pageSize: number }> {
 
     constructor(props: any) {
@@ -94,7 +90,9 @@ export default class extends React.Component<any, { expandAll: boolean, pageSize
                     />
                     <MasterDetail enabled={true} component={DetailComponent} />
 
-                    <Template name={"toolbarLabel"} render={ToolbarItemRender} />
+                    <Template name={"toolbarLabel"}>
+                        {this.state.expandAll ? <b>Collapse Groups:</b> : <b>Expand Groups:</b>}
+                    </Template>
                 </DataGrid>
             </Example>
         );

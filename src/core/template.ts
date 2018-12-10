@@ -11,6 +11,7 @@ interface ITemplateProps {
     name: string;
     component?: any;
     render?: any;
+    children?: any;
 }
 
 class Template extends React.PureComponent<ITemplateProps, any> {
@@ -20,7 +21,7 @@ class Template extends React.PureComponent<ITemplateProps, any> {
 }
 
 const requiredPropsCheck = (props: Record<string, any>) => {
-    if (!props.component && !props.render) {
+    if (!props.component && !props.render && !props.children) {
         return new Error("The Template component requires 'component' or 'render' property");
     }
     return null;
@@ -29,22 +30,25 @@ const requiredPropsCheck = (props: Record<string, any>) => {
 (Template as any).propTypes = {
     name: PropTypes.string.isRequired,
     component: requiredPropsCheck,
-    render: requiredPropsCheck
+    render: requiredPropsCheck,
+    children: requiredPropsCheck
 };
 
-function findProps(child: React.ReactElement<any>): { name: string, render: any, component: any } | undefined {
+function findProps(child: React.ReactElement<any>): ITemplateProps | undefined {
     if (child.type !== Template) {
         return;
     }
     return {
         name: child.props.name,
         render: child.props.render,
-        component: child.props.component
+        component: child.props.component,
+        children: child.props.children
     };
 }
 
 export {
     ITemplateMeta,
+    ITemplateProps,
     Template,
     findProps
 };
