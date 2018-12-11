@@ -1,7 +1,6 @@
 import * as React from "react";
 import Example from "./example-block";
 
-import { Template } from "../src/core/template";
 import Form, { RequiredRule, SimpleItem, } from "../src/form";
 import TextArea from "../src/text-area";
 
@@ -58,9 +57,10 @@ export default class extends React.Component<any, {}> {
                     </SimpleItem>
                     <SimpleItem
                         dataField={"Notes"}
-                        component={TextArea}
                         colSpan={2}
-                    />
+                    >
+                        <TextArea/>
+                    </SimpleItem>
                     <SimpleItem dataField={"Address"} />
                     <SimpleItem
                         dataField={"Phone"}

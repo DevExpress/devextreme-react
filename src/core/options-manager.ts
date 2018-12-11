@@ -182,6 +182,7 @@ class OptionsManager {
                     configComponent.templates);
 
                 this._templateHost.add({
+                    useChildren: (optionName) => optionName === "template" && !!e.element.props.children,
                     props: props.templates,
                     templateProps: configComponent.templates,
                     ownerName: `${configComponent.optionName}${configComponent.isCollectionItem ? `[${index}]` : ""}`,

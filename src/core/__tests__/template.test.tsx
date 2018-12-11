@@ -449,6 +449,36 @@ describe("component/render in nested options", () => {
         expect(Object.keys(integrationOptions.templates)).toEqual(["collection[0].template", "collection[1].template"]);
     });
 
+    it("pass integrationOptions for collection nested component with 'template' option if children is defined", () => {
+        const UserTemplate = () => <div>Template</div>;
+        mount(
+            <TestComponent>
+                <NestedComponent>
+                    <UserTemplate/>
+                </NestedComponent>
+                <CollectionNestedComponent>
+                    <UserTemplate/>
+                </CollectionNestedComponent>
+                <CollectionNestedComponent>
+                    <UserTemplate/>
+                </CollectionNestedComponent>
+                <CollectionNestedComponent/>
+            </TestComponent>
+        );
+
+        const options = WidgetClass.mock.calls[0][1];
+
+        expect(options["collection[0].template"]).toBe("collection[0].template");
+        expect(options["collection[1].template"]).toBe("collection[1].template");
+        expect(options["collection[2].template"]).toBe(undefined);
+        expect(options["option.item"]).toBe(undefined);
+        expect(options["option.template"]).toBe(undefined);
+
+        const integrationOptions = options.integrationOptions;
+
+        expect(Object.keys(integrationOptions.templates)).toEqual(["collection[0].template", "collection[1].template"]);
+    });
+
     it("renders templates", () => {
         const FirstTemplate = () => <div className={"template"}>First Template</div>;
         const component = mount(
@@ -463,6 +493,31 @@ describe("component/render in nested options", () => {
         const SecondTemplate = () => <div className={"template"}>Second Template</div>;
         component.setProps({
             children: <NestedComponent itemComponent={SecondTemplate} />
+        });
+        component.update();
+        expect(component.find(".template").html()).toBe('<div class="template">Second Template</div>');
+    });
+
+    it("renders static templates", () => {
+        const FirstTemplate = () => <div className={"template"}>First Template</div>;
+        const component = mount(
+            <TestComponent>
+                <CollectionNestedComponent>
+                    <FirstTemplate/>
+                </CollectionNestedComponent>
+            </TestComponent >
+        );
+        renderTemplate("collection[0].template");
+        component.update();
+        expect(component.find(".template").html()).toBe('<div class="template">First Template</div>');
+
+        const SecondTemplate = () => <div className={"template"}>Second Template</div>;
+        component.setProps({
+            children: (
+                <CollectionNestedComponent>
+                    <SecondTemplate/>
+                </CollectionNestedComponent>
+            )
         });
         component.update();
         expect(component.find(".template").html()).toBe('<div class="template">Second Template</div>');

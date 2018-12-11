@@ -21,7 +21,6 @@ interface IDxTemplate {
 }
 
 interface ITemplateDescr {
-    name: string;
     propName: string;
     isComponent: boolean;
     propsGetter: PropsGetter;
@@ -32,6 +31,7 @@ interface IIntegrationDescr {
     templateProps: ITemplateMeta[];
     ownerName: string;
     propsGetter: PropsGetter;
+    useChildren: (name: string) => boolean;
 }
 
 class TemplateHost {
@@ -58,16 +58,22 @@ class TemplateHost {
         const ownerName = meta.ownerName;
 
         for (const tmpl of templateProps) {
+            let propName = props[tmpl.component] ? tmpl.component : tmpl.render;
+            let propsGetter = meta.propsGetter;
             if (!props[tmpl.component] && !props[tmpl.render]) {
-                continue;
+                if (meta.useChildren(tmpl.tmplOption)) {
+                    propName = "children";
+                    propsGetter = () => () => meta.propsGetter("children");
+                } else {
+                    continue;
+                }
             }
-            const name = ownerName ? `${ownerName}.${tmpl.tmplOption}` : tmpl.tmplOption;
 
+            const name = ownerName ? `${ownerName}.${tmpl.tmplOption}` : tmpl.tmplOption;
             const templateDescr: ITemplateDescr = {
-                name,
-                propName: props[tmpl.component] ? tmpl.component : tmpl.render,
+                propName,
                 isComponent: !!props[tmpl.component],
-                propsGetter: meta.propsGetter
+                propsGetter
             };
             stubs[name] = name;
             templates[name] = wrapTemplate(templateDescr, this._stateUpdater);
@@ -91,10 +97,9 @@ class TemplateHost {
             render: props.render,
             children: () => props.children
         };
-        const propsGetter = (prop) => this._nestedTemplateProps[name][prop];
+        const propsGetter: PropsGetter = (prop) => this._nestedTemplateProps[name][prop];
 
         const templateDescr: ITemplateDescr = {
-            name,
             propName: !!props.component ? "component" : !!props.render ? "render" : "children",
             isComponent: !!props.component,
             propsGetter
