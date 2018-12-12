@@ -449,7 +449,7 @@ describe("component/render in nested options", () => {
         expect(Object.keys(integrationOptions.templates)).toEqual(["collection[0].template", "collection[1].template"]);
     });
 
-    it("pass integrationOptions for collection nested component with 'template' option if children is defined", () => {
+    it("pass integrationOptions for collection nested component with 'template' option if a child defined", () => {
         const UserTemplate = () => <div>Template</div>;
         mount(
             <TestComponent>
