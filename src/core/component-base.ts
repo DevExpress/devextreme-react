@@ -172,6 +172,7 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
     const separatedProps = separateProps(rawProps, this._defaults, this._templateProps);
 
     this._templateHost.add({
+      useChildren: () => false,
       ownerName: "",
       templateProps: this._templateProps,
       props: separatedProps.templates,
