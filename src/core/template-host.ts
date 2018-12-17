@@ -1,4 +1,4 @@
-import { ITemplateMeta } from "./template";
+import { ITemplateMeta, ITemplateProps } from "./template";
 
 import * as React from "react";
 
@@ -20,19 +20,19 @@ interface IDxTemplate {
     render: (data: IDxTemplateData) => any;
 }
 
-interface ITemplateDescr {
-    name: string;
-    propName: string;
-    isComponent: boolean;
-    propsGetter: PropsGetter;
-}
-
 interface IIntegrationDescr {
     props: Record<string, any>;
     templateProps: ITemplateMeta[];
     ownerName: string;
     propsGetter: PropsGetter;
+    useChildren: (name: string) => boolean;
 }
+
+const contentCreators = {
+    component: (name: string, propsGetter: PropsGetter) => React.createElement.bind(null, propsGetter(name)),
+    render: (name: string, propsGetter: PropsGetter) => propsGetter(name),
+    children: (_: string, propsGetter: PropsGetter) => () => propsGetter("children")
+};
 
 class TemplateHost {
     private readonly _stateUpdater: StateUpdater;
@@ -42,6 +42,7 @@ class TemplateHost {
     private _nestedTemplateProps: Record<string, {
         render: any;
         component: any;
+        children: any;
     }> = {};
 
     constructor(stateUpdater: StateUpdater) {
@@ -57,19 +58,32 @@ class TemplateHost {
         const ownerName = meta.ownerName;
 
         for (const tmpl of templateProps) {
-            if (!props[tmpl.component] && !props[tmpl.render]) {
+            let contentCreator;
+            let propName;
+
+            if (meta.useChildren(tmpl.tmplOption)) {
+                contentCreator = contentCreators.children;
+            }
+
+            if (props[tmpl.render]) {
+                propName = tmpl.render;
+                contentCreator = contentCreators.render;
+            }
+
+            if (props[tmpl.component]) {
+                propName = tmpl.component;
+                contentCreator = contentCreators.component;
+            }
+
+            if (!contentCreator) {
                 continue;
             }
-            const name = ownerName ? `${ownerName}.${tmpl.tmplOption}` : tmpl.tmplOption;
 
-            const templateDescr: ITemplateDescr = {
-                name,
-                propName: props[tmpl.component] ? tmpl.component : tmpl.render,
-                isComponent: !!props[tmpl.component],
-                propsGetter: meta.propsGetter
-            };
+            contentCreator = contentCreator.bind(this, propName, meta.propsGetter);
+
+            const name = ownerName ? `${ownerName}.${tmpl.tmplOption}` : tmpl.tmplOption;
             stubs[name] = name;
-            templates[name] = wrapTemplate(templateDescr, this._stateUpdater);
+            templates[name] = wrapTemplate(contentCreator, this._stateUpdater);
         }
 
         this._templates = {
@@ -83,26 +97,19 @@ class TemplateHost {
         };
     }
 
-    public addNested(props: {
-        name: string;
-        render: any;
-        component: any;
-    }): void {
+    public addNested(props: ITemplateProps): void {
         const name: string = props.name;
         this._nestedTemplateProps[name] = {
             component: props.component,
-            render: props.render
-        };
-        const propsGetter = (prop) => this._nestedTemplateProps[name][prop];
-
-        const templateDescr: ITemplateDescr = {
-            name,
-            propName: !!props.component ? "component" : "render",
-            isComponent: !!props.component,
-            propsGetter
+            render: props.render,
+            children: props.children
         };
 
-        this._templates[name] = wrapTemplate(templateDescr, this._stateUpdater);
+        const type = !!props.component ? "component" : !!props.render ? "render" : "children";
+        const propsGetter: PropsGetter = (prop) => this._nestedTemplateProps[name][prop];
+
+        const contentCreator = contentCreators[type].bind(this, type, propsGetter);
+        this._templates[name] = wrapTemplate(contentCreator, this._stateUpdater);
     }
 
     public get options(): Record<string, any> | undefined {
@@ -119,22 +126,17 @@ class TemplateHost {
     }
 }
 
-function wrapTemplate(templateDescr: ITemplateDescr, stateUpdater: StateUpdater): IDxTemplate {
+function wrapTemplate(createContentProvider: () => (model: any) => any, stateUpdater: StateUpdater): IDxTemplate {
     return {
         render: (data: IDxTemplateData) => {
             const templateId = "__template_" + generateID();
             const container = unwrapElement(data.container);
             const createWrapper = () => {
-                const propsGetter = templateDescr.propsGetter;
-
-                const contentProvider = templateDescr.isComponent
-                    ? React.createElement.bind(null, propsGetter(templateDescr.propName))
-                    : propsGetter(templateDescr.propName);
-
                 const model = data.model;
                 if (model && model.hasOwnProperty("key")) {
                     model.dxkey = model.key;
                 }
+                const contentProvider = createContentProvider();
                 return React.createElement<ITemplateWrapperProps>(TemplateWrapper, {
                     content: contentProvider(model),
                     container,
