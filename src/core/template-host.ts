@@ -43,6 +43,7 @@ class TemplateHost {
         render: any;
         component: any;
         children: any;
+        keyExpr?: (data) => string
     }> = {};
 
     constructor(stateUpdater: StateUpdater) {
@@ -83,7 +84,7 @@ class TemplateHost {
 
             const name = ownerName ? `${ownerName}.${tmpl.tmplOption}` : tmpl.tmplOption;
             stubs[name] = name;
-            templates[name] = wrapTemplate(contentCreator, this._stateUpdater);
+            templates[name] = wrapTemplate(contentCreator, this._stateUpdater, meta.propsGetter(tmpl.keyExpr));
         }
 
         this._templates = {
@@ -109,7 +110,7 @@ class TemplateHost {
         const propsGetter: PropsGetter = (prop) => this._nestedTemplateProps[name][prop];
 
         const contentCreator = contentCreators[type].bind(this, type, propsGetter);
-        this._templates[name] = wrapTemplate(contentCreator, this._stateUpdater);
+        this._templates[name] = wrapTemplate(contentCreator, this._stateUpdater, props.keyExpr);
     }
 
     public get options(): Record<string, any> | undefined {
@@ -126,10 +127,14 @@ class TemplateHost {
     }
 }
 
-function wrapTemplate(createContentProvider: () => (model: any) => any, stateUpdater: StateUpdater): IDxTemplate {
+function wrapTemplate(
+    createContentProvider: () => (model: any) => any,
+    stateUpdater: StateUpdater,
+    keyExpr?: (data) => string
+): IDxTemplate {
     return {
         render: (data: IDxTemplateData) => {
-            const templateId = "__template_" + generateID();
+            const templateId = keyExpr && keyExpr(data.model) || "__template_" + generateID();
             const container = unwrapElement(data.container);
             const createWrapper = () => {
                 const model = data.model;
