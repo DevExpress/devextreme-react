@@ -38,6 +38,10 @@ class Item extends React.Component<IListItemProps, { counter: number }> {
     }
 }
 
+function ItemKeyGetter(data: any) {
+    return data.text;
+}
+
 // tslint:disable-next-line:max-classes-per-file
 export default class extends React.Component<any, { text: string; items: IListItemProps[]; }> {
 
@@ -79,8 +83,10 @@ export default class extends React.Component<any, { text: string; items: IListIt
                 <hr />
                 <h4>List with component template</h4>
                 <List
+                    repaintChangesOnly={true}
                     items={this.state.items}
                     itemComponent={Item}
+                    itemTemplateKeyExpr={ItemKeyGetter}
                 />
 
                 <hr />

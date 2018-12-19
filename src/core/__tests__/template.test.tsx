@@ -11,7 +11,8 @@ class ComponentWithTemplates extends TestComponent {
     protected _templateProps = [{
         tmplOption: "item",
         render: "itemRender",
-        component: "itemComponent"
+        component: "itemComponent",
+        keyExpr: "itemKeyExpr"
     }];
 
     constructor(props: any) {
@@ -183,6 +184,21 @@ function testTemplateOption(testedOption: string) {
         expect(templatesKeys[0]).not.toBe(templatesKeys[1]);
     });
 
+    it("has templates in state with ids genetated with keyExpr", () => {
+        const elementOptions: Record<string, any> = {};
+        elementOptions[testedOption] = (props: any) => <div className={"template"}>Template {props.text}</div>;
+        elementOptions.itemKeyExpr = (data) => data.text;
+        const component = shallow(React.createElement(ComponentWithTemplates, elementOptions));
+
+        renderItemTemplate({ text: 1 });
+        renderItemTemplate({ text: 2 });
+
+        const templatesKeys = Object.getOwnPropertyNames(component.state("templates"));
+        expect(templatesKeys.length).toBe(2);
+        expect(templatesKeys[0]).toBe("1");
+        expect(templatesKeys[1]).toBe("2");
+    });
+
     it("removes deleted nodes from state", () => {
         const elementOptions: Record<string, any> = {};
         elementOptions[testedOption] = (props: any) => <div className={"template"}>Template {props.text}</div>;
@@ -334,6 +350,22 @@ describe("nested template", () => {
         });
         component.update();
         expect(component.find(".template").html()).toBe('<div class="template">Second Template</div>');
+    });
+
+    it("has templates in state with ids genetated with keyExpr", () => {
+        const FirstTemplate = () => <div className={"template"}>Template</div>;
+        const keyExpr = (data) => data.text;
+        const component = mount(
+            <ComponentWithTemplates>
+                <Template name={"item1"} render={FirstTemplate} keyExpr={keyExpr} />
+            </ComponentWithTemplates >
+        );
+
+        renderTemplate("item1", { text: 1 });
+
+        const templatesKeys = Object.getOwnPropertyNames(component.state("templates"));
+        expect(templatesKeys.length).toBe(1);
+        expect(templatesKeys[0]).toBe("1");
     });
 
 });

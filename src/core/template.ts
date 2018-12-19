@@ -5,6 +5,7 @@ interface ITemplateMeta {
     tmplOption: string;
     component: string;
     render: string;
+    keyExpr: string;
 }
 
 interface ITemplateProps {
@@ -12,6 +13,7 @@ interface ITemplateProps {
     component?: any;
     render?: any;
     children?: any;
+    keyExpr?: (data: any) => string;
 }
 
 class Template extends React.PureComponent<ITemplateProps, any> {
@@ -42,7 +44,8 @@ function findProps(child: React.ReactElement<any>): ITemplateProps | undefined {
         name: child.props.name,
         render: child.props.render,
         component: child.props.component,
-        children: child.props.children
+        children: child.props.children,
+        keyExpr: child.props.keyExpr
     };
 }
 
