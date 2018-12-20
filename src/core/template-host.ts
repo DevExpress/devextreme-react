@@ -134,7 +134,7 @@ function wrapTemplate(
 ): IDxTemplate {
     return {
         render: (data: IDxTemplateData) => {
-            const templateId = keyExpr && keyExpr(data.model) || "__template_" + generateID();
+            const templateId = keyExpr ? keyExpr(data.model) : "__template_" + generateID();
             const container = unwrapElement(data.container);
             const createWrapper = () => {
                 const model = data.model;
