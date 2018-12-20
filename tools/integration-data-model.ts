@@ -56,16 +56,18 @@ export interface IArrayDescr extends ITypeDescr {
 }
 
 export interface IFunctionDescr extends ITypeDescr {
+  // tslint:disable-next-line:array-type
   params: {
     name: string;
     types: ITypeDescr[];
-  }[]; // tslint:disable-line:array-type
+  }[];
   returnValueType: ITypeDescr;
 }
 
 export interface IObjectDescr extends ITypeDescr {
+  // tslint:disable-next-line:array-type
   fields: {
     name: string;
     types: ITypeDescr[];
-  }[]; // tslint:disable-line:array-type
+  }[];
 }
