@@ -92,6 +92,7 @@ import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 interface ICLASS_NAMEOptions extends IOptions, IHtmlOptions {
   optionRender?: (props: any) => React.ReactNode;
   optionComponent?: React.ComponentType<any>;
+  optionKeyFn?: (data: any) => string;
 }
 
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
@@ -105,7 +106,8 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
   protected _templateProps = [{
     tmplOption: "optionTemplate",
     render: "optionRender",
-    component: "optionComponent"
+    component: "optionComponent",
+    keyFn: "optionKeyFn"
   }];
 }
 export default CLASS_NAME;
@@ -141,8 +143,10 @@ import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 interface ICLASS_NAMEOptions extends IOptions, IHtmlOptions {
   optionRender?: (props: any) => React.ReactNode;
   optionComponent?: React.ComponentType<any>;
+  optionKeyFn?: (data: any) => string;
   anotherOptionRender?: (props: any) => React.ReactNode;
   anotherOptionComponent?: React.ComponentType<any>;
+  anotherOptionKeyFn?: (data: any) => string;
 }
 
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
@@ -156,11 +160,13 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
   protected _templateProps = [{
     tmplOption: "optionTemplate",
     render: "optionRender",
-    component: "optionComponent"
+    component: "optionComponent",
+    keyFn: "optionKeyFn"
   }, {
     tmplOption: "anotherOptionTemplate",
     render: "anotherOptionRender",
-    component: "anotherOptionComponent"
+    component: "anotherOptionComponent",
+    keyFn: "anotherOptionKeyFn"
   }];
 }
 export default CLASS_NAME;
@@ -196,6 +202,7 @@ import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 interface ICLASS_NAMEOptions extends IOptions, IHtmlOptions {
   render?: (props: any) => React.ReactNode;
   component?: React.ComponentType<any>;
+  keyFn?: (data: any) => string;
 }
 
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
@@ -209,7 +216,8 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
   protected _templateProps = [{
     tmplOption: "template",
     render: "render",
-    component: "component"
+    component: "component",
+    keyFn: "keyFn"
   }];
 }
 export default CLASS_NAME;
@@ -635,12 +643,14 @@ class Opt_1_Component extends NestedOption<{
   optionTemplate?: TYPE_1;
   optionRender?: (props: any) => React.ReactNode;
   optionComponent?: React.ComponentType<any>;
+  optionKeyFn?: (data: any) => string;
 }> {
   public static OptionName = "opt_1";
   public static TemplateProps = [{
     tmplOption: "optionTemplate",
     render: "optionRender",
-    component: "optionComponent"
+    component: "optionComponent",
+    keyFn: "optionKeyFn"
   }];
 }
 
