@@ -56,7 +56,7 @@ interface IRenderedPropTyping {
     renderedTypes: string[];
 }
 
-const TYPE_KEY_EXPR = "(data: any) => string";
+const TYPE_KEY_FN = "(data: any) => string";
 const TYPE_RENDER = "(props: any) => React.ReactNode";
 const TYPE_COMPONENT = "React.ComponentType<any>";
 
@@ -102,8 +102,8 @@ function generate(component: IComponent): string {
                             name: t.component,
                             type: TYPE_COMPONENT
                         }, {
-                            name: t.keyExpr,
-                            type: TYPE_KEY_EXPR
+                            name: t.keyFn,
+                            type: TYPE_KEY_FN
                         });
                     });
                 }
@@ -209,7 +209,7 @@ function createTemplateDto(templates: string[]) {
         actualOptionName,
         render: formatTemplatePropName(actualOptionName, "Render"),
         component: formatTemplatePropName(actualOptionName, "Component"),
-        keyExpr: formatTemplatePropName(actualOptionName, "ReactKeyExpr")
+        keyFn: formatTemplatePropName(actualOptionName, "KeyFn")
     }))
     : null;
 }
@@ -307,7 +307,7 @@ const renderOptionsInterface: (model: {
 `<#~ it.templates :template #>` +
     `  <#= template.render #>?: ${TYPE_RENDER};` + `\n` +
     `  <#= template.component #>?: ${TYPE_COMPONENT};` + `\n` +
-    `  <#= template.keyExpr #>?: ${TYPE_KEY_EXPR};` + `\n` +
+    `  <#= template.keyFn #>?: ${TYPE_KEY_FN};` + `\n` +
 `<#~#>` +
 
 `<#~ it.defaultProps :prop #>` +
@@ -427,7 +427,7 @@ const renderTemplateOption: (model: {
     tmplOption: "<#= it.actualOptionName #>",
     render: "<#= it.render #>",
     component: "<#= it.component #>",
-    keyExpr: "<#= it.keyExpr #>"
+    keyFn: "<#= it.keyFn #>"
   }
 `.trim());
 

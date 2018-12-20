@@ -12,7 +12,7 @@ class ComponentWithTemplates extends TestComponent {
         tmplOption: "item",
         render: "itemRender",
         component: "itemComponent",
-        keyExpr: "itemKeyExpr"
+        keyFn: "itemKeyFn"
     }];
 
     constructor(props: any) {
@@ -187,7 +187,7 @@ function testTemplateOption(testedOption: string) {
     it("has templates in state with ids genetated with keyExpr", () => {
         const elementOptions: Record<string, any> = {};
         elementOptions[testedOption] = (props: any) => <div className={"template"}>Template {props.text}</div>;
-        elementOptions.itemKeyExpr = (data) => data.text;
+        elementOptions.itemKeyFn = (data) => data.text;
         const component = shallow(React.createElement(ComponentWithTemplates, elementOptions));
 
         renderItemTemplate({ text: 1 });
@@ -352,12 +352,12 @@ describe("nested template", () => {
         expect(component.find(".template").html()).toBe('<div class="template">Second Template</div>');
     });
 
-    it("has templates in state with ids genetated with keyExpr", () => {
+    it("has templates in state with ids genetated with keyFn", () => {
         const FirstTemplate = () => <div className={"template"}>Template</div>;
         const keyExpr = (data) => data.text;
         const component = mount(
             <ComponentWithTemplates>
-                <Template name={"item1"} render={FirstTemplate} keyExpr={keyExpr} />
+                <Template name={"item1"} render={FirstTemplate} keyFn={keyExpr} />
             </ComponentWithTemplates >
         );
 

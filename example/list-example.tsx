@@ -86,7 +86,7 @@ export default class extends React.Component<any, { text: string; items: IListIt
                     repaintChangesOnly={true}
                     items={this.state.items}
                     itemComponent={Item}
-                    itemReactKeyExpr={ItemKeyGetter}
+                    itemKeyFn={ItemKeyGetter}
                 />
 
                 <hr />
