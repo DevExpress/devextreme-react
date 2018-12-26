@@ -33,6 +33,8 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
   protected readonly _templateProps: ITemplateMeta[] = [];
   protected readonly _expectedChildren: Record<string, INestedOption>;
 
+  private _templateCallbacks: any[] = [];
+
   private readonly _templateHost: TemplateHost;
   private readonly _optionsManager: OptionsManager;
 
@@ -125,13 +127,23 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
   }
 
   private _updateTemplatesState(callback: any) {
-    this.setState((state: IState) => {
-        const templates = { ...state.templates };
-        callback(templates);
-        return {
-            templates
-        };
-    });
+    if (!this._templateCallbacks.length) {
+      this._templateCallbacks.push(callback);
+      setTimeout(() => {
+        this.setState((state: IState) => {
+            const templates = { ...state.templates };
+            for (const cb of this._templateCallbacks) {
+              cb(templates);
+            }
+            this._templateCallbacks.length = 0;
+            return {
+                templates
+            };
+        });
+      });
+    } else {
+      this._templateCallbacks.push(callback);
+    }
   }
 
   private _getElementProps(): Record<string, any> {
