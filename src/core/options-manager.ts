@@ -153,6 +153,13 @@ class OptionsManager {
         return this._registerNestedOption(component, expectedChildren, this._nestedOptions);
     }
 
+    public dispose() {
+        for (const optionName of Object.keys(this._guards)) {
+            window.clearTimeout(this._guards[optionName]);
+            delete this._guards[optionName];
+        }
+    }
+
     private _setOption(name: string, value: any): void {
         let actualValue = value;
         if (isEventHanlder(name, value)) {
