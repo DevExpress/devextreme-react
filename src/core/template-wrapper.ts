@@ -24,8 +24,9 @@ class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps> {
                     style: { display: "none" },
                     ref: (element: HTMLDivElement) => this._removalListener = element
                 }),
-            )
-        , this.props.container);
+            ),
+            this.props.container
+        );
     }
 
     public componentDidMount() {
@@ -33,18 +34,20 @@ class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps> {
             const onRendered: () => void = this.props.onRendered;
             setTimeout(() => onRendered());
         }
-        const restoreRemovedContent = () => {
-            // Let React remove it itself
-            const node = ReactDOM.findDOMNode(this);
-            if (node) {
-                this.props.container.appendChild(node);
-            }
-            this.props.container.appendChild(this._removalListener);
-        };
+
         events.one(this._removalListener, DX_REMOVE_EVENT, () => {
-            restoreRemovedContent();
+            this._restoreRemovedContent.call(this);
             this.props.onRemoved();
         });
+    }
+
+    private _restoreRemovedContent() {
+        // Let React remove it itself
+        const node = ReactDOM.findDOMNode(this);
+        if (node) {
+            this.props.container.appendChild(node);
+        }
+        this.props.container.appendChild(this._removalListener);
     }
 }
 
