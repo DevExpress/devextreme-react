@@ -33,6 +33,9 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
   protected readonly _templateProps: ITemplateMeta[] = [];
   protected readonly _expectedChildren: Record<string, INestedOption>;
 
+  private _templateCallbacks: any[] = [];
+  private _templateTimeout: any;
+
   private readonly _templateHost: TemplateHost;
   private readonly _optionsManager: OptionsManager;
 
@@ -70,6 +73,7 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
   }
 
   public componentWillUnmount() {
+    this._clearTemplates();
     if (this._instance) {
       events.triggerHandler(this._element, DX_REMOVE_EVENT);
       this._instance.dispose();
@@ -126,13 +130,28 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
   }
 
   private _updateTemplatesState(callback: any) {
-    this.setState((state: IState) => {
+    this._templateCallbacks.push(callback);
+
+    if (this._templateTimeout) { return; }
+
+    this._templateTimeout = setTimeout(() => {
+      this.setState((state: IState) => {
         const templates = { ...state.templates };
-        callback(templates);
-        return {
-            templates
-        };
+        for (const cb of this._templateCallbacks) {
+          cb(templates);
+        }
+        this._clearTemplates();
+        return { templates };
+      });
     });
+  }
+
+  private _clearTemplates() {
+    this._templateCallbacks.length = 0;
+    if (this._templateTimeout) {
+      clearTimeout(this._templateTimeout);
+      this._templateTimeout = undefined;
+    }
   }
 
   private _getElementProps(): Record<string, any> {
