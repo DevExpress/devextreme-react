@@ -129,23 +129,20 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
   }
 
   private _updateTemplatesState(callback: any) {
-    if (!this._templateTimeout) {
-      this._templateCallbacks.push(callback);
-      this._templateTimeout = setTimeout(() => {
-        this.setState((state: IState) => {
-            const templates = { ...state.templates };
-            for (const cb of this._templateCallbacks) {
-              cb(templates);
-            }
-            this._clearTemplates();
-            return {
-                templates
-            };
-        });
+    this._templateCallbacks.push(callback);
+
+    if (this._templateTimeout) { return; }
+
+    this._templateTimeout = setTimeout(() => {
+      this.setState((state: IState) => {
+        const templates = { ...state.templates };
+        for (const cb of this._templateCallbacks) {
+          cb(templates);
+        }
+        this._clearTemplates();
+        return { templates };
       });
-    } else {
-      this._templateCallbacks.push(callback);
-    }
+    });
   }
 
   private _clearTemplates() {
