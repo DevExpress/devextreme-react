@@ -1,7 +1,7 @@
 import * as events from "devextreme/events";
 
 import { mount, React, shallow } from "./setup";
-import { TestComponent, Widget, WidgetClass } from "./test-component";
+import { fireOptionChange, TestComponent, Widget, WidgetClass } from "./test-component";
 
 describe("rendering", () => {
 
@@ -159,6 +159,18 @@ describe("disposing", () => {
         component.unmount();
 
         expect(handleDxRemove).toHaveBeenCalledTimes(1);
+    });
+
+    it("remove option guards", () => {
+        const component = shallow(
+            <TestComponent option1={true} />
+        );
+
+        fireOptionChange("option1", false);
+        component.unmount();
+        jest.runAllTimers();
+
+        expect(Widget.option.mock.calls.length).toBe(0);
     });
 
 });

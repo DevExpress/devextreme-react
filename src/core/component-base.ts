@@ -74,6 +74,7 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
       events.triggerHandler(this._element, DX_REMOVE_EVENT);
       this._instance.dispose();
     }
+    this._optionsManager.dispose();
   }
 
   protected _prepareChildren(args: any[] = []): any[] {
