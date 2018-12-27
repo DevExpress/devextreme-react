@@ -15,6 +15,7 @@ interface IControlledComponentProps {
     onControlledOptionChanged?: () => void;
     everyOption?: number;
     anotherOption?: string;
+    complexOption?: object;
 }
 
 // tslint:disable:max-classes-per-file
@@ -220,6 +221,17 @@ describe("option control", () => {
         expect(Widget.option.mock.calls[0]).toEqual(["everyOption", 123]);
     });
 
+    it("rolls complex option value back", () => {
+        shallow(
+            <ControlledComponent complexOption={{a: 123}} />
+        );
+
+        fireOptionChange("complexOption.a", 234);
+        jest.runAllTimers();
+        expect(Widget.option.mock.calls.length).toBe(1);
+        expect(Widget.option.mock.calls[0]).toEqual(["complexOption", {a: 123}]);
+    });
+
     it("rolls option value back if value has no changes", () => {
         const component = shallow(
             <ControlledComponent everyOption={123} anotherOption={"const"} />
@@ -281,9 +293,9 @@ describe("option defaults control", () => {
 
 });
 
-describe("nested option control", () => {
+describe("cfg-component option control", () => {
 
-    it("rolls nested option value back", () => {
+    it("rolls cfg-component option value back", () => {
         mount(
             <ControlledComponent>
                 <NestedComponent a={123} />
@@ -296,7 +308,7 @@ describe("nested option control", () => {
         expect(Widget.option.mock.calls[0]).toEqual(["nestedOption.a", 123]);
     });
 
-    it("rolls nested option value if parent object changes another field", () => {
+    it("rolls cfg-component option value if parent object changes another field", () => {
         mount(
             <ControlledComponent>
                 <NestedComponent a={123} />
@@ -309,7 +321,7 @@ describe("nested option control", () => {
         expect(Widget.option.mock.calls[0]).toEqual(["nestedOption.a", 123]);
     });
 
-    it("rolls nested option value and preserves parent object", () => {
+    it("rolls cfg-component option value and preserves parent object", () => {
         mount(
             <ControlledComponent>
                 <NestedComponent a={123} />
@@ -322,7 +334,7 @@ describe("nested option control", () => {
         expect(Widget.option.mock.calls[0]).toEqual(["nestedOption.a", 123]);
     });
 
-    it("rolls nested option value back if value has no changes", () => {
+    it("rolls cfg-component option value back if value has no changes", () => {
         const component = shallow(
             <ControlledComponent>
                 <NestedComponent a={123} b="const" />
@@ -338,7 +350,7 @@ describe("nested option control", () => {
         expect(Widget.option.mock.calls[1]).toEqual(["nestedOption.b", "const"]);
     });
 
-    it("apply nested option change if value really change", () => {
+    it("apply cfg-component option change if value really change", () => {
         const component = shallow(
             <ControlledComponent>
                 <NestedComponent a={123} b="const" />
@@ -353,7 +365,7 @@ describe("nested option control", () => {
         expect(Widget.option.mock.calls[0]).toEqual(["nestedOption.a", 234]);
     });
 
-    it("does not control not specified nested option", () => {
+    it("does not control not specified cfg-component option", () => {
         shallow(
             <ControlledComponent>
                 <NestedComponent a={123} />
@@ -367,7 +379,7 @@ describe("nested option control", () => {
 
 });
 
-describe("nested option defaults control", () => {
+describe("cfg-component option defaults control", () => {
 
     it("pass nested default values to widget", () => {
         mount(
@@ -390,7 +402,7 @@ describe("nested option defaults control", () => {
         expect(WidgetClass.mock.calls[0][1]).not.toHaveProperty("defaultControlledOption");
     });
 
-    it("ignores nested option with default prefix", () => {
+    it("ignores cfg-component option with default prefix", () => {
         mount(
             <ControlledComponent>
                 <NestedComponent defaultC="default" />
