@@ -42,6 +42,12 @@ function ItemKeyGetter(data: any) {
     return data.text;
 }
 
+function ItemsRender(item: string) {
+    return <i>{item}</i>;
+}
+
+const listItems: string[] = ["orange", "apple", "potato"];
+
 // tslint:disable-next-line:max-classes-per-file
 export default class extends React.Component<any, { text: string; items: IListItemProps[]; }> {
 
@@ -77,8 +83,8 @@ export default class extends React.Component<any, { text: string; items: IListIt
                 <hr />
                 <h4>List with function template</h4>
                 <List
-                    items={["orange", "apple", "potato"]}
-                    itemRender={(item: string) => <i>{item}</i>}
+                    items={listItems}
+                    itemRender={ItemsRender}
                 />
                 <hr />
                 <h4>List with component template</h4>

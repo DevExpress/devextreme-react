@@ -24,9 +24,11 @@ function renderTemplate(name: string, model?: any, container?: any, onRendered?:
     model = model || {};
     container = container || document.createElement("div");
     const render = WidgetClass.mock.calls[0][1].integrationOptions.templates[name].render;
-    return render({
+    const result = render({
         container, model, onRendered
     });
+    jest.runAllTimers();
+    return result;
 }
 
 function renderItemTemplate(model?: any, container?: any, onRendered?: () => void): Element {
@@ -217,6 +219,7 @@ function testTemplateOption(testedOption: string) {
         parentElement.removeChild(removeListener);
         parentElement.removeChild(templateContent);
         events.triggerHandler(removeListener, "dxremove");
+        jest.runAllTimers();
         component.update();
         expect(Object.getOwnPropertyNames(component.state("templates")).length).toBe(0);
     });
