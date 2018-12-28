@@ -1,4 +1,7 @@
 import * as events from "devextreme/events";
+
+import * as commonUtils from "devextreme/core/utils/common";
+
 import * as React from "react";
 
 import OptionsManager, { INestedOption } from "./options-manager";
@@ -34,7 +37,7 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
   protected readonly _expectedChildren: Record<string, INestedOption>;
 
   private _templateCallbacks: any[] = [];
-  private _templateTimeout: any;
+  private _isTemplatePostponed: boolean = false;
 
   private readonly _templateHost: TemplateHost;
   private readonly _optionsManager: OptionsManager;
@@ -132,9 +135,10 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
   private _updateTemplatesState(callback: any) {
     this._templateCallbacks.push(callback);
 
-    if (this._templateTimeout) { return; }
+    if (this._isTemplatePostponed) { return; }
 
-    this._templateTimeout = setTimeout(() => {
+    this._isTemplatePostponed = true;
+    commonUtils.deferUpdate(() => {
       this.setState((state: IState) => {
         const templates = { ...state.templates };
         for (const cb of this._templateCallbacks) {
@@ -148,9 +152,8 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
 
   private _clearTemplates() {
     this._templateCallbacks.length = 0;
-    if (this._templateTimeout) {
-      clearTimeout(this._templateTimeout);
-      this._templateTimeout = undefined;
+    if (this._isTemplatePostponed) {
+      this._isTemplatePostponed = false;
     }
   }
 
