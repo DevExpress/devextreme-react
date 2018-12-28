@@ -83,9 +83,11 @@ class OptionsManager {
         }
 
         let optionValue;
+        let optionName;
 
         const nestedOption = this._nestedOptions[e.name];
         if (nestedOption) {
+            optionName = e.fullName;
             const nestedOptionObj = separateProps(
                 nestedOption.elementEntries[0].element.props,
                 nestedOption.defaults,
@@ -102,10 +104,11 @@ class OptionsManager {
                 return;
             }
 
-            if (!nestedOption.isCollectionItem) {
-                optionValue = getNestedValue(nestedOptionObj, e.fullName.split(".").slice(1));
-            }
+            if (nestedOption.isCollectionItem) { return; }
+
+            optionValue = getNestedValue(nestedOptionObj, e.fullName.split(".").slice(1));
         } else {
+            optionName = e.name;
             optionValue = this._optionValueGetter(e.name);
         }
 
@@ -113,7 +116,7 @@ class OptionsManager {
             return;
         }
 
-        this._setGuard(e.fullName, optionValue);
+        this._setGuard(optionName, optionValue);
     }
 
     public processChangedValues(newProps: Record<string, any>, prevProps: Record<string, any>): void {
