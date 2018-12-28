@@ -152,9 +152,7 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
 
   private _clearTemplates() {
     this._templateCallbacks.length = 0;
-    if (this._isTemplatePostponed) {
-      this._isTemplatePostponed = false;
-    }
+    this._isTemplatePostponed = false;
   }
 
   private _getElementProps(): Record<string, any> {
