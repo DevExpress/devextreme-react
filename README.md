@@ -15,6 +15,10 @@ This project allows you to use [DevExtreme](http://js.devexpress.com) [React](ht
   * [Uncontrolled Mode](#uncontrolled-mode)
   * [Getting Widget Instance](#getting-widget-instance)
 * [Markup Customization](#markup-customization)
+  * [Rendering Function](#markup-customization-render)
+  * [Component](#markup-customization-component)
+  * [Template Component](#markup-customization-template-component)
+  * [Components with Transcluded Content](#markup-customization-transcluded)
 * [Configuration Components](#configuration-components)
   * [Basic usage](#configuration-components-basic)
   * [Collection Options](#configuration-components-collection)
@@ -84,7 +88,8 @@ In the controlled mode, a parent component passes a component's state using its 
 - Share state between components in your app
 - Persist and restore state
 
-To manage a component's state, provide the value for a related property and handle the event that is fired when the value changes:
+To manage the component's state, provide a value for a related property and handle the event that is fired when the value changes.
+**Note that the event is fired only when the component changes its state internally (when a user interacts with the component). If you directly update the property value, the event is not fired.**
 
 ```jsx
 import React from 'react';
@@ -229,65 +234,13 @@ You can customize widget elements' appearance via the corresponding template pro
 To specify a DevExtreme React Component template, use the `Render` or `Component` suffix instead.
 If a widget has an option called `template` (e.g. Button's [template](https://js.devexpress.com/Documentation/ApiReference/UI_Widgets/dxButton/Configuration/#template) option) the corresponding React Component properties are called `render` and `component`.
 
-Use a property with the `Render` suffix to specify a rendering function:
-```jsx
-import React from 'react';
-import ReactDOM from 'react-dom';
 
-import List from 'devextreme-react/list';
+### <a name="markup-customization-render"></a>Rendering Function
 
-import 'devextreme/dist/css/dx.common.css';
-import 'devextreme/dist/css/dx.light.compact.css';
+Use the `render` property or a property with the `Render` suffix to specify a function that renders a component's or component element's content.
 
-const items = [
-    { text: '123' },
-    { text: '234' },
-    { text: '567' }
-];
+If a widget has the `template` option, use the `render` property to specify the rendering function:
 
-ReactDOM.render(
-    <List items={items} itemRender={(item) => <i>Function template for item <b>{item.text}</b></i>}/>,
-    document.getElementById('root')
-);
-```
-Functional Components can cause unnecessary render calls. In such cases, consider using the [PureComponent](https://reactjs.org/docs/react-api.html#reactpurecomponent) or the [shouldComponentUpdate method](https://reactjs.org/docs/react-component.html#shouldcomponentupdate).
-
-A template component can be specified using a property with the `Component` suffix:
-```jsx
-import React from 'react';
-import ReactDOM from 'react-dom';
-
-import List from 'devextreme-react/list';
-
-import 'devextreme/dist/css/dx.common.css';
-import 'devextreme/dist/css/dx.light.compact.css';
-
-const items = [
-    { text: '123' },
-    { text: '234' },
-    { text: '567' }
-];
-
-class Item extends React.PureComponent {
-
-    render() {
-        return (
-            <i onClick={this.handleClick}>
-                Component template for item {this.props.text}.
-            </i>
-        );
-    }
-}
-
-ReactDOM.render(
-    <List items={items} itemComponent={Item} />,
-    document.getElementById('root')
-);
-```
-
-**Note: You cannot use the `key` prop in template components because it is a special [React prop](https://reactjs.org/warnings/special-props.html ). Use `dxkey` instead.**
-
-Use the `render` property to specify a rendering function for a widget with `template` option:
 ```jsx
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -330,6 +283,128 @@ ReactDOM.render(
 );
 ```
 
+For an option with the `template` suffix, use the corresponding property with the `Render` suffix to specify a rendering function:
+
+```jsx
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+import List from 'devextreme-react/list';
+
+import 'devextreme/dist/css/dx.common.css';
+import 'devextreme/dist/css/dx.light.compact.css';
+
+const items = [
+    { text: '123' },
+    { text: '234' },
+    { text: '567' }
+];
+
+ReactDOM.render(
+    <List items={items} itemRender={(item) => <i>Function template for item <b>{item.text}</b></i>}/>,
+    document.getElementById('root')
+);
+```
+
+### <a name="markup-customization-component"></a>Component
+
+You can also customize a widget's or widget element's content using a component instead of a rendering function. Pass the component or an inline function that creates the component to the `component` property or a property with the `Component` suffix. If you pass an inline function, a new component will be created each time the widget is rendered.
+
+Functional Components can cause unnecessary render calls. In such cases, consider using the [PureComponent](https://reactjs.org/docs/react-api.html#reactpurecomponent) or the [shouldComponentUpdate method](https://reactjs.org/docs/react-component.html#shouldcomponentupdate).
+
+The following example demonstrates how to use the `itemComponent` property to customize the widget item's appearance:
+
+```jsx
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+import List from 'devextreme-react/list';
+
+import 'devextreme/dist/css/dx.common.css';
+import 'devextreme/dist/css/dx.light.compact.css';
+
+const items = [
+    { text: '123' },
+    { text: '234' },
+    { text: '567' }
+];
+
+class Item extends React.PureComponent {
+
+    render() {
+        return (
+            <i onClick={this.handleClick}>
+                Component template for item {this.props.text}.
+            </i>
+        );
+    }
+}
+
+ReactDOM.render(
+    <List items={items} itemComponent={Item} />,
+    document.getElementById('root')
+);
+```
+
+**Note: You cannot use the `key` prop in template components because it is a special [React prop](https://reactjs.org/warnings/special-props.html ). Use `dxkey` instead.**
+
+### <a name="markup-customization-template-component"></a>Template Component
+To customize a widget element with a template component, specify the template name in the template component's `name` property and assign this name to the widget's template option. The template markup can be specified as a component (the `component` property) or a rendering function (the `render` property). Alternatively, you can put the markup directly into the template component as shown in the example below.
+
+```jsx
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+import DataGrid, { Column } from "devextreme-react/data-grid"; 
+import { Template } from "devextreme-react/core/template";
+
+import { data } from './data.js';
+
+class Example extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            expandAll: true
+        };
+
+        this._handleToolbarPreparing = this._handleToolbarPreparing.bind(this);
+    }
+
+    render() {
+        return (
+            <React.Fragment>
+                <DataGrid 
+                    dataSource={ data }
+                    onToolbarPreparing={this._handleToolbarPreparing}
+                >
+                    <GroupPanel visible={true} />
+                    <Grouping autoExpandAll={this.state.expandAll} />
+                    <Column dataField="firstName"/>
+                    <Column dataField="lastName" caption="Last Name" defaultVisible={true}/>
+
+                    <Template name={"toolbarLabel"}>
+                        {this.state.expandAll ? <b>All data is expanded</b> : <b>All data is collapsed</b>}
+                    </Template>
+                </DataGrid>
+            </React.Fragment>
+        );
+    }
+    
+    _handleToolbarPreparing(args) {
+        args.toolbarOptions.items.unshift({
+            location: "after",
+            template: "toolbarLabel"
+        });
+    }
+}
+
+ReactDOM.render(
+    <Example />,
+    document.getElementById('root')
+);
+```
+
+### <a name="markup-customization-transcluded"></a>Components with Transcluded Content
 The components that displays content in an overlaying window (for example, [ScrollView](https://js.devexpress.com/Documentation/ApiReference/UI_Widgets/dxScrollView/)), allow to specify the content as component children:
 
 ```jsx
@@ -469,6 +544,31 @@ ReactDOM.render(
 Note that configuration components are not provided for options that accept a type that depends on another option's value. For example,
 the DataGrid's [editorOptions](https://js.devexpress.com/Documentation/ApiReference/UI_Widgets/dxDataGrid/Configuration/columns/#editorOptions), Form's [editorOptions](https://js.devexpress.com/Documentation/ApiReference/UI_Widgets/dxForm/Item_Types/SimpleItem/#editorOptions), Toolbar's [widget](https://js.devexpress.com/Documentation/ApiReference/UI_Widgets/dxToolbar/Default_Item_Template/#options) options.
 
+
+### <a name="configuration-components-template"></a>Put Markup Into Configuration Components ###
+
+If a widget's configuration component supports the `template` option, you can put markup into this component. The following example demonstrates how to specify a list item's markup.
+
+```jsx
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+import List, { Item } from 'devextreme-react/list';
+
+import 'devextreme/dist/css/dx.common.css';
+import 'devextreme/dist/css/dx.light.compact.css';
+
+ReactDOM.render(
+    (
+    <List>
+      <Item>orange</Item>
+      <Item>white</Item>
+      <Item>black</Item>
+    </List>
+    ),
+    document.getElementById('root')
+);
+```
 
 ## <a name="devextreme-validation"></a>DevExtreme Validation ##
 DevExtreme React editors support built-in [data validation](https://js.devexpress.com/Documentation/Guide/Widgets/Common/UI_Widgets/Data_Validation/).
