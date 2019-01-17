@@ -8,7 +8,7 @@ interface INestedOptionMeta {
     optionName: string;
     registerNestedOption: RegisterNestedOptionFunc;
     updateFunc: UpdateFunc;
-    makeDirty: MakeDirtyFunc;
+    makeDirty?: MakeDirtyFunc;
 }
 
 class NestedOption<P> extends React.PureComponent<P, any> {

@@ -54,6 +54,7 @@ class OptionsManager {
 
         this._setOption = this._setOption.bind(this);
         this._registerNestedOption = this._registerNestedOption.bind(this);
+        this.registerNestedOption = this.registerNestedOption.bind(this);
         this.handleOptionChange = this.handleOptionChange.bind(this);
         this.processChangedValues = this.processChangedValues.bind(this);
     }
