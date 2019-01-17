@@ -2,11 +2,13 @@ import * as React from "react";
 
 type RegisterNestedOptionFunc = (component: React.ReactElement<any>) => any;
 type UpdateFunc = (newProps, prevProps) => void;
+type MakeDirtyFunc = () => void;
 
 interface INestedOptionMeta {
     optionName: string;
     registerNestedOption: RegisterNestedOptionFunc;
     updateFunc: UpdateFunc;
+    makeDirty?: MakeDirtyFunc;
 }
 
 class NestedOption<P> extends React.PureComponent<P, any> {
@@ -22,6 +24,8 @@ class NestedOption<P> extends React.PureComponent<P, any> {
         this._optionFullName = meta.optionName;
         this._registerNestedOption = meta.registerNestedOption;
         this._updateFunc = meta.updateFunc;
+
+        if (meta.makeDirty) { meta.makeDirty(); }
 
         this._isAttached = !!this._registerNestedOption && !!this._updateFunc && !!this._optionFullName;
 
@@ -48,12 +52,18 @@ class NestedOption<P> extends React.PureComponent<P, any> {
             this._updateFunc(clearProps(this.props), prevProps);
         }
     }
+
+    public componentWillUnmount() {
+        const meta = this.props as any as INestedOptionMeta;
+        if (meta.makeDirty) { meta.makeDirty(); }
+    }
 }
 
-function clearProps(props) {
-    const result = { ...props };
+function clearProps(props: any) {
+    const result: INestedOptionMeta = { ...props };
     delete result.registerNestedOption;
     delete result.updateFunc;
+    delete result.makeDirty;
     return result;
 }
 

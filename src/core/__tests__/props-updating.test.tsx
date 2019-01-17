@@ -86,35 +86,36 @@ describe("option update", () => {
     });
 
     it("updates nested collection item", () => {
-        const node = shallow(
+        const TestContainer = (props: any) => (
             <TestComponentWithExpectation>
-                <CollectionNestedComponent a={123}/>
+                <CollectionNestedComponent a={props.value} />
             </TestComponentWithExpectation>
         );
 
-        const nested = node
-            .find(CollectionNestedComponent).dive();
+        mount(<TestContainer value={123} />)
+            .setProps({
+                value: 234
+            });
 
-        nested.setProps({ a: 234 });
         jest.runAllTimers();
         expect(Widget.option.mock.calls.length).toBe(1);
         expect(Widget.option.mock.calls[0]).toEqual(["items[0].a", 234]);
     });
 
     it("updates sub-nested collection item", () => {
-        const node = shallow(
+        const TestContainer = (props: any) => (
             <TestComponentWithExpectation>
                 <CollectionNestedComponent>
-                    <CollectionSubNestedComponent a={123}/>
+                    <CollectionSubNestedComponent a={props.value} />
                 </CollectionNestedComponent>
             </TestComponentWithExpectation>
         );
 
-        const nested = node
-            .find(CollectionNestedComponent).dive()
-            .find(CollectionSubNestedComponent).dive();
+        mount(<TestContainer value={123} />)
+            .setProps({
+                value: 234
+            });
 
-        nested.setProps({ a: 234 });
         jest.runAllTimers();
         expect(Widget.option.mock.calls.length).toBe(1);
         expect(Widget.option.mock.calls[0]).toEqual(["items[0].subItems[0].a", 234]);
@@ -335,15 +336,17 @@ describe("cfg-component option control", () => {
     });
 
     it("rolls cfg-component option value back if value has no changes", () => {
-        const component = shallow(
+        const TestContainer = (props: any) => (
             <ControlledComponent>
-                <NestedComponent a={123} b="const" />
+                <NestedComponent a={props.value} b="const" />
             </ControlledComponent>
         );
-        const nested = component.find(NestedComponent).dive();
+
+        const container = mount(<TestContainer value={123} />);
 
         fireOptionChange("nestedOption.b", "changed");
-        nested.setProps({ a: 234 });
+        container.setProps({ value: 234 });
+
         jest.runAllTimers();
         expect(Widget.option.mock.calls.length).toBe(2);
         expect(Widget.option.mock.calls[0]).toEqual(["nestedOption.a", 234]);
@@ -351,15 +354,20 @@ describe("cfg-component option control", () => {
     });
 
     it("apply cfg-component option change if value really change", () => {
-        const component = shallow(
+        const TestContainer = (props: any) => (
             <ControlledComponent>
-                <NestedComponent a={123} b="const" />
+                <NestedComponent a={props.value} b="const" />
             </ControlledComponent>
-        );
-        const nested = component.find(NestedComponent).dive();
 
+        );
+
+        const container = mount(<TestContainer value={123} />);
         fireOptionChange("nestedOption.a", 234);
-        nested.setProps({ a: 234 });
+
+        container.setProps({
+            value: 234
+        });
+
         jest.runAllTimers();
         expect(Widget.option.mock.calls.length).toBe(1);
         expect(Widget.option.mock.calls[0]).toEqual(["nestedOption.a", 234]);
@@ -415,17 +423,18 @@ describe("cfg-component option defaults control", () => {
     });
 
     it("ignores 3rd-party changes in nested default props", () => {
-        const component = shallow(
+
+        const TestContainer = (props: any) => (
             <ControlledComponent>
-                <NestedComponent defaultC="default" />
+                <NestedComponent defaultC={props.optionDefValue} />
             </ControlledComponent>
-
         );
-        const nested = component.find(NestedComponent).dive();
 
-        nested.setProps({
-            defaultC: "changed"
-        });
+        mount(<TestContainer optionDefValue={"default"} />)
+            .setProps({
+                optionDefValue: "changed"
+            });
+
         jest.runAllTimers();
         expect(Widget.option.mock.calls.length).toBe(0);
     });
