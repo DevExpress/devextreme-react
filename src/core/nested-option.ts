@@ -55,7 +55,7 @@ class NestedOption<P> extends React.PureComponent<P, any> {
 
     public componentWillUnmount() {
         const meta = this.props as any as INestedOptionMeta;
-        meta.makeDirty();
+        if (meta.makeDirty) { meta.makeDirty(); }
     }
 }
 
