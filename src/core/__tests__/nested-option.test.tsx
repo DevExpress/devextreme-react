@@ -222,14 +222,15 @@ describe("nested option", () => {
 
     it("is pulled after update", () => {
 
-        const component = shallow(
+        const TestContainer = (props: any) => (
             <TestComponent>
-                <NestedComponent a={123} />
+                <NestedComponent a={props.value} />
             </TestComponent>
         );
-        const nested = component.find(NestedComponent).dive();
 
-        nested.setProps({ a: 456 });
+        mount(<TestContainer value={123} />)
+            .setProps({ value: 456 });
+
         jest.runAllTimers();
         expect(Widget.option.mock.calls.length).toBe(1);
         expect(Widget.option.mock.calls[0]).toEqual(["option.a", 456]);
@@ -247,6 +248,64 @@ describe("nested option", () => {
         jest.runAllTimers();
         expect(Widget.option.mock.calls.length).toBe(1);
         expect(Widget.option.mock.calls[0]).toEqual(["option.a", 456]);
+    });
+
+    it("updates widget option when collection item added", () => {
+        const TestContainer = (props: any) => {
+            const nesteds = props.children.map((child: any) => (
+                <CollectionNestedComponent c={child.c} d={child.d} key={child.key} />
+            ));
+
+            return (<TestComponent>{nesteds}</TestComponent>);
+        };
+
+        const children = [
+            { c: 123, d: "abc", key: 1 },
+            { c: 456, d: "def", key: 2 },
+        ];
+        mount(<TestContainer children={children} />)
+            .setProps({
+                children: [
+                    { c: 123, d: "abc", key: 1 },
+                    { c: 456, d: "def", key: 2 },
+                    { c: 789, d: "ghi", key: 3 }
+                ]
+            });
+
+        jest.runAllTimers();
+        expect(Widget.option.mock.calls.length).toBe(1);
+        expect(Widget.option.mock.calls[0]).toEqual(["itemOptions", [
+            { c: 123, d: "abc" },
+            { c: 456, d: "def" },
+            { c: 789, d: "ghi" }
+        ]]);
+    });
+
+    it("updates widget option when collection item removed", () => {
+        const TestContainer = (props: any) => {
+            const nesteds = props.children.map((child: any) => (
+                <CollectionNestedComponent c={child.c} d={child.d} key={child.key} />
+            ));
+
+            return (<TestComponent>{nesteds}</TestComponent>);
+        };
+
+        const children = [
+            { c: 123, d: "abc", key: 1 },
+            { c: 456, d: "def", key: 2 },
+        ];
+        mount(<TestContainer children={children} />)
+            .setProps({
+                children: [
+                    { c: 123, d: "abc", key: 1 }
+                ]
+            });
+
+        jest.runAllTimers();
+        expect(Widget.option.mock.calls.length).toBe(1);
+        expect(Widget.option.mock.calls[0]).toEqual(["itemOptions", [
+            { c: 123, d: "abc" }
+        ]]);
     });
 
 });
@@ -389,17 +448,19 @@ describe("nested sub-option", () => {
 
     it("is pulled after update", () => {
 
-        const component = shallow(
+        const TestContainer = (props: any) => (
             <TestComponent>
                 <NestedComponent a={123} >
-                    <SubNestedComponent d={"abc"} />
+                    <SubNestedComponent d={props.value} />
                 </NestedComponent>
             </TestComponent>
         );
-        const nested = component.find(NestedComponent).dive();
-        const subNested = nested.find(SubNestedComponent).dive();
 
-        subNested.setProps({ d: "def" });
+        mount(<TestContainer value={"abc"} />)
+            .setProps({
+                value: "def"
+            });
+
         jest.runAllTimers();
         expect(Widget.option.mock.calls.length).toBe(1);
         expect(Widget.option.mock.calls[0]).toEqual(["option.subOption.d", "def"]);
