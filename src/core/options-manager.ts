@@ -1,6 +1,6 @@
 import { ITemplateMeta } from "./template";
 
-import { addPrefixToKeys, getNestedValue } from "./helpers";
+import { addPrefixToKeys, getNestedValue, isEmptyObject } from "./helpers";
 import { createOptionComponent, INestedOptionMeta } from "./nested-option";
 import TemplateHost from "./template-host";
 import { separateProps } from "./widget-config";
@@ -214,9 +214,13 @@ class OptionsManager {
                 configComponent.defaults,
                 configComponent.templates);
 
+            const nestedObjects = this._getNestedOptionsObjects(e.children, templateRegistrationRequired);
+
             if (templateRegistrationRequired) {
                 this._templateHost.add({
-                    useChildren: (optionName) => optionName === "template" && !!e.element.props.children,
+                    useChildren: (optionName) => {
+                        return optionName === "template" && !!e.element.props.children && isEmptyObject(nestedObjects);
+                    },
                     props: props.templates,
                     templateProps: configComponent.templates,
                     ownerName: this.buildFullOptionName(
@@ -231,7 +235,7 @@ class OptionsManager {
                 ...e.predefinedProps,
                 ...props.defaults,
                 ...props.options,
-                ...this._getNestedOptionsObjects(e.children, templateRegistrationRequired)
+                ...nestedObjects
             };
         });
 
