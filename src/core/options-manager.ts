@@ -11,6 +11,7 @@ interface INestedOption {
 }
 
 interface INestedConfigDescr extends INestedOption {
+    ownerFullName?: string;
     defaults: Record<string, any>;
     templates: ITemplateMeta[];
     elementEntries: Array<{
@@ -225,7 +226,8 @@ class OptionsManager {
                     templateProps: configComponent.templates,
                     ownerName: this.buildFullOptionName(
                         configComponent.optionName,
-                        configComponent.isCollectionItem ? index : undefined
+                        configComponent.isCollectionItem ? index : undefined,
+                        configComponent.ownerFullName
                     ),
                     propsGetter: (prop) => configComponent.elementEntries[index].element.props[prop]
                 });
@@ -270,7 +272,8 @@ class OptionsManager {
             owningCollection,
             nestedOptionClass.type.DefaultsProps,
             nestedOptionClass.type.TemplateProps,
-            isCollectionItem
+            isCollectionItem,
+            ownerFullName
         );
 
         const optionFullName = this.buildFullOptionName(
@@ -350,7 +353,8 @@ function ensureNestedOption(
     optionsCollection: Record<string, INestedConfigDescr>,
     defaults: Record<string, any>,
     templates: ITemplateMeta[],
-    isCollectionItem: boolean
+    isCollectionItem: boolean,
+    ownerFullName?: string
 ): INestedConfigDescr {
 
     if (optionsCollection[optionName] === null ||
@@ -358,6 +362,7 @@ function ensureNestedOption(
     ) {
         optionsCollection[optionName] = {
             optionName,
+            ownerFullName,
             defaults,
             templates,
             elementEntries: [],
