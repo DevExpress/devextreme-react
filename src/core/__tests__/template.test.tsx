@@ -469,6 +469,12 @@ describe("component/render in nested options", () => {
             <TestComponent>
                 <CollectionNestedComponent render={UserTemplate} />
                 <CollectionNestedComponent render={UserTemplate} />
+                <CollectionNestedComponent>
+                    <NestedComponent itemRender={UserTemplate}/>
+                </CollectionNestedComponent>
+                <NestedComponent>
+                    <CollectionNestedComponent render={UserTemplate} />
+                </NestedComponent>
             </TestComponent>
         );
 
@@ -476,10 +482,17 @@ describe("component/render in nested options", () => {
 
         expect(options["collection[0].template"]).toBe("collection[0].template");
         expect(options["collection[1].template"]).toBe("collection[1].template");
+        expect(options["collection[2].option.item"]).toBe("collection[2].option.item");
+        expect(options["option.collection[0].template"]).toBe("option.collection[0].template");
 
         const integrationOptions = options.integrationOptions;
 
-        expect(Object.keys(integrationOptions.templates)).toEqual(["collection[0].template", "collection[1].template"]);
+        expect(Object.keys(integrationOptions.templates)).toEqual([
+            "collection[0].template",
+            "collection[1].template",
+            "collection[2].option.item",
+            "option.collection[0].template"
+        ]);
     });
 
     it("pass integrationOptions for collection nested component with 'template' option if a child defined", () => {
