@@ -11,6 +11,7 @@ interface INestedOption {
 }
 
 interface INestedConfigDescr extends INestedOption {
+    optionFullName: string;
     defaults: Record<string, any>;
     templates: ITemplateMeta[];
     elementEntries: Array<{
@@ -219,9 +220,9 @@ class OptionsManager {
                     useChildren: (optionName) => optionName === "template" && !!e.element.props.children,
                     props: props.templates,
                     templateProps: configComponent.templates,
-                    ownerName: this.buildFullOptionName(
-                        configComponent.optionName,
-                        configComponent.isCollectionItem ? index : undefined
+                    ownerName: this.buildOptionItemName(
+                        configComponent,
+                        configComponent.isCollectionItem ? index : undefined,
                     ),
                     propsGetter: (prop) => configComponent.elementEntries[index].element.props[prop]
                 });
@@ -261,18 +262,23 @@ class OptionsManager {
         const optionName = resolvedNested.optionName;
         const isCollectionItem = resolvedNested.isCollectionItem;
 
+        let optionFullName = optionName;
+        if (ownerFullName) {
+            optionFullName = `${ownerFullName}.${optionFullName}`;
+        }
+
         const option = ensureNestedOption(
             optionName,
+            optionFullName,
             owningCollection,
             nestedOptionClass.type.DefaultsProps,
             nestedOptionClass.type.TemplateProps,
             isCollectionItem
         );
 
-        const optionFullName = this.buildFullOptionName(
-            optionName,
-            isCollectionItem ? option.elementEntries.length : undefined,
-            ownerFullName
+        const optionItemName = this.buildOptionItemName(
+            option,
+            isCollectionItem ? option.elementEntries.length : undefined
         );
 
         const nestedOptionMeta: INestedOptionMeta = {
@@ -282,7 +288,7 @@ class OptionsManager {
                     c,
                     nestedOptionClass.type.ExpectedChildren,
                     nestedOptionsCollection,
-                    optionFullName
+                    optionItemName
                 );
             },
             updateFunc: (newProps, prevProps) => {
@@ -290,8 +296,8 @@ class OptionsManager {
                     nestedOptionClass.type.DefaultsProps,
                     nestedOptionClass.type.TemplateProps).options;
                 this.processChangedValues(
-                    addPrefixToKeys(newOptions, optionFullName + "."),
-                    addPrefixToKeys(prevProps, optionFullName + ".")
+                    addPrefixToKeys(newOptions, optionItemName + "."),
+                    addPrefixToKeys(prevProps, optionItemName + ".")
                 );
             },
             makeDirty: () => {
@@ -312,18 +318,14 @@ class OptionsManager {
         return optionComponent;
     }
 
-    private buildFullOptionName(optionName: string, index?: number, ownerName?: string, ): string {
-        let optionFullName = optionName;
+    private buildOptionItemName(descr: INestedConfigDescr, index?: number): string {
+        let optionItemName = descr.optionFullName;
 
         if (index !== undefined) {
-            optionFullName += `[${index}]`;
+            optionItemName += `[${index}]`;
         }
 
-        if (ownerName) {
-            optionFullName = `${ownerName}.${optionFullName}`;
-        }
-
-        return optionFullName;
+        return optionItemName;
     }
 
     private _setGuard(optionName: string, optionValue: any): void {
@@ -343,6 +345,7 @@ class OptionsManager {
 
 function ensureNestedOption(
     optionName: string,
+    optionFullName: string,
     optionsCollection: Record<string, INestedConfigDescr>,
     defaults: Record<string, any>,
     templates: ITemplateMeta[],
@@ -354,6 +357,7 @@ function ensureNestedOption(
     ) {
         optionsCollection[optionName] = {
             optionName,
+            optionFullName,
             defaults,
             templates,
             elementEntries: [],
