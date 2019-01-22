@@ -19,3 +19,7 @@ export function addPrefixToKeys(obj: Record<string, any>, prefix: string): Recor
 export function generateID(): string {
     return Math.random().toString(36).substr(2);
 }
+
+export function isEmptyObject(obj: Record<any, any>): boolean {
+    return Object.keys(obj).length === 0;
+}
