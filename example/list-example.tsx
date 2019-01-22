@@ -3,7 +3,7 @@ import * as React from "react";
 import DataSource from "devextreme/data/data_source";
 
 import Button from "../src/button";
-import List from "../src/list";
+import List, { Item as ListItem } from "../src/list";
 import TextBox from "../src/text-box";
 
 import Example from "./example-block";
@@ -80,6 +80,13 @@ export default class extends React.Component<any, { text: string; items: IListIt
     public render() {
         return (
             <Example title="DxList" state={this.state} >
+                <hr />
+                <h4>List with inline items</h4>
+                <List>
+                    <ListItem>abc</ListItem>
+                    <ListItem>def</ListItem>
+                    <ListItem>ghi</ListItem>
+                </List>
                 <hr />
                 <h4>List with function template</h4>
                 <List
