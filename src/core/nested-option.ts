@@ -1,34 +1,33 @@
 import * as React from "react";
 
-type RegisterNestedOptionFunc = (component: React.ReactElement<any>) => any;
-type UpdateFunc = (newProps, prevProps) => void;
-type MakeDirtyFunc = () => void;
-
 interface INestedOptionMeta {
     optionName: string;
-    registerNestedOption: RegisterNestedOptionFunc;
-    updateFunc: UpdateFunc;
-    makeDirty?: MakeDirtyFunc;
+    registerNestedOption(component: React.ReactElement<any>): any;
+    updateFunc(newProps: any, prevProps: any): void;
+    makeDirty(): void;
 }
 
-class NestedOption<P> extends React.PureComponent<P, any> {
+class NestedOption<P> extends React.PureComponent<P & INestedOptionMeta, any> {
+
     private readonly _isAttached: boolean;
+    private readonly _meta: INestedOptionMeta;
 
-    private readonly _optionFullName: string;
-    private readonly _registerNestedOption: RegisterNestedOptionFunc;
-    private readonly _updateFunc: UpdateFunc;
-
-    constructor(props: P) {
+    constructor(props: P & INestedOptionMeta) {
         super(props);
-        const meta = this.props as any as INestedOptionMeta;
-        this._optionFullName = meta.optionName;
-        this._registerNestedOption = meta.registerNestedOption;
-        this._updateFunc = meta.updateFunc;
 
-        if (meta.makeDirty) { meta.makeDirty(); }
+        this._meta = {
+            optionName: props.optionName,
+            registerNestedOption: props.registerNestedOption,
+            updateFunc: props.updateFunc,
+            makeDirty: props.makeDirty
+        };
 
-        this._isAttached = !!this._registerNestedOption && !!this._updateFunc && !!this._optionFullName;
+        if (this._meta.makeDirty) { this._meta.makeDirty(); }
 
+        this._isAttached =
+            !!this._meta.registerNestedOption &&
+            !!this._meta.updateFunc &&
+            !!this._meta.optionName;
     }
 
     public render() {
@@ -36,7 +35,7 @@ class NestedOption<P> extends React.PureComponent<P, any> {
 
         const children: any[] = [];
         React.Children.forEach(this.props.children, (c: React.ReactElement<any>) => {
-            const processedChild = this._registerNestedOption(c);
+            const processedChild = this._meta.registerNestedOption(c);
             if (processedChild) {
                 children.push(processedChild);
             }
@@ -49,21 +48,24 @@ class NestedOption<P> extends React.PureComponent<P, any> {
 
     public componentDidUpdate(prevProps: P) {
         if (this._isAttached) {
-            this._updateFunc(clearProps(this.props), prevProps);
+            this._meta.updateFunc(clearProps(this.props), prevProps);
         }
     }
 
     public componentWillUnmount() {
-        const meta = this.props as any as INestedOptionMeta;
-        if (meta.makeDirty) { meta.makeDirty(); }
+        if (this._meta.makeDirty) { this._meta.makeDirty(); }
     }
 }
 
 function clearProps(props: any) {
-    const result: INestedOptionMeta = { ...props };
-    delete result.registerNestedOption;
-    delete result.updateFunc;
-    delete result.makeDirty;
+    const {
+        optionName,
+        registerNestedOption,
+        updateFunc,
+        makeDirty,
+        ...result
+    } = props;
+
     return result;
 }
 
@@ -74,7 +76,5 @@ function createOptionComponent<P>(rawElement: React.ReactElement<P>, metaData: I
 export default NestedOption;
 export {
     createOptionComponent,
-    INestedOptionMeta,
-    RegisterNestedOptionFunc,
-    UpdateFunc
+    INestedOptionMeta
 };
