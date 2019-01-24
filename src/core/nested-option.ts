@@ -18,16 +18,9 @@ class NestedOption<P> extends React.PureComponent<P, any> {
     constructor(props: P & INestedOptionProps) {
         super(props);
 
-        if (!!props.meta &&
-            !!props.meta.registerNestedOption &&
-            !!props.meta.updateFunc &&
-            !!props.meta.optionName
-        ) {
-            this._meta = { ...props.meta };
-        }
+        this._meta = props.meta;
 
-        if (this._meta && this._meta.makeDirty) { this._meta.makeDirty(); }
-
+        this._markOptionAsDirty();
     }
 
     public render() {
@@ -49,13 +42,20 @@ class NestedOption<P> extends React.PureComponent<P, any> {
     }
 
     public componentDidUpdate(prevProps: P) {
-        if (this._meta) { this._meta.updateFunc(getCleanProps(this.props), prevProps); }
+        if (this._meta) {
+            this._meta.updateFunc(getCleanProps(this.props), prevProps);
+        }
     }
 
     public componentWillUnmount() {
-        if (this._meta && this._meta.makeDirty) { this._meta.makeDirty(); }
+        this._markOptionAsDirty();
     }
 
+    private _markOptionAsDirty() {
+        if (this._meta) {
+            this._meta.makeDirty();
+        }
+    }
 }
 
 function getCleanProps(props: any) {
