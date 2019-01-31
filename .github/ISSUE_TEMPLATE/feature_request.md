@@ -26,3 +26,6 @@ Please look through our Roadmap for future releases (https://js.devexpress.com/R
 
 **Alternatives:**
 <!-- If you have considered any alternative solutions or workarounds, describe them. -->
+
+**Additional Context:**
+<!-- Provide additional information here (i.e. screenshots). -->
