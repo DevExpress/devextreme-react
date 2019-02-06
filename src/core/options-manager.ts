@@ -1,6 +1,7 @@
 import { ITemplateMeta } from "./template";
 
-import { addPrefixToKeys, getNestedValue, isEmptyObject } from "./helpers";
+import { Children as ReactChildren } from "react";
+import { addPrefixToKeys, getNestedValue } from "./helpers";
 import { createOptionComponent, INestedOptionMeta } from "./nested-option";
 import TemplateHost from "./template-host";
 import { separateProps } from "./widget-config";
@@ -217,10 +218,13 @@ class OptionsManager {
 
             const nestedObjects = this._getNestedOptionsObjects(e.children, templateRegistrationRequired);
 
+            const hasChildrenForTemplate =
+                ReactChildren.count(e.element.props.children) > Object.keys(nestedObjects).length;
+
             if (templateRegistrationRequired) {
                 this._templateHost.add({
                     useChildren: (optionName) => {
-                        return optionName === "template" && !!e.element.props.children && isEmptyObject(nestedObjects);
+                        return optionName === "template" && hasChildrenForTemplate;
                     },
                     props: props.templates,
                     templateProps: configComponent.templates,
