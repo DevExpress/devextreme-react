@@ -1,6 +1,6 @@
 import { ITemplateMeta } from "./template";
 
-import * as React from "react";
+import { Children as ReactChildren } from "react";
 import { addPrefixToKeys, getNestedValue } from "./helpers";
 import { createOptionComponent, INestedOptionMeta } from "./nested-option";
 import TemplateHost from "./template-host";
@@ -219,7 +219,7 @@ class OptionsManager {
             const nestedObjects = this._getNestedOptionsObjects(e.children, templateRegistrationRequired);
 
             const hasChildrenForTemplate =
-                React.Children.count(e.element.props.children) > Object.keys(nestedObjects).length;
+                ReactChildren.count(e.element.props.children) > Object.keys(nestedObjects).length;
 
             if (templateRegistrationRequired) {
                 this._templateHost.add({
