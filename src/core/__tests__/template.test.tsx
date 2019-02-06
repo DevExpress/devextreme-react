@@ -472,6 +472,10 @@ describe("component/render in nested options", () => {
                 <CollectionNestedComponent>
                     <NestedComponent itemRender={UserTemplate}/>
                 </CollectionNestedComponent>
+                <CollectionNestedComponent>
+                    <NestedComponent/>
+                    abc
+                </CollectionNestedComponent>
                 <NestedComponent>
                     <CollectionNestedComponent render={UserTemplate} />
                 </NestedComponent>
@@ -491,6 +495,7 @@ describe("component/render in nested options", () => {
             "collection[0].template",
             "collection[1].template",
             "collection[2].option.item",
+            "collection[3].template",
             "option.collection[0].template"
         ]);
     });
@@ -502,17 +507,31 @@ describe("component/render in nested options", () => {
                 <NestedComponent>
                     <UserTemplate/>
                 </NestedComponent>
+
                 <CollectionNestedComponent>
                     <UserTemplate/>
                 </CollectionNestedComponent>
+
                 <CollectionNestedComponent>
                     <UserTemplate/>
                 </CollectionNestedComponent>
-                <CollectionNestedComponent/>
+
                 <CollectionNestedComponent>
                     <NestedComponent/>
                     <UserTemplate/>
                 </CollectionNestedComponent>
+
+                <CollectionNestedComponent>
+                    <NestedComponent/>
+                    abc
+                </CollectionNestedComponent>
+
+                <CollectionNestedComponent>
+                    <NestedComponent/>
+                </CollectionNestedComponent>
+
+                <CollectionNestedComponent/>
+
             </TestComponent>
         );
 
@@ -520,14 +539,21 @@ describe("component/render in nested options", () => {
 
         expect(options["collection[0].template"]).toBe("collection[0].template");
         expect(options["collection[1].template"]).toBe("collection[1].template");
-        expect(options["collection[2].template"]).toBe(undefined);
-        expect(options["collection[3].template"]).toBe(undefined);
+        expect(options["collection[2].template"]).toBe("collection[2].template");
+        expect(options["collection[3].template"]).toBe("collection[3].template");
+        expect(options["collection[4].template"]).toBe(undefined);
+        expect(options["collection[5].template"]).toBe(undefined);
         expect(options["option.item"]).toBe(undefined);
         expect(options["option.template"]).toBe(undefined);
 
         const integrationOptions = options.integrationOptions;
 
-        expect(Object.keys(integrationOptions.templates)).toEqual(["collection[0].template", "collection[1].template"]);
+        expect(Object.keys(integrationOptions.templates)).toEqual([
+            "collection[0].template",
+            "collection[1].template",
+            "collection[2].template",
+            "collection[3].template"
+        ]);
     });
 
     it("renders templates", () => {
