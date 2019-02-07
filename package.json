@@ -51,9 +51,9 @@
     "tslint-react": "^3.5.1",
     "typescript": "^2.7.1",
     "url-loader": "^0.6.2",
-    "webpack": "^4.28.4",
-    "webpack-cli": "^3.2.1",
-    "webpack-dev-server": "^3.1.11"
+    "webpack": "^4.29.2",
+    "webpack-cli": "^3.2.3",
+    "webpack-dev-server": "^3.1.14"
   },
   "scripts": {
     "start": "npm run build && npm run serve",
