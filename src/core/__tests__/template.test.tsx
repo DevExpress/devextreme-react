@@ -169,7 +169,7 @@ function testTemplateOption(testedOption: string) {
         const component = mount(React.createElement(ComponentWithTemplates, elementOptions));
 
         renderItemTemplate({ text: 1 });
-        expect(component.update.bind(component)).not.toThrow();
+        expect(() => component.update.bind(component)).not.toThrow();
     });
 
     it("has templates in state with unique ids", () => {

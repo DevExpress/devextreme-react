@@ -45,7 +45,7 @@ it("unmounts without errors", () => {
         <TestExtensionComponent />
     );
 
-    expect(component.unmount.bind(component)).not.toThrow();
+    expect(() => component.unmount.bind(component)).not.toThrow();
 });
 
 it("pulls options from a single nested component", () => {
