@@ -212,9 +212,11 @@ class OptionsManager {
         templateRegistrationRequired: boolean
     ): Record<string, any> | any {
         const options = configComponent.elementEntries.map((e, index) => {
-            const props = separateProps(e.element.props,
+            const props = separateProps(
+                e.element.props,
                 configComponent.defaults,
-                configComponent.templates);
+                configComponent.templates
+            );
 
             const nestedObjects = this._getNestedOptionsObjects(e.children, templateRegistrationRequired);
 
@@ -300,9 +302,12 @@ class OptionsManager {
                 );
             },
             updateFunc: (newProps, prevProps) => {
-                const newOptions = separateProps(newProps,
+                const newOptions = separateProps(
+                    newProps,
                     nestedOptionClass.type.DefaultsProps,
-                    nestedOptionClass.type.TemplateProps).options;
+                    nestedOptionClass.type.TemplateProps
+                ).options;
+
                 this.processChangedValues(
                     addPrefixToKeys(newOptions, optionItemName + "."),
                     addPrefixToKeys(prevProps, optionItemName + ".")
