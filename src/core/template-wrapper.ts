@@ -46,6 +46,7 @@ class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps> {
 
         const removalListener = this._removalListenerRef.current;
         if (!removalListener) {
+            // T713245 (ref to removalListener is undefined under certain conditions)
             return;
         }
         events.one(removalListener, DX_REMOVE_EVENT, () => {
