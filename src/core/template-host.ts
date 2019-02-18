@@ -141,16 +141,13 @@ function wrapTemplate(
                     model.dxkey = model.key;
                 }
                 const contentProvider = createContentProvider();
-                return React.createElement<ITemplateWrapperProps>(
-                    TemplateWrapper,
-                    {
-                        content: contentProvider(model),
-                        container,
-                        onRemoved: () => stateUpdater((t) => delete t[templateId]),
-                        onRendered: data.onRendered,
-                        key: templateId
-                    }
-                );
+                return React.createElement<ITemplateWrapperProps>(TemplateWrapper, {
+                    content: contentProvider(model),
+                    container,
+                    onRemoved: () => stateUpdater((t) => delete t[templateId]),
+                    onRendered: data.onRendered,
+                    key: templateId
+                });
             };
             stateUpdater((t) => t[templateId] = createWrapper);
             return container;
