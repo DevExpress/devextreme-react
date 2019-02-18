@@ -210,5 +210,6 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
 export {
   IState,
   IHtmlOptions,
-  ComponentBase
+  ComponentBase,
+  DX_REMOVE_EVENT
 };

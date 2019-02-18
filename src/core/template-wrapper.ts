@@ -2,7 +2,7 @@ import * as events from "devextreme/events";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-const DX_REMOVE_EVENT = "dxremove";
+import { DX_REMOVE_EVENT } from "./component-base";
 
 interface ITemplateWrapperProps {
     content: any;
@@ -13,17 +13,26 @@ interface ITemplateWrapperProps {
 }
 
 class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps> {
-    private _removalListener: HTMLDivElement;
+    private readonly _removalListenerRef = React.createRef<HTMLElement>();
+
+    constructor(props: ITemplateWrapperProps) {
+        super(props);
+        this._restoreRemovedContent = this._restoreRemovedContent.bind(this);
+    }
 
     public render() {
         return ReactDOM.createPortal(
-            React.createElement(React.Fragment,
+            React.createElement(
+                React.Fragment,
                 null,
                 this.props.content,
-                React.createElement(this.props.container.nodeName === "TABLE" ? "tbody" : "span", {
-                    style: { display: "none" },
-                    ref: (element: HTMLDivElement) => this._removalListener = element
-                }),
+                React.createElement(
+                    this.props.container.nodeName === "TABLE" ? "tbody" : "span",
+                    {
+                        style: { display: "none" },
+                        ref: this._removalListenerRef
+                    }
+                ),
             ),
             this.props.container
         );
@@ -35,19 +44,24 @@ class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps> {
             setTimeout(() => onRendered());
         }
 
-        events.one(this._removalListener, DX_REMOVE_EVENT, () => {
-            this._restoreRemovedContent.call(this);
+        const removalListener = this._removalListenerRef.current;
+        if (!removalListener) {
+            // T713245 (ref to removalListener is undefined under certain conditions)
+            return;
+        }
+        events.one(removalListener, DX_REMOVE_EVENT, () => {
+            this._restoreRemovedContent(removalListener);
             this.props.onRemoved();
         });
     }
 
-    private _restoreRemovedContent() {
+    private _restoreRemovedContent(removalListener: HTMLElement) {
         // Let React remove it itself
         const node = ReactDOM.findDOMNode(this);
         if (node) {
             this.props.container.appendChild(node);
         }
-        this.props.container.appendChild(this._removalListener);
+        this.props.container.appendChild(removalListener);
     }
 }
 
