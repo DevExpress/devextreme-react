@@ -9,7 +9,10 @@ describe("template-host", () => {
             const container: any = {};
             const template = wrapTemplate(
                 jest.fn(),
-                updateFunc,
+                {
+                    setTemplate: updateFunc,
+                    removeTemplate: jest.fn()
+                },
                 jest.fn()
             );
 

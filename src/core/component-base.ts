@@ -4,10 +4,10 @@ import * as React from "react";
 
 import OptionsManager, { INestedOption } from "./options-manager";
 import { findProps as findNestedTemplateProps, ITemplateMeta } from "./template";
-import { TemplateQueue } from "./template-queue";
+import { TemplateUpdater } from "./template-updater";
 import { elementPropNames, getClassName, separateProps } from "./widget-config";
 
-import TemplateHost from "./template-host";
+import TemplateHost, { RenderedTemplate } from "./template-host";
 
 const DX_REMOVE_EVENT = "dxremove";
 
@@ -17,7 +17,7 @@ interface IWidgetConfig {
 }
 
 interface IState {
-  templates: Record<string, () => void>;
+  templates: Record<string, () => RenderedTemplate>;
 }
 
 interface IHtmlOptions {
@@ -37,7 +37,7 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
 
   private readonly _templateHost: TemplateHost;
   private readonly _optionsManager: OptionsManager;
-  private readonly _templateQueue: TemplateQueue;
+  private readonly _templateUpdater: TemplateUpdater;
 
   constructor(props: P) {
     super(props);
@@ -47,18 +47,11 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
       templates: {}
     };
 
-    this._templateQueue = new TemplateQueue((templateCallbacks) => {
-      const callbacks = [...templateCallbacks];
-      this.setState((state: IState) => {
-        const templates = { ...state.templates };
-        for (const cb of callbacks) {
-          cb(templates);
-        }
-        return { templates };
-      });
+    this._templateUpdater = new TemplateUpdater((templates) => {
+      this.setState({ templates: {...templates} });
     });
 
-    this._templateHost = new TemplateHost(this._templateQueue.updateTemplate);
+    this._templateHost = new TemplateHost(this._templateUpdater);
     this._optionsManager = new OptionsManager((name) => this.props[name], this._templateHost);
   }
 
@@ -83,7 +76,6 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
   }
 
   public componentWillUnmount() {
-    this._templateQueue.flush();
     if (this._instance) {
       events.triggerHandler(this._element, DX_REMOVE_EVENT);
       this._instance.dispose();

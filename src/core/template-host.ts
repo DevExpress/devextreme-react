@@ -3,10 +3,10 @@ import { ITemplateMeta, ITemplateProps } from "./template";
 import * as React from "react";
 
 import { generateID } from "./helpers";
+import { ITemplateUpdater } from "./template-updater";
 import { ITemplateWrapperProps, TemplateWrapper } from "./template-wrapper";
 
-type TemplateGetter = (nestedTemplates: Record<string, () => void>) => React.ReactElement<ITemplateWrapperProps>;
-type StateUpdater = (callback: (templates: TemplateGetter) => void) => void;
+type RenderedTemplate = React.ReactElement<ITemplateWrapperProps>;
 type PropsGetter = (propName: string) => any;
 
 interface IDxTemplateData {
@@ -35,7 +35,7 @@ const contentCreators = {
 };
 
 class TemplateHost {
-    private readonly _stateUpdater: StateUpdater;
+    private readonly _templateUpdater: ITemplateUpdater;
 
     private _templates: Record<string, any> = {};
     private _stubs: Record<string, any> = {};
@@ -45,8 +45,8 @@ class TemplateHost {
         children: any;
     }> = {};
 
-    constructor(stateUpdater: StateUpdater) {
-        this._stateUpdater = stateUpdater;
+    constructor(templateUpdater: ITemplateUpdater) {
+        this._templateUpdater = templateUpdater;
     }
 
     public add(meta: IIntegrationDescr) {
@@ -83,7 +83,7 @@ class TemplateHost {
 
             const name = ownerName ? `${ownerName}.${tmpl.tmplOption}` : tmpl.tmplOption;
             stubs[name] = name;
-            templates[name] = wrapTemplate(contentCreator, this._stateUpdater, meta.propsGetter(tmpl.keyFn));
+            templates[name] = wrapTemplate(contentCreator, this._templateUpdater, meta.propsGetter(tmpl.keyFn));
         }
 
         this._templates = {
@@ -109,7 +109,7 @@ class TemplateHost {
         const propsGetter: PropsGetter = (prop) => this._nestedTemplateProps[name][prop];
 
         const contentCreator = contentCreators[type].bind(this, type, propsGetter);
-        this._templates[name] = wrapTemplate(contentCreator, this._stateUpdater, props.keyFn);
+        this._templates[name] = wrapTemplate(contentCreator, this._templateUpdater, props.keyFn);
     }
 
     public get options(): Record<string, any> | undefined {
@@ -128,8 +128,8 @@ class TemplateHost {
 
 function wrapTemplate(
     createContentProvider: () => (model: any) => any,
-    stateUpdater: StateUpdater,
-    keyFn?: (data) => string
+    templateUpdater: ITemplateUpdater,
+    keyFn?: (data: any) => string
 ): IDxTemplate {
 
     const renderedContainers: HTMLElement[] = [];
@@ -143,7 +143,7 @@ function wrapTemplate(
             }
             renderedContainers.push(container);
 
-            const createWrapper = () => {
+            templateUpdater.setTemplate(templateId, () => {
                 const model = data.model;
                 if (model && model.hasOwnProperty("key")) {
                     model.dxkey = model.key;
@@ -154,13 +154,13 @@ function wrapTemplate(
                     {
                         content: contentProvider(model),
                         container,
-                        onRemoved: () => stateUpdater((t) => delete t[templateId]),
+                        onRemoved: () => templateUpdater.removeTemplate(templateId),
                         onRendered: data.onRendered,
                         key: templateId
                     }
                 );
-            };
-            stateUpdater((t) => t[templateId] = createWrapper);
+            });
+
             return container;
         }
     };
@@ -172,5 +172,6 @@ function unwrapElement(element: any): HTMLElement {
 
 export default TemplateHost;
 export {
+    RenderedTemplate,
     wrapTemplate
 };
