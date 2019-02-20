@@ -131,10 +131,18 @@ function wrapTemplate(
     stateUpdater: StateUpdater,
     keyFn?: (data) => string
 ): IDxTemplate {
+
+    const renderedContainers: HTMLElement[] = [];
     return {
         render: (data: IDxTemplateData) => {
             const templateId = keyFn ? keyFn(data.model) : "__template_" + generateID();
             const container = unwrapElement(data.container);
+
+            if (renderedContainers.indexOf(container) > -1) {
+                return container;
+            }
+            renderedContainers.push(container);
+
             const createWrapper = () => {
                 const model = data.model;
                 if (model && model.hasOwnProperty("key")) {
@@ -163,3 +171,6 @@ function unwrapElement(element: any) {
 }
 
 export default TemplateHost;
+export {
+    wrapTemplate
+};
