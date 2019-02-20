@@ -1,11 +1,10 @@
 import * as events from "devextreme/events";
 
-import * as commonUtils from "devextreme/core/utils/common";
-
 import * as React from "react";
 
 import OptionsManager, { INestedOption } from "./options-manager";
 import { findProps as findNestedTemplateProps, ITemplateMeta } from "./template";
+import { TemplateQueue } from "./template-queue";
 import { elementPropNames, getClassName, separateProps } from "./widget-config";
 
 import TemplateHost from "./template-host";
@@ -36,22 +35,29 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
   protected readonly _templateProps: ITemplateMeta[] = [];
   protected readonly _expectedChildren: Record<string, INestedOption>;
 
-  private _templateCallbacks: any[] = [];
-  private _isTemplatePostponed: boolean = false;
-
   private readonly _templateHost: TemplateHost;
   private readonly _optionsManager: OptionsManager;
+  private readonly _templateQueue: TemplateQueue;
 
   constructor(props: P) {
     super(props);
     this._prepareProps = this._prepareProps.bind(this);
-    this._updateTemplatesState = this._updateTemplatesState.bind(this);
 
     this.state = {
       templates: {}
     };
 
-    this._templateHost = new TemplateHost(this._updateTemplatesState);
+    this._templateQueue = new TemplateQueue((_templateCallbacks) => {
+      this.setState((state: IState) => {
+        const templates = { ...state.templates };
+        for (const cb of _templateCallbacks) {
+          cb(templates);
+        }
+        return { templates };
+      });
+    });
+
+    this._templateHost = new TemplateHost(this._templateQueue.updateTemplate);
     this._optionsManager = new OptionsManager((name) => this.props[name], this._templateHost);
   }
 
@@ -76,7 +82,7 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
   }
 
   public componentWillUnmount() {
-    this._clearTemplates();
+    this._templateQueue.flush();
     if (this._instance) {
       events.triggerHandler(this._element, DX_REMOVE_EVENT);
       this._instance.dispose();
@@ -130,29 +136,6 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
     this._instance = new this._WidgetClass(element, options);
     this._optionsManager.setInstance(this._instance);
     this._instance.on("optionChanged", this._optionsManager.handleOptionChange);
-  }
-
-  private _updateTemplatesState(callback: any) {
-    this._templateCallbacks.push(callback);
-
-    if (this._isTemplatePostponed) { return; }
-
-    this._isTemplatePostponed = true;
-    commonUtils.deferUpdate(() => {
-      this.setState((state: IState) => {
-        const templates = { ...state.templates };
-        for (const cb of this._templateCallbacks) {
-          cb(templates);
-        }
-        this._clearTemplates();
-        return { templates };
-      });
-    });
-  }
-
-  private _clearTemplates() {
-    this._templateCallbacks.length = 0;
-    this._isTemplatePostponed = false;
   }
 
   private _getElementProps(): Record<string, any> {
