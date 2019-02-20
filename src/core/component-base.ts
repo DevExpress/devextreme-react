@@ -47,10 +47,11 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
       templates: {}
     };
 
-    this._templateQueue = new TemplateQueue((_templateCallbacks) => {
+    this._templateQueue = new TemplateQueue((templateCallbacks) => {
+      const callbacks = [...templateCallbacks];
       this.setState((state: IState) => {
         const templates = { ...state.templates };
-        for (const cb of _templateCallbacks) {
+        for (const cb of callbacks) {
           cb(templates);
         }
         return { templates };
