@@ -32,7 +32,7 @@ class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps> {
                         style: { display: "none" },
                         ref: this._removalListenerRef
                     }
-                ),
+                )
             ),
             this.props.container
         );

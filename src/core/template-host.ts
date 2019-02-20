@@ -5,7 +5,7 @@ import * as React from "react";
 import { generateID } from "./helpers";
 import { ITemplateWrapperProps, TemplateWrapper } from "./template-wrapper";
 
-type TemplateGetter = (nestedTemplates: Record<string, any>) => React.ReactElement<ITemplateWrapperProps>;
+type TemplateGetter = (nestedTemplates: Record<string, () => void>) => React.ReactElement<ITemplateWrapperProps>;
 type StateUpdater = (callback: (templates: TemplateGetter) => void) => void;
 type PropsGetter = (propName: string) => any;
 
@@ -166,7 +166,7 @@ function wrapTemplate(
     };
 }
 
-function unwrapElement(element: any) {
+function unwrapElement(element: any): HTMLElement {
     return element.get ? element.get(0) : element;
 }
 
