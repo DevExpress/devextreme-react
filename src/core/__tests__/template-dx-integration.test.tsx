@@ -1,16 +1,16 @@
-import { wrapTemplate } from "../template-host";
+import { createDxIntegration } from "../template-dx-integration";
 
 describe("template-host", () => {
 
     describe("its wrapped template", () => {
 
         it("doesn't render twice into the same container", () => {
-            const updateFunc = jest.fn();
+            const setTemplate = jest.fn();
             const container: any = {};
-            const template = wrapTemplate(
+            const template = createDxIntegration(
                 jest.fn(),
                 {
-                    setTemplate: updateFunc,
+                    setTemplate,
                     removeTemplate: jest.fn()
                 },
                 jest.fn()
@@ -24,7 +24,7 @@ describe("template-host", () => {
                 container
             });
 
-            expect(updateFunc).toHaveBeenCalledTimes(1);
+            expect(setTemplate).toHaveBeenCalledTimes(1);
         });
     });
 

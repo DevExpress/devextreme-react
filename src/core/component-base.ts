@@ -4,10 +4,10 @@ import * as React from "react";
 
 import OptionsManager, { INestedOption } from "./options-manager";
 import { findProps as findNestedTemplateProps, ITemplateMeta } from "./template";
+import TemplateHost from "./template-host";
 import { TemplateUpdater } from "./template-updater";
+import { TemplateWrapperRenderer } from "./template-wrapper";
 import { elementPropNames, getClassName, separateProps } from "./widget-config";
-
-import TemplateHost, { RenderedTemplate } from "./template-host";
 
 const DX_REMOVE_EVENT = "dxremove";
 
@@ -17,7 +17,7 @@ interface IWidgetConfig {
 }
 
 interface IState {
-  templates: Record<string, () => RenderedTemplate>;
+  templates: Record<string, TemplateWrapperRenderer>;
 }
 
 interface IHtmlOptions {

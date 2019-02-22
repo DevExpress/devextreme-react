@@ -1,19 +1,19 @@
 import * as commonUtils from "devextreme/core/utils/common";
-import { RenderedTemplate } from "./template-host";
+import { TemplateWrapperRenderer } from "./template-wrapper";
 
 interface ITemplateUpdater {
-    setTemplate(templateId: string, templateFunc: () => RenderedTemplate): void;
+    setTemplate(templateId: string, templateFunc: TemplateWrapperRenderer): void;
     removeTemplate(templateId: string): void;
 }
 
 class TemplateUpdater implements ITemplateUpdater {
 
-    private readonly _templates: Record<string, () => RenderedTemplate> = {};
-    private readonly _updateTemplatesCallback: (t: Record<string, () => RenderedTemplate>) => void;
+    private readonly _templates: Record<string, TemplateWrapperRenderer> = {};
+    private readonly _updateTemplatesCallback: (t: Record<string, TemplateWrapperRenderer>) => void;
 
     private _updateIsDelayed: boolean = false;
 
-    constructor(updateTemplatesCallback: (t: Record<string, () => RenderedTemplate>) => void) {
+    constructor(updateTemplatesCallback: (t: Record<string, TemplateWrapperRenderer>) => void) {
         this._updateTemplatesCallback = updateTemplatesCallback;
 
         this._scheduleUpdate = this._scheduleUpdate.bind(this);
@@ -21,7 +21,7 @@ class TemplateUpdater implements ITemplateUpdater {
         this.removeTemplate = this.removeTemplate.bind(this);
     }
 
-    public setTemplate(templateId: string, templateFunc: () => RenderedTemplate): void {
+    public setTemplate(templateId: string, templateFunc: TemplateWrapperRenderer): void {
         this._templates[templateId] = templateFunc;
         this._scheduleUpdate();
     }
