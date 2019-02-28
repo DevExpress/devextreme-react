@@ -4,7 +4,7 @@ import { generateID } from "./helpers";
 import { ITemplateUpdater } from "./template-updater";
 import { ITemplateWrapperProps, TemplateWrapper } from "./template-wrapper";
 
-interface ITemplateDxIntegration {
+interface IDxTemplate {
     render: (data: IDxTemplateData) => any;
 }
 
@@ -15,11 +15,11 @@ interface IDxTemplateData {
     onRendered?: () => void;
 }
 
-function createDxIntegration(
+function createDxTemplate(
     createContentProvider: () => (model: any) => any,
     templateUpdater: ITemplateUpdater,
     keyFn?: (data: any) => string
-): ITemplateDxIntegration {
+): IDxTemplate {
 
     const renderedContainers: HTMLElement[] = [];
     return {
@@ -60,6 +60,6 @@ function unwrapElement(element: any): HTMLElement {
 }
 
 export {
-    ITemplateDxIntegration,
-    createDxIntegration
+    IDxTemplate,
+    createDxTemplate
 };

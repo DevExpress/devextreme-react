@@ -1,4 +1,4 @@
-import { createDxIntegration } from "../template-dx-integration";
+import { createDxTemplate } from "../dx-template";
 
 describe("template-host", () => {
 
@@ -7,7 +7,7 @@ describe("template-host", () => {
         it("doesn't render twice into the same container", () => {
             const setTemplate = jest.fn();
             const container: any = {};
-            const template = createDxIntegration(
+            const template = createDxTemplate(
                 jest.fn(),
                 {
                     setTemplate,

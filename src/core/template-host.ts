@@ -1,7 +1,7 @@
 import * as React from "react";
 
+import { createDxTemplate, IDxTemplate } from "./dx-template";
 import { ITemplateMeta, ITemplateProps } from "./template";
-import { createDxIntegration, ITemplateDxIntegration } from "./template-dx-integration";
 import { ITemplateUpdater } from "./template-updater";
 
 type PropsGetter = (propName: string) => any;
@@ -36,7 +36,7 @@ class TemplateHost {
     }
 
     public add(meta: IIntegrationDescr) {
-        const templates: Record<string, ITemplateDxIntegration> = {};
+        const templates: Record<string, IDxTemplate> = {};
         const stubs: Record<string, any> = {};
 
         const props = meta.props;
@@ -69,7 +69,7 @@ class TemplateHost {
 
             const name = ownerName ? `${ownerName}.${tmpl.tmplOption}` : tmpl.tmplOption;
             stubs[name] = name;
-            templates[name] = createDxIntegration(contentCreator, this._templateUpdater, meta.propsGetter(tmpl.keyFn));
+            templates[name] = createDxTemplate(contentCreator, this._templateUpdater, meta.propsGetter(tmpl.keyFn));
         }
 
         this._templates = {
@@ -95,7 +95,7 @@ class TemplateHost {
         const propsGetter: PropsGetter = (prop) => this._nestedTemplateProps[name][prop];
 
         const contentCreator = contentCreators[type].bind(this, type, propsGetter);
-        this._templates[name] = createDxIntegration(contentCreator, this._templateUpdater, props.keyFn);
+        this._templates[name] = createDxTemplate(contentCreator, this._templateUpdater, props.keyFn);
     }
 
     public get options(): Record<string, any> | undefined {
