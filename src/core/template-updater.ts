@@ -1,4 +1,4 @@
-import * as commonUtils from "devextreme/core/utils/common";
+import { deferUpdate } from "devextreme/core/utils/common";
 import { TemplateWrapperRenderer } from "./template-wrapper";
 
 interface ITemplateUpdater {
@@ -38,7 +38,7 @@ class TemplateUpdater implements ITemplateUpdater {
 
         this._updateIsDelayed = true;
 
-        commonUtils.deferUpdate(() => {
+        deferUpdate(() => {
             this._updateTemplatesCallback(this._templates);
             this._updateIsDelayed = false;
         });

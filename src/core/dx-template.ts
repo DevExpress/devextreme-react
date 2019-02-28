@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { generateID } from "./helpers";
+import { findInArray, generateID } from "./helpers";
 import { ITemplateUpdater } from "./template-updater";
 import { ITemplateWrapperProps, TemplateWrapper } from "./template-wrapper";
 
@@ -15,22 +15,31 @@ interface IDxTemplateData {
     onRendered?: () => void;
 }
 
+type templateIdFunc = (data: any) => string;
+
 function createDxTemplate(
     createContentProvider: () => (model: any) => any,
     templateUpdater: ITemplateUpdater,
-    keyFn?: (data: any) => string
+    keyFn?: templateIdFunc
 ): IDxTemplate {
 
-    const renderedContainers: HTMLElement[] = [];
+    const renderedModels: Array<{ model: any, templateId: string }> = [];
     return {
         render: (data: IDxTemplateData) => {
-            const templateId = keyFn ? keyFn(data.model) : "__template_" + generateID();
-            const container = unwrapElement(data.container);
+            const renderedModel = findInArray(renderedModels, (e) => e.model === data.model);
 
-            if (renderedContainers.indexOf(container) > -1) {
-                return container;
+            let templateId: string;
+            if (renderedModel) {
+                templateId = renderedModel.templateId;
+            } else {
+                templateId = keyFn ? keyFn(data.model) : "__template_" + generateID();
+
+                if (data.model !== undefined) {
+                    renderedModels.push({ model: data.model, templateId });
+                }
             }
-            renderedContainers.push(container);
+
+            const container = unwrapElement(data.container);
 
             templateUpdater.setTemplate(templateId, () => {
                 const model = data.model;

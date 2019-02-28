@@ -23,3 +23,12 @@ export function generateID(): string {
 export function isEmptyObject(obj: Record<any, any>): boolean {
     return Object.keys(obj).length === 0;
 }
+
+export function findInArray<T>(array: T[], predicate: (entry: T) => boolean): T | undefined {
+    for (const entry of array) {
+        if (predicate(entry)) {
+            return entry;
+        }
+    }
+    return undefined;
+}
