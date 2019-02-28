@@ -1,24 +1,10 @@
-import { ITemplateMeta, ITemplateProps } from "./template";
-
 import * as React from "react";
 
-import { generateID } from "./helpers";
-import { ITemplateWrapperProps, TemplateWrapper } from "./template-wrapper";
+import { createDxTemplate, IDxTemplate } from "./dx-template";
+import { ITemplateMeta, ITemplateProps } from "./template";
+import { ITemplateUpdater } from "./template-updater";
 
-type TemplateGetter = (nestedTemplates: Record<string, any>) => React.ReactElement<ITemplateWrapperProps>;
-type StateUpdater = (callback: (templates: TemplateGetter) => void) => void;
 type PropsGetter = (propName: string) => any;
-
-interface IDxTemplateData {
-    container: any;
-    model?: any;
-    index?: any;
-    onRendered?: () => void;
-}
-
-interface IDxTemplate {
-    render: (data: IDxTemplateData) => any;
-}
 
 interface IIntegrationDescr {
     props: Record<string, any>;
@@ -35,7 +21,7 @@ const contentCreators = {
 };
 
 class TemplateHost {
-    private readonly _stateUpdater: StateUpdater;
+    private readonly _templateUpdater: ITemplateUpdater;
 
     private _templates: Record<string, any> = {};
     private _stubs: Record<string, any> = {};
@@ -45,8 +31,8 @@ class TemplateHost {
         children: any;
     }> = {};
 
-    constructor(stateUpdater: StateUpdater) {
-        this._stateUpdater = stateUpdater;
+    constructor(templateUpdater: ITemplateUpdater) {
+        this._templateUpdater = templateUpdater;
     }
 
     public add(meta: IIntegrationDescr) {
@@ -83,7 +69,7 @@ class TemplateHost {
 
             const name = ownerName ? `${ownerName}.${tmpl.tmplOption}` : tmpl.tmplOption;
             stubs[name] = name;
-            templates[name] = wrapTemplate(contentCreator, this._stateUpdater, meta.propsGetter(tmpl.keyFn));
+            templates[name] = createDxTemplate(contentCreator, this._templateUpdater, meta.propsGetter(tmpl.keyFn));
         }
 
         this._templates = {
@@ -109,7 +95,7 @@ class TemplateHost {
         const propsGetter: PropsGetter = (prop) => this._nestedTemplateProps[name][prop];
 
         const contentCreator = contentCreators[type].bind(this, type, propsGetter);
-        this._templates[name] = wrapTemplate(contentCreator, this._stateUpdater, props.keyFn);
+        this._templates[name] = createDxTemplate(contentCreator, this._templateUpdater, props.keyFn);
     }
 
     public get options(): Record<string, any> | undefined {
@@ -126,51 +112,4 @@ class TemplateHost {
     }
 }
 
-function wrapTemplate(
-    createContentProvider: () => (model: any) => any,
-    stateUpdater: StateUpdater,
-    keyFn?: (data) => string
-): IDxTemplate {
-
-    const renderedContainers: HTMLElement[] = [];
-    return {
-        render: (data: IDxTemplateData) => {
-            const templateId = keyFn ? keyFn(data.model) : "__template_" + generateID();
-            const container = unwrapElement(data.container);
-
-            if (renderedContainers.indexOf(container) > -1) {
-                return container;
-            }
-            renderedContainers.push(container);
-
-            const createWrapper = () => {
-                const model = data.model;
-                if (model && model.hasOwnProperty("key")) {
-                    model.dxkey = model.key;
-                }
-                const contentProvider = createContentProvider();
-                return React.createElement<ITemplateWrapperProps>(
-                    TemplateWrapper,
-                    {
-                        content: contentProvider(model),
-                        container,
-                        onRemoved: () => stateUpdater((t) => delete t[templateId]),
-                        onRendered: data.onRendered,
-                        key: templateId
-                    }
-                );
-            };
-            stateUpdater((t) => t[templateId] = createWrapper);
-            return container;
-        }
-    };
-}
-
-function unwrapElement(element: any) {
-    return element.get ? element.get(0) : element;
-}
-
 export default TemplateHost;
-export {
-    wrapTemplate
-};
