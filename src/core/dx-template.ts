@@ -15,12 +15,10 @@ interface IDxTemplateData {
     onRendered?: () => void;
 }
 
-type templateIdFunc = (data: any) => string;
-
 function createDxTemplate(
     createContentProvider: () => (model: any) => any,
     templateUpdater: ITemplateUpdater,
-    keyFn?: templateIdFunc
+    keyFn?: (data: any) => string
 ): IDxTemplate {
 
     const renderedModels: Array<{ model: any, templateId: string }> = [];
