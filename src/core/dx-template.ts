@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { findInArray, generateID } from "./helpers";
+import { generateID } from "./helpers";
 import { ITemplateUpdater } from "./template-updater";
 import { ITemplateWrapperProps, TemplateWrapper } from "./template-wrapper";
 
@@ -21,19 +21,19 @@ function createDxTemplate(
     keyFn?: (data: any) => string
 ): IDxTemplate {
 
-    const renderedModels: Array<{ model: any, templateId: string }> = [];
+    const renderedModels = new Map<any, string>();
     return {
         render: (data: IDxTemplateData) => {
-            const renderedModel = findInArray(renderedModels, (e) => e.model === data.model);
+            const prevTemplateId = renderedModels.get(data.model);
 
             let templateId: string;
-            if (renderedModel) {
-                templateId = renderedModel.templateId;
+            if (prevTemplateId) {
+                templateId = prevTemplateId;
             } else {
                 templateId = keyFn ? keyFn(data.model) : "__template_" + generateID();
 
                 if (data.model !== undefined) {
-                    renderedModels.push({ model: data.model, templateId });
+                    renderedModels.set(data.model, templateId);
                 }
             }
 
