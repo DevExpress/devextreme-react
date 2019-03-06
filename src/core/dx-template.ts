@@ -21,16 +21,23 @@ function createDxTemplate(
     keyFn?: (data: any) => string
 ): IDxTemplate {
 
-    const renderedContainers: HTMLElement[] = [];
+    const renderedModels = new Map<any, string>();
     return {
         render: (data: IDxTemplateData) => {
-            const templateId = keyFn ? keyFn(data.model) : "__template_" + generateID();
-            const container = unwrapElement(data.container);
+            const prevTemplateId = renderedModels.get(data.model);
 
-            if (renderedContainers.indexOf(container) > -1) {
-                return container;
+            let templateId: string;
+            if (prevTemplateId) {
+                templateId = prevTemplateId;
+            } else {
+                templateId = keyFn ? keyFn(data.model) : "__template_" + generateID();
+
+                if (data.model !== undefined) {
+                    renderedModels.set(data.model, templateId);
+                }
             }
-            renderedContainers.push(container);
+
+            const container = unwrapElement(data.container);
 
             templateUpdater.setTemplate(templateId, () => {
                 const model = data.model;
@@ -43,7 +50,10 @@ function createDxTemplate(
                     {
                         content: contentProvider(model),
                         container,
-                        onRemoved: () => templateUpdater.removeTemplate(templateId),
+                        onRemoved: () => {
+                            templateUpdater.removeTemplate(templateId);
+                            renderedModels.delete(model);
+                        },
                         onRendered: data.onRendered,
                         key: templateId
                     }
