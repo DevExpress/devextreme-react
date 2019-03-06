@@ -8,7 +8,7 @@ describe("dx-template", () => {
             setTemplate.mockClear();
             const model: any = {};
 
-            tryTemplate(model);
+            tryDoubleRender(model);
 
             expect(setTemplate).toHaveBeenCalledTimes(2);
 
@@ -22,7 +22,7 @@ describe("dx-template", () => {
             setTemplate.mockClear();
             const model: any = null;
 
-            tryTemplate(model);
+            tryDoubleRender(model);
 
             expect(setTemplate).toHaveBeenCalledTimes(2);
 
@@ -36,7 +36,7 @@ describe("dx-template", () => {
             setTemplate.mockClear();
             const model: any = undefined;
 
-            tryTemplate(model);
+            tryDoubleRender(model);
 
             expect(setTemplate).toHaveBeenCalledTimes(2);
 
@@ -48,7 +48,7 @@ describe("dx-template", () => {
 
         const setTemplate = jest.fn();
 
-        function tryTemplate(model: any): void {
+        function tryDoubleRender(model: any): void {
             const template = createDxTemplate(
                 jest.fn(),
                 {
