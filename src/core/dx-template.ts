@@ -50,7 +50,10 @@ function createDxTemplate(
                     {
                         content: contentProvider(model),
                         container,
-                        onRemoved: () => templateUpdater.removeTemplate(templateId),
+                        onRemoved: () => {
+                            templateUpdater.removeTemplate(templateId);
+                            renderedModels.delete(model);
+                        },
                         onRendered: data.onRendered,
                         key: templateId
                     }
