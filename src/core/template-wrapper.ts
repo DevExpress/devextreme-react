@@ -12,6 +12,8 @@ interface ITemplateWrapperProps {
     key: string;
 }
 
+type TemplateWrapperRenderer = () => TemplateWrapper;
+
 class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps> {
     private readonly _removalListenerRef = React.createRef<HTMLElement>();
 
@@ -32,7 +34,7 @@ class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps> {
                         style: { display: "none" },
                         ref: this._removalListenerRef
                     }
-                ),
+                )
             ),
             this.props.container
         );
@@ -67,5 +69,6 @@ class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps> {
 
 export {
     ITemplateWrapperProps,
-    TemplateWrapper
+    TemplateWrapper,
+    TemplateWrapperRenderer
 };
