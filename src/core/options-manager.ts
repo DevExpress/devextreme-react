@@ -219,9 +219,13 @@ class OptionsManager {
             );
 
             const nestedObjects = this._getNestedOptionsObjects(e.children, templateRegistrationRequired);
+            const nestedObjectsCount =  Object.keys(nestedObjects).reduce((acc, item) => {
+                const obj = nestedObjects[item];
+                return acc + (Array.isArray(obj) ? obj.length : 1);
+            }, 0);
 
             const hasChildrenForTemplate =
-                ReactChildren.count(e.element.props.children) > Object.keys(nestedObjects).length;
+                ReactChildren.count(e.element.props.children) > nestedObjectsCount;
 
             if (templateRegistrationRequired) {
                 this._templateHost.add({
