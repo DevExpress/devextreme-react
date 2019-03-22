@@ -532,6 +532,10 @@ describe("component/render in nested options", () => {
 
                 <CollectionNestedComponent/>
 
+                <CollectionNestedComponent>
+                    <CollectionNestedComponent/>
+                    <CollectionNestedComponent/>
+                </CollectionNestedComponent>
             </TestComponent>
         );
 
@@ -543,6 +547,7 @@ describe("component/render in nested options", () => {
         expect(options["collection[3].template"]).toBe("collection[3].template");
         expect(options["collection[4].template"]).toBe(undefined);
         expect(options["collection[5].template"]).toBe(undefined);
+        expect(options["collection[6].template"]).toBe(undefined);
         expect(options["option.item"]).toBe(undefined);
         expect(options["option.template"]).toBe(undefined);
 
