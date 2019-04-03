@@ -8,7 +8,8 @@ This project allows you to use [DevExtreme](http://js.devexpress.com) [React](ht
 * [Getting started](#getting-started)
   * [Prerequisites](#prerequisites)
   * [Install DevExtreme](#installation)
-  * [Use DevExtreme Components](#use-components)
+  * [Import Stylesheets](#import-stylesheets)
+  * [Use DevExtreme Components](#import-components)
 * [API Reference](#api-reference)
 * [State Management](#state-management)
   * [Controlled Mode](#controlled-mode)
@@ -50,7 +51,18 @@ The following configuration steps depend on the build tool, bundler or module lo
 * [Configuring Webpack](https://github.com/DevExpress/devextreme-react/blob/master/docs/using-webpack.md)
 * [Using Create React App](https://github.com/DevExpress/devextreme-react/blob/master/docs/using-create-react-app.md)
 
-### <a name="use-components"></a>Use DevExtreme Components  ####
+### <a name="import-stylesheets"></a>Import Stylesheets ###
+
+Import `dx.common.css` and a [predefined theme stylesheet](/Documentation/Guide/Themes_and_Styles/Predefined_Themes/) in the main component file (`App.js`) or in the component where DevExtreme widgets will be used: 
+
+```js
+import 'devextreme/dist/css/dx.common.css';
+import 'devextreme/dist/css/dx.light.compact.css';
+```
+
+### <a name="import-components"></a>Import DevExtreme Components  ###
+
+Import the DevExtreme components you are going to use from specific modules. 
 
 ```jsx
 import React from 'react';
@@ -66,9 +78,6 @@ ReactDOM.render(
     document.getElementById('root')
 );
 ```
-
-Note that [DevExtreme styles](https://js.devexpress.com/Documentation/Guide/Themes/Predefined_Themes/#Themes_in_Sites) are required.
-
 
 ## <a name="api-reference"></a>API Reference ##
 
