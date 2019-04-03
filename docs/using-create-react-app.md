@@ -4,6 +4,10 @@
 
 Use [Create React App](https://reactjs.org/blog/2016/07/22/create-apps-with-no-configuration.html/) to create a new project.
 
-## Add DevExtreme ##
+## Install DevExtreme ##
 
 Follow the [installation](https://github.com/DevExpress/devextreme-react#installation) section in our Readme.
+
+## Add DevExtreme to the Application ##
+
+Follow the [Use DevExtreme Components](https://github.com/DevExpress/devextreme-react#use-devextreme-components) section in our Readme.
