@@ -195,33 +195,40 @@ ReactDOM.render(
 
 
 ### <a name="getting-widget-instance"></a>Getting Widget Instance ###
-A widget instance is required to call methods. You can get it by assigning a callback function to the component's `ref` property. This function accepts the mounted DevExtreme Component as an argument whose `instance` field stores the widget instance.
 
+You need the widget instance to call widget methods. Create a [ref](https://reactjs.org/docs/refs-and-the-dom.html) and attach it to the target component via the `ref` attribute. Implement a getter that returns the instance taken from the ref. In the following code, this approach is used to get a `TextBox` instance:
+    
 ```jsx
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { Button, TextBox } from 'devextreme-react';
+import Button from 'devextreme-react/button';
+import TextBox from 'devextreme-react/text-box';
 
-import 'devextreme/dist/css/dx.common.css';
-import 'devextreme/dist/css/dx.light.compact.css';
+class App extends React.Component {
+    constructor(props) {
+        super(props);
+        
+        this.textBoxRef = React.createRef();
+        
+        this.focusTextBox = () => {
+            this.textBox.focus()
+        };
+    }
 
-class Example extends React.Component {
+    get textBox() {
+        return this.textBoxRef.current.instance;
+    }
 
     render() {
         return (
             <div>
-                <TextBox ref={(ref) => this.textBox = ref.instance}/>
-                <Button text='Go to the TextBox' onClick={() => this.textBox.focus()} />
+                <TextBox ref={this.textBoxRef} />
+                <Button text="Focus TextBox" onClick={this.focusTextBox} />
             </div>
         );
     }
 }
-
-ReactDOM.render(
-    <Example />,
-    document.getElementById('root')
-);
 ```
 
 ## <a name="markup-customization"></a>Markup Customization
