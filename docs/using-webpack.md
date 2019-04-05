@@ -4,9 +4,13 @@
 
 You can use some starter to create a new project based on Webpack.
 
-## Add DevExtreme ##
+## Install DevExtreme ##
 
-Follow the [installation](https://github.com/DevExpress/devextreme-react#installation) section in our Readme.
+Install the **devextreme** and **devextreme-react** npm packages:
+
+```console
+npm install --save devextreme devextreme-react
+```
 
 ## <a name="configuration"></a>Configure Webpack Loaders for DevExtreme Stylesheets ##
 
@@ -37,3 +41,7 @@ Go to your main .js file and import the stylesheets as follows:
 import 'devextreme/dist/css/dx.common.css';
 import 'devextreme/dist/css/dx.light.css';
 ```
+
+## Import DevExtreme Components ##
+
+Refer to [Import DevExtreme Components](https://github.com/DevExpress/devextreme-react#import-components).
