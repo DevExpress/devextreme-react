@@ -20,18 +20,18 @@ class ComponentWithTemplates extends TestComponent {
     }
 }
 
-function renderTemplate(name: string, model?: any, container?: any, onRendered?: () => void): Element {
+function renderTemplate(name: string, model?: any, container?: any, index?: number, onRendered?: () => void): Element {
     model = model || {};
     container = container || document.createElement("div");
     const render = WidgetClass.mock.calls[0][1].integrationOptions.templates[name].render;
 
     return render({
-        container, model, onRendered
+        container, model, ...(index && { index }), onRendered
     });
 }
 
-function renderItemTemplate(model?: any, container?: any, onRendered?: () => void): Element {
-    return renderTemplate("item", model, container, onRendered);
+function renderItemTemplate(model?: any, container?: any, index?: number, onRendered?: () => void): Element {
+    return renderTemplate("item", model, container, index, onRendered);
 }
 
 function testTemplateOption(testedOption: string) {
@@ -157,7 +157,7 @@ function testTemplateOption(testedOption: string) {
         const component = mount(React.createElement(ComponentWithTemplates, elementOptions));
         const onRendered: () => void = jest.fn();
 
-        renderItemTemplate({ text: "with data" }, undefined, onRendered);
+        renderItemTemplate({ text: "with data" }, undefined, undefined, onRendered);
         component.update();
         jest.runAllTimers();
         expect(onRendered).toBeCalled();
@@ -237,6 +237,20 @@ describe("function template", () => {
         component.update();
         expect(component.find(".template").html()).toBe('<div class="template">Template with data</div>');
     });
+
+    it("renders index", () => {
+        const itemRender: any = jest.fn((_, index: number) => {
+            return <div className={"template"}>Index {index}</div>;
+        });
+        const component = mount(
+            <ComponentWithTemplates itemRender={itemRender} />
+        );
+        renderItemTemplate(undefined, undefined, 5);
+
+        expect(itemRender).toBeCalled();
+        component.update();
+        expect(component.find(".template").html()).toBe('<div class="template">Index 5</div>');
+    });
 });
 
 describe("component template", () => {
@@ -248,7 +262,7 @@ describe("component template", () => {
             <ComponentWithTemplates itemComponent={ItemTemplate} />
         );
 
-        renderItemTemplate({ key: "key_1" });
+        renderItemTemplate({ key: "key_1" }, undefined, 5);
         component.update();
         expect(component.find(".template").html()).toBe('<div class="template">key: , dxkey: key_1</div>');
     });
