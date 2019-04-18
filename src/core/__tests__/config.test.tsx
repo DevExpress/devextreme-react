@@ -1,4 +1,4 @@
-import config from "../../core/config";
+import config, { getOption } from "../../core/config";
 import { mount, React} from "./setup";
 import { TestComponent, WidgetClass } from "./test-component";
 
@@ -16,12 +16,14 @@ class ComponentWithTemplates extends TestComponent {
 }
 
 describe("useLegacyTemplatEngine", () => {
+    const originalValue = getOption("useLegacyTemplatEngine");
+
     beforeEach(() => {
         config({ useLegacyTemplatEngine: true });
     });
 
     afterEach(() => {
-        config({ useLegacyTemplatEngine: false });
+        config({ useLegacyTemplatEngine: originalValue });
     });
 
     it("works for render template", () => {

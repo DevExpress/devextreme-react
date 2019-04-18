@@ -3,7 +3,7 @@ interface IOptions {
   }
 
 let config: IOptions = {
-    useLegacyTemplatEngine: false
+    useLegacyTemplatEngine: true
 };
 
 function setOptions(options: Partial<IOptions>): void {
