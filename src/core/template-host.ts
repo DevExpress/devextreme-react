@@ -16,7 +16,7 @@ interface IIntegrationDescr {
 
 const contentCreators = {
     component: (name: string, propsGetter: PropsGetter) => React.createElement.bind(null, propsGetter(name)),
-    render: (name: string, propsGetter: PropsGetter) => propsGetter(name),
+    render: (name: string, propsGetter: PropsGetter) => (data) => propsGetter(name)(data.data, data.index),
     children: (_: string, propsGetter: PropsGetter) => () => propsGetter("children")
 };
 

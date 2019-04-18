@@ -16,7 +16,7 @@ interface IDxTemplateData {
 }
 
 function createDxTemplate(
-    createContentProvider: () => (model: any, index?: number) => any,
+    createContentProvider: () => (model: any) => any,
     templateUpdater: ITemplateUpdater,
     keyFn?: (data: any) => string
 ): IDxTemplate {
@@ -48,7 +48,7 @@ function createDxTemplate(
                 return React.createElement<ITemplateWrapperProps>(
                     TemplateWrapper,
                     {
-                        content: contentProvider(model, data.index),
+                        content: contentProvider({ data: model, index: data.index }),
                         container,
                         onRemoved: () => {
                             templateUpdater.removeTemplate(templateId);
