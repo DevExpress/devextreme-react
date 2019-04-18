@@ -283,19 +283,6 @@ describe("function template", () => {
 describe("component template", () => {
     testTemplateOption("itemComponent");
 
-    it("renders key prop", () => {
-        const ItemTemplate = (props: any) => (
-            <div className={"template"}>key: {props.data.key}, dxkey: {props.data.dxkey}</div>
-        );
-        const component = mount(
-            <ComponentWithTemplates itemComponent={ItemTemplate} />
-        );
-
-        renderItemTemplate({ key: "key_1" }, undefined, 5);
-        component.update();
-        expect(component.find(".template").html()).toBe('<div class="template">key: key_1, dxkey: key_1</div>');
-    });
-
     it("renders index", () => {
         const ItemTemplate = (props: any) => (
             <div className={"template"}>

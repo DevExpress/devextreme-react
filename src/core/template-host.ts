@@ -1,7 +1,8 @@
 import * as React from "react";
 
+import { getOption as getConfigOption } from "./config";
 import { createDxTemplate, IDxTemplate } from "./dx-template";
-import { ITemplateMeta, ITemplateProps } from "./template";
+import { ITemplateArgs, ITemplateMeta, ITemplateProps } from "./template";
 import { ITemplateUpdater } from "./template-updater";
 
 type PropsGetter = (propName: string) => any;
@@ -14,9 +15,26 @@ interface IIntegrationDescr {
     useChildren: (name: string) => boolean;
 }
 
+function normalizeProps(props: ITemplateArgs) {
+    if (getConfigOption("useLegacyTemplatEngine")) {
+        const model = props.data;
+        if (model && model.hasOwnProperty("key")) {
+            model.dxkey = model.key;
+        }
+        return model;
+    }
+    return props;
+}
+
 const contentCreators = {
-    component: (name: string, propsGetter: PropsGetter) => React.createElement.bind(null, propsGetter(name)),
-    render: (name: string, propsGetter: PropsGetter) => (data) => propsGetter(name)(data.data, data.index),
+    component: (name: string, propsGetter: PropsGetter) => (props: ITemplateArgs) => {
+        props = normalizeProps(props);
+        return React.createElement.bind(null, propsGetter(name))(props);
+    },
+    render: (name: string, propsGetter: PropsGetter) => (props: ITemplateArgs) => {
+        normalizeProps(props);
+        return propsGetter(name)(props.data, props.index);
+    },
     children: (_: string, propsGetter: PropsGetter) => () => propsGetter("children")
 };
 
