@@ -9,7 +9,10 @@ import TextBox from "../src/text-box";
 import Example from "./example-block";
 
 interface IListItemProps {
-    text: string;
+    data: {
+        text: string;
+    };
+    index: number;
 }
 
 class Item extends React.Component<IListItemProps, { counter: number }> {
@@ -26,7 +29,8 @@ class Item extends React.Component<IListItemProps, { counter: number }> {
     public render() {
         return (
             <i onClick={this.handleClick}>
-                Component template for item {this.props.text}. <b>Clicks: {this.state.counter}</b>
+                {this.props.index + 1}. Component template for item {this.props.data.text}.
+                <b>Clicks: {this.state.counter}</b>
             </i>
         );
     }

@@ -21,17 +21,17 @@ const DetailComponent = (props: any) => {
     return (
         <p>Row data:
             <br/>
-            {JSON.stringify(props.data)}
+            {JSON.stringify(props.data.data)}
         </p>
     );
 };
 
 const CityComponent = (props: any) => {
-    return <i>{props.displayValue}</i>;
+    return <i>{props.data.displayValue}</i>;
 };
 
 const RegionComponent = (props: any) => {
-    return <b>{props.displayValue}</b>;
+    return <b>{props.data.displayValue}</b>;
 };
 
 export default class extends React.Component<any, { expandAll: boolean, pageSize: number }> {
