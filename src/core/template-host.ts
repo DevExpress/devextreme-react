@@ -16,7 +16,7 @@ interface IIntegrationDescr {
 }
 
 function normalizeProps(props: ITemplateArgs) {
-    if (getConfigOption("useLegacyTemplatEngine")) {
+    if (getConfigOption("useLegacyTemplateEngine")) {
         const model = props.data;
         if (model && model.hasOwnProperty("key")) {
             model.dxkey = model.key;

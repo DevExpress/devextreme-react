@@ -17,11 +17,11 @@ import NumberBox from "../src/number-box";
 
 import { sales } from "./data";
 
-const DetailComponent = (props: any) => {
+const DetailComponent = ({ data: { data } }: any) => {
     return (
         <p>Row data:
             <br/>
-            {JSON.stringify(props.data.data)}
+            {JSON.stringify(data)}
         </p>
     );
 };

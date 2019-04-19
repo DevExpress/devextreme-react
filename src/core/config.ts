@@ -1,9 +1,9 @@
 interface IOptions {
-    useLegacyTemplatEngine: boolean;
+    useLegacyTemplateEngine: boolean;
   }
 
 let config: IOptions = {
-    useLegacyTemplatEngine: true
+    useLegacyTemplateEngine: true
 };
 
 function setOptions(options: Partial<IOptions>): void {

@@ -6,14 +6,14 @@ import { Template } from "../../core/template";
 import { mount, React, shallow } from "./setup";
 import { TestComponent, Widget, WidgetClass } from "./test-component";
 
-const originalLegacyOption = getConfigOption("useLegacyTemplatEngine");
+const originalLegacyOption = getConfigOption("useLegacyTemplateEngine");
 
 beforeEach(() => {
-    config({ useLegacyTemplatEngine: false });
+    config({ useLegacyTemplateEngine: false });
 });
 
 afterEach(() => {
-    config({ useLegacyTemplatEngine: originalLegacyOption });
+    config({ useLegacyTemplateEngine: originalLegacyOption });
 });
 
 // tslint:disable-next-line:max-classes-per-file

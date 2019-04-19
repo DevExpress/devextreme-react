@@ -15,18 +15,18 @@ class ComponentWithTemplates extends TestComponent {
     }
 }
 
-describe("useLegacyTemplatEngine", () => {
-    const originalValue = getOption("useLegacyTemplatEngine");
+describe("useLegacyTemplateEngine", () => {
+    const originalValue = getOption("useLegacyTemplateEngine");
 
     beforeEach(() => {
-        config({ useLegacyTemplatEngine: true });
+        config({ useLegacyTemplateEngine: true });
     });
 
     afterEach(() => {
-        config({ useLegacyTemplatEngine: originalValue });
+        config({ useLegacyTemplateEngine: originalValue });
     });
 
-    it("works for render template", () => {
+    it("works for render-function template", () => {
         const ItemTemplate = (data: any) => (
             <div className={"template"}>
                 value: {data.value}, key: {data.key}, dxkey: {data.dxkey}
