@@ -16,6 +16,11 @@ interface ITemplateProps {
     keyFn?: (data: any) => string;
 }
 
+interface ITemplateArgs {
+    data: any;
+    index?: number;
+}
+
 class Template extends React.PureComponent<ITemplateProps, any> {
     public render() {
         return null;
@@ -52,6 +57,7 @@ function findProps(child: React.ReactElement<any>): ITemplateProps | undefined {
 export {
     ITemplateMeta,
     ITemplateProps,
+    ITemplateArgs,
     Template,
     findProps
 };

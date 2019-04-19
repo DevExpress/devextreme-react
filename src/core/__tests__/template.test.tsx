@@ -1,9 +1,20 @@
 import * as events from "devextreme/events";
 
+import config, { getOption as getConfigOption } from "../../core/config";
 import ConfigurationComponent from "../../core/nested-option";
 import { Template } from "../../core/template";
 import { mount, React, shallow } from "./setup";
 import { TestComponent, Widget, WidgetClass } from "./test-component";
+
+const originalLegacyOption = getConfigOption("useLegacyTemplateEngine");
+
+beforeEach(() => {
+    config({ useLegacyTemplateEngine: false });
+});
+
+afterEach(() => {
+    config({ useLegacyTemplateEngine: originalLegacyOption });
+});
 
 // tslint:disable-next-line:max-classes-per-file
 class ComponentWithTemplates extends TestComponent {
@@ -20,21 +31,36 @@ class ComponentWithTemplates extends TestComponent {
     }
 }
 
-function renderTemplate(name: string, model?: any, container?: any, onRendered?: () => void): Element {
+function renderTemplate(name: string, model?: any, container?: any, index?: number, onRendered?: () => void): Element {
     model = model || {};
     container = container || document.createElement("div");
     const render = WidgetClass.mock.calls[0][1].integrationOptions.templates[name].render;
 
     return render({
-        container, model, onRendered
+        container, model, ...(index && { index }), onRendered
     });
 }
 
-function renderItemTemplate(model?: any, container?: any, onRendered?: () => void): Element {
-    return renderTemplate("item", model, container, onRendered);
+function renderItemTemplate(model?: any, container?: any, index?: number, onRendered?: () => void): Element {
+    return renderTemplate("item", model, container, index, onRendered);
 }
 
 function testTemplateOption(testedOption: string) {
+    let prepareTemplate = (render) => render;
+
+    if (testedOption === "itemComponent") {
+        prepareTemplate = (render) => {
+            // tslint:disable-next-line:max-classes-per-file
+            class ItemComponent extends React.PureComponent {
+                public props: { data: any, index?: number };
+                public render() {
+                    return render(this.props.data, this.props.index);
+                }
+            }
+            return ItemComponent;
+        };
+    }
+
     it("pass integrationOptions to widget", () => {
         const elementOptions: Record<string, any> = {};
         elementOptions[testedOption] = () => <div>Template</div>;
@@ -54,7 +80,9 @@ function testTemplateOption(testedOption: string) {
 
     it("renders", () => {
         const elementOptions: Record<string, any> = {};
-        elementOptions[testedOption] = (props: any) => <div className={"template"}>Template {props.text}</div>;
+        elementOptions[testedOption] = prepareTemplate((data: any) => (
+            <div className={"template"}>Template {data.text}</div>
+        ));
 
         const component = mount(React.createElement(ComponentWithTemplates, elementOptions));
 
@@ -129,7 +157,7 @@ function testTemplateOption(testedOption: string) {
 
     it("renders template removeEvent listener", () => {
         const elementOptions: Record<string, any> = {};
-        elementOptions[testedOption] = (props: any) => <div>Template {props.text}</div>;
+        elementOptions[testedOption] = prepareTemplate((data: any) => <div>Template {data.text}</div>);
         const component = mount(React.createElement(ComponentWithTemplates, elementOptions));
 
         const container = document.createElement("div");
@@ -140,7 +168,9 @@ function testTemplateOption(testedOption: string) {
 
     it("renders template removeEvent listener for table", () => {
         const elementOptions: Record<string, any> = {};
-        elementOptions[testedOption] = (props: any) => <tbody><tr><td>Template {props.text}</td></tr></tbody>;
+        elementOptions[testedOption] = prepareTemplate((data: any) => (
+            <tbody><tr><td>Template {data.text}</td></tr></tbody>
+        ));
         const component = mount(React.createElement(ComponentWithTemplates, elementOptions));
 
         const container = document.createElement("table");
@@ -153,11 +183,13 @@ function testTemplateOption(testedOption: string) {
 
     it("calls onRendered callback", () => {
         const elementOptions: Record<string, any> = {};
-        elementOptions[testedOption] = (props: any) => <div className={"template"}>Template {props.text}</div>;
+        elementOptions[testedOption] = prepareTemplate((data: any) => (
+            <div className={"template"}>Template {data.text}</div>
+        ));
         const component = mount(React.createElement(ComponentWithTemplates, elementOptions));
         const onRendered: () => void = jest.fn();
 
-        renderItemTemplate({ text: "with data" }, undefined, onRendered);
+        renderItemTemplate({ text: "with data" }, undefined, undefined, onRendered);
         component.update();
         jest.runAllTimers();
         expect(onRendered).toBeCalled();
@@ -174,7 +206,9 @@ function testTemplateOption(testedOption: string) {
 
     it("has templates in state with unique ids", () => {
         const elementOptions: Record<string, any> = {};
-        elementOptions[testedOption] = (props: any) => <div className={"template"}>Template {props.text}</div>;
+        elementOptions[testedOption] = prepareTemplate((data: any) => (
+            <div className={"template"}>Template {data.text}</div>
+        ));
         const component = shallow(React.createElement(ComponentWithTemplates, elementOptions));
 
         renderItemTemplate({ text: 1 });
@@ -187,7 +221,9 @@ function testTemplateOption(testedOption: string) {
 
     it("has templates in state with ids genetated with keyExpr", () => {
         const elementOptions: Record<string, any> = {};
-        elementOptions[testedOption] = (props: any) => <div className={"template"}>Template {props.text}</div>;
+        elementOptions[testedOption] = prepareTemplate((data: any) => (
+            <div className={"template"}>Template {data.text}</div>
+        ));
         elementOptions.itemKeyFn = (data) => data.text;
         const component = shallow(React.createElement(ComponentWithTemplates, elementOptions));
 
@@ -202,7 +238,9 @@ function testTemplateOption(testedOption: string) {
 
     it("removes deleted nodes from state", () => {
         const elementOptions: Record<string, any> = {};
-        elementOptions[testedOption] = (props: any) => <div className={"template"}>Template {props.text}</div>;
+        elementOptions[testedOption] = prepareTemplate((data: any) => (
+            <div className={"template"}>Template {data.text}</div>
+        ));
         const component = mount(React.createElement(ComponentWithTemplates, elementOptions));
 
         renderItemTemplate();
@@ -237,20 +275,39 @@ describe("function template", () => {
         component.update();
         expect(component.find(".template").html()).toBe('<div class="template">Template with data</div>');
     });
+
+    it("renders index", () => {
+        const itemRender: any = jest.fn((_, index: number) => {
+            return <div className={"template"}>Index {index}</div>;
+        });
+        const component = mount(
+            <ComponentWithTemplates itemRender={itemRender} />
+        );
+        renderItemTemplate(undefined, undefined, 5);
+
+        expect(itemRender).toBeCalled();
+        component.update();
+        expect(component.find(".template").html()).toBe('<div class="template">Index 5</div>');
+    });
 });
 
 describe("component template", () => {
     testTemplateOption("itemComponent");
 
-    it("renders key prop", () => {
-        const ItemTemplate = (props: any) => <div className={"template"}>key: {props.key}, dxkey: {props.dxkey}</div>;
+    it("renders index", () => {
+        const ItemTemplate = (props: any) => (
+            <div className={"template"}>
+                value: {props.data.value}, index: {props.index}
+            </div>
+        );
+
         const component = mount(
             <ComponentWithTemplates itemComponent={ItemTemplate} />
         );
 
-        renderItemTemplate({ key: "key_1" });
+        renderItemTemplate({ value: "Value" }, undefined, 5);
         component.update();
-        expect(component.find(".template").html()).toBe('<div class="template">key: , dxkey: key_1</div>');
+        expect(component.find(".template").text()).toBe("value: Value, index: 5");
     });
 });
 

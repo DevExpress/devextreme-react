@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import { generateID } from "./helpers";
+import { ITemplateArgs } from "./template";
 import { ITemplateUpdater } from "./template-updater";
 import { ITemplateWrapperProps, TemplateWrapper } from "./template-wrapper";
 
@@ -16,7 +17,7 @@ interface IDxTemplateData {
 }
 
 function createDxTemplate(
-    createContentProvider: () => (model: any) => any,
+    createContentProvider: () => (props: ITemplateArgs) => any,
     templateUpdater: ITemplateUpdater,
     keyFn?: (data: any) => string
 ): IDxTemplate {
@@ -40,19 +41,20 @@ function createDxTemplate(
             const container = unwrapElement(data.container);
 
             templateUpdater.setTemplate(templateId, () => {
-                const model = data.model;
-                if (model && model.hasOwnProperty("key")) {
-                    model.dxkey = model.key;
-                }
+                const props: ITemplateArgs = {
+                    data: data.model,
+                    index: data.index
+                };
+
                 const contentProvider = createContentProvider();
                 return React.createElement<ITemplateWrapperProps>(
                     TemplateWrapper,
                     {
-                        content: contentProvider(model),
+                        content: contentProvider(props),
                         container,
                         onRemoved: () => {
                             templateUpdater.removeTemplate(templateId);
-                            renderedModels.delete(model);
+                            renderedModels.delete(props);
                         },
                         onRendered: data.onRendered,
                         key: templateId
