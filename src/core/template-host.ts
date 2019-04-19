@@ -15,7 +15,7 @@ interface IIntegrationDescr {
     useChildren: (name: string) => boolean;
 }
 
-function normalizeProps(props: ITemplateArgs) {
+function normalizeProps(props: ITemplateArgs): ITemplateArgs | ITemplateArgs["data"] {
     if (getConfigOption("useLegacyTemplateEngine")) {
         const model = props.data;
         if (model && model.hasOwnProperty("key")) {
