@@ -87,7 +87,7 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
     this._optionsManager.resetNestedElements();
 
     React.Children.forEach(this.props.children, (child: React.ReactElement<any>) => {
-      if(child) {
+      if (child) {
         args.push(this._preprocessChild(child) || child);
       }
     });
