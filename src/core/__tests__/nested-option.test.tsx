@@ -1,6 +1,6 @@
 import { Component } from "../../core/component";
 import ConfigurationComponent from "../../core/nested-option";
-import { mount, React, shallow } from "./setup";
+import { mount, React } from "./setup";
 import { TestComponent, Widget, WidgetClass } from "./test-component";
 
 // tslint:disable:max-classes-per-file
@@ -59,6 +59,22 @@ describe("nested option", () => {
         mount(
             <TestComponent>
                 <NestedComponent a={123} />
+            </TestComponent>
+        );
+
+        expect(WidgetClass.mock.calls[0][1]).toEqual({
+            templatesRenderAsynchronously: true,
+            option: {
+                a: 123
+            }
+        });
+    });
+
+    it("is not pulled with condition", () => {
+        mount(
+            <TestComponent>
+                <NestedComponent a={123} />
+                { false && <NestedComponent a={123} /> }
             </TestComponent>
         );
 
