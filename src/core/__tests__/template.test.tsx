@@ -1,20 +1,9 @@
 import * as events from "devextreme/events";
 
-import config, { getOption as getConfigOption } from "../../core/config";
 import ConfigurationComponent from "../../core/nested-option";
 import { Template } from "../../core/template";
 import { mount, React, shallow } from "./setup";
 import { TestComponent, Widget, WidgetClass } from "./test-component";
-
-const originalLegacyOption = getConfigOption("useLegacyTemplateEngine");
-
-beforeEach(() => {
-    config({ useLegacyTemplateEngine: false });
-});
-
-afterEach(() => {
-    config({ useLegacyTemplateEngine: originalLegacyOption });
-});
 
 // tslint:disable-next-line:max-classes-per-file
 class ComponentWithTemplates extends TestComponent {

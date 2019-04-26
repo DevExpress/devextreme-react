@@ -21,9 +21,6 @@ import ToolbarExample from "./toolbar-example";
 import ValidationExample from "./validation-example";
 
 import { Button, NumberBox } from "../src";
-import config from "../src/core/config";
-
-config({ useLegacyTemplateEngine: false });
 
 ReactDOM.render(
   <div>
