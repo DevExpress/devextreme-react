@@ -74,7 +74,7 @@ describe("nested option", () => {
         mount(
             <TestComponent>
                 <NestedComponent a={123} />
-                {false && <NestedComponent a={123} />}
+                {false && <NestedComponent a={456} />}
             </TestComponent>
         );
 
