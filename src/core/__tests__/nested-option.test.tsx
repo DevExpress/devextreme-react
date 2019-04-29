@@ -70,7 +70,7 @@ describe("nested option", () => {
         });
     });
 
-    it("is not pulled with condition", () => {
+    it("is not pulled during conditional rendering", () => {
         mount(
             <TestComponent>
                 <NestedComponent a={123} />
