@@ -59,7 +59,7 @@ export interface IFunctionDescr extends ITypeDescr {
   params: {
     name: string;
     types: ITypeDescr[];
-  }[];
+  }[]; // tslint:disable-line:array-type
   returnValueType: ITypeDescr;
 }
 
@@ -67,5 +67,5 @@ export interface IObjectDescr extends ITypeDescr {
   fields: {
     name: string;
     types: ITypeDescr[];
-  }[];
+  }[]; // tslint:disable-line:array-type
 }
