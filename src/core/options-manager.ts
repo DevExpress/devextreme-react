@@ -111,8 +111,18 @@ class OptionsManager {
 
             optionValue = getNestedValue(nestedOptionObj, e.fullName.split(".").slice(1));
         } else {
-            optionName = e.name;
-            optionValue = this._optionValueGetter(e.name);
+            const fullNameParts = e.fullName.split(".");
+
+            if (fullNameParts.length > 1) {
+                optionName = e.fullName;
+                optionValue = getNestedValue(
+                    this._optionValueGetter(e.name),
+                    fullNameParts.slice(1)
+                );
+            } else {
+                optionName = e.name;
+                optionValue = this._optionValueGetter(e.name);
+            }
         }
 
         if (optionValue === undefined || optionValue === null) {

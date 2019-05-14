@@ -230,7 +230,7 @@ describe("option control", () => {
         fireOptionChange("complexOption.a", 234);
         jest.runAllTimers();
         expect(Widget.option.mock.calls.length).toBe(1);
-        expect(Widget.option.mock.calls[0]).toEqual(["complexOption", {a: 123}]);
+        expect(Widget.option.mock.calls[0]).toEqual(["complexOption.a", 123]);
     });
 
     it("rolls option value back if value has no changes", () => {
@@ -256,6 +256,26 @@ describe("option control", () => {
         jest.runAllTimers();
         expect(Widget.option.mock.calls.length).toBe(1);
         expect(Widget.option.mock.calls[0]).toEqual(["everyOption", 234]);
+    });
+
+    it("does not roll if value is not controlled", () => {
+        shallow(
+            <ControlledComponent />
+        );
+
+        fireOptionChange("everyOption", 123);
+        jest.runAllTimers();
+        expect(Widget.option.mock.calls.length).toBe(0);
+    });
+
+    it("does not roll if complex option item is not controlled", () => {
+        shallow(
+            <ControlledComponent complexOption={{a: 123}} />
+        );
+
+        fireOptionChange("complexOption.b", 234);
+        jest.runAllTimers();
+        expect(Widget.option.mock.calls.length).toBe(0);
     });
 
 });
