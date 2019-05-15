@@ -211,7 +211,7 @@ describe("option control", () => {
         });
     });
 
-    it("rolls option value back", () => {
+    it("rolls back controlled simple option", () => {
         shallow(
             <ControlledComponent everyOption={123} />
         );
@@ -222,7 +222,7 @@ describe("option control", () => {
         expect(Widget.option.mock.calls[0]).toEqual(["everyOption", 123]);
     });
 
-    it("rolls complex option value back", () => {
+    it("rolls back complex option controlled field", () => {
         shallow(
             <ControlledComponent complexOption={{a: 123}} />
         );
@@ -233,7 +233,7 @@ describe("option control", () => {
         expect(Widget.option.mock.calls[0]).toEqual(["complexOption.a", 123]);
     });
 
-    it("rolls option value back if value has no changes", () => {
+    it("rolls back one simple option and updates other", () => {
         const component = shallow(
             <ControlledComponent everyOption={123} anotherOption={"const"} />
         );
@@ -246,7 +246,7 @@ describe("option control", () => {
         expect(Widget.option.mock.calls[1]).toEqual(["anotherOption", "const"]);
     });
 
-    it("apply option change if value really change", () => {
+    it("applies simple option change", () => {
         const component = shallow(
             <ControlledComponent everyOption={123} />
         );
@@ -258,7 +258,19 @@ describe("option control", () => {
         expect(Widget.option.mock.calls[0]).toEqual(["everyOption", 234]);
     });
 
-    it("does not roll if option is not controlled", () => {
+    it("applies complex option change", () => {
+        const component = shallow(
+            <ControlledComponent complexOption={{a: 123}} />
+        );
+
+        fireOptionChange("complexOption.b", 234);
+        component.setProps({ complexOption: {a: 123, b: 234} });
+        jest.runAllTimers();
+        expect(Widget.option.mock.calls.length).toBe(1);
+        expect(Widget.option.mock.calls[0]).toEqual(["complexOption", {a: 123, b: 234} ]);
+    });
+
+    it("does not roll back not controlled simple option", () => {
         shallow(
             <ControlledComponent />
         );
@@ -268,7 +280,7 @@ describe("option control", () => {
         expect(Widget.option.mock.calls.length).toBe(0);
     });
 
-    it("does not roll if complex option item is not controlled", () => {
+    it("does not roll back controlled complex option not controlled field", () => {
         shallow(
             <ControlledComponent complexOption={{a: 123}} />
         );
@@ -278,7 +290,7 @@ describe("option control", () => {
         expect(Widget.option.mock.calls.length).toBe(0);
     });
 
-    it("does not roll if complex option is not controlled", () => {
+    it("does not roll back not controlled complex option", () => {
         shallow(
             <ControlledComponent />
         );
