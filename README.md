@@ -8,16 +8,14 @@ This project allows you to use [DevExtreme widgets](http://js.devexpress.com/Dem
 * [Documentation](https://js.devexpress.com/Documentation/Guide/React_Components/DevExtreme_React_Components/)
 * [Technical Demos](https://js.devexpress.com/Demos/WidgetsGallery/Demo/DataGrid/Overview/React/Light/)
 * [API Reference](http://js.devexpress.com/Documentation/ApiReference/)
-* [License](#license)
-* [Support & Feedback](#support-feedback)
 
-## <a name="license"></a>License ##
+## License ##
 
 **DevExtreme React UI Components are released as an MIT-licensed (free and open-source) add-on to DevExtreme.**
 
 Familiarize yourself with the [DevExtreme License](https://js.devexpress.com/Licensing/). [Free trial is available!](http://js.devexpress.com/Buy/)
 
-## <a name="support-feedback"></a>Support & Feedback ##
+## Support & Feedback ##
 
 If you have questions regarding React functionality, consult [React docs](https://reactjs.org/docs).
 
