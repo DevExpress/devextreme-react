@@ -1,4 +1,8 @@
 export function getNestedValue(obj: object, keyParts: string[]): any {
+    if (!obj) {
+        return;
+    }
+
     let current = obj;
     keyParts.some((part) => {
         current = current[part];
