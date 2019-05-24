@@ -6,7 +6,7 @@ import { deferUpdate } from "devextreme/core/utils/common";
 import OptionsManager, { INestedOption } from "./options-manager";
 import { findProps as findNestedTemplateProps, ITemplateMeta } from "./template";
 import TemplatesManager from "./templates-manager";
-import { ITemplatesStore, TemplatesStore } from "./templates-store";
+import { TemplatesStore } from "./templates-store";
 import { elementPropNames, getClassName, separateProps } from "./widget-config";
 
 const DX_REMOVE_EVENT = "dxremove";
@@ -32,7 +32,7 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
   protected readonly _expectedChildren: Record<string, INestedOption>;
 
   private readonly _templatesManager: TemplatesManager;
-  private readonly _templatesStore: ITemplatesStore;
+  private readonly _templatesStore: TemplatesStore;
   private readonly _optionsManager: OptionsManager;
   private _updateScheduled: boolean = false;
 

@@ -3,7 +3,7 @@ import * as React from "react";
 import { generateID } from "./helpers";
 import { ITemplateArgs } from "./template";
 import { ITemplateWrapperProps, TemplateWrapper } from "./template-wrapper";
-import { ITemplatesStore } from "./templates-store";
+import { TemplatesStore } from "./templates-store";
 
 interface IDxTemplate {
     render: (data: IDxTemplateData) => any;
@@ -18,7 +18,7 @@ interface IDxTemplateData {
 
 function createDxTemplate(
     createContentProvider: () => (props: ITemplateArgs) => any,
-    templatesStore: ITemplatesStore,
+    templatesStore: TemplatesStore,
     keyFn?: (data: any) => string
 ): IDxTemplate {
 

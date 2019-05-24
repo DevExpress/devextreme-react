@@ -3,7 +3,7 @@ import * as React from "react";
 import { getOption as getConfigOption } from "./config";
 import { createDxTemplate, IDxTemplate } from "./dx-template";
 import { ITemplateArgs, ITemplateMeta, ITemplateProps } from "./template";
-import { ITemplatesStore } from "./templates-store";
+import { TemplatesStore } from "./templates-store";
 
 type PropsGetter = (propName: string) => any;
 
@@ -39,7 +39,7 @@ const contentCreators = {
 };
 
 class TemplatesManager {
-    private _templatesStore: ITemplatesStore;
+    private _templatesStore: TemplatesStore;
     private _templates: Record<string, any> = {};
     private _stubs: Record<string, any> = {};
     private _nestedTemplateProps: Record<string, {
@@ -48,7 +48,7 @@ class TemplatesManager {
         children: any;
     }> = {};
 
-    constructor(templatesStore: ITemplatesStore) {
+    constructor(templatesStore: TemplatesStore) {
         this._templatesStore = templatesStore;
     }
 

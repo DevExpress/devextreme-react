@@ -1,4 +1,5 @@
 import { createDxTemplate } from "../dx-template";
+import { TemplatesStore } from "../templates-store";
 
 describe("dx-template", () => {
 
@@ -46,7 +47,7 @@ describe("dx-template", () => {
             expect(secondId).not.toBe(firstId);
         });
 
-        const templatesStore = {
+        const templatesStore: any = {
             add: jest.fn(),
             remove: jest.fn(),
             listWrappers: jest.fn()
@@ -55,7 +56,7 @@ describe("dx-template", () => {
         function tryDoubleRender(model: any): void {
             const template = createDxTemplate(
                 jest.fn(),
-                templatesStore
+                templatesStore as TemplatesStore
             );
 
             template.render({
