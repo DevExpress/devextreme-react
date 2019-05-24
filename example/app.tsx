@@ -15,11 +15,11 @@ import MapExample from "./map-example";
 import PopupExample from "./popup-example";
 import SchedulerExample from "./scheduler-example";
 import ScrollViewExample from "./scroll-view-example";
+import SelectBoxExample from "./selectbox-example";
 import SlideOutViewExample from "./slide-out-view-example";
 import TextBoxExample from "./text-box-example";
 import ToolbarExample from "./toolbar-example";
 import ValidationExample from "./validation-example";
-import SelectBoxExample from "./selectbox-example";
 
 import { Button, NumberBox } from "../src";
 
