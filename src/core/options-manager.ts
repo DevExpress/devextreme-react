@@ -3,7 +3,7 @@ import { ITemplateMeta } from "./template";
 import { Children as ReactChildren } from "react";
 import { addPrefixToKeys, getNestedValue } from "./helpers";
 import { createOptionComponent, INestedOptionMeta } from "./nested-option";
-import TemplateHost from "./template-host";
+import TemplatesManager from "./templates-manager";
 import { separateProps } from "./widget-config";
 
 interface INestedOption {
@@ -43,16 +43,16 @@ class OptionsManager {
     private readonly _guards: Record<string, number> = {};
     private readonly _nestedOptions: Record<string, INestedConfigDescr> = {};
     private readonly _optionValueGetter: (name: string) => any;
-    private readonly _templateHost: TemplateHost;
+    private readonly _templatesManager: TemplatesManager;
 
     private _instance: any;
 
     private _updatingProps: boolean;
     private _dirtyOptions: Record<string, INestedConfigDescr> = {};
 
-    constructor(optionValueGetter: (name: string) => any, templateHost: TemplateHost) {
+    constructor(optionValueGetter: (name: string) => any, templateHost: TemplatesManager) {
         this._optionValueGetter = optionValueGetter;
-        this._templateHost = templateHost;
+        this._templatesManager = templateHost;
 
         this._setOption = this._setOption.bind(this);
         this._registerNestedOption = this._registerNestedOption.bind(this);
@@ -189,6 +189,7 @@ class OptionsManager {
         if (isEventHanlder(name, value)) {
             actualValue = this._wrapEventHandler(value);
         }
+
         this._instance.option(name, actualValue);
     }
 
@@ -238,7 +239,7 @@ class OptionsManager {
                 ReactChildren.count(e.element.props.children) > nestedObjectsCount;
 
             if (templateRegistrationRequired) {
-                this._templateHost.add({
+                this._templatesManager.add({
                     useChildren: (optionName) => {
                         return optionName === "template" && hasChildrenForTemplate;
                     },

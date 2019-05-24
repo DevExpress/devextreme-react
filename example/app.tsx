@@ -19,6 +19,7 @@ import SlideOutViewExample from "./slide-out-view-example";
 import TextBoxExample from "./text-box-example";
 import ToolbarExample from "./toolbar-example";
 import ValidationExample from "./validation-example";
+import SelectBoxExample from "./selectbox-example";
 
 import { Button, NumberBox } from "../src";
 
@@ -69,6 +70,9 @@ ReactDOM.render(
       <Button text="Button with style attr" style={{backgroundColor: "#ffc"}}/>
     </Example>
 
+    <Example title="SelectBox example">
+      <SelectBoxExample />
+    </Example>
   </div>,
   document.getElementById("app")
 );

@@ -2,11 +2,11 @@ import * as events from "devextreme/events";
 
 import * as React from "react";
 
+import { deferUpdate } from "devextreme/core/utils/common";
 import OptionsManager, { INestedOption } from "./options-manager";
 import { findProps as findNestedTemplateProps, ITemplateMeta } from "./template";
-import TemplateHost from "./template-host";
-import { TemplateUpdater } from "./template-updater";
-import { TemplateWrapperRenderer } from "./template-wrapper";
+import TemplatesManager from "./templates-manager";
+import { ITemplatesStore, TemplatesStore } from "./templates-store";
 import { elementPropNames, getClassName, separateProps } from "./widget-config";
 
 const DX_REMOVE_EVENT = "dxremove";
@@ -16,17 +16,13 @@ interface IWidgetConfig {
     options: Record<string, any>;
 }
 
-interface IState {
-  templates: Record<string, TemplateWrapperRenderer>;
-}
-
 interface IHtmlOptions {
   id?: string;
   className?: string;
   style?: any;
 }
 
-abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent<P, IState> {
+abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent<P> {
   protected _WidgetClass: any;
   protected _instance: any;
   protected _element: HTMLDivElement;
@@ -35,28 +31,28 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
   protected readonly _templateProps: ITemplateMeta[] = [];
   protected readonly _expectedChildren: Record<string, INestedOption>;
 
-  private readonly _templateHost: TemplateHost;
+  private readonly _templatesManager: TemplatesManager;
+  private readonly _templatesStore: ITemplatesStore;
   private readonly _optionsManager: OptionsManager;
-  private readonly _templateUpdater: TemplateUpdater;
+  private _updateScheduled: boolean = false;
 
   constructor(props: P) {
     super(props);
     this._prepareProps = this._prepareProps.bind(this);
+    this._scheduleUpdate = this._scheduleUpdate.bind(this);
 
-    this.state = {
-      templates: {}
-    };
-
-    this._templateUpdater = new TemplateUpdater((templates) => {
-      this.setState({ templates: {...templates} });
-    });
-
-    this._templateHost = new TemplateHost(this._templateUpdater);
-    this._optionsManager = new OptionsManager((name) => this.props[name], this._templateHost);
+    this._templatesStore = new TemplatesStore(this._scheduleUpdate);
+    this._templatesManager = new TemplatesManager(this._templatesStore);
+    this._optionsManager = new OptionsManager((name) => this.props[name], this._templatesManager);
   }
 
   public render() {
-    return React.createElement("div", this._getElementProps(), ...this._prepareChildren());
+    return React.createElement(
+      "div",
+      this._getElementProps(),
+      ...this._prepareChildren(),
+      ...this._templatesStore.listWrappers()
+    );
   }
 
   public componentDidMount() {
@@ -69,9 +65,8 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
     const preparedProps = this._prepareProps(this.props);
     const options: Record<string, any> = {
       ...preparedProps.options,
-      ...this._templateHost.options
+      ...this._templatesManager.options
     };
-
     this._optionsManager.processChangedValues(options, prevProps);
   }
 
@@ -92,19 +87,13 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
       }
     });
 
-    const templates = Object.getOwnPropertyNames(this.state.templates) || [];
-
-    templates.forEach((t) => {
-      args.push(this.state.templates[t]());
-    });
-
     return args;
   }
 
   protected _preprocessChild(component: React.ReactElement<any>): React.ReactElement<any> {
     const nestedTemplate = findNestedTemplateProps(component);
     if (nestedTemplate) {
-      this._templateHost.addNested(nestedTemplate);
+      this._templatesManager.addNested(nestedTemplate);
     }
     return this._optionsManager.registerNestedOption(component, this._expectedChildren) || component;
   }
@@ -123,7 +112,7 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
       templatesRenderAsynchronously: true,
       ...preparedProps.defaults,
       ...preparedProps.options,
-      ...this._templateHost.options
+      ...this._templatesManager.options
     };
 
     this._optionsManager.wrapEventHandlers(options);
@@ -131,6 +120,19 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
     this._instance = new this._WidgetClass(element, options);
     this._optionsManager.setInstance(this._instance);
     this._instance.on("optionChanged", this._optionsManager.handleOptionChange);
+  }
+
+  private _scheduleUpdate() {
+    if (this._updateScheduled) {
+      return;
+    }
+
+    this._updateScheduled = true;
+
+    deferUpdate(() => {
+      this.forceUpdate();
+      this._updateScheduled = false;
+    });
   }
 
   private _getElementProps(): Record<string, any> {
@@ -170,7 +172,7 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
   private _prepareProps(rawProps: Record<string, any>): IWidgetConfig {
     const separatedProps = separateProps(rawProps, this._defaults, this._templateProps);
 
-    this._templateHost.add({
+    this._templatesManager.add({
       useChildren: () => false,
       ownerName: "",
       templateProps: this._templateProps,
@@ -186,7 +188,6 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
 }
 
 export {
-  IState,
   IHtmlOptions,
   ComponentBase,
   DX_REMOVE_EVENT
