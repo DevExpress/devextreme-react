@@ -50,7 +50,7 @@ describe("dx-template", () => {
         const templatesStore: any = {
             add: jest.fn(),
             remove: jest.fn(),
-            listWrappers: jest.fn()
+            renderWrappers: jest.fn()
         };
 
         function tryDoubleRender(model: any): void {

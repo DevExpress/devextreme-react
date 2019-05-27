@@ -46,6 +46,16 @@ describe("templates-store", () => {
         expect(templatesStore.renderWrappers().length).toBe(0);
     });
 
+    it("removes not existing template correctly", () => {
+        const templatesStore = new TemplatesStore(jest.fn());
+
+        templatesStore.add("1", jest.fn());
+
+        templatesStore.remove("2");
+        templatesStore.remove("3");
+        expect(templatesStore.renderWrappers().length).toBe(1);
+    });
+
     it("does not execute callback on item removed", () => {
         const callback = jest.fn();
         const templatesStore = new TemplatesStore(callback);

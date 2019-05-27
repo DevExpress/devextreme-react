@@ -235,7 +235,7 @@ function testTemplateOption(testedOption: string) {
         const componentInstance = component.instance() as any;
 
         renderItemTemplate();
-        expect(componentInstance._templatesStore.listWrappers().length).toBe(1);
+        expect(componentInstance._templatesStore.renderWrappers().length).toBe(1);
         component.update();
         const templateContent = component.find(".template").getDOMNode();
 
@@ -248,7 +248,7 @@ function testTemplateOption(testedOption: string) {
         parentElement.removeChild(templateContent);
         events.triggerHandler(removeListener, "dxremove");
         component.update();
-        expect(componentInstance._templatesStore.listWrappers().length).toBe(0);
+        expect(componentInstance._templatesStore.renderWrappers().length).toBe(0);
     });
 }
 
