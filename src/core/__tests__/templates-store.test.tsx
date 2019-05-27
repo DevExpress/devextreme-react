@@ -8,7 +8,7 @@ describe("templates-store", () => {
         templatesStore.add("1", jest.fn());
         templatesStore.add("2", jest.fn());
 
-        expect(templatesStore.listWrappers().length).toBe(2);
+        expect(templatesStore.renderWrappers().length).toBe(2);
     });
 
     it("replaces items with equal identifiers", () => {
@@ -17,7 +17,7 @@ describe("templates-store", () => {
         templatesStore.add("1", jest.fn());
         templatesStore.add("1", jest.fn());
 
-        expect(templatesStore.listWrappers().length).toBe(1);
+        expect(templatesStore.renderWrappers().length).toBe(1);
     });
 
     it("executes callback on item added", () => {
@@ -28,7 +28,7 @@ describe("templates-store", () => {
 
         expect(callback.mock.calls.length).toBe(1);
 
-        templatesStore.add("1", jest.fn());
+        templatesStore.add("2", jest.fn());
 
         expect(callback.mock.calls.length).toBe(2);
     });
@@ -40,10 +40,10 @@ describe("templates-store", () => {
         templatesStore.add("2", jest.fn());
 
         templatesStore.remove("1");
-        expect(templatesStore.listWrappers().length).toBe(1);
+        expect(templatesStore.renderWrappers().length).toBe(1);
 
         templatesStore.remove("2");
-        expect(templatesStore.listWrappers().length).toBe(0);
+        expect(templatesStore.renderWrappers().length).toBe(0);
     });
 
     it("does not execute callback on item removed", () => {
@@ -69,7 +69,7 @@ describe("templates-store", () => {
         templatesStore.add("1", renderer1);
         templatesStore.add("2", renderer2);
 
-        const wrappers = templatesStore.listWrappers();
+        const wrappers = templatesStore.renderWrappers();
 
         expect(renderer1.mock.calls.length).toBe(1);
         expect(renderer2.mock.calls.length).toBe(1);

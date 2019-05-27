@@ -1,12 +1,6 @@
 import { TemplateWrapper, TemplateWrapperRenderer } from "./template-wrapper";
 
-interface ITemplatesStore {
-    add(templateId: string, templateFunc: TemplateWrapperRenderer): void;
-    remove(templateId: string): void;
-    listWrappers(): TemplateWrapper[];
-}
-
-class TemplatesStore implements ITemplatesStore {
+class TemplatesStore {
     private readonly _templates: Record<string, TemplateWrapperRenderer> = {};
     private readonly _onTemplateAdded: () => void;
 
@@ -23,7 +17,7 @@ class TemplatesStore implements ITemplatesStore {
         delete this._templates[templateId];
     }
 
-    public listWrappers(): TemplateWrapper[] {
+    public renderWrappers(): TemplateWrapper[] {
         return Object.getOwnPropertyNames(this._templates).map(
             (templateId) => this._templates[templateId]()
         );
@@ -31,6 +25,5 @@ class TemplatesStore implements ITemplatesStore {
 }
 
 export {
-    ITemplatesStore,
     TemplatesStore
 };

@@ -53,6 +53,7 @@ class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps> {
     }
 
     public componentWillUnmount() {
+        // Let React remove it itself
         const node = ReactDOM.findDOMNode(this);
 
         if (node) {

@@ -51,7 +51,7 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
       "div",
       this._getElementProps(),
       ...this._prepareChildren(),
-      ...this._templatesStore.listWrappers()
+      ...this._templatesStore.renderWrappers()
     );
   }
 
