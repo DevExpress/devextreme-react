@@ -19,7 +19,6 @@ class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps> {
 
     constructor(props: ITemplateWrapperProps) {
         super(props);
-        this._restoreRemovedContent = this._restoreRemovedContent.bind(this);
     }
 
     public render() {
@@ -46,24 +45,34 @@ class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps> {
             setTimeout(() => onRendered());
         }
 
+        this._subscribeOnRemove();
+    }
+
+    public componentDidUpdate() {
+        this._subscribeOnRemove();
+    }
+
+    public componentWillUnmount() {
+        // Let React remove it itself
+        const node = ReactDOM.findDOMNode(this);
+
+        if (node) {
+            this.props.container.appendChild(node);
+        }
+        this.props.container.appendChild(
+            this._removalListenerRef.current as HTMLElement
+        );
+    }
+
+    private _subscribeOnRemove() {
         const removalListener = this._removalListenerRef.current;
         if (!removalListener) {
             // T713245 (ref to removalListener is undefined under certain conditions)
             return;
         }
         events.one(removalListener, DX_REMOVE_EVENT, () => {
-            this._restoreRemovedContent(removalListener);
             this.props.onRemoved();
         });
-    }
-
-    private _restoreRemovedContent(removalListener: HTMLElement) {
-        // Let React remove it itself
-        const node = ReactDOM.findDOMNode(this);
-        if (node) {
-            this.props.container.appendChild(node);
-        }
-        this.props.container.appendChild(removalListener);
     }
 }
 
