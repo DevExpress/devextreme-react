@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { createDxTemplate, IDxTemplate } from "./dx-template";
 import { ITemplateMeta, ITemplateProps } from "./template";
-import { ITemplateUpdater } from "./template-updater";
+import { TemplatesStore } from "./templates-store";
 
 type PropsGetter = (propName: string) => any;
 
@@ -20,9 +20,8 @@ const contentCreators = {
     children: (_: string, propsGetter: PropsGetter) => () => propsGetter("children")
 };
 
-class TemplateHost {
-    private readonly _templateUpdater: ITemplateUpdater;
-
+class TemplatesManager {
+    private _templatesStore: TemplatesStore;
     private _templates: Record<string, any> = {};
     private _stubs: Record<string, any> = {};
     private _nestedTemplateProps: Record<string, {
@@ -31,8 +30,8 @@ class TemplateHost {
         children: any;
     }> = {};
 
-    constructor(templateUpdater: ITemplateUpdater) {
-        this._templateUpdater = templateUpdater;
+    constructor(templatesStore: TemplatesStore) {
+        this._templatesStore = templatesStore;
     }
 
     public add(meta: IIntegrationDescr) {
@@ -69,7 +68,11 @@ class TemplateHost {
 
             const name = ownerName ? `${ownerName}.${tmpl.tmplOption}` : tmpl.tmplOption;
             stubs[name] = name;
-            templates[name] = createDxTemplate(contentCreator, this._templateUpdater, meta.propsGetter(tmpl.keyFn));
+            templates[name] = createDxTemplate(
+                contentCreator,
+                this._templatesStore,
+                meta.propsGetter(tmpl.keyFn)
+            );
         }
 
         this._templates = {
@@ -95,7 +98,7 @@ class TemplateHost {
         const propsGetter: PropsGetter = (prop) => this._nestedTemplateProps[name][prop];
 
         const contentCreator = contentCreators[type].bind(this, type, propsGetter);
-        this._templates[name] = createDxTemplate(contentCreator, this._templateUpdater, props.keyFn);
+        this._templates[name] = createDxTemplate(contentCreator, this._templatesStore, props.keyFn);
     }
 
     public get options(): Record<string, any> | undefined {
@@ -112,4 +115,4 @@ class TemplateHost {
     }
 }
 
-export default TemplateHost;
+export default TemplatesManager;

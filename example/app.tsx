@@ -15,6 +15,7 @@ import MapExample from "./map-example";
 import PopupExample from "./popup-example";
 import SchedulerExample from "./scheduler-example";
 import ScrollViewExample from "./scroll-view-example";
+import SelectBoxExample from "./selectbox-example";
 import SlideOutViewExample from "./slide-out-view-example";
 import TextBoxExample from "./text-box-example";
 import ToolbarExample from "./toolbar-example";
@@ -69,6 +70,9 @@ ReactDOM.render(
       <Button text="Button with style attr" style={{backgroundColor: "#ffc"}}/>
     </Example>
 
+    <Example title="SelectBox example">
+      <SelectBoxExample />
+    </Example>
   </div>,
   document.getElementById("app")
 );
