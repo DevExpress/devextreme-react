@@ -59,7 +59,6 @@ function testTemplateOption(testedOption: string) {
         const component = mount(React.createElement(ComponentWithTemplates, elementOptions));
 
         renderItemTemplate({ text: "with data" });
-        expect(Object.getOwnPropertyNames(component.state("templates")).length).toBe(1);
         component.update();
         expect(component.find(".template").html()).toBe('<div class="template">Template with data</div>');
     });
@@ -172,41 +171,44 @@ function testTemplateOption(testedOption: string) {
         expect(() => component.update.bind(component)).not.toThrow();
     });
 
-    it("has templates in state with unique ids", () => {
+    it("has templates with unique ids", () => {
         const elementOptions: Record<string, any> = {};
         elementOptions[testedOption] = (props: any) => <div className={"template"}>Template {props.text}</div>;
         const component = shallow(React.createElement(ComponentWithTemplates, elementOptions));
+        const componentInstace = component.instance() as any;
 
         renderItemTemplate({ text: 1 });
         renderItemTemplate({ text: 2 });
 
-        const templatesKeys = Object.getOwnPropertyNames(component.state("templates"));
+        const templatesKeys = Object.getOwnPropertyNames(componentInstace._templatesStore._templates);
         expect(templatesKeys.length).toBe(2);
         expect(templatesKeys[0]).not.toBe(templatesKeys[1]);
     });
 
-    it("has templates in state with ids genetated with keyExpr", () => {
+    it("has templates with ids genetated with keyExpr", () => {
         const elementOptions: Record<string, any> = {};
         elementOptions[testedOption] = (props: any) => <div className={"template"}>Template {props.text}</div>;
         elementOptions.itemKeyFn = (data) => data.text;
         const component = shallow(React.createElement(ComponentWithTemplates, elementOptions));
+        const componentInstance = component.instance() as any;
 
         renderItemTemplate({ text: 1 });
         renderItemTemplate({ text: 2 });
 
-        const templatesKeys = Object.getOwnPropertyNames(component.state("templates"));
+        const templatesKeys = Object.getOwnPropertyNames(componentInstance._templatesStore._templates);
         expect(templatesKeys.length).toBe(2);
         expect(templatesKeys[0]).toBe("1");
         expect(templatesKeys[1]).toBe("2");
     });
 
-    it("removes deleted nodes from state", () => {
+    it("removes deleted templates", () => {
         const elementOptions: Record<string, any> = {};
         elementOptions[testedOption] = (props: any) => <div className={"template"}>Template {props.text}</div>;
         const component = mount(React.createElement(ComponentWithTemplates, elementOptions));
+        const componentInstance = component.instance() as any;
 
         renderItemTemplate();
-        expect(Object.getOwnPropertyNames(component.state("templates")).length).toBe(1);
+        expect(componentInstance._templatesStore.renderWrappers().length).toBe(1);
         component.update();
         const templateContent = component.find(".template").getDOMNode();
 
@@ -219,7 +221,7 @@ function testTemplateOption(testedOption: string) {
         parentElement.removeChild(templateContent);
         events.triggerHandler(removeListener, "dxremove");
         component.update();
-        expect(Object.getOwnPropertyNames(component.state("templates")).length).toBe(0);
+        expect(componentInstance._templatesStore.renderWrappers().length).toBe(0);
     });
 }
 
@@ -353,7 +355,7 @@ describe("nested template", () => {
         expect(component.find(".template").html()).toBe('<div class="template">Second Template</div>');
     });
 
-    it("has templates in state with ids genetated with keyFn", () => {
+    it("has templates with ids genetated by keyFn", () => {
         const FirstTemplate = () => <div className={"template"}>Template</div>;
         const keyExpr = (data) => data.text;
         const component = mount(
@@ -363,10 +365,10 @@ describe("nested template", () => {
         );
 
         renderTemplate("item1", { text: 1 });
-
-        const templatesKeys = Object.getOwnPropertyNames(component.state("templates"));
-        expect(templatesKeys.length).toBe(1);
-        expect(templatesKeys[0]).toBe("1");
+        const componentInstance = component.instance() as any;
+        const templates = Object.getOwnPropertyNames(componentInstance._templatesStore._templates);
+        expect(templates.length).toBe(1);
+        expect(templates[0]).toBe("1");
     });
 
 });
