@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { generateID } from "./helpers";
+import { DoubleKeyMap, generateID } from "./helpers";
 import { ITemplateWrapperProps, TemplateWrapper } from "./template-wrapper";
 import { TemplatesStore } from "./templates-store";
 
@@ -21,10 +21,13 @@ function createDxTemplate(
     keyFn?: (data: any) => string
 ): IDxTemplate {
 
-    const renderedModels = new Map<any, string>();
+    const renderedTemplates = new DoubleKeyMap<any, HTMLElement | null, string>();
+
     return {
         render: (data: IDxTemplateData) => {
-            const prevTemplateId = renderedModels.get(data.model);
+            const container = unwrapElement(data.container);
+            const key = { key1: data.model, key2: container };
+            const prevTemplateId = renderedTemplates.get(key);
 
             let templateId: string;
             if (prevTemplateId) {
@@ -33,11 +36,9 @@ function createDxTemplate(
                 templateId = keyFn ? keyFn(data.model) : "__template_" + generateID();
 
                 if (data.model !== undefined) {
-                    renderedModels.set(data.model, templateId);
+                    renderedTemplates.set(key, templateId);
                 }
             }
-
-            const container = unwrapElement(data.container);
 
             templatesStore.add(templateId, () => {
                 const model = data.model;
@@ -52,7 +53,7 @@ function createDxTemplate(
                         container,
                         onRemoved: () => {
                             templatesStore.remove(templateId);
-                            renderedModels.delete(model);
+                            renderedTemplates.delete({ key1: model, key2: container });
                         },
                         onRendered: data.onRendered,
                         key: templateId

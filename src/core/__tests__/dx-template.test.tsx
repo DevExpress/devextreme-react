@@ -3,48 +3,99 @@ import { TemplatesStore } from "../templates-store";
 
 describe("dx-template", () => {
 
-    describe("template ID", () => {
+    describe("multiple rendering", () => {
+        const container = {};
+        const anotherContainer = {};
+
         beforeEach(() => {
             jest.resetAllMocks();
         });
 
-        it("is the same if template rendered twice for the same model", () => {
-            const model: any = {};
+        describe("is prevented if", () => {
 
-            tryDoubleRender(model);
+            it("is rendered with the same model", () => {
+                const model: any = {};
 
-            expect(templatesStore.add).toHaveBeenCalledTimes(2);
+                tryDoubleRender(model, container, model, container);
 
-            const firstId = templatesStore.add.mock.calls[0][0];
-            const secondId = templatesStore.add.mock.calls[1][0];
-            expect(secondId).toBe(firstId);
+                expect(templatesStore.add).toHaveBeenCalledTimes(2);
+
+                const firstId = templatesStore.add.mock.calls[0][0];
+                const secondId = templatesStore.add.mock.calls[1][0];
+                expect(secondId).toBe(firstId);
+            });
+
+            it("is rendered with null as model", () => {
+                // e.g. Lookup passes null as model if no item selected
+                // https://github.com/DevExpress/devextreme-react/issues/306
+                const model: any = null;
+
+                tryDoubleRender(model, container, model, container);
+
+                expect(templatesStore.add).toHaveBeenCalledTimes(2);
+
+                const firstId = templatesStore.add.mock.calls[0][0];
+                const secondId = templatesStore.add.mock.calls[1][0];
+                expect(secondId).toBe(firstId);
+            });
+
         });
 
-        it("is the same if template rendered twice with null passed as model", () => {
-            // e.g. Lookup passes null as model if no item selected
-            const model: any = null;
+        describe("is allowed if", () => {
 
-            tryDoubleRender(model);
+            it("is rendered with different models", () => {
+                // skip cases when model is undefined since no clear way of how to behave
+                const model1: any = {};
+                const model2: any = {};
 
-            expect(templatesStore.add).toHaveBeenCalledTimes(2);
+                tryDoubleRender(model1, container, model2, container);
 
-            const firstId = templatesStore.add.mock.calls[0][0];
-            const secondId = templatesStore.add.mock.calls[1][0];
-            expect(secondId).toBe(firstId);
-        });
+                expect(templatesStore.add).toHaveBeenCalledTimes(2);
 
-        it("is different if template rendered twice with undefined as model", () => {
-            // skip cases when model is undefined since no clear way of how to behave
-            const model: any = undefined;
+                const firstId = templatesStore.add.mock.calls[0][0];
+                const secondId = templatesStore.add.mock.calls[1][0];
 
-            tryDoubleRender(model);
+                expect(secondId).not.toBe(firstId);
+            });
 
-            expect(templatesStore.add).toHaveBeenCalledTimes(2);
+            it("is rendered with undefined as model", () => {
+                // skip cases when model is undefined since no clear way of how to behave
+                const model: any = undefined;
 
-            const firstId = templatesStore.add.mock.calls[0][0];
-            const secondId = templatesStore.add.mock.calls[1][0];
+                tryDoubleRender(model, container, model, container);
 
-            expect(secondId).not.toBe(firstId);
+                expect(templatesStore.add).toHaveBeenCalledTimes(2);
+
+                const firstId = templatesStore.add.mock.calls[0][0];
+                const secondId = templatesStore.add.mock.calls[1][0];
+
+                expect(secondId).not.toBe(firstId);
+            });
+
+            it("is rendered with same models into different containers ", () => {
+                const model: any = {};
+
+                tryDoubleRender(model, container, model, anotherContainer);
+
+                expect(templatesStore.add).toHaveBeenCalledTimes(2);
+
+                const firstId = templatesStore.add.mock.calls[0][0];
+                const secondId = templatesStore.add.mock.calls[1][0];
+                expect(secondId).not.toBe(firstId);
+            });
+
+            it("is rendered with null as model into different containers", () => {
+                // e.g. Lookup passes null as model if no item selected
+                const model: any = null;
+
+                tryDoubleRender(model, container, model, anotherContainer);
+
+                expect(templatesStore.add).toHaveBeenCalledTimes(2);
+
+                const firstId = templatesStore.add.mock.calls[0][0];
+                const secondId = templatesStore.add.mock.calls[1][0];
+                expect(secondId).not.toBe(firstId);
+            });
         });
 
         const templatesStore: any = {
@@ -52,22 +103,22 @@ describe("dx-template", () => {
             remove: jest.fn(),
             renderWrappers: jest.fn()
         };
-
-        function tryDoubleRender(model: any): void {
+        function tryDoubleRender(model1: any, container1: any, model2: any, container2: any): void {
             const template = createDxTemplate(
                 jest.fn(),
                 templatesStore as TemplatesStore
             );
 
             template.render({
-                container: {},
-                model
+                container: container1,
+                model: model1
             });
 
             template.render({
-                container: {},
-                model
+                container: container2,
+                model: model2
             });
         }
     });
+
 });
