@@ -47,7 +47,7 @@
     "style-loader": "^0.23.1",
     "ts-jest": "^22.0.4",
     "ts-loader": "^5.3.3",
-    "tslint": "^5.9.1",
+    "tslint": "^5.17.0",
     "tslint-react": "^3.5.1",
     "typescript": "^2.7.1",
     "url-loader": "^0.6.2",
