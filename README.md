@@ -8,6 +8,7 @@ This project allows you to use [DevExtreme widgets](http://js.devexpress.com/Dem
 * [Documentation](https://js.devexpress.com/Documentation/Guide/React_Components/DevExtreme_React_Components/)
 * [Technical Demos](https://js.devexpress.com/Demos/WidgetsGallery/Demo/DataGrid/Overview/React/Light/)
 * [API Reference](http://js.devexpress.com/Documentation/ApiReference/)
+* [Live example](https://stackblitz.com/edit/devextreme-react)
 
 ## License ##
 
