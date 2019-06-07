@@ -41,7 +41,6 @@ const contentCreators = {
 class TemplatesManager {
     private _templatesStore: TemplatesStore;
     private _templates: Record<string, any> = {};
-    private _stubs: Record<string, any> = {};
     private _nestedTemplateProps: Record<string, {
         render: any;
         component: any;
@@ -124,8 +123,7 @@ class TemplatesManager {
         return {
             integrationOptions: {
                 templates: this._templates
-            },
-            // ...this._stubs
+            }
         };
     }
 }

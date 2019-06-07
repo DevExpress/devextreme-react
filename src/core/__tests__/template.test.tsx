@@ -1,3 +1,4 @@
+/* tslint:disable:no-string-literal */
 import * as events from "devextreme/events";
 
 import ConfigurationComponent from "../../core/nested-option";

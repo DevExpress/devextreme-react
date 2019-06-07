@@ -64,7 +64,7 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
 
     const preparedProps = this._prepareProps(this.props);
 
-    this._optionsManager.processChangedValues(preparedProps.options, prevProps);
+    this._optionsManager.updateOptions(preparedProps.options, prevProps);
   }
 
   public componentWillUnmount() {
