@@ -653,4 +653,56 @@ describe("component/render in nested options", () => {
         component.update();
         expect(component.find(".template").html()).toBe('<div class="template">Second Template</div>');
     });
+
+    it("modifies nested components dynamically", () => {
+        const ItemTemplate = () => <div>Template</div>;
+        const items = [{id: 1, component: ItemTemplate}];
+
+        const TestContainer = (props: any) => (
+            <TestComponent>
+                {
+                    props.items.map(item => <CollectionNestedComponent key={item.id} component={item.component} />)
+                }
+            </TestComponent>
+        );
+
+        const component = mount(<TestContainer items={items} />);
+
+        let options = WidgetClass.mock.calls[0][1];
+        expect(options["collection"].length).toBe(1);
+        expect(options["collection"][0].template).toBe("collection[0].template");
+
+        component.setProps({
+            items:[
+                ...items,
+                {id: 2, component: ItemTemplate}
+            ]
+        });
+
+        const updatedOptions = Widget.option.mock.calls;
+
+        expect(updatedOptions[0][0]).toBe("integrationOptions");
+        expect(Object.keys(updatedOptions[0][1].templates)).toEqual([
+            "collection[0].template",
+            "collection[1].template"
+        ]);
+
+        expect(updatedOptions[1][0]).toBe("collection");
+        expect(updatedOptions[1][1].length).toBe(2);
+        expect(updatedOptions[1][1][0].template).toBe("collection[0].template");
+        expect(updatedOptions[1][1][1].template).toBe("collection[1].template");
+        
+        component.setProps({
+            items
+        });
+
+        expect(updatedOptions[2][0]).toBe("integrationOptions");
+        expect(Object.keys(updatedOptions[2][1].templates)).toContain(
+            "collection[0].template"
+        );
+
+        expect(updatedOptions[3][0]).toBe("collection");
+        expect(updatedOptions[3][1].length).toBe(1);
+        expect(updatedOptions[3][1][0].template).toBe("collection[0].template");
+    });
 });
