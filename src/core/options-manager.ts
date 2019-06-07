@@ -135,8 +135,23 @@ class OptionsManager {
     public processChangedValues(newProps: Record<string, any>, prevProps: Record<string, any>): void {
         this._updatingProps = false;
 
-        for (const optionName of Object.keys(newProps)) {
-            if (newProps[optionName] === prevProps[optionName]) {
+        const nestedOptions: Record<string, any> = {};
+
+        Object.keys(this._dirtyOptions).forEach((optionName) => {
+            const optionDescr = this._dirtyOptions[optionName];
+            const optionValue = this._getNestedOptionObj(optionDescr, true);
+
+            nestedOptions[optionName] = optionValue;
+        });
+
+        const newOptions: Record<string, any> = {
+            ...this._templatesManager.options,
+            ...nestedOptions,
+            ...newProps
+        };
+
+        for (const optionName of Object.keys(newOptions)) {
+            if (newOptions[optionName] === prevProps[optionName]) {
                 continue;
             }
 
@@ -149,19 +164,13 @@ class OptionsManager {
                 this._instance.beginUpdate();
                 this._updatingProps = true;
             }
-            this._setOption(optionName, newProps[optionName]);
+            this._setOption(optionName, newOptions[optionName]);
         }
 
         if (this._updatingProps) {
             this._updatingProps = false;
             this._instance.endUpdate();
         }
-
-        Object.keys(this._dirtyOptions).forEach((optionName) => {
-            const optionDescr = this._dirtyOptions[optionName];
-            const optionValue = this._getNestedOptionObj(optionDescr, false);
-            this._setOption(optionName, optionValue);
-        });
 
         this._dirtyOptions = {};
     }
@@ -238,8 +247,9 @@ class OptionsManager {
             const hasChildrenForTemplate =
                 ReactChildren.count(e.element.props.children) > nestedObjectsCount;
 
+            let templatesOptions = {};
             if (templateRegistrationRequired) {
-                this._templatesManager.add({
+                templatesOptions = this._templatesManager.add({
                     useChildren: (optionName) => {
                         return optionName === "template" && hasChildrenForTemplate;
                     },
@@ -249,7 +259,15 @@ class OptionsManager {
                         configComponent,
                         configComponent.isCollectionItem ? index : undefined,
                     ),
-                    propsGetter: (prop) => configComponent.elementEntries[index].element.props[prop]
+                    propsGetter: (prop) => {
+                        const nestedElement = configComponent.elementEntries[index];
+
+                        if (!nestedElement) {
+                            return;
+                        }
+
+                        return nestedElement.element.props[prop]
+                    }
                 });
             }
 
@@ -257,7 +275,8 @@ class OptionsManager {
                 ...e.predefinedProps,
                 ...props.defaults,
                 ...props.options,
-                ...nestedObjects
+                ...nestedObjects,
+                ...templatesOptions
             };
         });
 
