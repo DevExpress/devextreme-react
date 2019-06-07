@@ -660,20 +660,18 @@ describe("component/render in nested options", () => {
 
         const TestContainer = (props: any) => (
             <TestComponent>
-                {
-                    props.items.map(item => <CollectionNestedComponent key={item.id} component={item.component} />)
-                }
+                {props.items.map((item) => <CollectionNestedComponent key={item.id} component={item.component} />)}
             </TestComponent>
         );
 
         const component = mount(<TestContainer items={items} />);
 
-        let options = WidgetClass.mock.calls[0][1];
+        const options = WidgetClass.mock.calls[0][1];
         expect(options["collection"].length).toBe(1);
         expect(options["collection"][0].template).toBe("collection[0].template");
 
         component.setProps({
-            items:[
+            items: [
                 ...items,
                 {id: 2, component: ItemTemplate}
             ]
@@ -691,7 +689,7 @@ describe("component/render in nested options", () => {
         expect(updatedOptions[1][1].length).toBe(2);
         expect(updatedOptions[1][1][0].template).toBe("collection[0].template");
         expect(updatedOptions[1][1][1].template).toBe("collection[1].template");
-        
+
         component.setProps({
             items
         });
