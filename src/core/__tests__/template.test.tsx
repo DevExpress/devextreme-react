@@ -654,26 +654,21 @@ describe("component/render in nested options", () => {
         expect(component.find(".template").html()).toBe('<div class="template">Second Template</div>');
     });
 
-    it("modifies nested components dynamically", () => {
-        const ItemTemplate = () => <div>Template</div>;
-        const items = [{id: 1, component: ItemTemplate}];
+    it("adds nested components dynamically", () => {
+        const renderItem = () => <div>Template</div>;
+        const items = [{id: 1, render: renderItem}];
 
         const TestContainer = (props: any) => (
             <TestComponent>
-                {props.items.map((item) => <CollectionNestedComponent key={item.id} component={item.component} />)}
+                {props.items.map((item) => <CollectionNestedComponent key={item.id} render={item.render} />)}
             </TestComponent>
         );
 
         const component = mount(<TestContainer items={items} />);
-
-        const options = WidgetClass.mock.calls[0][1];
-        expect(options["collection"].length).toBe(1);
-        expect(options["collection"][0].template).toBe("collection[0].template");
-
         component.setProps({
             items: [
                 ...items,
-                {id: 2, component: ItemTemplate}
+                {id: 2, render: renderItem}
             ]
         });
 
@@ -689,18 +684,56 @@ describe("component/render in nested options", () => {
         expect(updatedOptions[1][1].length).toBe(2);
         expect(updatedOptions[1][1][0].template).toBe("collection[0].template");
         expect(updatedOptions[1][1][1].template).toBe("collection[1].template");
+    });
 
+    it("removes nested components dynamically", () => {
+        const renderItem = () => <div>Template</div>;
+        const items = [{id: 1, render: renderItem}, {id: 2, render: renderItem}];
+
+        const TestContainer = (props: any) => (
+            <TestComponent>
+                {props.items.map((item) => <CollectionNestedComponent key={item.id} render={item.render} />)}
+            </TestComponent>
+        );
+
+        const component = mount(<TestContainer items={items} />);
         component.setProps({
-            items
+            items: items.slice(0, 1)
         });
 
-        expect(updatedOptions[2][0]).toBe("integrationOptions");
-        expect(Object.keys(updatedOptions[2][1].templates)).toContain(
+        const updatedOptions = Widget.option.mock.calls;
+
+        expect(updatedOptions[0][0]).toBe("integrationOptions");
+        expect(Object.keys(updatedOptions[0][1].templates)).toContain(
             "collection[0].template"
         );
 
-        expect(updatedOptions[3][0]).toBe("collection");
-        expect(updatedOptions[3][1].length).toBe(1);
-        expect(updatedOptions[3][1][0].template).toBe("collection[0].template");
+        expect(updatedOptions[1][0]).toBe("collection");
+        expect(updatedOptions[1][1].length).toBe(1);
+        expect(updatedOptions[1][1][0].template).toBe("collection[0].template");
+    });
+
+    xit("removes deleted tempalates from integrationOptions", () => {
+        const ItemTemplate = () => <div>Template</div>;
+        const items = [{id: 1, render: ItemTemplate}, {id: 2, render: ItemTemplate}];
+
+        const TestContainer = (props: any) => (
+            <TestComponent>
+                {props.items.map((item) => <CollectionNestedComponent key={item.id} render={item.render} />)}
+            </TestComponent>
+        );
+
+        const component = mount(<TestContainer items={items} />);
+        component.setProps({
+            items: items.slice(0, 1)
+        });
+
+        const updatedOptions = Widget.option.mock.calls;
+
+        expect(updatedOptions[0][0]).toBe("integrationOptions");
+        expect(Object.keys(updatedOptions[0][1].templates).length).toBe(1);
+        expect(Object.keys(updatedOptions[0][1].templates)[0]).toBe(
+            "collection[0].template"
+        );
     });
 });

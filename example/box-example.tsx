@@ -4,7 +4,7 @@ import Box, { Item } from "../src/box";
 import Button from "../src/button";
 import Example from "./example-block";
 
-const defaultState = {
+const initialState = {
   items: [
     {
       id: 1,
@@ -17,12 +17,12 @@ const defaultState = {
   ]
 };
 
-class App extends React.Component<any, typeof defaultState> {
+class App extends React.Component<any, typeof initialState> {
 
   constructor(props: any) {
     super(props);
 
-    this.state = { ...defaultState };
+    this.state = { ...initialState };
   }
 
   public render() {
