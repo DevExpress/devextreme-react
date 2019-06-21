@@ -22,6 +22,7 @@ import ToolbarExample from "./toolbar-example";
 import ValidationExample from "./validation-example";
 
 import { Button, NumberBox } from "../src";
+import BoxExample from "./box-example";
 
 ReactDOM.render(
   <div>
@@ -73,6 +74,9 @@ ReactDOM.render(
     <Example title="SelectBox example">
       <SelectBoxExample />
     </Example>
+
+    <BoxExample />
+
   </div>,
   document.getElementById("app")
 );
