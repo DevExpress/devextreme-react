@@ -269,7 +269,6 @@ class OptionsManager {
                     ),
                     propsGetter: (prop) => {
                         const nestedElement = configComponent.elementEntries[index];
-
                         if (!nestedElement) {
                             return;
                         }

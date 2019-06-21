@@ -703,11 +703,6 @@ describe("component/render in nested options", () => {
 
         const updatedOptions = Widget.option.mock.calls;
 
-        expect(updatedOptions[0][0]).toBe("integrationOptions");
-        expect(Object.keys(updatedOptions[0][1].templates)).toContain(
-            "collection[0].template"
-        );
-
         expect(updatedOptions[1][0]).toBe("collection");
         expect(updatedOptions[1][1].length).toBe(1);
         expect(updatedOptions[1][1][0].template).toBe("collection[0].template");
