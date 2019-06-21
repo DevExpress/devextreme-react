@@ -41,7 +41,6 @@ const contentCreators = {
 class TemplatesManager {
     private _templatesStore: TemplatesStore;
     private _templates: Record<string, any> = {};
-    private _stubs: Record<string, any> = {};
     private _nestedTemplateProps: Record<string, {
         render: any;
         component: any;
@@ -52,9 +51,9 @@ class TemplatesManager {
         this._templatesStore = templatesStore;
     }
 
-    public add(meta: IIntegrationDescr) {
+    public add(meta: IIntegrationDescr): Record<string, any> {
         const templates: Record<string, IDxTemplate> = {};
-        const stubs: Record<string, any> = {};
+        const templatesOptions: Record<string, any> = {};
 
         const props = meta.props;
         const templateProps = meta.templateProps || [];
@@ -85,7 +84,7 @@ class TemplatesManager {
             contentCreator = contentCreator.bind(this, propName, meta.propsGetter);
 
             const name = ownerName ? `${ownerName}.${tmpl.tmplOption}` : tmpl.tmplOption;
-            stubs[name] = name;
+            templatesOptions[tmpl.tmplOption] = name;
             templates[name] = createDxTemplate(
                 contentCreator,
                 this._templatesStore,
@@ -98,10 +97,7 @@ class TemplatesManager {
             ...templates
         };
 
-        this._stubs = {
-            ...this._stubs,
-            ...stubs
-        };
+        return templatesOptions;
     }
 
     public addNested(props: ITemplateProps): void {
@@ -127,8 +123,7 @@ class TemplatesManager {
         return {
             integrationOptions: {
                 templates: this._templates
-            },
-            ...this._stubs
+            }
         };
     }
 }

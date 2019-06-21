@@ -55,10 +55,11 @@ class OptionsManager {
         this._templatesManager = templateHost;
 
         this._setOption = this._setOption.bind(this);
+        this._syncOptions = this._syncOptions.bind(this);
         this._registerNestedOption = this._registerNestedOption.bind(this);
         this.registerNestedOption = this.registerNestedOption.bind(this);
         this.handleOptionChange = this.handleOptionChange.bind(this);
-        this.processChangedValues = this.processChangedValues.bind(this);
+        this.updateOptions = this.updateOptions.bind(this);
     }
 
     public resetNestedElements() {
@@ -132,36 +133,23 @@ class OptionsManager {
         this._setGuard(optionName, optionValue);
     }
 
-    public processChangedValues(newProps: Record<string, any>, prevProps: Record<string, any>): void {
-        this._updatingProps = false;
-
-        for (const optionName of Object.keys(newProps)) {
-            if (newProps[optionName] === prevProps[optionName]) {
-                continue;
-            }
-
-            if (this._guards[optionName]) {
-                window.clearTimeout(this._guards[optionName]);
-                delete this._guards[optionName];
-            }
-
-            if (!this._updatingProps) {
-                this._instance.beginUpdate();
-                this._updatingProps = true;
-            }
-            this._setOption(optionName, newProps[optionName]);
-        }
-
-        if (this._updatingProps) {
-            this._updatingProps = false;
-            this._instance.endUpdate();
-        }
+    public updateOptions(newProps: Record<string, any>, prevProps: Record<string, any>): void {
+        const nestedOptions: Record<string, any> = {};
 
         Object.keys(this._dirtyOptions).forEach((optionName) => {
             const optionDescr = this._dirtyOptions[optionName];
-            const optionValue = this._getNestedOptionObj(optionDescr, false);
-            this._setOption(optionName, optionValue);
+            const optionValue = this._getNestedOptionObj(optionDescr, true);
+
+            nestedOptions[optionName] = optionValue;
         });
+
+        const newOptions: Record<string, any> = {
+            ...this._templatesManager.options,
+            ...nestedOptions,
+            ...newProps
+        };
+
+        this._syncOptions(newOptions, prevProps);
 
         this._dirtyOptions = {};
     }
@@ -181,6 +169,35 @@ class OptionsManager {
         for (const optionName of Object.keys(this._guards)) {
             window.clearTimeout(this._guards[optionName]);
             delete this._guards[optionName];
+        }
+    }
+
+    private _syncOptions(
+        newOptions: Record<string, any>,
+        prevOptions: Record<string, any>
+    ): void {
+        this._updatingProps = false;
+
+        for (const optionName of Object.keys(newOptions)) {
+            if (newOptions[optionName] === prevOptions[optionName]) {
+                continue;
+            }
+
+            if (this._guards[optionName]) {
+                window.clearTimeout(this._guards[optionName]);
+                delete this._guards[optionName];
+            }
+
+            if (!this._updatingProps) {
+                this._instance.beginUpdate();
+                this._updatingProps = true;
+            }
+            this._setOption(optionName, newOptions[optionName]);
+        }
+
+        if (this._updatingProps) {
+            this._updatingProps = false;
+            this._instance.endUpdate();
         }
     }
 
@@ -238,8 +255,9 @@ class OptionsManager {
             const hasChildrenForTemplate =
                 ReactChildren.count(e.element.props.children) > nestedObjectsCount;
 
+            let templatesOptions = {};
             if (templateRegistrationRequired) {
-                this._templatesManager.add({
+                templatesOptions = this._templatesManager.add({
                     useChildren: (optionName) => {
                         return optionName === "template" && hasChildrenForTemplate;
                     },
@@ -249,7 +267,14 @@ class OptionsManager {
                         configComponent,
                         configComponent.isCollectionItem ? index : undefined,
                     ),
-                    propsGetter: (prop) => configComponent.elementEntries[index].element.props[prop]
+                    propsGetter: (prop) => {
+                        const nestedElement = configComponent.elementEntries[index];
+                        if (!nestedElement) {
+                            return;
+                        }
+
+                        return nestedElement.element.props[prop];
+                    }
                 });
             }
 
@@ -257,7 +282,8 @@ class OptionsManager {
                 ...e.predefinedProps,
                 ...props.defaults,
                 ...props.options,
-                ...nestedObjects
+                ...nestedObjects,
+                ...templatesOptions
             };
         });
 
@@ -323,7 +349,7 @@ class OptionsManager {
                     nestedOptionClass.type.TemplateProps
                 ).options;
 
-                this.processChangedValues(
+                this._syncOptions(
                     addPrefixToKeys(newOptions, optionItemName + "."),
                     addPrefixToKeys(prevProps, optionItemName + ".")
                 );

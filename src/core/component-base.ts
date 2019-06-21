@@ -63,11 +63,8 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
     this._updateCssClasses(prevProps, this.props);
 
     const preparedProps = this._prepareProps(this.props);
-    const options: Record<string, any> = {
-      ...preparedProps.options,
-      ...this._templatesManager.options
-    };
-    this._optionsManager.processChangedValues(options, prevProps);
+
+    this._optionsManager.updateOptions(preparedProps.options, prevProps);
   }
 
   public componentWillUnmount() {
@@ -172,7 +169,7 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
   private _prepareProps(rawProps: Record<string, any>): IWidgetConfig {
     const separatedProps = separateProps(rawProps, this._defaults, this._templateProps);
 
-    this._templatesManager.add({
+    const templatesOptions = this._templatesManager.add({
       useChildren: () => false,
       ownerName: "",
       templateProps: this._templateProps,
@@ -181,7 +178,10 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
     });
 
     return {
-        options: separatedProps.options,
+        options: {
+          ...separatedProps.options,
+          ...templatesOptions
+        },
         defaults: separatedProps.defaults
     };
   }

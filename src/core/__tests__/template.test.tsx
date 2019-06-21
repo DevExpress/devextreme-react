@@ -1,3 +1,4 @@
+/* tslint:disable:no-string-literal */
 import * as events from "devextreme/events";
 
 import ConfigurationComponent from "../../core/nested-option";
@@ -459,7 +460,7 @@ describe("component/render in nested options", () => {
         );
 
         const options = WidgetClass.mock.calls[0][1];
-        expect(options["option.item"]).toBe("option.item");
+        expect(options["option"]["item"]).toBe("option.item");
 
         const integrationOptions = options.integrationOptions;
 
@@ -503,8 +504,8 @@ describe("component/render in nested options", () => {
 
         const options = WidgetClass.mock.calls[0][1];
 
-        expect(options["option.item"]).toBe("option.item");
-        expect(options["collection[0].template"]).toBe("collection[0].template");
+        expect(options["option"]["item"]).toBe("option.item");
+        expect(options["collection"][0]["template"]).toBe("collection[0].template");
 
         const integrationOptions = options.integrationOptions;
 
@@ -532,10 +533,10 @@ describe("component/render in nested options", () => {
 
         const options = WidgetClass.mock.calls[0][1];
 
-        expect(options["collection[0].template"]).toBe("collection[0].template");
-        expect(options["collection[1].template"]).toBe("collection[1].template");
-        expect(options["collection[2].option.item"]).toBe("collection[2].option.item");
-        expect(options["option.collection[0].template"]).toBe("option.collection[0].template");
+        expect(options["collection"][0]["template"]).toBe("collection[0].template");
+        expect(options["collection"][1]["template"]).toBe("collection[1].template");
+        expect(options["collection"][2]["option"]["item"]).toBe("collection[2].option.item");
+        expect(options["option"]["collection"][0]["template"]).toBe("option.collection[0].template");
 
         const integrationOptions = options.integrationOptions;
 
@@ -589,15 +590,15 @@ describe("component/render in nested options", () => {
 
         const options = WidgetClass.mock.calls[0][1];
 
-        expect(options["collection[0].template"]).toBe("collection[0].template");
-        expect(options["collection[1].template"]).toBe("collection[1].template");
-        expect(options["collection[2].template"]).toBe("collection[2].template");
-        expect(options["collection[3].template"]).toBe("collection[3].template");
-        expect(options["collection[4].template"]).toBe(undefined);
-        expect(options["collection[5].template"]).toBe(undefined);
-        expect(options["collection[6].template"]).toBe(undefined);
-        expect(options["option.item"]).toBe(undefined);
-        expect(options["option.template"]).toBe(undefined);
+        expect(options["collection"][0]["template"]).toBe("collection[0].template");
+        expect(options["collection"][1]["template"]).toBe("collection[1].template");
+        expect(options["collection"][2]["template"]).toBe("collection[2].template");
+        expect(options["collection"][3]["template"]).toBe("collection[3].template");
+        expect(options["collection"][4]["template"]).toBe(undefined);
+        expect(options["collection"][5]["template"]).toBe(undefined);
+        expect(options["collection"][6]["template"]).toBe(undefined);
+        expect(options["option"]["item"]).toBe(undefined);
+        expect(options["option"]["template"]).toBe(undefined);
 
         const integrationOptions = options.integrationOptions;
 
@@ -651,5 +652,83 @@ describe("component/render in nested options", () => {
         });
         component.update();
         expect(component.find(".template").html()).toBe('<div class="template">Second Template</div>');
+    });
+
+    it("adds nested components dynamically", () => {
+        const renderItem = () => <div>Template</div>;
+        const items = [{id: 1, render: renderItem}];
+
+        const TestContainer = (props: any) => (
+            <TestComponent>
+                {props.items.map((item) => <CollectionNestedComponent key={item.id} render={item.render} />)}
+            </TestComponent>
+        );
+
+        const component = mount(<TestContainer items={items} />);
+        component.setProps({
+            items: [
+                ...items,
+                {id: 2, render: renderItem}
+            ]
+        });
+
+        const updatedOptions = Widget.option.mock.calls;
+
+        expect(updatedOptions[0][0]).toBe("integrationOptions");
+        expect(Object.keys(updatedOptions[0][1].templates)).toEqual([
+            "collection[0].template",
+            "collection[1].template"
+        ]);
+
+        expect(updatedOptions[1][0]).toBe("collection");
+        expect(updatedOptions[1][1].length).toBe(2);
+        expect(updatedOptions[1][1][0].template).toBe("collection[0].template");
+        expect(updatedOptions[1][1][1].template).toBe("collection[1].template");
+    });
+
+    it("removes nested components dynamically", () => {
+        const renderItem = () => <div>Template</div>;
+        const items = [{id: 1, render: renderItem}, {id: 2, render: renderItem}];
+
+        const TestContainer = (props: any) => (
+            <TestComponent>
+                {props.items.map((item) => <CollectionNestedComponent key={item.id} render={item.render} />)}
+            </TestComponent>
+        );
+
+        const component = mount(<TestContainer items={items} />);
+        component.setProps({
+            items: items.slice(0, 1)
+        });
+
+        const updatedOptions = Widget.option.mock.calls;
+
+        expect(updatedOptions[1][0]).toBe("collection");
+        expect(updatedOptions[1][1].length).toBe(1);
+        expect(updatedOptions[1][1][0].template).toBe("collection[0].template");
+    });
+
+    xit("removes deleted tempalates from integrationOptions", () => {
+        const ItemTemplate = () => <div>Template</div>;
+        const items = [{id: 1, render: ItemTemplate}, {id: 2, render: ItemTemplate}];
+
+        const TestContainer = (props: any) => (
+            <TestComponent>
+                {props.items.map((item) => <CollectionNestedComponent key={item.id} render={item.render} />)}
+            </TestComponent>
+        );
+
+        const component = mount(<TestContainer items={items} />);
+        component.setProps({
+            items: items.slice(0, 1)
+        });
+
+        const updatedOptions = Widget.option.mock.calls;
+
+        expect(updatedOptions[0][0]).toBe("integrationOptions");
+        expect(Object.keys(updatedOptions[0][1].templates).length).toBe(1);
+        expect(Object.keys(updatedOptions[0][1].templates)[0]).toBe(
+            "collection[0].template"
+        );
     });
 });
