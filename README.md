@@ -3,6 +3,8 @@
 [![Build Status](https://img.shields.io/shippable/5a9532d976382b0800e7a53c/master.svg?maxAge=43200)](https://app.shippable.com/github/DevExpress/devextreme-react)
 [![NPM](https://img.shields.io/npm/v/devextreme-react.svg?maxAge=43200)](https://www.npmjs.com/package/devextreme-react)
 
+### If you are looking for the v18.2 branch, please follow this link: [https://github.com/DevExpress/devextreme-react/tree/18.2](https://github.com/DevExpress/devextreme-react/tree/18.2).
+
 This project allows you to use [DevExtreme widgets](http://js.devexpress.com/Demos/WidgetsGallery/) in [React](https://reactjs.org) applications.
 
 * [Documentation](https://js.devexpress.com/Documentation/Guide/React_Components/DevExtreme_React_Components/)
