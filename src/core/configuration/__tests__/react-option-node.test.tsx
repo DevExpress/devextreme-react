@@ -34,7 +34,7 @@ class CollectionConfigurationComponent extends ConfigurationComponent<any> {
     public static PredefinedProps = { type: "numeric" };
 }
 
-describe("ReactOptionNode.GetDescriptor()", () => {
+describe("ReactOptionNode.getDescriptor()", () => {
     it("returns descriptor", () => {
         const components: any[] = [
             MinimalConfigurationComponent,
@@ -46,7 +46,7 @@ describe("ReactOptionNode.GetDescriptor()", () => {
             const wrapper = mount(React.createElement(component));
 
             const optionNode = new ReactOptionNode(wrapper.getElement());
-            const descriptor = optionNode.GetDescriptor() as any as IOptionNodeDescriptor;
+            const descriptor = optionNode.getDescriptor() as any as IOptionNodeDescriptor;
 
             expect(descriptor.name).toEqual(component.OptionName);
             expect(descriptor.isCollection).toEqual(component.IsCollectionItem);
@@ -67,14 +67,14 @@ describe("ReactOptionNode.GetDescriptor()", () => {
             const wrapper = mount(React.createElement(component));
 
             const optionNode = new ReactOptionNode(wrapper.getElement());
-            const descriptor = optionNode.GetDescriptor() as any as IOptionNodeDescriptor;
+            const descriptor = optionNode.getDescriptor() as any as IOptionNodeDescriptor;
 
             expect(descriptor).toEqual(null);
         });
     });
 });
 
-describe("ReactOptionNode.GetValues()", () => {
+describe("ReactOptionNode.getValues()", () => {
     it("returns props", () => {
         const props = {id: 1, name: "text"};
 
@@ -83,7 +83,7 @@ describe("ReactOptionNode.GetValues()", () => {
         );
 
         const optionNode = new ReactOptionNode(wrapper.getElement());
-        const values = optionNode.GetValues();
+        const values = optionNode.getValues();
         expect(values).toEqual(props);
     });
 
@@ -93,12 +93,12 @@ describe("ReactOptionNode.GetValues()", () => {
         );
 
         const optionNode = new ReactOptionNode(wrapper.getElement());
-        const values = optionNode.GetValues();
+        const values = optionNode.getValues();
         expect(values).toEqual({});
     });
 });
 
-describe("ReactOptionNode.GetChildren()", () => {
+describe("ReactOptionNode.getChildren()", () => {
     it("returns children", () => {
         const children = [
             React.createElement(MinimalConfigurationComponent),
@@ -111,7 +111,7 @@ describe("ReactOptionNode.GetChildren()", () => {
         );
 
         const optionNode = new ReactOptionNode(wrapper.getElement());
-        optionNode.GetChildren().map((childNode, index) => {
+        optionNode.getChildren().map((childNode, index) => {
             expect((childNode as any)._node).toEqual(children[index]);
         });
     });
@@ -122,7 +122,7 @@ describe("ReactOptionNode.GetChildren()", () => {
         );
 
         const optionNode = new ReactOptionNode(wrapper.getElement());
-        const children = optionNode.GetChildren();
+        const children = optionNode.getChildren();
         expect(children).toEqual([]);
     });
 });

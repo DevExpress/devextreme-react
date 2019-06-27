@@ -8,7 +8,7 @@ class ReactOptionNode implements IOptionNode {
         this._node = node as any as IReactConfigurationElement;
     }
 
-    public GetDescriptor(): IOptionNodeDescriptor | null {
+    public getDescriptor(): IOptionNodeDescriptor | null {
         if (!(this._node && this._node.type && this._node.type.OptionName)) {
             return null;
         }
@@ -22,7 +22,7 @@ class ReactOptionNode implements IOptionNode {
         };
     }
 
-    public GetValues(): Record<string, any> {
+    public getValues(): Record<string, any> {
         if (!(this._node && this._node.props)) {
             return {};
         }
@@ -30,7 +30,7 @@ class ReactOptionNode implements IOptionNode {
         return this._node.props;
     }
 
-    public GetChildren(): IOptionNode[] {
+    public getChildren(): IOptionNode[] {
         if (!(this._node && this._node.props)) {
             return [];
         }

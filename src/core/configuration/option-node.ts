@@ -1,7 +1,7 @@
 interface IOptionNode {
-    GetDescriptor(): IOptionNodeDescriptor | null;
-    GetValues(): Record<string, any>;
-    GetChildren(): IOptionNode[];
+    getDescriptor(): IOptionNodeDescriptor | null;
+    getValues(): Record<string, any>;
+    getChildren(): IOptionNode[];
 }
 
 interface IOptionNodeDescriptor {
