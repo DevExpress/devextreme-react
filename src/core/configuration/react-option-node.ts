@@ -23,6 +23,10 @@ class ReactOptionNode implements IOptionNode {
     }
 
     public GetValues(): Record<string, any> {
+        if (!(this._node && this._node.props)) {
+            return {};
+        }
+
         return this._node.props;
     }
 
@@ -34,7 +38,7 @@ class ReactOptionNode implements IOptionNode {
         return React.Children.map(
             this._node.props.children,
             (child) => new ReactOptionNode(child)
-        );
+        ) || [];
     }
 }
 
