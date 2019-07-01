@@ -4,7 +4,7 @@ import * as React from "react";
 
 import { deferUpdate } from "devextreme/core/utils/common";
 import { IOptionNodeDescriptor } from "./configuration/node";
-import { OptionsManagerNew } from "./configuration/options-manager";
+import { IntegrationManager } from "./integration-manager";
 import OptionsManager, { INestedOption } from "./options-manager";
 import { findProps as findNestedTemplateProps, ITemplateMeta } from "./template";
 import TemplatesManager from "./templates-manager";
@@ -38,14 +38,17 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
   private readonly _optionsManager: OptionsManager;
   private _updateScheduled: boolean = false;
 
+  private _integrationManager: IntegrationManager;
+
   constructor(props: P) {
     super(props);
-    this._prepareProps = this._prepareProps.bind(this);
-    this._scheduleUpdate = this._scheduleUpdate.bind(this);
+    // this._prepareProps = this._prepareProps.bind(this);
+    this.scheduleUpdate = this.scheduleUpdate.bind(this);
+    this._integrationManager = new IntegrationManager(this);
 
-    this._templatesStore = new TemplatesStore(this._scheduleUpdate);
-    this._templatesManager = new TemplatesManager(this._templatesStore);
-    this._optionsManager = new OptionsManager((name) => this.props[name], this._templatesManager);
+    // this._templatesStore = new TemplatesStore(this._scheduleUpdate);
+    // this._templatesManager = new TemplatesManager(this._templatesStore);
+    // this._optionsManager = new OptionsManager((name) => this.props[name], this._templatesManager);
   }
 
   public get descriptor(): IOptionNodeDescriptor {
@@ -58,33 +61,50 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
     };
   }
 
+  public get widgetClass(): any {
+    return this._WidgetClass;
+  }
+
   public render() {
     return React.createElement(
       "div",
       this._getElementProps(),
-      ...this._prepareChildren(),
-      ...this._templatesStore.renderWrappers()
+      this.props.children,
+      ...this._integrationManager.getWrappers()
     );
   }
 
   public componentDidMount() {
-    this._updateCssClasses(null, this.props);
+    // this._updateCssClasses(null, this.props);
   }
 
   public componentDidUpdate(prevProps: P) {
-    this._updateCssClasses(prevProps, this.props);
+    // this._updateCssClasses(prevProps, this.props);
 
-    const preparedProps = this._prepareProps(this.props);
+    // const preparedProps = this._prepareProps(this.props);
 
-    this._optionsManager.updateOptions(preparedProps.options, prevProps);
+    // this._optionsManager.updateOptions(preparedProps.options, prevProps);
   }
 
   public componentWillUnmount() {
-    if (this._instance) {
-      events.triggerHandler(this._element, DX_REMOVE_EVENT);
-      this._instance.dispose();
+    // if (this._instance) {
+    //   events.triggerHandler(this._element, DX_REMOVE_EVENT);
+    //   this._instance.dispose();
+    // }
+    // this._optionsManager.dispose();
+  }
+
+  public scheduleUpdate() {
+    if (this._updateScheduled) {
+      return;
     }
-    this._optionsManager.dispose();
+
+    this._updateScheduled = true;
+
+    deferUpdate(() => {
+      this.forceUpdate();
+      this._updateScheduled = false;
+    });
   }
 
   protected _prepareChildren(args: any[] = []): any[] {
@@ -108,43 +128,32 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
   }
 
   protected _createWidget(element?: Element) {
-    element = element || this._element;
-    const optionsManager = new OptionsManagerNew(this, this._templatesManager);
-    console.log(this, optionsManager.getInitialOptions());
+    this._integrationManager.createWidget(this._element);
 
-    const nestedProps = this._optionsManager.getNestedOptionsObjects();
-    const props = {
-        ...(this.props as any),
-        ...nestedProps
-    };
+    // element = element || this._element;
+    // const optionsManager = new OptionsManagerNew(this, this._templatesManager);
+    // console.log(this, optionsManager.getInitialOptions());
 
-    const preparedProps = this._prepareProps(props);
+    // const nestedProps = this._optionsManager.getNestedOptionsObjects();
+    // const props = {
+    //     ...(this.props as any),
+    //     ...nestedProps
+    // };
 
-    const options: Record<string, any> = {
-      templatesRenderAsynchronously: true,
-      ...preparedProps.defaults,
-      ...preparedProps.options,
-      ...this._templatesManager.options
-    };
+    // const preparedProps = this._prepareProps(props);
 
-    this._optionsManager.wrapEventHandlers(options);
+    // const options: Record<string, any> = {
+    //   templatesRenderAsynchronously: true,
+    //   ...preparedProps.defaults,
+    //   ...preparedProps.options,
+    //   ...this._templatesManager.options
+    // };
 
-    this._instance = new this._WidgetClass(element, options);
-    this._optionsManager.setInstance(this._instance);
-    this._instance.on("optionChanged", this._optionsManager.handleOptionChange);
-  }
+    // this._optionsManager.wrapEventHandlers(options);
 
-  private _scheduleUpdate() {
-    if (this._updateScheduled) {
-      return;
-    }
-
-    this._updateScheduled = true;
-
-    deferUpdate(() => {
-      this.forceUpdate();
-      this._updateScheduled = false;
-    });
+    // this._instance = new this._WidgetClass(element, options);
+    // this._optionsManager.setInstance(this._instance);
+    // this._instance.on("optionChanged", this._optionsManager.handleOptionChange);
   }
 
   private _getElementProps(): Record<string, any> {

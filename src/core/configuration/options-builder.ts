@@ -7,12 +7,21 @@ class OptionsBuilder {
     private _templatesManager: TemplatesManager;
     private _ignoreInitialValues: boolean;
 
-    constructor(templatesManager: TemplatesManager, ignoreInitialValues: boolean) {
+    constructor(templatesManager: TemplatesManager) {
         this._templatesManager = templatesManager;
-        this._ignoreInitialValues = ignoreInitialValues;
     }
 
-    public build(configuration: OptionConfiguration, path: string): Record<string, any> {
+    public build(config: OptionConfiguration, ignoreInitialValues: boolean) {
+        this._ignoreInitialValues = ignoreInitialValues;
+
+        return {
+            templatesRenderAsynchronously: true,
+            ...this._build(config, ""),
+            ...this._templatesManager.options
+        };
+    }
+
+    private _build(configuration: OptionConfiguration, path: string): Record<string, any> {
         const complexOptions: Record<string, any> = {};
         const currentOptionName = this._buildFullname(
             configuration.descriptor.name,
@@ -49,6 +58,7 @@ class OptionsBuilder {
 
         return {
             ...configuration.descriptor.predefinedValues,
+            ...complexOptions,
             ...separatedValues.options,
             ...initialValues,
             ...templatesOptions
@@ -58,7 +68,7 @@ class OptionsBuilder {
     private _appendChildren(options: Record<string, any>, children: OptionConfiguration[], path: string) {
         children.map(
             (child) => {
-                options[child.descriptor.name] = this.build(child, path);
+                options[child.descriptor.name] = this._build(child, path);
             }
         );
     }
@@ -71,7 +81,7 @@ class OptionsBuilder {
         for (const key of Object.keys(collections)) {
             const currentPath = this._buildFullname(key, path, false);
             options[key] = collections[key].map(
-                (item, index) => this.build(item, currentPath + "[" + index + "]")
+                (item, index) => this._build(item, currentPath + "[" + index + "]")
             );
         }
     }
@@ -83,7 +93,7 @@ class OptionsBuilder {
         path: string
     ): Record<string, any> {
         return this._templatesManager.add({
-            useChildren: (optionName) => optionName === "template", // CHANGED LOGIC, CHECK
+            useChildren: (optionName) => path.length > 0 && optionName === "template", // CHANGED LOGIC, CHECK
             props: templateValues,
             templateProps: templates,
             ownerName: path,
