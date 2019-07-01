@@ -3,6 +3,8 @@ import * as events from "devextreme/events";
 import * as React from "react";
 
 import { deferUpdate } from "devextreme/core/utils/common";
+import { getOptions } from "./configuration";
+import { IOptionNodeDescriptor } from "./configuration/node";
 import OptionsManager, { INestedOption } from "./options-manager";
 import { findProps as findNestedTemplateProps, ITemplateMeta } from "./template";
 import TemplatesManager from "./templates-manager";
@@ -46,6 +48,16 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
     this._optionsManager = new OptionsManager((name) => this.props[name], this._templatesManager);
   }
 
+  public getDescriptor(): IOptionNodeDescriptor  {
+    return {
+      name: "",
+      isCollection: false,
+      templates: this._templateProps as any as [],
+      initialValueProps: this._defaults,
+      predefinedValues: {}
+    };
+  }
+
   public render() {
     return React.createElement(
       "div",
@@ -57,6 +69,7 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
 
   public componentDidMount() {
     this._updateCssClasses(null, this.props);
+    getOptions(this);
   }
 
   public componentDidUpdate(prevProps: P) {
