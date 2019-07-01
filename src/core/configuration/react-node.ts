@@ -4,7 +4,7 @@ import { ITemplateMeta, Template } from "../template";
 import { INode, NodeType } from "./node";
 
 function createNode(element: React.ReactChild): INode {
-    if (typeof element === "string" || typeof element === "number") {
+    if (!element || typeof element === "string" || typeof element === "number") {
         return {
             type: NodeType.Unknown,
             getChildren: () => []
