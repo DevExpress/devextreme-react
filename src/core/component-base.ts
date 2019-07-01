@@ -3,8 +3,8 @@ import * as events from "devextreme/events";
 import * as React from "react";
 
 import { deferUpdate } from "devextreme/core/utils/common";
-import { getOptions } from "./configuration";
 import { IOptionNodeDescriptor } from "./configuration/node";
+import { OptionsManagerNew } from "./configuration/options-manager";
 import OptionsManager, { INestedOption } from "./options-manager";
 import { findProps as findNestedTemplateProps, ITemplateMeta } from "./template";
 import TemplatesManager from "./templates-manager";
@@ -48,11 +48,11 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
     this._optionsManager = new OptionsManager((name) => this.props[name], this._templatesManager);
   }
 
-  public getDescriptor(): IOptionNodeDescriptor  {
+  public get descriptor(): IOptionNodeDescriptor {
     return {
       name: "",
       isCollection: false,
-      templates: this._templateProps as any as [],
+      templates: this._templateProps,
       initialValueProps: this._defaults,
       predefinedValues: {}
     };
@@ -69,7 +69,6 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
 
   public componentDidMount() {
     this._updateCssClasses(null, this.props);
-    getOptions(this);
   }
 
   public componentDidUpdate(prevProps: P) {
@@ -110,6 +109,9 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
 
   protected _createWidget(element?: Element) {
     element = element || this._element;
+    const optionsManager = new OptionsManagerNew(this, this._templatesManager);
+    console.log(this, optionsManager.getInitialOptions());
+
     const nestedProps = this._optionsManager.getNestedOptionsObjects();
     const props = {
         ...(this.props as any),
