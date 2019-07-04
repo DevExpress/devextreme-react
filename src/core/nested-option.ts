@@ -1,4 +1,6 @@
 import * as React from "react";
+import { NodeType } from "./configuration/node";
+import { createNode } from "./configuration/react-node";
 
 interface INestedOptionProps {
     meta?: INestedOptionMeta;
@@ -13,55 +15,29 @@ interface INestedOptionMeta {
 
 class NestedOption<P> extends React.PureComponent<P, any> {
 
-    private readonly _meta?: INestedOptionMeta;
-
     constructor(props: P & INestedOptionProps) {
         super(props);
-
-        this._meta = props.meta;
-
-        this._markOptionAsDirty();
     }
 
     public render() {
-        if (!this.props.children || !this._meta) { return null; }
-
-        const registerNestedOption = this._meta.registerNestedOption;
-
-        const children: any[] = [];
-        React.Children.forEach(this.props.children, (c: React.ReactElement<any>) => {
-            const processedChild = registerNestedOption(c);
-            if (processedChild) {
-                children.push(processedChild);
+        if (!this.props.children) {
+            return null;
+        }
+        const children = React.Children.map(
+            this.props.children,
+            (child) => {
+                return {
+                    type: createNode(child).type,
+                    child
+                };
             }
-        });
-
-        return children.length === 0
-            ? null
-            : React.createElement(React.Fragment, {}, ...children);
+        );
+        return React.createElement(
+            React.Fragment,
+            {},
+            children.filter((child) => child.type === NodeType.Option).map((child) => child.child)
+        );
     }
-
-    public componentDidUpdate(prevProps: P) {
-        if (this._meta) {
-            this._meta.updateFunc(getCleanProps(this.props), prevProps);
-        }
-    }
-
-    public componentWillUnmount() {
-        this._markOptionAsDirty();
-    }
-
-    private _markOptionAsDirty() {
-        if (this._meta) {
-            this._meta.makeDirty();
-        }
-    }
-}
-
-function getCleanProps(props: any) {
-    const { meta, ...cleanProps } = props;
-
-    return cleanProps;
 }
 
 function createOptionComponent<P>(rawElement: React.ReactElement<P>, meta: INestedOptionMeta) {

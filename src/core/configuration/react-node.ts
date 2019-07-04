@@ -55,5 +55,6 @@ interface IConfigurationType {
 }
 
 export {
+    createNode,
     createChildNodes
 };
