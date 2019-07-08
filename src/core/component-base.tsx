@@ -1,11 +1,17 @@
+import * as events from "devextreme/events";
 import * as React from "react";
 
-import { deferUpdate } from "devextreme/core/utils/common";
-import { IOptionNodeDescriptor } from "./configuration/node";
-import { IntegrationManager } from "./integration-manager";
 import { INestedOption } from "./options-manager";
 import { ITemplateMeta } from "./template";
+import TemplatesManager from "./templates-manager";
 import { TemplatesRenderer } from "./templates-renderer";
+import { TemplatesStore } from "./templates-store";
+
+import { OptionConfiguration } from "./configuration/option-configuration";
+import { OptionsManager } from "./configuration/options-manager";
+import { buildOptionsTree } from "./configuration/options-tree";
+import { createChildNodes } from "./configuration/react-node";
+
 import { elementPropNames, getClassName } from "./widget-config";
 
 const DX_REMOVE_EVENT = "dxremove";
@@ -25,35 +31,24 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
   protected readonly _templateProps: ITemplateMeta[] = [];
   protected readonly _expectedChildren: Record<string, INestedOption>;
 
-  private _updateScheduled: boolean = false;
-
-  private _integrationManager: IntegrationManager;
   private _templatesRendererRef: TemplatesRenderer | null;
+
+  private _templatesStore: TemplatesStore;
+  private _templatesManager: TemplatesManager;
+  private _optionsManager: OptionsManager;
 
   constructor(props: P) {
     super(props);
 
-    this.scheduleUpdate = this.scheduleUpdate.bind(this);
     this._setTemplatesRendererRef = this._setTemplatesRendererRef.bind(this);
-    this._integrationManager = new IntegrationManager(this);
-  }
 
-  public get descriptor(): IOptionNodeDescriptor {
-    return {
-      name: "",
-      isCollection: false,
-      templates: this._templateProps,
-      initialValueProps: this._defaults,
-      predefinedValues: {}
-    };
-  }
-
-  public get templatesRenderer() {
-    return this._templatesRendererRef;
-  }
-
-  public get widgetClass(): any {
-    return this._WidgetClass;
+    this._templatesStore = new TemplatesStore(() => {
+      if (this._templatesRendererRef) {
+        this._templatesRendererRef.scheduleUpdate();
+      }
+    });
+    this._templatesManager = new TemplatesManager(this._templatesStore);
+    this._optionsManager = new OptionsManager(this._templatesManager);
   }
 
   public render() {
@@ -64,7 +59,7 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
       React.createElement(
         TemplatesRenderer,
         {
-          templatesStore: this._integrationManager.templatesStore,
+          templatesStore: this._templatesStore,
           ref: this._setTemplatesRendererRef
         }
       )
@@ -77,36 +72,57 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
 
   public componentDidUpdate(prevProps: P) {
     this._updateCssClasses(prevProps, this.props);
-    this._integrationManager.updateOptions();
+
+    const config = this._getConfig();
+    this._optionsManager.update(config);
   }
 
   public componentWillUnmount() {
-    // if (this._instance) {
-    //   events.triggerHandler(this._element, DX_REMOVE_EVENT);
-    //   this._instance.dispose();
-    // }
+    if (this._instance) {
+      events.triggerHandler(this._element, DX_REMOVE_EVENT);
+      this._instance.dispose();
+    }
     // this._optionsManager.dispose();
   }
 
-  // DO WE NEED THIS?
-  public scheduleUpdate() {
-    if (this._updateScheduled) {
-      return;
-    }
-
-    this._updateScheduled = true;
-
-    deferUpdate(() => {
-      this.forceUpdate();
-      this._updateScheduled = false;
-    });
-  }
-
   protected _createWidget(element?: Element) {
-    this._integrationManager.createWidget(this._element);
+    element = element || this._element;
+
+    const config = this._getConfig();
+    this._instance = new this._WidgetClass(
+      element,
+      {
+        templatesRenderAsynchronously: true,
+        ...this._optionsManager.build(config, false)
+      }
+    );
+
+    this._optionsManager.setInstance(this._instance, config);
 
     // this._optionsManager.wrapEventHandlers(options);
     // this._instance.on("optionChanged", this._optionsManager.handleOptionChange);
+  }
+
+  private _getConfig(): OptionConfiguration {
+    const config = new OptionConfiguration(
+      {
+        name: "",
+        isCollection: false,
+        templates: this._templateProps,
+        initialValueProps: this._defaults,
+        predefinedValues: {}
+      },
+      this.props,
+      ""
+    );
+
+    createChildNodes(this.props.children).map(
+      (childNode) => {
+        buildOptionsTree(childNode, config);
+      }
+    );
+
+    return config;
   }
 
   private _setTemplatesRendererRef(instance: TemplatesRenderer | null) {
