@@ -1,3 +1,5 @@
+import { Children as ReactChildren } from "react";
+
 import TemplatesManager from "../templates-manager";
 import { OptionConfiguration } from "./option-configuration";
 import { buildOptionFullname } from "./utils";
@@ -169,12 +171,24 @@ class OptionsManager {
 
     private _registerTemplates(node: OptionConfiguration): Record<string, any> {
         return this._templatesManager.add({
-            useChildren: (optionName) => node.fullname.length > 0 && optionName === "template", // CHANGED LOGIC, CHECK
+            useChildren: (optionName) => this._useChildrenForTemplate(node, optionName),
             props: node.templates,
             templateProps: node.descriptor.templates,
             ownerName: node.fullname,
             propsGetter: (prop) => node.rawValues[prop]
         });
+    }
+
+    private _useChildrenForTemplate(node: OptionConfiguration, optionName: string): boolean {
+        if (node.fullname === "" || optionName !== "template") {
+            return false;
+        }
+
+        if (ReactChildren.count(node.rawValues.children) > node.children.length) {
+            return true;
+        }
+
+        return false;
     }
 }
 
