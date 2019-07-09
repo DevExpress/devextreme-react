@@ -13,6 +13,7 @@ import { buildOptionsTree } from "./configuration/options-tree";
 import { createChildNodes } from "./configuration/react-node";
 
 import { elementPropNames, getClassName } from "./widget-config";
+import { WidgetContext } from "./widget-context";
 
 const DX_REMOVE_EVENT = "dxremove";
 
@@ -26,6 +27,7 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
   protected _WidgetClass: any;
   protected _instance: any;
   protected _element: HTMLDivElement;
+  protected _extensions: Array<(element: Element) => void> = [];
 
   protected readonly _defaults: Record<string, string>;
   protected readonly _templateProps: ITemplateMeta[] = [];
@@ -36,6 +38,10 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
   private _templatesStore: TemplatesStore;
   private _templatesManager: TemplatesManager;
   private _optionsManager: OptionsManager;
+
+  private _contextValue = {
+    registerExtension: (callback: any) => { this._extensions.push(callback); }
+  };
 
   constructor(props: P) {
     super(props);
@@ -55,7 +61,7 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
     return React.createElement(
       "div",
       this._getElementProps(),
-      this.props.children,
+      this.renderChildren(),
       React.createElement(
         TemplatesRenderer,
         {
@@ -98,9 +104,19 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
     );
 
     this._optionsManager.setInstance(this._instance, config);
-
+    // console.log(config);
     // this._optionsManager.wrapEventHandlers(options);
     // this._instance.on("optionChanged", this._optionsManager.handleOptionChange);
+  }
+
+  private renderChildren() {
+    return React.createElement(
+      WidgetContext.Provider,
+      {
+        value: this._contextValue
+      },
+      this.props.children
+    );
   }
 
   private _getConfig(): OptionConfiguration {
