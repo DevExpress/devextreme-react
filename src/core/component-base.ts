@@ -99,7 +99,7 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
       element,
       {
         templatesRenderAsynchronously: true,
-        ...this._optionsManager.build(config, false)
+        ...this._optionsManager.getInitialOptions(config)
       }
     );
 

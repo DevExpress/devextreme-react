@@ -1,19 +1,12 @@
 import * as React from "react";
 
 import { getOption as getConfigOption } from "./config";
-import { createDxTemplate, IDxTemplate } from "./dx-template";
-import { ITemplateArgs, ITemplateMeta, ITemplateProps } from "./template";
+import { ITemplateInfo } from "./configuration/builder";
+import { createDxTemplate } from "./dx-template";
+import { ITemplateArgs, ITemplateProps } from "./template";
 import { TemplatesStore } from "./templates-store";
 
 type PropsGetter = (propName: string) => any;
-
-interface IIntegrationDescr {
-    props: Record<string, any>;
-    templateProps: ITemplateMeta[];
-    ownerName: string;
-    propsGetter: PropsGetter;
-    useChildren: (name: string) => boolean;
-}
 
 function normalizeProps(props: ITemplateArgs): ITemplateArgs | ITemplateArgs["data"] {
     if (getConfigOption("useLegacyTemplateEngine")) {
@@ -38,6 +31,18 @@ const contentCreators = {
     children: (_: string, propsGetter: PropsGetter) => () => propsGetter("children")
 };
 
+const newContentCreators = {
+    component: (content: any) => (props: ITemplateArgs) => {
+        props = normalizeProps(props);
+        return React.createElement.bind(null, content)(props);
+    },
+    render: (content: any) => (props: ITemplateArgs) => {
+        normalizeProps(props);
+        return content(props.data, props.index);
+    },
+    children: (content: any) => () => content
+};
+
 class TemplatesManager {
     private _templatesStore: TemplatesStore;
     private _templates: Record<string, any> = {};
@@ -51,53 +56,14 @@ class TemplatesManager {
         this._templatesStore = templatesStore;
     }
 
-    public add(meta: IIntegrationDescr): Record<string, any> {
-        const templates: Record<string, IDxTemplate> = {};
-        const templatesOptions: Record<string, any> = {};
-
-        const props = meta.props;
-        const templateProps = meta.templateProps || [];
-        const ownerName = meta.ownerName;
-
-        for (const tmpl of templateProps) {
-            let contentCreator;
-            let propName;
-
-            if (meta.useChildren(tmpl.tmplOption)) {
-                contentCreator = contentCreators.children;
-            }
-
-            if (props[tmpl.render]) {
-                propName = tmpl.render;
-                contentCreator = contentCreators.render;
-            }
-
-            if (props[tmpl.component]) {
-                propName = tmpl.component;
-                contentCreator = contentCreators.component;
-            }
-
-            if (!contentCreator) {
-                continue;
-            }
-
-            contentCreator = contentCreator.bind(this, propName, meta.propsGetter);
-
-            const name = ownerName ? `${ownerName}.${tmpl.tmplOption}` : tmpl.tmplOption;
-            templatesOptions[tmpl.tmplOption] = name;
-            templates[name] = createDxTemplate(
-                contentCreator,
-                this._templatesStore,
-                meta.propsGetter(tmpl.keyFn)
-            );
-        }
-
-        this._templates = {
-            ...this._templates,
-            ...templates
-        };
-
-        return templatesOptions;
+    public add(templateInfo: ITemplateInfo) {
+        let contentCreator: any = newContentCreators[templateInfo.type];
+        contentCreator = contentCreator.bind(this, templateInfo.content);
+        this._templates[templateInfo.name] = createDxTemplate(
+            contentCreator,
+            this._templatesStore,
+            templateInfo.keyFn
+        );
     }
 
     public addNested(props: ITemplateProps): void {

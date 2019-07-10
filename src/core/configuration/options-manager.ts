@@ -1,6 +1,5 @@
-import { Children as ReactChildren } from "react";
-
 import TemplatesManager from "../templates-manager";
+import { buildConfig, getTemplateInfo } from "./builder";
 import { OptionConfiguration } from "./option-configuration";
 import { buildOptionFullname } from "./utils";
 
@@ -19,9 +18,15 @@ class OptionsManager {
         this._currentConfig = config;
     }
 
-    public build(config: OptionConfiguration, ignoreInitialValues: boolean) {
+    public getInitialOptions(rootNode: OptionConfiguration) {
+        const config = buildConfig(rootNode, false);
+
+        for (const key of Object.keys(config.templates)) {
+            this._templatesManager.add(config.templates[key]);
+        }
+
         return {
-            ...this._build(config, ignoreInitialValues),
+            ...config.options,
             ...this._templatesManager.options
         };
     }
@@ -47,10 +52,7 @@ class OptionsManager {
 
     private _update(current: OptionConfiguration, prev: OptionConfiguration) {
         if (!prev) {
-            this._setValue(
-                current.fullname,
-                this._build(current, true)
-            );
+            this._updateNodeWithTemplates(current);
         }
 
         this._processRemovedValues(current.values, prev.values, current.fullname);
@@ -65,8 +67,8 @@ class OptionsManager {
             );
         }
 
-        for (const key of Object.keys(current.children)) {
-            this._update(current.children[key], prev.children[key]);
+        for (let i = 0; i < current.children.length; i++) {
+            this._update(current.children[i], prev.children[i]);
         }
 
         for (const key of Object.keys(current.values)) {
@@ -83,17 +85,47 @@ class OptionsManager {
         this._registerTemplates(current);
     }
 
+    private _registerTemplates(node: OptionConfiguration) {
+        for (const templateMeta of node.descriptor.templates || []) {
+            const templateInfo = getTemplateInfo(node, templateMeta);
+            if (templateInfo) {
+                this._templatesManager.add(templateInfo);
+            }
+        }
+    }
+
     private _updateCollection(current: OptionConfiguration[], prev: OptionConfiguration[], fullname: string) {
         if (!prev || current.length !== prev.length) {
             this._setValue(
                 fullname,
-                current.map((node) => this._build(node, true))
+                current.map(
+                    (node) => {
+                        const config = buildConfig(node, true);
+
+                        for (const key of Object.keys(config.templates)) {
+                            this._templatesManager.add(config.templates[key]);
+                        }
+
+                        return config.options;
+                    }
+                )
             );
             return;
         }
 
         for (let i = 0; i < current.length; i++) {
             this._update(current[i], prev[i]);
+        }
+    }
+
+    private _processRemovedValues(current: Record<string, any>, prev: Record<string, any>, fullname: string) {
+        const removedKeys = Object.keys(prev).filter((key) => Object.keys(current).indexOf(key) < 0);
+
+        for (const key of removedKeys) {
+            this._setValue(
+                buildOptionFullname(fullname, key),
+                undefined
+            );
         }
     }
 
@@ -106,89 +138,14 @@ class OptionsManager {
         this._instance.option(name, value);
     }
 
-    private _processRemovedValues(current: Record<string, any>, prev: Record<string, any>, fullname: string) {
-        const removedKeys = Object.keys(prev).filter((key) => Object.keys(current).indexOf(key) < 0);
+    private _updateNodeWithTemplates(node: OptionConfiguration) {
+        const config = buildConfig(node, true);
 
-        for (const key of removedKeys) {
-            this._setValue(
-                buildOptionFullname(current.fullname, key),
-                undefined
-            );
-        }
-    }
-
-    private _build(configuration: OptionConfiguration, ignoreInitialValues: boolean): Record<string, any> {
-        const complexOptions: Record<string, any> = {};
-
-        this._appendChildren(
-            complexOptions,
-            configuration.children,
-            ignoreInitialValues
-        );
-
-        this._appendCollections(
-            complexOptions,
-            configuration.collections,
-            ignoreInitialValues
-        );
-
-        const initialValues = ignoreInitialValues ? {} : configuration.initialValues;
-
-        const templatesOptions = this._registerTemplates(configuration);
-
-        return {
-            ...configuration.descriptor.predefinedValues,
-            ...complexOptions,
-            ...configuration.values,
-            ...initialValues,
-            ...templatesOptions
-        };
-    }
-
-    private _appendChildren(
-        options: Record<string, any>,
-        children: OptionConfiguration[],
-        ignoreInitialValues: boolean
-    ) {
-        children.map(
-            (child) => {
-                options[child.descriptor.name] = this._build(child, ignoreInitialValues);
-            }
-        );
-    }
-
-    private _appendCollections(
-        options: Record<string, any>,
-        collections: Record<string, OptionConfiguration[]>,
-        ignoreInitialValues: boolean
-    ) {
-        for (const key of Object.keys(collections)) {
-            options[key] = collections[key].map(
-                (item) => this._build(item, ignoreInitialValues)
-            );
-        }
-    }
-
-    private _registerTemplates(node: OptionConfiguration): Record<string, any> {
-        return this._templatesManager.add({
-            useChildren: (optionName) => this._useChildrenForTemplate(node, optionName),
-            props: node.templates,
-            templateProps: node.descriptor.templates,
-            ownerName: node.fullname,
-            propsGetter: (prop) => node.rawValues[prop]
-        });
-    }
-
-    private _useChildrenForTemplate(node: OptionConfiguration, optionName: string): boolean {
-        if (node.fullname === "" || optionName !== "template") {
-            return false;
+        for (const key of Object.keys(config.templates)) {
+            this._templatesManager.add(config.templates[key]);
         }
 
-        if (ReactChildren.count(node.rawValues.children) > node.children.length) {
-            return true;
-        }
-
-        return false;
+        this._setValue(node.fullname, config.options);
     }
 }
 
