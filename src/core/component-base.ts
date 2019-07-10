@@ -104,9 +104,8 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
     );
 
     this._optionsManager.setInstance(this._instance, config);
-    // console.log(config);
     // this._optionsManager.wrapEventHandlers(options);
-    // this._instance.on("optionChanged", this._optionsManager.handleOptionChange);
+    this._instance.on("optionChanged", this._optionsManager.onOptionChanged);
   }
 
   private renderChildren() {

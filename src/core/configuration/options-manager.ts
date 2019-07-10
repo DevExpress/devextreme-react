@@ -1,9 +1,10 @@
 import TemplatesManager from "../templates-manager";
 import { buildConfig, getTemplateInfo } from "./builder";
 import { ConfigNode } from "./config-node";
-import { buildOptionFullname } from "./utils";
+import { buildOptionFullname, getOptionValue } from "./utils";
 
 class OptionsManager {
+    private readonly _guards: Record<string, number> = {};
     private _templatesManager: TemplatesManager;
     private _instance: any;
     private _isUpdating = false;
@@ -11,6 +12,8 @@ class OptionsManager {
 
     constructor(templatesManager: TemplatesManager) {
         this._templatesManager = templatesManager;
+
+        this.onOptionChanged = this.onOptionChanged.bind(this);
     }
 
     public setInstance(instance: any, config: ConfigNode) {
@@ -36,18 +39,50 @@ class OptionsManager {
 
         const integrationOptions = this._templatesManager.options && this._templatesManager.options.integrationOptions;
         if (integrationOptions) {
-            this._setValue(
+            this._setValueInTransaction(
                 "integrationOptions",
                 integrationOptions
             );
         }
 
         if (this._isUpdating) {
-            this._instance.endUpdate();
             this._isUpdating = false;
+            this._instance.endUpdate();
         }
 
         this._currentConfig = config;
+    }
+
+    public onOptionChanged(e: { name: string, fullName: string, value: any }) {
+        if (this._isUpdating) {
+            return;
+        }
+
+        const controlledValue = getOptionValue(this._currentConfig, e.fullName.split("."));
+
+        if (
+            controlledValue === null ||
+            controlledValue === undefined ||
+            controlledValue === e.value
+        ) {
+            return;
+        }
+
+        this._setGuard(e.fullName, controlledValue);
+    }
+
+    private _setGuard(optionName: string, optionValue: any): void {
+        if (this._guards[optionName] !== undefined) {
+            return;
+        }
+
+        const guardId = window.setTimeout(() => {
+            this._setValue(optionName, optionValue);
+            window.clearTimeout(guardId);
+            delete this._guards[optionName];
+        });
+
+        this._guards[optionName] = guardId;
     }
 
     private _update(current: ConfigNode, prev: ConfigNode) {
@@ -76,7 +111,7 @@ class OptionsManager {
                 continue;
             }
 
-            this._setValue(
+            this._setValueInTransaction(
                 buildOptionFullname(current.fullname, key),
                 current.values[key]
             );
@@ -96,7 +131,7 @@ class OptionsManager {
 
     private _updateCollection(current: ConfigNode[], prev: ConfigNode[], fullname: string) {
         if (!prev || current.length !== prev.length) {
-            this._setValue(
+            this._setValueInTransaction(
                 fullname,
                 current.map(
                     (node) => {
@@ -122,19 +157,23 @@ class OptionsManager {
         const removedKeys = Object.keys(prev).filter((key) => Object.keys(current).indexOf(key) < 0);
 
         for (const key of removedKeys) {
-            this._setValue(
+            this._setValueInTransaction(
                 buildOptionFullname(fullname, key),
                 undefined
             );
         }
     }
 
-    private _setValue(name: string, value: any) {
+    private _setValueInTransaction(name: string, value: any) {
         if (!this._isUpdating) {
             this._instance.beginUpdate();
             this._isUpdating = true;
         }
 
+        this._setValue(name, value);
+    }
+
+    private _setValue(name: string, value: any) {
         this._instance.option(name, value);
     }
 
@@ -145,7 +184,7 @@ class OptionsManager {
             this._templatesManager.add(config.templates[key]);
         }
 
-        this._setValue(node.fullname, config.options);
+        this._setValueInTransaction(node.fullname, config.options);
     }
 }
 
