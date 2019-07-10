@@ -1,24 +1,24 @@
 import TemplatesManager from "../templates-manager";
 import { buildConfig, getTemplateInfo } from "./builder";
-import { OptionConfiguration } from "./option-configuration";
+import { ConfigNode } from "./config-node";
 import { buildOptionFullname } from "./utils";
 
 class OptionsManager {
     private _templatesManager: TemplatesManager;
     private _instance: any;
     private _isUpdating = false;
-    private _currentConfig: OptionConfiguration;
+    private _currentConfig: ConfigNode;
 
     constructor(templatesManager: TemplatesManager) {
         this._templatesManager = templatesManager;
     }
 
-    public setInstance(instance: any, config: OptionConfiguration) {
+    public setInstance(instance: any, config: ConfigNode) {
         this._instance = instance;
         this._currentConfig = config;
     }
 
-    public getInitialOptions(rootNode: OptionConfiguration) {
+    public getInitialOptions(rootNode: ConfigNode) {
         const config = buildConfig(rootNode, false);
 
         for (const key of Object.keys(config.templates)) {
@@ -31,7 +31,7 @@ class OptionsManager {
         };
     }
 
-    public update(config: OptionConfiguration) {
+    public update(config: ConfigNode) {
         this._update(config, this._currentConfig);
 
         const integrationOptions = this._templatesManager.options && this._templatesManager.options.integrationOptions;
@@ -50,7 +50,7 @@ class OptionsManager {
         this._currentConfig = config;
     }
 
-    private _update(current: OptionConfiguration, prev: OptionConfiguration) {
+    private _update(current: ConfigNode, prev: ConfigNode) {
         if (!prev) {
             this._updateNodeWithTemplates(current);
         }
@@ -67,8 +67,8 @@ class OptionsManager {
             );
         }
 
-        for (let i = 0; i < current.children.length; i++) {
-            this._update(current.children[i], prev.children[i]);
+        for (const key of Object.keys(current.children)) {
+            this._update(current.children[key], prev.children[key]);
         }
 
         for (const key of Object.keys(current.values)) {
@@ -85,7 +85,7 @@ class OptionsManager {
         this._registerTemplates(current);
     }
 
-    private _registerTemplates(node: OptionConfiguration) {
+    private _registerTemplates(node: ConfigNode) {
         for (const templateMeta of node.descriptor.templates || []) {
             const templateInfo = getTemplateInfo(node, templateMeta);
             if (templateInfo) {
@@ -94,7 +94,7 @@ class OptionsManager {
         }
     }
 
-    private _updateCollection(current: OptionConfiguration[], prev: OptionConfiguration[], fullname: string) {
+    private _updateCollection(current: ConfigNode[], prev: ConfigNode[], fullname: string) {
         if (!prev || current.length !== prev.length) {
             this._setValue(
                 fullname,
@@ -138,7 +138,7 @@ class OptionsManager {
         this._instance.option(name, value);
     }
 
-    private _updateNodeWithTemplates(node: OptionConfiguration) {
+    private _updateNodeWithTemplates(node: ConfigNode) {
         const config = buildConfig(node, true);
 
         for (const key of Object.keys(config.templates)) {

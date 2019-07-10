@@ -24,12 +24,10 @@ interface IOptionNode {
 interface ITemplateNode {
     type: NodeType.Template;
     values: Record<string, any>;
-    getChildren(): INode[];
 }
 
 interface IUnknownNode {
     type: NodeType.Unknown;
-    getChildren(): INode[];
 }
 
 type INode = IOptionNode | ITemplateNode | IUnknownNode;

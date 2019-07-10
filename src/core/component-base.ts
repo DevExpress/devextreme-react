@@ -7,7 +7,7 @@ import TemplatesManager from "./templates-manager";
 import { TemplatesRenderer } from "./templates-renderer";
 import { TemplatesStore } from "./templates-store";
 
-import { OptionConfiguration } from "./configuration/option-configuration";
+import { ConfigNode } from "./configuration/config-node";
 import { OptionsManager } from "./configuration/options-manager";
 import { buildOptionsTree } from "./configuration/options-tree";
 import { createChildNodes } from "./configuration/react-node";
@@ -119,8 +119,8 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
     );
   }
 
-  private _getConfig(): OptionConfiguration {
-    const config = new OptionConfiguration(
+  private _getConfig(): ConfigNode {
+    const config = new ConfigNode(
       {
         name: "",
         isCollection: false,

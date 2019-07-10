@@ -1,7 +1,11 @@
+import { ConfigNode } from "./config-node";
 import { INode, NodeType } from "./node";
-import { OptionConfiguration } from "./option-configuration";
 
-function buildOptionsTree(node: INode, parentOption: OptionConfiguration) {
+function buildOptionsTree(node: INode, parentOption: ConfigNode) {
+    if (node.type === NodeType.Unknown) {
+        return;
+    }
+
     if (node.type === NodeType.Template) {
         // register tempalate
         return;

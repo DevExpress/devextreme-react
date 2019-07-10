@@ -1,9 +1,9 @@
 import { Children as ReactChildren } from "react";
 
 import { ITemplateMeta } from "../template";
-import { OptionConfiguration } from "./option-configuration";
+import { ConfigNode } from "./config-node";
 
-function buildConfig(root: OptionConfiguration, ignoreInitialValues: boolean): IWidgetConfig {
+function buildConfig(root: ConfigNode, ignoreInitialValues: boolean): IWidgetConfig {
     const templates: Record<string, ITemplateInfo> = {};
     const options = build(root, templates, ignoreInitialValues);
 
@@ -14,7 +14,7 @@ function buildConfig(root: OptionConfiguration, ignoreInitialValues: boolean): I
 }
 
 function build(
-    node: OptionConfiguration,
+    node: ConfigNode,
     templates: Record<string, ITemplateInfo>,
     ignoreInitialValues: boolean
 ): Record<string, any> {
@@ -24,11 +24,9 @@ function build(
         result[key] = node.descriptor.predefinedValues[key];
     }
 
-    node.children.map(
-        (child) => {
-            result[child.descriptor.name] = build(child, templates, ignoreInitialValues);
-        }
-    );
+    for (const key of Object.keys(node.children)) {
+        result[key] = build(node.children[key], templates, ignoreInitialValues);
+    }
 
     for (const key of Object.keys(node.collections)) {
         result[key] = node.collections[key].map(
@@ -57,7 +55,7 @@ function build(
     return result;
 }
 
-function getTemplateInfo(node: OptionConfiguration, templateMeta: ITemplateMeta): ITemplateInfo | null {
+function getTemplateInfo(node: ConfigNode, templateMeta: ITemplateMeta): ITemplateInfo | null {
     const name = node.fullname ? `${node.fullname}.${templateMeta.tmplOption}` : templateMeta.tmplOption;
     if (isTranscludedTemplate(node, templateMeta.tmplOption)) {
         return {
@@ -89,12 +87,12 @@ function getTemplateInfo(node: OptionConfiguration, templateMeta: ITemplateMeta)
     return null;
 }
 
-function isTranscludedTemplate(node: OptionConfiguration, optionName: string): boolean {
+function isTranscludedTemplate(node: ConfigNode, optionName: string): boolean {
     if (node.fullname === "" || optionName !== "template") {
         return false;
     }
 
-    if (ReactChildren.count(node.rawValues.children) > node.children.length) {
+    if (ReactChildren.count(node.rawValues.children) > Object.keys(node.children).length) {
         return true;
     }
 

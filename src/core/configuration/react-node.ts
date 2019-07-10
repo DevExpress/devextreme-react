@@ -6,20 +6,18 @@ import { INode, NodeType } from "./node";
 function createNode(element: React.ReactChild): INode {
     if (!element || typeof element === "string" || typeof element === "number") {
         return {
-            type: NodeType.Unknown,
-            getChildren: () => []
+            type: NodeType.Unknown
         };
     }
 
     if (element.type === Template) {
         return {
             type: NodeType.Template,
-            values: element.props,
-            getChildren: () => createChildNodes(element.props.children)
+            values: element.props
         };
     }
 
-    const configuration = element.type as any as IConfigurationType;
+    const configuration = element.type as any as IConfiguration;
 
     if (configuration.OptionName) {
         return {
@@ -37,8 +35,7 @@ function createNode(element: React.ReactChild): INode {
     }
 
     return {
-        type: NodeType.Unknown,
-        getChildren: () => createChildNodes(element.props.children)
+        type: NodeType.Unknown
     };
 }
 
@@ -46,7 +43,7 @@ function createChildNodes(children: React.ReactNode): INode[] {
     return React.Children.map(children, (child) => createNode(child)) || [];
 }
 
-interface IConfigurationType {
+interface IConfiguration {
     OptionName: string;
     IsCollectionItem: boolean;
     DefaultsProps: Record<string, string>;
