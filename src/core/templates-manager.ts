@@ -81,16 +81,8 @@ class TemplatesManager {
         this._templates[name] = createDxTemplate(contentCreator, this._templatesStore, props.keyFn);
     }
 
-    public get options(): Record<string, any> | undefined {
-        if (!Object.keys(this._templates).length) {
-            return;
-        }
-
-        return {
-            integrationOptions: {
-                templates: this._templates
-            }
-        };
+    public get templates(): Record<string, any> {
+        return this._templates;
     }
 }
 

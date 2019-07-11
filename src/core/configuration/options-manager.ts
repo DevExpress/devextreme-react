@@ -14,6 +14,7 @@ class OptionsManager {
         this._templatesManager = templatesManager;
 
         this.onOptionChanged = this.onOptionChanged.bind(this);
+        this._wrapOptionValue = this._wrapOptionValue.bind(this);
     }
 
     public setInstance(instance: any, config: ConfigNode) {
@@ -28,22 +29,28 @@ class OptionsManager {
             this._templatesManager.add(config.templates[key]);
         }
 
-        return {
-            ...config.options,
-            ...this._templatesManager.options
+        const options = {};
+
+        for (const key of Object.keys(config.options)) {
+            options[key] = this._wrapOptionValue(key, config.options[key]);
+        }
+
+        options["integrationOptions"] = {
+            templates: this._templatesManager.templates
         };
+
+        return options;
     }
 
     public update(config: ConfigNode) {
         this._update(config, this._currentConfig);
 
-        const integrationOptions = this._templatesManager.options && this._templatesManager.options.integrationOptions;
-        if (integrationOptions) {
-            this._setValueInTransaction(
-                "integrationOptions",
-                integrationOptions
-            );
-        }
+        this._setValueInTransaction(
+            "integrationOptions",
+            {
+                templates: this._templatesManager.templates
+            }
+        );
 
         if (this._isUpdating) {
             this._isUpdating = false;
@@ -69,6 +76,18 @@ class OptionsManager {
         }
 
         this._setGuard(e.fullName, controlledValue);
+    }
+
+    private _wrapOptionValue(name: string, value: any) {
+        if (name.substr(0, 2) === "on" && typeof value === "function") {
+            return (...args: any[]) => {
+                if (!this._isUpdating) {
+                    value(...args);
+                }
+            };
+        }
+
+        return value;
     }
 
     private _setGuard(optionName: string, optionValue: any): void {
@@ -174,7 +193,15 @@ class OptionsManager {
     }
 
     private _setValue(name: string, value: any) {
-        this._instance.option(name, value);
+        if (this._guards[name]) {
+            window.clearTimeout(this._guards[name]);
+            delete this._guards[name];
+        }
+
+        this._instance.option(
+            name,
+            this._wrapOptionValue(name, value)
+        );
     }
 
     private _updateNodeWithTemplates(node: ConfigNode) {
