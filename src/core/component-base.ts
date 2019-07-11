@@ -1,14 +1,13 @@
 import * as events from "devextreme/events";
 import * as React from "react";
 
-import { INestedOption } from "./options-manager";
+import { OptionsManager } from "./options-manager";
 import { ITemplateMeta } from "./template";
 import TemplatesManager from "./templates-manager";
 import { TemplatesRenderer } from "./templates-renderer";
 import { TemplatesStore } from "./templates-store";
 
 import { ConfigNode } from "./configuration/config-node";
-import { OptionsManager } from "./configuration/options-manager";
 import { buildOptionsTree } from "./configuration/options-tree";
 import { createChildNodes } from "./configuration/react-node";
 
@@ -16,6 +15,11 @@ import { elementPropNames, getClassName } from "./widget-config";
 import { WidgetContext } from "./widget-context";
 
 const DX_REMOVE_EVENT = "dxremove";
+
+interface INestedOption {
+  optionName: string;
+  isCollectionItem: boolean;
+}
 
 interface IHtmlOptions {
   id?: string;

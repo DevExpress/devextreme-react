@@ -40,13 +40,7 @@ class NestedOption<P> extends React.PureComponent<P, any> {
     }
 }
 
-function createOptionComponent<P>(rawElement: React.ReactElement<P>, meta: INestedOptionMeta) {
-    const props: INestedOptionProps = { meta };
-    return React.cloneElement(rawElement, props as any);
-}
-
 export default NestedOption;
 export {
-    createOptionComponent,
     INestedOptionMeta
 };
