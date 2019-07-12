@@ -5,7 +5,7 @@ interface IWidgetContext {
 }
 
 const WidgetContext = createContext<IWidgetContext>({
-    registerExtension: (callback: any) => { return; }
+    registerExtension: (_: any) => { return; }
 });
 
 export {
