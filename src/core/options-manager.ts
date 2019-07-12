@@ -1,6 +1,5 @@
-import { buildConfig, getTemplateInfo } from "./configuration/builder";
-import { ConfigNode } from "./configuration/config-node";
-import { buildOptionFullname, getOptionValue } from "./configuration/utils";
+import { getOptionValue, IConfigNode, prepareConfig } from "./configuration";
+import { mergeNameParts } from "./configuration/utils";
 import TemplatesManager from "./templates-manager";
 
 class OptionsManager {
@@ -8,7 +7,7 @@ class OptionsManager {
     private _templatesManager: TemplatesManager;
     private _instance: any;
     private _isUpdating = false;
-    private _currentConfig: ConfigNode;
+    private _currentConfig: IConfigNode;
 
     constructor(templatesManager: TemplatesManager) {
         this._templatesManager = templatesManager;
@@ -17,16 +16,16 @@ class OptionsManager {
         this._wrapOptionValue = this._wrapOptionValue.bind(this);
     }
 
-    public setInstance(instance: any, config: ConfigNode) {
+    public setInstance(instance: any, config: IConfigNode) {
         this._instance = instance;
         this._currentConfig = config;
     }
 
-    public getInitialOptions(rootNode: ConfigNode) {
-        const config = buildConfig(rootNode, false);
+    public getInitialOptions(rootNode: IConfigNode) {
+        const config = prepareConfig(rootNode, false);
 
         for (const key of Object.keys(config.templates)) {
-            this._templatesManager.add(config.templates[key]);
+            this._templatesManager.add(key, config.templates[key]);
         }
 
         const options: Record<string, any> = {};
@@ -39,10 +38,12 @@ class OptionsManager {
             templates: this._templatesManager.templates
         };
 
+        console.log(options);
+
         return options;
     }
 
-    public update(config: ConfigNode) {
+    public update(config: IConfigNode) {
         this._update(config, this._currentConfig);
 
         this._setValueInTransaction(
@@ -104,60 +105,64 @@ class OptionsManager {
         this._guards[optionName] = guardId;
     }
 
-    private _update(current: ConfigNode, prev: ConfigNode) {
+    private _update(current: IConfigNode, prev: IConfigNode) {
         if (!prev) {
             this._updateNodeWithTemplates(current);
         }
 
-        this._processRemovedValues(current.values, prev.values, current.fullname);
-        this._processRemovedValues(current.collections, prev.collections, current.fullname);
-        this._processRemovedValues(current.children, prev.children, current.fullname);
+        this._processRemovedValues(current.options, prev.options);
+        this._processRemovedValues(current.configCollections, prev.configCollections);
+        this._processRemovedValues(current.configs, prev.configs);
 
-        for (const key of Object.keys(current.collections)) {
+        for (const key of Object.keys(current.configCollections)) {
             this._updateCollection(
-                current.collections[key],
-                prev.collections[key],
-                buildOptionFullname(current.fullname, key)
+                current.configCollections[key],
+                prev.configCollections[key],
+                mergeNameParts(current.fullName, key)
             );
         }
 
-        for (const key of Object.keys(current.children)) {
-            this._update(current.children[key], prev.children[key]);
+        for (const key of Object.keys(current.configs)) {
+            this._update(current.configs[key], prev.configs[key]);
         }
 
-        for (const key of Object.keys(current.values)) {
-            if (current.values[key] === prev.values[key]) {
+        for (const key of Object.keys(current.options)) {
+            if (current.options[key] === prev.options[key]) {
                 continue;
             }
 
             this._setValueInTransaction(
-                buildOptionFullname(current.fullname, key),
-                current.values[key]
+                mergeNameParts(current.fullName, key),
+                current.options[key]
             );
         }
 
-        this._registerTemplates(current);
+        this._updateTemplates(current);
     }
 
-    private _registerTemplates(node: ConfigNode) {
-        for (const templateMeta of node.descriptor.templates || []) {
-            const templateInfo = getTemplateInfo(node, templateMeta);
-            if (templateInfo) {
-                this._templatesManager.add(templateInfo);
+    private _updateTemplates(node: IConfigNode) {
+        node.templates.map(
+            (template) => {
+                if (template.isAnonymous) {
+                    const templateName = mergeNameParts(node.fullName, template.optionName);
+                    this._templatesManager.add(templateName, template);
+                } else {
+                    this._templatesManager.add(template.optionName, template);
+                }
             }
-        }
+        );
     }
 
-    private _updateCollection(current: ConfigNode[], prev: ConfigNode[], fullname: string) {
+    private _updateCollection(current: IConfigNode[], prev: IConfigNode[], fullname: string) {
         if (!prev || current.length !== prev.length) {
             this._setValueInTransaction(
                 fullname,
                 current.map(
                     (node) => {
-                        const config = buildConfig(node, true);
+                        const config = prepareConfig(node, true);
 
                         for (const key of Object.keys(config.templates)) {
-                            this._templatesManager.add(config.templates[key]);
+                            this._templatesManager.add(key, config.templates[key]);
                         }
 
                         return config.options;
@@ -172,12 +177,12 @@ class OptionsManager {
         }
     }
 
-    private _processRemovedValues(current: Record<string, any>, prev: Record<string, any>, fullname: string) {
+    private _processRemovedValues(current: Record<string, any>, prev: Record<string, any>) {
         const removedKeys = Object.keys(prev).filter((key) => Object.keys(current).indexOf(key) < 0);
 
         for (const key of removedKeys) {
             this._setValueInTransaction(
-                buildOptionFullname(fullname, key),
+                mergeNameParts(current.fullName, key),
                 undefined
             );
         }
@@ -204,14 +209,14 @@ class OptionsManager {
         );
     }
 
-    private _updateNodeWithTemplates(node: ConfigNode) {
-        const config = buildConfig(node, true);
+    private _updateNodeWithTemplates(node: IConfigNode) {
+        const config = prepareConfig(node, true);
 
         for (const key of Object.keys(config.templates)) {
-            this._templatesManager.add(config.templates[key]);
+            this._templatesManager.add(key, config.templates[key]);
         }
 
-        this._setValueInTransaction(node.fullname, config.options);
+        this._setValueInTransaction(node.fullName, config.options);
     }
 }
 

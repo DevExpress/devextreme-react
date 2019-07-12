@@ -6,13 +6,11 @@ import { ITemplateMeta } from "./template";
 import TemplatesManager from "./templates-manager";
 import { TemplatesRenderer } from "./templates-renderer";
 import { TemplatesStore } from "./templates-store";
-
-import { ConfigNode } from "./configuration/config-node";
-import { buildOptionsTree } from "./configuration/options-tree";
-import { createChildNodes } from "./configuration/react-node";
-
 import { elementPropNames, getClassName } from "./widget-config";
 import { WidgetContext } from "./widget-context";
+
+import { IConfigNode } from "./configuration";
+import { buildConfigTree } from "./configuration/react/config-tree";
 
 const DX_REMOVE_EVENT = "dxremove";
 
@@ -108,7 +106,6 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
     );
 
     this._optionsManager.setInstance(this._instance, config);
-    // this._optionsManager.wrapEventHandlers(options);
     this._instance.on("optionChanged", this._optionsManager.onOptionChanged);
   }
 
@@ -122,26 +119,15 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
     );
   }
 
-  private _getConfig(): ConfigNode {
-    const config = new ConfigNode(
+  private _getConfig(): IConfigNode {
+    return buildConfigTree(
       {
-        name: "",
-        isCollection: false,
         templates: this._templateProps,
-        initialValueProps: this._defaults,
-        predefinedValues: {}
+        initialValuesProps: this._defaults,
+        predefinedValuesProps: {}
       },
-      this.props,
-      ""
+      this.props
     );
-
-    createChildNodes(this.props.children).map(
-      (childNode) => {
-        buildOptionsTree(childNode, config);
-      }
-    );
-
-    return config;
   }
 
   private _setTemplatesRendererRef(instance: TemplatesRenderer | null) {

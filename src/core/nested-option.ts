@@ -1,6 +1,5 @@
 import * as React from "react";
-import { NodeType } from "./configuration/node";
-import { createNode } from "./configuration/react-node";
+import { ElementType, getElementInfo } from "./configuration/react/element";
 
 interface INestedOptionProps {
     meta?: INestedOptionMeta;
@@ -27,7 +26,7 @@ class NestedOption<P> extends React.PureComponent<P, any> {
             this.props.children,
             (child) => {
                 return {
-                    type: createNode(child).type,
+                    type: getElementInfo(child).type,
                     child
                 };
             }
@@ -35,7 +34,7 @@ class NestedOption<P> extends React.PureComponent<P, any> {
         return React.createElement(
             React.Fragment,
             {},
-            children.filter((child) => child.type === NodeType.Option).map((child) => child.child)
+            children.filter((child) => child.type === ElementType.Option).map((child) => child.child)
         );
     }
 }

@@ -59,5 +59,5 @@ export {
     ITemplateProps,
     ITemplateArgs,
     Template,
-    findProps
+    findProps,
 };

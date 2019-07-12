@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { getOption as getConfigOption } from "./config";
-import { ITemplateInfo } from "./configuration/builder";
+import { ITemplate } from "./configuration";
 import { createDxTemplate } from "./dx-template";
 import { ITemplateArgs } from "./template";
 import { TemplatesStore } from "./templates-store";
@@ -37,13 +37,13 @@ class TemplatesManager {
         this._templatesStore = templatesStore;
     }
 
-    public add(templateInfo: ITemplateInfo) {
-        let contentCreator: any = contentCreators[templateInfo.type];
-        contentCreator = contentCreator.bind(this, templateInfo.content);
-        this._templates[templateInfo.name] = createDxTemplate(
+    public add(name: string, template: ITemplate) {
+        let contentCreator: any = contentCreators[template.type];
+        contentCreator = contentCreator.bind(this, template.content);
+        this._templates[name] = createDxTemplate(
             contentCreator,
             this._templatesStore,
-            templateInfo.keyFn
+            template.keyFn
         );
     }
 
