@@ -83,6 +83,9 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
 
     const config = this._getConfig();
     this._optionsManager.update(config);
+    if (this._templatesRendererRef) {
+      this._templatesRendererRef.scheduleUpdate();
+    }
   }
 
   public componentWillUnmount() {

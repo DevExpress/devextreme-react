@@ -17,29 +17,32 @@ function normalizeProps(props: ITemplateArgs): ITemplateArgs | ITemplateArgs["da
     return props;
 }
 
+type ContentGetter = () => any;
+
 const contentCreators = {
-    component: (content: any) => (props: ITemplateArgs) => {
+    component: (contentGetter: ContentGetter) => (props: ITemplateArgs) => {
         props = normalizeProps(props);
-        return React.createElement.bind(null, content)(props);
+        return React.createElement.bind(null, contentGetter())(props);
     },
-    render: (content: any) => (props: ITemplateArgs) => {
+    render: (contentGetter: ContentGetter) => (props: ITemplateArgs) => {
         normalizeProps(props);
-        return content(props.data, props.index);
+        return contentGetter()(props.data, props.index);
     },
-    children: (content: any) => () => content
+    children: (contentGetter: ContentGetter) => () => contentGetter()
 };
 
 class TemplatesManager {
     private _templatesStore: TemplatesStore;
     private _templates: Record<string, any> = {};
+    private _templatesContent: Record<string, any> = {};
 
     constructor(templatesStore: TemplatesStore) {
         this._templatesStore = templatesStore;
     }
 
     public add(name: string, template: ITemplate) {
-        let contentCreator: any = contentCreators[template.type];
-        contentCreator = contentCreator.bind(this, template.content);
+        this._templatesContent[name] = template.content;
+        const contentCreator = contentCreators[template.type].bind(this, () => this._templatesContent[name]);
         this._templates[name] = createDxTemplate(
             contentCreator,
             this._templatesStore,

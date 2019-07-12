@@ -38,8 +38,6 @@ class OptionsManager {
             templates: this._templatesManager.templates
         };
 
-        console.log(options);
-
         return options;
     }
 
