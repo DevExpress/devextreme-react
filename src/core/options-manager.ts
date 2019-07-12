@@ -77,6 +77,13 @@ class OptionsManager {
         this._setGuard(e.fullName, controlledValue);
     }
 
+    public dispose() {
+        for (const optionName of Object.keys(this._guards)) {
+            window.clearTimeout(this._guards[optionName]);
+            delete this._guards[optionName];
+        }
+    }
+
     private _wrapOptionValue(name: string, value: any) {
         if (name.substr(0, 2) === "on" && typeof value === "function") {
             return (...args: any[]) => {
