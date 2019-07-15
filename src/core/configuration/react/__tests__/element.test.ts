@@ -37,15 +37,21 @@ class CollectionConfigurationComponent extends ConfigurationComponent<any> {
     public static PredefinedProps = { type: "numeric" };
 }
 
-describe("getElementInfo", () => {
-    it("parses Configuration components", () => {
-        const components: any[] = [
-            MinimalConfigurationComponent,
-            RichConfigurationComponent,
-            CollectionConfigurationComponent
-        ];
+const configurationComponents: any[] = [
+    MinimalConfigurationComponent,
+    RichConfigurationComponent,
+    CollectionConfigurationComponent
+];
 
-        components.map((component) => {
+const otherComponents = [
+    "div",
+    ConfigurationComponent,
+    () => React.createElement("div", {}, "text")
+];
+
+describe("getElementInfo", () => {
+    configurationComponents.map((component) => {
+        it("parses Configuration component", () => {
             const wrapper = mount(React.createElement(component));
             const elementInfo = getElementInfo(wrapper.getElement());
 
@@ -65,18 +71,18 @@ describe("getElementInfo", () => {
         });
     });
 
-    it("parses Template components", () => {
+    it("parses Template component", () => {
         const wrapper = mount(
             React.createElement(
                 Template,
                 {
                     name: "template-name"
-                }
+                },
+                "Template content"
             )
         );
 
         const elementInfo = getElementInfo(wrapper.getElement());
-
         if (elementInfo.type !== ElementType.Template) {
             expect(elementInfo.type).toEqual(ElementType.Template);
             return;
@@ -85,14 +91,8 @@ describe("getElementInfo", () => {
         expect(elementInfo.props).toEqual(wrapper.getElement().props);
     });
 
-    it("parses Other components", () => {
-        const components: any[] = [
-            "div",
-            ConfigurationComponent,
-            () => React.createElement("div", {}, "text")
-        ];
-
-        components.map((component) => {
+    otherComponents.map((component) => {
+        it("parses Other components", () => {
             const wrapper = mount(React.createElement(component));
             const elementInfo = getElementInfo(wrapper.getElement());
 
