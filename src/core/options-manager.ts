@@ -1,6 +1,7 @@
-import { getOptionValue, IConfigNode, prepareConfig } from "./configuration";
-import { mergeNameParts } from "./configuration/utils";
 import TemplatesManager from "./templates-manager";
+
+import { buildConfig, findValue, IConfigNode } from "./configuration";
+import { getChanges } from "./configuration/comparer";
 
 class OptionsManager {
     private readonly _guards: Record<string, number> = {};
@@ -22,7 +23,7 @@ class OptionsManager {
     }
 
     public getInitialOptions(rootNode: IConfigNode) {
-        const config = prepareConfig(rootNode, false);
+        const config = buildConfig(rootNode, false);
 
         for (const key of Object.keys(config.templates)) {
             this._templatesManager.add(key, config.templates[key]);
@@ -42,7 +43,15 @@ class OptionsManager {
     }
 
     public update(config: IConfigNode) {
-        this._update(config, this._currentConfig);
+        const changes = getChanges(config, this._currentConfig);
+
+        for (const key of Object.keys(changes.options)) {
+            this._setValueInTransaction(key, changes.options[key]);
+        }
+
+        for (const key of Object.keys(changes.templates)) {
+            this._templatesManager.add(key, changes.templates[key]);
+        }
 
         this._setValueInTransaction(
             "integrationOptions",
@@ -64,7 +73,7 @@ class OptionsManager {
             return;
         }
 
-        const controlledValue = getOptionValue(this._currentConfig, e.fullName.split("."));
+        const controlledValue = findValue(this._currentConfig, e.fullName.split("."));
 
         if (
             controlledValue === null ||
@@ -110,89 +119,6 @@ class OptionsManager {
         this._guards[optionName] = guardId;
     }
 
-    private _update(current: IConfigNode, prev: IConfigNode) {
-        if (!prev) {
-            this._updateNodeWithTemplates(current);
-        }
-
-        this._processRemovedValues(current.options, prev.options);
-        this._processRemovedValues(current.configCollections, prev.configCollections);
-        this._processRemovedValues(current.configs, prev.configs);
-
-        for (const key of Object.keys(current.configCollections)) {
-            this._updateCollection(
-                current.configCollections[key],
-                prev.configCollections[key],
-                mergeNameParts(current.fullName, key)
-            );
-        }
-
-        for (const key of Object.keys(current.configs)) {
-            this._update(current.configs[key], prev.configs[key]);
-        }
-
-        for (const key of Object.keys(current.options)) {
-            if (current.options[key] === prev.options[key]) {
-                continue;
-            }
-
-            this._setValueInTransaction(
-                mergeNameParts(current.fullName, key),
-                current.options[key]
-            );
-        }
-
-        this._updateTemplates(current);
-    }
-
-    private _updateTemplates(node: IConfigNode) {
-        node.templates.map(
-            (template) => {
-                if (template.isAnonymous) {
-                    const templateName = mergeNameParts(node.fullName, template.optionName);
-                    this._templatesManager.add(templateName, template);
-                } else {
-                    this._templatesManager.add(template.optionName, template);
-                }
-            }
-        );
-    }
-
-    private _updateCollection(current: IConfigNode[], prev: IConfigNode[], fullname: string) {
-        if (!prev || current.length !== prev.length) {
-            this._setValueInTransaction(
-                fullname,
-                current.map(
-                    (node) => {
-                        const config = prepareConfig(node, true);
-
-                        for (const key of Object.keys(config.templates)) {
-                            this._templatesManager.add(key, config.templates[key]);
-                        }
-
-                        return config.options;
-                    }
-                )
-            );
-            return;
-        }
-
-        for (let i = 0; i < current.length; i++) {
-            this._update(current[i], prev[i]);
-        }
-    }
-
-    private _processRemovedValues(current: Record<string, any>, prev: Record<string, any>) {
-        const removedKeys = Object.keys(prev).filter((key) => Object.keys(current).indexOf(key) < 0);
-
-        for (const key of removedKeys) {
-            this._setValueInTransaction(
-                mergeNameParts(current.fullName, key),
-                undefined
-            );
-        }
-    }
-
     private _setValueInTransaction(name: string, value: any) {
         if (!this._isUpdating) {
             this._instance.beginUpdate();
@@ -212,16 +138,6 @@ class OptionsManager {
             name,
             this._wrapOptionValue(name, value)
         );
-    }
-
-    private _updateNodeWithTemplates(node: IConfigNode) {
-        const config = prepareConfig(node, true);
-
-        for (const key of Object.keys(config.templates)) {
-            this._templatesManager.add(key, config.templates[key]);
-        }
-
-        this._setValueInTransaction(node.fullName, config.options);
     }
 }
 

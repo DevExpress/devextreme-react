@@ -10,7 +10,7 @@ import { elementPropNames, getClassName } from "./widget-config";
 import { WidgetContext } from "./widget-context";
 
 import { IConfigNode } from "./configuration";
-import { buildConfigTree } from "./configuration/react/config-tree";
+import { buildConfigTree } from "./configuration/react";
 
 const DX_REMOVE_EVENT = "dxremove";
 

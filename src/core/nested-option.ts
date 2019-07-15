@@ -1,9 +1,5 @@
 import * as React from "react";
-import { ElementType, getElementInfo } from "./configuration/react/element";
-
-interface INestedOptionProps {
-    meta?: INestedOptionMeta;
-}
+import { ElementType, getElementInfo } from "./configuration/react";
 
 interface INestedOptionMeta {
     optionName: string;
@@ -13,10 +9,6 @@ interface INestedOptionMeta {
 }
 
 class NestedOption<P> extends React.PureComponent<P, any> {
-
-    constructor(props: P & INestedOptionProps) {
-        super(props);
-    }
 
     public render() {
         if (!this.props.children) {

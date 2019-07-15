@@ -5,7 +5,7 @@ import { separateProps } from "../../widget-config";
 
 import { ElementType, getElementInfo, IOptionElement } from "./element";
 
-import { IConfigNode, ITemplate } from "../index";
+import { IConfigNode, ITemplate } from "../config-node";
 import { mergeNameParts } from "../utils";
 import { getAnonymousTemplate, getNamedTemplate } from "./templates";
 

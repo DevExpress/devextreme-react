@@ -1,5 +1,5 @@
 import { ITemplateMeta, ITemplateProps } from "src/core/template";
-import { ITemplate } from "..";
+import { ITemplate } from "../config-node";
 
 function getAnonymousTemplate(
     props: Record<string, any>,
