@@ -45,10 +45,6 @@ class OptionsManager {
     public update(config: IConfigNode) {
         const changes = getChanges(config, this._currentConfig);
 
-        for (const key of Object.keys(changes.options)) {
-            this._setValueInTransaction(key, changes.options[key]);
-        }
-
         for (const key of Object.keys(changes.templates)) {
             this._templatesManager.add(key, changes.templates[key]);
         }
@@ -59,6 +55,10 @@ class OptionsManager {
                 templates: this._templatesManager.templates
             }
         );
+
+        for (const key of Object.keys(changes.options)) {
+            this._setValueInTransaction(key, changes.options[key]);
+        }
 
         if (this._isUpdating) {
             this._isUpdating = false;

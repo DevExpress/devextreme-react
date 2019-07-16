@@ -25,9 +25,9 @@ function compare(current: IConfigNode, prev: IConfigNode, changesAccum: IConfigC
         return;
     }
 
-    appendRemovedValues(current.options, prev.options, changesAccum);
-    appendRemovedValues(current.configCollections, prev.configCollections, changesAccum);
-    appendRemovedValues(current.configs, prev.configs, changesAccum);
+    appendRemovedValues(current.options, prev.options, current.fullName, changesAccum.options);
+    appendRemovedValues(current.configCollections, prev.configCollections, current.fullName, changesAccum.options);
+    appendRemovedValues(current.configs, prev.configs, current.fullName, changesAccum.options);
 
     compareCollections(current, prev, changesAccum);
 
@@ -43,18 +43,48 @@ function compare(current: IConfigNode, prev: IConfigNode, changesAccum: IConfigC
         changesAccum.options[mergeNameParts(current.fullName, key)] = current.options[key];
     }
 
-    buildTemplates(current, {}, changesAccum.templates);
+    compareTemplates(current, prev, changesAccum);
+}
+
+function compareTemplates(current: IConfigNode, prev: IConfigNode, changesAccum: IConfigChanges) {
+    const currentTemplatesOptions: Record<string, any> = {};
+    const currentTemplates: Record<string, ITemplate> = {};
+    const prevTemplatesOptions: Record<string, any> = {};
+    const prevTemplates: Record<string, ITemplate> = {};
+
+    buildTemplates(current, currentTemplatesOptions, currentTemplates);
+    buildTemplates(prev, prevTemplatesOptions, prevTemplates);
+
+    appendRemovedValues(currentTemplatesOptions, currentTemplates, current.fullName, changesAccum.options);
+    appendRemovedValues(currentTemplates, prevTemplates, "", changesAccum.templates);
+
+    for (const key of Object.keys(currentTemplatesOptions)) {
+        if (currentTemplatesOptions[key] === prevTemplatesOptions[key]) {
+            continue;
+        }
+
+        changesAccum.options[mergeNameParts(current.fullName, key)] = currentTemplatesOptions[key];
+    }
+
+    for (const key of Object.keys(currentTemplates)) {
+        if (currentTemplates[key].content === prevTemplates[key].content) {
+            continue;
+        }
+
+        changesAccum.templates[key] = currentTemplates[key];
+    }
 }
 
 function appendRemovedValues(
     current: Record<string, any>,
     prev: Record<string, any>,
-    changesAccum: IConfigChanges
+    path: string,
+    changesAccum: Record<string, any>
 ) {
     const removedKeys = Object.keys(prev).filter((key) => Object.keys(current).indexOf(key) < 0);
 
     for (const key of removedKeys) {
-        changesAccum.options[mergeNameParts(current.fullName, key)] = undefined;
+        changesAccum[mergeNameParts(path, key)] = undefined;
     }
 }
 

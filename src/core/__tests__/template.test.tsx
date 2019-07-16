@@ -125,13 +125,10 @@ function testTemplateOption(testedOption: string) {
         component.setProps(changedElementOptions);
         jest.runAllTimers();
         const optionCalls = Widget.option.mock.calls;
-        expect(optionCalls.length).toBe(2);
+        expect(optionCalls.length).toBe(1);
 
         expect(optionCalls[0][0]).toBe("integrationOptions");
         expect(typeof optionCalls[0][1].templates.item.render).toBe("function");
-
-        expect(optionCalls[1][0]).toBe("item");
-        expect(optionCalls[1][1]).toBe("item");
     });
 
     it("renders inside unwrapped container", () => {
@@ -541,11 +538,11 @@ describe("component/render in nested options", () => {
         const integrationOptions = options.integrationOptions;
 
         expect(Object.keys(integrationOptions.templates)).toEqual([
+            "option.collection[0].template",
             "collection[0].template",
             "collection[1].template",
             "collection[2].option.item",
-            "collection[3].template",
-            "option.collection[0].template"
+            "collection[3].template"
         ]);
     });
 
