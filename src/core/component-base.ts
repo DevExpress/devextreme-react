@@ -11,13 +11,9 @@ import { WidgetContext } from "./widget-context";
 
 import { IConfigNode } from "./configuration";
 import { buildConfigTree } from "./configuration/react";
+import { IExpectedChild } from "./configuration/react/element";
 
 const DX_REMOVE_EVENT = "dxremove";
-
-interface INestedOption {
-  optionName: string;
-  isCollectionItem: boolean;
-}
 
 interface IHtmlOptions {
   id?: string;
@@ -33,7 +29,7 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
 
   protected readonly _defaults: Record<string, string>;
   protected readonly _templateProps: ITemplateMeta[] = [];
-  protected readonly _expectedChildren: Record<string, INestedOption>;
+  protected readonly _expectedChildren: Record<string, IExpectedChild>;
 
   private _templatesRendererRef: TemplatesRenderer | null;
 
@@ -127,7 +123,8 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
       {
         templates: this._templateProps,
         initialValuesProps: this._defaults,
-        predefinedValuesProps: {}
+        predefinedValuesProps: {},
+        expectedChildren: this._expectedChildren
       },
       this.props
     );

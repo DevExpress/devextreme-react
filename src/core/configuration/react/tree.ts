@@ -3,7 +3,7 @@ import * as React from "react";
 import { ITemplateMeta, ITemplateProps } from "../../template";
 import { separateProps } from "../../widget-config";
 
-import { ElementType, getElementInfo, IOptionElement } from "./element";
+import { ElementType, getElementInfo, IExpectedChild, IOptionElement } from "./element";
 
 import { IConfigNode, ITemplate } from "../config-node";
 import { mergeNameParts } from "../utils";
@@ -13,6 +13,7 @@ interface IWidgetDescriptor {
     templates: ITemplateMeta[];
     initialValuesProps: Record<string, string>;
     predefinedValuesProps: Record<string, any>;
+    expectedChildren: Record<string, IExpectedChild>;
 }
 
 function buildConfigTree(widgetDescriptor: IWidgetDescriptor, props: Record<string, any>) {
@@ -41,7 +42,7 @@ function createConfigNode(element: IOptionElement, path: string): IConfigNode {
         element.descriptor.templates
     );
 
-    const childrenData = processChildren(element.props.children, fullName);
+    const childrenData = processChildren(element, fullName);
 
     for (const templateMeta of element.descriptor.templates) {
         const template = getAnonymousTemplate(
@@ -65,16 +66,16 @@ function createConfigNode(element: IOptionElement, path: string): IConfigNode {
     };
 }
 
-function processChildren(children: React.ReactNode, parentFullName: string) {
+function processChildren(parentElement: IOptionElement, parentFullName: string) {
     const templates: ITemplate[] = [];
     const configCollections: Record<string, IConfigNode[]> = {};
     const configs: Record<string, IConfigNode> = {};
     let hasTranscludedContent: boolean = false;
 
     React.Children.map(
-        children,
+        parentElement.props.children,
         (child) => {
-            const element = getElementInfo(child);
+            const element = getElementInfo(child, parentElement.descriptor.expectedChildren);
             if (element.type === ElementType.Unknown) {
                 hasTranscludedContent = true;
                 return;

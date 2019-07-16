@@ -6,12 +6,18 @@ enum ElementType {
     Unknown
 }
 
+interface IExpectedChild {
+    optionName: string;
+    isCollectionItem: boolean;
+}
+
 interface IOptionDescriptor {
     isCollection: boolean;
     name: string;
     templates: ITemplateMeta[];
     initialValuesProps: Record<string, string>;
     predefinedValuesProps: Record<string, any>;
+    expectedChildren: Record<string, IExpectedChild>;
 }
 
 interface IOptionElement {
@@ -31,7 +37,10 @@ interface IUnknownElement {
 
 type IElement = IOptionElement | ITemplateElement | IUnknownElement;
 
-function getElementInfo(element: React.ReactChild): IElement {
+function getElementInfo(
+    element: React.ReactChild,
+    parentExpectedChildren: Record<string, IExpectedChild>
+): IElement {
     if (!element || typeof element === "string" || typeof element === "number") {
         return {
             type: ElementType.Unknown
@@ -48,14 +57,26 @@ function getElementInfo(element: React.ReactChild): IElement {
     const elementDescriptor = element.type as any as IElementDescriptor;
 
     if (elementDescriptor.OptionName) {
+        let name = elementDescriptor.OptionName;
+        let isCollectionItem =  elementDescriptor.IsCollectionItem;
+
+        const expectation = parentExpectedChildren && parentExpectedChildren[name];
+        if (expectation) {
+            isCollectionItem = expectation.isCollectionItem;
+            if (expectation.optionName) {
+                name = expectation.optionName;
+            }
+        }
+
         return {
             type: ElementType.Option,
             descriptor: {
-                name: elementDescriptor.OptionName,
-                isCollection: elementDescriptor.IsCollectionItem,
+                name,
+                isCollection: isCollectionItem,
                 templates: elementDescriptor.TemplateProps || [],
                 initialValuesProps: elementDescriptor.DefaultsProps || {},
-                predefinedValuesProps: elementDescriptor.PredefinedProps || {}
+                predefinedValuesProps: elementDescriptor.PredefinedProps || {},
+                expectedChildren: elementDescriptor.ExpectedChildren || {}
             },
             props: element.props
         };
@@ -72,11 +93,13 @@ interface IElementDescriptor {
     DefaultsProps: Record<string, string>;
     TemplateProps: ITemplateMeta[];
     PredefinedProps: Record<string, any>;
+    ExpectedChildren: Record<string, IExpectedChild>;
 }
 
 export {
     getElementInfo,
     ElementType,
     IElement,
-    IOptionElement
+    IOptionElement,
+    IExpectedChild
 };
