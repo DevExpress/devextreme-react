@@ -50,6 +50,10 @@ class TemplatesManager {
         );
     }
 
+    public get templatesCount(): number {
+        return Object.keys(this._templates).length;
+    }
+
     public get templates(): Record<string, any> {
         return this._templates;
     }

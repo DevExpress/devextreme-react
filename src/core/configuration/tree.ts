@@ -32,14 +32,14 @@ function buildNode(
         );
     }
 
-    for (const key of Object.keys(node.options)) {
-        result[key] = node.options[key];
-    }
-
     if (!ignoreInitialValues) {
         for (const key of Object.keys(node.initialOptions)) {
             result[key] = node.initialOptions[key];
         }
+    }
+
+    for (const key of Object.keys(node.options)) {
+        result[key] = node.options[key];
     }
 
     buildTemplates(node, result, templatesAccum);
@@ -74,7 +74,7 @@ function findValue(node: IConfigNode, path: string[]): any {
     const name = path.shift();
 
     if (!name) {
-        return buildConfig(node, true);
+        return buildConfig(node, true).options;
     }
 
     const optionInfo = parseOptionName(name);
@@ -100,10 +100,23 @@ function findValue(node: IConfigNode, path: string[]): any {
 
     const value = node.options[optionInfo.name];
     if (value) {
-        return value;
+        return findValueInObject(value, path);
     }
 
     return;
+}
+
+function findValueInObject(obj: any, path: string[]): any {
+    if (!obj) {
+        return;
+    }
+
+    const key = path.shift();
+    if (!key) {
+        return obj;
+    }
+
+    return findValueInObject(obj[key], path);
 }
 
 export {

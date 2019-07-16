@@ -2,6 +2,10 @@ export function generateID(): string {
     return Math.random().toString(36).substr(2);
 }
 
+export function isObject(value: any): boolean {
+    return value && typeof value === "object" && value.constructor === Object;
+}
+
 export class DoubleKeyMap<TKey1, TKey2, TValue> {
     private readonly _map: Map<TKey1, Map<TKey2, TValue>> = new Map();
 

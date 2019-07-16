@@ -2,6 +2,8 @@ import TemplatesManager from "./templates-manager";
 
 import { buildConfig, findValue, IConfigNode } from "./configuration";
 import { getChanges } from "./configuration/comparer";
+import { mergeNameParts } from "./configuration/utils";
+import { isObject } from "./helpers";
 
 class OptionsManager {
     private readonly _guards: Record<string, number> = {};
@@ -35,9 +37,11 @@ class OptionsManager {
             options[key] = this._wrapOptionValue(key, config.options[key]);
         }
 
-        options.integrationOptions = {
-            templates: this._templatesManager.templates
-        };
+        if (this._templatesManager.templatesCount > 0) {
+            options.integrationOptions = {
+                templates: this._templatesManager.templates
+            };
+        }
 
         return options;
     }
@@ -49,12 +53,14 @@ class OptionsManager {
             this._templatesManager.add(key, changes.templates[key]);
         }
 
-        this._setValueInTransaction(
-            "integrationOptions",
-            {
-                templates: this._templatesManager.templates
-            }
-        );
+        if (this._templatesManager.templatesCount > 0) {
+            this._setValueInTransaction(
+                "integrationOptions",
+                {
+                    templates: this._templatesManager.templates
+                }
+            );
+        }
 
         for (const key of Object.keys(changes.options)) {
             this._setValueInTransaction(key, changes.options[key]);
@@ -83,7 +89,20 @@ class OptionsManager {
             return;
         }
 
-        this._setGuard(e.fullName, controlledValue);
+        if (isObject(controlledValue) && isObject(e.value)) {
+            for (const key of Object.keys(controlledValue)) {
+                if (
+                    controlledValue[key] === null ||
+                    controlledValue[key] === undefined ||
+                    controlledValue[key] === e.value[key]
+                ) {
+                    continue;
+                }
+                this._setGuard(mergeNameParts(e.fullName, key), controlledValue[key]);
+            }
+        } else {
+            this._setGuard(e.fullName, controlledValue);
+        }
     }
 
     public dispose() {
