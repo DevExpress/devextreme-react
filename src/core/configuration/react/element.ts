@@ -39,7 +39,7 @@ type IElement = IOptionElement | ITemplateElement | IUnknownElement;
 
 function getElementInfo(
     element: React.ReactChild,
-    parentExpectedChildren: Record<string, IExpectedChild>
+    parentExpectedChildren?: Record<string, IExpectedChild>
 ): IElement {
     if (!element || typeof element === "string" || typeof element === "number") {
         return {
