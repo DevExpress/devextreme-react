@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ElementType, getElementInfo } from "./configuration/react";
+import { ElementType, getElementInfo } from "./configuration/react/element";
 
 interface INestedOptionMeta {
     optionName: string;

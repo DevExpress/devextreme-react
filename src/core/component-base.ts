@@ -9,9 +9,9 @@ import { TemplatesStore } from "./templates-store";
 import { elementPropNames, getClassName } from "./widget-config";
 import { WidgetContext } from "./widget-context";
 
-import { IConfigNode } from "./configuration";
-import { buildConfigTree } from "./configuration/react";
+import { IConfigNode } from "./configuration/config-node";
 import { IExpectedChild } from "./configuration/react/element";
+import { buildConfigTree } from "./configuration/react/tree";
 
 const DX_REMOVE_EVENT = "dxremove";
 

@@ -1,7 +1,8 @@
 import TemplatesManager from "./templates-manager";
 
-import { buildConfig, findValue, IConfigNode } from "./configuration";
 import { getChanges } from "./configuration/comparer";
+import { IConfigNode } from "./configuration/config-node";
+import { buildConfig, findValue } from "./configuration/tree";
 import { mergeNameParts } from "./configuration/utils";
 import { isObject } from "./helpers";
 

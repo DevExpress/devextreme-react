@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { getOption as getConfigOption } from "./config";
-import { ITemplate } from "./configuration";
+import { ITemplate } from "./configuration/config-node";
 import { createDxTemplate } from "./dx-template";
 import { ITemplateArgs } from "./template";
 import { TemplatesStore } from "./templates-store";
