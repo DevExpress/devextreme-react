@@ -1,4 +1,5 @@
 /* tslint:disable:no-string-literal */
+/* tslint:disable:max-classes-per-file */
 import * as events from "devextreme/events";
 
 import ConfigurationComponent from "../../core/nested-option";
@@ -6,7 +7,6 @@ import { Template } from "../../core/template";
 import { mount, React, shallow } from "./setup";
 import { TestComponent, Widget, WidgetClass } from "./test-component";
 
-// tslint:disable-next-line:max-classes-per-file
 class ComponentWithTemplates extends TestComponent {
 
     protected _templateProps = [{
