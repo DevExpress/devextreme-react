@@ -7,7 +7,6 @@ import TemplatesManager from "./templates-manager";
 import { TemplatesRenderer } from "./templates-renderer";
 import { TemplatesStore } from "./templates-store";
 import { elementPropNames, getClassName } from "./widget-config";
-import { WidgetContext } from "./widget-context";
 
 import { IConfigNode } from "./configuration/config-node";
 import { IExpectedChild } from "./configuration/react/element";
@@ -25,7 +24,6 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
   protected _WidgetClass: any;
   protected _instance: any;
   protected _element: HTMLDivElement;
-  protected _extensions: Array<(element: Element) => void> = [];
 
   protected readonly _defaults: Record<string, string>;
   protected readonly _templateProps: ITemplateMeta[] = [];
@@ -36,10 +34,6 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
   private _templatesStore: TemplatesStore;
   private _templatesManager: TemplatesManager;
   private _optionsManager: OptionsManager;
-
-  private _contextValue = {
-    registerExtension: (callback: any) => { this._extensions.push(callback); }
-  };
 
   constructor(props: P) {
     super(props);
@@ -92,6 +86,10 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
     this._optionsManager.dispose();
   }
 
+  protected renderChildren() {
+    return this.props.children;
+  }
+
   protected _createWidget(element?: Element) {
     element = element || this._element;
 
@@ -106,16 +104,6 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
 
     this._optionsManager.setInstance(this._instance, config);
     this._instance.on("optionChanged", this._optionsManager.onOptionChanged);
-  }
-
-  private renderChildren() {
-    return React.createElement(
-      WidgetContext.Provider,
-      {
-        value: this._contextValue
-      },
-      this.props.children
-    );
   }
 
   private _getConfig(): IConfigNode {
