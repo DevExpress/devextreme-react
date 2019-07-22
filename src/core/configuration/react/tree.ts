@@ -48,7 +48,7 @@ function createConfigNode(element: IOptionElement, path: string): IConfigNode {
         const template = getAnonymousTemplate(
             element.props,
             templateMeta,
-            childrenData.hasTranscludedContent
+            path.length > 0 ? childrenData.hasTranscludedContent : false
         );
         if (template) {
             childrenData.templates.push(template);
