@@ -731,4 +731,24 @@ describe("component/render in nested options", () => {
             "collection[0].template"
         );
     });
+
+    it("does not create template for widget transcluded content", () => {
+        class ComponentWithTranscludedContent extends TestComponent {
+            protected _templateProps = [{
+                tmplOption: "template",
+                render: "render",
+                component: "component",
+                keyFn: "keyFn"
+            }];
+        }
+
+        mount(
+            <ComponentWithTranscludedContent>
+                Widget Transcluded Content
+            </ComponentWithTranscludedContent>
+        );
+
+        const integrationOptions = WidgetClass.mock.calls[0][1].integrationOptions;
+        expect(integrationOptions).toBe(undefined);
+    });
 });
