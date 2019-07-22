@@ -1,4 +1,5 @@
 /* tslint:disable:no-string-literal */
+/* tslint:disable:max-classes-per-file */
 import * as events from "devextreme/events";
 
 import ConfigurationComponent from "../../core/nested-option";
@@ -6,7 +7,6 @@ import { Template } from "../../core/template";
 import { mount, React, shallow } from "./setup";
 import { TestComponent, Widget, WidgetClass } from "./test-component";
 
-// tslint:disable-next-line:max-classes-per-file
 class ComponentWithTemplates extends TestComponent {
 
     protected _templateProps = [{
@@ -730,5 +730,25 @@ describe("component/render in nested options", () => {
         expect(Object.keys(updatedOptions[0][1].templates)[0]).toBe(
             "collection[0].template"
         );
+    });
+
+    it("does not create template for widget transcluded content", () => {
+        class ComponentWithTranscludedContent extends TestComponent {
+            protected _templateProps = [{
+                tmplOption: "template",
+                render: "render",
+                component: "component",
+                keyFn: "keyFn"
+            }];
+        }
+
+        mount(
+            <ComponentWithTranscludedContent>
+                Widget Transcluded Content
+            </ComponentWithTranscludedContent>
+        );
+
+        const integrationOptions = WidgetClass.mock.calls[0][1].integrationOptions;
+        expect(integrationOptions).toBe(undefined);
     });
 });
