@@ -53,7 +53,7 @@ describe("getElementInfo", () => {
     configurationComponents.map((component) => {
         it("parses Configuration component", () => {
             const wrapper = mount(React.createElement(component));
-            const elementInfo = getElementInfo(wrapper.getElement(), {});
+            const elementInfo = getElementInfo(wrapper.getElement());
 
             if (elementInfo.type !== ElementType.Option) {
                 expect(elementInfo.type).toEqual(ElementType.Option);
@@ -82,7 +82,7 @@ describe("getElementInfo", () => {
             )
         );
 
-        const elementInfo = getElementInfo(wrapper.getElement(), {});
+        const elementInfo = getElementInfo(wrapper.getElement());
         if (elementInfo.type !== ElementType.Template) {
             expect(elementInfo.type).toEqual(ElementType.Template);
             return;
@@ -94,7 +94,7 @@ describe("getElementInfo", () => {
     otherComponents.map((component) => {
         it("parses Other components", () => {
             const wrapper = mount(React.createElement(component));
-            const elementInfo = getElementInfo(wrapper.getElement(), {});
+            const elementInfo = getElementInfo(wrapper.getElement());
 
             expect(elementInfo.type).toEqual(ElementType.Unknown);
         });
