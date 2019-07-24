@@ -222,6 +222,17 @@ describe("option control", () => {
         expect(Widget.option.mock.calls[0]).toEqual(["everyOption", 123]);
     });
 
+    it("rolls back controlled complex option", () => {
+        shallow(
+            <ControlledComponent complexOption={{a: 123, b: 234}} />
+        );
+
+        fireOptionChange("complexOption", {});
+        jest.runAllTimers();
+        expect(Widget.option.mock.calls.length).toBe(1);
+        expect(Widget.option.mock.calls[0]).toEqual(["complexOption", {a: 123, b: 234}]);
+    });
+
     it("rolls back complex option controlled field", () => {
         shallow(
             <ControlledComponent complexOption={{a: 123}} />
@@ -299,7 +310,6 @@ describe("option control", () => {
         jest.runAllTimers();
         expect(Widget.option.mock.calls.length).toBe(0);
     });
-
 });
 
 describe("option defaults control", () => {
@@ -349,6 +359,34 @@ describe("cfg-component option control", () => {
         jest.runAllTimers();
         expect(Widget.option.mock.calls.length).toBe(1);
         expect(Widget.option.mock.calls[0]).toEqual(["nestedOption.a", 123]);
+    });
+
+    it("rolls nested collection value back", () => {
+        mount(
+            <TestComponentWithExpectation>
+                <CollectionNestedComponent a={1} />
+                <CollectionNestedComponent a={2} />
+            </TestComponentWithExpectation>
+        );
+
+        fireOptionChange("items", []);
+        jest.runAllTimers();
+        expect(Widget.option.mock.calls.length).toBe(1);
+        expect(Widget.option.mock.calls[0]).toEqual(["items", [{a: 1}, {a: 2}]]);
+    });
+
+    it("rolls nested collection item value back", () => {
+        mount(
+            <TestComponentWithExpectation>
+                <CollectionNestedComponent a={1} />
+                <CollectionNestedComponent a={2} />
+            </TestComponentWithExpectation>
+        );
+
+        fireOptionChange("items[0]", {a: 3});
+        jest.runAllTimers();
+        expect(Widget.option.mock.calls.length).toBe(1);
+        expect(Widget.option.mock.calls[0]).toEqual(["items[0].a", 1]);
     });
 
     it("rolls cfg-component option value if parent object changes another field", () => {

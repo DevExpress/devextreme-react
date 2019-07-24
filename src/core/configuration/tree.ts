@@ -1,6 +1,11 @@
 import { IConfigNode, ITemplate } from "./config-node";
 import { mergeNameParts, parseOptionName } from "./utils";
 
+interface IConfig {
+    options: Record<string, any>;
+    templates: Record<string, ITemplate>;
+}
+
 function buildConfig(root: IConfigNode, ignoreInitialValues: boolean): IConfig {
     const templatesAccum: Record<string, ITemplate> = {};
     const options = buildNode(root, templatesAccum, ignoreInitialValues);
@@ -65,20 +70,28 @@ function buildTemplates(
     );
 }
 
-interface IConfig {
-    options: Record<string, any>;
-    templates: Record<string, ITemplate>;
+interface IValueDescriptor {
+    value: any;
+    type: ValueType;
 }
 
-function findValue(node: IConfigNode, path: string[]): any {
+enum ValueType {
+    Simple,
+    Complex,
+    Array
+}
+
+function findValue(node: IConfigNode, path: string[]): undefined | IValueDescriptor {
     const name = path.shift();
 
     if (!name) {
-        return buildConfig(node, true).options;
+        return {
+            value: buildConfig(node, true).options,
+            type: ValueType.Complex
+        };
     }
 
     const optionInfo = parseOptionName(name);
-
     if (optionInfo.isCollectionItem) {
         const collection = node.configCollections[optionInfo.name];
         if (!collection) {
@@ -98,6 +111,18 @@ function findValue(node: IConfigNode, path: string[]): any {
         return findValue(child, path);
     }
 
+    const childCollection = node.configCollections[optionInfo.name];
+    if (childCollection) {
+        if (path.length !== 0) {
+            return;
+        }
+
+        return {
+            value: childCollection.map((item) => buildNode(item, {}, true)),
+            type: ValueType.Array
+        };
+    }
+
     const value = node.options[optionInfo.name];
     if (value) {
         return findValueInObject(value, path);
@@ -106,20 +131,24 @@ function findValue(node: IConfigNode, path: string[]): any {
     return;
 }
 
-function findValueInObject(obj: any, path: string[]): any {
+function findValueInObject(obj: any, path: string[]): undefined | IValueDescriptor {
     if (!obj) {
         return;
     }
 
     const key = path.shift();
     if (!key) {
-        return obj;
+        return {
+            value: obj,
+            type: ValueType.Simple
+        };
     }
 
     return findValueInObject(obj[key], path);
 }
 
 export {
+    ValueType,
     buildConfig,
     buildNode,
     buildTemplates,

@@ -2,7 +2,7 @@ import TemplatesManager from "./templates-manager";
 
 import { getChanges } from "./configuration/comparer";
 import { IConfigNode } from "./configuration/config-node";
-import { buildConfig, findValue } from "./configuration/tree";
+import { buildConfig, findValue, ValueType } from "./configuration/tree";
 import { mergeNameParts } from "./configuration/utils";
 import { isObject } from "./helpers";
 
@@ -80,29 +80,32 @@ class OptionsManager {
             return;
         }
 
-        const controlledValue = findValue(this._currentConfig, e.fullName.split("."));
-
-        if (
-            controlledValue === null ||
-            controlledValue === undefined ||
-            controlledValue === e.value
-        ) {
+        const valueDescriptor = findValue(this._currentConfig, e.fullName.split("."));
+        if (!valueDescriptor) {
             return;
         }
 
-        if (isObject(controlledValue) && isObject(e.value)) {
-            for (const key of Object.keys(controlledValue)) {
+        const { value, type } = valueDescriptor;
+        if (type === ValueType.Complex) {
+            for (const key of Object.keys(value)) {
                 if (
-                    controlledValue[key] === null ||
-                    controlledValue[key] === undefined ||
-                    controlledValue[key] === e.value[key]
+                    value[key] === null ||
+                    value[key] === undefined ||
+                    value[key] === e.value[key]
                 ) {
                     continue;
                 }
-                this._setGuard(mergeNameParts(e.fullName, key), controlledValue[key]);
+                this._setGuard(mergeNameParts(e.fullName, key), value[key]);
             }
         } else {
-            this._setGuard(e.fullName, controlledValue);
+            if (
+                value === null ||
+                value === undefined ||
+                value === e.value
+            ) {
+                return;
+            }
+            this._setGuard(e.fullName, value);
         }
     }
 
