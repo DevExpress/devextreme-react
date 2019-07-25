@@ -4,7 +4,6 @@ import { getChanges } from "./configuration/comparer";
 import { IConfigNode } from "./configuration/config-node";
 import { buildConfig, findValue, ValueType } from "./configuration/tree";
 import { mergeNameParts } from "./configuration/utils";
-import { isObject } from "./helpers";
 
 class OptionsManager {
     private readonly _guards: Record<string, number> = {};
