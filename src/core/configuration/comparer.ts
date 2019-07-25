@@ -55,8 +55,9 @@ function compareTemplates(current: IConfigNode, prev: IConfigNode, changesAccum:
     buildTemplates(current, currentTemplatesOptions, currentTemplates);
     buildTemplates(prev, prevTemplatesOptions, prevTemplates);
 
-    appendRemovedValues(currentTemplatesOptions, currentTemplates, current.fullName, changesAccum.options);
-    appendRemovedValues(currentTemplates, prevTemplates, "", changesAccum.templates);
+    appendRemovedValues(currentTemplatesOptions, prevTemplatesOptions, current.fullName, changesAccum.options);
+    // TODO: support switching to default templates
+    // appendRemovedValues(currentTemplates, prevTemplates, "", changesAccum.templates);
 
     for (const key of Object.keys(currentTemplatesOptions)) {
         if (currentTemplatesOptions[key] === prevTemplatesOptions[key]) {
@@ -67,11 +68,13 @@ function compareTemplates(current: IConfigNode, prev: IConfigNode, changesAccum:
     }
 
     for (const key of Object.keys(currentTemplates)) {
-        if (currentTemplates[key].content === prevTemplates[key].content) {
+        const currentTemplate = currentTemplates[key];
+        const prevTemplate = prevTemplates[key];
+        if (prevTemplate && currentTemplate.content === prevTemplate.content) {
             continue;
         }
 
-        changesAccum.templates[key] = currentTemplates[key];
+        changesAccum.templates[key] = currentTemplate;
     }
 }
 
