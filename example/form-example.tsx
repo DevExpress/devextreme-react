@@ -1,7 +1,8 @@
 import * as React from "react";
 import Example from "./example-block";
 
-import Form, { RequiredRule, SimpleItem, } from "../src/form";
+import { Button, NumberBox } from "../src";
+import Form, { GroupItem, Item, RequiredRule, SimpleItem, } from "../src/form";
 import TextArea from "../src/text-area";
 
 const employee: any = {
@@ -26,14 +27,29 @@ const positions = [
     "Shipping Manager"
 ];
 
-export default class extends React.Component<any, {}> {
+export default class extends React.Component<any, {disableIdInput: boolean}> {
+    constructor(props: any) {
+        super(props);
+
+        this.state = {
+            disableIdInput: true
+        };
+    }
 
     public render() {
+        const { disableIdInput } = this.state;
         return (
             <Example title="DxForm">
                 <Form colCount={2} formData={employee} >
-
-                    <SimpleItem dataField={"ID"} />
+                    <GroupItem caption="Form Group Item">
+                        <Item dataField={"ID"} component={getTextBoxComponent(disableIdInput)} />
+                        <Item>
+                            <Button
+                                text={disableIdInput ? "Enable input" : "Disable input"}
+                                onClick={this.toggleIdInputState}
+                            />
+                        </Item>
+                    </GroupItem>
                     <SimpleItem dataField={"FirstName"} editorOptions={{ disabled: true }} />
                     <SimpleItem dataField={"LastName"} editorOptions={{ disabled: true }} />
                     <SimpleItem
@@ -70,4 +86,10 @@ export default class extends React.Component<any, {}> {
             </Example>
         );
     }
+
+    private toggleIdInputState = () => this.setState({disableIdInput: !this.state.disableIdInput});
 }
+
+const getTextBoxComponent = (disabled: boolean) => (props: any) => {
+    return <NumberBox disabled={disabled} value={props.data.editorOptions.value} />;
+};

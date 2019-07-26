@@ -651,6 +651,25 @@ describe("component/render in nested options", () => {
         expect(component.find(".template").html()).toBe('<div class="template">Second Template</div>');
     });
 
+    // T748280
+    it("renders updates in deeply nested templates", () => {
+        const getTemplate = (arg: string) => () => <div className="template">{arg}</div>;
+        const TestContainer = (props: any) => (
+            <TestComponent>
+                <CollectionNestedComponent>
+                    <NestedComponent itemComponent={getTemplate(props.value)}/>
+                </CollectionNestedComponent>
+            </TestComponent>
+        );
+        const component = mount(<TestContainer value="test" />);
+        component.setProps({value: "test2"});
+        jest.runAllTimers();
+
+        renderTemplate("collection[0].option.item");
+        component.update();
+        expect(component.find(".template").html()).toBe('<div class="template">test2</div>');
+    });
+
     it("adds nested components dynamically", () => {
         const renderItem = () => <div>Template</div>;
         const items = [{id: 1, render: renderItem}];
