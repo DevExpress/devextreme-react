@@ -28,14 +28,6 @@ describe("rendering", () => {
         expect(WidgetClass.mock.calls[0][1]).toEqual({ templatesRenderAsynchronously: true });
     });
 
-    it("does not create empty children prop", () => {
-        const component = shallow(
-            <TestComponent />
-        );
-
-        expect(Object.keys(component.props())).toEqual([]);
-    });
-
     it("creates nested component", () => {
         mount(
             <TestComponent>

@@ -55,7 +55,7 @@ function createDxTemplate(
                         container,
                         onRemoved: () => {
                             templatesStore.remove(templateId);
-                            renderedTemplates.delete({ key1: props, key2: container });
+                            renderedTemplates.delete({ key1: data.model, key2: container });
                         },
                         onRendered: data.onRendered,
                         key: templateId
