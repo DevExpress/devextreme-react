@@ -4,7 +4,13 @@ import { ComponentBase, IHtmlOptions } from "./component-base";
 import { ExtensionComponent } from "./extension-component";
 
 class Component<P> extends ComponentBase<P> {
-  private readonly _extensions: Array<(element: Element) => void> = [];
+  private _extensions: Array<(element: Element) => void> = [];
+
+  constructor(props: P) {
+    super(props);
+
+    this.registerExtension = this.registerExtension.bind(this);
+  }
 
   public componentDidMount() {
     super.componentDidMount();
@@ -12,35 +18,25 @@ class Component<P> extends ComponentBase<P> {
     this._extensions.forEach((extension) => extension.call(this, this._element));
   }
 
-  protected _prepareChildren(): any[] {
-    const args: any[] = [];
-    if (isSingleTextNode(this.props.children)) {
-      args.push(React.Fragment);
-    }
+  protected renderChildren() {
+    return React.Children.map(
+      this.props.children,
+      (child) => {
+        if (child && ExtensionComponent.isPrototypeOf((child as any).type)) {
+          return React.cloneElement(
+            child as any,
+            { onMounted: this.registerExtension}
+          );
+        }
 
-    return super._prepareChildren(args);
-  }
-
-  protected _preprocessChild(component: React.ReactElement<any>) {
-    return this._registerExtension(component) || super._preprocessChild(component);
-  }
-
-  private _registerExtension(component: React.ReactElement<any>) {
-    if (!ExtensionComponent.isPrototypeOf(component.type)) {
-      return null;
-    }
-
-    return React.cloneElement(component, {
-      onMounted: (callback: any) => {
-        this._extensions.push(callback);
+        return child;
       }
-    });
+    );
   }
-}
 
-function isSingleTextNode(input: React.ReactNode) {
-  const children = React.Children.toArray(input);
-  return children.length === 1 && typeof children[0] === "string";
+  private registerExtension(callback: any) {
+    this._extensions.push(callback);
+  }
 }
 
 export {
