@@ -17,6 +17,7 @@ import SchedulerExample from "./scheduler-example";
 import ScrollViewExample from "./scroll-view-example";
 import SelectBoxExample from "./selectbox-example";
 import SlideOutViewExample from "./slide-out-view-example";
+import StandaloneValidatorExample from "./standalone-validator";
 import TextBoxExample from "./text-box-example";
 import ToolbarExample from "./toolbar-example";
 import ValidationExample from "./validation-example";
@@ -76,6 +77,7 @@ ReactDOM.render(
     </Example>
 
     <BoxExample />
+    <StandaloneValidatorExample />
 
   </div>,
   document.getElementById("app")

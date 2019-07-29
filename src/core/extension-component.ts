@@ -4,9 +4,11 @@ class ExtensionComponent<P> extends ComponentBase<P> {
   public componentDidMount() {
     const onMounted = (this.props as Record<string, any>).onMounted;
     if (onMounted) {
-      onMounted((element) => {
+      onMounted((element: Element) => {
         this._createWidget(element);
       });
+    } else {
+      this._createWidget();
     }
   }
 }
