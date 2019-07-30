@@ -39,6 +39,7 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
     super(props);
 
     this._setTemplatesRendererRef = this._setTemplatesRendererRef.bind(this);
+    this._createWidget = this._createWidget.bind(this);
 
     this._templatesStore = new TemplatesStore(() => {
       if (this._templatesRendererRef) {

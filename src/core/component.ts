@@ -4,18 +4,18 @@ import { ComponentBase, IHtmlOptions } from "./component-base";
 import { ExtensionComponent } from "./extension-component";
 
 class Component<P> extends ComponentBase<P> {
-  private _extensions: Array<(element: Element) => void> = [];
+  private _extensionCreators: Array<(element: Element) => void> = [];
 
   constructor(props: P) {
     super(props);
 
-    this.registerExtension = this.registerExtension.bind(this);
+    this._registerExtension = this._registerExtension.bind(this);
   }
 
   public componentDidMount() {
     super.componentDidMount();
     this._createWidget();
-    this._extensions.forEach((extension) => extension.call(this, this._element));
+    this._createExtensions();
   }
 
   protected renderChildren() {
@@ -25,7 +25,7 @@ class Component<P> extends ComponentBase<P> {
         if (child && ExtensionComponent.isPrototypeOf((child as any).type)) {
           return React.cloneElement(
             child as any,
-            { onMounted: this.registerExtension}
+            { onMounted: this._registerExtension}
           );
         }
 
@@ -34,8 +34,12 @@ class Component<P> extends ComponentBase<P> {
     );
   }
 
-  private registerExtension(callback: any) {
-    this._extensions.push(callback);
+  private _registerExtension(creator: any) {
+    this._extensionCreators.push(creator);
+  }
+
+  private _createExtensions() {
+    this._extensionCreators.forEach((creator) => creator(this._element));
   }
 }
 
