@@ -21,7 +21,7 @@ class NestedComponent extends ConfigurationComponent<{ a: number }> {
 
 // tslint:enable:max-classes-per-file
 
-it("initializes when onMounted prop is set", () => {
+it("is initialized as a plugin-component", () => {
     const onMounted = jest.fn();
     mount(
         <TestExtensionComponent onMounted={onMounted} />
@@ -32,7 +32,7 @@ it("initializes when onMounted prop is set", () => {
     expect(ExtensionWidgetClass).toHaveBeenCalledTimes(0);
 });
 
-it("initializes without onMounted prop", () => {
+it("is initialized as a standalone widget", () => {
     mount(
         <TestExtensionComponent/>
     );
