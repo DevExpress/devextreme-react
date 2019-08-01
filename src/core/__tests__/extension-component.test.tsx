@@ -21,12 +21,23 @@ class NestedComponent extends ConfigurationComponent<{ a: number }> {
 
 // tslint:enable:max-classes-per-file
 
-it("does not create widget on componentDidMount", () => {
-    shallow(
-        <TestExtensionComponent />
+it("is initialized as a plugin-component", () => {
+    const onMounted = jest.fn();
+    mount(
+        <TestExtensionComponent onMounted={onMounted} />
     );
 
+    expect(onMounted).toHaveBeenCalledTimes(1);
+    expect(onMounted.mock.calls[0][0]).toBeInstanceOf(Function);
     expect(ExtensionWidgetClass).toHaveBeenCalledTimes(0);
+});
+
+it("is initialized as a standalone widget", () => {
+    mount(
+        <TestExtensionComponent/>
+    );
+
+    expect(ExtensionWidgetClass).toHaveBeenCalledTimes(1);
 });
 
 it("creates widget on componentDidMount inside another component on same element", () => {
