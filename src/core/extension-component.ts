@@ -1,8 +1,12 @@
-import { ComponentBase } from "./component-base";
+import { ComponentBase, IHtmlOptions } from "./component-base";
 
-class ExtensionComponent<P> extends ComponentBase<P> {
+interface IExtensionOptions {
+  onMounted(callback: (element: Element) => void): void;
+}
+
+class ExtensionComponent<P extends IHtmlOptions & IExtensionOptions> extends ComponentBase<P> {
   public componentDidMount() {
-    const onMounted = (this.props as any).onMounted;
+    const onMounted = this.props.onMounted;
     if (onMounted) {
       onMounted(this._createWidget);
     } else {
