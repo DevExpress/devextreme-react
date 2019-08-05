@@ -522,9 +522,7 @@ describe("nested sub-option", () => {
 
 const ComponentWithConditionalOption = (props: {enableOption: boolean}) => (
     <TestComponent>
-        {
-            props.enableOption && <NestedComponent a={1} />
-        }
+    {props.enableOption && <NestedComponent a={1} />}
     </TestComponent>
 );
 
