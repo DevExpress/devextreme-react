@@ -519,3 +519,35 @@ describe("nested sub-option", () => {
         });
     });
 });
+
+const ComponentWithConditionalOption = (props: {enableOption: boolean}) => (
+    <TestComponent>
+        {
+            props.enableOption && <NestedComponent a={1} />
+        }
+    </TestComponent>
+);
+
+describe("conditional rendering", () => {
+    it("adds option", () => {
+        const component = mount(
+            <ComponentWithConditionalOption enableOption={false} />,
+        );
+
+        component.setProps({enableOption: true});
+
+        expect(Widget.option.mock.calls.length).toBe(1);
+        expect(Widget.option.mock.calls[0]).toEqual(["option", {a: 1}]);
+    });
+
+    it("removes option", () => {
+        const component = mount(
+            <ComponentWithConditionalOption enableOption={true} />,
+        );
+
+        component.setProps({enableOption: false});
+
+        expect(Widget.option.mock.calls.length).toBe(1);
+        expect(Widget.option.mock.calls[0]).toEqual(["option", undefined]);
+    });
+});
