@@ -20,8 +20,11 @@ function getChanges(current: IConfigNode, prev: IConfigNode) {
 
 function compare(current: IConfigNode, prev: IConfigNode, changesAccum: IConfigChanges) {
     if (!prev) {
-        const config = buildNode(current, changesAccum.templates, true);
-        changesAccum.options[current.fullName] = config.options;
+        changesAccum.options[current.fullName] = buildNode(
+            current,
+            changesAccum.templates,
+            true
+        );
         return;
     }
 
