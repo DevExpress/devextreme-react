@@ -33,9 +33,7 @@ export {
             name: "CLASS_NAME",
             baseComponentPath: "BASE_COMPONENT_PATH",
             extensionComponentPath: "EXTENSION_COMPONENT_PATH",
-            configComponentPath: null,
-            dxExportPath: "DX/WIDGET/PATH",
-            expectedChildren: undefined
+            dxExportPath: "DX/WIDGET/PATH"
         })
     ).toBe(EXPECTED);
 });
@@ -70,10 +68,8 @@ export {
             name: "CLASS_NAME",
             baseComponentPath: "BASE_COMPONENT_PATH",
             extensionComponentPath: "EXTENSION_COMPONENT_PATH",
-            configComponentPath: null,
             dxExportPath: "DX/WIDGET/PATH",
-            isExtension: true,
-            expectedChildren: undefined
+            isExtension: true
         })
     ).toBe(EXPECTED);
 });
@@ -123,10 +119,8 @@ export {
                 name: "CLASS_NAME",
                 baseComponentPath: "BASE_COMPONENT_PATH",
                 extensionComponentPath: "EXTENSION_COMPONENT_PATH",
-                configComponentPath: null,
                 dxExportPath: "DX/WIDGET/PATH",
-                templates: ["optionTemplate"],
-                expectedChildren: undefined
+                templates: ["optionTemplate"]
             })
         ).toBe(EXPECTED);
     });
@@ -182,10 +176,8 @@ export {
                 name: "CLASS_NAME",
                 baseComponentPath: "BASE_COMPONENT_PATH",
                 extensionComponentPath: "EXTENSION_COMPONENT_PATH",
-                configComponentPath: null,
                 dxExportPath: "DX/WIDGET/PATH",
-                templates: ["optionTemplate", "anotherOptionTemplate"],
-                expectedChildren: undefined
+                templates: ["optionTemplate", "anotherOptionTemplate"]
             })
         ).toBe(EXPECTED);
     });
@@ -233,10 +225,8 @@ export {
                 name: "CLASS_NAME",
                 baseComponentPath: "BASE_COMPONENT_PATH",
                 extensionComponentPath: "EXTENSION_COMPONENT_PATH",
-                configComponentPath: null,
                 dxExportPath: "DX/WIDGET/PATH",
-                templates: ["template"],
-                expectedChildren: undefined
+                templates: ["template"]
             })
         ).toBe(EXPECTED);
     });
@@ -282,12 +272,10 @@ export {
                 name: "CLASS_NAME",
                 baseComponentPath: "BASE_COMPONENT_PATH",
                 extensionComponentPath: "EXTENSION_COMPONENT_PATH",
-                configComponentPath: null,
                 dxExportPath: "DX/WIDGET/PATH",
                 subscribableOptions: [
                     { name: "option1", type: "someType" }
-                ],
-                expectedChildren: undefined
+                ]
             })
         ).toBe(EXPECTED);
     });
@@ -332,13 +320,11 @@ export {
                 name: "CLASS_NAME",
                 baseComponentPath: "BASE_COMPONENT_PATH",
                 extensionComponentPath: "EXTENSION_COMPONENT_PATH",
-                configComponentPath: null,
                 dxExportPath: "DX/WIDGET/PATH",
                 subscribableOptions: [
                     { name: "option1", type: "someType" },
                     { name: "option2", type: "anotherType" }
-                ],
-                expectedChildren: undefined
+                ]
             })
         ).toBe(EXPECTED);
     });
@@ -408,13 +394,11 @@ export {
                 extensionComponentPath: "EXTENSION_COMPONENT_PATH",
                 configComponentPath: "CONFIG_COMPONENT_PATH",
                 dxExportPath: "DX/WIDGET/PATH",
-                expectedChildren: undefined,
                 nestedComponents: [
                     {
                         className: "Opt_1_Component",
                         owners: [ "CLASS_NAME" ],
                         optionName: "opt_1",
-                        templates: null,
                         options: [
                             {
                                 name: "sub_opt_2",
@@ -438,21 +422,18 @@ export {
                                     }
                                 ]
                             }
-                        ],
-                        expectedChildren: undefined,
+                        ]
                     },
                     {
                         className: "Opt_6_SubComponent",
                         owners: [ "Opt_1_Component" ],
                         optionName: "sub_sub_opt_7",
-                        templates: null,
                         options: [
                             {
                                 name: "sub_sub_sub_opt_8",
                                 type: "TYPE_4"
                             }
-                        ],
-                        expectedChildren: undefined,
+                        ]
                     }
                 ]
             })
@@ -507,21 +488,18 @@ export {
                 extensionComponentPath: "EXTENSION_COMPONENT_PATH",
                 configComponentPath: "CONFIG_COMPONENT_PATH",
                 dxExportPath: "DX/WIDGET/PATH",
-                expectedChildren: undefined,
                 nestedComponents: [
                     {
                         className: "Opt_1_Component",
                         owners: [ "CLASS_NAME" ],
                         optionName: "opt_1",
                         isCollectionItem: true,
-                        templates: null,
                         options: [
                             {
                                 name: "sub_opt_2",
                                 type: "TYPE_1"
                             }
                         ],
-                        expectedChildren: undefined
                     },
                 ]
             })
@@ -582,14 +560,11 @@ export {
                 extensionComponentPath: "EXTENSION_COMPONENT_PATH",
                 configComponentPath: "CONFIG_COMPONENT_PATH",
                 dxExportPath: "DX/WIDGET/PATH",
-                templates: null,
-                expectedChildren: undefined,
                 nestedComponents: [
                     {
                         className: "Opt_1_Component",
                         owners: [ "CLASS_NAME" ],
                         optionName: "opt_1",
-                        templates: null,
                         options: [
                             {
                                 name: "sub_opt_2",
@@ -606,8 +581,7 @@ export {
                                     }
                                 ]
                             }
-                        ],
-                        expectedChildren: undefined,
+                        ]
                     }
                 ]
             })
@@ -670,8 +644,6 @@ export {
                 extensionComponentPath: "EXTENSION_COMPONENT_PATH",
                 configComponentPath: "CONFIG_COMPONENT_PATH",
                 dxExportPath: "DX/WIDGET/PATH",
-                templates: null,
-                expectedChildren: undefined,
                 nestedComponents: [
                     {
                         className: "Opt_1_Component",
@@ -683,8 +655,7 @@ export {
                                 name: "optionTemplate",
                                 type: "TYPE_1"
                             }
-                        ],
-                        expectedChildren: undefined,
+                        ]
                     }
                 ]
             })
@@ -742,14 +713,12 @@ export {
                 extensionComponentPath: "EXTENSION_COMPONENT_PATH",
                 configComponentPath: "CONFIG_COMPONENT_PATH",
                 dxExportPath: "DX/WIDGET/PATH",
-                expectedChildren: undefined,
                 nestedComponents: [
                     {
                         className: "Opt_1_Component",
                         owners: [ "CLASS_NAME" ],
                         optionName: "opt_1",
                         isCollectionItem: true,
-                        templates: null,
                         predefinedProps: {
                             predefinedProp_1: "predefined-value"
                         },
@@ -758,8 +727,7 @@ export {
                                 name: "sub_opt_2",
                                 type: "TYPE_1"
                             }
-                        ],
-                        expectedChildren: undefined,
+                        ]
                     }
                 ]
             })
@@ -806,15 +774,13 @@ export {
                 name: "CLASS_NAME",
                 baseComponentPath: "BASE_COMPONENT_PATH",
                 extensionComponentPath: "EXTENSION_COMPONENT_PATH",
-                configComponentPath: null,
                 dxExportPath: "DX/WIDGET/PATH",
                 propTypings: [
                     {
                         propName: "PROP1",
                         types: ["SOME_TYPE"]
                     }
-                ],
-                expectedChildren: undefined
+                ]
             })
         ).toBe(EXPECTED);
     });
@@ -859,7 +825,6 @@ export {
                 name: "CLASS_NAME",
                 baseComponentPath: "BASE_COMPONENT_PATH",
                 extensionComponentPath: "EXTENSION_COMPONENT_PATH",
-                configComponentPath: null,
                 dxExportPath: "DX/WIDGET/PATH",
                 propTypings: [
                     {
@@ -867,8 +832,7 @@ export {
                         types: [],
                         acceptableValues: ["\"VALUE_1\"", "\"VALUE_2\""],
                     }
-                ],
-                expectedChildren: undefined
+                ]
             })
         ).toBe(EXPECTED);
     });
@@ -913,15 +877,13 @@ export {
                 name: "CLASS_NAME",
                 baseComponentPath: "BASE_COMPONENT_PATH",
                 extensionComponentPath: "EXTENSION_COMPONENT_PATH",
-                configComponentPath: null,
                 dxExportPath: "DX/WIDGET/PATH",
                 propTypings: [
                     {
                         propName: "PROP1",
                         types: ["SOME_TYPE", "ANOTHER_TYPE"]
                     }
-                ],
-                expectedChildren: undefined
+                ]
             })
         ).toBe(EXPECTED);
     });
@@ -969,7 +931,6 @@ export {
                 name: "CLASS_NAME",
                 baseComponentPath: "BASE_COMPONENT_PATH",
                 extensionComponentPath: "EXTENSION_COMPONENT_PATH",
-                configComponentPath: null,
                 dxExportPath: "DX/WIDGET/PATH",
                 propTypings: [
                     {
@@ -988,8 +949,7 @@ export {
                         propName: "B-PROP",
                         types: ["TYPE_4"]
                     }
-                ],
-                expectedChildren: undefined
+                ]
             })
         ).toBe(EXPECTED);
     });
@@ -1035,11 +995,10 @@ export {
             name: "CLASS_NAME",
             baseComponentPath: "BASE_COMPONENT_PATH",
             extensionComponentPath: "EXTENSION_COMPONENT_PATH",
-            configComponentPath: null,
             dxExportPath: "DX/WIDGET/PATH",
             expectedChildren: [
                 { componentName: "expectedOption1", optionName: "expectedName1", isCollectionItem: true },
-                { componentName: "expectedOption2", optionName: "expectedName2", isCollectionItem: undefined },
+                { componentName: "expectedOption2", optionName: "expectedName2" },
             ]
         })
     ).toBe(EXPECTED);
@@ -1095,13 +1054,11 @@ export {
                 extensionComponentPath: "EXTENSION_COMPONENT_PATH",
                 configComponentPath: "CONFIG_COMPONENT_PATH",
                 dxExportPath: "DX/WIDGET/PATH",
-                expectedChildren: undefined,
                 nestedComponents: [
                     {
                         className: "Opt_1_Component",
                         owners: [ "CLASS_NAME" ],
                         optionName: "opt_1",
-                        templates: null,
                         options: [],
                         expectedChildren: [
                             {
@@ -1111,8 +1068,7 @@ export {
                             },
                             {
                                 componentName: "expectedOption2",
-                                optionName: "expectedName2",
-                                isCollectionItem: undefined
+                                optionName: "expectedName2"
                             },
                         ]
                     }

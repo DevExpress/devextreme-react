@@ -1,4 +1,4 @@
-import { createTempate, L1, L2, L3, L4 } from "./template";
+import { createTempate, L1, L2 } from "./template";
 
 import {
     createKeyComparator,
@@ -7,37 +7,51 @@ import {
     uppercaseFirst
 } from "./helpers";
 
-interface IComponent {
+type IComponent  = {
     name: string;
     baseComponentPath: string;
     extensionComponentPath: string;
-    configComponentPath: string;
     dxExportPath: string;
-    expectedChildren: IExpectedChild[];
+    expectedChildren?: IExpectedChild[];
     isExtension?: boolean;
-    subscribableOptions?: IOption[];
-    nestedComponents?: INestedComponent[];
+    subscribableOptions?: ISubscribableOption[];
     templates?: string[];
     propTypings?: IPropTyping[];
-}
+} & ({
+    nestedComponents: INestedComponent[];
+    configComponentPath: string;
+} | {
+    nestedComponents?: undefined;
+    configComponentPath?: undefined;
+});
 
 interface INestedComponent {
     className: string;
     optionName: string;
     owners: string[];
     options: IOption[];
-    templates: string[];
-    expectedChildren: IExpectedChild[];
-    predefinedProps?: Record<string, any>;
+    templates?: string[];
+    expectedChildren?: IExpectedChild[];
+    predefinedProps?: Record<string, string>;
     isCollectionItem?: boolean;
 }
 
-interface IOption {
+interface ISubscribableOption {
     name: string;
-    type?: string;
-    nested?: IOption[];
-    isSubscribable?: boolean;
+    type: string;
+    isSubscribable?: true;
 }
+
+type IOption = {
+    name: string;
+    isSubscribable?: true;
+} & ({
+    type: string;
+    nested?: undefined;
+} | {
+    type?: undefined;
+    nested: IOption[];
+})
 
 interface IPropTyping {
     propName: string;
@@ -48,7 +62,7 @@ interface IPropTyping {
 interface IExpectedChild {
     componentName: string;
     optionName: string;
-    isCollectionItem: boolean;
+    isCollectionItem?: boolean;
 }
 
 interface IRenderedPropTyping {
@@ -77,7 +91,7 @@ function generate(component: IComponent): string {
             .map((c) => {
                 const options = [...c.options];
                 const nestedSubscribableOptions = options.filter((o) => o.isSubscribable);
-                let renderedSubscribableOptions = null;
+                let renderedSubscribableOptions: string[] | undefined;
                 if (isNotEmptyArray(nestedSubscribableOptions)) {
 
                     options.push(...nestedSubscribableOptions.map((o) => ({
@@ -108,12 +122,15 @@ function generate(component: IComponent): string {
                     });
                 }
 
-                let predefinedProps;
+                let predefinedProps: { name: string; value: string }[] | undefined = undefined;
                 if (c.predefinedProps) {
-                    predefinedProps = Object.keys(c.predefinedProps).map((name) => ({
-                        name,
-                        value: c.predefinedProps[name]
-                    }));
+                    predefinedProps = [];
+                    for (const name in c.predefinedProps) {
+                        predefinedProps.push({
+                            name,
+                            value: c.predefinedProps[name]
+                        });
+                    }
                 }
 
                 return {
@@ -129,7 +146,7 @@ function generate(component: IComponent): string {
                     owners: c.owners
                 };
             })
-        : null;
+        : undefined;
 
     const optionsName = `I${component.name}Options`;
     const exportNames: string[] = [
@@ -137,7 +154,7 @@ function generate(component: IComponent): string {
         optionsName
     ];
 
-    if (isNotEmptyArray(component.nestedComponents)) {
+    if (component.nestedComponents && isNotEmptyArray(component.nestedComponents)) {
         component.nestedComponents.forEach((c) => {
             exportNames.push(c.className);
         });
@@ -150,7 +167,7 @@ function generate(component: IComponent): string {
             type: o.type,
             actualOptionName: o.name
         }))
-        : null;
+        : undefined;
 
     const hasExtraOptions = !component.isExtension;
     const widgetName =  `dx${uppercaseFirst(component.name)}`;
@@ -159,7 +176,7 @@ function generate(component: IComponent): string {
         ? component.propTypings
             .sort(createKeyComparator<IPropTyping>((p) => p.propName))
             .map((t) => renderPropTyping(createPropTypingModel(t)))
-        : null;
+        : undefined;
 
     return renderModule({
 
@@ -167,18 +184,17 @@ function generate(component: IComponent): string {
             dxExportPath: component.dxExportPath,
             baseComponentPath: component.isExtension ? component.extensionComponentPath : component.baseComponentPath,
             baseComponentName: component.isExtension ? "ExtensionComponent" : "Component",
-            configComponentPath: component.configComponentPath,
             widgetName,
             optionsAliasName: hasExtraOptions ? undefined : optionsName,
             hasExtraOptions,
-            hasNestedComponents: isNotEmptyArray(nestedComponents),
-            hasPropTypings: isNotEmptyArray(renderedPropTypings)
+            hasPropTypings: isNotEmptyArray(renderedPropTypings),
+            configComponentPath: component.configComponentPath
         }),
 
         renderedOptionsInterface: !hasExtraOptions ? undefined : renderOptionsInterface({
             optionsName,
-            defaultProps,
-            templates
+            defaultProps: defaultProps || [],
+            templates: templates || []
         }),
 
         renderedComponent: renderComponent({
@@ -203,7 +219,7 @@ function generate(component: IComponent): string {
     });
 }
 
-function createTemplateDto(templates: string[]) {
+function createTemplateDto(templates: string[] | undefined) {
     return templates
     ? templates.map((actualOptionName) => ({
         actualOptionName,
@@ -211,7 +227,7 @@ function createTemplateDto(templates: string[]) {
         component: formatTemplatePropName(actualOptionName, "Component"),
         keyFn: formatTemplatePropName(actualOptionName, "KeyFn")
     }))
-    : null;
+    : undefined;
 }
 
 function formatTemplatePropName(name: string, suffix: string): string {
@@ -220,7 +236,7 @@ function formatTemplatePropName(name: string, suffix: string): string {
 
 function createPropTypingModel(typing: IPropTyping): IRenderedPropTyping {
     const types = typing.types.map((t) => "PropTypes." + t);
-    if (isNotEmptyArray(typing.acceptableValues)) {
+    if (typing.acceptableValues && isNotEmptyArray(typing.acceptableValues)) {
         types.push(`PropTypes.oneOf([\n    ${typing.acceptableValues.join(",\n    ")}\n  ])`);
     }
     return {
@@ -233,9 +249,9 @@ function createPropTypingModel(typing: IPropTyping): IRenderedPropTyping {
 
 const renderModule: (model: {
     renderedImports: string;
-    renderedOptionsInterface: string;
+    renderedOptionsInterface?: string;
     renderedComponent: string;
-    renderedNestedComponents: string[];
+    renderedNestedComponents?: string[];
     defaultExport: string;
     renderedExports: string;
 }) => string = createTempate(
@@ -263,14 +279,13 @@ const renderModule: (model: {
 
 const renderImports: (model: {
     dxExportPath: string;
-    configComponentPath: string;
     baseComponentPath: string;
     baseComponentName: string;
     widgetName: string;
-    optionsAliasName: string;
+    optionsAliasName?: string;
     hasExtraOptions: boolean;
     hasPropTypings: boolean;
-    hasNestedComponents: boolean;
+    configComponentPath?: string;
 }) => string = createTempate(
 `import <#= it.widgetName #>, {
     IOptions` + `<#? it.optionsAliasName #> as <#= it.optionsAliasName #><#?#>` + `\n` +
@@ -286,7 +301,7 @@ const renderImports: (model: {
     `<#?#>` +
 ` } from "<#= it.baseComponentPath #>";` + `\n` +
 
-`<#? it.hasNestedComponents #>` +
+`<#? it.configComponentPath #>` +
     `import NestedOption from "<#= it.configComponentPath #>";` + `\n` +
 `<#?#>`
 );
@@ -321,10 +336,10 @@ const renderComponent: (model: {
     className: string;
     widgetName: string;
     optionsName: string;
-    expectedChildren: IExpectedChild[];
-    renderedDefaultProps: string[];
-    renderedTemplateProps: string[];
-    renderedPropTypings: string[];
+    expectedChildren?: IExpectedChild[];
+    renderedDefaultProps?: string[];
+    renderedTemplateProps?: string[];
+    renderedPropTypings?: string[];
 }) => string = createTempate(
 `class <#= it.className #> extends BaseComponent<<#= it.optionsName #>> {
 
@@ -364,15 +379,15 @@ L1 +  `};\n` +
 const renderNestedComponent: (model: {
     className: string;
     optionName: string;
-    isCollectionItem: boolean;
-    predefinedProps: Array<{
+    isCollectionItem?: boolean;
+    predefinedProps?: Array<{
         name: string;
         value: any;
     }>;
-    expectedChildren: IExpectedChild[];
+    expectedChildren?: IExpectedChild[];
     renderedType: string;
-    renderedSubscribableOptions: string[];
-    renderedTemplateProps: string[];
+    renderedSubscribableOptions?: string[];
+    renderedTemplateProps?: string[];
     owners: string[];
 }) => string = createTempate(
 `// owners:\n` +
@@ -461,7 +476,7 @@ function renderObject(props: IOption[], indent: number): string {
 
     props.forEach((opt) => {
         result += "\n" + getIndent(indent) + opt.name + "?: ";
-        if (isNotEmptyArray(opt.nested)) {
+        if (opt.nested && isNotEmptyArray(opt.nested)) {
             result += renderObject(opt.nested, indent);
         } else {
             result += opt.type;

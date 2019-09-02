@@ -1,4 +1,3 @@
-import { IArrayDescr, ITypeDescr } from "../integration-data-model";
 import { convertTypes } from "./converter";
 
 it("deduplicates", () => {
@@ -49,6 +48,10 @@ it("returns undefined if array is undefined", () => {
 
 it("returns undefined if array is null", () => {
     expect(convertTypes(null)).toBeUndefined();
+});
+
+it("returns undefined if array is undefined", () => {
+    expect(convertTypes(undefined)).toBeUndefined();
 });
 
 it("expands custom types", () => {

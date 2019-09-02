@@ -1,9 +1,12 @@
 import { ICustomType, ITypeDescr } from "../integration-data-model";
 import { lowercaseFirst } from "./helpers";
 
-function convertTypes(types: ITypeDescr[], customTypes?: Record<string, ICustomType>): string[] {
+function convertTypes(
+    types: ITypeDescr[] | undefined | null,
+    customTypes?: Record<string, ICustomType>
+): string[] | undefined {
     if (types === undefined || types === null || types.length === 0) {
-        return;
+        return undefined;
     }
 
     if (customTypes) {
@@ -12,21 +15,21 @@ function convertTypes(types: ITypeDescr[], customTypes?: Record<string, ICustomT
 
     const convertedTypes = new Set(types.map(convertType));
     if (convertedTypes.has("Any")) {
-        return;
+        return undefined;
     }
 
     return Array.from(convertedTypes);
 }
 
 function expandTypes(types: ITypeDescr[], customTypes: Record<string, ICustomType>): ITypeDescr[] {
-    const expandedTypes = [];
+    const expandedTypes: ITypeDescr[] = [];
     types.forEach((t) => {
-      if (t.isCustomType) {
-        const aliases = customTypes[t.type].types;
-        if (aliases) {
-            expandedTypes.push(...aliases);
+        if (t.isCustomType) {
+            const aliases = customTypes[t.type].types;
+            if (aliases) {
+                expandedTypes.push(...aliases);
+            }
         }
-      }
     });
     return expandedTypes;
 }
