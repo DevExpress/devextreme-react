@@ -188,7 +188,7 @@ function generate(component: IComponent): string {
             optionsAliasName: hasExtraOptions ? undefined : optionsName,
             hasExtraOptions,
             hasPropTypings: isNotEmptyArray(renderedPropTypings),
-            configComponentPath: component.configComponentPath
+            configComponentPath: isNotEmptyArray(nestedComponents) ? component.configComponentPath : undefined
         }),
 
         renderedOptionsInterface: !hasExtraOptions ? undefined : renderOptionsInterface({
