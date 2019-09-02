@@ -51,7 +51,7 @@ type IOption = {
 } | {
     type?: undefined;
     nested: IOption[];
-})
+});
 
 interface IPropTyping {
     propName: string;
@@ -122,10 +122,10 @@ function generate(component: IComponent): string {
                     });
                 }
 
-                let predefinedProps: { name: string; value: string }[] | undefined = undefined;
+                let predefinedProps: Array<{ name: string; value: string }> | undefined;
                 if (c.predefinedProps) {
                     predefinedProps = [];
-                    for (const name in c.predefinedProps) {
+                    for (const name of Object.keys(c.predefinedProps)) {
                         predefinedProps.push({
                             name,
                             value: c.predefinedProps[name]
