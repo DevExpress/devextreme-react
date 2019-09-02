@@ -25,11 +25,12 @@ import generateComponent, {
   IComponent,
   INestedComponent,
   IOption,
-  IPropTyping
+  IPropTyping,
+  ISubscribableOption
 } from "./component-generator";
 
 import {
-  isNotEmptyArray,
+  isEmptyArray,
   removeExtension,
   removePrefix,
   toKebabCase,
@@ -84,9 +85,9 @@ function mapWidget(
   component: IComponent
 } {
   const name = removePrefix(raw.name, "dx");
-  const subscribableOptions: IOption[] = raw.options
+  const subscribableOptions: ISubscribableOption[] = raw.options
     .filter((o) => o.isSubscribable)
-    .map(mapOption);
+    .map(mapSubscribableOption);
 
   const nestedOptions = raw.complexOptions
     ? extractNestedComponents(raw.complexOptions, raw.name, name)
@@ -108,10 +109,10 @@ function mapWidget(
       dxExportPath: raw.exportPath,
       isExtension: raw.isExtension,
       templates: raw.templates,
-      subscribableOptions: subscribableOptions.length > 0 ? subscribableOptions : null,
-      nestedComponents: nestedOptions && nestedOptions.length > 0 ? nestedOptions : null,
+      subscribableOptions: subscribableOptions.length > 0 ? subscribableOptions : undefined,
+      nestedComponents: nestedOptions && nestedOptions.length > 0 ? nestedOptions : undefined,
       expectedChildren: raw.nesteds,
-      propTypings: propTypings.length > 0 ? propTypings : null
+      propTypings: propTypings.length > 0 ? propTypings : undefined
     }
   };
 }
@@ -170,17 +171,25 @@ function createPropTyping(option: IProp, customTypes: Record<string, ICustomType
 }
 
 function mapOption(prop: IProp): IOption {
-  const result: IOption = {
+  return isEmptyArray(prop.props) ?
+    {
+      name: prop.name,
+      type: "any",
+      isSubscribable: prop.isSubscribable || undefined
+
+    } : {
+      name: prop.name,
+      isSubscribable: prop.isSubscribable || undefined,
+      nested: prop.props.map(mapOption)
+    };
+}
+
+function mapSubscribableOption(prop: IProp): ISubscribableOption {
+  return {
     name: prop.name,
     type: "any",
-    isSubscribable: prop.isSubscribable
+    isSubscribable: prop.isSubscribable || undefined
   };
-
-  if (isNotEmptyArray(prop.props)) {
-    result.nested = prop.props.map(mapOption);
-  }
-
-  return result;
 }
 
 export default generate;

@@ -504,6 +504,7 @@ export {
     IComponent,
     INestedComponent,
     IOption,
+    ISubscribableOption,
     IPropTyping,
     generateReExport
 };
