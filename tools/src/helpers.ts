@@ -36,11 +36,11 @@ export function removeElement<T>(array: T[], element: T) {
     }
 }
 
-export function isNotEmptyArray(array: any[]): boolean {
+export function isNotEmptyArray(array: any[] | undefined | null): boolean {
     return !isEmptyArray(array);
 }
 
-export function isEmptyArray(array: any[]): boolean {
+export function isEmptyArray(array: any[] | undefined | null): boolean {
     return array === undefined || array === null || array.length === 0;
 }
 
