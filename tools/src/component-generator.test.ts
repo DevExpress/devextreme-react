@@ -744,7 +744,7 @@ import dxCLASS_NAME, {
     IOptions
 } from "devextreme/DX/WIDGET/PATH";
 
-import { PropTypes } from "prop-types";
+import * as PropTypes from "prop-types";
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 
 interface ICLASS_NAMEOptions extends IOptions, IHtmlOptions {
@@ -792,7 +792,7 @@ import dxCLASS_NAME, {
     IOptions
 } from "devextreme/DX/WIDGET/PATH";
 
-import { PropTypes } from "prop-types";
+import * as PropTypes from "prop-types";
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 
 interface ICLASS_NAMEOptions extends IOptions, IHtmlOptions {
@@ -844,7 +844,7 @@ import dxCLASS_NAME, {
     IOptions
 } from "devextreme/DX/WIDGET/PATH";
 
-import { PropTypes } from "prop-types";
+import * as PropTypes from "prop-types";
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 
 interface ICLASS_NAMEOptions extends IOptions, IHtmlOptions {
@@ -895,7 +895,7 @@ import dxCLASS_NAME, {
     IOptions
 } from "devextreme/DX/WIDGET/PATH";
 
-import { PropTypes } from "prop-types";
+import * as PropTypes from "prop-types";
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 
 interface ICLASS_NAMEOptions extends IOptions, IHtmlOptions {

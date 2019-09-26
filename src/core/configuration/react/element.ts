@@ -38,23 +38,24 @@ interface IUnknownElement {
 type IElement = IOptionElement | ITemplateElement | IUnknownElement;
 
 function getElementInfo(
-    element: React.ReactChild,
+    element: React.ReactNode,
     parentExpectedChildren?: Record<string, IExpectedChild>
 ): IElement {
-    if (!element || typeof element === "string" || typeof element === "number") {
+    const reactElement = element as any as React.ReactElement;
+    if (!reactElement || !reactElement.type) {
         return {
             type: ElementType.Unknown
         };
     }
 
-    if (element.type === Template) {
+    if (reactElement.type === Template) {
         return {
             type: ElementType.Template,
-            props: element.props
+            props: reactElement.props
         };
     }
 
-    const elementDescriptor = element.type as any as IElementDescriptor;
+    const elementDescriptor = reactElement.type as any as IElementDescriptor;
 
     if (elementDescriptor.OptionName) {
         let name = elementDescriptor.OptionName;
@@ -78,7 +79,7 @@ function getElementInfo(
                 predefinedValuesProps: elementDescriptor.PredefinedProps || {},
                 expectedChildren: elementDescriptor.ExpectedChildren || {}
             },
-            props: element.props
+            props: reactElement.props
         };
     }
 

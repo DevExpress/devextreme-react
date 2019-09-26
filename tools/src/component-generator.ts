@@ -292,7 +292,7 @@ const renderImports: (model: {
 `} from "devextreme/<#= it.dxExportPath #>";` + `\n` + `\n` +
 
 `<#? it.hasPropTypings #>` +
-    `import { PropTypes } from "prop-types";` + `\n` +
+    `import * as PropTypes from "prop-types";` + `\n` +
 `<#?#>` +
 
 `import { <#= it.baseComponentName #> as BaseComponent` +
