@@ -51,7 +51,7 @@ describe("useLegacyTemplateEngine", () => {
     it("works for component template", () => {
         const ItemTemplate = (props: any) => (
             <div className={"template"}>
-                value: {props.value}, key: {props.key}, dxkey: {props.dxkey}
+                value: {props.value}, dxkey: {props.dxkey}
             </div>
         );
 
@@ -67,6 +67,6 @@ describe("useLegacyTemplateEngine", () => {
         });
 
         component.update();
-        expect(component.find(".template").text()).toBe("value: Value, key: , dxkey: key_1");
+        expect(component.find(".template").text()).toBe("value: Value, dxkey: key_1");
     });
 });
