@@ -18,6 +18,7 @@ import ScrollViewExample from "./scroll-view-example";
 import SelectBoxExample from "./selectbox-example";
 import SlideOutViewExample from "./slide-out-view-example";
 import StandaloneValidatorExample from "./standalone-validator";
+import TemplatesPerformanceExample from "./templates-performance-example";
 import TextBoxExample from "./text-box-example";
 import ToolbarExample from "./toolbar-example";
 import ValidationExample from "./validation-example";
@@ -78,6 +79,8 @@ ReactDOM.render(
 
     <BoxExample />
     <StandaloneValidatorExample />
+
+    <TemplatesPerformanceExample />
 
   </div>,
   document.getElementById("app")
