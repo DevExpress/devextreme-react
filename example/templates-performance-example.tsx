@@ -4,8 +4,9 @@ import DataGrid, {
     Scrolling
 } from "../src/data-grid";
 
-import { sales } from "./data";
+import { sales as salesData } from "./data";
 import Example from "./example-block";
+const sales = [...salesData, ...salesData, ...salesData];
 
 const renderTemplate = (props: any) => props.value;
 

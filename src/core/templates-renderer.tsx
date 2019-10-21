@@ -5,11 +5,11 @@ import { TemplatesStore } from "./templates-store";
 
 class TemplatesRenderer extends React.PureComponent<{ templatesStore: TemplatesStore }> {
     private _updateScheduled: boolean = false;
-    private _updateTimeout: any;
 
     public scheduleUpdate() {
-        this.debounceForceUpdate();
-        // this.deferForceUpdate();
+        // this.throttleWithSetTimeout();
+        // this.throttleWithRequestAnimationFrame();
+        this.deferUpdate();
     }
 
     public render() {
@@ -20,16 +20,31 @@ class TemplatesRenderer extends React.PureComponent<{ templatesStore: TemplatesS
         );
     }
 
-    protected debounceForceUpdate() {
-        clearTimeout(this._updateTimeout);
+    protected throttleWithSetTimeout() {
+        if (this._updateScheduled) {
+            return;
+        }
+        this._updateScheduled = true;
 
-        this._updateTimeout = setTimeout(() => {
-            clearTimeout(this._updateTimeout);
+        setTimeout(() => {
             this.forceUpdate();
+            this._updateScheduled = false;
+        }, 50);
+    }
+
+    protected throttleWithRequestAnimationFrame() {
+        if (this._updateScheduled) {
+            return;
+        }
+        this._updateScheduled = true;
+
+        requestAnimationFrame(() => {
+            this.forceUpdate();
+            this._updateScheduled = false;
         });
     }
 
-    protected deferForceUpdate() {
+    protected deferUpdate() {
         if (this._updateScheduled) {
             return;
         }

@@ -29,7 +29,7 @@ import BoxExample from "./box-example";
 ReactDOM.render(
   <div>
 
-    <Example title="DxButton">
+    {/* <Example title="DxButton">
       <Button text="Example Button" />
     </Example>
 
@@ -78,7 +78,7 @@ ReactDOM.render(
     </Example>
 
     <BoxExample />
-    <StandaloneValidatorExample />
+    <StandaloneValidatorExample /> */}
 
     <TemplatesPerformanceExample />
 
