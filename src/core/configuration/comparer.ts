@@ -95,8 +95,8 @@ function appendRemovedValues(
 }
 
 function compareCollections(
-    current: Record<string, any>,
-    prev: Record<string, any>,
+    current: IConfigNode,
+    prev: IConfigNode,
     changesAccum: IConfigChanges
 ) {
     for (const key of Object.keys(current.configCollections)) {
@@ -110,7 +110,7 @@ function compareCollections(
                     updatedCollection.push(config);
                 }
             );
-            changesAccum.options[mergeNameParts(current.fullname, key)] = updatedCollection;
+            changesAccum.options[mergeNameParts(current.fullName, key)] = updatedCollection;
             continue;
         }
 
