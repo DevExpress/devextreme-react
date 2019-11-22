@@ -1,9 +1,9 @@
-﻿{
+{
   "author": {
     "name": "Developer Express Inc."
   },
   "name": "devextreme-react",
-  "version": "19.1.7",
+  "version": "19.1.8",
   "description": "DevExtreme React UI and Visualization Components",
   "repository": {
     "type": "git",
@@ -15,7 +15,7 @@
     "prop-types": "^15.6.1"
   },
   "peerDependencies": {
-    "devextreme": "~19.1.7",
+    "devextreme": "~19.1.8",
     "react": "^16.2.0",
     "react-dom": "^16.2.0"
   },
@@ -28,7 +28,7 @@
     "css-loader": "^2.1.0",
     "dasherize": "^2.0.0",
     "del": "^3.0.0",
-    "devextreme": "~19.1.7",
+    "devextreme": "~19.1.8",
     "dot": "^1.1.2",
     "enzyme": "^3.7.0",
     "enzyme-adapter-react-16": "^1.6.0",
