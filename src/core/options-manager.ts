@@ -49,6 +49,10 @@ class OptionsManager {
     public update(config: IConfigNode) {
         const changes = getChanges(config, this._currentConfig);
 
+        changes.resetOptions.forEach((optionName) => {
+            this._resetOption(optionName);
+        });
+
         for (const key of Object.keys(changes.templates)) {
             this._templatesManager.add(key, changes.templates[key]);
         }
@@ -66,10 +70,7 @@ class OptionsManager {
             this._setValueInTransaction(key, changes.options[key]);
         }
 
-        if (this._isUpdating) {
-            this._isUpdating = false;
-            this._instance.endUpdate();
-        }
+        this._unlockWidgetUpdate();
 
         this._currentConfig = config;
     }
@@ -141,12 +142,27 @@ class OptionsManager {
         this._guards[optionName] = guardId;
     }
 
-    private _setValueInTransaction(name: string, value: any) {
+    private _lockWidgetUpdate() {
         if (!this._isUpdating) {
             this._instance.beginUpdate();
             this._isUpdating = true;
         }
+    }
 
+    private _unlockWidgetUpdate() {
+        if (this._isUpdating) {
+            this._isUpdating = false;
+            this._instance.endUpdate();
+        }
+    }
+
+    private _resetOption(name: string) {
+        this._lockWidgetUpdate();
+        this._instance.resetOption(name);
+    }
+
+    private _setValueInTransaction(name: string, value: any) {
+        this._lockWidgetUpdate();
         this._setValue(name, value);
     }
 

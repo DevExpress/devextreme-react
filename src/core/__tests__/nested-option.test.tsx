@@ -545,7 +545,7 @@ describe("conditional rendering", () => {
 
         component.setProps({enableOption: false});
 
-        expect(Widget.option.mock.calls.length).toBe(1);
-        expect(Widget.option.mock.calls[0]).toEqual(["option", undefined]);
+        expect(Widget.resetOption.mock.calls.length).toBe(1);
+        expect(Widget.resetOption.mock.calls[0]).toEqual(["option"]);
     });
 });
