@@ -49,7 +49,14 @@ class OptionsManager {
     public update(config: IConfigNode) {
         const changes = getChanges(config, this._currentConfig);
 
-        changes.resetOptions.forEach((optionName) => {
+        if(!changes.options && !changes.templates && !changes.removedOptions) {
+            return;
+        }
+
+        this._instance.beginUpdate();
+        this._isUpdating = true;
+
+        changes.removedOptions.forEach((optionName) => {
             this._resetOption(optionName);
         });
 
@@ -58,7 +65,7 @@ class OptionsManager {
         }
 
         if (this._templatesManager.templatesCount > 0) {
-            this._setValueInTransaction(
+            this._setValue(
                 "integrationOptions",
                 {
                     templates: this._templatesManager.templates
@@ -67,10 +74,11 @@ class OptionsManager {
         }
 
         for (const key of Object.keys(changes.options)) {
-            this._setValueInTransaction(key, changes.options[key]);
+            this._setValue(key, changes.options[key]);
         }
 
-        this._unlockWidgetUpdate();
+        this._isUpdating = false;
+        this._instance.endUpdate();
 
         this._currentConfig = config;
     }
@@ -142,28 +150,8 @@ class OptionsManager {
         this._guards[optionName] = guardId;
     }
 
-    private _lockWidgetUpdate() {
-        if (!this._isUpdating) {
-            this._instance.beginUpdate();
-            this._isUpdating = true;
-        }
-    }
-
-    private _unlockWidgetUpdate() {
-        if (this._isUpdating) {
-            this._isUpdating = false;
-            this._instance.endUpdate();
-        }
-    }
-
     private _resetOption(name: string) {
-        this._lockWidgetUpdate();
         this._instance.resetOption(name);
-    }
-
-    private _setValueInTransaction(name: string, value: any) {
-        this._lockWidgetUpdate();
-        this._setValue(name, value);
     }
 
     private _setValue(name: string, value: any) {

@@ -4,14 +4,14 @@ import { mergeNameParts } from "./utils";
 
 interface IConfigChanges {
     options: Record<string, any>;
-    resetOptions: string[];
+    removedOptions: string[];
     templates: Record<string, ITemplate>;
 }
 
 function getChanges(current: IConfigNode, prev: IConfigNode) {
     const changesAccum: IConfigChanges = {
         options: {},
-        resetOptions: [],
+        removedOptions: [],
         templates: {}
     };
 
@@ -30,9 +30,9 @@ function compare(current: IConfigNode, prev: IConfigNode, changesAccum: IConfigC
         return;
     }
 
-    appendRemovedValues(current.options, prev.options, current.fullName, changesAccum.resetOptions);
-    appendRemovedValues(current.configCollections, prev.configCollections, current.fullName, changesAccum.resetOptions);
-    appendRemovedValues(current.configs, prev.configs, current.fullName, changesAccum.resetOptions);
+    appendRemovedValues(current.options, prev.options, current.fullName, changesAccum.removedOptions);
+    appendRemovedValues(current.configCollections, prev.configCollections, current.fullName, changesAccum.removedOptions);
+    appendRemovedValues(current.configs, prev.configs, current.fullName, changesAccum.removedOptions);
 
     compareCollections(current, prev, changesAccum);
 
@@ -60,7 +60,7 @@ function compareTemplates(current: IConfigNode, prev: IConfigNode, changesAccum:
     buildTemplates(current, currentTemplatesOptions, currentTemplates);
     buildTemplates(prev, prevTemplatesOptions, prevTemplates);
 
-    appendRemovedValues(currentTemplatesOptions, prevTemplatesOptions, current.fullName, changesAccum.resetOptions);
+    appendRemovedValues(currentTemplatesOptions, prevTemplatesOptions, current.fullName, changesAccum.removedOptions);
     // TODO: support switching to default templates
     // appendRemovedValues(currentTemplates, prevTemplates, "", changesAccum.templates);
 
