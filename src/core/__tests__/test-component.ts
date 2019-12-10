@@ -4,7 +4,7 @@ const eventHandlers: { [index: string]: (e?: any) => void } = {};
 
 const Widget = {
     option: jest.fn(),
-    resetOption: jest.fn(),
+    removedOption: jest.fn(),
     beginUpdate: jest.fn(),
     endUpdate: jest.fn(),
     on: (event: string, handler: (e: any) => void) => {
