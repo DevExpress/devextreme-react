@@ -31,7 +31,11 @@ function compare(current: IConfigNode, prev: IConfigNode, changesAccum: IConfigC
     }
 
     appendRemovedValues(current.options, prev.options, current.fullName, changesAccum.removedOptions);
-    appendRemovedValues(current.configCollections, prev.configCollections, current.fullName, changesAccum.removedOptions);
+    appendRemovedValues(
+        current.configCollections,
+        prev.configCollections,
+        current.fullName,
+        changesAccum.removedOptions);
     appendRemovedValues(current.configs, prev.configs, current.fullName, changesAccum.removedOptions);
 
     compareCollections(current, prev, changesAccum);

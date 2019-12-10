@@ -49,7 +49,7 @@ class OptionsManager {
     public update(config: IConfigNode) {
         const changes = getChanges(config, this._currentConfig);
 
-        if(!changes.options && !changes.templates && !changes.removedOptions) {
+        if (!changes.options && !changes.templates && !changes.removedOptions) {
             return;
         }
 
