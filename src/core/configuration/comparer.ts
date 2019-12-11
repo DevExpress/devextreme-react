@@ -6,7 +6,7 @@ interface IConfigChanges {
     options: Record<string, any>;
     removedOptions: string[];
     templates: Record<string, ITemplate>;
-    addRemovedValues(current: Record<string, any>, prev: Record<string, any>, path: string): void;
+    addRemovedValues(currentOptions: Record<string, any>, prevOptions: Record<string, any>, path: string): void;
 }
 
 function getChanges(current: IConfigNode, prev: IConfigNode) {
@@ -14,8 +14,8 @@ function getChanges(current: IConfigNode, prev: IConfigNode) {
         options: {},
         removedOptions: [],
         templates: {},
-        addRemovedValues(current: Record<string, any>, prev: Record<string, any>, path: string ) {
-            appendRemovedValues(current, prev, path, this.removedOptions)
+        addRemovedValues(currentOptions, prevOptions, path) {
+            appendRemovedValues(currentOptions, prevOptions, path, this.removedOptions);
         }
     };
 
