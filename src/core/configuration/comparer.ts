@@ -6,13 +6,17 @@ interface IConfigChanges {
     options: Record<string, any>;
     removedOptions: string[];
     templates: Record<string, ITemplate>;
+    addRemovedValues(current: Record<string, any>, prev: Record<string, any>, path: string): void;
 }
 
 function getChanges(current: IConfigNode, prev: IConfigNode) {
     const changesAccum: IConfigChanges = {
         options: {},
         removedOptions: [],
-        templates: {}
+        templates: {},
+        addRemovedValues(current: Record<string, any>, prev: Record<string, any>, path: string ) {
+            appendRemovedValues(current, prev, path, this.removedOptions)
+        }
     };
 
     compare(current, prev, changesAccum);
@@ -30,13 +34,12 @@ function compare(current: IConfigNode, prev: IConfigNode, changesAccum: IConfigC
         return;
     }
 
-    appendRemovedValues(current.options, prev.options, current.fullName, changesAccum.removedOptions);
-    appendRemovedValues(
+    changesAccum.addRemovedValues(current.options, prev.options, current.fullName);
+    changesAccum.addRemovedValues(
         current.configCollections,
         prev.configCollections,
-        current.fullName,
-        changesAccum.removedOptions);
-    appendRemovedValues(current.configs, prev.configs, current.fullName, changesAccum.removedOptions);
+        current.fullName);
+    changesAccum.addRemovedValues(current.configs, prev.configs, current.fullName);
 
     compareCollections(current, prev, changesAccum);
 
@@ -64,7 +67,7 @@ function compareTemplates(current: IConfigNode, prev: IConfigNode, changesAccum:
     buildTemplates(current, currentTemplatesOptions, currentTemplates);
     buildTemplates(prev, prevTemplatesOptions, prevTemplates);
 
-    appendRemovedValues(currentTemplatesOptions, prevTemplatesOptions, current.fullName, changesAccum.removedOptions);
+    changesAccum.addRemovedValues(currentTemplatesOptions, prevTemplatesOptions, current.fullName);
     // TODO: support switching to default templates
     // appendRemovedValues(currentTemplates, prevTemplates, "", changesAccum.templates);
 
