@@ -4,13 +4,19 @@ import { mergeNameParts } from "./utils";
 
 interface IConfigChanges {
     options: Record<string, any>;
+    removedOptions: string[];
     templates: Record<string, ITemplate>;
+    addRemovedValues(currentOptions: Record<string, any>, prevOptions: Record<string, any>, path: string): void;
 }
 
 function getChanges(current: IConfigNode, prev: IConfigNode) {
     const changesAccum: IConfigChanges = {
         options: {},
-        templates: {}
+        removedOptions: [],
+        templates: {},
+        addRemovedValues(currentOptions, prevOptions, path) {
+            appendRemovedValues(currentOptions, prevOptions, path, this.removedOptions);
+        }
     };
 
     compare(current, prev, changesAccum);
@@ -28,9 +34,12 @@ function compare(current: IConfigNode, prev: IConfigNode, changesAccum: IConfigC
         return;
     }
 
-    appendRemovedValues(current.options, prev.options, current.fullName, changesAccum.options);
-    appendRemovedValues(current.configCollections, prev.configCollections, current.fullName, changesAccum.options);
-    appendRemovedValues(current.configs, prev.configs, current.fullName, changesAccum.options);
+    changesAccum.addRemovedValues(current.options, prev.options, current.fullName);
+    changesAccum.addRemovedValues(
+        current.configCollections,
+        prev.configCollections,
+        current.fullName);
+    changesAccum.addRemovedValues(current.configs, prev.configs, current.fullName);
 
     compareCollections(current, prev, changesAccum);
 
@@ -58,7 +67,7 @@ function compareTemplates(current: IConfigNode, prev: IConfigNode, changesAccum:
     buildTemplates(current, currentTemplatesOptions, currentTemplates);
     buildTemplates(prev, prevTemplatesOptions, prevTemplates);
 
-    appendRemovedValues(currentTemplatesOptions, prevTemplatesOptions, current.fullName, changesAccum.options);
+    changesAccum.addRemovedValues(currentTemplatesOptions, prevTemplatesOptions, current.fullName);
     // TODO: support switching to default templates
     // appendRemovedValues(currentTemplates, prevTemplates, "", changesAccum.templates);
 
@@ -85,12 +94,12 @@ function appendRemovedValues(
     current: Record<string, any>,
     prev: Record<string, any>,
     path: string,
-    changesAccum: Record<string, any>
+    changesAccum: string[]
 ) {
     const removedKeys = Object.keys(prev).filter((key) => Object.keys(current).indexOf(key) < 0);
 
     for (const key of removedKeys) {
-        changesAccum[mergeNameParts(path, key)] = undefined;
+        changesAccum.push(mergeNameParts(path, key));
     }
 }
 
