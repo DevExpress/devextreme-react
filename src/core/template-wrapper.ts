@@ -12,28 +12,34 @@ interface ITemplateWrapperProps {
     key: string;
 }
 
+interface ITemplateWrapperState {
+    renderRemovalListener: boolean;
+}
+
 type TemplateWrapperRenderer = () => TemplateWrapper;
 
-class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps> {
+class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps, ITemplateWrapperState> {
     private readonly _removalListenerRef = React.createRef<HTMLElement>();
 
     constructor(props: ITemplateWrapperProps) {
         super(props);
+
+        this.state = { renderRemovalListener: false };
+
+        this._onDxRemove = this._onDxRemove.bind(this);
     }
 
     public render() {
+        const removalListener = this.state.renderRemovalListener
+            ? React.createElement("span", { style: { display: "none" }, ref: this._removalListenerRef })
+            : undefined;
+
         return ReactDOM.createPortal(
             React.createElement(
                 React.Fragment,
                 null,
                 this.props.content,
-                React.createElement(
-                    this.props.container.nodeName === "TABLE" ? "tbody" : "span",
-                    {
-                        style: { display: "none" },
-                        ref: this._removalListenerRef
-                    }
-                )
+                removalListener
             ),
             this.props.container
         );
@@ -59,20 +65,42 @@ class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps> {
         if (node) {
             this.props.container.appendChild(node);
         }
-        this.props.container.appendChild(
-            this._removalListenerRef.current as HTMLElement
-        );
+        if (this._listenerElement) {
+            this.props.container.appendChild(this._listenerElement);
+        }
     }
 
     private _subscribeOnRemove() {
-        const removalListener = this._removalListenerRef.current;
-        if (!removalListener) {
-            // T713245 (ref to removalListener is undefined under certain conditions)
+        const node = ReactDOM.findDOMNode(this);
+        if (!node) {
             return;
         }
-        events.one(removalListener, DX_REMOVE_EVENT, () => {
-            this.props.onRemoved();
-        });
+
+        if (node.nodeType === Node.ELEMENT_NODE) {
+            this._addRemoveEventListener(node as Element);
+        } else {
+            if (!this.state.renderRemovalListener) {
+                this.setState({ renderRemovalListener: true });
+                return;
+            }
+
+            if (this._listenerElement) {
+                this._addRemoveEventListener(this._listenerElement);
+            }
+        }
+    }
+
+    private get _listenerElement(): HTMLElement {
+        return this._removalListenerRef.current as HTMLElement;
+    }
+
+    private _addRemoveEventListener(element: Element): void {
+        events.off(element, DX_REMOVE_EVENT, this._onDxRemove);
+        events.one(element, DX_REMOVE_EVENT, this._onDxRemove);
+    }
+
+    private _onDxRemove(): void {
+        this.props.onRemoved();
     }
 }
 
