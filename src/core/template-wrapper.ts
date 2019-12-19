@@ -76,11 +76,8 @@ class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps, ITempla
 
     private _subscribeOnRemove() {
         const node = ReactDOM.findDOMNode(this);
-        if (!node) {
-            return;
-        }
 
-        if (node.nodeType === Node.ELEMENT_NODE) {
+        if (node && node.nodeType === Node.ELEMENT_NODE) {
             this._subscribeOnElementRemoval(node as Element);
             return;
         }
