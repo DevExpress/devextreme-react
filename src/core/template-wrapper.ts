@@ -18,6 +18,8 @@ interface ITemplateWrapperState {
 
 type TemplateWrapperRenderer = () => TemplateWrapper;
 
+const removalListenerStyle = { display: "none" };
+
 class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps, ITemplateWrapperState> {
     private readonly _removalListenerRef = React.createRef<HTMLElement>();
 
@@ -35,7 +37,7 @@ class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps, ITempla
 
     public render() {
         const removalListener = this.state.removalListenerRequired
-            ? React.createElement("span", { style: { display: "none" }, ref: this._removalListenerRef })
+            ? React.createElement("span", { style: removalListenerStyle, ref: this._removalListenerRef })
             : undefined;
 
         return ReactDOM.createPortal(
