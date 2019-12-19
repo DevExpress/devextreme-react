@@ -13,7 +13,7 @@ interface ITemplateWrapperProps {
 }
 
 interface ITemplateWrapperState {
-    renderRemovalListener: boolean;
+    removalListenerRequired: boolean;
 }
 
 type TemplateWrapperRenderer = () => TemplateWrapper;
@@ -21,16 +21,20 @@ type TemplateWrapperRenderer = () => TemplateWrapper;
 class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps, ITemplateWrapperState> {
     private readonly _removalListenerRef = React.createRef<HTMLElement>();
 
+    private get _listenerElement(): HTMLElement {
+        return this._removalListenerRef.current as HTMLElement;
+    }
+
     constructor(props: ITemplateWrapperProps) {
         super(props);
 
-        this.state = { renderRemovalListener: false };
+        this.state = { removalListenerRequired: false };
 
         this._onDxRemove = this._onDxRemove.bind(this);
     }
 
     public render() {
-        const removalListener = this.state.renderRemovalListener
+        const removalListener = this.state.removalListenerRequired
             ? React.createElement("span", { style: { display: "none" }, ref: this._removalListenerRef })
             : undefined;
 
@@ -77,24 +81,21 @@ class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps, ITempla
         }
 
         if (node.nodeType === Node.ELEMENT_NODE) {
-            this._addRemoveEventListener(node as Element);
-        } else {
-            if (!this.state.renderRemovalListener) {
-                this.setState({ renderRemovalListener: true });
-                return;
-            }
+            this._subscribeOnElementRemoval(node as Element);
+            return;
+        }
 
-            if (this._listenerElement) {
-                this._addRemoveEventListener(this._listenerElement);
-            }
+        if (!this.state.removalListenerRequired) {
+            this.setState({ removalListenerRequired: true });
+            return;
+        }
+
+        if (this._listenerElement) {
+            this._subscribeOnElementRemoval(this._listenerElement);
         }
     }
 
-    private get _listenerElement(): HTMLElement {
-        return this._removalListenerRef.current as HTMLElement;
-    }
-
-    private _addRemoveEventListener(element: Element): void {
+    private _subscribeOnElementRemoval(element: Element): void {
         events.off(element, DX_REMOVE_EVENT, this._onDxRemove);
         events.one(element, DX_REMOVE_EVENT, this._onDxRemove);
     }
