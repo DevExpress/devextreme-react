@@ -98,7 +98,7 @@ function testTemplateOption(testedOption: string) {
         component.update();
 
         expect(component.html())
-            .toBe("<div>Text<div><div>Template</div><span style=\"display: none;\"></span></div></div>");
+            .toBe("<div>Text<div><div>Template</div></div></div>");
     });
 
     it("renders new template after component change", () => {
@@ -143,16 +143,16 @@ function testTemplateOption(testedOption: string) {
 
     it("renders template removeEvent listener", () => {
         const elementOptions: Record<string, any> = {};
-        elementOptions[testedOption] = prepareTemplate((data: any) => <div>Template {data.text}</div>);
+        elementOptions[testedOption] = prepareTemplate((data: any) => <>Template {data.text}</>);
         const component = mount(React.createElement(ComponentWithTemplates, elementOptions));
 
         const container = document.createElement("div");
         renderItemTemplate({ text: "with data"}, container);
         component.update();
-        expect(container.innerHTML).toBe('<div>Template with data</div><span style=\"display: none;\"></span>');
+        expect(container.innerHTML).toBe('Template with data<span style=\"display: none;\"></span>');
     });
 
-    it("renders template removeEvent listener for table", () => {
+    it("does not render template removeEvent listener", () => {
         const elementOptions: Record<string, any> = {};
         elementOptions[testedOption] = prepareTemplate((data: any) => (
             <tbody><tr><td>Template {data.text}</td></tr></tbody>
@@ -164,7 +164,7 @@ function testTemplateOption(testedOption: string) {
 
         component.update();
         expect(container.innerHTML)
-            .toBe("<tbody><tr><td>Template with data</td></tr></tbody><tbody style=\"display: none;\"></tbody>");
+            .toBe("<tbody><tr><td>Template with data</td></tr></tbody>");
     });
 
     it("calls onRendered callback", () => {
@@ -224,11 +224,36 @@ function testTemplateOption(testedOption: string) {
         expect(templatesKeys[1]).toBe("2");
     });
 
-    it("removes deleted templates", () => {
+    it("removes text template", () => {
         const elementOptions: Record<string, any> = {};
         elementOptions[testedOption] = prepareTemplate((data: any) => (
-            <div className={"template"}>Template {data.text}</div>
+            <>Template {data.text}</>
         ));
+        const component = mount(React.createElement(ComponentWithTemplates, elementOptions));
+        const componentInstance = component.instance() as any;
+
+        const container = document.createElement("div");
+        renderItemTemplate({}, container);
+        expect(componentInstance._templatesStore.renderWrappers().length).toBe(1);
+        component.update();
+        const removeListener = container.getElementsByTagName("SPAN")[0];
+
+        const parentElement = removeListener.parentElement;
+        if (!parentElement) { throw new Error(); }
+
+        parentElement.innerHTML = "";
+        events.triggerHandler(removeListener, "dxremove");
+        component.update();
+        expect(componentInstance._templatesStore.renderWrappers().length).toBe(0);
+    });
+
+    it("removes template", () => {
+        const elementOptions: Record<string, any> = {
+            [testedOption]: prepareTemplate((data: any) => (
+                <div className={"template"}>Template {data.text}</div>
+            ))
+        };
+
         const component = mount(React.createElement(ComponentWithTemplates, elementOptions));
         const componentInstance = component.instance() as any;
 
@@ -240,11 +265,8 @@ function testTemplateOption(testedOption: string) {
         const parentElement = templateContent.parentElement;
         if (!parentElement) { throw new Error(); }
 
-        const removeListener = parentElement.getElementsByTagName("SPAN")[0];
-
-        parentElement.removeChild(removeListener);
         parentElement.removeChild(templateContent);
-        events.triggerHandler(removeListener, "dxremove");
+        events.triggerHandler(templateContent, "dxremove");
         component.update();
         expect(componentInstance._templatesStore.renderWrappers().length).toBe(0);
     });
