@@ -13,7 +13,7 @@ interface IControlledComponentProps {
     defaultControlledOption?: string;
     controlledOption?: string;
     onControlledOptionChanged?: () => void;
-    everyOption?: number;
+    everyOption?: number | boolean | null;
     anotherOption?: string;
     complexOption?: object;
 }
@@ -211,31 +211,33 @@ describe("option control", () => {
         });
     });
 
-    it("rolls back controlled simple option", () => {
-        shallow(
-            <ControlledComponent everyOption={123} />
-        );
+    [123, false, 0].map((value) => {
+        it("rolls back controlled simple option", () => {
+            shallow(
+                <ControlledComponent everyOption={value} />
+            );
 
-        fireOptionChange("everyOption", 234);
-        jest.runAllTimers();
-        expect(Widget.option.mock.calls.length).toBe(1);
-        expect(Widget.option.mock.calls[0]).toEqual(["everyOption", 123]);
+            fireOptionChange("everyOption", 234);
+            jest.runAllTimers();
+            expect(Widget.option.mock.calls.length).toBe(1);
+            expect(Widget.option.mock.calls[0]).toEqual(["everyOption", value]);
+        });
     });
 
     it("rolls back controlled complex option", () => {
         shallow(
-            <ControlledComponent complexOption={{a: 123, b: 234}} />
+            <ControlledComponent complexOption={{ a: 123, b: 234 }} />
         );
 
         fireOptionChange("complexOption", {});
         jest.runAllTimers();
         expect(Widget.option.mock.calls.length).toBe(1);
-        expect(Widget.option.mock.calls[0]).toEqual(["complexOption", {a: 123, b: 234}]);
+        expect(Widget.option.mock.calls[0]).toEqual(["complexOption", { a: 123, b: 234 }]);
     });
 
     it("rolls back complex option controlled field", () => {
         shallow(
-            <ControlledComponent complexOption={{a: 123}} />
+            <ControlledComponent complexOption={{ a: 123 }} />
         );
 
         fireOptionChange("complexOption.a", 234);
@@ -271,14 +273,14 @@ describe("option control", () => {
 
     it("applies complex option change", () => {
         const component = shallow(
-            <ControlledComponent complexOption={{a: 123}} />
+            <ControlledComponent complexOption={{ a: 123 }} />
         );
 
         fireOptionChange("complexOption.b", 234);
-        component.setProps({ complexOption: {a: 123, b: 234} });
+        component.setProps({ complexOption: { a: 123, b: 234 } });
         jest.runAllTimers();
         expect(Widget.option.mock.calls.length).toBe(1);
-        expect(Widget.option.mock.calls[0]).toEqual(["complexOption", {a: 123, b: 234} ]);
+        expect(Widget.option.mock.calls[0]).toEqual(["complexOption", { a: 123, b: 234 }]);
     });
 
     it("does not roll back not controlled simple option", () => {
@@ -293,7 +295,7 @@ describe("option control", () => {
 
     it("does not roll back controlled complex option not controlled field", () => {
         shallow(
-            <ControlledComponent complexOption={{a: 123}} />
+            <ControlledComponent complexOption={{ a: 123 }} />
         );
 
         fireOptionChange("complexOption.b", 234);
@@ -372,7 +374,7 @@ describe("cfg-component option control", () => {
         fireOptionChange("items", []);
         jest.runAllTimers();
         expect(Widget.option.mock.calls.length).toBe(1);
-        expect(Widget.option.mock.calls[0]).toEqual(["items", [{a: 1}, {a: 2}]]);
+        expect(Widget.option.mock.calls[0]).toEqual(["items", [{ a: 1 }, { a: 2 }]]);
     });
 
     it("rolls nested collection item value back", () => {
@@ -383,7 +385,7 @@ describe("cfg-component option control", () => {
             </TestComponentWithExpectation>
         );
 
-        fireOptionChange("items[0]", {a: 3});
+        fireOptionChange("items[0]", { a: 3 });
         jest.runAllTimers();
         expect(Widget.option.mock.calls.length).toBe(1);
         expect(Widget.option.mock.calls[0]).toEqual(["items[0].a", 1]);
