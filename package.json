@@ -12,6 +12,7 @@
   "main": "index.js",
   "types": "index.d.ts",
   "dependencies": {
+    "devextreme-internal-tools": "^1.2.50",
     "prop-types": "^15.6.1"
   },
   "peerDependencies": {
@@ -64,7 +65,8 @@
     "clean": "gulp clean",
     "test": "jest",
     "test-watch": "jest --watch",
-    "pack": "gulp npm.pack"
+    "pack": "gulp npm.pack",
+    "update-integration-meta": "dx-tools update-integration-meta"
   },
   "keywords": [
     "react",
