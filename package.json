@@ -12,7 +12,6 @@
   "main": "index.js",
   "types": "index.d.ts",
   "dependencies": {
-    "devextreme-internal-tools": "^1.2.50",
     "prop-types": "^15.6.1"
   },
   "peerDependencies": {
@@ -30,6 +29,7 @@
     "dasherize": "^2.0.0",
     "del": "^3.0.0",
     "devextreme": "~19.2.5",
+    "devextreme-internal-tools": "^1.0.0",
     "dot": "^1.1.2",
     "enzyme": "^3.7.0",
     "enzyme-adapter-react-16": "^1.6.0",
