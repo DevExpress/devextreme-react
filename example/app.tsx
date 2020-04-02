@@ -4,81 +4,147 @@ import * as ReactDOM from "react-dom";
 import "devextreme/dist/css/dx.common.css";
 import "devextreme/dist/css/dx.light.compact.css";
 
-import AccordionExample from "./accordion-example";
-import ChartExample from "./chart-example";
-import DataGridExample from "./data-grid-example";
-import EditorExample from "./editor-example";
-import Example from "./example-block";
-import FormExample from "./form-example";
-import ListExample from "./list-example";
-import MapExample from "./map-example";
-import PopupExample from "./popup-example";
-import SchedulerExample from "./scheduler-example";
-import ScrollViewExample from "./scroll-view-example";
-import SelectBoxExample from "./selectbox-example";
-import SlideOutViewExample from "./slide-out-view-example";
-import StandaloneValidatorExample from "./standalone-validator";
-import TextBoxExample from "./text-box-example";
-import ToolbarExample from "./toolbar-example";
-import ValidationExample from "./validation-example";
+import Scheduler, { Resource } from '../src/scheduler';
+import Query from 'devextreme/data/query';
 
-import { Button, NumberBox } from "../src";
-import BoxExample from "./box-example";
+import AppointmentTemplate from './AppointmentTemplate';
+import AppointmentTooltipTemplate from './AppointmentTooltipTemplate';
+import { data, moviesData, theatreData } from './data';
+
+const currentDate = new Date(2015, 4, 25);
+const views : any = ['day', 'week', 'timelineDay'];
+const groups = ['theatreId'];
+
+
+
+
+class App extends React.Component<{}, { scheduler: any }> {
+  constructor(props: Readonly<{}>) {
+    super(props);
+    this.state = {
+      scheduler: null
+    };
+    this.getAppointmentTooltipTemplate = this.getAppointmentTooltipTemplate.bind(this);
+    this.onAppointmentFormOpening = this.onAppointmentFormOpening.bind(this);
+    this.onContentReady = this.onContentReady.bind(this);
+  }
+  render() {
+    return (
+      <Scheduler
+        dataSource={data}
+        views={views}
+        defaultCurrentView="day"
+        defaultCurrentDate={currentDate}
+        groups={groups}
+        height={600}
+        firstDayOfWeek={0}
+        startDayHour={9}
+        endDayHour={23}
+        showAllDayPanel={false}
+        crossScrollingEnabled={true}
+        cellDuration={20}
+        editing={{ allowAdding: false }}
+        appointmentRender={AppointmentTemplate}
+        appointmentTooltipRender={this.getAppointmentTooltipTemplate}
+        onContentReady={this.onContentReady}
+        onAppointmentFormOpening={this.onAppointmentFormOpening}
+      >
+        <Resource
+          dataSource={moviesData}
+          fieldExpr="movieId"
+          useColorAsDefault={true}
+        />
+        <Resource
+          dataSource={theatreData}
+          fieldExpr="theatreId"
+        />
+      </Scheduler>
+    );
+  }
+
+  getAppointmentTooltipTemplate(model: any) {
+    return <AppointmentTooltipTemplate model={model} />;
+  }
+
+  onContentReady(e: { component: any; }) {
+    this.state.scheduler === null && this.setState({ scheduler: e.component });
+  }
+
+  onAppointmentFormOpening(data: { form: any; appointmentData: { movieId: any; startDate: any; }; }) {
+    let form = data.form,
+      movieInfo = getMovieById(data.appointmentData.movieId) || {},
+      startDate = data.appointmentData.startDate;
+
+    form.option('items', [{
+      label: {
+        text: 'Movie'
+      },
+      editorType: 'dxSelectBox',
+      dataField: 'movieId',
+      editorOptions: {
+        items: moviesData,
+        displayExpr: 'text',
+        valueExpr: 'id',
+        onValueChanged: function(args: { value: any; }) {
+          movieInfo = getMovieById(args.value);
+          form.getEditor('director')
+            .option('value', movieInfo.director);
+          form.getEditor('endDate')
+            .option('value', new Date(startDate.getTime() +
+              60 * 1000 * movieInfo.duration));
+        }
+      },
+    }, {
+      label: {
+        text: 'Director'
+      },
+      name: 'director',
+      editorType: 'dxTextBox',
+      editorOptions: {
+        value: movieInfo.director,
+        readOnly: true
+      }
+    }, {
+      dataField: 'startDate',
+      editorType: 'dxDateBox',
+      editorOptions: {
+        width: '100%',
+        type: 'datetime',
+        onValueChanged: function(args: { value: any; }) {
+          startDate = args.value;
+          form.getEditor('endDate')
+            .option('value', new Date(startDate.getTime() +
+              60 * 1000 * movieInfo.duration));
+        }
+      }
+    }, {
+      name: 'endDate',
+      dataField: 'endDate',
+      editorType: 'dxDateBox',
+      editorOptions: {
+        width: '100%',
+        type: 'datetime',
+        readOnly: true
+      }
+    }, {
+      dataField: 'price',
+      editorType: 'dxRadioGroup',
+      editorOptions: {
+        dataSource: [5, 10, 15, 20],
+        itemTemplate: function(itemData: any) {
+          return `$${itemData}`;
+        }
+      }
+    }
+    ]);
+  }
+}
+
+function getMovieById(id:any) {
+  return Query(moviesData).filter(['id', id]).toArray()[0];
+}
 
 ReactDOM.render(
-  <div>
-
-    <Example title="DxButton">
-      <Button text="Example Button" />
-    </Example>
-
-    <PopupExample />
-
-    <TextBoxExample />
-    <ToolbarExample />
-    <EditorExample />
-
-    <Example title="DxNumberBox">
-      <NumberBox
-        defaultValue={102.453}
-        step={10}
-        min={50}
-        format={"$ #0.##"}
-        showSpinButtons={true}
-      />
-    </Example>
-
-    <SlideOutViewExample />
-
-    <ScrollViewExample />
-
-    <ValidationExample />
-
-    <FormExample/>
-
-    <ListExample />
-
-    <MapExample />
-
-    <AccordionExample />
-
-    <DataGridExample/>
-
-    <SchedulerExample />
-
-    <ChartExample />
-
-    <Example title="Element attributes">
-      <Button text="Button with style attr" style={{backgroundColor: "#ffc"}}/>
-    </Example>
-
-    <Example title="SelectBox example">
-      <SelectBoxExample />
-    </Example>
-
-    <BoxExample />
-    <StandaloneValidatorExample />
-
-  </div>,
+    <App/>,
   document.getElementById("app")
 );

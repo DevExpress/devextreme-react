@@ -26,6 +26,7 @@ function createDxTemplate(
 
     return {
         render: (data: IDxTemplateData) => {
+            console.log("dx template");
             const container = unwrapElement(data.container);
             const key = { key1: data.model, key2: container };
             const prevTemplateId = renderedTemplates.get(key);
