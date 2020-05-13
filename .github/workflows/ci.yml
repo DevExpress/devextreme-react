@@ -6,8 +6,9 @@ env:
 
 jobs:
 
-  build:
+  test:
     runs-on: windows-latest
+    name: Build and run tests
     steps:
 
     - name: Checkout
@@ -23,11 +24,6 @@ jobs:
 
     - name: Build
       run: npm run build
-
-  test:
-    needs: build
-    runs-on: windows-latest
-    steps:
 
     - name: Test
       run: npm test
