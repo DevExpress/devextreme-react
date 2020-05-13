@@ -1,6 +1,14 @@
 name: Continuous Integration
-on: push
+on:
 
+  push:
+    branches:
+    - master
+
+  pull_request:
+    branches:
+    - master
+  
 env:
   nodeVersion: 12.x
 
