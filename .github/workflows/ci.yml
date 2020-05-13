@@ -5,20 +5,28 @@ env:
   nodeVersion: 12.x
 
 jobs:
+
   build:
     runs-on: windows-latest
     steps:
 
-    - uses: actions/checkout@v2
+    - name: Checkout
+      uses: actions/checkout@v2
 
-    - uses: actions/setup-node@v1
+    - name: Set up Node.js
+      uses: actions/setup-node@v1
       with:
         node-version: ${{ env.nodeVersion }}
 
-    - run: npm install
+    - name: Install package dependencies
+      run: npm install
 
     - name: Build
       run: npm run build
+
+  test:
+    needs: build
+    steps:
 
     - name: Test
       run: npm test
