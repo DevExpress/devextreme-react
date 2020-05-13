@@ -1,0 +1,27 @@
+name: Continuous Integration
+on: push
+
+env:
+  nodeVersion: 12.x
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Use Node.js v${{ env.nodeVersion }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ env.nodeVersion }}
+
+    - name: Install package dependencies
+      run: npm install
+
+    - name: Build
+      run: npm run build
+
+    - name: Test
+      run: npm test
