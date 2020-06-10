@@ -18,16 +18,17 @@ import ScrollViewExample from "./scroll-view-example";
 import SelectBoxExample from "./selectbox-example";
 import SlideOutViewExample from "./slide-out-view-example";
 import StandaloneValidatorExample from "./standalone-validator";
+import TemplatesPerformanceExample from "./templates-performance-example";
 import TextBoxExample from "./text-box-example";
 import ToolbarExample from "./toolbar-example";
 import ValidationExample from "./validation-example";
 
 import { Button, NumberBox } from "../src";
 import BoxExample from "./box-example";
+import TreeExample from "./tree-example";
 
 ReactDOM.render(
   <div>
-
     <Example title="DxButton">
       <Button text="Example Button" />
     </Example>
@@ -54,7 +55,7 @@ ReactDOM.render(
 
     <ValidationExample />
 
-    <FormExample/>
+    <FormExample />
 
     <ListExample />
 
@@ -62,14 +63,14 @@ ReactDOM.render(
 
     <AccordionExample />
 
-    <DataGridExample/>
+    <DataGridExample />
 
     <SchedulerExample />
 
     <ChartExample />
 
     <Example title="Element attributes">
-      <Button text="Button with style attr" style={{backgroundColor: "#ffc"}}/>
+      <Button text="Button with style attr" style={{ backgroundColor: "#ffc" }} />
     </Example>
 
     <Example title="SelectBox example">
@@ -78,7 +79,8 @@ ReactDOM.render(
 
     <BoxExample />
     <StandaloneValidatorExample />
-
+    <TemplatesPerformanceExample />
+    <TreeExample />
   </div>,
   document.getElementById("app")
 );
