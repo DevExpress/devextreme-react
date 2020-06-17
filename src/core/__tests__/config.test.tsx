@@ -44,6 +44,7 @@ describe("useLegacyTemplateEngine", () => {
             model: { value: "Value", key: "key_1" }
         });
 
+        jest.runAllTimers();
         component.update();
         expect(component.find(".template").text()).toBe("value: Value, key: key_1, dxkey: key_1");
     });
@@ -66,6 +67,7 @@ describe("useLegacyTemplateEngine", () => {
             model: { value: "Value", key: "key_1" }
         });
 
+        jest.runAllTimers();
         component.update();
         expect(component.find(".template").text()).toBe("value: Value, dxkey: key_1");
     });
