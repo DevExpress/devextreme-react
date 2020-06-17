@@ -1,3 +1,4 @@
+import { deferUpdate } from "devextreme/core/utils/common";
 import * as React from "react";
 
 import { TemplatesStore } from "./templates-store";
@@ -9,9 +10,10 @@ class TemplatesRenderer extends React.PureComponent<{ templatesStore: TemplatesS
         if (this._updateScheduled) {
             return;
         }
+
         this._updateScheduled = true;
 
-        setTimeout(() => {
+        deferUpdate(() => {
             this.forceUpdate();
             this._updateScheduled = false;
         });

@@ -26,11 +26,9 @@ function renderTemplate(name: string, model?: any, container?: any, index?: numb
     container = container || document.createElement("div");
     const render = WidgetClass.mock.calls[0][1].integrationOptions.templates[name].render;
 
-    const result = render({
+    return render({
         container, model, ...(index && { index }), onRendered
     });
-    jest.runAllTimers();
-    return result;
 }
 
 function renderItemTemplate(model?: any, container?: any, index?: number, onRendered?: () => void): Element {
@@ -396,7 +394,6 @@ describe("nested template", () => {
         component.setProps({
             children: <Template name={"item1"} render={SecondTemplate} />
         });
-        jest.runAllTimers();
         component.update();
         expect(component.find(".template").html()).toBe('<div class="template">Second Template</div>');
     });
@@ -420,7 +417,6 @@ describe("nested template", () => {
                 </Template>
             )
         });
-        jest.runAllTimers();
         component.update();
         expect(component.find(".template").html()).toBe('<div class="template">Second Template</div>');
     });
@@ -648,7 +644,6 @@ describe("component/render in nested options", () => {
         component.setProps({
             children: <NestedComponent itemComponent={SecondTemplate} />
         });
-        jest.runAllTimers();
         component.update();
         expect(component.find(".template").html()).toBe('<div class="template">Second Template</div>');
     });
@@ -674,7 +669,6 @@ describe("component/render in nested options", () => {
                 </CollectionNestedComponent>
             )
         });
-        jest.runAllTimers();
         component.update();
         expect(component.find(".template").html()).toBe('<div class="template">Second Template</div>');
     });
