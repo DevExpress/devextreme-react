@@ -66,7 +66,7 @@
     "test": "jest",
     "test-watch": "jest --watch",
     "pack": "gulp npm.pack",
-    "update-integration-meta": "dx-tools update-integration-meta --output-path=./tools/integration-data.json"
+    "update-integration-meta": "dx-tools update-integration-meta --output-path ./tools/integration-data.json"
   },
   "keywords": [
     "react",
