@@ -37,21 +37,36 @@ import {
   uppercaseFirst
 } from "./helpers";
 
-function generate(
-  rawData: IModel,
-  baseComponent: string,
-  extensionComponent: string,
-  configComponent: string,
+function generate({
+  metaData: rawData,
+  components: { baseComponent, extensionComponent, configComponent },
+  out,
+  widgetsPackage
+}: {
+  metaData: IModel,
+  components: {
+    baseComponent: string,
+    extensionComponent: string,
+    configComponent: string,
+  },
   out: {
     componentsDir: string,
     oldComponentsDir: string,
     indexFileName: string
-  }
-) {
+  },
+  widgetsPackage: string
+}) {
   const modulePaths: IReExport[] = [];
 
   rawData.widgets.forEach((data) => {
-    const widgetFile = mapWidget(data, baseComponent, extensionComponent, configComponent, rawData.customTypes);
+    const widgetFile = mapWidget(
+      data,
+      baseComponent,
+      extensionComponent,
+      configComponent,
+      rawData.customTypes,
+      widgetsPackage
+    );
     const widgetFilePath = joinPaths(out.componentsDir, widgetFile.fileName);
     const indexFileDir = getDirName(out.indexFileName);
 
@@ -79,7 +94,8 @@ function mapWidget(
   baseComponent: string,
   extensionComponent: string,
   configComponent: string,
-  customTypes: ICustomType[]
+  customTypes: ICustomType[],
+  widgetPackage: string
 ): {
   fileName: string;
   component: IComponent
@@ -106,7 +122,7 @@ function mapWidget(
       baseComponentPath: baseComponent,
       extensionComponentPath: extensionComponent,
       configComponentPath: configComponent,
-      dxExportPath: raw.exportPath,
+      dxExportPath: `${widgetPackage}/${raw.exportPath}`,
       isExtension: raw.isExtension,
       templates: raw.templates,
       subscribableOptions: subscribableOptions.length > 0 ? subscribableOptions : undefined,

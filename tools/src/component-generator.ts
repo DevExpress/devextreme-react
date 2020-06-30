@@ -289,7 +289,7 @@ const renderImports: (model: {
 }) => string = createTempate(
 `import <#= it.widgetName #>, {
     IOptions` + `<#? it.optionsAliasName #> as <#= it.optionsAliasName #><#?#>` + `\n` +
-`} from "devextreme/<#= it.dxExportPath #>";` + `\n` + `\n` +
+`} from "<#= it.dxExportPath #>";` + `\n` + `\n` +
 
 `<#? it.hasPropTypings #>` +
     `import * as PropTypes from "prop-types";` + `\n` +
