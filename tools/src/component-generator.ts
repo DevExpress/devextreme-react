@@ -71,7 +71,7 @@ interface IRenderedPropTyping {
 }
 
 const TYPE_KEY_FN = "(data: any) => string";
-const TYPE_RENDER = "(props: any) => React.ReactNode";
+const TYPE_RENDER = "(...params: any) => React.ReactNode";
 const TYPE_COMPONENT = "React.ComponentType<any>";
 
 function generateReExport(path: string, fileName: string): string {

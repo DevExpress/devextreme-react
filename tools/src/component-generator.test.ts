@@ -86,7 +86,7 @@ import dxCLASS_NAME, {
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 
 interface ICLASS_NAMEOptions extends IOptions, IHtmlOptions {
-  optionRender?: (props: any) => React.ReactNode;
+  optionRender?: (...params: any) => React.ReactNode;
   optionComponent?: React.ComponentType<any>;
   optionKeyFn?: (data: any) => string;
 }
@@ -135,10 +135,10 @@ import dxCLASS_NAME, {
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 
 interface ICLASS_NAMEOptions extends IOptions, IHtmlOptions {
-  optionRender?: (props: any) => React.ReactNode;
+  optionRender?: (...params: any) => React.ReactNode;
   optionComponent?: React.ComponentType<any>;
   optionKeyFn?: (data: any) => string;
-  anotherOptionRender?: (props: any) => React.ReactNode;
+  anotherOptionRender?: (...params: any) => React.ReactNode;
   anotherOptionComponent?: React.ComponentType<any>;
   anotherOptionKeyFn?: (data: any) => string;
 }
@@ -192,7 +192,7 @@ import dxCLASS_NAME, {
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 
 interface ICLASS_NAMEOptions extends IOptions, IHtmlOptions {
-  render?: (props: any) => React.ReactNode;
+  render?: (...params: any) => React.ReactNode;
   component?: React.ComponentType<any>;
   keyFn?: (data: any) => string;
 }
@@ -615,7 +615,7 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 // CLASS_NAME
 class Opt_1_Component extends NestedOption<{
   optionTemplate?: TYPE_1;
-  optionRender?: (props: any) => React.ReactNode;
+  optionRender?: (...params: any) => React.ReactNode;
   optionComponent?: React.ComponentType<any>;
   optionKeyFn?: (data: any) => string;
 }> {
