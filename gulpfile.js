@@ -57,17 +57,20 @@ gulp.task(GEN_COMPILE, gulp.series(
 
 gulp.task(GEN_RUN, (done) => {
   const generateSync = require(`${config.generator.binDir}generator.js`).default;
-  generateSync(
-    JSON.parse(fs.readFileSync(config.metadataPath).toString()),
-    config.baseComponent,
-    config.extensionComponent,
-    config.configComponent,
-    {
+  generateSync({
+    metaData: JSON.parse(fs.readFileSync(config.metadataPath).toString()),
+    components: {
+      baseComponent: config.baseComponent,
+      extensionComponent: config.extensionComponent,
+      configComponent: config.configComponent
+    },
+    out: {
       componentsDir: config.generatedComponentsDir,
       oldComponentsDir: config.oldComponentsDir,
       indexFileName: config.indexFileName
-    }
-  );
+    },
+    widgetsPackage: 'devextreme'
+  });
 
   done();
 });

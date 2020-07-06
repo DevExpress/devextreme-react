@@ -5,7 +5,7 @@ it("generates", () => {
     const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions
-} from "devextreme/DX/WIDGET/PATH";
+} from "DX/WIDGET/PATH";
 
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 
@@ -43,7 +43,7 @@ it("generates extension component", () => {
     const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions as ICLASS_NAMEOptions
-} from "devextreme/DX/WIDGET/PATH";
+} from "DX/WIDGET/PATH";
 
 import { ExtensionComponent as BaseComponent } from "EXTENSION_COMPONENT_PATH";
 
@@ -81,7 +81,7 @@ describe("template-props generation", () => {
         const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions
-} from "devextreme/DX/WIDGET/PATH";
+} from "DX/WIDGET/PATH";
 
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 
@@ -130,7 +130,7 @@ export {
         const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions
-} from "devextreme/DX/WIDGET/PATH";
+} from "DX/WIDGET/PATH";
 
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 
@@ -187,7 +187,7 @@ export {
         const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions
-} from "devextreme/DX/WIDGET/PATH";
+} from "DX/WIDGET/PATH";
 
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 
@@ -239,7 +239,7 @@ describe("props generation", () => {
         const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions
-} from "devextreme/DX/WIDGET/PATH";
+} from "DX/WIDGET/PATH";
 
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 
@@ -285,7 +285,7 @@ export {
         const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions
-} from "devextreme/DX/WIDGET/PATH";
+} from "DX/WIDGET/PATH";
 
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 
@@ -337,7 +337,7 @@ describe("nested options", () => {
         const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions
-} from "devextreme/DX/WIDGET/PATH";
+} from "DX/WIDGET/PATH";
 
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 import NestedOption from "CONFIG_COMPONENT_PATH";
@@ -445,7 +445,7 @@ export {
         const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions
-} from "devextreme/DX/WIDGET/PATH";
+} from "DX/WIDGET/PATH";
 
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 import NestedOption from "CONFIG_COMPONENT_PATH";
@@ -511,7 +511,7 @@ export {
         const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions
-} from "devextreme/DX/WIDGET/PATH";
+} from "DX/WIDGET/PATH";
 
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 import NestedOption from "CONFIG_COMPONENT_PATH";
@@ -593,7 +593,7 @@ export {
         const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions
-} from "devextreme/DX/WIDGET/PATH";
+} from "DX/WIDGET/PATH";
 
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 import NestedOption from "CONFIG_COMPONENT_PATH";
@@ -667,7 +667,7 @@ export {
         const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions
-} from "devextreme/DX/WIDGET/PATH";
+} from "DX/WIDGET/PATH";
 
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 import NestedOption from "CONFIG_COMPONENT_PATH";
@@ -742,7 +742,7 @@ describe("prop typings", () => {
         const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions
-} from "devextreme/DX/WIDGET/PATH";
+} from "DX/WIDGET/PATH";
 
 import * as PropTypes from "prop-types";
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
@@ -790,7 +790,7 @@ export {
         const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions
-} from "devextreme/DX/WIDGET/PATH";
+} from "DX/WIDGET/PATH";
 
 import * as PropTypes from "prop-types";
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
@@ -842,7 +842,7 @@ export {
         const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions
-} from "devextreme/DX/WIDGET/PATH";
+} from "DX/WIDGET/PATH";
 
 import * as PropTypes from "prop-types";
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
@@ -893,7 +893,7 @@ export {
         const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions
-} from "devextreme/DX/WIDGET/PATH";
+} from "DX/WIDGET/PATH";
 
 import * as PropTypes from "prop-types";
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
@@ -962,7 +962,7 @@ describe("child expectation", () => {
     const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions
-} from "devextreme/DX/WIDGET/PATH";
+} from "DX/WIDGET/PATH";
 
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 
@@ -1009,7 +1009,7 @@ export {
         const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions
-} from "devextreme/DX/WIDGET/PATH";
+} from "DX/WIDGET/PATH";
 
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 import NestedOption from "CONFIG_COMPONENT_PATH";
