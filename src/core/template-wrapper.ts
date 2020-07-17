@@ -52,10 +52,7 @@ class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps, ITempla
     }
 
     public componentDidMount() {
-        if (this.props.onRendered) {
-            const onRendered: () => void = this.props.onRendered;
-            setTimeout(() => onRendered());
-        }
+        this.props.onRendered?.();
 
         this._subscribeOnRemove();
     }
