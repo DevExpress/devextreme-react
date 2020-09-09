@@ -357,7 +357,7 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 
 // owners:
 // CLASS_NAME
-class Opt_1_Component extends NestedOption<{
+interface IOpt_1_ComponentProps {
   sub_opt_2?: TYPE_1;
   sub_opt_3?: {
     sub_sub_opt_4?: TYPE_2;
@@ -365,15 +365,17 @@ class Opt_1_Component extends NestedOption<{
       sub_sub_sub_opt_6?: TYPE_3;
     };
   };
-}> {
+}
+class Opt_1_Component extends NestedOption<IOpt_1_ComponentProps> {
   public static OptionName = "opt_1";
 }
 
 // owners:
 // Opt_1_Component
-class Opt_6_SubComponent extends NestedOption<{
+interface IOpt_6_SubComponentProps {
   sub_sub_sub_opt_8?: TYPE_4;
-}> {
+}
+class Opt_6_SubComponent extends NestedOption<IOpt_6_SubComponentProps> {
   public static OptionName = "sub_sub_opt_7";
 }
 
@@ -382,7 +384,9 @@ export {
   CLASS_NAME,
   ICLASS_NAMEOptions,
   Opt_1_Component,
-  Opt_6_SubComponent
+  IOpt_1_ComponentProps,
+  Opt_6_SubComponent,
+  IOpt_6_SubComponentProps
 };
 `.trimLeft();
         //#endregion
@@ -465,9 +469,10 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 
 // owners:
 // CLASS_NAME
-class Opt_1_Component extends NestedOption<{
+interface IOpt_1_ComponentProps {
   sub_opt_2?: TYPE_1;
-}> {
+}
+class Opt_1_Component extends NestedOption<IOpt_1_ComponentProps> {
   public static OptionName = "opt_1";
   public static IsCollectionItem = true;
 }
@@ -476,7 +481,8 @@ export default CLASS_NAME;
 export {
   CLASS_NAME,
   ICLASS_NAMEOptions,
-  Opt_1_Component
+  Opt_1_Component,
+  IOpt_1_ComponentProps
 };
 `.trimLeft();
         //#endregion
@@ -531,13 +537,14 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 
 // owners:
 // CLASS_NAME
-class Opt_1_Component extends NestedOption<{
+interface IOpt_1_ComponentProps {
   sub_opt_2?: TYPE_1;
   sub_opt_3?: {
     sub_sub_opt_4?: TYPE_2;
   };
   defaultSub_opt_2?: TYPE_1;
-}> {
+}
+class Opt_1_Component extends NestedOption<IOpt_1_ComponentProps> {
   public static OptionName = "opt_1";
   public static DefaultsProps = {
     defaultSub_opt_2: "sub_opt_2"
@@ -548,7 +555,8 @@ export default CLASS_NAME;
 export {
   CLASS_NAME,
   ICLASS_NAMEOptions,
-  Opt_1_Component
+  Opt_1_Component,
+  IOpt_1_ComponentProps
 };
 `.trimLeft();
         //#endregion
@@ -613,12 +621,13 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 
 // owners:
 // CLASS_NAME
-class Opt_1_Component extends NestedOption<{
+interface IOpt_1_ComponentProps {
   optionTemplate?: TYPE_1;
   optionRender?: (...params: any) => React.ReactNode;
   optionComponent?: React.ComponentType<any>;
   optionKeyFn?: (data: any) => string;
-}> {
+}
+class Opt_1_Component extends NestedOption<IOpt_1_ComponentProps> {
   public static OptionName = "opt_1";
   public static TemplateProps = [{
     tmplOption: "optionTemplate",
@@ -632,7 +641,8 @@ export default CLASS_NAME;
 export {
   CLASS_NAME,
   ICLASS_NAMEOptions,
-  Opt_1_Component
+  Opt_1_Component,
+  IOpt_1_ComponentProps
 };
 `.trimLeft();
         //#endregion
@@ -687,9 +697,10 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 
 // owners:
 // CLASS_NAME
-class Opt_1_Component extends NestedOption<{
+interface IOpt_1_ComponentProps {
   sub_opt_2?: TYPE_1;
-}> {
+}
+class Opt_1_Component extends NestedOption<IOpt_1_ComponentProps> {
   public static OptionName = "opt_1";
   public static IsCollectionItem = true;
   public static PredefinedProps = {
@@ -701,7 +712,8 @@ export default CLASS_NAME;
 export {
   CLASS_NAME,
   ICLASS_NAMEOptions,
-  Opt_1_Component
+  Opt_1_Component,
+  IOpt_1_ComponentProps
 };
 `.trimLeft();
         //#endregion
@@ -1029,8 +1041,9 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 
 // owners:
 // CLASS_NAME
-class Opt_1_Component extends NestedOption<{
-}> {
+interface IOpt_1_ComponentProps {
+}
+class Opt_1_Component extends NestedOption<IOpt_1_ComponentProps> {
   public static OptionName = "opt_1";
   public static ExpectedChildren = {
     expectedOption1: { optionName: "expectedName1", isCollectionItem: true },
@@ -1042,7 +1055,8 @@ export default CLASS_NAME;
 export {
   CLASS_NAME,
   ICLASS_NAMEOptions,
-  Opt_1_Component
+  Opt_1_Component,
+  IOpt_1_ComponentProps
 };
 `.trimLeft();
         //#endregion
