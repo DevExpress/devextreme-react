@@ -135,6 +135,7 @@ function generate(component: IComponent): string {
 
                 return {
                     className: c.className,
+                    propsType: buildPropsTypeName(c.className),
                     optionName: c.optionName,
                     ownerName: c.owners,
                     renderedType: renderObject(options, 0),
@@ -157,6 +158,7 @@ function generate(component: IComponent): string {
     if (component.nestedComponents && isNotEmptyArray(component.nestedComponents)) {
         component.nestedComponents.forEach((c) => {
             exportNames.push(c.className);
+            exportNames.push(buildPropsTypeName(c.className));
         });
     }
 
@@ -217,6 +219,10 @@ function generate(component: IComponent): string {
         defaultExport: component.name,
         renderedExports: renderExports(exportNames)
     });
+}
+
+function buildPropsTypeName(className: string) {
+    return `I${className}Props`;
 }
 
 function createTemplateDto(templates: string[] | undefined) {
@@ -378,6 +384,7 @@ L1 +  `};\n` +
 
 const renderNestedComponent: (model: {
     className: string;
+    propsType: string;
     optionName: string;
     isCollectionItem?: boolean;
     predefinedProps?: Array<{
@@ -395,7 +402,9 @@ const renderNestedComponent: (model: {
     `// <#= owner #>\n` +
 `<#~#>` +
 
-`class <#= it.className #> extends NestedOption<<#= it.renderedType #>> {` +
+`interface <#= it.propsType #> <#= it.renderedType #>\n` +
+
+`class <#= it.className #> extends NestedOption<<#= it.propsType #>> {` +
 L1 + `public static OptionName = "<#= it.optionName #>";` +
 
 `<#? it.isCollectionItem #>` +
