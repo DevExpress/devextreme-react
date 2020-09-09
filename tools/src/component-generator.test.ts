@@ -5,7 +5,7 @@ it("generates", () => {
     const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions
-} from "devextreme/DX/WIDGET/PATH";
+} from "DX/WIDGET/PATH";
 
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 
@@ -43,7 +43,7 @@ it("generates extension component", () => {
     const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions as ICLASS_NAMEOptions
-} from "devextreme/DX/WIDGET/PATH";
+} from "DX/WIDGET/PATH";
 
 import { ExtensionComponent as BaseComponent } from "EXTENSION_COMPONENT_PATH";
 
@@ -81,12 +81,12 @@ describe("template-props generation", () => {
         const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions
-} from "devextreme/DX/WIDGET/PATH";
+} from "DX/WIDGET/PATH";
 
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 
 interface ICLASS_NAMEOptions extends IOptions, IHtmlOptions {
-  optionRender?: (props: any) => React.ReactNode;
+  optionRender?: (...params: any) => React.ReactNode;
   optionComponent?: React.ComponentType<any>;
   optionKeyFn?: (data: any) => string;
 }
@@ -130,15 +130,15 @@ export {
         const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions
-} from "devextreme/DX/WIDGET/PATH";
+} from "DX/WIDGET/PATH";
 
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 
 interface ICLASS_NAMEOptions extends IOptions, IHtmlOptions {
-  optionRender?: (props: any) => React.ReactNode;
+  optionRender?: (...params: any) => React.ReactNode;
   optionComponent?: React.ComponentType<any>;
   optionKeyFn?: (data: any) => string;
-  anotherOptionRender?: (props: any) => React.ReactNode;
+  anotherOptionRender?: (...params: any) => React.ReactNode;
   anotherOptionComponent?: React.ComponentType<any>;
   anotherOptionKeyFn?: (data: any) => string;
 }
@@ -187,12 +187,12 @@ export {
         const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions
-} from "devextreme/DX/WIDGET/PATH";
+} from "DX/WIDGET/PATH";
 
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 
 interface ICLASS_NAMEOptions extends IOptions, IHtmlOptions {
-  render?: (props: any) => React.ReactNode;
+  render?: (...params: any) => React.ReactNode;
   component?: React.ComponentType<any>;
   keyFn?: (data: any) => string;
 }
@@ -239,7 +239,7 @@ describe("props generation", () => {
         const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions
-} from "devextreme/DX/WIDGET/PATH";
+} from "DX/WIDGET/PATH";
 
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 
@@ -285,7 +285,7 @@ export {
         const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions
-} from "devextreme/DX/WIDGET/PATH";
+} from "DX/WIDGET/PATH";
 
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 
@@ -337,7 +337,7 @@ describe("nested options", () => {
         const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions
-} from "devextreme/DX/WIDGET/PATH";
+} from "DX/WIDGET/PATH";
 
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 import NestedOption from "CONFIG_COMPONENT_PATH";
@@ -357,7 +357,7 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 
 // owners:
 // CLASS_NAME
-class Opt_1_Component extends NestedOption<{
+interface IOpt_1_ComponentProps {
   sub_opt_2?: TYPE_1;
   sub_opt_3?: {
     sub_sub_opt_4?: TYPE_2;
@@ -365,15 +365,17 @@ class Opt_1_Component extends NestedOption<{
       sub_sub_sub_opt_6?: TYPE_3;
     };
   };
-}> {
+}
+class Opt_1_Component extends NestedOption<IOpt_1_ComponentProps> {
   public static OptionName = "opt_1";
 }
 
 // owners:
 // Opt_1_Component
-class Opt_6_SubComponent extends NestedOption<{
+interface IOpt_6_SubComponentProps {
   sub_sub_sub_opt_8?: TYPE_4;
-}> {
+}
+class Opt_6_SubComponent extends NestedOption<IOpt_6_SubComponentProps> {
   public static OptionName = "sub_sub_opt_7";
 }
 
@@ -382,7 +384,9 @@ export {
   CLASS_NAME,
   ICLASS_NAMEOptions,
   Opt_1_Component,
-  Opt_6_SubComponent
+  IOpt_1_ComponentProps,
+  Opt_6_SubComponent,
+  IOpt_6_SubComponentProps
 };
 `.trimLeft();
         //#endregion
@@ -445,7 +449,7 @@ export {
         const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions
-} from "devextreme/DX/WIDGET/PATH";
+} from "DX/WIDGET/PATH";
 
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 import NestedOption from "CONFIG_COMPONENT_PATH";
@@ -465,9 +469,10 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 
 // owners:
 // CLASS_NAME
-class Opt_1_Component extends NestedOption<{
+interface IOpt_1_ComponentProps {
   sub_opt_2?: TYPE_1;
-}> {
+}
+class Opt_1_Component extends NestedOption<IOpt_1_ComponentProps> {
   public static OptionName = "opt_1";
   public static IsCollectionItem = true;
 }
@@ -476,7 +481,8 @@ export default CLASS_NAME;
 export {
   CLASS_NAME,
   ICLASS_NAMEOptions,
-  Opt_1_Component
+  Opt_1_Component,
+  IOpt_1_ComponentProps
 };
 `.trimLeft();
         //#endregion
@@ -511,7 +517,7 @@ export {
         const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions
-} from "devextreme/DX/WIDGET/PATH";
+} from "DX/WIDGET/PATH";
 
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 import NestedOption from "CONFIG_COMPONENT_PATH";
@@ -531,13 +537,14 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 
 // owners:
 // CLASS_NAME
-class Opt_1_Component extends NestedOption<{
+interface IOpt_1_ComponentProps {
   sub_opt_2?: TYPE_1;
   sub_opt_3?: {
     sub_sub_opt_4?: TYPE_2;
   };
   defaultSub_opt_2?: TYPE_1;
-}> {
+}
+class Opt_1_Component extends NestedOption<IOpt_1_ComponentProps> {
   public static OptionName = "opt_1";
   public static DefaultsProps = {
     defaultSub_opt_2: "sub_opt_2"
@@ -548,7 +555,8 @@ export default CLASS_NAME;
 export {
   CLASS_NAME,
   ICLASS_NAMEOptions,
-  Opt_1_Component
+  Opt_1_Component,
+  IOpt_1_ComponentProps
 };
 `.trimLeft();
         //#endregion
@@ -593,7 +601,7 @@ export {
         const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions
-} from "devextreme/DX/WIDGET/PATH";
+} from "DX/WIDGET/PATH";
 
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 import NestedOption from "CONFIG_COMPONENT_PATH";
@@ -613,12 +621,13 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 
 // owners:
 // CLASS_NAME
-class Opt_1_Component extends NestedOption<{
+interface IOpt_1_ComponentProps {
   optionTemplate?: TYPE_1;
-  optionRender?: (props: any) => React.ReactNode;
+  optionRender?: (...params: any) => React.ReactNode;
   optionComponent?: React.ComponentType<any>;
   optionKeyFn?: (data: any) => string;
-}> {
+}
+class Opt_1_Component extends NestedOption<IOpt_1_ComponentProps> {
   public static OptionName = "opt_1";
   public static TemplateProps = [{
     tmplOption: "optionTemplate",
@@ -632,7 +641,8 @@ export default CLASS_NAME;
 export {
   CLASS_NAME,
   ICLASS_NAMEOptions,
-  Opt_1_Component
+  Opt_1_Component,
+  IOpt_1_ComponentProps
 };
 `.trimLeft();
         //#endregion
@@ -667,7 +677,7 @@ export {
         const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions
-} from "devextreme/DX/WIDGET/PATH";
+} from "DX/WIDGET/PATH";
 
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 import NestedOption from "CONFIG_COMPONENT_PATH";
@@ -687,9 +697,10 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 
 // owners:
 // CLASS_NAME
-class Opt_1_Component extends NestedOption<{
+interface IOpt_1_ComponentProps {
   sub_opt_2?: TYPE_1;
-}> {
+}
+class Opt_1_Component extends NestedOption<IOpt_1_ComponentProps> {
   public static OptionName = "opt_1";
   public static IsCollectionItem = true;
   public static PredefinedProps = {
@@ -701,7 +712,8 @@ export default CLASS_NAME;
 export {
   CLASS_NAME,
   ICLASS_NAMEOptions,
-  Opt_1_Component
+  Opt_1_Component,
+  IOpt_1_ComponentProps
 };
 `.trimLeft();
         //#endregion
@@ -742,7 +754,7 @@ describe("prop typings", () => {
         const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions
-} from "devextreme/DX/WIDGET/PATH";
+} from "DX/WIDGET/PATH";
 
 import * as PropTypes from "prop-types";
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
@@ -790,7 +802,7 @@ export {
         const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions
-} from "devextreme/DX/WIDGET/PATH";
+} from "DX/WIDGET/PATH";
 
 import * as PropTypes from "prop-types";
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
@@ -842,7 +854,7 @@ export {
         const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions
-} from "devextreme/DX/WIDGET/PATH";
+} from "DX/WIDGET/PATH";
 
 import * as PropTypes from "prop-types";
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
@@ -893,7 +905,7 @@ export {
         const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions
-} from "devextreme/DX/WIDGET/PATH";
+} from "DX/WIDGET/PATH";
 
 import * as PropTypes from "prop-types";
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
@@ -962,7 +974,7 @@ describe("child expectation", () => {
     const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions
-} from "devextreme/DX/WIDGET/PATH";
+} from "DX/WIDGET/PATH";
 
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 
@@ -1009,7 +1021,7 @@ export {
         const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions
-} from "devextreme/DX/WIDGET/PATH";
+} from "DX/WIDGET/PATH";
 
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 import NestedOption from "CONFIG_COMPONENT_PATH";
@@ -1029,8 +1041,9 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 
 // owners:
 // CLASS_NAME
-class Opt_1_Component extends NestedOption<{
-}> {
+interface IOpt_1_ComponentProps {
+}
+class Opt_1_Component extends NestedOption<IOpt_1_ComponentProps> {
   public static OptionName = "opt_1";
   public static ExpectedChildren = {
     expectedOption1: { optionName: "expectedName1", isCollectionItem: true },
@@ -1042,7 +1055,8 @@ export default CLASS_NAME;
 export {
   CLASS_NAME,
   ICLASS_NAMEOptions,
-  Opt_1_Component
+  Opt_1_Component,
+  IOpt_1_ComponentProps
 };
 `.trimLeft();
         //#endregion

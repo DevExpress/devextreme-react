@@ -71,7 +71,7 @@ interface IRenderedPropTyping {
 }
 
 const TYPE_KEY_FN = "(data: any) => string";
-const TYPE_RENDER = "(props: any) => React.ReactNode";
+const TYPE_RENDER = "(...params: any) => React.ReactNode";
 const TYPE_COMPONENT = "React.ComponentType<any>";
 
 function generateReExport(path: string, fileName: string): string {
@@ -135,6 +135,7 @@ function generate(component: IComponent): string {
 
                 return {
                     className: c.className,
+                    propsType: buildPropsTypeName(c.className),
                     optionName: c.optionName,
                     ownerName: c.owners,
                     renderedType: renderObject(options, 0),
@@ -157,6 +158,7 @@ function generate(component: IComponent): string {
     if (component.nestedComponents && isNotEmptyArray(component.nestedComponents)) {
         component.nestedComponents.forEach((c) => {
             exportNames.push(c.className);
+            exportNames.push(buildPropsTypeName(c.className));
         });
     }
 
@@ -217,6 +219,10 @@ function generate(component: IComponent): string {
         defaultExport: component.name,
         renderedExports: renderExports(exportNames)
     });
+}
+
+function buildPropsTypeName(className: string) {
+    return `I${className}Props`;
 }
 
 function createTemplateDto(templates: string[] | undefined) {
@@ -289,7 +295,7 @@ const renderImports: (model: {
 }) => string = createTempate(
 `import <#= it.widgetName #>, {
     IOptions` + `<#? it.optionsAliasName #> as <#= it.optionsAliasName #><#?#>` + `\n` +
-`} from "devextreme/<#= it.dxExportPath #>";` + `\n` + `\n` +
+`} from "<#= it.dxExportPath #>";` + `\n` + `\n` +
 
 `<#? it.hasPropTypings #>` +
     `import * as PropTypes from "prop-types";` + `\n` +
@@ -378,6 +384,7 @@ L1 +  `};\n` +
 
 const renderNestedComponent: (model: {
     className: string;
+    propsType: string;
     optionName: string;
     isCollectionItem?: boolean;
     predefinedProps?: Array<{
@@ -395,7 +402,9 @@ const renderNestedComponent: (model: {
     `// <#= owner #>\n` +
 `<#~#>` +
 
-`class <#= it.className #> extends NestedOption<<#= it.renderedType #>> {` +
+`interface <#= it.propsType #> <#= it.renderedType #>\n` +
+
+`class <#= it.className #> extends NestedOption<<#= it.propsType #>> {` +
 L1 + `public static OptionName = "<#= it.optionName #>";` +
 
 `<#? it.isCollectionItem #>` +
