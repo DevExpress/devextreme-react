@@ -4,6 +4,7 @@ import { getChanges } from "./configuration/comparer";
 import { IConfigNode } from "./configuration/config-node";
 import { buildConfig, findValue, ValueType } from "./configuration/tree";
 import { mergeNameParts } from "./configuration/utils";
+import { capitalizeFirstLetter } from "./helpers";
 
 class OptionsManager {
     private readonly _guards: Record<string, number> = {};
@@ -88,6 +89,7 @@ class OptionsManager {
             return;
         }
 
+        this._callOptionChangeHandler(e.fullName, e.value);
         const valueDescriptor = findValue(this._currentConfig, e.fullName.split("."));
         if (!valueDescriptor) {
             return;
@@ -121,6 +123,56 @@ class OptionsManager {
         for (const optionName of Object.keys(this._guards)) {
             window.clearTimeout(this._guards[optionName]);
             delete this._guards[optionName];
+        }
+    }
+
+    private _getOptionFromConfig(
+        parts: string[],
+        options: Record<string, any>,
+        configs: Record<string, IConfigNode | IConfigNode[]>
+    ): any {
+        const currentName = parts[0];
+        const arrayBracketIndex = currentName.indexOf("[");
+        const optionName = arrayBracketIndex > - 1 ? currentName.slice(0, arrayBracketIndex) : currentName;
+        const arrayIndex = arrayBracketIndex > - 1 ? currentName[arrayBracketIndex + 1] : -1;
+
+        const isOption = !!options[optionName];
+        let option = isOption ? options[optionName] : configs[optionName];
+        if (option) {
+            option = arrayIndex > -1 ? option[arrayIndex] : option;
+            if (parts.length > 1) {
+                const newOptions = isOption ? option : option.options;
+                const newConfig = isOption ? {} : { ...option.configs, ...option.configCollections };
+                return this._getOptionFromConfig(parts.slice(1), newOptions, newConfig);
+            }
+            return option;
+        }
+
+        return null;
+    }
+
+    private _callOptionChangeHandler(optionName: string, optionValue: any) {
+        const parts = optionName.split(".");
+        let eventName = parts[parts.length - 1];
+        if (eventName.substr(0, 2) !== "on") {
+            eventName = `on${capitalizeFirstLetter(eventName)}Change`;
+            parts[parts.length - 1] = eventName;
+            const changeEvent = this._getOptionFromConfig(
+                parts,
+                this._currentConfig.options,
+                { ...this._currentConfig.configs, ...this._currentConfig.configCollections }
+            );
+
+            if (changeEvent) {
+                if (typeof changeEvent === "function") {
+                    changeEvent(optionValue);
+                } else {
+                    throw new Error(
+                        `Invalid value for "${eventName}" property.
+                        The "${eventName}" must be a function.`
+                    );
+                }
+            }
         }
     }
 
