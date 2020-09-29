@@ -9,9 +9,12 @@ import {
 } from "path";
 
 import {
+  IArrayDescr,
   IComplexProp,
   ICustomType,
+  IFunctionDescr,
   IModel,
+  IObjectDescr,
   IProp,
   ITypeDescr,
   IWidget
@@ -87,6 +90,8 @@ function generate({
   });
 
   writeFile(out.indexFileName, generateIndex(modulePaths), { encoding: "utf8" });
+  const SAMPLE = parseCustomTypes(rawData.customTypes)
+  writeFile('./src/types.d.ts', SAMPLE);
 }
 
 function mapWidget(
@@ -190,7 +195,7 @@ function mapOption(prop: IProp): IOption {
   return isEmptyArray(prop.props) ?
     {
       name: prop.name,
-      type: "any",
+      type: typePropToStr(prop, true) || "any",
       isSubscribable: prop.isSubscribable || undefined
 
     } : {
@@ -206,6 +211,91 @@ function mapSubscribableOption(prop: IProp): ISubscribableOption {
     type: "any",
     isSubscribable: prop.isSubscribable || undefined
   };
+}
+
+function parseCustomTypes(customTypes: ICustomType[]): string {
+  const customDeclaration = customTypes.map(type => {
+    return customTypeToString(type)
+  })
+  return customDeclaration.join('\n')
+}
+
+function _typeToStr(type: ITypeDescr): string {
+  if (type.acceptableValues)
+    return type.acceptableValues.join('|')
+  if (type.type == 'Any')
+    return 'any'
+  if (type.isCustomType)
+    console.log(type)
+  return type.type.replace(/\./g, '')
+}
+
+function _typeArrToStr(type_arr: IArrayDescr): string {
+  if (!isEmptyArray(type_arr.itemTypes)) {
+    return `Array<${type_arr.itemTypes.map(ITypeDescrToStr).join('|')}>`
+  }
+
+}
+
+function _typeFuncToStr(func: IFunctionDescr): string {
+  if (!isEmptyArray(func.params)) {
+    const declarations = func.params.map(p => {
+      const types = p.types.map(t => ITypeDescrToStr(t))
+      return `${p.name}: ${types.join('|')}`
+    });
+    const ret = ITypeDescrToStr(func.returnValueType);
+    return `((${declarations.join(',')})=>${ret})`
+  }
+  else return 'Function'
+}
+
+function _typeObjToStr(obj: IObjectDescr): string {
+  if (!isEmptyArray(obj.fields)) {
+    const fields = obj.fields.map(f => {
+      const types = f.types.map(t => ITypeDescrToStr(t))
+      return `${f.name}: ${types.join('|')}`
+    })
+    return `{${fields.join(',\n')}}`;
+  }
+  else return 'Object';
+
+}
+
+function ITypeDescrToStr(basic_type: ITypeDescr | IArrayDescr | IFunctionDescr | IObjectDescr) {
+  switch (basic_type.type) {
+    case ('Object'):
+      return _typeObjToStr(basic_type as IObjectDescr)
+    case ('Function'):
+      return _typeFuncToStr(basic_type as IFunctionDescr)
+    case ('Array'):
+      return _typeArrToStr(basic_type as IArrayDescr)
+    default:
+      return _typeToStr(basic_type)
+  }
+}
+
+function typePropToStr(prop: IProp, noname: Boolean = false): string {
+  const name = noname ? '' : `${prop.name}: `
+  if (!isEmptyArray(prop.props)) {
+    return `${name}{${prop.props.map(p => typePropToStr(p))}}`
+
+  }
+  else {
+    if (!isEmptyArray(prop.types)) {
+      return `${name}${prop.types.map(ITypeDescrToStr).join('|')}`
+    }
+    else return `${name}any`
+  }
+}
+
+function customTypeToString(type: ICustomType): string {
+  const name = type.name.replace(/\./g, '')
+  if (!isEmptyArray(type.props)) {
+    return `export interface ${name} {
+        ${type.props.map((p) => typePropToStr(p)).join(',\n')}
+      }\n`;
+  }
+  else return `export interface ${name}{}`
 }
 
 export default generate;
