@@ -1,5 +1,7 @@
 import { writeFileSync as writeFile } from "fs";
 
+const missingImports = require('../missing-types.json')
+
 import {
   dirname as getDirName,
   join as joinPaths,
@@ -23,6 +25,10 @@ import {
 import { convertTypes } from "./converter";
 import generateIndex, { IReExport } from "./index-generator";
 
+const hardTypes = { values: new Set() }
+const realized = { values: new Set() }
+const importCustomTypesSet = { values: new Set() }
+
 import generateComponent, {
   generateReExport,
   IComponent,
@@ -34,6 +40,7 @@ import generateComponent, {
 
 import {
   isEmptyArray,
+  isNotEmptyArray,
   removeExtension,
   removePrefix,
   toKebabCase,
@@ -61,6 +68,16 @@ function generate({
 }) {
   const modulePaths: IReExport[] = [];
 
+  const SAMPLE = parseCustomTypes(rawData.customTypes)
+  const importStr = missingImports.values.map((imp) => `import ${imp.name} from "${imp.path}";`).join('\n');
+  const exportStr = missingImports.values.map((imp) => `export {${imp.name}};`).join('\n');
+  writeFile('./src/types.d.ts', importStr + '\n' + SAMPLE + exportStr);
+  let output = ""
+  const difference = new Set(
+    [...hardTypes.values].filter(x => !realized.values.has(x)));
+  difference.forEach(v => output += v + "\n");
+  writeFile('./hard-types.ts', output)
+
   rawData.widgets.forEach((data) => {
     const widgetFile = mapWidget(
       data,
@@ -73,7 +90,7 @@ function generate({
     const widgetFilePath = joinPaths(out.componentsDir, widgetFile.fileName);
     const indexFileDir = getDirName(out.indexFileName);
 
-    writeFile(widgetFilePath, generateComponent(widgetFile.component), { encoding: "utf8" });
+    writeFile(widgetFilePath, `import { ${widgetFile.importCustomTypes.join(', ')}} from "./types"\n` + generateComponent(widgetFile.component), { encoding: "utf8" });
     modulePaths.push({
       name: widgetFile.component.name,
       path: "./" + removeExtension(getRelativePath(indexFileDir, widgetFilePath)).replace(pathSeparator, "/")
@@ -90,8 +107,7 @@ function generate({
   });
 
   writeFile(out.indexFileName, generateIndex(modulePaths), { encoding: "utf8" });
-  const SAMPLE = parseCustomTypes(rawData.customTypes)
-  writeFile('./src/types.d.ts', SAMPLE);
+
 }
 
 function mapWidget(
@@ -103,12 +119,15 @@ function mapWidget(
   widgetPackage: string
 ): {
   fileName: string;
-  component: IComponent
+  component: IComponent;
+  importCustomTypes: string[]
 } {
   const name = removePrefix(raw.name, "dx");
   const subscribableOptions: ISubscribableOption[] = raw.options
     .filter((o) => o.isSubscribable)
     .map(mapSubscribableOption);
+
+  importCustomTypesSet.values = new Set();
 
   const nestedOptions = raw.complexOptions
     ? extractNestedComponents(raw.complexOptions, raw.name, name)
@@ -119,6 +138,9 @@ function mapWidget(
     return result;
   }, {});
   const propTypings = extractPropTypings(raw.options, customTypeHash);
+
+  const importsSet = new Set(
+    [...importCustomTypesSet.values].filter(x => realized.values.has(x)));
 
   return {
     fileName: `${toKebabCase(name)}.ts`,
@@ -134,7 +156,8 @@ function mapWidget(
       nestedComponents: nestedOptions && nestedOptions.length > 0 ? nestedOptions : undefined,
       expectedChildren: raw.nesteds,
       propTypings: propTypings.length > 0 ? propTypings : undefined
-    }
+    },
+    importCustomTypes: Array.from(importsSet) as string[]
   };
 }
 
@@ -225,20 +248,23 @@ function _typeToStr(type: ITypeDescr): string {
     return type.acceptableValues.join('|')
   if (type.type == 'Any')
     return 'any'
-  if (type.isCustomType)
-    console.log(type)
+  if (type.isCustomType) {
+    importCustomTypesSet.values.add(type.type)
+    hardTypes.values.add(type.type)
+  }
+
   return type.type.replace(/\./g, '')
 }
 
 function _typeArrToStr(type_arr: IArrayDescr): string {
-  if (!isEmptyArray(type_arr.itemTypes)) {
+  if (isNotEmptyArray(type_arr.itemTypes)) {
     return `Array<${type_arr.itemTypes.map(ITypeDescrToStr).join('|')}>`
   }
 
 }
 
 function _typeFuncToStr(func: IFunctionDescr): string {
-  if (!isEmptyArray(func.params)) {
+  if (isNotEmptyArray(func.params)) {
     const declarations = func.params.map(p => {
       const types = p.types.map(t => ITypeDescrToStr(t))
       return `${p.name}: ${types.join('|')}`
@@ -250,7 +276,7 @@ function _typeFuncToStr(func: IFunctionDescr): string {
 }
 
 function _typeObjToStr(obj: IObjectDescr): string {
-  if (!isEmptyArray(obj.fields)) {
+  if (isNotEmptyArray(obj.fields)) {
     const fields = obj.fields.map(f => {
       const types = f.types.map(t => ITypeDescrToStr(t))
       return `${f.name}: ${types.join('|')}`
@@ -275,13 +301,13 @@ function ITypeDescrToStr(basic_type: ITypeDescr | IArrayDescr | IFunctionDescr |
 }
 
 function typePropToStr(prop: IProp, noname: Boolean = false): string {
-  const name = noname ? '' : `${prop.name}: `
-  if (!isEmptyArray(prop.props)) {
+  const name = noname ? '' : `${prop.name.replace(/\(.*\)/, '')}: `
+  if (isNotEmptyArray(prop.props)) {
     return `${name}{${prop.props.map(p => typePropToStr(p))}}`
 
   }
   else {
-    if (!isEmptyArray(prop.types)) {
+    if (isNotEmptyArray(prop.types)) {
       return `${name}${prop.types.map(ITypeDescrToStr).join('|')}`
     }
     else return `${name}any`
@@ -290,12 +316,28 @@ function typePropToStr(prop: IProp, noname: Boolean = false): string {
 
 function customTypeToString(type: ICustomType): string {
   const name = type.name.replace(/\./g, '')
-  if (!isEmptyArray(type.props)) {
+  realized.values.add(name)
+  const statements = []
+  let prev = ''
+  let tempStatements = []
+  if (isNotEmptyArray(type.props)) {
+    type.props.map(p => {
+      const Pname = p.name.replace(/\(.*\)/, '')
+      if (Pname !== prev) {
+        statements.push([...tempStatements, typePropToStr(p)].reverse().join('|'))
+        prev = Pname
+        tempStatements = []
+      }
+      else {
+        tempStatements.push(typePropToStr(p, true))
+      }
+    })
     return `export interface ${name} {
-        ${type.props.map((p) => typePropToStr(p)).join(',\n')}
-      }\n`;
+      ${statements.map((s) => '\t' + s).join(',\n')}
+            }\n`;
   }
   else return `export interface ${name}{}`
+
 }
 
 export default generate;
