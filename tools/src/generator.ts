@@ -69,8 +69,8 @@ function generate({
   const modulePaths: IReExport[] = [];
 
   const SAMPLE = parseCustomTypes(rawData.customTypes)
-  const importStr = missingImports.values.map((imp) => `import ${imp.name} from "${imp.path}";`).join('\n');
-  const exportStr = missingImports.values.map((imp) => `export {${imp.name}};`).join('\n');
+  const importStr = missingImports.values.map((imp) => `import ${imp.name} from "${imp.path}";`).join('\n') + 'import {GridBase} from "devextreme/ui/data_grid"\n';
+  const exportStr = missingImports.values.map((imp) => `export {${imp.name}};`).join('\n') + 'export {GridBase}';
   writeFile('./src/types.d.ts', importStr + '\n' + SAMPLE + exportStr);
   let output = ""
   const difference = new Set(
@@ -90,7 +90,7 @@ function generate({
     const widgetFilePath = joinPaths(out.componentsDir, widgetFile.fileName);
     const indexFileDir = getDirName(out.indexFileName);
 
-    writeFile(widgetFilePath, `import { ${widgetFile.importCustomTypes.join(', ')}} from "./types"\n` + generateComponent(widgetFile.component), { encoding: "utf8" });
+    writeFile(widgetFilePath, `import * as types from "./types"\n` + generateComponent(widgetFile.component), { encoding: "utf8" });
     modulePaths.push({
       name: widgetFile.component.name,
       path: "./" + removeExtension(getRelativePath(indexFileDir, widgetFilePath)).replace(pathSeparator, "/")
@@ -218,7 +218,7 @@ function mapOption(prop: IProp): IOption {
   return isEmptyArray(prop.props) ?
     {
       name: prop.name,
-      type: typePropToStr(prop, true) || "any",
+      type: typePropToStr(prop, true, true) || "any",
       isSubscribable: prop.isSubscribable || undefined
 
     } : {
@@ -243,7 +243,7 @@ function parseCustomTypes(customTypes: ICustomType[]): string {
   return customDeclaration.join('\n')
 }
 
-function _typeToStr(type: ITypeDescr): string {
+function _typeToStr(type: ITypeDescr, nested: Boolean = false): string {
   if (type.acceptableValues)
     return type.acceptableValues.join('|')
   if (type.type == 'Any')
@@ -251,34 +251,37 @@ function _typeToStr(type: ITypeDescr): string {
   if (type.isCustomType) {
     importCustomTypesSet.values.add(type.type)
     hardTypes.values.add(type.type)
+    if (nested) {
+      return 'types.' + type.type.replace(/\./g, '')
+    }
   }
 
   return type.type.replace(/\./g, '')
 }
 
-function _typeArrToStr(type_arr: IArrayDescr): string {
+function _typeArrToStr(type_arr: IArrayDescr, nested: Boolean = false): string {
   if (isNotEmptyArray(type_arr.itemTypes)) {
-    return `Array<${type_arr.itemTypes.map(ITypeDescrToStr).join('|')}>`
+    return `Array<${type_arr.itemTypes.map(t => ITypeDescrToStr(t, nested)).join('|')}>`
   }
 
 }
 
-function _typeFuncToStr(func: IFunctionDescr): string {
+function _typeFuncToStr(func: IFunctionDescr, nested: Boolean = false): string {
   if (isNotEmptyArray(func.params)) {
     const declarations = func.params.map(p => {
-      const types = p.types.map(t => ITypeDescrToStr(t))
+      const types = p.types.map(t => ITypeDescrToStr(t, nested))
       return `${p.name}: ${types.join('|')}`
     });
-    const ret = ITypeDescrToStr(func.returnValueType);
+    const ret = ITypeDescrToStr(func.returnValueType, nested);
     return `((${declarations.join(',')})=>${ret})`
   }
   else return 'Function'
 }
 
-function _typeObjToStr(obj: IObjectDescr): string {
+function _typeObjToStr(obj: IObjectDescr, nested: Boolean = false): string {
   if (isNotEmptyArray(obj.fields)) {
     const fields = obj.fields.map(f => {
-      const types = f.types.map(t => ITypeDescrToStr(t))
+      const types = f.types.map(t => ITypeDescrToStr(t, nested))
       return `${f.name}: ${types.join('|')}`
     })
     return `{${fields.join(',\n')}}`;
@@ -287,28 +290,31 @@ function _typeObjToStr(obj: IObjectDescr): string {
 
 }
 
-function ITypeDescrToStr(basic_type: ITypeDescr | IArrayDescr | IFunctionDescr | IObjectDescr) {
+function ITypeDescrToStr(
+  basic_type: ITypeDescr | IArrayDescr | IFunctionDescr | IObjectDescr,
+  nested: Boolean = false
+) {
   switch (basic_type.type) {
     case ('Object'):
-      return _typeObjToStr(basic_type as IObjectDescr)
+      return _typeObjToStr(basic_type as IObjectDescr, nested)
     case ('Function'):
-      return _typeFuncToStr(basic_type as IFunctionDescr)
+      return _typeFuncToStr(basic_type as IFunctionDescr, nested)
     case ('Array'):
-      return _typeArrToStr(basic_type as IArrayDescr)
+      return _typeArrToStr(basic_type as IArrayDescr, nested)
     default:
-      return _typeToStr(basic_type)
+      return _typeToStr(basic_type, nested)
   }
 }
 
-function typePropToStr(prop: IProp, noname: Boolean = false): string {
+function typePropToStr(prop: IProp, noname: Boolean = false, nested: Boolean = false): string {
   const name = noname ? '' : `${prop.name.replace(/\(.*\)/, '')}: `
   if (isNotEmptyArray(prop.props)) {
-    return `${name}{${prop.props.map(p => typePropToStr(p))}}`
+    return `${name}{${prop.props.map(p => typePropToStr(p, false, nested))}}`
 
   }
   else {
     if (isNotEmptyArray(prop.types)) {
-      return `${name}${prop.types.map(ITypeDescrToStr).join('|')}`
+      return `${name}${prop.types.map(p => ITypeDescrToStr(p, nested)).join('|')}`
     }
     else return `${name}any`
   }
