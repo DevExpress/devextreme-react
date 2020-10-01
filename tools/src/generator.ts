@@ -25,8 +25,7 @@ import {
 import { convertTypes } from "./converter";
 import generateIndex, { IReExport } from "./index-generator";
 
-const hardTypes = { values: new Set() }
-const realized = { values: new Set() }
+const generatedInterfaces = { values: new Set() }
 const importCustomTypesSet = { values: new Set() }
 
 import generateComponent, {
@@ -69,14 +68,9 @@ function generate({
   const modulePaths: IReExport[] = [];
 
   const SAMPLE = parseCustomTypes(rawData.customTypes)
-  const importStr = missingImports.values.map((imp) => `import ${imp.name} from "${imp.path}";`).join('\n') + 'import {GridBase} from "devextreme/ui/data_grid"\n';
+  const importStr = missingImports.values.map((imp) => `import ${imp.name} from "${imp.path}";`).join('\n') + '\nimport {GridBase} from "devextreme/ui/data_grid"\n';
   const exportStr = missingImports.values.map((imp) => `export {${imp.name}};`).join('\n') + 'export {GridBase}';
   writeFile('./src/types.d.ts', importStr + '\n' + SAMPLE + exportStr);
-  let output = ""
-  const difference = new Set(
-    [...hardTypes.values].filter(x => !realized.values.has(x)));
-  difference.forEach(v => output += v + "\n");
-  writeFile('./hard-types.ts', output)
 
   rawData.widgets.forEach((data) => {
     const widgetFile = mapWidget(
@@ -140,7 +134,7 @@ function mapWidget(
   const propTypings = extractPropTypings(raw.options, customTypeHash);
 
   const importsSet = new Set(
-    [...importCustomTypesSet.values].filter(x => realized.values.has(x)));
+    [...importCustomTypesSet.values].filter(x => generatedInterfaces.values.has(x)));
 
   return {
     fileName: `${toKebabCase(name)}.ts`,
@@ -250,7 +244,6 @@ function _typeToStr(type: ITypeDescr, nested: Boolean = false): string {
     return 'any'
   if (type.isCustomType) {
     importCustomTypesSet.values.add(type.type)
-    hardTypes.values.add(type.type)
     if (nested) {
       return 'types.' + type.type.replace(/\./g, '')
     }
@@ -321,28 +314,28 @@ function typePropToStr(prop: IProp, noname: Boolean = false, nested: Boolean = f
 }
 
 function customTypeToString(type: ICustomType): string {
-  const name = type.name.replace(/\./g, '')
-  realized.values.add(name)
+  const interfaceName = type.name.replace(/\./g, '')
+  generatedInterfaces.values.add(interfaceName)
   const statements = []
   let prev = ''
   let tempStatements = []
   if (isNotEmptyArray(type.props)) {
     type.props.map(p => {
-      const Pname = p.name.replace(/\(.*\)/, '')
-      if (Pname !== prev) {
+      const name = p.name.replace(/\(.*\)/, '')
+      if (name !== prev) {
         statements.push([...tempStatements, typePropToStr(p)].reverse().join('|'))
-        prev = Pname
+        prev = name
         tempStatements = []
       }
       else {
         tempStatements.push(typePropToStr(p, true))
       }
     })
-    return `export interface ${name} {
+    return `export interface ${interfaceName} {
       ${statements.map((s) => '\t' + s).join(',\n')}
             }\n`;
   }
-  else return `export interface ${name}{}`
+  else return `export interface ${interfaceName}{}`
 
 }
 
