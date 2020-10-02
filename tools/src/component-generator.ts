@@ -162,6 +162,7 @@ function generate(component: IComponent): string {
         });
     }
 
+    const keys = getKeys(component);
     const templates = createTemplateDto(component.templates);
     const defaultProps = component.subscribableOptions
         ? component.subscribableOptions.map((o) => ({
@@ -196,6 +197,7 @@ function generate(component: IComponent): string {
         renderedOptionsInterface: !hasExtraOptions ? undefined : renderOptionsInterface({
             optionsName,
             defaultProps: defaultProps || [],
+            keyOpt: keys || [],
             templates: templates || []
         }),
 
@@ -219,6 +221,14 @@ function generate(component: IComponent): string {
         defaultExport: component.name,
         renderedExports: renderExports(exportNames)
     });
+}
+
+function getKeys(component: IComponent) {
+    const keyOpt = component.propTypings && component.propTypings.find((e) => e.propName === "key");
+    if (keyOpt) {
+        keyOpt.propName = uppercaseFirst(keyOpt.propName);
+    }
+    return keyOpt;
 }
 
 function buildPropsTypeName(className: string) {
@@ -318,6 +328,7 @@ const renderOptionsInterface: (model: {
         render: string;
         component: string;
     }>;
+    keyOpt: IPropTyping | {};
     defaultProps: Array<{
         name: string;
         type: string;
@@ -330,6 +341,12 @@ const renderOptionsInterface: (model: {
     `  <#= template.component #>?: ${TYPE_COMPONENT};` + `\n` +
     `  <#= template.keyFn #>?: ${TYPE_KEY_FN};` + `\n` +
 `<#~#>` +
+
+`<#? it.keyOpt #>` +
+    `<#? it.keyOpt.propName #>` +
+        `  dx<#= it.keyOpt.propName #>?: <#= it.keyOpt.types.join(' | ')#>;` + `\n` +
+    `<#?#>` +
+`<#?#>` +
 
 `<#~ it.defaultProps :prop #>` +
     `  <#= prop.name #>?: <#= prop.type #>;` + `\n` +
@@ -484,7 +501,7 @@ function renderObject(props: IOption[], indent: number): string {
     indent += 1;
 
     props.forEach((opt) => {
-        result += "\n" + getIndent(indent) + opt.name + "?: ";
+        result += "\n" + getIndent(indent) + (opt.name === "key" ? "dxKey" : opt.name) + "?: ";
         if (opt.nested && isNotEmptyArray(opt.nested)) {
             result += renderObject(opt.nested, indent);
         } else {

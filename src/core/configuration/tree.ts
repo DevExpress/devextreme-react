@@ -47,6 +47,11 @@ function buildNode(
         result[key] = node.options[key];
     }
 
+    if ("dxKey" in result) {
+        result.key = result.dxKey;
+        delete result.dxKey;
+    }
+
     buildTemplates(node, result, templatesAccum);
 
     return result;
