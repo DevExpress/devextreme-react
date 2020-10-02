@@ -196,10 +196,13 @@ function mapOption(prop: IProp): IOption {
     } : {
       name: prop.name,
       isSubscribable: prop.isSubscribable || undefined,
-      nested: prop.props.map(mapOption)
+      nested: prop.props.map(mapOption),
+      isArray: nestedOptionArrayPostfix(prop)
     };
 }
-
+function nestedOptionArrayPostfix(prop: IProp): boolean {
+  return (prop?.types && prop.types.length && prop.types[0]?.type && prop.types[0].type === "Array")
+}
 function mapSubscribableOption(prop: IProp): ISubscribableOption {
   return {
     name: prop.name,
