@@ -163,6 +163,7 @@ function extractNestedComponents(props: IComplexProp[], rawWidgetName: string, w
   });
 
   return props.map((p) => {
+    if (p.name === "groupItems") debugger;
     return {
       className: nameClassMap[p.name],
       owners: p.owners.map((o) => nameClassMap[o]),
@@ -209,19 +210,24 @@ function createPropTyping(option: IProp, customTypes: Record<string, ICustomType
 }
 
 function mapOption(prop: IProp): IOption {
+  if (prop.name === "groupItems") debugger;
   return isEmptyArray(prop.props) ?
     {
       name: prop.name,
-      type: typePropToStr(prop, true, true) || "any",
-      isSubscribable: prop.isSubscribable || undefined
+      type: (typePropToStr(prop, true, true) || "any"),
+      isSubscribable: prop.isSubscribable || undefined,
+
 
     } : {
       name: prop.name,
       isSubscribable: prop.isSubscribable || undefined,
-      nested: prop.props.map(mapOption)
+      nested: prop.props.map(mapOption),
+      isArray: nestedOptionArrayPostfix(prop)
     };
 }
-
+function nestedOptionArrayPostfix(prop: IProp): boolean {
+  return (prop?.types && prop.types.length && prop.types[0]?.type && prop.types[0].type === "Array")
+}
 function mapSubscribableOption(prop: IProp): ISubscribableOption {
   return {
     name: prop.name,
@@ -301,6 +307,9 @@ function ITypeDescrToStr(
 
 function typePropToStr(prop: IProp, noname: Boolean = false, nested: Boolean = false): string {
   const name = noname ? '' : `${prop.name.replace(/\(.*\)/, '')}: `
+
+  const test = nestedOptionArrayPostfix(prop)
+  if (prop.name === "groupItems") debugger;
   if (isNotEmptyArray(prop.props)) {
     return `${name}{${prop.props.map(p => typePropToStr(p, false, nested))}}`
 
