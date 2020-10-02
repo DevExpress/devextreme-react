@@ -128,22 +128,23 @@ describe("build templates", () => {
             predefinedOptions: {},
             templates: []
         };
-        const checkNode = testNode;
+        const expectedNode = testNode;
         const optionAccum = {
             google: "X"
         };
         const templateAccum = {};
-        const checkOptionAccum = {
+        const expectedOptionAccum = {
             google: "X"
         };
-        const checkTemplateAccum = {};
+        const expectedTemplateAccum = {};
         buildTemplates(testNode, optionAccum, templateAccum);
-        expect(testNode).toEqual(checkNode);
-        expect(optionAccum).toEqual(checkOptionAccum);
-        expect(templateAccum).toEqual(checkTemplateAccum);
+        expect(testNode).toEqual(expectedNode);
+        expect(optionAccum).toEqual(expectedOptionAccum);
+        expect(templateAccum).toEqual(expectedTemplateAccum);
     });
 
     it("change templateAccum and optionAccum", () => {
+        const content = () => undefined;
         const testNode: IConfigNode = {
             configCollections: {},
             configs: {},
@@ -157,14 +158,14 @@ describe("build templates", () => {
             },
             predefinedOptions: {},
             templates: [{
-                content: () => undefined,
+                content,
                 isAnonymous: true,
                 keyFn: undefined,
                 optionName: "template",
                 type: "render"
             }]
         };
-        const checkNode = {
+        const expectedNode = {
             configCollections: {},
             configs: {},
             fullName: "",
@@ -177,7 +178,7 @@ describe("build templates", () => {
             },
             predefinedOptions: {},
             templates: [{
-                content: () => undefined,
+                content,
                 isAnonymous: true,
                 keyFn: undefined,
                 optionName: "template",
@@ -190,7 +191,7 @@ describe("build templates", () => {
             type: "normal",
             width: 120
          };
-        const checkOptionAccum = {
+        const expectedOptionAccum = {
             stylingMode: "contained",
             template: "template",
             text: "Contained",
@@ -198,9 +199,9 @@ describe("build templates", () => {
             width: 120
         };
         const templateAccum = {};
-        const checkTemplateAccum = {
+        const expectedTemplateAccum = {
             template: {
-                content: () => undefined,
+                content,
                 isAnonymous: true,
                 keyFn: undefined,
                 optionName: "template",
@@ -208,8 +209,8 @@ describe("build templates", () => {
             }
         };
         buildTemplates(testNode, optionAccum, templateAccum);
-        expect(JSON.stringify(testNode)).toEqual(JSON.stringify(checkNode));
-        expect(optionAccum).toEqual(checkOptionAccum);
-        expect(JSON.stringify(templateAccum)).toEqual(JSON.stringify(checkTemplateAccum));
+        expect(testNode).toEqual(expectedNode);
+        expect(optionAccum).toEqual(expectedOptionAccum);
+        expect(templateAccum).toEqual(expectedTemplateAccum);
     });
 });
