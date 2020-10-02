@@ -162,7 +162,7 @@ function generate(component: IComponent): string {
         });
     }
 
-    const keys = getKeys(component);
+    const keyOpt = getKeyOpt(component);
     const templates = createTemplateDto(component.templates);
     const defaultProps = component.subscribableOptions
         ? component.subscribableOptions.map((o) => ({
@@ -197,7 +197,7 @@ function generate(component: IComponent): string {
         renderedOptionsInterface: !hasExtraOptions ? undefined : renderOptionsInterface({
             optionsName,
             defaultProps: defaultProps || [],
-            keyOpt: keys || [],
+            keyOpt: keyOpt || {},
             templates: templates || []
         }),
 
@@ -223,7 +223,7 @@ function generate(component: IComponent): string {
     });
 }
 
-function getKeys(component: IComponent) {
+function getKeyOpt(component: IComponent) {
     const keyOpt = component.propTypings && component.propTypings.find((e) => e.propName === "key");
     if (keyOpt) {
         keyOpt.propName = uppercaseFirst(keyOpt.propName);
