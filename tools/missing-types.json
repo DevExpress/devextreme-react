@@ -1,0 +1,68 @@
+{
+    "values": [
+        {
+            "name": "Component",
+            "path": "devextreme/core/component"
+        },
+        {
+            "name": "Widget",
+            "path": "devextreme/ui/widget/ui.widget"
+        },
+        {
+            "name": "CollectionWidget",
+            "path": "devextreme/ui/collection/ui.collection_widget.base"
+        },
+        {
+            "name": "dxActionSheet",
+            "path": "devextreme/ui/action_sheet"
+        },
+        {
+            "name": "dxButton",
+            "path": "devextreme/ui/button"
+        },
+        {
+            "name": "dxDataGrid",
+            "path": "devextreme/ui/data_grid"
+        },
+        {
+            "name": "dxDraggable",
+            "path": "devextreme/ui/draggable"
+        },
+        {
+            "name": "dxDropDownButton",
+            "path": "devextreme/ui/drop_down_button"
+        },
+        {
+            "name": "dxFilterBuilder",
+            "path": "devextreme/ui/filter_builder"
+        },
+        {
+            "name": "dxForm",
+            "path": "devextreme/ui/form"
+        },
+        {
+            "name": "dxOverlay",
+            "path": "devextreme/ui/overlay"
+        },
+        {
+            "name": "dxPopup",
+            "path": "devextreme/ui/popup"
+        },
+        {
+            "name": "dxSortable",
+            "path": "devextreme/ui/sortable"
+        },
+        {
+            "name": "dxTabPanel",
+            "path": "devextreme/ui/tab_panel"
+        },
+        {
+            "name": "dxTextEditor",
+            "path": "devextreme/ui/text_box/ui.text_editor.base"
+        },
+        {
+            "name": "dxTreeList",
+            "path": "devextreme/ui/tree_list"
+        }
+    ]
+}
