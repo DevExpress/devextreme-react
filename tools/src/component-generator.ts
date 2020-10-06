@@ -94,10 +94,15 @@ function generate(component: IComponent): string {
                 let renderedSubscribableOptions: string[] | undefined;
                 if (isNotEmptyArray(nestedSubscribableOptions)) {
 
-                    options.push(...nestedSubscribableOptions.map((o) => ({
-                        ...o,
-                        name: `default${uppercaseFirst(o.name)}`
-                    })));
+                    nestedSubscribableOptions.forEach((o) => {
+                        options.push({
+                            ...o,
+                            name: `default${uppercaseFirst(o.name)}`
+                        }, {
+                            name: `on${uppercaseFirst(o.name)}Change`,
+                            type: `(value: ${o.type}) => void`
+                        });
+                    });
 
                     renderedSubscribableOptions = nestedSubscribableOptions.map((o) =>
                         renderObjectEntry({
@@ -170,6 +175,13 @@ function generate(component: IComponent): string {
             actualOptionName: o.name
         }))
         : undefined;
+    const onChangeEvents = component.subscribableOptions
+        ? component.subscribableOptions.map((o) => ({
+            name: `on${uppercaseFirst(o.name)}Change`,
+            type: `(value: ${o.type}) => void`,
+            actualOptionName: o.name
+        }))
+        : undefined;
 
     const hasExtraOptions = !component.isExtension;
     const widgetName =  `dx${uppercaseFirst(component.name)}`;
@@ -196,6 +208,7 @@ function generate(component: IComponent): string {
         renderedOptionsInterface: !hasExtraOptions ? undefined : renderOptionsInterface({
             optionsName,
             defaultProps: defaultProps || [],
+            onChangeEvents: onChangeEvents || [],
             templates: templates || []
         }),
 
@@ -322,6 +335,10 @@ const renderOptionsInterface: (model: {
         name: string;
         type: string;
     }>;
+    onChangeEvents: Array<{
+        name: string;
+        type: string;
+    }>;
 }) => string = createTempate(
 `interface <#= it.optionsName #> extends IOptions, IHtmlOptions {` + `\n` +
 
@@ -332,6 +349,10 @@ const renderOptionsInterface: (model: {
 `<#~#>` +
 
 `<#~ it.defaultProps :prop #>` +
+    `  <#= prop.name #>?: <#= prop.type #>;` + `\n` +
+`<#~#>` +
+
+`<#~ it.onChangeEvents :prop #>` +
     `  <#= prop.name #>?: <#= prop.type #>;` + `\n` +
 `<#~#>` +
 
