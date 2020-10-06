@@ -32,7 +32,8 @@ class NestedComponent extends ConfigurationComponent<{
     b?: string;
     c?: string;
     defaultC?: string;
-    [name: string]: any;
+    value?: number;
+    onValueChange?: () => void;
 }> {
 
     public static DefaultsProps = {
@@ -42,7 +43,7 @@ class NestedComponent extends ConfigurationComponent<{
 
 (NestedComponent as any).OptionName = "nestedOption";
 
-class CollectionNestedComponent extends ConfigurationComponent<{ a?: number; [name: string]: any; }> {}
+class CollectionNestedComponent extends ConfigurationComponent<{ a?: number; onAChange?: any; }> {}
 (CollectionNestedComponent as any).OptionName = "items";
 (CollectionNestedComponent as any).IsCollectionItem = true;
 (CollectionNestedComponent as any).ExpectedChildren = {
@@ -52,7 +53,7 @@ class CollectionNestedComponent extends ConfigurationComponent<{ a?: number; [na
     }
 };
 
-class CollectionSubNestedComponent extends ConfigurationComponent<{ a?: number; [name: string]: any }> { }
+class CollectionSubNestedComponent extends ConfigurationComponent<{ a?: number; onAChange?: any; }> { }
 (CollectionSubNestedComponent as any).OptionName = "subItems";
 (CollectionSubNestedComponent as any).IsCollectionItem = true;
 
@@ -692,8 +693,8 @@ describe("onXXXChange", () => {
         mount(
             <TestComponent>
                 <NestedComponent
-                    text={0}
-                    onTextChange={onNestedPropChange}
+                    value={0}
+                    onValueChange={onNestedPropChange}
                 />
                 <CollectionNestedComponent
                     a={0}
@@ -707,8 +708,8 @@ describe("onXXXChange", () => {
                         onAChange={onSubCollectionPropChange}
                     />
                     <NestedComponent
-                        text={0}
-                        onTextChange={onSubNestedPropChange}
+                        value={0}
+                        onValueChange={onSubNestedPropChange}
                     />
                 </CollectionNestedComponent>
             </TestComponent>
@@ -722,11 +723,11 @@ describe("onXXXChange", () => {
         expect(onSubCollectionPropChange).toHaveBeenCalledTimes(1);
         expect(onSubCollectionPropChange).toBeCalledWith(2);
 
-        fireOptionChange("nestedOption.text", "3");
+        fireOptionChange("nestedOption.value", "3");
         expect(onNestedPropChange).toHaveBeenCalledTimes(1);
         expect(onNestedPropChange).toBeCalledWith("3");
 
-        fireOptionChange("items[1].nestedOption.text", "4");
+        fireOptionChange("items[1].nestedOption.value", "4");
         expect(onSubNestedPropChange).toHaveBeenCalledTimes(1);
         expect(onSubNestedPropChange).toBeCalledWith("4");
     });
