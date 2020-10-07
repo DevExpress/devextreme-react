@@ -625,7 +625,7 @@ describe("mutation detection", () => {
 });
 
 describe("onXXXChange", () => {
-    it("should call on component changes option", () => {
+    it("is called on component changes option", () => {
         const onPropChange = jest.fn();
         const component = mount(
             <TestComponent
