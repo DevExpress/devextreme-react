@@ -126,54 +126,25 @@ class OptionsManager {
         }
     }
 
-    private _getOptionFromConfig(
-        parts: string[],
-        options: Record<string, any>,
-        configs: Record<string, IConfigNode | IConfigNode[]>
-    ): any {
-        const currentName = parts[0];
-        const arrayBracketIndex = currentName.indexOf("[");
-        const optionName = arrayBracketIndex > - 1 ? currentName.slice(0, arrayBracketIndex) : currentName;
-        const arrayIndex = arrayBracketIndex > - 1 ? currentName[arrayBracketIndex + 1] : -1;
-
-        const isOption = !!options[optionName];
-        let option = isOption ? options[optionName] : configs[optionName];
-        if (option) {
-            option = arrayIndex > -1 ? option[arrayIndex] : option;
-            if (parts.length > 1) {
-                const newOptions = isOption ? option : option.options;
-                const newConfig = isOption ? {} : { ...option.configs, ...option.configCollections };
-                return this._getOptionFromConfig(parts.slice(1), newOptions, newConfig);
-            }
-            return option;
-        }
-
-        return null;
-    }
-
     private _callOptionChangeHandler(optionName: string, optionValue: any) {
         const parts = optionName.split(".");
         const propName = parts[parts.length - 1];
         if (propName.substr(0, 2) !== "on") {
             const eventName = `on${capitalizeFirstLetter(propName)}Change`;
             parts[parts.length - 1] = eventName;
-            const changeEvent = this._getOptionFromConfig(
-                parts,
-                this._currentConfig.options,
-                { ...this._currentConfig.configs, ...this._currentConfig.configCollections }
-            );
+            const changeEvent = findValue(this._currentConfig, parts);
 
             if (!changeEvent) {
                 return;
             }
 
-            if (typeof changeEvent !== "function") {
+            if (typeof changeEvent.value !== "function") {
                 throw new Error(
                     `Invalid value for "${eventName}" property.
                     The "${eventName}" must be a function.`
                 );
             }
-            changeEvent(optionValue);
+            changeEvent.value(optionValue);
         }
     }
 

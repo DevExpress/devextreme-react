@@ -92,6 +92,14 @@ function findValue(node: IConfigNode, path: string[]): undefined | IValueDescrip
     }
 
     const optionInfo = parseOptionName(name);
+
+    if (optionInfo.name in node.options) {
+        const options = optionInfo.isCollectionItem
+          ? node.options[optionInfo.name][optionInfo.index]
+          : node.options[optionInfo.name];
+        return findValueInObject(options, path);
+    }
+
     if (optionInfo.isCollectionItem) {
         const collection = node.configCollections[optionInfo.name];
         if (!collection) {
@@ -121,10 +129,6 @@ function findValue(node: IConfigNode, path: string[]): undefined | IValueDescrip
             value: childCollection.map((item) => buildNode(item, {}, true)),
             type: ValueType.Array
         };
-    }
-
-    if (optionInfo.name in node.options) {
-        return findValueInObject(node.options[optionInfo.name], path);
     }
 
     return;
