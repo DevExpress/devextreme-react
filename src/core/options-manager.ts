@@ -153,9 +153,9 @@ class OptionsManager {
 
     private _callOptionChangeHandler(optionName: string, optionValue: any) {
         const parts = optionName.split(".");
-        let eventName = parts[parts.length - 1];
-        if (eventName.substr(0, 2) !== "on") {
-            eventName = `on${capitalizeFirstLetter(eventName)}Change`;
+        const propName = parts[parts.length - 1];
+        if (propName.substr(0, 2) !== "on") {
+            const eventName = `on${capitalizeFirstLetter(propName)}Change`;
             parts[parts.length - 1] = eventName;
             const changeEvent = this._getOptionFromConfig(
                 parts,
@@ -163,16 +163,17 @@ class OptionsManager {
                 { ...this._currentConfig.configs, ...this._currentConfig.configCollections }
             );
 
-            if (changeEvent) {
-                if (typeof changeEvent === "function") {
-                    changeEvent(optionValue);
-                } else {
-                    throw new Error(
-                        `Invalid value for "${eventName}" property.
-                        The "${eventName}" must be a function.`
-                    );
-                }
+            if (!changeEvent) {
+                return;
             }
+
+            if (typeof changeEvent !== "function") {
+                throw new Error(
+                    `Invalid value for "${eventName}" property.
+                    The "${eventName}" must be a function.`
+                );
+            }
+            changeEvent(optionValue);
         }
     }
 
