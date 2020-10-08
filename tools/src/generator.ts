@@ -197,10 +197,10 @@ function mapOption(prop: IProp): IOption {
       name: prop.name,
       isSubscribable: prop.isSubscribable || undefined,
       nested: prop.props.map(mapOption),
-      isArray: nestedOptionArrayPostfix(prop)
+      isArray: isNestedOptionArray(prop)
     };
 }
-function nestedOptionArrayPostfix(prop: IProp): boolean {
+function isNestedOptionArray(prop: IProp): boolean {
   const type = prop?.types?.[0]?.type;
   return type ? type === "Array" : false;
 }

@@ -488,10 +488,11 @@ function renderObject(props: IOption[], indent: number): string {
         result += "\n" + getIndent(indent) + opt.name + "?: ";
         if (opt.nested && isNotEmptyArray(opt.nested)) {
             result += renderObject(opt.nested, indent);
+            if (opt.isArray) { result += "[]"; }
         } else {
             result += opt.type;
         }
-        if (opt.isArray) { result += "[]"; }
+
         result += ";";
     });
 
