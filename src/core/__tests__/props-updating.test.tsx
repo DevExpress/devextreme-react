@@ -651,7 +651,7 @@ describe("onXXXChange", () => {
         expect(onPropChange).toBeCalledWith("2");
     });
 
-    it("should call on component changes complex option", () => {
+    it("is called on component changes complex option", () => {
         const onPropChange = jest.fn();
         mount(
             <TestComponent
@@ -665,7 +665,7 @@ describe("onXXXChange", () => {
         expect(onPropChange).toBeCalledWith("1");
     });
 
-    it("should call on component changes array option", () => {
+    it("is called on component changes array option", () => {
         const onFirstPropChange = jest.fn();
         const onSecondPropChange = jest.fn();
         mount(
@@ -691,7 +691,7 @@ describe("onXXXChange", () => {
         expect(onSecondPropChange).toHaveBeenCalledWith("2");
     });
 
-    it("should call on nested option changed", () => {
+    it("is called on nested option changed", () => {
         const onNestedPropChange = jest.fn();
         const onSubNestedPropChange = jest.fn();
         const onCollectionPropChange = jest.fn();
@@ -738,7 +738,7 @@ describe("onXXXChange", () => {
         expect(onSubNestedPropChange).toBeCalledWith("4");
     });
 
-    it("should throw an error if handler is not a function", () => {
+    it("throws an error if handler is not a function", () => {
         mount(
             <TestComponent
                 text="0"

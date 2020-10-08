@@ -129,7 +129,9 @@ class OptionsManager {
     private _callOptionChangeHandler(optionName: string, optionValue: any) {
         const parts = optionName.split(".");
         const propName = parts[parts.length - 1];
-        if (propName.substr(0, 2) !== "on") {
+        if (eventName.startsWith("on")) {
+            return;
+        }
             const eventName = `on${capitalizeFirstLetter(propName)}Change`;
             parts[parts.length - 1] = eventName;
             const changeEvent = findValue(this._currentConfig, parts);
