@@ -33,7 +33,7 @@ class NestedComponent extends ConfigurationComponent<{
     c?: string;
     defaultC?: string;
     value?: number;
-    onValueChange?: () => void;
+    onValueChange?: (value: number) => void;
 }> {
 
     public static DefaultsProps = {
@@ -43,7 +43,10 @@ class NestedComponent extends ConfigurationComponent<{
 
 (NestedComponent as any).OptionName = "nestedOption";
 
-class CollectionNestedComponent extends ConfigurationComponent<{ a?: number; onAChange?: any; }> {}
+class CollectionNestedComponent extends ConfigurationComponent<{
+  a?: number;
+  onAChange?: (value: number) => void;
+}> {}
 (CollectionNestedComponent as any).OptionName = "items";
 (CollectionNestedComponent as any).IsCollectionItem = true;
 (CollectionNestedComponent as any).ExpectedChildren = {
@@ -53,7 +56,10 @@ class CollectionNestedComponent extends ConfigurationComponent<{ a?: number; onA
     }
 };
 
-class CollectionSubNestedComponent extends ConfigurationComponent<{ a?: number; onAChange?: any; }> { }
+class CollectionSubNestedComponent extends ConfigurationComponent<{
+  a?: number;
+  onAChange?: (value: number) => void;
+}> {}
 (CollectionSubNestedComponent as any).OptionName = "subItems";
 (CollectionSubNestedComponent as any).IsCollectionItem = true;
 
