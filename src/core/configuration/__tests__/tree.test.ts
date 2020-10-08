@@ -9,34 +9,16 @@ describe("buildNode", () => {
         const mockNode: IConfigNode = {
             fullName: "",
             predefinedOptions: {},
-            initialOptions: {
-                center: {
-                    lat: 40.749825,
-                    lng: -73.987963
-                },
-                zoom: 10
-            },
+            initialOptions: {},
             options: {
-                controls: true,
-                width: "100%",
-                provider: "google",
-                dxKey: {
-                    google: "X"
-                }
+                dxKey: { google: "X" }
             },
             templates: [],
             configs: {},
             configCollections: {}
         };
         expect(buildNode(mockNode, mockTemplatesAccum, mockIgnoreInitialValues)).toEqual({
-            center: {lat: 40.749825, lng: -73.987963},
-            controls: true,
-            key: {
-                google: "X"
-            },
-            provider: "google",
-            width: "100%",
-            zoom: 10
+            key: { google: "X" }
         });
     });
 
@@ -44,18 +26,8 @@ describe("buildNode", () => {
         const mockNode: IConfigNode = {
             fullName: "",
             predefinedOptions: {},
-            initialOptions: {
-                center: {
-                    lat: 40.749825,
-                    lng: -73.987963
-                },
-                zoom: 10
-            },
-            options: {
-                controls: true,
-                provider: "google",
-                width: "100%"
-            },
+            initialOptions: {},
+            options: {},
             templates: [],
             configs: {
                 key: {
@@ -63,9 +35,7 @@ describe("buildNode", () => {
                     configCollections: {},
                     predefinedOptions: {},
                     initialOptions: {},
-                    options: {
-                        google: "X"
-                    },
+                    options: { google: "X" },
                     templates: [],
                     configs: {}
                 }
@@ -73,14 +43,7 @@ describe("buildNode", () => {
             configCollections: {}
         };
         expect(buildNode(mockNode, mockTemplatesAccum, mockIgnoreInitialValues)).toEqual({
-            center: {lat: 40.749825, lng: -73.987963},
-            controls: true,
-            key: {
-                google: "X"
-            },
-            provider: "google",
-            width: "100%",
-            zoom: 10,
+            key: { google: "X" }
         });
     });
 
@@ -88,57 +51,33 @@ describe("buildNode", () => {
         const mockNode: IConfigNode = {
             fullName: "",
             predefinedOptions: {},
-            initialOptions: {
-                center: {
-                    lat: 40.749825,
-                    lng: -73.987963
-                },
-                zoom: 10
-            },
-            options: {
-                controls: true,
-                width: "100%",
-                provider: "google",
-            },
+            initialOptions: {},
+            options: {},
             templates: [],
             configs: {},
             configCollections: {}
         };
 
-        expect(buildNode(mockNode, mockTemplatesAccum, mockIgnoreInitialValues)).toEqual({
-            center: {lat: 40.749825, lng: -73.987963},
-            controls: true,
-            provider: "google",
-            width: "100%",
-            zoom: 10
-        });
+        expect(buildNode(mockNode, mockTemplatesAccum, mockIgnoreInitialValues)).toEqual({});
     });
 });
 
-describe("build templates", () => {
+describe("buildTemplates", () => {
     it("do not change anything", () => {
         const testNode: IConfigNode = {
             configCollections: {},
             configs: {},
             fullName: "key",
             initialOptions: {},
-            options: {
-                google: "X"
-            },
+            options: { google: "X" },
             predefinedOptions: {},
             templates: []
         };
-        const expectedNode = testNode;
-        const optionAccum = {
-            google: "X"
-        };
+        const optionAccum = { google: "X" };
         const templateAccum = {};
-        const expectedOptionAccum = {
-            google: "X"
-        };
+        const expectedOptionAccum = { google: "X" };
         const expectedTemplateAccum = {};
         buildTemplates(testNode, optionAccum, templateAccum);
-        expect(testNode).toEqual(expectedNode);
         expect(optionAccum).toEqual(expectedOptionAccum);
         expect(templateAccum).toEqual(expectedTemplateAccum);
     });
@@ -150,32 +89,7 @@ describe("build templates", () => {
             configs: {},
             fullName: "",
             initialOptions: {},
-            options: {
-                width: 120,
-                text: "Contained",
-                type: "normal",
-                stylingMode: "contained"
-            },
-            predefinedOptions: {},
-            templates: [{
-                content,
-                isAnonymous: true,
-                keyFn: undefined,
-                optionName: "template",
-                type: "render"
-            }]
-        };
-        const expectedNode = {
-            configCollections: {},
-            configs: {},
-            fullName: "",
-            initialOptions: {},
-            options: {
-                width: 120,
-                text: "Contained",
-                type: "normal",
-                stylingMode: "contained"
-            },
+            options: {},
             predefinedOptions: {},
             templates: [{
                 content,
@@ -188,15 +102,13 @@ describe("build templates", () => {
         const optionAccum = {
             stylingMode: "contained",
             text: "Contained",
-            type: "normal",
-            width: 120
+            type: "normal"
          };
         const expectedOptionAccum = {
             stylingMode: "contained",
             template: "template",
             text: "Contained",
-            type: "normal",
-            width: 120
+            type: "normal"
         };
         const templateAccum = {};
         const expectedTemplateAccum = {
@@ -209,7 +121,6 @@ describe("build templates", () => {
             }
         };
         buildTemplates(testNode, optionAccum, templateAccum);
-        expect(testNode).toEqual(expectedNode);
         expect(optionAccum).toEqual(expectedOptionAccum);
         expect(templateAccum).toEqual(expectedTemplateAccum);
     });
