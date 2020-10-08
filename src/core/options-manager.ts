@@ -140,8 +140,8 @@ class OptionsManager {
 
             if (typeof changeEvent.value !== "function") {
                 throw new Error(
-                    `Invalid value for "${eventName}" property.
-                    The "${eventName}" must be a function.`
+                    `Invalid value for the ${eventName} property.
+                    ${eventName} must be a function.`
                 );
             }
             changeEvent.value(optionValue);
