@@ -129,25 +129,26 @@ class OptionsManager {
     private _callOptionChangeHandler(optionName: string, optionValue: any) {
         const parts = optionName.split(".");
         const propName = parts[parts.length - 1];
-        if (eventName.startsWith("on")) {
+
+        if (propName.startsWith("on")) {
             return;
         }
-            const eventName = `on${capitalizeFirstLetter(propName)}Change`;
-            parts[parts.length - 1] = eventName;
-            const changeEvent = findValue(this._currentConfig, parts);
 
-            if (!changeEvent) {
-                return;
-            }
+        const eventName = `on${capitalizeFirstLetter(propName)}Change`;
+        parts[parts.length - 1] = eventName;
+        const changeEvent = findValue(this._currentConfig, parts);
 
-            if (typeof changeEvent.value !== "function") {
-                throw new Error(
-                    `Invalid value for the ${eventName} property.
-                    ${eventName} must be a function.`
-                );
-            }
-            changeEvent.value(optionValue);
+        if (!changeEvent) {
+            return;
         }
+
+        if (typeof changeEvent.value !== "function") {
+            throw new Error(
+                `Invalid value for the ${eventName} property.
+                ${eventName} must be a function.`
+            );
+        }
+        changeEvent.value(optionValue);
     }
 
     private _wrapOptionValue(name: string, value: any) {
