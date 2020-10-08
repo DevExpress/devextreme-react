@@ -201,7 +201,8 @@ function mapOption(prop: IProp): IOption {
     };
 }
 function nestedOptionArrayPostfix(prop: IProp): boolean {
-  return (prop?.types && prop.types.length && prop.types[0]?.type && prop.types[0].type === "Array")
+  const type = prop?.types?.[0]?.type;
+  return type ? type === "Array" : false;
 }
 function mapSubscribableOption(prop: IProp): ISubscribableOption {
   return {
