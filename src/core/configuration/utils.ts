@@ -1,9 +1,9 @@
 export function mergeNameParts(...args: string[]) {
-  return args.filter((value) => value).join(".");
+  return args.filter((value) => value).join('.');
 }
 
 export function parseOptionName(name: string): IOptionInfo | ICollectionOptionInfo {
-  const parts = name.split("[");
+  const parts = name.split('[');
 
   if (parts.length === 1) {
     return {

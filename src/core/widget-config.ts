@@ -1,7 +1,7 @@
-import { ITemplateMeta } from "./template";
+import { ITemplateMeta } from './template';
 
-const elementPropNames = ["style", "id"];
-const classNamePropName = "className";
+const elementPropNames = ['style', 'id'];
+const classNamePropName = 'className';
 
 function separateProps(
   props: Record<string, any>,
@@ -50,7 +50,7 @@ function getClassName(props: Record<string, any>): string | undefined {
 }
 
 function isIgnoredProp(name: string) {
-  return name === "children" || name === classNamePropName || elementPropNames.indexOf(name) > -1;
+  return name === 'children' || name === classNamePropName || elementPropNames.indexOf(name) > -1;
 }
 
 export {

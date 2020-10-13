@@ -1,18 +1,18 @@
-import * as events from "devextreme/events";
+import * as events from 'devextreme/events';
 
-import { mount, React, shallow } from "./setup";
-import { fireOptionChange, TestComponent, Widget, WidgetClass } from "./test-component";
+import { mount, React, shallow } from './setup';
+import { fireOptionChange, TestComponent, Widget, WidgetClass } from './test-component';
 
-describe("rendering", () => {
+describe('rendering', () => {
 
-  it("renders correctly", () => {
+  it('renders correctly', () => {
     const component = shallow(
       <TestComponent />,
     );
-    expect(component.type()).toBe("div");
+    expect(component.type()).toBe('div');
   });
 
-  it("create widget on componentDidMount", () => {
+  it('create widget on componentDidMount', () => {
     shallow(
       <TestComponent />,
     );
@@ -20,7 +20,7 @@ describe("rendering", () => {
     expect(WidgetClass.mock.instances.length).toBe(1);
   });
 
-  it("pass templatesRenderAsynchronously to widgets", () => {
+  it('pass templatesRenderAsynchronously to widgets', () => {
     shallow(
       <TestComponent />,
     );
@@ -28,7 +28,7 @@ describe("rendering", () => {
     expect(WidgetClass.mock.calls[0][1]).toEqual({ templatesRenderAsynchronously: true });
   });
 
-  it("creates nested component", () => {
+  it('creates nested component', () => {
     mount(
       <TestComponent>
         <TestComponent />
@@ -39,7 +39,7 @@ describe("rendering", () => {
     expect(WidgetClass.mock.instances[1]).toEqual({});
   });
 
-  it("do not pass children to options", () => {
+  it('do not pass children to options', () => {
     mount(
       <TestComponent>
         <TestComponent />
@@ -50,72 +50,72 @@ describe("rendering", () => {
   });
 });
 
-describe("element attrs management", () => {
+describe('element attrs management', () => {
 
-  it("passes id, className and style to element", () => {
+  it('passes id, className and style to element', () => {
     const component = mount(
-      <TestComponent id="id1" className="class1" style={{ background: "red" }} />,
+      <TestComponent id="id1" className="class1" style={{ background: 'red' }} />,
     );
 
     const node = component.getDOMNode();
 
-    expect(node.id).toBe("id1");
-    expect(node.className).toBe("class1");
-    expect((node as HTMLElement).style.background).toEqual("red");
+    expect(node.id).toBe('id1');
+    expect(node.className).toBe('class1');
+    expect((node as HTMLElement).style.background).toEqual('red');
   });
 
-  it("updates id, className and style", () => {
+  it('updates id, className and style', () => {
     const component = mount(
-      <TestComponent id="id1" className="class1" style={{ background: "red" }} />,
+      <TestComponent id="id1" className="class1" style={{ background: 'red' }} />,
     );
 
     const node = component.getDOMNode();
     component.setProps({
-      id: "id2",
-      className: "class2",
+      id: 'id2',
+      className: 'class2',
       style: {
-        background: "blue",
+        background: 'blue',
       },
     });
 
-    expect(node.id).toBe("id2");
-    expect(node.className).toBe("class2");
-    expect((node as HTMLElement).style.background).toEqual("blue");
+    expect(node.id).toBe('id2');
+    expect(node.className).toBe('class2');
+    expect((node as HTMLElement).style.background).toEqual('blue');
   });
 
-  it("sets id, className and style after init", () => {
+  it('sets id, className and style after init', () => {
     const component = mount(
       <TestComponent />,
     );
 
     const node = component.getDOMNode();
     component.setProps({
-      id: "id1",
-      className: "class1",
+      id: 'id1',
+      className: 'class1',
       style: {
-        background: "red",
+        background: 'red',
       },
     });
 
-    expect(node.id).toBe("id1");
-    expect(node.className).toBe("class1");
-    expect((node as HTMLElement).style.background).toEqual("red");
+    expect(node.id).toBe('id1');
+    expect(node.className).toBe('class1');
+    expect((node as HTMLElement).style.background).toEqual('red');
   });
 
-  it("cleans className (empty string)", () => {
+  it('cleans className (empty string)', () => {
     const component = mount(
       <TestComponent className="class1" />,
     );
 
     const node = component.getDOMNode();
     component.setProps({
-      className: "",
+      className: '',
     });
 
-    expect(node.className).toBe("");
+    expect(node.className).toBe('');
   });
 
-  it("cleans className (undefined)", () => {
+  it('cleans className (undefined)', () => {
     const component = mount(
       <TestComponent className="class1" />,
     );
@@ -125,13 +125,13 @@ describe("element attrs management", () => {
       className: undefined,
     });
 
-    expect(node.className).toBe("");
+    expect(node.className).toBe('');
   });
 });
 
-describe("disposing", () => {
+describe('disposing', () => {
 
-  it("call dispose", () => {
+  it('call dispose', () => {
     const component = shallow(
       <TestComponent />,
     );
@@ -141,24 +141,24 @@ describe("disposing", () => {
     expect(Widget.dispose).toBeCalled();
   });
 
-  it("fires dxremove", () => {
+  it('fires dxremove', () => {
     const handleDxRemove = jest.fn();
     const component = mount(
       <TestComponent />,
     );
 
-    events.on(component.getDOMNode(), "dxremove", handleDxRemove);
+    events.on(component.getDOMNode(), 'dxremove', handleDxRemove);
     component.unmount();
 
     expect(handleDxRemove).toHaveBeenCalledTimes(1);
   });
 
-  it("remove option guards", () => {
+  it('remove option guards', () => {
     const component = shallow(
       <TestComponent option1={true} />,
     );
 
-    fireOptionChange("option1", false);
+    fireOptionChange('option1', false);
     component.unmount();
     jest.runAllTimers();
 

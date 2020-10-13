@@ -1,18 +1,18 @@
 /* eslint-disable max-len */
-import * as React from "react";
+import * as React from 'react';
 
-import Example from "./example-block";
+import Example from './example-block';
 
-import Button from "../src/button";
-import ScrollView from "../src/scroll-view";
-import TextBox from "../src/text-box";
+import Button from '../src/button';
+import ScrollView from '../src/scroll-view';
+import TextBox from '../src/text-box';
 
 export default class extends React.Component<any, { text: string }> {
 
   constructor(props: any) {
     super(props);
     this.state = {
-      text: "Clear me",
+      text: 'Clear me',
     };
 
     this.clearText = this.clearText.bind(this);
@@ -24,7 +24,7 @@ export default class extends React.Component<any, { text: string }> {
     // tslint:disable:max-line-length
       <Example title="DxScrollView" state={this.state}>
         <ScrollView height="150px">
-          <Button text="Show alert" onClick={() => alert("shown")} />
+          <Button text="Show alert" onClick={() => alert('shown')} />
           <Button text="Clear TextBox" onClick={this.clearText} />
           <br />
           <br />
@@ -54,7 +54,7 @@ export default class extends React.Component<any, { text: string }> {
 
   private clearText() {
     this.setState({
-      text: "",
+      text: '',
     });
   }
 

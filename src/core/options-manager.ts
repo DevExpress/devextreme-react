@@ -1,9 +1,9 @@
-import TemplatesManager from "./templates-manager";
+import TemplatesManager from './templates-manager';
 
-import { getChanges } from "./configuration/comparer";
-import { IConfigNode } from "./configuration/config-node";
-import { buildConfig, findValue, ValueType } from "./configuration/tree";
-import { mergeNameParts } from "./configuration/utils";
+import { getChanges } from './configuration/comparer';
+import { IConfigNode } from './configuration/config-node';
+import { buildConfig, findValue, ValueType } from './configuration/tree';
+import { mergeNameParts } from './configuration/utils';
 
 class OptionsManager {
   private readonly _guards: Record<string, number> = {};
@@ -66,7 +66,7 @@ class OptionsManager {
 
     if (this._templatesManager.templatesCount > 0) {
       this._setValue(
-        "integrationOptions",
+        'integrationOptions',
         {
           templates: this._templatesManager.templates,
         },
@@ -88,7 +88,7 @@ class OptionsManager {
       return;
     }
 
-    const valueDescriptor = findValue(this._currentConfig, e.fullName.split("."));
+    const valueDescriptor = findValue(this._currentConfig, e.fullName.split('.'));
     if (!valueDescriptor) {
       return;
     }
@@ -125,7 +125,7 @@ class OptionsManager {
   }
 
   private _wrapOptionValue(name: string, value: any) {
-    if (name.substr(0, 2) === "on" && typeof value === "function") {
+    if (name.substr(0, 2) === 'on' && typeof value === 'function') {
       return (...args: any[]) => {
         if (!this._isUpdating) {
           value(...args);

@@ -1,40 +1,40 @@
 // tslint:disable:max-classes-per-file
-import { mount, React } from "../../../__tests__/setup";
+import { mount, React } from '../../../__tests__/setup';
 
-import ConfigurationComponent from "../../../../core/nested-option";
-import { Template } from "../../../template";
+import ConfigurationComponent from '../../../../core/nested-option';
+import { Template } from '../../../template';
 
-import { ElementType, getElementInfo } from "../element";
+import { ElementType, getElementInfo } from '../element';
 
 class MinimalConfigurationComponent extends ConfigurationComponent<any> {
-  public static OptionName = "option";
+  public static OptionName = 'option';
   public static IsCollectionItem = false;
 }
 
 class RichConfigurationComponent extends ConfigurationComponent<any> {
-  public static OptionName = "option";
+  public static OptionName = 'option';
   public static IsCollectionItem = false;
-  public static DefaultsProps = { defaultValue: "value" };
+  public static DefaultsProps = { defaultValue: 'value' };
   public static TemplateProps = [{
-    tmplOption: "template",
-    render: "render",
-    component: "component",
-    keyFn: "keyFn",
+    tmplOption: 'template',
+    render: 'render',
+    component: 'component',
+    keyFn: 'keyFn',
   }];
-  public static PredefinedProps = { type: "numeric" };
+  public static PredefinedProps = { type: 'numeric' };
 }
 
 class CollectionConfigurationComponent extends ConfigurationComponent<any> {
-  public static OptionName = "option";
+  public static OptionName = 'option';
   public static IsCollectionItem = true;
-  public static DefaultsProps = { defaultValue: "value" };
+  public static DefaultsProps = { defaultValue: 'value' };
   public static TemplateProps = [{
-    tmplOption: "template",
-    render: "render",
-    component: "component",
-    keyFn: "keyFn",
+    tmplOption: 'template',
+    render: 'render',
+    component: 'component',
+    keyFn: 'keyFn',
   }];
-  public static PredefinedProps = { type: "numeric" };
+  public static PredefinedProps = { type: 'numeric' };
 }
 
 const configurationComponents: any[] = [
@@ -44,14 +44,14 @@ const configurationComponents: any[] = [
 ];
 
 const otherComponents = [
-  "div",
+  'div',
   ConfigurationComponent,
-  () => React.createElement("div", {}, "text"),
+  () => React.createElement('div', {}, 'text'),
 ];
 
-describe("getElementInfo", () => {
+describe('getElementInfo', () => {
   configurationComponents.map((component) => {
-    it("parses Configuration component", () => {
+    it('parses Configuration component', () => {
       const wrapper = mount(React.createElement(component));
       const elementInfo = getElementInfo(wrapper.getElement());
 
@@ -71,14 +71,14 @@ describe("getElementInfo", () => {
     });
   });
 
-  it("parses Template component", () => {
+  it('parses Template component', () => {
     const wrapper = mount(
       React.createElement(
         Template,
         {
-          name: "template-name",
+          name: 'template-name',
         },
-        "Template content",
+        'Template content',
       ),
     );
 
@@ -92,7 +92,7 @@ describe("getElementInfo", () => {
   });
 
   otherComponents.map((component) => {
-    it("parses Other components", () => {
+    it('parses Other components', () => {
       const wrapper = mount(React.createElement(component));
       const elementInfo = getElementInfo(wrapper.getElement());
 

@@ -1,16 +1,16 @@
-import { ITemplateMeta, ITemplateProps } from "src/core/template";
-import { ITemplate } from "../config-node";
+import { ITemplateMeta, ITemplateProps } from 'src/core/template';
+import { ITemplate } from '../config-node';
 
 function getAnonymousTemplate(
   props: Record<string, any>,
   templateMeta: ITemplateMeta,
   hasTranscludedContent: boolean,
 ): ITemplate | null {
-  if (templateMeta.tmplOption === "template" && hasTranscludedContent) {
+  if (templateMeta.tmplOption === 'template' && hasTranscludedContent) {
     return {
       optionName: templateMeta.tmplOption,
       isAnonymous: true,
-      type: "children",
+      type: 'children',
       content: props.children,
       keyFn: props[templateMeta.keyFn],
     };
@@ -20,7 +20,7 @@ function getAnonymousTemplate(
     return {
       optionName: templateMeta.tmplOption,
       isAnonymous: true,
-      type: "render",
+      type: 'render',
       content: props[templateMeta.render],
       keyFn: props[templateMeta.keyFn],
     };
@@ -30,7 +30,7 @@ function getAnonymousTemplate(
     return {
       optionName: templateMeta.tmplOption,
       isAnonymous: true,
-      type: "component",
+      type: 'component',
       content: props[templateMeta.component],
       keyFn: props[templateMeta.keyFn],
     };
@@ -48,7 +48,7 @@ function getNamedTemplate(props: ITemplateProps): ITemplate | null {
     return {
       optionName: props.name,
       isAnonymous: false,
-      type: "component",
+      type: 'component',
       content: props.component,
       keyFn: props.keyFn,
     };
@@ -58,7 +58,7 @@ function getNamedTemplate(props: ITemplateProps): ITemplate | null {
     return {
       optionName: props.name,
       isAnonymous: false,
-      type: "render",
+      type: 'render',
       content: props.render,
       keyFn: props.keyFn,
     };
@@ -67,7 +67,7 @@ function getNamedTemplate(props: ITemplateProps): ITemplate | null {
   return {
     optionName: props.name,
     isAnonymous: false,
-    type: "children",
+    type: 'children',
     content: props.children,
     keyFn: props.keyFn,
   };

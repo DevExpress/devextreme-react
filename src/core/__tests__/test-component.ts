@@ -1,4 +1,4 @@
-import { Component } from "../../core/component";
+import { Component } from '../../core/component';
 
 const eventHandlers: { [index: string]: (e?: any) => void } = {};
 
@@ -21,7 +21,7 @@ class TestComponent<P = any> extends Component<P> {
 
 function fireOptionChange(fullName: string, value: any) {
   eventHandlers.optionChanged({
-    name: fullName.split(".")[0],
+    name: fullName.split('.')[0],
     fullName,
     value,
   });

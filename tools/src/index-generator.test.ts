@@ -1,10 +1,10 @@
-import generate from "./index-generator";
+import generate from './index-generator';
 
-it("generates", () => {
+it('generates', () => {
   expect(
     generate([
-      { name: "widget", path: "./path" },
-      { name: "anotherWidget", path: "./another/path" },
+      { name: 'widget', path: './path' },
+      { name: 'anotherWidget', path: './another/path' },
     ]),
   ).toBe(EXPECTED_GENERATES);
 });

@@ -1,5 +1,5 @@
-import { IConfigNode, ITemplate } from "./config-node";
-import { mergeNameParts, parseOptionName } from "./utils";
+import { IConfigNode, ITemplate } from './config-node';
+import { mergeNameParts, parseOptionName } from './utils';
 
 interface IConfig {
   options: Record<string, any>;

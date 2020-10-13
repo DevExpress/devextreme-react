@@ -1,20 +1,20 @@
-import * as React from "react";
-import Example from "./example-block";
+import * as React from 'react';
+import Example from './example-block';
 
-import { Button, SlideOutView, Template, Toolbar } from "../src";
+import { Button, SlideOutView, Template, Toolbar } from '../src';
 
 function renderMenuTemplate() {
   const items = [{
-    location: "before",
-    locateInMenu: "auto",
-    widget: "dxButton",
+    location: 'before',
+    locateInMenu: 'auto',
+    widget: 'dxButton',
     options: {
-      icon: "menu",
+      icon: 'menu',
     },
   }, {
-    location: "center",
-    locateInMenu: "auto",
-    template: "menuTextTemplate",
+    location: 'center',
+    locateInMenu: 'auto',
+    template: 'menuTextTemplate',
   }];
 
   return (
@@ -59,7 +59,7 @@ export default class extends React.Component<any, any> {
   }
 
   private _optionChangeHandler(args: {name: string, value: any }) {
-    if (args.name === "menuVisible") {
+    if (args.name === 'menuVisible') {
       this.setState({ menuVisible: args.value });
     }
   }

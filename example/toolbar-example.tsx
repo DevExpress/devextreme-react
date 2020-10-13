@@ -1,8 +1,8 @@
-import * as React from "react";
-import Example from "./example-block";
+import * as React from 'react';
+import Example from './example-block';
 
-import { Button } from "../src/button";
-import { Toolbar } from "../src/toolbar";
+import { Button } from '../src/button';
+import { Toolbar } from '../src/toolbar';
 
 const ItemComponent = (data: {data: {text: string}}) => {
   return (
@@ -10,7 +10,7 @@ const ItemComponent = (data: {data: {text: string}}) => {
   );
 };
 
-const items = [{ text: "Text" }, { text: "Text2" }];
+const items = [{ text: 'Text' }, { text: 'Text2' }];
 
 export default class extends React.Component<any, any> {
   public render() {

@@ -1,5 +1,5 @@
-import { ICustomType, ITypeDescr } from "../integration-data-model";
-import { lowercaseFirst } from "./helpers";
+import { ICustomType, ITypeDescr } from '../integration-data-model';
+import { lowercaseFirst } from './helpers';
 
 function convertTypes(
   types: ITypeDescr[] | undefined | null,
@@ -14,7 +14,7 @@ function convertTypes(
   }
 
   const convertedTypes = new Set(types.map(convertType));
-  if (convertedTypes.has("Any")) {
+  if (convertedTypes.has('Any')) {
     return undefined;
   }
 
@@ -44,28 +44,28 @@ function convertType(typeDescr: ITypeDescr): string {
       return lowercaseFirst(type);
 
     case inputTypes.bool:
-      return "bool";
+      return 'bool';
 
     case inputTypes.func:
-      return "func";
+      return 'func';
     default:
       break;
   }
 
   if (typeDescr.isCustomType) {
-    return "object";
+    return 'object';
   }
 
-  return "Any";
+  return 'Any';
 }
 
 const inputTypes = {
-  array: "Array",
-  string: "String",
-  number: "Number",
-  object: "Object",
-  bool: "Boolean",
-  func: "Function",
+  array: 'Array',
+  string: 'String',
+  number: 'Number',
+  object: 'Object',
+  bool: 'Boolean',
+  func: 'Function',
 };
 
 export {

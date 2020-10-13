@@ -1,29 +1,29 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 
-import "devextreme/dist/css/dx.common.css";
-import "devextreme/dist/css/dx.light.compact.css";
+import 'devextreme/dist/css/dx.common.css';
+import 'devextreme/dist/css/dx.light.compact.css';
 
-import AccordionExample from "./accordion-example";
-import ChartExample from "./chart-example";
-import DataGridExample from "./data-grid-example";
-import EditorExample from "./editor-example";
-import Example from "./example-block";
-import FormExample from "./form-example";
-import ListExample from "./list-example";
-import MapExample from "./map-example";
-import PopupExample from "./popup-example";
-import SchedulerExample from "./scheduler-example";
-import ScrollViewExample from "./scroll-view-example";
-import SelectBoxExample from "./selectbox-example";
-import SlideOutViewExample from "./slide-out-view-example";
-import StandaloneValidatorExample from "./standalone-validator";
-import TextBoxExample from "./text-box-example";
-import ToolbarExample from "./toolbar-example";
-import ValidationExample from "./validation-example";
+import AccordionExample from './accordion-example';
+import ChartExample from './chart-example';
+import DataGridExample from './data-grid-example';
+import EditorExample from './editor-example';
+import Example from './example-block';
+import FormExample from './form-example';
+import ListExample from './list-example';
+import MapExample from './map-example';
+import PopupExample from './popup-example';
+import SchedulerExample from './scheduler-example';
+import ScrollViewExample from './scroll-view-example';
+import SelectBoxExample from './selectbox-example';
+import SlideOutViewExample from './slide-out-view-example';
+import StandaloneValidatorExample from './standalone-validator';
+import TextBoxExample from './text-box-example';
+import ToolbarExample from './toolbar-example';
+import ValidationExample from './validation-example';
 
-import { Button, NumberBox } from "../src";
-import BoxExample from "./box-example";
+import { Button, NumberBox } from '../src';
+import BoxExample from './box-example';
 
 ReactDOM.render(
   <div>
@@ -69,7 +69,7 @@ ReactDOM.render(
     <ChartExample />
 
     <Example title="Element attributes">
-      <Button text="Button with style attr" style={{ backgroundColor: "#ffc" }} />
+      <Button text="Button with style attr" style={{ backgroundColor: '#ffc' }} />
     </Example>
 
     <Example title="SelectBox example">
@@ -80,5 +80,5 @@ ReactDOM.render(
     <StandaloneValidatorExample />
 
   </div>,
-  document.getElementById("app"),
+  document.getElementById('app'),
 );

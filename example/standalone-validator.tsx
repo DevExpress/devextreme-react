@@ -1,11 +1,11 @@
-import * as React from "react";
-import { Button, TextBox, ValidationSummary, Validator } from "../src";
+import * as React from 'react';
+import { Button, TextBox, ValidationSummary, Validator } from '../src';
 
-import { RequiredRule } from "../src/validator";
-import Example from "./example-block";
+import { RequiredRule } from '../src/validator';
+import Example from './example-block';
 
 class ValidatorExample extends React.Component<any, any> {
-  private _currentValue: string = "";
+  private _currentValue: string = '';
   private _adapter: any;
   private _callbacks: any[] = [];
 
@@ -30,7 +30,7 @@ class ValidatorExample extends React.Component<any, any> {
     return (
       <div>
         <Example title="Standalone Validator example">
-          <div style={{ border: this.state.isValid ? "none" : "1px solid red" }}>
+          <div style={{ border: this.state.isValid ? 'none' : '1px solid red' }}>
             <TextBox onValueChanged={this._onValueChanged} />
           </div>
           <Validator adapter={this._adapter}>

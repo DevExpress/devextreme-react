@@ -1,18 +1,18 @@
-import * as events from "devextreme/events";
-import * as React from "react";
+import * as events from 'devextreme/events';
+import * as React from 'react';
 
-import { OptionsManager } from "./options-manager";
-import { ITemplateMeta } from "./template";
-import TemplatesManager from "./templates-manager";
-import { TemplatesRenderer } from "./templates-renderer";
-import { TemplatesStore } from "./templates-store";
-import { elementPropNames, getClassName } from "./widget-config";
+import { OptionsManager } from './options-manager';
+import { ITemplateMeta } from './template';
+import TemplatesManager from './templates-manager';
+import { TemplatesRenderer } from './templates-renderer';
+import { TemplatesStore } from './templates-store';
+import { elementPropNames, getClassName } from './widget-config';
 
-import { IConfigNode } from "./configuration/config-node";
-import { IExpectedChild } from "./configuration/react/element";
-import { buildConfigTree } from "./configuration/react/tree";
+import { IConfigNode } from './configuration/config-node';
+import { IExpectedChild } from './configuration/react/element';
+import { buildConfigTree } from './configuration/react/tree';
 
-const DX_REMOVE_EVENT = "dxremove";
+const DX_REMOVE_EVENT = 'dxremove';
 
 interface IHtmlOptions {
   id?: string;
@@ -52,7 +52,7 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
 
   public render() {
     return React.createElement(
-      "div",
+      'div',
       this._getElementProps(),
       this.renderChildren(),
       React.createElement(
@@ -104,7 +104,7 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
     );
 
     this._optionsManager.setInstance(this._instance, config);
-    this._instance.on("optionChanged", this._optionsManager.onOptionChanged);
+    this._instance.on('optionChanged', this._optionsManager.onOptionChanged);
   }
 
   private _getConfig(): IConfigNode {
@@ -143,14 +143,14 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
     if (prevClassName === newClassName) { return; }
 
     if (prevClassName) {
-      const classNames = prevClassName.split(" ").filter((c) => c);
+      const classNames = prevClassName.split(' ').filter((c) => c);
       if (classNames.length) {
         this._element.classList.remove(...classNames);
       }
     }
 
     if (newClassName) {
-      const classNames = newClassName.split(" ").filter((c) => c);
+      const classNames = newClassName.split(' ').filter((c) => c);
       if (classNames.length) {
         this._element.classList.add(...classNames);
       }

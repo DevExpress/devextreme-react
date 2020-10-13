@@ -1,7 +1,7 @@
-import * as React from "react";
-import Example from "./example-block";
+import * as React from 'react';
+import Example from './example-block';
 
-import { Template } from "../src/core/template";
+import { Template } from '../src/core/template';
 
 import DataGrid, {
   Column,
@@ -12,10 +12,10 @@ import DataGrid, {
   Pager,
   Paging,
   Selection,
-} from "../src/data-grid";
-import NumberBox from "../src/number-box";
+} from '../src/data-grid';
+import NumberBox from '../src/number-box';
 
-import { sales } from "./data";
+import { sales } from './data';
 
 const DetailComponent = ({ data: { data } }: any) => {
   return (
@@ -100,17 +100,17 @@ export default class extends React.Component<any, { expandAll: boolean, pageSize
 
   private handleToolbarPreparing(args: any) {
     args.toolbarOptions.items.unshift({
-      location: "after",
-      template: "toolbarLabel",
+      location: 'after',
+      template: 'toolbarLabel',
     },
     {
-      location: "after",
-      widget: "dxButton",
+      location: 'after',
+      widget: 'dxButton',
       options: {
-        icon: "chevronup",
+        icon: 'chevronup',
         onClick: (e: any) => {
           this.setState((state) => {
-            e.component.option("icon", state.expandAll ? "chevrondown" : "chevronup");
+            e.component.option('icon', state.expandAll ? 'chevrondown' : 'chevronup');
             return {
               expandAll: !state.expandAll,
             };

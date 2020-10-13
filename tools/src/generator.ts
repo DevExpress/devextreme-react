@@ -1,4 +1,4 @@
-import { writeFileSync as writeFile } from "fs";
+import { writeFileSync as writeFile } from 'fs';
 
 import {
   dirname as getDirName,
@@ -6,7 +6,7 @@ import {
   normalize as normalizePath,
   relative as getRelativePath,
   sep as pathSeparator,
-} from "path";
+} from 'path';
 
 import {
   IComplexProp,
@@ -15,10 +15,10 @@ import {
   IProp,
   ITypeDescr,
   IWidget,
-} from "../integration-data-model";
+} from '../integration-data-model';
 
-import { convertTypes } from "./converter";
-import generateIndex, { IReExport } from "./index-generator";
+import { convertTypes } from './converter';
+import generateIndex, { IReExport } from './index-generator';
 
 import generateComponent, {
   generateReExport,
@@ -27,7 +27,7 @@ import generateComponent, {
   IOption,
   IPropTyping,
   ISubscribableOption,
-} from "./component-generator";
+} from './component-generator';
 
 import {
   isEmptyArray,
@@ -35,7 +35,7 @@ import {
   removePrefix,
   toKebabCase,
   uppercaseFirst,
-} from "./helpers";
+} from './helpers';
 
 function generate({
   metaData: rawData,
@@ -70,23 +70,23 @@ function generate({
     const widgetFilePath = joinPaths(out.componentsDir, widgetFile.fileName);
     const indexFileDir = getDirName(out.indexFileName);
 
-    writeFile(widgetFilePath, generateComponent(widgetFile.component), { encoding: "utf8" });
+    writeFile(widgetFilePath, generateComponent(widgetFile.component), { encoding: 'utf8' });
     modulePaths.push({
       name: widgetFile.component.name,
-      path: "./" + removeExtension(getRelativePath(indexFileDir, widgetFilePath)).replace(pathSeparator, "/"),
+      path: './' + removeExtension(getRelativePath(indexFileDir, widgetFilePath)).replace(pathSeparator, '/'),
     });
 
     writeFile(
       joinPaths(out.oldComponentsDir, widgetFile.fileName),
       generateReExport(
-        normalizePath("./" + removeExtension(getRelativePath(out.oldComponentsDir, widgetFilePath)))
-          .replace(pathSeparator, "/"),
+        normalizePath('./' + removeExtension(getRelativePath(out.oldComponentsDir, widgetFilePath)))
+          .replace(pathSeparator, '/'),
         removeExtension(widgetFile.fileName),
       ),
     );
   });
 
-  writeFile(out.indexFileName, generateIndex(modulePaths), { encoding: "utf8" });
+  writeFile(out.indexFileName, generateIndex(modulePaths), { encoding: 'utf8' });
 }
 
 function mapWidget(
@@ -100,7 +100,7 @@ function mapWidget(
     fileName: string;
     component: IComponent
   } {
-  const name = removePrefix(raw.name, "dx");
+  const name = removePrefix(raw.name, 'dx');
   const subscribableOptions: ISubscribableOption[] = raw.options
     .filter((o) => o.isSubscribable)
     .map(mapSubscribableOption);
@@ -198,7 +198,7 @@ function mapOption(prop: IProp): IOption {
   return isEmptyArray(prop.props) ?
     {
       name: prop.name,
-      type: "any",
+      type: 'any',
       isSubscribable: prop.isSubscribable || undefined,
 
     } : {
@@ -211,7 +211,7 @@ function mapOption(prop: IProp): IOption {
 function mapSubscribableOption(prop: IProp): ISubscribableOption {
   return {
     name: prop.name,
-    type: "any",
+    type: 'any',
     isSubscribable: prop.isSubscribable || undefined,
   };
 }

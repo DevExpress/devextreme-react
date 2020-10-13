@@ -1,10 +1,10 @@
-import * as React from "react";
-import Example from "./example-block";
+import * as React from 'react';
+import Example from './example-block';
 
-import dxTextBox from "devextreme/ui/text_box";
-import { Button } from "../src/button";
-import { TextBox } from "../src/text-box";
-import { RequiredRule, Validator } from "../src/validator";
+import dxTextBox from 'devextreme/ui/text_box';
+import { Button } from '../src/button';
+import { TextBox } from '../src/text-box';
+import { RequiredRule, Validator } from '../src/validator';
 
 export default class extends React.Component<any, { text: string; uncontrolledText: string; }> {
 
@@ -13,8 +13,8 @@ export default class extends React.Component<any, { text: string; uncontrolledTe
   constructor(props: any) {
     super(props);
     this.state = {
-      text: "text",
-      uncontrolledText: "initial text",
+      text: 'text',
+      uncontrolledText: 'initial text',
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -53,7 +53,7 @@ export default class extends React.Component<any, { text: string; uncontrolledTe
 
   private updateUncontrolledValue() {
     this.setState({
-      uncontrolledText: "#" + this.textBox.option("value"),
+      uncontrolledText: '#' + this.textBox.option('value'),
     });
   }
 
@@ -63,7 +63,7 @@ export default class extends React.Component<any, { text: string; uncontrolledTe
 
   private handleChange(e: any) {
     this.setState({
-      text: "#" + (e.value as string).toUpperCase().replace("A", "_"),
+      text: '#' + (e.value as string).toUpperCase().replace('A', '_'),
     });
   }
 }

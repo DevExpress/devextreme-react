@@ -1,8 +1,8 @@
-import { getChanges } from "../comparer";
-import { IConfigNode } from "../config-node";
+import { getChanges } from '../comparer';
+import { IConfigNode } from '../config-node';
 
 const emptyNode: IConfigNode = {
-  fullName: "",
+  fullName: '',
   predefinedOptions: {},
   initialOptions: {},
   options: {},
@@ -11,8 +11,8 @@ const emptyNode: IConfigNode = {
   configCollections: {},
 };
 
-describe("child config nodes comparing", () => {
-  it("detects additions", () => {
+describe('child config nodes comparing', () => {
+  it('detects additions', () => {
     const prevConfig = {
       ...emptyNode,
     };
@@ -22,7 +22,7 @@ describe("child config nodes comparing", () => {
       configs: {
         option: {
           ...emptyNode,
-          fullName: "option",
+          fullName: 'option',
           options: { a: 1 },
         },
       },
@@ -34,23 +34,23 @@ describe("child config nodes comparing", () => {
   });
 });
 
-describe("collections comparing", () => {
-  it("detects additions", () => {
+describe('collections comparing', () => {
+  it('detects additions', () => {
     const prevConfig = {
       ...emptyNode,
-      fullName: "items[0].items[0]",
+      fullName: 'items[0].items[0]',
       configCollections: {
         items: [
           {
             ...emptyNode,
-            fullName: "items[0].items[0].items[0]",
+            fullName: 'items[0].items[0].items[0]',
             options: {
               a: 1,
             },
           },
           {
             ...emptyNode,
-            fullName: "items[0].items[0].items[1]",
+            fullName: 'items[0].items[0].items[1]',
             options: {
               b: 2,
             },
@@ -61,26 +61,26 @@ describe("collections comparing", () => {
 
     const currentConfig = {
       ...emptyNode,
-      fullName: "items[0].items[0]",
+      fullName: 'items[0].items[0]',
       configCollections: {
         items: [
           {
             ...emptyNode,
-            fullName: "items[0].items[0].items[0]",
+            fullName: 'items[0].items[0].items[0]',
             options: {
               a: 11,
             },
           },
           {
             ...emptyNode,
-            fullName: "items[0].items[0].items[1]",
+            fullName: 'items[0].items[0].items[1]',
             options: {
               b: 22,
             },
           },
           {
             ...emptyNode,
-            fullName: "items[0].items[0].items[2]",
+            fullName: 'items[0].items[0].items[2]',
             options: {
               c: 33,
             },
@@ -91,6 +91,6 @@ describe("collections comparing", () => {
 
     const changes = getChanges(currentConfig, prevConfig);
     expect(Object.keys(changes.options).length).toEqual(1);
-    expect(changes.options["items[0].items[0].items"]).toEqual([{ a: 11 }, { b: 22 }, { c: 33 }]);
+    expect(changes.options['items[0].items[0].items']).toEqual([{ a: 11 }, { b: 22 }, { c: 33 }]);
   });
 });

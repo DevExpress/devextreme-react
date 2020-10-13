@@ -1,12 +1,12 @@
-import * as React from "react";
+import * as React from 'react';
 
-import DataSource from "devextreme/data/data_source";
+import DataSource from 'devextreme/data/data_source';
 
-import Button from "../src/button";
-import List, { Item as ListItem } from "../src/list";
-import TextBox from "../src/text-box";
+import Button from '../src/button';
+import List, { Item as ListItem } from '../src/list';
+import TextBox from '../src/text-box';
 
-import Example from "./example-block";
+import Example from './example-block';
 
 interface IListItemProps {
   data: {
@@ -51,7 +51,7 @@ function ItemsRender(item: string) {
   return <i>{item}</i>;
 }
 
-const listItems: string[] = ["orange", "apple", "potato"];
+const listItems: string[] = ['orange', 'apple', 'potato'];
 
 // tslint:disable-next-line:max-classes-per-file
 export default class extends React.Component<any, { text: string; items: IListItemProps[]; }> {
@@ -61,18 +61,18 @@ export default class extends React.Component<any, { text: string; items: IListIt
   constructor(props: any) {
     super(props);
     this.state = {
-      text: "",
+      text: '',
       items,
     };
 
     this.dataSource = new DataSource(
       {
         store: {
-          type: "array",
+          type: 'array',
           data: items,
         },
         sort: [
-          { getter: "text", desc: true },
+          { getter: 'text', desc: true },
         ],
         pageSize: 1,
       },
@@ -130,13 +130,13 @@ export default class extends React.Component<any, { text: string; items: IListIt
   private addTextToList() {
     this.setState({
       items: [...this.state.items, { text: this.state.text }],
-      text: "",
+      text: '',
     });
   }
 }
 
 const items: IListItemProps[] = [
-  { text: "123" },
-  { text: "234" },
-  { text: "567" },
+  { text: '123' },
+  { text: '234' },
+  { text: '567' },
 ];

@@ -1,9 +1,9 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { DoubleKeyMap, generateID } from "./helpers";
-import { ITemplateArgs } from "./template";
-import { ITemplateWrapperProps, TemplateWrapper } from "./template-wrapper";
-import { TemplatesStore } from "./templates-store";
+import { DoubleKeyMap, generateID } from './helpers';
+import { ITemplateArgs } from './template';
+import { ITemplateWrapperProps, TemplateWrapper } from './template-wrapper';
+import { TemplatesStore } from './templates-store';
 
 interface IDxTemplate {
   render: (data: IDxTemplateData) => any;
@@ -34,7 +34,7 @@ function createDxTemplate(
       if (prevTemplateId) {
         templateId = prevTemplateId;
       } else {
-        templateId = keyFn ? keyFn(data.model) : "__template_" + generateID();
+        templateId = keyFn ? keyFn(data.model) : '__template_' + generateID();
 
         if (data.model !== undefined) {
           renderedTemplates.set(key, templateId);

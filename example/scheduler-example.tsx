@@ -1,9 +1,9 @@
-import * as React from "react";
-import Example from "./example-block";
+import * as React from 'react';
+import Example from './example-block';
 
-import { Scheduler } from "../src/scheduler";
+import { Scheduler } from '../src/scheduler';
 
-import { appointments } from "./data";
+import { appointments } from './data';
 
 class DateCell extends React.PureComponent<any> {
   public render() {
@@ -11,7 +11,7 @@ class DateCell extends React.PureComponent<any> {
     const start = new Date(now.getFullYear(), 0, 0).getTime();
     const dayNumber = Math.floor((now - start) / (1000 * 60 * 60 * 24));
     return (
-      <div style={{ height: "50px", color: now.getDay() % 6 === 0 ? "red" : "" }}>
+      <div style={{ height: '50px', color: now.getDay() % 6 === 0 ? 'red' : '' }}>
         <h4>{text}</h4>
         <h5>{dayNumber}</h5>
       </div>

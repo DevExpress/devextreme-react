@@ -11,7 +11,7 @@ interface IConfigNode {
 interface ITemplate {
   optionName: string;
   isAnonymous: boolean;
-  type: "component" | "render" | "children";
+  type: 'component' | 'render' | 'children';
   content: any;
   keyFn?: (data: any) => string;
 }

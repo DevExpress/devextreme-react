@@ -1,4 +1,4 @@
-import { TemplateWrapper, TemplateWrapperRenderer } from "./template-wrapper";
+import { TemplateWrapper, TemplateWrapperRenderer } from './template-wrapper';
 
 class TemplatesStore {
   private readonly _templates: Record<string, TemplateWrapperRenderer> = {};

@@ -1,18 +1,18 @@
-import * as React from "react";
+import * as React from 'react';
 
-import Box, { Item } from "../src/box";
-import Button from "../src/button";
-import Example from "./example-block";
+import Box, { Item } from '../src/box';
+import Button from '../src/button';
+import Example from './example-block';
 
 const initialState = {
   items: [
     {
       id: 1,
-      name: "Item #1",
+      name: 'Item #1',
     },
     {
       id: 2,
-      name: "Item #2",
+      name: 'Item #2',
     },
   ],
 };
