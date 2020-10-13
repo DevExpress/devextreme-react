@@ -81,7 +81,11 @@ function testTemplateOption(testedOption: string) {
   it('renders', () => {
     const elementOptions: Record<string, any> = {};
     elementOptions[testedOption] = prepareTemplate((data: any) => (
-      <div className="template">Template {data.text}</div>
+      <div className="template">
+        Template
+        {' '}
+        {data.text}
+      </div>
     ));
 
     const component = mount(React.createElement(ComponentWithTemplates, elementOptions));
@@ -153,7 +157,13 @@ function testTemplateOption(testedOption: string) {
 
   it('renders template removeEvent listener', () => {
     const elementOptions: Record<string, any> = {};
-    elementOptions[testedOption] = prepareTemplate((data: any) => <>Template {data.text}</>);
+    elementOptions[testedOption] = prepareTemplate((data: any) => (
+      <>
+        Template
+        {' '}
+        {data.text}
+      </>
+    ));
     const component = mount(React.createElement(ComponentWithTemplates, elementOptions));
 
     const container = document.createElement('div');
@@ -165,7 +175,15 @@ function testTemplateOption(testedOption: string) {
   it('does not render template removeEvent listener', () => {
     const elementOptions: Record<string, any> = {};
     elementOptions[testedOption] = prepareTemplate((data: any) => (
-      <tbody><tr><td>Template {data.text}</td></tr></tbody>
+      <tbody>
+        <tr>
+          <td>
+            Template
+            {' '}
+            {data.text}
+          </td>
+        </tr>
+      </tbody>
     ));
     const component = mount(React.createElement(ComponentWithTemplates, elementOptions));
 
@@ -180,7 +198,11 @@ function testTemplateOption(testedOption: string) {
   it('calls onRendered callback', () => {
     const elementOptions: Record<string, any> = {};
     elementOptions[testedOption] = prepareTemplate((data: any) => (
-      <div className="template">Template {data.text}</div>
+      <div className="template">
+        Template
+        {' '}
+        {data.text}
+      </div>
     ));
     const component = mount(React.createElement(ComponentWithTemplates, elementOptions));
     const onRendered: () => void = jest.fn();
@@ -203,7 +225,11 @@ function testTemplateOption(testedOption: string) {
   it('has templates with unique ids', () => {
     const elementOptions: Record<string, any> = {};
     elementOptions[testedOption] = prepareTemplate((data: any) => (
-      <div className="template">Template {data.text}</div>
+      <div className="template">
+        Template
+        {' '}
+        {data.text}
+      </div>
     ));
     const component = shallow(React.createElement(ComponentWithTemplates, elementOptions));
     const componentInstace = component.instance() as any;
@@ -219,7 +245,11 @@ function testTemplateOption(testedOption: string) {
   it('has templates with ids genetated with keyExpr', () => {
     const elementOptions: Record<string, any> = {};
     elementOptions[testedOption] = prepareTemplate((data: any) => (
-      <div className="template">Template {data.text}</div>
+      <div className="template">
+        Template
+        {' '}
+        {data.text}
+      </div>
     ));
     elementOptions.itemKeyFn = (data) => data.text;
     const component = shallow(React.createElement(ComponentWithTemplates, elementOptions));
@@ -237,7 +267,11 @@ function testTemplateOption(testedOption: string) {
   it('removes text template', () => {
     const elementOptions: Record<string, any> = {};
     elementOptions[testedOption] = prepareTemplate((data: any) => (
-      <>Template {data.text}</>
+      <>
+        Template
+        {' '}
+        {data.text}
+      </>
     ));
     const component = mount(React.createElement(ComponentWithTemplates, elementOptions));
     const componentInstance = component.instance() as any;
@@ -260,7 +294,11 @@ function testTemplateOption(testedOption: string) {
   it('removes template', () => {
     const elementOptions: Record<string, any> = {
       [testedOption]: prepareTemplate((data: any) => (
-        <div className="template">Template {data.text}</div>
+        <div className="template">
+          Template
+          {' '}
+          {data.text}
+        </div>
       )),
     };
 
@@ -286,7 +324,13 @@ describe('function template', () => {
   testTemplateOption('itemRender');
 
   it('renders simple item', () => {
-    const itemRender: any = jest.fn((text: string) => <div className="template">Template {text}</div>);
+    const itemRender: any = jest.fn((text: string) => (
+      <div className="template">
+        Template
+        {' '}
+        {text}
+      </div>
+    ));
     const component = mount(
       <ComponentWithTemplates itemRender={itemRender} />,
     );
@@ -299,7 +343,13 @@ describe('function template', () => {
 
   it('renders index', () => {
     const itemRender: any = jest.fn((_, index: number) => {
-      return <div className="template">Index {index}</div>;
+      return (
+        <div className="template">
+          Index
+          {' '}
+          {index}
+        </div>
+      );
     });
     const component = mount(
       <ComponentWithTemplates itemRender={itemRender} />,
@@ -318,7 +368,12 @@ describe('component template', () => {
   it('renders index', () => {
     const ItemTemplate = (props: any) => (
       <div className="template">
-        value: {props.data.value}, index: {props.index}
+        value:
+        {' '}
+        {props.data.value}
+        , index:
+        {' '}
+        {props.index}
       </div>
     );
 

@@ -19,7 +19,8 @@ import { sales } from './data';
 
 const DetailComponent = ({ data: { data } }: any) => {
   return (
-    <p>Row data:
+    <p>
+      Row data:
       <br />
       {JSON.stringify(data)}
     </p>

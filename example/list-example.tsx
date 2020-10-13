@@ -29,8 +29,14 @@ class Item extends React.Component<IListItemProps, { counter: number }> {
     const { data: { text }, index } = this.props;
     return (
       <i onClick={this.handleClick}>
-        {index + 1}. Component template for item {text}.
-        <b>Clicks: {this.state.counter}</b>
+        {index + 1}
+        . Component template for item
+        {text}
+        .
+        <b>
+          Clicks:
+          {this.state.counter}
+        </b>
       </i>
     );
   }

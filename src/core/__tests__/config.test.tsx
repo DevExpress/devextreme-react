@@ -29,7 +29,15 @@ describe('useLegacyTemplateEngine', () => {
   it('works for render-function template', () => {
     const ItemTemplate = (data: any) => (
       <div className="template">
-        value: {data.value}, key: {data.key}, dxkey: {data.dxkey}
+        value:
+        {' '}
+        {data.value}
+        , key:
+        {' '}
+        {data.key}
+        , dxkey:
+        {' '}
+        {data.dxkey}
       </div>
     );
 
@@ -51,7 +59,12 @@ describe('useLegacyTemplateEngine', () => {
   it('works for component template', () => {
     const ItemTemplate = (props: any) => (
       <div className="template">
-        value: {props.value}, dxkey: {props.dxkey}
+        value:
+        {' '}
+        {props.value}
+        , dxkey:
+        {' '}
+        {props.dxkey}
       </div>
     );
 
