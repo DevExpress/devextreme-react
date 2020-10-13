@@ -56,11 +56,11 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
     this._optionsManager = new OptionsManager(this._templatesManager);
   }
 
-  public componentDidMount() {
+  public componentDidMount(): void {
     this._updateCssClasses(null, this.props);
   }
 
-  public componentDidUpdate(prevProps: P) {
+  public componentDidUpdate(prevProps: P): void {
     this._updateCssClasses(prevProps, this.props);
 
     const config = this._getConfig();
@@ -70,7 +70,7 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
     }
   }
 
-  public componentWillUnmount() {
+  public componentWillUnmount(): void {
     if (this._instance) {
       events.triggerHandler(this._element, DX_REMOVE_EVENT);
       this._instance.dispose();
@@ -78,7 +78,7 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
     this._optionsManager.dispose();
   }
 
-  protected _createWidget(element?: Element) {
+  protected _createWidget(element?: Element): void {
     element = element || this._element;
 
     const config = this._getConfig();
@@ -144,11 +144,11 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
     }
   }
 
-  protected renderChildren() {
+  protected renderChildren(): React.ReactNode {
     return this.props.children;
   }
 
-  public render() {
+  public render(): JSX.Element {
     return React.createElement(
       'div',
       this._getElementProps(),

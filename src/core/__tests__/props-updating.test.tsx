@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 import { Component } from '../../core/component';
 import ConfigurationComponent from '../../core/nested-option';
 import { mount, React, shallow } from './setup';
@@ -17,8 +18,6 @@ interface IControlledComponentProps {
   anotherOption?: string;
   complexOption?: object;
 }
-
-// tslint:disable:max-classes-per-file
 
 class ControlledComponent extends TestComponent<IControlledComponentProps> {
   protected _defaults = {

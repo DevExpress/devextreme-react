@@ -1,7 +1,7 @@
 import * as React from 'react';
+import dxTextBox from 'devextreme/ui/text_box';
 import Example from './example-block';
 
-import dxTextBox from 'devextreme/ui/text_box';
 import { Button } from '../src/button';
 import { TextBox } from '../src/text-box';
 import { RequiredRule, Validator } from '../src/validator';
@@ -9,6 +9,7 @@ import { RequiredRule, Validator } from '../src/validator';
 export default class extends React.Component<any, { text: string; uncontrolledText: string; }> {
   private textBox: dxTextBox;
 
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   constructor(props: any) {
     super(props);
     this.state = {
@@ -37,7 +38,7 @@ export default class extends React.Component<any, { text: string; uncontrolledTe
     });
   }
 
-  public render() {
+  public render(): JSX.Element {
     return (
       <Example title="DxTextBox" state={this.state}>
         uncontrolled mode

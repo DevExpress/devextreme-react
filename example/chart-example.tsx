@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+/* eslint-disable max-classes-per-file */
 import * as React from 'react';
 
 import { orangesByDay } from './data';
@@ -48,7 +50,7 @@ export default class extends React.Component<any, IState> {
     });
   }
 
-  public render() {
+  public render(): JSX.Element {
     return (
       <Example title="DxChart" state={this.state}>
 

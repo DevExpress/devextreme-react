@@ -56,7 +56,7 @@ function buildTemplates(
   node: IConfigNode,
   optionsAccum: Record<string, any>,
   templatesAccum: Record<string, ITemplate>,
-) {
+): void {
   node.templates.forEach(
     (template) => {
       if (template.isAnonymous) {
@@ -126,6 +126,7 @@ function findValue(node: IConfigNode, path: string[]): undefined | IValueDescrip
   if (optionInfo.name in node.options) {
     return findValueInObject(node.options[optionInfo.name], path);
   }
+  return undefined;
 }
 
 function findValueInObject(obj: any, path: string[]): undefined | IValueDescriptor {

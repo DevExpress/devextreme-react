@@ -16,6 +16,7 @@ const startPos = {
 };
 
 export default class extends React.Component<any, { text: string; pos: IPosition }> {
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   constructor(props: any) {
     super(props);
     const pos = { ...startPos };
@@ -27,7 +28,7 @@ export default class extends React.Component<any, { text: string; pos: IPosition
     this.updatePos = this.updatePos.bind(this);
   }
 
-  public updatePos() {
+  public updatePos(): void {
     const pos = {
       lat: this.state.pos.lat + 0.01,
       lng: this.state.pos.lng + 0.05,
@@ -39,7 +40,7 @@ export default class extends React.Component<any, { text: string; pos: IPosition
     });
   }
 
-  public render() {
+  public render(): JSX.Element {
     return (
       <Example title="dxMap" state={this.state}>
         <button onClick={this.updatePos}>Move!</button>

@@ -23,12 +23,13 @@ class OptionsManager {
     this._wrapOptionValue = this._wrapOptionValue.bind(this);
   }
 
-  public setInstance(instance: any, config: IConfigNode) {
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  public setInstance(instance: any, config: IConfigNode): void {
     this._instance = instance;
     this._currentConfig = config;
   }
 
-  public getInitialOptions(rootNode: IConfigNode) {
+  public getInitialOptions(rootNode: IConfigNode): {} {
     const config = buildConfig(rootNode, false);
 
     for (const key of Object.keys(config.templates)) {
@@ -50,7 +51,7 @@ class OptionsManager {
     return options;
   }
 
-  public update(config: IConfigNode) {
+  public update(config: IConfigNode): void {
     const changes = getChanges(config, this._currentConfig);
 
     if (!changes.options && !changes.templates && !changes.removedOptions.length) {
@@ -87,7 +88,7 @@ class OptionsManager {
     this._currentConfig = config;
   }
 
-  public onOptionChanged(e: { name: string, fullName: string, value: any }) {
+  public onOptionChanged(e: { name: string, fullName: string, value: any }): void {
     if (this._isUpdating) {
       return;
     }
@@ -121,7 +122,7 @@ class OptionsManager {
     }
   }
 
-  public dispose() {
+  public dispose(): void {
     for (const optionName of Object.keys(this._guards)) {
       window.clearTimeout(this._guards[optionName]);
       delete this._guards[optionName];

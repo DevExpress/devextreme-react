@@ -13,6 +13,7 @@ class ValidatorExample extends React.Component<any, any> {
 
   private _callbacks: any[] = [];
 
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   constructor(props: any) {
     super(props);
     this.state = {
@@ -40,7 +41,7 @@ class ValidatorExample extends React.Component<any, any> {
     e.validationGroup.validate();
   };
 
-  public render() {
+  public render(): JSX.Element {
     return (
       <div>
         <Example title="Standalone Validator example">

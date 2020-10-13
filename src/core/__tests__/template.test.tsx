@@ -1,5 +1,5 @@
-/* tslint:disable:no-string-literal */
-/* tslint:disable:max-classes-per-file */
+/* eslint-disable max-classes-per-file */
+/* eslint-disable no-useless-escape */
 import * as events from 'devextreme/events';
 
 import ConfigurationComponent from '../../core/nested-option';
@@ -544,7 +544,7 @@ describe('component/render in nested options', () => {
     );
 
     const options = WidgetClass.mock.calls[0][1];
-    expect(options['option']['item']).toBe('option.item');
+    expect(options.option.item).toBe('option.item');
 
     const integrationOptions = options.integrationOptions;
 
@@ -588,8 +588,8 @@ describe('component/render in nested options', () => {
 
     const options = WidgetClass.mock.calls[0][1];
 
-    expect(options['option']['item']).toBe('option.item');
-    expect(options['collection'][0]['template']).toBe('collection[0].template');
+    expect(options.option.item).toBe('option.item');
+    expect(options.collection[0].template).toBe('collection[0].template');
 
     const integrationOptions = options.integrationOptions;
 
@@ -617,10 +617,10 @@ describe('component/render in nested options', () => {
 
     const options = WidgetClass.mock.calls[0][1];
 
-    expect(options['collection'][0]['template']).toBe('collection[0].template');
-    expect(options['collection'][1]['template']).toBe('collection[1].template');
-    expect(options['collection'][2]['option']['item']).toBe('collection[2].option.item');
-    expect(options['option']['collection'][0]['template']).toBe('option.collection[0].template');
+    expect(options.collection[0].template).toBe('collection[0].template');
+    expect(options.collection[1].template).toBe('collection[1].template');
+    expect(options.collection[2].option.item).toBe('collection[2].option.item');
+    expect(options.option.collection[0].template).toBe('option.collection[0].template');
 
     const integrationOptions = options.integrationOptions;
 
@@ -674,15 +674,15 @@ describe('component/render in nested options', () => {
 
     const options = WidgetClass.mock.calls[0][1];
 
-    expect(options['collection'][0]['template']).toBe('collection[0].template');
-    expect(options['collection'][1]['template']).toBe('collection[1].template');
-    expect(options['collection'][2]['template']).toBe('collection[2].template');
-    expect(options['collection'][3]['template']).toBe('collection[3].template');
-    expect(options['collection'][4]['template']).toBe(undefined);
-    expect(options['collection'][5]['template']).toBe(undefined);
-    expect(options['collection'][6]['template']).toBe(undefined);
-    expect(options['option']['item']).toBe(undefined);
-    expect(options['option']['template']).toBe(undefined);
+    expect(options.collection[0].template).toBe('collection[0].template');
+    expect(options.collection[1].template).toBe('collection[1].template');
+    expect(options.collection[2].template).toBe('collection[2].template');
+    expect(options.collection[3].template).toBe('collection[3].template');
+    expect(options.collection[4].template).toBe(undefined);
+    expect(options.collection[5].template).toBe(undefined);
+    expect(options.collection[6].template).toBe(undefined);
+    expect(options.option.item).toBe(undefined);
+    expect(options.option.template).toBe(undefined);
 
     const integrationOptions = options.integrationOptions;
 
@@ -764,7 +764,8 @@ describe('component/render in nested options', () => {
     const TestContainer = (props: any) => (
       <TestComponent>
         {props.items.map(
-          (item) => <CollectionNestedComponent key={item.id} render={item.render} />)}
+          (item) => <CollectionNestedComponent key={item.id} render={item.render} />,
+        )}
       </TestComponent>
     );
 
@@ -797,7 +798,8 @@ describe('component/render in nested options', () => {
     const TestContainer = (props: any) => (
       <TestComponent>
         {props.items.map(
-          (item) => <CollectionNestedComponent key={item.id} render={item.render} />)}
+          (item) => <CollectionNestedComponent key={item.id} render={item.render} />,
+        )}
       </TestComponent>
     );
 
@@ -820,7 +822,8 @@ describe('component/render in nested options', () => {
     const TestContainer = (props: any) => (
       <TestComponent>
         {props.items.map(
-          (item) => <CollectionNestedComponent key={item.id} render={item.render} />)}
+          (item) => <CollectionNestedComponent key={item.id} render={item.render} />,
+        )}
       </TestComponent>
     );
 

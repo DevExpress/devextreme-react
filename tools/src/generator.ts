@@ -55,7 +55,7 @@ function generate({
     indexFileName: string
   },
   widgetsPackage: string
-}) {
+}): void {
   const modulePaths: IReExport[] = [];
 
   rawData.widgets.forEach((data) => {

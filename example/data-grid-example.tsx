@@ -30,6 +30,7 @@ const CityComponent = (props: any) => <i>{props.data.displayValue}</i>;
 const RegionComponent = (props: any) => <b>{props.data.displayValue}</b>;
 
 export default class extends React.Component<any, { expandAll: boolean, pageSize: number }> {
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   constructor(props: any) {
     super(props);
     this.state = {
@@ -69,7 +70,7 @@ export default class extends React.Component<any, { expandAll: boolean, pageSize
     });
   }
 
-  public render() {
+  public render(): JSX.Element {
     return (
       <Example title="DxDataGrid" state={this.state}>
         <br />

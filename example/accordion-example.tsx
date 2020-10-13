@@ -20,7 +20,7 @@ const items: IAccordionItemProps[] = [
 const ItemTitle = (data: IAccordionItemProps) => <div style={{ height: 100 }}>{data.title}</div>;
 
 export default class extends React.Component<any, any> {
-  public render() {
+  public render(): JSX.Element {
     return (
       <Example title="DxAccordion">
         <hr />

@@ -7,7 +7,7 @@ const Widget = {
   resetOption: jest.fn(),
   beginUpdate: jest.fn(),
   endUpdate: jest.fn(),
-  on: (event: string, handler: (e: any) => void) => {
+  on: (event: string, handler: (e: any) => void): void => {
     eventHandlers[event] = handler;
   },
   dispose: jest.fn(),
@@ -19,7 +19,8 @@ class TestComponent<P = any> extends Component<P> {
   protected _WidgetClass = WidgetClass;
 }
 
-function fireOptionChange(fullName: string, value: any) {
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+function fireOptionChange(fullName: string, value: any): void {
   eventHandlers.optionChanged({
     name: fullName.split('.')[0],
     fullName,

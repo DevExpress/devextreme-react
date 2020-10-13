@@ -10,6 +10,7 @@ const VALID_TEXT = 'good';
 const validateText = (text: string) => text === VALID_TEXT;
 
 export default class extends React.Component<any, { visible: boolean; text: string; }> {
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   constructor(props: any) {
     super(props);
     this.state = {
@@ -33,7 +34,7 @@ export default class extends React.Component<any, { visible: boolean; text: stri
     });
   }
 
-  public render() {
+  public render(): JSX.Element {
     return (
       <Example title="DxPopup" state={this.state}>
         <TextBox value={this.state.text} onValueChanged={this.handleTextUpdate} valueChangeEvent="input" />

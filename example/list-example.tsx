@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 import * as React from 'react';
 
 import DataSource from 'devextreme/data/data_source';
@@ -31,7 +32,7 @@ class Item extends React.Component<IListItemProps, { counter: number }> {
     });
   }
 
-  public render() {
+  public render(): JSX.Element {
     const { data: { text }, index } = this.props;
     return (
       <i onClick={this.handleClick}>
@@ -58,10 +59,10 @@ function ItemsRender(item: string) {
 
 const listItems: string[] = ['orange', 'apple', 'potato'];
 
-// tslint:disable-next-line:max-classes-per-file
 export default class extends React.Component<any, { text: string; items: IListItemProps[]; }> {
   private dataSource: DataSource;
 
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   constructor(props: any) {
     super(props);
     this.state = {
@@ -86,7 +87,7 @@ export default class extends React.Component<any, { text: string; items: IListIt
     this.addTextToList = this.addTextToList.bind(this);
   }
 
-  public componentWillUnmount() {
+  public componentWillUnmount(): void {
     this.dataSource.dispose();
   }
 
@@ -103,7 +104,7 @@ export default class extends React.Component<any, { text: string; items: IListIt
     });
   }
 
-  public render() {
+  public render(): JSX.Element {
     return (
       <Example title="DxList" state={this.state}>
         <hr />

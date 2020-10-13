@@ -10,7 +10,7 @@ function fieldRender() {
 }
 
 export default class extends React.Component<any, any> {
-  public render() {
+  public render(): JSX.Element {
     return (
       <Example title="Editors" state={this.state}>
         <SelectBox fieldRender={fieldRender} />

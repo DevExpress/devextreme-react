@@ -18,6 +18,7 @@ const initialState = {
 };
 
 class App extends React.Component<any, typeof initialState> {
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   constructor(props: any) {
     super(props);
 
@@ -46,7 +47,7 @@ class App extends React.Component<any, typeof initialState> {
     this.setState({ items });
   };
 
-  public render() {
+  public render(): JSX.Element {
     return (
       <Example title="Box example">
         <Button

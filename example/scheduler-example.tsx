@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 import * as React from 'react';
 import Example from './example-block';
 
@@ -6,7 +7,7 @@ import { Scheduler } from '../src/scheduler';
 import { appointments } from './data';
 
 class DateCell extends React.PureComponent<any> {
-  public render() {
+  public render(): JSX.Element {
     const { date: now, text } = this.props.data;
     const start = new Date(now.getFullYear(), 0, 0).getTime();
     const dayNumber = Math.floor((now - start) / (1000 * 60 * 60 * 24));
@@ -19,9 +20,8 @@ class DateCell extends React.PureComponent<any> {
   }
 }
 
-// tslint:disable-next-line:max-classes-per-file
 export default class extends React.Component<any, any> {
-  public render() {
+  public render(): JSX.Element {
     return (
       <Example title="DxScheduler">
         <Scheduler

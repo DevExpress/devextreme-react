@@ -8,6 +8,7 @@ import ScrollView from '../src/scroll-view';
 import TextBox from '../src/text-box';
 
 export default class extends React.Component<any, { text: string }> {
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   constructor(props: any) {
     super(props);
     this.state = {
@@ -30,7 +31,7 @@ export default class extends React.Component<any, { text: string }> {
     });
   }
 
-  public render() {
+  public render(): JSX.Element {
     return (
       <Example title="DxScrollView" state={this.state}>
         <ScrollView height="150px">

@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 /* eslint-disable no-control-regex */
 import { template, templateSettings } from 'dot';
 

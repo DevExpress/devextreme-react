@@ -18,7 +18,10 @@ interface IWidgetDescriptor {
   expectedChildren: Record<string, IExpectedChild>;
 }
 
-function buildConfigTree(widgetDescriptor: IWidgetDescriptor, props: Record<string, any>) {
+function buildConfigTree(
+  widgetDescriptor: IWidgetDescriptor,
+  props: Record<string, any>,
+): IConfigNode {
   return createConfigNode(
     {
       type: ElementType.Option,

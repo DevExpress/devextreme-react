@@ -2,6 +2,7 @@ import { ITemplateMeta, Template } from '../../template';
 
 enum ElementType {
   Option,
+  // eslint-disable-next-line @typescript-eslint/no-shadow
   Template,
   Unknown
 }

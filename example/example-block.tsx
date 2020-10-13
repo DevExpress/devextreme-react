@@ -6,7 +6,7 @@ interface IProps {
   children: any;
 }
 
-const Example = (props: IProps) => {
+const Example = (props: IProps): JSX.Element => {
   let stateBlock = null;
   if (!!props.state) {
     stateBlock = <pre className="example-state">{JSON.stringify(props.state, null, '  ')}</pre>;

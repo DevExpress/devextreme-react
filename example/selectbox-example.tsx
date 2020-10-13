@@ -4,7 +4,7 @@ import { SelectBox } from '../src/select-box';
 const SelectBoxItem = (option: any) => <span>{option.data.value}</span>;
 
 class SelectBoxEditor extends React.Component {
-  public render() {
+  public render(): JSX.Element {
     return (
       <SelectBox
         searchEnabled

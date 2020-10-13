@@ -29,6 +29,7 @@ function renderMenuTemplate() {
 }
 
 export default class extends React.Component<any, any> {
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   constructor(props: any) {
     super(props);
     this.state = {
@@ -38,7 +39,7 @@ export default class extends React.Component<any, any> {
     this.toggle = this.toggle.bind(this);
   }
 
-  public toggle() {
+  public toggle(): void {
     this.setState({ menuVisible: !this.state.menuVisible });
   }
 
@@ -48,7 +49,7 @@ export default class extends React.Component<any, any> {
     }
   }
 
-  public render() {
+  public render(): JSX.Element {
     return (
       <Example title="DxSlideOutView" state={this.state}>
         <Button text="toggle" onClick={this.toggle} />

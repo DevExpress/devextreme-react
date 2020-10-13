@@ -102,8 +102,7 @@ function generate(component: IComponent): string {
           renderedSubscribableOptions = nestedSubscribableOptions.map((o) => renderObjectEntry({
             key: `default${uppercaseFirst(o.name)}`,
             value: o.name,
-          }),
-          );
+          }));
         }
         const nestedTemplates = createTemplateDto(c.templates);
         if (nestedTemplates) {
@@ -210,8 +209,7 @@ function generate(component: IComponent): string {
       renderedDefaultProps: defaultProps && defaultProps.map((o) => renderObjectEntry({
         key: o.name,
         value: o.actualOptionName,
-      }),
-      ),
+      })),
       renderedPropTypings,
       expectedChildren: component.expectedChildren,
     }),
@@ -282,7 +280,8 @@ const renderModule: (model: {
 + `export {
 <#= it.renderedExports #>
 };
-`);
+`,
+);
 // tslint:enable:max-line-length
 
 const renderImports: (model: {

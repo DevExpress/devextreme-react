@@ -30,6 +30,7 @@ const positions = [
 ];
 
 export default class extends React.Component<any, {disableIdInput: boolean}> {
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   constructor(props: any) {
     super(props);
 
@@ -40,7 +41,7 @@ export default class extends React.Component<any, {disableIdInput: boolean}> {
 
   private toggleIdInputState = () => this.setState({ disableIdInput: !this.state.disableIdInput });
 
-  public render() {
+  public render(): JSX.Element {
     const { disableIdInput } = this.state;
     return (
       <Example title="DxForm">
