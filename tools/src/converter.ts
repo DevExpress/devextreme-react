@@ -35,7 +35,7 @@ function expandTypes(types: ITypeDescr[], customTypes: Record<string, ICustomTyp
 }
 
 function convertType(typeDescr: ITypeDescr): string {
-  const type = typeDescr.type;
+  const { type } = typeDescr;
   switch (type) {
     case inputTypes.string:
     case inputTypes.number:

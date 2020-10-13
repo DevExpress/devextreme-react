@@ -106,6 +106,7 @@ class OptionsManager {
                     || value[key] === undefined
                     || value[key] === e.value[key]
         ) {
+          // eslint-disable-next-line no-continue
           continue;
         }
         this._setGuard(mergeNameParts(e.fullName, key), value[key]);

@@ -2,8 +2,8 @@
 /* eslint-disable no-useless-escape */
 import * as events from 'devextreme/events';
 
-import ConfigurationComponent from '../../core/nested-option';
-import { Template } from '../../core/template';
+import ConfigurationComponent from '../nested-option';
+import { Template } from '../template';
 import { mount, React, shallow } from './setup';
 import { TestComponent, Widget, WidgetClass } from './test-component';
 
@@ -14,10 +14,6 @@ class ComponentWithTemplates extends TestComponent {
     component: 'itemComponent',
     keyFn: 'itemKeyFn',
   }];
-
-  constructor(props: any) {
-    super(props);
-  }
 }
 
 function renderTemplate(
@@ -29,7 +25,7 @@ function renderTemplate(
 ): Element {
   model = model || {};
   container = container || document.createElement('div');
-  const render = WidgetClass.mock.calls[0][1].integrationOptions.templates[name].render;
+  const { render } = WidgetClass.mock.calls[0][1].integrationOptions.templates[name];
 
   return render({
     container, model, ...(index && { index }), onRendered,
@@ -50,8 +46,8 @@ function testTemplateOption(testedOption: string) {
 
   if (testedOption === 'itemComponent') {
     prepareTemplate = (render) => {
-      // tslint:disable-next-line:max-classes-per-file
       class ItemComponent extends React.PureComponent {
+        // eslint-disable-next-line react/static-property-placement
         public props: { data: any, index?: number };
 
         public render() {
@@ -71,7 +67,7 @@ function testTemplateOption(testedOption: string) {
 
     expect(options.item).toBe('item');
 
-    const integrationOptions = options.integrationOptions;
+    const { integrationOptions } = options;
 
     expect(integrationOptions).toBeDefined();
     expect(integrationOptions.templates).toBeDefined();
@@ -283,7 +279,7 @@ function testTemplateOption(testedOption: string) {
     component.update();
     const removeListener = container.getElementsByTagName('SPAN')[0];
 
-    const parentElement = removeListener.parentElement;
+    const { parentElement } = removeListener;
     if (!parentElement) { throw new Error(); }
 
     parentElement.innerHTML = '';
@@ -311,7 +307,7 @@ function testTemplateOption(testedOption: string) {
     component.update();
     const templateContent = component.find('.template').getDOMNode();
 
-    const parentElement = templateContent.parentElement;
+    const { parentElement } = templateContent;
     if (!parentElement) { throw new Error(); }
 
     parentElement.removeChild(templateContent);
@@ -403,7 +399,7 @@ describe('nested template', () => {
 
     expect(options.item).toBeUndefined();
 
-    const integrationOptions = options.integrationOptions;
+    const { integrationOptions } = options;
 
     expect(integrationOptions).toBeDefined();
     expect(integrationOptions.templates).toBeDefined();
@@ -503,7 +499,6 @@ describe('nested template', () => {
 });
 
 describe('component/render in nested options', () => {
-  // tslint:disable-next-line:max-classes-per-file
   class NestedComponent extends ConfigurationComponent<{
     item?: any;
     itemRender?: any;
@@ -518,7 +513,6 @@ describe('component/render in nested options', () => {
     }];
   }
 
-  // tslint:disable-next-line:max-classes-per-file
   class CollectionNestedComponent extends ConfigurationComponent<{
     template?: any;
     render?: any;
@@ -546,7 +540,7 @@ describe('component/render in nested options', () => {
     const options = WidgetClass.mock.calls[0][1];
     expect(options.option.item).toBe('option.item');
 
-    const integrationOptions = options.integrationOptions;
+    const { integrationOptions } = options;
 
     expect(integrationOptions).toBeDefined();
     expect(integrationOptions.templates).toBeDefined();
@@ -565,7 +559,7 @@ describe('component/render in nested options', () => {
 
     const options = WidgetClass.mock.calls[0][1];
 
-    const integrationOptions = options.integrationOptions;
+    const { integrationOptions } = options;
 
     expect(integrationOptions.templates.nested).toBeDefined();
     expect(typeof integrationOptions.templates.nested.render).toBe('function');
@@ -591,7 +585,7 @@ describe('component/render in nested options', () => {
     expect(options.option.item).toBe('option.item');
     expect(options.collection[0].template).toBe('collection[0].template');
 
-    const integrationOptions = options.integrationOptions;
+    const { integrationOptions } = options;
 
     expect(Object.keys(integrationOptions.templates)).toEqual(['option.item', 'collection[0].template']);
   });
@@ -622,7 +616,7 @@ describe('component/render in nested options', () => {
     expect(options.collection[2].option.item).toBe('collection[2].option.item');
     expect(options.option.collection[0].template).toBe('option.collection[0].template');
 
-    const integrationOptions = options.integrationOptions;
+    const { integrationOptions } = options;
 
     expect(Object.keys(integrationOptions.templates)).toEqual([
       'option.collection[0].template',
@@ -684,7 +678,7 @@ describe('component/render in nested options', () => {
     expect(options.option.item).toBe(undefined);
     expect(options.option.template).toBe(undefined);
 
-    const integrationOptions = options.integrationOptions;
+    const { integrationOptions } = options;
 
     expect(Object.keys(integrationOptions.templates)).toEqual([
       'collection[0].template',
@@ -857,7 +851,7 @@ describe('component/render in nested options', () => {
       </ComponentWithTranscludedContent>,
     );
 
-    const integrationOptions = WidgetClass.mock.calls[0][1].integrationOptions;
+    const { integrationOptions } = WidgetClass.mock.calls[0][1];
     expect(integrationOptions).toBe(undefined);
   });
 });

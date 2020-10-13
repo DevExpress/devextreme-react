@@ -1,4 +1,4 @@
-import { Component } from '../../core/component';
+import { Component } from '../component';
 
 const eventHandlers: { [index: string]: (e?: any) => void } = {};
 

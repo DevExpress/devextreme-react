@@ -95,12 +95,12 @@ function findValue(node: IConfigNode, path: string[]): undefined | IValueDescrip
   if (optionInfo.isCollectionItem) {
     const collection = node.configCollections[optionInfo.name];
     if (!collection) {
-      return;
+      return undefined;
     }
 
     const item = collection[optionInfo.index];
     if (!item) {
-      return;
+      return undefined;
     }
 
     return findValue(item, path);
@@ -114,7 +114,7 @@ function findValue(node: IConfigNode, path: string[]): undefined | IValueDescrip
   const childCollection = node.configCollections[optionInfo.name];
   if (childCollection) {
     if (path.length !== 0) {
-      return;
+      return undefined;
     }
 
     return {
@@ -131,7 +131,7 @@ function findValue(node: IConfigNode, path: string[]): undefined | IValueDescrip
 
 function findValueInObject(obj: any, path: string[]): undefined | IValueDescriptor {
   if (obj === null || obj === undefined) {
-    return;
+    return undefined;
   }
 
   const key = path.shift();

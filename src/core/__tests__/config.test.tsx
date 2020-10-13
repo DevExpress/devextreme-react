@@ -1,4 +1,4 @@
-import config, { getOption } from '../../core/config';
+import config, { getOption } from '../config';
 import { mount, React } from './setup';
 import { TestComponent, WidgetClass } from './test-component';
 
@@ -9,10 +9,6 @@ class ComponentWithTemplates extends TestComponent {
     component: 'itemComponent',
     keyFn: 'itemKeyFn',
   }];
-
-  constructor(props: any) {
-    super(props);
-  }
 }
 
 describe('useLegacyTemplateEngine', () => {
@@ -45,7 +41,7 @@ describe('useLegacyTemplateEngine', () => {
       <ComponentWithTemplates itemRender={ItemTemplate} />,
     );
 
-    const render = WidgetClass.mock.calls[0][1].integrationOptions.templates.item.render;
+    const { render } = WidgetClass.mock.calls[0][1].integrationOptions.templates.item;
 
     render({
       container: document.createElement('div'),
@@ -72,7 +68,7 @@ describe('useLegacyTemplateEngine', () => {
       <ComponentWithTemplates itemComponent={ItemTemplate} />,
     );
 
-    const render = WidgetClass.mock.calls[0][1].integrationOptions.templates.item.render;
+    const { render } = WidgetClass.mock.calls[0][1].integrationOptions.templates.item;
 
     render({
       container: document.createElement('div'),

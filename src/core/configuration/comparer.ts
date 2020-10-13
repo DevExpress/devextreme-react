@@ -1,3 +1,4 @@
+/* eslint-disable no-continue */
 import { IConfigNode, ITemplate } from './config-node';
 import { buildNode, buildTemplates } from './tree';
 import { mergeNameParts } from './utils';
@@ -128,7 +129,7 @@ function compareCollections(
       continue;
     }
 
-    for (let i = 0; i < currentCollection.length; i++) {
+    for (let i = 0; i < currentCollection.length; i += 1) {
       compare(currentCollection[i], prevCollection[i], changesAccum);
     }
   }

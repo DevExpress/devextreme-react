@@ -1,5 +1,6 @@
 /* eslint-disable no-useless-escape */
 /* eslint-disable no-control-regex */
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { template, templateSettings } from 'dot';
 
 const defaultSettings = {

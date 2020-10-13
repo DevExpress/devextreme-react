@@ -43,6 +43,7 @@ class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps, ITempla
 
   public componentWillUnmount(): void {
     // Let React remove it itself
+    // eslint-disable-next-line react/no-find-dom-node
     const node = ReactDOM.findDOMNode(this);
 
     if (node) {
@@ -58,6 +59,7 @@ class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps, ITempla
   }
 
   private _subscribeOnRemove() {
+    // eslint-disable-next-line react/no-find-dom-node
     const node = ReactDOM.findDOMNode(this);
 
     if (node && node.nodeType === Node.ELEMENT_NODE) {

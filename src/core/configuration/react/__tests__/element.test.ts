@@ -1,7 +1,7 @@
 /* eslint-disable max-classes-per-file */
 import { mount, React } from '../../../__tests__/setup';
 
-import ConfigurationComponent from '../../../../core/nested-option';
+import ConfigurationComponent from '../../../nested-option';
 import { Template } from '../../../template';
 
 import { ElementType, getElementInfo } from '../element';
@@ -71,7 +71,7 @@ describe('getElementInfo', () => {
 
       expect(elementInfo.props).toEqual(wrapper.getElement().props);
 
-      const descriptor = elementInfo.descriptor;
+      const { descriptor } = elementInfo;
       expect(descriptor.name).toEqual(component.OptionName);
       expect(descriptor.isCollection).toEqual(component.IsCollectionItem);
       expect(descriptor.templates).toEqual(component.TemplateProps || []);

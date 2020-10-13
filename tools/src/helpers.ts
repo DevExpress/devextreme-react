@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 import * as dasherize from 'dasherize';
 import { extname as getPathExtension } from 'path';
 
