@@ -35,6 +35,8 @@ class Item extends React.Component<IListItemProps, { counter: number }> {
   public render(): JSX.Element {
     const { data: { text }, index } = this.props;
     return (
+      // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+      // eslint-disable-next-line jsx-a11y/click-events-have-key-events
       <i onClick={this.handleClick}>
         {index + 1}
         . Component template for item

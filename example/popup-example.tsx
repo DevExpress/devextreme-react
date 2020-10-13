@@ -47,7 +47,7 @@ export default class extends React.Component<any, { visible: boolean; text: stri
           width={600}
           height={400}
         >
-          Enter valid text (it should be 'good'):
+          Enter valid text (it should be `&apos;`good`&apos;`):
           <br />
           <TextBox value={this.state.text} onValueChanged={this.handleTextUpdate} valueChangeEvent="input" />
           <br />

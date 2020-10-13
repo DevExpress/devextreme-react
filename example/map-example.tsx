@@ -43,7 +43,7 @@ export default class extends React.Component<any, { text: string; pos: IPosition
   public render(): JSX.Element {
     return (
       <Example title="dxMap" state={this.state}>
-        <button onClick={this.updatePos}>Move!</button>
+        <button type="button" onClick={this.updatePos}>Move!</button>
         <Map
           provider="bing"
           defaultZoom={11}

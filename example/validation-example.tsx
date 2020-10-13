@@ -15,6 +15,7 @@ export default class extends React.Component<any, any> {
     this.validate = this.validate.bind(this);
   }
 
+  // eslint-disable-next-line class-methods-use-this
   private validate(params: any) {
     const result = params.validationGroup.validate();
     if (result.isValid) {

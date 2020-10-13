@@ -9,6 +9,7 @@ import { TemplatesStore } from './templates-store';
 function normalizeProps(props: ITemplateArgs): ITemplateArgs | ITemplateArgs['data'] {
   if (getConfigOption('useLegacyTemplateEngine')) {
     const model = props.data;
+    // eslint-disable-next-line no-prototype-builtins
     if (model && model.hasOwnProperty('key')) {
       model.dxkey = model.key;
     }

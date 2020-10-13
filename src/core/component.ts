@@ -22,6 +22,7 @@ class Component<P> extends ComponentBase<P> {
     return React.Children.map(
       this.props.children,
       (child) => {
+        // eslint-disable-next-line no-prototype-builtins
         if (child && ExtensionComponent.isPrototypeOf((child as any).type)) {
           return React.cloneElement(
             child as any,

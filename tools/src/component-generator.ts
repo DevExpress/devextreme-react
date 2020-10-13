@@ -123,6 +123,7 @@ function generate(component: IComponent): string {
         let predefinedProps: Array<{ name: string; value: string }> | undefined;
         if (c.predefinedProps) {
           predefinedProps = [];
+          // eslint-disable-next-line no-restricted-syntax
           for (const name of Object.keys(c.predefinedProps)) {
             predefinedProps.push({
               name,
