@@ -4,7 +4,7 @@ import * as React from 'react';
 import { TemplatesStore } from './templates-store';
 
 class TemplatesRenderer extends React.PureComponent<{ templatesStore: TemplatesStore }> {
-  private _updateScheduled: boolean = false;
+  private _updateScheduled = false;
 
   public scheduleUpdate(): void {
     if (this._updateScheduled) {

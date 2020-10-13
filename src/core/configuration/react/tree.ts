@@ -75,7 +75,7 @@ function processChildren(parentElement: IOptionElement, parentFullName: string) 
   const templates: ITemplate[] = [];
   const configCollections: Record<string, IConfigNode[]> = {};
   const configs: Record<string, IConfigNode> = {};
-  let hasTranscludedContent: boolean = false;
+  let hasTranscludedContent = false;
 
   React.Children.map(
     parentElement.props.children,
