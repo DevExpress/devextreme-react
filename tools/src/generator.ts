@@ -97,9 +97,9 @@ function mapWidget(
   customTypes: ICustomType[],
   widgetPackage: string
 ): {
-  fileName: string;
-  component: IComponent
-} {
+    fileName: string;
+    component: IComponent
+  } {
   const name = removePrefix(raw.name, "dx");
   const subscribableOptions: ISubscribableOption[] = raw.options
     .filter((o) => o.isSubscribable)

@@ -36,7 +36,7 @@ class App extends React.Component<any, typeof initialState> {
           text="Remove"
           onClick={this.remove}
         />
-        <Box direction={"row"} width={"100%"} height={75}>
+        <Box direction="row" width="100%" height={75}>
           {this.renderItems()}
         </Box>
       </Example>

@@ -43,7 +43,7 @@ ReactDOM.render(
         defaultValue={102.453}
         step={10}
         min={50}
-        format={"$ #0.##"}
+        format="$ #0.##"
         showSpinButtons={true}
       />
     </Example>
@@ -54,7 +54,7 @@ ReactDOM.render(
 
     <ValidationExample />
 
-    <FormExample/>
+    <FormExample />
 
     <ListExample />
 
@@ -62,14 +62,14 @@ ReactDOM.render(
 
     <AccordionExample />
 
-    <DataGridExample/>
+    <DataGridExample />
 
     <SchedulerExample />
 
     <ChartExample />
 
     <Example title="Element attributes">
-      <Button text="Button with style attr" style={{backgroundColor: "#ffc"}}/>
+      <Button text="Button with style attr" style={{ backgroundColor: "#ffc" }} />
     </Example>
 
     <Example title="SelectBox example">

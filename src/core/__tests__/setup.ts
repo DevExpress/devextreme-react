@@ -6,11 +6,11 @@ configureEnzyme({ adapter: new Adapter() });
 jest.useFakeTimers();
 
 beforeEach(() => {
-    jest.clearAllMocks();
+  jest.clearAllMocks();
 });
 
 export {
-    mount,
-    shallow,
-    React
+  mount,
+  shallow,
+  React
 };

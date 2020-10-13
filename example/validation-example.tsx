@@ -9,44 +9,44 @@ import { EmailRule, RequiredRule, Validator } from "../src/validator";
 
 export default class extends React.Component<any, any> {
 
-    constructor(props: any) {
-        super(props);
+  constructor(props: any) {
+    super(props);
 
-        this.validate = this.validate.bind(this);
-    }
+    this.validate = this.validate.bind(this);
+  }
 
-    public render() {
-        return (
-            <Example title="Validation" state={this.state}>
-                <ValidationGroup>
-                    <TextBox defaultValue={"email@mail.com"}>
-                        <Validator>
-                            <EmailRule message={"Email is invalid."} />
-                            <RequiredRule message={"Email is required."} />
-                        </Validator>
-                    </TextBox>
-                    <br />
-                    <TextBox defaultValue={"password"}>
-                        <Validator>
-                            <RequiredRule message={"Password is required."} />
-                        </Validator>
-                    </TextBox>
-                    <ValidationSummary />
-                    <br />
-                    <Button
-                        text={"Submit"}
-                        onClick={this.validate}
-                    />
-                </ValidationGroup>
-            </Example>
-        );
-    }
+  public render() {
+    return (
+      <Example title="Validation" state={this.state}>
+        <ValidationGroup>
+          <TextBox defaultValue="email@mail.com">
+            <Validator>
+              <EmailRule message="Email is invalid." />
+              <RequiredRule message="Email is required." />
+            </Validator>
+          </TextBox>
+          <br />
+          <TextBox defaultValue="password">
+            <Validator>
+              <RequiredRule message="Password is required." />
+            </Validator>
+          </TextBox>
+          <ValidationSummary />
+          <br />
+          <Button
+            text="Submit"
+            onClick={this.validate}
+          />
+        </ValidationGroup>
+      </Example>
+    );
+  }
 
-    private validate(params: any) {
-        const result = params.validationGroup.validate();
-        if (result.isValid) {
-            // form data is valid
-            params.validationGroup.reset();
-        }
+  private validate(params: any) {
+    const result = params.validationGroup.validate();
+    if (result.isValid) {
+      // form data is valid
+      params.validationGroup.reset();
     }
+  }
 }
