@@ -52,7 +52,7 @@ export default class extends React.Component<any, { text: string; uncontrolledTe
 
   private updateUncontrolledValue() {
     this.setState({
-      uncontrolledText: '#' + this.textBox.option('value'),
+      uncontrolledText: `#${this.textBox.option('value')}`,
     });
   }
 
@@ -62,7 +62,7 @@ export default class extends React.Component<any, { text: string; uncontrolledTe
 
   private handleChange(e: any) {
     this.setState({
-      text: '#' + (e.value as string).toUpperCase().replace('A', '_'),
+      text: `#${(e.value as string).toUpperCase().replace('A', '_')}`,
     });
   }
 }

@@ -101,10 +101,10 @@ function processChildren(parentElement: IOptionElement, parentFullName: string) 
 
         const collectionItem = createConfigNode(
           element,
-          mergeNameParts(
+          `${mergeNameParts(
             parentFullName,
             element.descriptor.name,
-          ) + '[' + collection.length + ']',
+          )}[${collection.length}]`,
         );
 
         collection.push(collectionItem);

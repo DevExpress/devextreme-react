@@ -22,10 +22,10 @@ const createTempate = (templateStr: string): ((model: any) => string) => {
     .replace(/\x08/, '');
 };
 
-const L1: string = '\n' + tab(1);
-const L2: string = '\n' + tab(2);
-const L3: string = '\n' + tab(3);
-const L4: string = '\n' + tab(4);
+const L1: string = `\n${tab(1)}`;
+const L2: string = `\n${tab(2)}`;
+const L3: string = `\n${tab(3)}`;
+const L4: string = `\n${tab(4)}`;
 
 const TAB1: string = tab(1);
 const TAB2: string = tab(2);
