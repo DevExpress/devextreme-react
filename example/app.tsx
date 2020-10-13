@@ -80,5 +80,5 @@ ReactDOM.render(
     <StandaloneValidatorExample />
 
   </div>,
-  document.getElementById("app")
+  document.getElementById("app"),
 );

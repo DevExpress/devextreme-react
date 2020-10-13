@@ -12,5 +12,5 @@ beforeEach(() => {
 export {
   mount,
   shallow,
-  React
+  React,
 };

@@ -12,5 +12,5 @@ class ExtensionComponent<P> extends ComponentBase<P> {
 }
 
 export {
-  ExtensionComponent
+  ExtensionComponent,
 };

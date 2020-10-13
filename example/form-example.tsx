@@ -2,7 +2,7 @@ import * as React from "react";
 import Example from "./example-block";
 
 import { Button, NumberBox } from "../src";
-import Form, { GroupItem, Item, RequiredRule, SimpleItem, } from "../src/form";
+import Form, { GroupItem, Item, RequiredRule, SimpleItem } from "../src/form";
 import TextArea from "../src/text-area";
 
 const employee: any = {
@@ -14,7 +14,7 @@ const employee: any = {
   HireDate: "1995/01/15",
   Notes: "John has been in the Audio/Video industry since 1990. He has led DevAv as its CEO since 2003.",
   Address: "351 S Hill St., Los Angeles, CA",
-  Phone: "360-684-1334"
+  Phone: "360-684-1334",
 };
 
 const positions = [
@@ -24,7 +24,7 @@ const positions = [
   "Controller",
   "Sales Manager",
   "Support Manager",
-  "Shipping Manager"
+  "Shipping Manager",
 ];
 
 export default class extends React.Component<any, {disableIdInput: boolean}> {
@@ -32,7 +32,7 @@ export default class extends React.Component<any, {disableIdInput: boolean}> {
     super(props);
 
     this.state = {
-      disableIdInput: true
+      disableIdInput: true,
     };
   }
 

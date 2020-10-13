@@ -9,12 +9,12 @@ function renderMenuTemplate() {
     locateInMenu: "auto",
     widget: "dxButton",
     options: {
-      icon: "menu"
-    }
+      icon: "menu",
+    },
   }, {
     location: "center",
     locateInMenu: "auto",
-    template: "menuTextTemplate"
+    template: "menuTextTemplate",
   }];
 
   return (
@@ -31,7 +31,7 @@ export default class extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
     this.state = {
-      menuVisible: true
+      menuVisible: true,
     };
     this._optionChangeHandler = this._optionChangeHandler.bind(this);
     this.toggle = this.toggle.bind(this);

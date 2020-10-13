@@ -5,7 +5,7 @@ import {
   createKeyComparator,
   isNotEmptyArray,
   lowercaseFirst,
-  uppercaseFirst
+  uppercaseFirst,
 } from "./helpers";
 
 type IComponent = {
@@ -82,7 +82,7 @@ function generateReExport(path: string, fileName: string): string {
 const renderReExport: (model: {path: string, fileName: string}) => string = createTempate(
   `/** @deprecated Use 'devextreme-react/<#= it.fileName #>' file instead */\n` +
 `export * from "<#= it.path #>";\n` +
-`export { default } from "<#= it.path #>";\n`
+`export { default } from "<#= it.path #>";\n`,
 );
 
 function generate(component: IComponent): string {
@@ -97,13 +97,13 @@ function generate(component: IComponent): string {
 
           options.push(...nestedSubscribableOptions.map((o) => ({
             ...o,
-            name: `default${uppercaseFirst(o.name)}`
+            name: `default${uppercaseFirst(o.name)}`,
           })));
 
           renderedSubscribableOptions = nestedSubscribableOptions.map((o) => renderObjectEntry({
             key: `default${uppercaseFirst(o.name)}`,
-            value: o.name
-          })
+            value: o.name,
+          }),
           );
         }
         const nestedTemplates = createTemplateDto(c.templates);
@@ -111,13 +111,13 @@ function generate(component: IComponent): string {
           nestedTemplates.forEach((t) => {
             options.push({
               name: t.render,
-              type: TYPE_RENDER
+              type: TYPE_RENDER,
             }, {
               name: t.component,
-              type: TYPE_COMPONENT
+              type: TYPE_COMPONENT,
             }, {
               name: t.keyFn,
-              type: TYPE_KEY_FN
+              type: TYPE_KEY_FN,
             });
           });
         }
@@ -128,7 +128,7 @@ function generate(component: IComponent): string {
           for (const name of Object.keys(c.predefinedProps)) {
             predefinedProps.push({
               name,
-              value: c.predefinedProps[name]
+              value: c.predefinedProps[name],
             });
           }
         }
@@ -144,7 +144,7 @@ function generate(component: IComponent): string {
           isCollectionItem: c.isCollectionItem,
           predefinedProps,
           expectedChildren: c.expectedChildren,
-          owners: c.owners
+          owners: c.owners,
         };
       })
     : undefined;
@@ -152,7 +152,7 @@ function generate(component: IComponent): string {
   const optionsName = `I${component.name}Options`;
   const exportNames: string[] = [
     component.name,
-    optionsName
+    optionsName,
   ];
 
   if (component.nestedComponents && isNotEmptyArray(component.nestedComponents)) {
@@ -167,7 +167,7 @@ function generate(component: IComponent): string {
     ? component.subscribableOptions.map((o) => ({
       name: `default${uppercaseFirst(o.name)}`,
       type: o.type,
-      actualOptionName: o.name
+      actualOptionName: o.name,
     }))
     : undefined;
 
@@ -194,13 +194,13 @@ function generate(component: IComponent): string {
       hasPropTypings: isNotEmptyArray(renderedPropTypings),
       configComponentPath: isNotEmptyArray(nestedComponents)
         ? component.configComponentPath
-        : undefined
+        : undefined,
     }),
 
     renderedOptionsInterface: !hasExtraOptions ? undefined : renderOptionsInterface({
       optionsName,
       defaultProps: defaultProps || [],
-      templates: templates || []
+      templates: templates || [],
     }),
 
     renderedComponent: renderComponent({
@@ -210,17 +210,17 @@ function generate(component: IComponent): string {
       renderedTemplateProps: templates && templates.map(renderTemplateOption),
       renderedDefaultProps: defaultProps && defaultProps.map((o) => renderObjectEntry({
         key: o.name,
-        value: o.actualOptionName
-      })
+        value: o.actualOptionName,
+      }),
       ),
       renderedPropTypings,
-      expectedChildren: component.expectedChildren
+      expectedChildren: component.expectedChildren,
     }),
 
     renderedNestedComponents: nestedComponents && nestedComponents.map(renderNestedComponent),
 
     defaultExport: component.name,
-    renderedExports: renderExports(exportNames)
+    renderedExports: renderExports(exportNames),
   });
 }
 
@@ -234,7 +234,7 @@ function createTemplateDto(templates: string[] | undefined) {
       actualOptionName,
       render: formatTemplatePropName(actualOptionName, "Render"),
       component: formatTemplatePropName(actualOptionName, "Component"),
-      keyFn: formatTemplatePropName(actualOptionName, "KeyFn")
+      keyFn: formatTemplatePropName(actualOptionName, "KeyFn"),
     }))
     : undefined;
 }
@@ -250,7 +250,7 @@ function createPropTypingModel(typing: IPropTyping): IRenderedPropTyping {
   }
   return {
     propName: typing.propName,
-    renderedTypes: types
+    renderedTypes: types,
   };
 }
 
@@ -312,7 +312,7 @@ const renderImports: (model: {
 
 `<#? it.configComponentPath #>` +
     `import NestedOption from "<#= it.configComponentPath #>";` + `\n` +
-`<#?#>`
+`<#?#>`,
 );
 
 const renderOptionsInterface: (model: {
@@ -338,7 +338,7 @@ const renderOptionsInterface: (model: {
     `  <#= prop.name #>?: <#= prop.type #>;` + `\n` +
 `<#~#>` +
 
-`}`
+`}`,
 );
 
 const renderComponent: (model: {
@@ -382,7 +382,7 @@ L1 + `};\n` +
     `(<#= it.className #> as any).propTypes = {` + `\n` +
         `<#= it.renderedPropTypings.join(',\\n') #>` + `\n` +
     `};` + `\n` +
-`<#?#>`
+`<#?#>`,
 );
 
 const renderNestedComponent: (model: {
@@ -442,7 +442,7 @@ L1 + `public static OptionName = "<#= it.optionName #>";` +
     L1 + `};` +
 `<#?#>` +
 
-`\n}`
+`\n}`,
 );
 
 const renderTemplateOption: (model: {
@@ -470,7 +470,7 @@ const renderPropTyping: (model: IRenderedPropTyping) => string = createTempate(
     `PropTypes.oneOfType([` + `\n` +
     `    <#= it.renderedTypes.join(',\\n    ') #>` + `\n` +
     `  ])` +
-`<#?#>`
+`<#?#>`,
 );
 // tslint:enable:max-line-length
 
@@ -518,5 +518,5 @@ export {
   IOption,
   ISubscribableOption,
   IPropTyping,
-  generateReExport
+  generateReExport,
 };

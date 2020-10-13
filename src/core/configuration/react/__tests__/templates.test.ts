@@ -17,8 +17,8 @@ const positiveCasesForAnonymous = [
       type: "children",
       isAnonymous: true,
       content: children,
-      keyFn: undefined
-    }
+      keyFn: undefined,
+    },
   },
   {
     props: { children, itemKeyFn: keyFn },
@@ -29,8 +29,8 @@ const positiveCasesForAnonymous = [
       type: "children",
       isAnonymous: true,
       content: children,
-      keyFn
-    }
+      keyFn,
+    },
   },
   {
     props: { renderItem: render },
@@ -41,8 +41,8 @@ const positiveCasesForAnonymous = [
       type: "render",
       isAnonymous: true,
       content: render,
-      keyFn: undefined
-    }
+      keyFn: undefined,
+    },
   },
   {
     props: { renderItem: render, itemKeyFn: keyFn },
@@ -53,8 +53,8 @@ const positiveCasesForAnonymous = [
       type: "render",
       isAnonymous: true,
       content: render,
-      keyFn
-    }
+      keyFn,
+    },
   },
   {
     props: { itemComponent: component },
@@ -65,8 +65,8 @@ const positiveCasesForAnonymous = [
       type: "component",
       isAnonymous: true,
       content: component,
-      keyFn: undefined
-    }
+      keyFn: undefined,
+    },
   },
   {
     props: { itemComponent: component, itemKeyFn: keyFn },
@@ -77,32 +77,32 @@ const positiveCasesForAnonymous = [
       type: "component",
       isAnonymous: true,
       content: component,
-      keyFn
-    }
-  }
+      keyFn,
+    },
+  },
 ];
 
 const negativeCasesForAnonymous = [
   {
     props: { children },
     templateMeta: { tmplOption: "template" },
-    hasTranscludedContent: false
+    hasTranscludedContent: false,
   },
   {
     props: { renderItem: render },
     templateMeta: { tmplOption: "template" },
-    hasTranscludedContent: false
+    hasTranscludedContent: false,
   },
   {
     props: { renderItem: render },
     templateMeta: { tmplOption: "template", component: "itemComponent" },
-    hasTranscludedContent: false
+    hasTranscludedContent: false,
   },
   {
     props: { itemComponent: component },
     templateMeta: { tmplOption: "template", render: "renderItem" },
-    hasTranscludedContent: false
-  }
+    hasTranscludedContent: false,
+  },
 ];
 
 describe("getAnonymousTemplate", () => {
@@ -112,7 +112,7 @@ describe("getAnonymousTemplate", () => {
         const template = getAnonymousTemplate(
           testCase.props,
           testCase.templateMeta as any as ITemplateMeta,
-          testCase.hasTranscludedContent
+          testCase.hasTranscludedContent,
         );
 
         if (template === null) {
@@ -126,7 +126,7 @@ describe("getAnonymousTemplate", () => {
         expect(template.content).toBe(testCase.expected.content);
         expect(template.keyFn).toBe(testCase.expected.keyFn);
       });
-    }
+    },
   );
 
   negativeCasesForAnonymous.map(
@@ -135,12 +135,12 @@ describe("getAnonymousTemplate", () => {
         const template = getAnonymousTemplate(
           testCase.props,
           testCase.templateMeta as any as ITemplateMeta,
-          testCase.hasTranscludedContent
+          testCase.hasTranscludedContent,
         );
 
         expect(template).toBe(null);
       });
-    }
+    },
   );
 });
 
@@ -148,83 +148,83 @@ const casesForNamed = [
   {
     props: {
       name: "template1",
-      component
+      component,
     },
     expected: {
       optionName: "template1",
       type: "component",
       isAnonymous: false,
       content: component,
-      keyFn: undefined
-    }
+      keyFn: undefined,
+    },
   },
   {
     props: {
       name: "template2",
       component,
-      keyFn
+      keyFn,
     },
     expected: {
       optionName: "template2",
       type: "component",
       isAnonymous: false,
       content: component,
-      keyFn
-    }
+      keyFn,
+    },
   },
   {
     props: {
       name: "template3",
-      render
+      render,
     },
     expected: {
       optionName: "template3",
       type: "render",
       isAnonymous: false,
       content: render,
-      keyFn: undefined
-    }
+      keyFn: undefined,
+    },
   },
   {
     props: {
       name: "template4",
       render,
-      keyFn
+      keyFn,
     },
     expected: {
       optionName: "template4",
       type: "render",
       isAnonymous: false,
       content: render,
-      keyFn
-    }
+      keyFn,
+    },
   },
   {
     props: {
       name: "template5",
-      children
+      children,
     },
     expected: {
       optionName: "template5",
       type: "children",
       isAnonymous: false,
       content: children,
-      keyFn: undefined
-    }
+      keyFn: undefined,
+    },
   },
   {
     props: {
       name: "template6",
       children,
-      keyFn
+      keyFn,
     },
     expected: {
       optionName: "template6",
       type: "children",
       isAnonymous: false,
       content: children,
-      keyFn
-    }
+      keyFn,
+    },
   },
   {
     props: {
@@ -235,8 +235,8 @@ const casesForNamed = [
       type: "children",
       isAnonymous: false,
       content: undefined,
-      keyFn: undefined
-    }
+      keyFn: undefined,
+    },
   },
 ];
 
@@ -257,7 +257,7 @@ describe("getNamedTemplate", () => {
         expect(template.content).toBe(testCase.expected.content);
         expect(template.keyFn).toBe(testCase.expected.keyFn);
       });
-    }
+    },
   );
 
   it("returns null", () => {

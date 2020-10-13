@@ -59,9 +59,9 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
         TemplatesRenderer,
         {
           templatesStore: this._templatesStore,
-          ref: this._setTemplatesRendererRef
-        }
-      )
+          ref: this._setTemplatesRendererRef,
+        },
+      ),
     );
   }
 
@@ -99,8 +99,8 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
       element,
       {
         templatesRenderAsynchronously: true,
-        ...this._optionsManager.getInitialOptions(config)
-      }
+        ...this._optionsManager.getInitialOptions(config),
+      },
     );
 
     this._optionsManager.setInstance(this._instance, config);
@@ -113,9 +113,9 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
         templates: this._templateProps,
         initialValuesProps: this._defaults,
         predefinedValuesProps: {},
-        expectedChildren: this._expectedChildren
+        expectedChildren: this._expectedChildren,
       },
-      this.props
+      this.props,
     );
   }
 
@@ -125,7 +125,7 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
 
   private _getElementProps(): Record<string, any> {
     const elementProps: Record<string, any> = {
-      ref: (element: HTMLDivElement) => this._element = element
+      ref: (element: HTMLDivElement) => this._element = element,
     };
 
     elementPropNames.forEach((name) => {
@@ -161,5 +161,5 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
 export {
   IHtmlOptions,
   ComponentBase,
-  DX_REMOVE_EVENT
+  DX_REMOVE_EVENT,
 };

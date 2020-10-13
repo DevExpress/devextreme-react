@@ -18,5 +18,5 @@ interface ITemplate {
 
 export {
   IConfigNode,
-  ITemplate
+  ITemplate,
 };

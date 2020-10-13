@@ -11,7 +11,7 @@ const defaultSettings = {
   iterate: /\<#~\s*(?:#\>|([\s\S]+?)\s*\:\s*([\w$]+)\s*(?:\:\s*([\w$]+))?\s*#\>)/g,
   use: /\<##([\s\S]+?)#\>/g,
   strip: false,
-  varname: "it"
+  varname: "it",
 };
 
 const createTempate = (templateStr: string): ((model: any) => string) => {
@@ -45,5 +45,5 @@ export {
   TAB1,
   TAB2,
   TAB3,
-  TAB4
+  TAB4,
 };

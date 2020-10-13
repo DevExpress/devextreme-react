@@ -4,7 +4,7 @@ import { ITemplate } from "../config-node";
 function getAnonymousTemplate(
   props: Record<string, any>,
   templateMeta: ITemplateMeta,
-  hasTranscludedContent: boolean
+  hasTranscludedContent: boolean,
 ): ITemplate | null {
   if (templateMeta.tmplOption === "template" && hasTranscludedContent) {
     return {
@@ -12,7 +12,7 @@ function getAnonymousTemplate(
       isAnonymous: true,
       type: "children",
       content: props.children,
-      keyFn: props[templateMeta.keyFn]
+      keyFn: props[templateMeta.keyFn],
     };
   }
 
@@ -22,7 +22,7 @@ function getAnonymousTemplate(
       isAnonymous: true,
       type: "render",
       content: props[templateMeta.render],
-      keyFn: props[templateMeta.keyFn]
+      keyFn: props[templateMeta.keyFn],
     };
   }
 
@@ -32,7 +32,7 @@ function getAnonymousTemplate(
       isAnonymous: true,
       type: "component",
       content: props[templateMeta.component],
-      keyFn: props[templateMeta.keyFn]
+      keyFn: props[templateMeta.keyFn],
     };
   }
 
@@ -50,7 +50,7 @@ function getNamedTemplate(props: ITemplateProps): ITemplate | null {
       isAnonymous: false,
       type: "component",
       content: props.component,
-      keyFn: props.keyFn
+      keyFn: props.keyFn,
     };
   }
 
@@ -60,7 +60,7 @@ function getNamedTemplate(props: ITemplateProps): ITemplate | null {
       isAnonymous: false,
       type: "render",
       content: props.render,
-      keyFn: props.keyFn
+      keyFn: props.keyFn,
     };
   }
 
@@ -69,11 +69,11 @@ function getNamedTemplate(props: ITemplateProps): ITemplate | null {
     isAnonymous: false,
     type: "children",
     content: props.children,
-    keyFn: props.keyFn
+    keyFn: props.keyFn,
   };
 }
 
 export {
   getAnonymousTemplate,
-  getNamedTemplate
+  getNamedTemplate,
 };

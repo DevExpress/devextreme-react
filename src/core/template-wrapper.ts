@@ -45,9 +45,9 @@ class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps, ITempla
         React.Fragment,
         null,
         this.props.content,
-        removalListener
+        removalListener,
       ),
-      this.props.container
+      this.props.container,
     );
   }
 
@@ -104,5 +104,5 @@ class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps, ITempla
 export {
   ITemplateWrapperProps,
   TemplateWrapper,
-  TemplateWrapperRenderer
+  TemplateWrapperRenderer,
 };

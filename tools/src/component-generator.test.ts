@@ -33,8 +33,8 @@ export {
       name: "CLASS_NAME",
       baseComponentPath: "BASE_COMPONENT_PATH",
       extensionComponentPath: "EXTENSION_COMPONENT_PATH",
-      dxExportPath: "DX/WIDGET/PATH"
-    })
+      dxExportPath: "DX/WIDGET/PATH",
+    }),
   ).toBe(EXPECTED);
 });
 
@@ -69,8 +69,8 @@ export {
       baseComponentPath: "BASE_COMPONENT_PATH",
       extensionComponentPath: "EXTENSION_COMPONENT_PATH",
       dxExportPath: "DX/WIDGET/PATH",
-      isExtension: true
-    })
+      isExtension: true,
+    }),
   ).toBe(EXPECTED);
 });
 
@@ -120,8 +120,8 @@ export {
         baseComponentPath: "BASE_COMPONENT_PATH",
         extensionComponentPath: "EXTENSION_COMPONENT_PATH",
         dxExportPath: "DX/WIDGET/PATH",
-        templates: ["optionTemplate"]
-      })
+        templates: ["optionTemplate"],
+      }),
     ).toBe(EXPECTED);
   });
 
@@ -177,8 +177,8 @@ export {
         baseComponentPath: "BASE_COMPONENT_PATH",
         extensionComponentPath: "EXTENSION_COMPONENT_PATH",
         dxExportPath: "DX/WIDGET/PATH",
-        templates: ["optionTemplate", "anotherOptionTemplate"]
-      })
+        templates: ["optionTemplate", "anotherOptionTemplate"],
+      }),
     ).toBe(EXPECTED);
   });
 
@@ -226,8 +226,8 @@ export {
         baseComponentPath: "BASE_COMPONENT_PATH",
         extensionComponentPath: "EXTENSION_COMPONENT_PATH",
         dxExportPath: "DX/WIDGET/PATH",
-        templates: ["template"]
-      })
+        templates: ["template"],
+      }),
     ).toBe(EXPECTED);
   });
 });
@@ -274,9 +274,9 @@ export {
         extensionComponentPath: "EXTENSION_COMPONENT_PATH",
         dxExportPath: "DX/WIDGET/PATH",
         subscribableOptions: [
-          { name: "option1", type: "someType" }
-        ]
-      })
+          { name: "option1", type: "someType" },
+        ],
+      }),
     ).toBe(EXPECTED);
   });
 
@@ -323,9 +323,9 @@ export {
         dxExportPath: "DX/WIDGET/PATH",
         subscribableOptions: [
           { name: "option1", type: "someType" },
-          { name: "option2", type: "anotherType" }
-        ]
-      })
+          { name: "option2", type: "anotherType" },
+        ],
+      }),
     ).toBe(EXPECTED);
   });
 });
@@ -406,27 +406,27 @@ export {
             options: [
               {
                 name: "sub_opt_2",
-                type: "TYPE_1"
+                type: "TYPE_1",
               },
               {
                 name: "sub_opt_3",
                 nested: [
                   {
                     name: "sub_sub_opt_4",
-                    type: "TYPE_2"
+                    type: "TYPE_2",
                   },
                   {
                     name: "sub_sub_opt_5",
                     nested: [
                       {
                         name: "sub_sub_sub_opt_6",
-                        type: "TYPE_3"
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
+                        type: "TYPE_3",
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
           },
           {
             className: "Opt_6_SubComponent",
@@ -435,12 +435,12 @@ export {
             options: [
               {
                 name: "sub_sub_sub_opt_8",
-                type: "TYPE_4"
-              }
-            ]
-          }
-        ]
-      })
+                type: "TYPE_4",
+              },
+            ],
+          },
+        ],
+      }),
     ).toBe(EXPECTED);
   });
 
@@ -503,12 +503,12 @@ export {
             options: [
               {
                 name: "sub_opt_2",
-                type: "TYPE_1"
-              }
+                type: "TYPE_1",
+              },
             ],
           },
-        ]
-      })
+        ],
+      }),
     ).toBe(EXPECTED);
   });
 
@@ -577,7 +577,7 @@ export {
               {
                 name: "sub_opt_2",
                 type: "TYPE_1",
-                isSubscribable: true
+                isSubscribable: true,
               },
               {
                 name: "sub_opt_3",
@@ -585,14 +585,14 @@ export {
                   {
                     name: "sub_sub_opt_4",
                     type: "TYPE_2",
-                    isSubscribable: true // should not be rendered
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      })
+                    isSubscribable: true, // should not be rendered
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      }),
     ).toBe(EXPECTED);
   });
 
@@ -663,12 +663,12 @@ export {
             options: [
               {
                 name: "optionTemplate",
-                type: "TYPE_1"
-              }
-            ]
-          }
-        ]
-      })
+                type: "TYPE_1",
+              },
+            ],
+          },
+        ],
+      }),
     ).toBe(EXPECTED);
   });
 
@@ -732,17 +732,17 @@ export {
             optionName: "opt_1",
             isCollectionItem: true,
             predefinedProps: {
-              predefinedProp_1: "predefined-value"
+              predefinedProp_1: "predefined-value",
             },
             options: [
               {
                 name: "sub_opt_2",
-                type: "TYPE_1"
-              }
-            ]
-          }
-        ]
-      })
+                type: "TYPE_1",
+              },
+            ],
+          },
+        ],
+      }),
     ).toBe(EXPECTED);
   });
 });
@@ -790,10 +790,10 @@ export {
         propTypings: [
           {
             propName: "PROP1",
-            types: ["SOME_TYPE"]
-          }
-        ]
-      })
+            types: ["SOME_TYPE"],
+          },
+        ],
+      }),
     ).toBe(EXPECTED);
   });
 
@@ -843,9 +843,9 @@ export {
             propName: "PROP1",
             types: [],
             acceptableValues: ["\"VALUE_1\"", "\"VALUE_2\""],
-          }
-        ]
-      })
+          },
+        ],
+      }),
     ).toBe(EXPECTED);
   });
 
@@ -893,10 +893,10 @@ export {
         propTypings: [
           {
             propName: "PROP1",
-            types: ["SOME_TYPE", "ANOTHER_TYPE"]
-          }
-        ]
-      })
+            types: ["SOME_TYPE", "ANOTHER_TYPE"],
+          },
+        ],
+      }),
     ).toBe(EXPECTED);
   });
 
@@ -947,22 +947,22 @@ export {
         propTypings: [
           {
             propName: "A-PROP",
-            types: ["TYPE_1", "TYPE_2"]
+            types: ["TYPE_1", "TYPE_2"],
           },
           {
             propName: "c-PROP",
-            types: ["TYPE_2"]
+            types: ["TYPE_2"],
           },
           {
             propName: "a-PROP",
-            types: ["TYPE_3"]
+            types: ["TYPE_3"],
           },
           {
             propName: "B-PROP",
-            types: ["TYPE_4"]
-          }
-        ]
-      })
+            types: ["TYPE_4"],
+          },
+        ],
+      }),
     ).toBe(EXPECTED);
   });
 });
@@ -1011,8 +1011,8 @@ export {
         expectedChildren: [
           { componentName: "expectedOption1", optionName: "expectedName1", isCollectionItem: true },
           { componentName: "expectedOption2", optionName: "expectedName2" },
-        ]
-      })
+        ],
+      }),
     ).toBe(EXPECTED);
   });
 
@@ -1078,16 +1078,16 @@ export {
               {
                 componentName: "expectedOption1",
                 optionName: "expectedName1",
-                isCollectionItem: true
+                isCollectionItem: true,
               },
               {
                 componentName: "expectedOption2",
-                optionName: "expectedName2"
+                optionName: "expectedName2",
               },
-            ]
-          }
-        ]
-      })
+            ],
+          },
+        ],
+      }),
     ).toBe(EXPECTED);
   });
 

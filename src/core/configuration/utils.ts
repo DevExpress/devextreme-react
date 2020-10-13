@@ -8,14 +8,14 @@ export function parseOptionName(name: string): IOptionInfo | ICollectionOptionIn
   if (parts.length === 1) {
     return {
       isCollectionItem: false,
-      name
+      name,
     };
   }
 
   return {
     isCollectionItem: true,
     name: parts[0],
-    index: Number(parts[1].slice(0, -1))
+    index: Number(parts[1].slice(0, -1)),
   };
 }
 

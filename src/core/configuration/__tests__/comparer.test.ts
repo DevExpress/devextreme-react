@@ -8,13 +8,13 @@ const emptyNode: IConfigNode = {
   options: {},
   templates: [],
   configs: {},
-  configCollections: {}
+  configCollections: {},
 };
 
 describe("child config nodes comparing", () => {
   it("detects additions", () => {
     const prevConfig = {
-      ...emptyNode
+      ...emptyNode,
     };
 
     const currentConfig = {
@@ -23,9 +23,9 @@ describe("child config nodes comparing", () => {
         option: {
           ...emptyNode,
           fullName: "option",
-          options: { a: 1 }
-        }
-      }
+          options: { a: 1 },
+        },
+      },
     };
 
     const changes = getChanges(currentConfig, prevConfig);
@@ -45,18 +45,18 @@ describe("collections comparing", () => {
             ...emptyNode,
             fullName: "items[0].items[0].items[0]",
             options: {
-              a: 1
-            }
+              a: 1,
+            },
           },
           {
             ...emptyNode,
             fullName: "items[0].items[0].items[1]",
             options: {
-              b: 2
-            }
-          }
-        ]
-      }
+              b: 2,
+            },
+          },
+        ],
+      },
     };
 
     const currentConfig = {
@@ -68,25 +68,25 @@ describe("collections comparing", () => {
             ...emptyNode,
             fullName: "items[0].items[0].items[0]",
             options: {
-              a: 11
-            }
+              a: 11,
+            },
           },
           {
             ...emptyNode,
             fullName: "items[0].items[0].items[1]",
             options: {
-              b: 22
-            }
+              b: 22,
+            },
           },
           {
             ...emptyNode,
             fullName: "items[0].items[0].items[2]",
             options: {
-              c: 33
-            }
-          }
-        ]
-      }
+              c: 33,
+            },
+          },
+        ],
+      },
     };
 
     const changes = getChanges(currentConfig, prevConfig);

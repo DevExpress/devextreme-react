@@ -12,14 +12,14 @@ function buildConfig(root: IConfigNode, ignoreInitialValues: boolean): IConfig {
 
   return {
     templates: templatesAccum,
-    options
+    options,
   };
 }
 
 function buildNode(
   node: IConfigNode,
   templatesAccum: Record<string, ITemplate>,
-  ignoreInitialValues: boolean
+  ignoreInitialValues: boolean,
 ): Record<string, any> {
   const result: Record<string, any> = {};
 
@@ -33,7 +33,7 @@ function buildNode(
 
   for (const key of Object.keys(node.configCollections)) {
     result[key] = node.configCollections[key].map(
-      (item) => buildNode(item, templatesAccum, ignoreInitialValues)
+      (item) => buildNode(item, templatesAccum, ignoreInitialValues),
     );
   }
 
@@ -55,7 +55,7 @@ function buildNode(
 function buildTemplates(
   node: IConfigNode,
   optionsAccum: Record<string, any>,
-  templatesAccum: Record<string, ITemplate>
+  templatesAccum: Record<string, ITemplate>,
 ) {
   node.templates.map(
     (template) => {
@@ -66,7 +66,7 @@ function buildTemplates(
       } else {
         templatesAccum[template.optionName] = template;
       }
-    }
+    },
   );
 }
 
@@ -87,7 +87,7 @@ function findValue(node: IConfigNode, path: string[]): undefined | IValueDescrip
   if (!name) {
     return {
       value: buildConfig(node, true).options,
-      type: ValueType.Complex
+      type: ValueType.Complex,
     };
   }
 
@@ -119,7 +119,7 @@ function findValue(node: IConfigNode, path: string[]): undefined | IValueDescrip
 
     return {
       value: childCollection.map((item) => buildNode(item, {}, true)),
-      type: ValueType.Array
+      type: ValueType.Array,
     };
   }
 
@@ -139,7 +139,7 @@ function findValueInObject(obj: any, path: string[]): undefined | IValueDescript
   if (!key) {
     return {
       value: obj,
-      type: ValueType.Simple
+      type: ValueType.Simple,
     };
   }
 
@@ -151,5 +151,5 @@ export {
   buildConfig,
   buildNode,
   buildTemplates,
-  findValue
+  findValue,
 };

@@ -25,12 +25,12 @@ class Component<P> extends ComponentBase<P> {
         if (child && ExtensionComponent.isPrototypeOf((child as any).type)) {
           return React.cloneElement(
             child as any,
-            { onMounted: this._registerExtension }
+            { onMounted: this._registerExtension },
           );
         }
 
         return child;
-      }
+      },
     );
   }
 
@@ -45,5 +45,5 @@ class Component<P> extends ComponentBase<P> {
 
 export {
   Component,
-  IHtmlOptions
+  IHtmlOptions,
 };

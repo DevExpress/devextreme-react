@@ -12,7 +12,7 @@ export default class extends React.Component<any, { text: string }> {
   constructor(props: any) {
     super(props);
     this.state = {
-      text: "Clear me"
+      text: "Clear me",
     };
 
     this.clearText = this.clearText.bind(this);
@@ -54,13 +54,13 @@ export default class extends React.Component<any, { text: string }> {
 
   private clearText() {
     this.setState({
-      text: ""
+      text: "",
     });
   }
 
   private handleTextChange(e: any) {
     this.setState({
-      text: e.value
+      text: e.value,
     });
   }
 }

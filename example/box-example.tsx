@@ -8,13 +8,13 @@ const initialState = {
   items: [
     {
       id: 1,
-      name: "Item #1"
+      name: "Item #1",
     },
     {
       id: 2,
-      name: "Item #2"
-    }
-  ]
+      name: "Item #2",
+    },
+  ],
 };
 
 class App extends React.Component<any, typeof initialState> {
@@ -56,7 +56,7 @@ class App extends React.Component<any, typeof initialState> {
     const id = items.length ? items[items.length - 1].id + 1 : 1;
     items.push({
       id,
-      name: `Item #${id}`
+      name: `Item #${id}`,
     });
 
     this.setState({ items });

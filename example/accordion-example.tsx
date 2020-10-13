@@ -14,7 +14,7 @@ interface IAccordionItemProps {
 const items: IAccordionItemProps[] = [
   { text: "123", title: "title123" },
   { text: "234", title: "title234" },
-  { text: "567", title: "title567" }
+  { text: "567", title: "title567" },
 ];
 
 const ItemTitle = (data: IAccordionItemProps) => <div style={{ height: 100 }}>{data.title}</div>;
