@@ -7,7 +7,7 @@ const gulp = require('gulp');
 const shell = require('gulp-shell');
 const header = require('gulp-header');
 const ts = require('gulp-typescript');
-const tslint = require("gulp-tslint");
+const eslint = require("gulp-eslint");
 
 const config = require('./build.config');
 
@@ -151,8 +151,11 @@ gulp.task(NPM_PACK, gulp.series(
 
 gulp.task(LINT, () => {
   return gulp.src([config.src, config.generator.src, config.example.src])
-    .pipe(tslint({
-        formatter: "verbose"
-    }))
-    .pipe(tslint.report())
+  .pipe(eslint({configFile: "./.eslintrc"
+  , fix: true
+}))
+  .pipe(eslint.format())
+  .pipe(gulp.dest(file => file.base))
+  .pipe(eslint.formatEach('compact', process.stderr))
 })
+
