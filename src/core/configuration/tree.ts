@@ -126,8 +126,6 @@ function findValue(node: IConfigNode, path: string[]): undefined | IValueDescrip
   if (optionInfo.name in node.options) {
     return findValueInObject(node.options[optionInfo.name], path);
   }
-
-  return;
 }
 
 function findValueInObject(obj: any, path: string[]): undefined | IValueDescriptor {

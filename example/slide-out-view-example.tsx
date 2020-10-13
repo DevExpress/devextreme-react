@@ -20,11 +20,11 @@ function renderMenuTemplate() {
   }];
 
   return (
-    <React.Fragment>
+    <>
       <Toolbar items={items}>
         <Template name="menuTextTemplate" render={() => <h4>Demo</h4>} />
       </Toolbar>
-    </React.Fragment>
+    </>
   );
 }
 

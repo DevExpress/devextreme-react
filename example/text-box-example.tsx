@@ -43,6 +43,7 @@ export default class extends React.Component<any, { text: string; uncontrolledTe
         uncontrolled mode
         <TextBox
           defaultValue="initial text"
+          // eslint-disable-next-line no-return-assign
           ref={(ref) => ref && (this.textBox = ref.instance)}
         />
         <br />

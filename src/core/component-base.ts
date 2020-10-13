@@ -112,7 +112,7 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
 
   private _getElementProps(): Record<string, any> {
     const elementProps: Record<string, any> = {
-      ref: (element: HTMLDivElement) => this._element = element,
+      ref: (element: HTMLDivElement) => { this._element = element; },
     };
 
     elementPropNames.forEach((name) => {
