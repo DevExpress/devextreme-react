@@ -8,7 +8,6 @@ import { mount, React, shallow } from './setup';
 import { TestComponent, Widget, WidgetClass } from './test-component';
 
 class ComponentWithTemplates extends TestComponent {
-
   protected _templateProps = [{
     tmplOption: 'item',
     render: 'itemRender',
@@ -447,11 +446,9 @@ describe('nested template', () => {
     expect(templates.length).toBe(1);
     expect(templates[0]).toBe('1');
   });
-
 });
 
 describe('component/render in nested options', () => {
-
   // tslint:disable-next-line:max-classes-per-file
   class NestedComponent extends ConfigurationComponent<{
     item?: any;

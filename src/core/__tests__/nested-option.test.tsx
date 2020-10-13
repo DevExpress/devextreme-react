@@ -54,7 +54,6 @@ class CollectionSubNestedComponent extends ConfigurationComponent<{ c?: number, 
 }
 
 describe('nested option', () => {
-
   it('is pulled', () => {
     mount(
       <TestComponent>
@@ -156,9 +155,7 @@ describe('nested option', () => {
   });
 
   it('is pulled according to expectations', () => {
-
     class TestComponentWithExpectation<P = any> extends Component<P> {
-
       protected _expectedChildren = {
         option: {
           optionName: 'expectedItemOptions',
@@ -229,7 +226,8 @@ describe('nested option', () => {
         <CollectionNestedComponent key={1} c={123} d="abc" />,
         <CollectionNestedComponent key={2} c={999} />,
         <CollectionNestedComponent key={3} d="def" />,
-      ] });
+      ],
+    });
     jest.runAllTimers();
 
     expect(Widget.option.mock.calls.length).toBe(1);
@@ -237,7 +235,6 @@ describe('nested option', () => {
   });
 
   it('is pulled after update', () => {
-
     const TestContainer = (props: any) => (
       <TestComponent>
         <NestedComponent a={props.value} />
@@ -253,7 +250,6 @@ describe('nested option', () => {
   });
 
   it('is pulled after update without rubbish', () => {
-
     const component = mount(
       <TestComponent>
         <NestedComponent a={123} />
@@ -323,11 +319,9 @@ describe('nested option', () => {
       { c: 123, d: 'abc' },
     ]]);
   });
-
 });
 
 describe('nested sub-option', () => {
-
   it('is pulled', () => {
     mount(
       <TestComponent>
@@ -463,7 +457,6 @@ describe('nested sub-option', () => {
   });
 
   it('is pulled after update', () => {
-
     const TestContainer = (props: any) => (
       <TestComponent>
         <NestedComponent a={123}>
@@ -483,7 +476,6 @@ describe('nested sub-option', () => {
   });
 
   it('is pulled according to expectations', () => {
-
     class NestedComponentWithExpectations extends ConfigurationComponent<{ a: number }> {
       public static OptionName = 'option';
       public static ExpectedChildren = {

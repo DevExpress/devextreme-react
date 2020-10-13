@@ -7,7 +7,6 @@ const ExtensionWidgetClass = jest.fn(() => Widget);
 
 // tslint:disable:max-classes-per-file
 class TestExtensionComponent<P = any> extends ExtensionComponent<P> {
-
   constructor(props: P) {
     super(props);
 

@@ -1,7 +1,9 @@
 import * as React from 'react';
 import Example from './example-block';
 
-import Map, { Location, Marker, Route, Tooltip } from '../src/map';
+import Map, {
+  Location, Marker, Route, Tooltip,
+} from '../src/map';
 
 interface IPosition {
   lat: number;
@@ -14,7 +16,6 @@ const startPos = {
 };
 
 export default class extends React.Component<any, { text: string; pos: IPosition }> {
-
   constructor(props: any) {
     super(props);
     const pos = { ...startPos };

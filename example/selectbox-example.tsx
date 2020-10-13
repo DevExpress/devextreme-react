@@ -6,7 +6,6 @@ const SelectBoxItem = (option: any) => {
 };
 
 class SelectBoxEditor extends React.Component {
-
   public render() {
     return (
       <SelectBox

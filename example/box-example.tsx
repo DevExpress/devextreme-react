@@ -18,7 +18,6 @@ const initialState = {
 };
 
 class App extends React.Component<any, typeof initialState> {
-
   constructor(props: any) {
     super(props);
 
@@ -49,7 +48,7 @@ class App extends React.Component<any, typeof initialState> {
         {item.name}
       </Item>
     ));
-  }
+  };
 
   private add = () => {
     const items = [...this.state.items];
@@ -60,12 +59,12 @@ class App extends React.Component<any, typeof initialState> {
     });
 
     this.setState({ items });
-  }
+  };
 
   private remove = () => {
     const items = this.state.items.slice(0, this.state.items.length - 1);
     this.setState({ items });
-  }
+  };
 }
 
 export default App;

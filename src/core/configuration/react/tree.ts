@@ -3,7 +3,9 @@ import * as React from 'react';
 import { ITemplateMeta, ITemplateProps } from '../../template';
 import { separateProps } from '../../widget-config';
 
-import { ElementType, getElementInfo, IExpectedChild, IOptionElement } from './element';
+import {
+  ElementType, getElementInfo, IExpectedChild, IOptionElement,
+} from './element';
 
 import { IConfigNode, ITemplate } from '../config-node';
 import { mergeNameParts } from '../utils';

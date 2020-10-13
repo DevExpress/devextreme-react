@@ -1,5 +1,7 @@
 import * as React from 'react';
-import { Button, TextBox, ValidationSummary, Validator } from '../src';
+import {
+  Button, TextBox, ValidationSummary, Validator,
+} from '../src';
 
 import { RequiredRule } from '../src/validator';
 import Example from './example-block';
@@ -52,11 +54,11 @@ class ValidatorExample extends React.Component<any, any> {
     this._callbacks.forEach((callback: any) => {
       callback();
     });
-  }
+  };
 
   private _onSubmit = (e: any) => {
     e.validationGroup.validate();
-  }
+  };
 }
 
 export default ValidatorExample;

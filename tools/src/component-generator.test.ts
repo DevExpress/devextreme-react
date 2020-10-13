@@ -75,7 +75,6 @@ export {
 });
 
 describe('template-props generation', () => {
-
   it('processes option', () => {
     // #region EXPECTED
     const EXPECTED = `
@@ -233,7 +232,6 @@ export {
 });
 
 describe('props generation', () => {
-
   it('processes subscribable option', () => {
     // #region EXPECTED
     const EXPECTED = `
@@ -331,7 +329,6 @@ export {
 });
 
 describe('nested options', () => {
-
   it('processes nested options', () => {
     // #region EXPECTED
     const EXPECTED = `
@@ -748,7 +745,6 @@ export {
 });
 
 describe('prop typings', () => {
-
   it('adds check for single type', () => {
     // #region EXPECTED
     const EXPECTED = `
@@ -968,7 +964,6 @@ export {
 });
 
 describe('child expectation', () => {
-
   it('is rendered for widget', () => {
     // #region EXPECTED
     const EXPECTED = `
@@ -1090,5 +1085,4 @@ export {
       }),
     ).toBe(EXPECTED);
   });
-
 });

@@ -1,7 +1,9 @@
 import * as React from 'react';
 import Example from './example-block';
 
-import { Button, SlideOutView, Template, Toolbar } from '../src';
+import {
+  Button, SlideOutView, Template, Toolbar,
+} from '../src';
 
 function renderMenuTemplate() {
   const items = [{
@@ -27,7 +29,6 @@ function renderMenuTemplate() {
 }
 
 export default class extends React.Component<any, any> {
-
   constructor(props: any) {
     super(props);
     this.state = {
