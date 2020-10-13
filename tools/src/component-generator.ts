@@ -184,13 +184,17 @@ function generate(component: IComponent): string {
 
     renderedImports: renderImports({
       dxExportPath: component.dxExportPath,
-      baseComponentPath: component.isExtension ? component.extensionComponentPath : component.baseComponentPath,
+      baseComponentPath: component.isExtension
+        ? component.extensionComponentPath
+        : component.baseComponentPath,
       baseComponentName: component.isExtension ? "ExtensionComponent" : "Component",
       widgetName,
       optionsAliasName: hasExtraOptions ? undefined : optionsName,
       hasExtraOptions,
       hasPropTypings: isNotEmptyArray(renderedPropTypings),
-      configComponentPath: isNotEmptyArray(nestedComponents) ? component.configComponentPath : undefined
+      configComponentPath: isNotEmptyArray(nestedComponents)
+        ? component.configComponentPath
+        : undefined
     }),
 
     renderedOptionsInterface: !hasExtraOptions ? undefined : renderOptionsInterface({
