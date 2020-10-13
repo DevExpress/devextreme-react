@@ -21,6 +21,18 @@ export default class extends React.Component<any, { visible: boolean; text: stri
     this.handleTextUpdate = this.handleTextUpdate.bind(this);
   }
 
+  private toggle(visible: boolean) {
+    this.setState({
+      visible: visible || !validateText(this.state.text),
+    });
+  }
+
+  private handleTextUpdate(e: any) {
+    this.setState({
+      text: e.value,
+    });
+  }
+
   public render() {
     return (
       <Example title="DxPopup" state={this.state}>
@@ -67,17 +79,5 @@ export default class extends React.Component<any, { visible: boolean; text: stri
         </Popup>
       </Example>
     );
-  }
-
-  private toggle(visible: boolean) {
-    this.setState({
-      visible: visible || !validateText(this.state.text),
-    });
-  }
-
-  private handleTextUpdate(e: any) {
-    this.setState({
-      text: e.value,
-    });
   }
 }

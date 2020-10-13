@@ -50,21 +50,6 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
     this._optionsManager = new OptionsManager(this._templatesManager);
   }
 
-  public render() {
-    return React.createElement(
-      'div',
-      this._getElementProps(),
-      this.renderChildren(),
-      React.createElement(
-        TemplatesRenderer,
-        {
-          templatesStore: this._templatesStore,
-          ref: this._setTemplatesRendererRef,
-        },
-      ),
-    );
-  }
-
   public componentDidMount() {
     this._updateCssClasses(null, this.props);
   }
@@ -85,10 +70,6 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
       this._instance.dispose();
     }
     this._optionsManager.dispose();
-  }
-
-  protected renderChildren() {
-    return this.props.children;
   }
 
   protected _createWidget(element?: Element) {
@@ -135,7 +116,6 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
     });
     return elementProps;
   }
-
   private _updateCssClasses(prevProps: P | null, newProps: P) {
     const prevClassName = prevProps ? getClassName(prevProps) : undefined;
     const newClassName = getClassName(newProps);
@@ -155,6 +135,25 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
         this._element.classList.add(...classNames);
       }
     }
+  }
+
+  protected renderChildren() {
+    return this.props.children;
+  }
+
+  public render() {
+    return React.createElement(
+      'div',
+      this._getElementProps(),
+      this.renderChildren(),
+      React.createElement(
+        TemplatesRenderer,
+        {
+          templatesStore: this._templatesStore,
+          ref: this._setTemplatesRendererRef,
+        },
+      ),
+    );
   }
 }
 

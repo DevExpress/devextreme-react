@@ -1,9 +1,7 @@
 import * as React from 'react';
 import { SelectBox } from '../src/select-box';
 
-const SelectBoxItem = (option: any) => {
-  return <span>{option.data.value}</span>;
-};
+const SelectBoxItem = (option: any) => <span>{option.data.value}</span>;
 
 class SelectBoxEditor extends React.Component {
   public render() {

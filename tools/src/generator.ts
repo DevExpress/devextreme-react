@@ -144,18 +144,16 @@ function extractNestedComponents(
     nameClassMap[p.name] = uppercaseFirst(p.name);
   });
 
-  return props.map((p) => {
-    return {
-      className: nameClassMap[p.name],
-      owners: p.owners.map((o) => nameClassMap[o]),
-      optionName: p.optionName,
-      options: p.props.map(mapOption),
-      isCollectionItem: p.isCollectionItem,
-      templates: p.templates,
-      predefinedProps: p.predefinedProps,
-      expectedChildren: p.nesteds,
-    };
-  });
+  return props.map((p) => ({
+    className: nameClassMap[p.name],
+    owners: p.owners.map((o) => nameClassMap[o]),
+    optionName: p.optionName,
+    options: p.props.map(mapOption),
+    isCollectionItem: p.isCollectionItem,
+    templates: p.templates,
+    predefinedProps: p.predefinedProps,
+    expectedChildren: p.nesteds,
+  }));
 }
 
 function extractPropTypings(
@@ -168,8 +166,8 @@ function extractPropTypings(
 }
 
 function createPropTyping(option: IProp, customTypes: Record<string, ICustomType>): IPropTyping {
-  const isRestrictedType =
-  (t: ITypeDescr): boolean => t.acceptableValues && t.acceptableValues.length > 0;
+  const isRestrictedType = (t: ITypeDescr): boolean => t.acceptableValues
+    && t.acceptableValues.length > 0;
 
   const rawTypes = option.types.filter((t) => !isRestrictedType(t));
   const restrictedTypes = option.types.filter((t) => isRestrictedType(t));
@@ -195,8 +193,8 @@ function createPropTyping(option: IProp, customTypes: Record<string, ICustomType
 }
 
 function mapOption(prop: IProp): IOption {
-  return isEmptyArray(prop.props) ?
-    {
+  return isEmptyArray(prop.props)
+    ? {
       name: prop.name,
       type: 'any',
       isSubscribable: prop.isSubscribable || undefined,

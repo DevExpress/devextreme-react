@@ -17,23 +17,17 @@ import NumberBox from '../src/number-box';
 
 import { sales } from './data';
 
-const DetailComponent = ({ data: { data } }: any) => {
-  return (
-    <p>
-      Row data:
-      <br />
-      {JSON.stringify(data)}
-    </p>
-  );
-};
+const DetailComponent = ({ data: { data } }: any) => (
+  <p>
+    Row data:
+    <br />
+    {JSON.stringify(data)}
+  </p>
+);
 
-const CityComponent = (props: any) => {
-  return <i>{props.data.displayValue}</i>;
-};
+const CityComponent = (props: any) => <i>{props.data.displayValue}</i>;
 
-const RegionComponent = (props: any) => {
-  return <b>{props.data.displayValue}</b>;
-};
+const RegionComponent = (props: any) => <b>{props.data.displayValue}</b>;
 
 export default class extends React.Component<any, { expandAll: boolean, pageSize: number }> {
   constructor(props: any) {
@@ -45,6 +39,34 @@ export default class extends React.Component<any, { expandAll: boolean, pageSize
 
     this.handleToolbarPreparing = this.handleToolbarPreparing.bind(this);
     this.handlePageIndexChange = this.handlePageIndexChange.bind(this);
+  }
+
+  private handleToolbarPreparing(args: any) {
+    args.toolbarOptions.items.unshift({
+      location: 'after',
+      template: 'toolbarLabel',
+    },
+    {
+      location: 'after',
+      widget: 'dxButton',
+      options: {
+        icon: 'chevronup',
+        onClick: (e: any) => {
+          this.setState((state) => {
+            e.component.option('icon', state.expandAll ? 'chevrondown' : 'chevronup');
+            return {
+              expandAll: !state.expandAll,
+            };
+          });
+        },
+      },
+    });
+  }
+
+  private handlePageIndexChange(e: any) {
+    this.setState({
+      pageSize: e.value,
+    });
   }
 
   public render() {
@@ -96,33 +118,5 @@ export default class extends React.Component<any, { expandAll: boolean, pageSize
         </DataGrid>
       </Example>
     );
-  }
-
-  private handleToolbarPreparing(args: any) {
-    args.toolbarOptions.items.unshift({
-      location: 'after',
-      template: 'toolbarLabel',
-    },
-    {
-      location: 'after',
-      widget: 'dxButton',
-      options: {
-        icon: 'chevronup',
-        onClick: (e: any) => {
-          this.setState((state) => {
-            e.component.option('icon', state.expandAll ? 'chevrondown' : 'chevronup');
-            return {
-              expandAll: !state.expandAll,
-            };
-          });
-        },
-      },
-    });
-  }
-
-  private handlePageIndexChange(e: any) {
-    this.setState({
-      pageSize: e.value,
-    });
   }
 }

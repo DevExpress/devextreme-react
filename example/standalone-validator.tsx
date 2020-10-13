@@ -18,15 +18,25 @@ class ValidatorExample extends React.Component<any, any> {
     };
 
     this._adapter = {
-      getValue: () => {
-        return this._currentValue;
-      },
+      getValue: () => this._currentValue,
       validationRequestsCallbacks: this._callbacks,
       applyValidationResults: (e: any) => {
         this.setState({ isValid: e.isValid });
       },
     };
   }
+
+  private _onValueChanged = (e: any) => {
+    this._currentValue = e.value;
+
+    this._callbacks.forEach((callback: any) => {
+      callback();
+    });
+  };
+
+  private _onSubmit = (e: any) => {
+    e.validationGroup.validate();
+  };
 
   public render() {
     return (
@@ -47,18 +57,6 @@ class ValidatorExample extends React.Component<any, any> {
       </div>
     );
   }
-
-  private _onValueChanged = (e: any) => {
-    this._currentValue = e.value;
-
-    this._callbacks.forEach((callback: any) => {
-      callback();
-    });
-  };
-
-  private _onSubmit = (e: any) => {
-    e.validationGroup.validate();
-  };
 }
 
 export default ValidatorExample;

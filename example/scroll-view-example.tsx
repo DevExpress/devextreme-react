@@ -18,9 +18,20 @@ export default class extends React.Component<any, { text: string }> {
     this.handleTextChange = this.handleTextChange.bind(this);
   }
 
+  private clearText() {
+    this.setState({
+      text: '',
+    });
+  }
+
+  private handleTextChange(e: any) {
+    this.setState({
+      text: e.value,
+    });
+  }
+
   public render() {
     return (
-    // tslint:disable:max-line-length
       <Example title="DxScrollView" state={this.state}>
         <ScrollView height="150px">
           <Button text="Show alert" onClick={() => alert('shown')} />
@@ -49,17 +60,5 @@ export default class extends React.Component<any, { text: string }> {
         </ScrollView>
       </Example>
     );
-  }
-
-  private clearText() {
-    this.setState({
-      text: '',
-    });
-  }
-
-  private handleTextChange(e: any) {
-    this.setState({
-      text: e.value,
-    });
   }
 }

@@ -14,6 +14,14 @@ export default class extends React.Component<any, any> {
     this.validate = this.validate.bind(this);
   }
 
+  private validate(params: any) {
+    const result = params.validationGroup.validate();
+    if (result.isValid) {
+      // form data is valid
+      params.validationGroup.reset();
+    }
+  }
+
   public render() {
     return (
       <Example title="Validation" state={this.state}>
@@ -39,13 +47,5 @@ export default class extends React.Component<any, any> {
         </ValidationGroup>
       </Example>
     );
-  }
-
-  private validate(params: any) {
-    const result = params.validationGroup.validate();
-    if (result.isValid) {
-      // form data is valid
-      params.validationGroup.reset();
-    }
   }
 }

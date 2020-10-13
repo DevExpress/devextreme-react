@@ -31,6 +31,23 @@ export default class extends React.Component<any, IState> {
     this.updateSeriesName = this.updateSeriesName.bind(this);
   }
 
+  private GetTimeString = () => new Date().toLocaleTimeString();
+
+  private updateTime() {
+    this.setState({
+      currentTime: this.GetTimeString(),
+    });
+  }
+
+  private updateSeriesName(seriesName: string) {
+    const series = [...this.state.series];
+    series[0].name = seriesName;
+    this.setState({
+      seriesName,
+      series,
+    });
+  }
+
   public render() {
     return (
       <Example title="DxChart" state={this.state}>
@@ -53,26 +70,8 @@ export default class extends React.Component<any, IState> {
       </Example>
     );
   }
-
-  private updateTime() {
-    this.setState({
-      currentTime: this.GetTimeString(),
-    });
-  }
-
-  private updateSeriesName(seriesName: string) {
-    const series = [...this.state.series];
-    series[0].name = seriesName;
-    this.setState({
-      seriesName,
-      series,
-    });
-  }
-
-  private GetTimeString = () => new Date().toLocaleTimeString();
 }
 
-// tslint:disable-next-line:max-classes-per-file
 class Updater extends React.Component<{ onChange: (value: string) => void }, { value: string }> {
   constructor(props: { onChange: (value: string) => void }) {
     super(props);
@@ -82,6 +81,16 @@ class Updater extends React.Component<{ onChange: (value: string) => void }, { v
 
     this.update = this.update.bind(this);
     this.fireOnChange = this.fireOnChange.bind(this);
+  }
+
+  private fireOnChange() {
+    this.props.onChange(this.state.value);
+  }
+
+  private update(e: any) {
+    this.setState({
+      value: e.value,
+    });
   }
 
   public render() {
@@ -95,15 +104,5 @@ class Updater extends React.Component<{ onChange: (value: string) => void }, { v
         </div>
       </div>
     );
-  }
-
-  private fireOnChange() {
-    this.props.onChange(this.state.value);
-  }
-
-  private update(e: any) {
-    this.setState({
-      value: e.value,
-    });
   }
 }

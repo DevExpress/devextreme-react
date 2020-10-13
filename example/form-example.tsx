@@ -38,6 +38,8 @@ export default class extends React.Component<any, {disableIdInput: boolean}> {
     };
   }
 
+  private toggleIdInputState = () => this.setState({ disableIdInput: !this.state.disableIdInput });
+
   public render() {
     const { disableIdInput } = this.state;
     return (
@@ -88,10 +90,8 @@ export default class extends React.Component<any, {disableIdInput: boolean}> {
       </Example>
     );
   }
-
-  private toggleIdInputState = () => this.setState({ disableIdInput: !this.state.disableIdInput });
 }
 
-const getTextBoxComponent = (disabled: boolean) => (props: any) => {
-  return <NumberBox disabled={disabled} value={props.data.editorOptions.value} />;
-};
+const getTextBoxComponent = (disabled: boolean) => (props: any) => (
+  <NumberBox disabled={disabled} value={props.data.editorOptions.value} />
+);

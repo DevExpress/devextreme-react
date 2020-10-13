@@ -25,6 +25,12 @@ class Item extends React.Component<IListItemProps, { counter: number }> {
     this.handleClick = this.handleClick.bind(this);
   }
 
+  private handleClick() {
+    this.setState({
+      counter: this.state.counter + 1,
+    });
+  }
+
   public render() {
     const { data: { text }, index } = this.props;
     return (
@@ -39,12 +45,6 @@ class Item extends React.Component<IListItemProps, { counter: number }> {
         </b>
       </i>
     );
-  }
-
-  private handleClick() {
-    this.setState({
-      counter: this.state.counter + 1,
-    });
   }
 }
 
@@ -86,6 +86,23 @@ export default class extends React.Component<any, { text: string; items: IListIt
     this.addTextToList = this.addTextToList.bind(this);
   }
 
+  public componentWillUnmount() {
+    this.dataSource.dispose();
+  }
+
+  private updateText(e: any) {
+    this.setState({
+      text: e.value,
+    });
+  }
+
+  private addTextToList() {
+    this.setState({
+      items: [...this.state.items, { text: this.state.text }],
+      text: '',
+    });
+  }
+
   public render() {
     return (
       <Example title="DxList" state={this.state}>
@@ -119,23 +136,6 @@ export default class extends React.Component<any, { text: string; items: IListIt
         <Button text="Add to list" onClick={this.addTextToList} />
       </Example>
     );
-  }
-
-  public componentWillUnmount() {
-    this.dataSource.dispose();
-  }
-
-  private updateText(e: any) {
-    this.setState({
-      text: e.value,
-    });
-  }
-
-  private addTextToList() {
-    this.setState({
-      items: [...this.state.items, { text: this.state.text }],
-      text: '',
-    });
   }
 }
 

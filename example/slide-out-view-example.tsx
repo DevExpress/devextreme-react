@@ -38,6 +38,16 @@ export default class extends React.Component<any, any> {
     this.toggle = this.toggle.bind(this);
   }
 
+  public toggle() {
+    this.setState({ menuVisible: !this.state.menuVisible });
+  }
+
+  private _optionChangeHandler(args: {name: string, value: any }) {
+    if (args.name === 'menuVisible') {
+      this.setState({ menuVisible: args.value });
+    }
+  }
+
   public render() {
     return (
       <Example title="DxSlideOutView" state={this.state}>
@@ -53,15 +63,5 @@ export default class extends React.Component<any, any> {
         </SlideOutView>
       </Example>
     );
-  }
-
-  public toggle() {
-    this.setState({ menuVisible: !this.state.menuVisible });
-  }
-
-  private _optionChangeHandler(args: {name: string, value: any }) {
-    if (args.name === 'menuVisible') {
-      this.setState({ menuVisible: args.value });
-    }
   }
 }

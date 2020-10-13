@@ -23,32 +23,12 @@ const removalListenerStyle = { display: 'none' };
 class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps, ITemplateWrapperState> {
   private readonly _removalListenerRef = React.createRef<HTMLElement>();
 
-  private get _listenerElement(): HTMLElement {
-    return this._removalListenerRef.current as HTMLElement;
-  }
-
   constructor(props: ITemplateWrapperProps) {
     super(props);
 
     this.state = { removalListenerRequired: false };
 
     this._onDxRemove = this._onDxRemove.bind(this);
-  }
-
-  public render() {
-    const removalListener = this.state.removalListenerRequired
-      ? React.createElement('span', { style: removalListenerStyle, ref: this._removalListenerRef })
-      : undefined;
-
-    return ReactDOM.createPortal(
-      React.createElement(
-        React.Fragment,
-        null,
-        this.props.content,
-        removalListener,
-      ),
-      this.props.container,
-    );
   }
 
   public componentDidMount() {
@@ -71,6 +51,10 @@ class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps, ITempla
     if (this._listenerElement) {
       this.props.container.appendChild(this._listenerElement);
     }
+  }
+
+  private get _listenerElement(): HTMLElement {
+    return this._removalListenerRef.current as HTMLElement;
   }
 
   private _subscribeOnRemove() {
@@ -98,6 +82,22 @@ class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps, ITempla
 
   private _onDxRemove(): void {
     this.props.onRemoved();
+  }
+
+  public render() {
+    const removalListener = this.state.removalListenerRequired
+      ? React.createElement('span', { style: removalListenerStyle, ref: this._removalListenerRef })
+      : undefined;
+
+    return ReactDOM.createPortal(
+      React.createElement(
+        React.Fragment,
+        null,
+        this.props.content,
+        removalListener,
+      ),
+      this.props.container,
+    );
   }
 }
 
