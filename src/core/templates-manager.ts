@@ -33,7 +33,9 @@ const contentCreators = {
 
 class TemplatesManager {
   private _templatesStore: TemplatesStore;
+
   private _templates: Record<string, any> = {};
+
   private _templatesContent: Record<string, any> = {};
 
   constructor(templatesStore: TemplatesStore) {

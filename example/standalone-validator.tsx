@@ -8,7 +8,9 @@ import Example from './example-block';
 
 class ValidatorExample extends React.Component<any, any> {
   private _currentValue: string = '';
+
   private _adapter: any;
+
   private _callbacks: any[] = [];
 
   constructor(props: any) {

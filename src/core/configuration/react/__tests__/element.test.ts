@@ -8,32 +8,41 @@ import { ElementType, getElementInfo } from '../element';
 
 class MinimalConfigurationComponent extends ConfigurationComponent<any> {
   public static OptionName = 'option';
+
   public static IsCollectionItem = false;
 }
 
 class RichConfigurationComponent extends ConfigurationComponent<any> {
   public static OptionName = 'option';
+
   public static IsCollectionItem = false;
+
   public static DefaultsProps = { defaultValue: 'value' };
+
   public static TemplateProps = [{
     tmplOption: 'template',
     render: 'render',
     component: 'component',
     keyFn: 'keyFn',
   }];
+
   public static PredefinedProps = { type: 'numeric' };
 }
 
 class CollectionConfigurationComponent extends ConfigurationComponent<any> {
   public static OptionName = 'option';
+
   public static IsCollectionItem = true;
+
   public static DefaultsProps = { defaultValue: 'value' };
+
   public static TemplateProps = [{
     tmplOption: 'template',
     render: 'render',
     component: 'component',
     keyFn: 'keyFn',
   }];
+
   public static PredefinedProps = { type: 'numeric' };
 }
 

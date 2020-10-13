@@ -61,19 +61,19 @@ export default class extends React.Component<any, { text: string; pos: IPosition
 
           <Marker iconSrc="https://js.devexpress.com/Demos/RealtorApp/images/map-marker.png">
             <Tooltip text="Start" />
-            <Location {...startPos} />
+            <Location lat={startPos.lat} lng={startPos.lng} />
           </Marker>
 
           <Marker>
             <Tooltip text={JSON.stringify(this.state.pos)} />
-            <Location {...this.state.pos} />
+            <Location lat={this.state.pos.lat} lng={this.state.pos.lng} />
           </Marker>
 
           <Route color="green">
             <Location lat={40.755833} lng={-73.986389} />
             <Location lat={40.7825} lng={-73.966111} />
-            <Location {...startPos} />
-            <Location {...this.state.pos} />
+            <Location lat={startPos.lat} lng={startPos.lng} />
+            <Location lat={this.state.pos.lat} lng={this.state.pos.lng} />
           </Route>
         </Map>
       </Example>

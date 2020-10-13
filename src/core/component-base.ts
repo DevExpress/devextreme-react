@@ -22,17 +22,23 @@ interface IHtmlOptions {
 
 abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent<P> {
   protected _WidgetClass: any;
+
   protected _instance: any;
+
   protected _element: HTMLDivElement;
 
   protected readonly _defaults: Record<string, string>;
+
   protected readonly _templateProps: ITemplateMeta[] = [];
+
   protected readonly _expectedChildren: Record<string, IExpectedChild>;
 
   private _templatesRendererRef: TemplatesRenderer | null;
 
   private _templatesStore: TemplatesStore;
+
   private _templatesManager: TemplatesManager;
+
   private _optionsManager: OptionsManager;
 
   constructor(props: P) {
@@ -116,6 +122,7 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
     });
     return elementProps;
   }
+
   private _updateCssClasses(prevProps: P | null, newProps: P) {
     const prevClassName = prevProps ? getClassName(prevProps) : undefined;
     const newClassName = getClassName(newProps);
