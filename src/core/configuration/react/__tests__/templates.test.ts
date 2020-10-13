@@ -106,7 +106,7 @@ const negativeCasesForAnonymous = [
 ];
 
 describe('getAnonymousTemplate', () => {
-  positiveCasesForAnonymous.map(
+  positiveCasesForAnonymous.forEach(
     (testCase) => {
       it('returns template', () => {
         const template = getAnonymousTemplate(
@@ -129,7 +129,7 @@ describe('getAnonymousTemplate', () => {
     },
   );
 
-  negativeCasesForAnonymous.map(
+  negativeCasesForAnonymous.forEach(
     (testCase) => {
       it('returns null', () => {
         const template = getAnonymousTemplate(
@@ -241,7 +241,7 @@ const casesForNamed = [
 ];
 
 describe('getNamedTemplate', () => {
-  casesForNamed.map(
+  casesForNamed.forEach(
     (testCase) => {
       it('returns template', () => {
         const template = getNamedTemplate(testCase.props as ITemplateProps);

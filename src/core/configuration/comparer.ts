@@ -117,7 +117,7 @@ function compareCollections(
     const prevCollection = prev.configCollections[key] || [];
     if (!currentCollection || currentCollection.length !== prevCollection.length) {
       const updatedCollection: Array<Record<string, any>> = [];
-      currentCollection.map(
+      currentCollection.forEach(
         (item) => {
           const config = buildNode(item, changesAccum.templates, true);
           updatedCollection.push(config);

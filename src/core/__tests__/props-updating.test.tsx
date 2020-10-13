@@ -203,7 +203,7 @@ describe('option control', () => {
     });
   });
 
-  [123, false, 0].map((value) => {
+  [123, false, 0].forEach((value) => {
     it('rolls back controlled simple option', () => {
       shallow(
         <ControlledComponent everyOption={value} />,

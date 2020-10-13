@@ -57,7 +57,7 @@ function buildTemplates(
   optionsAccum: Record<string, any>,
   templatesAccum: Record<string, ITemplate>,
 ) {
-  node.templates.map(
+  node.templates.forEach(
     (template) => {
       if (template.isAnonymous) {
         const templateName = mergeNameParts(node.fullName, template.optionName);
