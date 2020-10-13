@@ -31,7 +31,7 @@ export default class extends React.Component<any, any> {
         <hr />
         <h4>Accordion with itemTitleRender</h4>
         <Accordion
-          collapsible={true}
+          collapsible
           items={items}
           itemTitleRender={ItemTitle}
         />

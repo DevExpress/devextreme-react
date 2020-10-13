@@ -15,7 +15,7 @@ export default class extends React.Component<any, any> {
       <Example title="Editors" state={this.state}>
         <SelectBox fieldRender={fieldRender} />
         <br />
-        <TagBox dataSource={['1', '2', '3']} showClearButton={true} tagRender={() => <div>test</div>} />
+        <TagBox dataSource={['1', '2', '3']} showClearButton tagRender={() => <div>test</div>} />
       </Example>
     );
   }

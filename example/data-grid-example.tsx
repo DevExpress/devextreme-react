@@ -78,7 +78,7 @@ export default class extends React.Component<any, { expandAll: boolean, pageSize
         Page size:
         <br />
         <NumberBox
-          showSpinButtons={true}
+          showSpinButtons
           step={5}
           value={this.state.pageSize}
           onValueChanged={this.handlePageIndexChange}
@@ -86,12 +86,12 @@ export default class extends React.Component<any, { expandAll: boolean, pageSize
         <br />
         <DataGrid
           dataSource={sales}
-          allowColumnReordering={true}
+          allowColumnReordering
           onToolbarPreparing={this.handleToolbarPreparing}
         >
-          <GroupPanel visible={true} />
+          <GroupPanel visible />
           <Grouping autoExpandAll={this.state.expandAll} />
-          <FilterRow visible={true} />
+          <FilterRow visible />
           <Selection mode="multiple" />
 
           <Column dataField="orderId" caption="Order ID" width={90} />
@@ -103,14 +103,14 @@ export default class extends React.Component<any, { expandAll: boolean, pageSize
 
           <Pager
             allowedPageSizes={[5, 10, 15, 20]}
-            showPageSizeSelector={true}
-            showInfo={true}
+            showPageSizeSelector
+            showInfo
           />
           <Paging
             defaultPageIndex={2}
             pageSize={this.state.pageSize}
           />
-          <MasterDetail enabled={true} component={DetailComponent} />
+          <MasterDetail enabled component={DetailComponent} />
 
           <Template name="toolbarLabel">
             {this.state.expandAll ? <b>Collapse Groups:</b> : <b>Expand Groups:</b>}

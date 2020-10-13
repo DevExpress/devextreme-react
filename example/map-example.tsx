@@ -47,7 +47,7 @@ export default class extends React.Component<any, { text: string; pos: IPosition
           provider="bing"
           defaultZoom={11}
           height={440}
-          controls={true}
+          controls
         >
           <Marker iconSrc="https://js.devexpress.com/Demos/RealtorApp/images/map-marker.png">
             <Tooltip text="Times Square" />

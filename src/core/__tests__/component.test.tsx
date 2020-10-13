@@ -154,7 +154,7 @@ describe('disposing', () => {
 
   it('remove option guards', () => {
     const component = shallow(
-      <TestComponent option1={true} />,
+      <TestComponent option1 />,
     );
 
     fireOptionChange('option1', false);

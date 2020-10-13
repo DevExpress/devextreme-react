@@ -54,7 +54,7 @@ export default class extends React.Component<any, any> {
         <Button text="toggle" onClick={this.toggle} />
         <SlideOutView
           height={200}
-          swipeEnabled={true}
+          swipeEnabled
           menuVisible={this.state.menuVisible}
           menuRender={renderMenuTemplate}
           onOptionChanged={this._optionChangeHandler}

@@ -44,7 +44,7 @@ ReactDOM.render(
         step={10}
         min={50}
         format="$ #0.##"
-        showSpinButtons={true}
+        showSpinButtons
       />
     </Example>
 

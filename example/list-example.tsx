@@ -122,7 +122,7 @@ export default class extends React.Component<any, { text: string; items: IListIt
         <hr />
         <h4>List with component template</h4>
         <List
-          repaintChangesOnly={true}
+          repaintChangesOnly
           items={this.state.items}
           itemComponent={Item}
           itemKeyFn={ItemKeyGetter}

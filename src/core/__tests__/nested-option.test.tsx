@@ -540,7 +540,7 @@ describe('conditional rendering', () => {
 
   it('removes option', () => {
     const component = mount(
-      <ComponentWithConditionalOption enableOption={true} />,
+      <ComponentWithConditionalOption enableOption />,
     );
 
     component.setProps({ enableOption: false });

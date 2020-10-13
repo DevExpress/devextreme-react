@@ -7,8 +7,8 @@ class SelectBoxEditor extends React.Component {
   public render() {
     return (
       <SelectBox
-        searchEnabled={true}
-        showClearButton={true}
+        searchEnabled
+        showClearButton
         searchTimeout={0}
         noDataText="No results found"
         displayExpr="label"
