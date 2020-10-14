@@ -349,9 +349,11 @@ const renderComponent: (model: {
     renderedPropTypings?: string[];
 }) => string = createTempate(
 `class <#= it.className #> extends BaseComponent<<#= it.optionsName #>> {
+
   public get instance(): <#= it.widgetName #> {
     return this._instance;
   }
+
   protected _WidgetClass = <#= it.widgetName #>;\n` +
 
 `<#? it.renderedDefaultProps #>` +
