@@ -31,6 +31,7 @@ import generateComponent, {
 
 import {
   isEmptyArray,
+  isNotEmptyArray,
   removeExtension,
   removePrefix,
   toKebabCase,
@@ -196,10 +197,13 @@ function mapOption(prop: IProp): IOption {
     } : {
       name: prop.name,
       isSubscribable: prop.isSubscribable || undefined,
-      nested: prop.props.map(mapOption)
+      nested: prop.props.map(mapOption),
+      isArray: isNestedOptionArray(prop)
     };
 }
-
+function isNestedOptionArray(prop: IProp): boolean {
+  return isNotEmptyArray(prop.types) && (prop.types[0].type === "Array");
+}
 function mapSubscribableOption(prop: IProp): ISubscribableOption {
   return {
     name: prop.name,
