@@ -1,6 +1,5 @@
 const mkdir = require('mkdirp');
 const fs = require('fs');
-const path = require('path');
 const del = require('del');
 
 const gulp = require('gulp');
@@ -114,12 +113,12 @@ gulp.task(NPM_BUILD_WITH_HEADERS, gulp.series(
   NPM_BUILD,
   () => {
     const pkg = require('./package.json');
-        const now = new Date();
-        const data = {
-            pkg,
-            date: now.toDateString(),
-            year: now.getFullYear()
-        };
+    const now = new Date();
+    const data = {
+      pkg,
+      date: now.toDateString(),
+      year: now.getFullYear()
+    };
 
     const banner = [
         '/*!',
