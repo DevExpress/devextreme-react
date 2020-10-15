@@ -4,6 +4,7 @@ import { getChanges } from "./configuration/comparer";
 import { IConfigNode } from "./configuration/config-node";
 import { buildConfig, findValue, ValueType } from "./configuration/tree";
 import { mergeNameParts } from "./configuration/utils";
+import { capitalizeFirstLetter } from "./helpers";
 
 class OptionsManager {
     private readonly _guards: Record<string, number> = {};
@@ -88,6 +89,7 @@ class OptionsManager {
             return;
         }
 
+        this._callOptionChangeHandler(e.fullName, e.value);
         const valueDescriptor = findValue(this._currentConfig, e.fullName.split("."));
         if (!valueDescriptor) {
             return;
@@ -122,6 +124,31 @@ class OptionsManager {
             window.clearTimeout(this._guards[optionName]);
             delete this._guards[optionName];
         }
+    }
+
+    private _callOptionChangeHandler(optionName: string, optionValue: any) {
+        const parts = optionName.split(".");
+        const propName = parts[parts.length - 1];
+
+        if (propName.startsWith("on")) {
+            return;
+        }
+
+        const eventName = `on${capitalizeFirstLetter(propName)}Change`;
+        parts[parts.length - 1] = eventName;
+        const changeEvent = findValue(this._currentConfig, parts);
+
+        if (!changeEvent) {
+            return;
+        }
+
+        if (typeof changeEvent.value !== "function") {
+            throw new Error(
+                `Invalid value for the ${eventName} property.
+                ${eventName} must be a function.`
+            );
+        }
+        changeEvent.value(optionValue);
     }
 
     private _wrapOptionValue(name: string, value: any) {

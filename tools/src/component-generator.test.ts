@@ -245,6 +245,7 @@ import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 
 interface ICLASS_NAMEOptions extends IOptions, IHtmlOptions {
   defaultOption1?: someType;
+  onOption1Change?: (value: someType) => void;
 }
 
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
@@ -292,6 +293,8 @@ import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 interface ICLASS_NAMEOptions extends IOptions, IHtmlOptions {
   defaultOption1?: someType;
   defaultOption2?: anotherType;
+  onOption1Change?: (value: someType) => void;
+  onOption2Change?: (value: anotherType) => void;
 }
 
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
@@ -543,6 +546,7 @@ interface IOpt_1_ComponentProps {
     sub_sub_opt_4?: TYPE_2;
   };
   defaultSub_opt_2?: TYPE_1;
+  onSub_opt_2Change?: (value: TYPE_1) => void;
 }
 class Opt_1_Component extends NestedOption<IOpt_1_ComponentProps> {
   public static OptionName = "opt_1";
