@@ -11,25 +11,24 @@ const eslint = require("gulp-eslint");
 
 const config = require('./build.config');
 
-const
-  GENERATE = 'generate',
-  CLEAN = 'clean',
+const GENERATE = 'generate';
+const CLEAN = 'clean';
 
-  OLD_OUTPUTDIR_CLEAN = 'output-dir.clean',
-  OLD_OUTPUTDIR_CREATE = 'output-dir.create',
-  GEN_COMPILE = 'generator.compile',
-  GEN_CLEAN = 'generator.clean',
-  GEN_RUN = 'generator.run',
+const OLD_OUTPUTDIR_CLEAN = 'output-dir.clean';
+const OLD_OUTPUTDIR_CREATE = 'output-dir.create';
+const GEN_COMPILE = 'generator.compile';
+const GEN_CLEAN = 'generator.clean';
+const GEN_RUN = 'generator.run';
 
-  LINT = 'lint',
+const LINT = 'lint';
 
-  NPM_CLEAN = 'npm.clean',
-  NPM_PACKAGE = 'npm.package',
-  NPM_LICENSE = 'npm.license',
-  NPM_BUILD_WITH_HEADERS = 'npm.license-headers',
-  NPM_README = 'npm.readme',
-  NPM_BUILD = 'npm.build',
-  NPM_PACK = 'npm.pack';
+const NPM_CLEAN = 'npm.clean';
+const NPM_PACKAGE = 'npm.package';
+const NPM_LICENSE = 'npm.license';
+const NPM_BUILD_WITH_HEADERS = 'npm.license-headers';
+const NPM_README = 'npm.readme';
+const NPM_BUILD = 'npm.build';
+const NPM_PACK = 'npm.pack';
 
 gulp.task(OLD_OUTPUTDIR_CLEAN, (c) =>
   del([`${config.generatedComponentsDir}\\*`, `!${config.coreComponentsDir}`], c)
@@ -49,8 +48,8 @@ gulp.task(GEN_COMPILE, gulp.series(
   GEN_CLEAN,
   () => gulp.src([config.generator.src, `!**/*.test.ts`])
       .pipe(ts({
-        'target': 'es6',
-        'module': 'commonjs'
+        target: 'es6',
+        module: 'commonjs'
       }))
       .pipe(gulp.dest(config.generator.binDir))
 ));
@@ -114,15 +113,15 @@ gulp.task(NPM_BUILD, gulp.series(
 gulp.task(NPM_BUILD_WITH_HEADERS, gulp.series(
   NPM_BUILD,
   () => {
-    const pkg = require('./package.json'),
-        now = new Date(),
-        data = {
-            pkg: pkg,
+    const pkg = require('./package.json');
+        const now = new Date();
+        const data = {
+            pkg,
             date: now.toDateString(),
             year: now.getFullYear()
         };
 
-    var banner = [
+    const banner = [
         '/*!',
         ' * <%= pkg.name %>',
         ' * Version: <%= pkg.version %>',
