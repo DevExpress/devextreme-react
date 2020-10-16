@@ -99,8 +99,6 @@ class OptionsManager {
         if (type === ValueType.Complex) {
             for (const key of Object.keys(value)) {
                 if (
-                    value[key] === null ||
-                    value[key] === undefined ||
                     value[key] === e.value[key]
                 ) {
                     continue;
@@ -109,8 +107,6 @@ class OptionsManager {
             }
         } else {
             if (
-                value === null ||
-                value === undefined ||
                 value === e.value
             ) {
                 return;
