@@ -1,7 +1,5 @@
 import * as React from 'react';
 
-import DataSource from 'devextreme/data/data_source';
-
 import Accordion from '../src/accordion';
 
 import Example from './example-block';

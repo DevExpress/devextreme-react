@@ -479,7 +479,7 @@ describe('component/render in nested options', () => {
     );
 
     const options = WidgetClass.mock.calls[0][1];
-    expect(options['option']['item']).toBe('option.item');
+    expect(options.option.item).toBe('option.item');
 
     const integrationOptions = options.integrationOptions;
 
