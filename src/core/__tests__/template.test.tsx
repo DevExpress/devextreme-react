@@ -15,10 +15,6 @@ class ComponentWithTemplates extends TestComponent {
         component: 'itemComponent',
         keyFn: 'itemKeyFn',
     }];
-
-    constructor(props: any) {
-        super(props);
-    }
 }
 
 function renderTemplate(name: string, model?: any, container?: any, index?: number, onRendered?: () => void): Element {

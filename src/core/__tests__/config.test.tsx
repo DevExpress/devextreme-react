@@ -9,10 +9,6 @@ class ComponentWithTemplates extends TestComponent {
         component: 'itemComponent',
         keyFn: 'itemKeyFn',
     }];
-
-    constructor(props: any) {
-        super(props);
-    }
 }
 
 describe('useLegacyTemplateEngine', () => {
