@@ -79,7 +79,7 @@
         // "@typescript-eslint/quotes": "off",
         // "@typescript-eslint/comma-dangle": "off",
         // "@typescript-eslint/semi": "off",
-        "@typescript-eslint/dot-notation": "off",
+        // "@typescript-eslint/dot-notation": "off",
         // "@typescript-eslint/lines-between-class-members": "off",
         "@typescript-eslint/no-inferrable-types": "off",
         "@typescript-eslint/no-explicit-any": "off",
