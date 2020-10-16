@@ -43,6 +43,7 @@ function testTemplateOption(testedOption: string) {
             // tslint:disable-next-line:max-classes-per-file
             class ItemComponent extends React.PureComponent {
                 public props: { data: any, index?: number };
+
                 public render() {
                     return render(this.props.data, this.props.index);
                 }
@@ -448,6 +449,7 @@ describe('component/render in nested options', () => {
         itemComponent?: any;
     }> {
         public static OptionName = 'option';
+
         public static TemplateProps = [{
             tmplOption: 'item',
             render: 'itemRender',
@@ -462,7 +464,9 @@ describe('component/render in nested options', () => {
         component?: any;
     }> {
         public static IsCollectionItem = true;
+
         public static OptionName = 'collection';
+
         public static TemplateProps = [{
             tmplOption: 'template',
             render: 'render',

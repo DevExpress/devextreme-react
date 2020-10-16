@@ -10,6 +10,7 @@ class NestedComponent extends ConfigurationComponent<{ a: number }> {
 
 class NestedComponentWithPredfeinedProps extends ConfigurationComponent<{ a: number }> {
     public static OptionName = 'option';
+
     public static PredefinedProps = {
         predefinedProp: 'predefined-value',
     };
@@ -17,7 +18,9 @@ class NestedComponentWithPredfeinedProps extends ConfigurationComponent<{ a: num
 
 class CollectionNestedWithPredfeinedProps1 extends ConfigurationComponent<{ a: number }> {
     public static IsCollectionItem = true;
+
     public static OptionName = 'option';
+
     public static PredefinedProps = {
         predefinedProp: 'predefined-value-1',
     };
@@ -25,7 +28,9 @@ class CollectionNestedWithPredfeinedProps1 extends ConfigurationComponent<{ a: n
 
 class CollectionNestedWithPredfeinedProps2 extends ConfigurationComponent<{ a: number }> {
     public static IsCollectionItem = true;
+
     public static OptionName = 'option';
+
     public static PredefinedProps = {
         predefinedProp: 'predefined-value-2',
     };
@@ -45,11 +50,13 @@ class AnotherNestedComponent extends ConfigurationComponent<{ b: string }> {
 
 class CollectionNestedComponent extends ConfigurationComponent<{ c?: number, d?: string }> {
     public static IsCollectionItem = true;
+
     public static OptionName = 'itemOptions';
 }
 
 class CollectionSubNestedComponent extends ConfigurationComponent<{ c?: number, d?: string }> {
     public static IsCollectionItem = true;
+
     public static OptionName = 'subItemsOptions';
 }
 
@@ -486,6 +493,7 @@ describe('nested sub-option', () => {
 
         class NestedComponentWithExpectations extends ConfigurationComponent<{ a: number }> {
             public static OptionName = 'option';
+
             public static ExpectedChildren = {
                 subOption: {
                     optionName: 'expectedSubItemOptions',

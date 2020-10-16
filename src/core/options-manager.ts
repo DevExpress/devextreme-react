@@ -8,9 +8,13 @@ import { capitalizeFirstLetter } from './helpers';
 
 class OptionsManager {
     private readonly _guards: Record<string, number> = {};
+
     private _templatesManager: TemplatesManager;
+
     private _instance: any;
+
     private _isUpdating = false;
+
     private _currentConfig: IConfigNode;
 
     constructor(templatesManager: TemplatesManager) {

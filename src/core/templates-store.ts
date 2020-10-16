@@ -2,6 +2,7 @@ import { TemplateWrapper, TemplateWrapperRenderer } from './template-wrapper';
 
 class TemplatesStore {
     private readonly _templates: Record<string, TemplateWrapperRenderer> = {};
+
     private readonly _onTemplateAdded: () => void;
 
     constructor(onTemplateAdded: () => void) {
