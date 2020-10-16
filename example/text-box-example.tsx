@@ -14,7 +14,7 @@ export default class extends React.Component<any, { text: string; uncontrolledTe
         super(props);
         this.state = {
             text: 'text',
-            uncontrolledText: 'initial text'
+            uncontrolledText: 'initial text',
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -53,7 +53,7 @@ export default class extends React.Component<any, { text: string; uncontrolledTe
 
     private updateUncontrolledValue() {
         this.setState({
-            uncontrolledText: '#' + this.textBox.option('value')
+            uncontrolledText: '#' + this.textBox.option('value'),
         });
     }
 

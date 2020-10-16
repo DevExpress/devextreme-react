@@ -23,11 +23,11 @@ class TemplatesRenderer extends React.PureComponent<{ templatesStore: TemplatesS
         return React.createElement(
             React.Fragment,
             {},
-            this.props.templatesStore.renderWrappers()
+            this.props.templatesStore.renderWrappers(),
         );
     }
 }
 
 export {
-    TemplatesRenderer
+    TemplatesRenderer,
 };

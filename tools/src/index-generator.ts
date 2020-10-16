@@ -19,5 +19,5 @@ const render: (model: IReExport[]) => string = createTempate(`
 
 export default generate;
 export {
-  IReExport
+  IReExport,
 };

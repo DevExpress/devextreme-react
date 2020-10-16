@@ -56,5 +56,5 @@ function isIgnoredProp(name: string) {
 export {
     elementPropNames,
     getClassName,
-    separateProps
+    separateProps,
 };

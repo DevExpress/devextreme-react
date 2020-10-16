@@ -39,19 +39,19 @@ type IElement = IOptionElement | ITemplateElement | IUnknownElement;
 
 function getElementInfo(
     element: React.ReactNode,
-    parentExpectedChildren?: Record<string, IExpectedChild>
+    parentExpectedChildren?: Record<string, IExpectedChild>,
 ): IElement {
     const reactElement = element as any as React.ReactElement;
     if (!reactElement || !reactElement.type) {
         return {
-            type: ElementType.Unknown
+            type: ElementType.Unknown,
         };
     }
 
     if (reactElement.type === Template) {
         return {
             type: ElementType.Template,
-            props: reactElement.props
+            props: reactElement.props,
         };
     }
 
@@ -77,14 +77,14 @@ function getElementInfo(
                 templates: elementDescriptor.TemplateProps || [],
                 initialValuesProps: elementDescriptor.DefaultsProps || {},
                 predefinedValuesProps: elementDescriptor.PredefinedProps || {},
-                expectedChildren: elementDescriptor.ExpectedChildren || {}
+                expectedChildren: elementDescriptor.ExpectedChildren || {},
             },
-            props: reactElement.props
+            props: reactElement.props,
         };
     }
 
     return {
-        type: ElementType.Unknown
+        type: ElementType.Unknown,
     };
 }
 
@@ -102,5 +102,5 @@ export {
     ElementType,
     IElement,
     IOptionElement,
-    IExpectedChild
+    IExpectedChild,
 };

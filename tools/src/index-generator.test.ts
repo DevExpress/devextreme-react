@@ -5,7 +5,7 @@ it('generates', () => {
         generate([
             { name: 'widget', path: './path' },
             { name: 'anotherWidget', path: './another/path' },
-        ])
+        ]),
     ).toBe(EXPECTED_GENERATES);
 });
 //#region EXPECTED_GENERATES

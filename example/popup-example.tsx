@@ -15,7 +15,7 @@ export default class extends React.Component<any, { visible: boolean; text: stri
         super(props);
         this.state = {
             visible: false,
-            text: 'non-' + VALID_TEXT
+            text: 'non-' + VALID_TEXT,
         };
 
         this.toggle = this.toggle.bind(this);
@@ -72,7 +72,7 @@ export default class extends React.Component<any, { visible: boolean; text: stri
 
     private toggle(visible: boolean) {
         this.setState({
-            visible: visible || !validateText(this.state.text)
+            visible: visible || !validateText(this.state.text),
         });
     }
 

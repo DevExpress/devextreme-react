@@ -77,7 +77,7 @@
         "@typescript-eslint/ban-types": "off",
         "@typescript-eslint/indent": "off",
         // "@typescript-eslint/quotes": "off",
-        "@typescript-eslint/comma-dangle": "off",
+        // "@typescript-eslint/comma-dangle": "off",
         "@typescript-eslint/semi": "off",
         "@typescript-eslint/dot-notation": "off",
         "@typescript-eslint/lines-between-class-members": "off",

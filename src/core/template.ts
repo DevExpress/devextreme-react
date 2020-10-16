@@ -38,7 +38,7 @@ const requiredPropsCheck = (props: Record<string, any>) => {
     name: PropTypes.string.isRequired,
     component: requiredPropsCheck,
     render: requiredPropsCheck,
-    children: requiredPropsCheck
+    children: requiredPropsCheck,
 };
 
 function findProps(child: React.ReactElement<any>): ITemplateProps | undefined {
@@ -50,7 +50,7 @@ function findProps(child: React.ReactElement<any>): ITemplateProps | undefined {
         render: child.props.render,
         component: child.props.component,
         children: child.props.children,
-        keyFn: child.props.keyFn
+        keyFn: child.props.keyFn,
     };
 }
 

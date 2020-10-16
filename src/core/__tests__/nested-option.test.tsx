@@ -11,7 +11,7 @@ class NestedComponent extends ConfigurationComponent<{ a: number }> {
 class NestedComponentWithPredfeinedProps extends ConfigurationComponent<{ a: number }> {
     public static OptionName = 'option';
     public static PredefinedProps = {
-        predefinedProp: 'predefined-value'
+        predefinedProp: 'predefined-value',
     };
 }
 
@@ -19,7 +19,7 @@ class CollectionNestedWithPredfeinedProps1 extends ConfigurationComponent<{ a: n
     public static IsCollectionItem = true;
     public static OptionName = 'option';
     public static PredefinedProps = {
-        predefinedProp: 'predefined-value-1'
+        predefinedProp: 'predefined-value-1',
     };
 }
 
@@ -27,7 +27,7 @@ class CollectionNestedWithPredfeinedProps2 extends ConfigurationComponent<{ a: n
     public static IsCollectionItem = true;
     public static OptionName = 'option';
     public static PredefinedProps = {
-        predefinedProp: 'predefined-value-2'
+        predefinedProp: 'predefined-value-2',
     };
 }
 
@@ -59,14 +59,14 @@ describe('nested option', () => {
         mount(
             <TestComponent>
                 <NestedComponent a={123} />
-            </TestComponent>
+            </TestComponent>,
         );
 
         expect(WidgetClass.mock.calls[0][1]).toEqual({
             templatesRenderAsynchronously: true,
             option: {
-                a: 123
-            }
+                a: 123,
+            },
         });
     });
 
@@ -75,14 +75,14 @@ describe('nested option', () => {
             <TestComponent>
                 <NestedComponent a={123} />
                 {false && <NestedComponent a={456} />}
-            </TestComponent>
+            </TestComponent>,
         );
 
         expect(WidgetClass.mock.calls[0][1]).toEqual({
             templatesRenderAsynchronously: true,
             option: {
-                a: 123
-            }
+                a: 123,
+            },
         });
     });
 
@@ -91,17 +91,17 @@ describe('nested option', () => {
             <TestComponent>
                 <NestedComponent a={123} />
                 <AnotherNestedComponent b="abc" />
-            </TestComponent>
+            </TestComponent>,
         );
 
         expect(WidgetClass.mock.calls[0][1]).toEqual({
             templatesRenderAsynchronously: true,
             option: {
-                a: 123
+                a: 123,
             },
             anotherOption: {
-                b: 'abc'
-            }
+                b: 'abc',
+            },
         });
     });
 
@@ -110,14 +110,14 @@ describe('nested option', () => {
             <TestComponent>
                 <NestedComponent a={123} />
                 <NestedComponent a={456} />
-            </TestComponent>
+            </TestComponent>,
         );
 
         expect(WidgetClass.mock.calls[0][1]).toEqual({
             templatesRenderAsynchronously: true,
             option: {
-                a: 456
-            }
+                a: 456,
+            },
         });
     });
 
@@ -125,14 +125,14 @@ describe('nested option', () => {
         mount(
             <TestComponent>
                 <CollectionNestedComponent c={123} d="abc" />
-            </TestComponent>
+            </TestComponent>,
         );
 
         expect(WidgetClass.mock.calls[0][1]).toEqual({
             templatesRenderAsynchronously: true,
             itemOptions: [
-                { c: 123, d: 'abc' }
-            ]
+                { c: 123, d: 'abc' },
+            ],
         });
     });
 
@@ -142,7 +142,7 @@ describe('nested option', () => {
                 <CollectionNestedComponent c={123} d="abc" />
                 <CollectionNestedComponent c={456} />
                 <CollectionNestedComponent d="def" />
-            </TestComponent>
+            </TestComponent>,
         );
 
         expect(WidgetClass.mock.calls[0][1]).toEqual({
@@ -150,8 +150,8 @@ describe('nested option', () => {
             itemOptions: [
                 { c: 123, d: 'abc' },
                 { c: 456 },
-                { d: 'def' }
-            ]
+                { d: 'def' },
+            ],
         });
     });
 
@@ -162,12 +162,12 @@ describe('nested option', () => {
             protected _expectedChildren = {
                 option: {
                     optionName: 'expectedItemOptions',
-                    isCollectionItem: true
+                    isCollectionItem: true,
                 },
                 itemOptions: {
                     optionName: 'expectedOption',
-                    isCollectionItem: false
-                }
+                    isCollectionItem: false,
+                },
             };
 
             protected _WidgetClass = WidgetClass;
@@ -177,15 +177,15 @@ describe('nested option', () => {
             <TestComponentWithExpectation>
                 <NestedComponent a={123} />
                 <CollectionNestedComponent c={456} d="abc" />
-            </TestComponentWithExpectation>
+            </TestComponentWithExpectation>,
         );
 
         expect(WidgetClass.mock.calls[0][1]).toEqual({
             templatesRenderAsynchronously: true,
             expectedItemOptions: [
-                { a: 123 }
+                { a: 123 },
             ],
-            expectedOption: { c: 456, d: 'abc' }
+            expectedOption: { c: 456, d: 'abc' },
         });
     });
 
@@ -193,7 +193,7 @@ describe('nested option', () => {
         mount(
             <TestComponent>
                 <NestedComponentWithPredfeinedProps a={123} />
-            </TestComponent>
+            </TestComponent>,
         );
 
         const actualProps = WidgetClass.mock.calls[0][1];
@@ -206,13 +206,13 @@ describe('nested option', () => {
             <TestComponent>
                 <CollectionNestedWithPredfeinedProps1 a={123} />
                 <CollectionNestedWithPredfeinedProps2 a={456} />
-            </TestComponent>
+            </TestComponent>,
         );
 
         const actualProps = WidgetClass.mock.calls[0][1];
         expect(actualProps.option).toEqual([
             { predefinedProp: 'predefined-value-1', a: 123 },
-            { predefinedProp: 'predefined-value-2', a: 456 }
+            { predefinedProp: 'predefined-value-2', a: 456 },
         ]);
     });
 
@@ -222,13 +222,13 @@ describe('nested option', () => {
                 <CollectionNestedComponent key={1} c={123} d="abc" />
                 <CollectionNestedComponent key={2} c={456} />
                 <CollectionNestedComponent key={3} d="def" />
-            </TestComponent>
+            </TestComponent>,
         );
         component.setProps({
             children: [
                 <CollectionNestedComponent key={1} c={123} d="abc" />,
                 <CollectionNestedComponent key={2} c={999} />,
-                <CollectionNestedComponent key={3} d="def" />
+                <CollectionNestedComponent key={3} d="def" />,
             ]});
         jest.runAllTimers();
 
@@ -257,7 +257,7 @@ describe('nested option', () => {
         const component = mount(
             <TestComponent>
                 <NestedComponent a={123} />
-            </TestComponent>
+            </TestComponent>,
         );
 
         component.setProps({ children: <NestedComponent a={456} />});
@@ -284,8 +284,8 @@ describe('nested option', () => {
                 children: [
                     { c: 123, d: 'abc', key: 1 },
                     { c: 456, d: 'def', key: 2 },
-                    { c: 789, d: 'ghi', key: 3 }
-                ]
+                    { c: 789, d: 'ghi', key: 3 },
+                ],
             });
 
         jest.runAllTimers();
@@ -293,7 +293,7 @@ describe('nested option', () => {
         expect(Widget.option.mock.calls[0]).toEqual(['itemOptions', [
             { c: 123, d: 'abc' },
             { c: 456, d: 'def' },
-            { c: 789, d: 'ghi' }
+            { c: 789, d: 'ghi' },
         ]]);
     });
 
@@ -313,14 +313,14 @@ describe('nested option', () => {
         mount(<TestContainer children={children} />)
             .setProps({
                 children: [
-                    { c: 123, d: 'abc', key: 1 }
-                ]
+                    { c: 123, d: 'abc', key: 1 },
+                ],
             });
 
         jest.runAllTimers();
         expect(Widget.option.mock.calls.length).toBe(1);
         expect(Widget.option.mock.calls[0]).toEqual(['itemOptions', [
-            { c: 123, d: 'abc' }
+            { c: 123, d: 'abc' },
         ]]);
     });
 
@@ -334,7 +334,7 @@ describe('nested sub-option', () => {
                 <NestedComponent a={123} >
                     <SubNestedComponent d={'abc'} />
                 </NestedComponent>
-            </TestComponent>
+            </TestComponent>,
         );
 
         expect(WidgetClass.mock.calls[0][1]).toEqual({
@@ -342,9 +342,9 @@ describe('nested sub-option', () => {
             option: {
                 a: 123,
                 subOption: {
-                    d: 'abc'
-                }
-            }
+                    d: 'abc',
+                },
+            },
         });
     });
 
@@ -355,7 +355,7 @@ describe('nested sub-option', () => {
                     <SubNestedComponent d={'abc'} />
                     <AnotherSubNestedComponent e={'def'} />
                 </NestedComponent>
-            </TestComponent>
+            </TestComponent>,
         );
 
         expect(WidgetClass.mock.calls[0][1]).toEqual({
@@ -363,12 +363,12 @@ describe('nested sub-option', () => {
             option: {
                 a: 123,
                 subOption: {
-                    d: 'abc'
+                    d: 'abc',
                 },
                 anotherSubOption: {
-                    e: 'def'
-                }
-            }
+                    e: 'def',
+                },
+            },
         });
     });
 
@@ -379,7 +379,7 @@ describe('nested sub-option', () => {
                     <SubNestedComponent d={'abc'} />
                     <SubNestedComponent d={'def'} />
                 </NestedComponent>
-            </TestComponent>
+            </TestComponent>,
         );
 
         expect(WidgetClass.mock.calls[0][1]).toEqual({
@@ -387,9 +387,9 @@ describe('nested sub-option', () => {
             option: {
                 a: 123,
                 subOption: {
-                    d: 'def'
-                }
-            }
+                    d: 'def',
+                },
+            },
         });
     });
 
@@ -399,7 +399,7 @@ describe('nested sub-option', () => {
                 <NestedComponent a={123} >
                     <CollectionSubNestedComponent c={123} d={'abc'} />
                 </NestedComponent>
-            </TestComponent>
+            </TestComponent>,
         );
 
         expect(WidgetClass.mock.calls[0][1]).toEqual({
@@ -407,9 +407,9 @@ describe('nested sub-option', () => {
             option: {
                 a: 123,
                 subItemsOptions: [
-                    { c: 123, d: 'abc' }
-                ]
-            }
+                    { c: 123, d: 'abc' },
+                ],
+            },
         });
     });
 
@@ -421,7 +421,7 @@ describe('nested sub-option', () => {
                     <CollectionSubNestedComponent c={456} />
                     <CollectionSubNestedComponent d="def" />
                 </NestedComponent>
-            </TestComponent>
+            </TestComponent>,
         );
 
         expect(WidgetClass.mock.calls[0][1]).toEqual({
@@ -431,9 +431,9 @@ describe('nested sub-option', () => {
                 subItemsOptions: [
                     { c: 123, d: 'abc' },
                     { c: 456 },
-                    { d: 'def' }
-                ]
-            }
+                    { d: 'def' },
+                ],
+            },
         });
     });
 
@@ -445,7 +445,7 @@ describe('nested sub-option', () => {
                     <CollectionSubNestedComponent key={2} c={456} />
                     <CollectionSubNestedComponent key={3} d="def" />
                 </NestedComponent>
-            </TestComponent>
+            </TestComponent>,
         );
         component.setProps({
             children: (
@@ -454,7 +454,7 @@ describe('nested sub-option', () => {
                     <CollectionSubNestedComponent key={2} c={999} />
                     <CollectionSubNestedComponent key={3} d="def" />
                 </NestedComponent>
-            )
+            ),
         });
         jest.runAllTimers();
 
@@ -474,7 +474,7 @@ describe('nested sub-option', () => {
 
         mount(<TestContainer value={'abc'} />)
             .setProps({
-                value: 'def'
+                value: 'def',
             });
 
         jest.runAllTimers();
@@ -489,12 +489,12 @@ describe('nested sub-option', () => {
             public static ExpectedChildren = {
                 subOption: {
                     optionName: 'expectedSubItemOptions',
-                    isCollectionItem: true
+                    isCollectionItem: true,
                 },
                 subItemsOptions: {
                     optionName: 'expectedSubOption',
-                    isCollectionItem: false
-                }
+                    isCollectionItem: false,
+                },
             };
         }
 
@@ -504,7 +504,7 @@ describe('nested sub-option', () => {
                     <SubNestedComponent d={'abc'} />
                     <CollectionSubNestedComponent c={456} d={'def'} />
                 </NestedComponentWithExpectations>
-            </TestComponent>
+            </TestComponent>,
         );
 
         expect(WidgetClass.mock.calls[0][1]).toEqual({
@@ -512,10 +512,10 @@ describe('nested sub-option', () => {
             option: {
                 a: 123,
                 expectedSubItemOptions: [
-                    { d: 'abc' }
+                    { d: 'abc' },
                 ],
-                expectedSubOption: { c: 456, d: 'def' }
-            }
+                expectedSubOption: { c: 456, d: 'def' },
+            },
         });
     });
 });

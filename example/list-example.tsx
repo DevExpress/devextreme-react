@@ -20,7 +20,7 @@ class Item extends React.Component<IListItemProps, { counter: number }> {
     constructor(props: IListItemProps) {
         super(props);
         this.state = {
-            counter: 0
+            counter: 0,
         };
 
         this.handleClick = this.handleClick.bind(this);
@@ -38,7 +38,7 @@ class Item extends React.Component<IListItemProps, { counter: number }> {
 
     private handleClick() {
         this.setState({
-            counter: this.state.counter + 1
+            counter: this.state.counter + 1,
         });
     }
 }
@@ -62,20 +62,20 @@ export default class extends React.Component<any, { text: string; items: IListIt
         super(props);
         this.state = {
             text: '',
-            items
+            items,
         };
 
         this.dataSource = new DataSource(
             {
                 store: {
                     type: 'array',
-                    data: items
+                    data: items,
                 },
                 sort: [
-                    { getter: 'text', desc: true}
+                    { getter: 'text', desc: true},
                 ],
-                pageSize: 1
-            }
+                pageSize: 1,
+            },
         );
 
         this.updateText = this.updateText.bind(this);
@@ -123,14 +123,14 @@ export default class extends React.Component<any, { text: string; items: IListIt
 
     private updateText(e: any) {
         this.setState({
-            text: e.value
+            text: e.value,
         });
     }
 
     private addTextToList() {
         this.setState({
             items: [...this.state.items, { text: this.state.text }],
-            text: ''
+            text: '',
         });
     }
 }
@@ -138,5 +138,5 @@ export default class extends React.Component<any, { text: string; items: IListIt
 const items: IListItemProps[] = [
     { text: '123' },
     { text: '234' },
-    { text: '567' }
+    { text: '567' },
 ];

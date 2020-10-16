@@ -10,7 +10,7 @@ interface IPosition {
 
 const startPos = {
     lat: 40.71000,
-    lng: -73.91000
+    lng: -73.91000,
 };
 
 export default class extends React.Component<any, { text: string; pos: IPosition }> {
@@ -20,7 +20,7 @@ export default class extends React.Component<any, { text: string; pos: IPosition
         const pos = { ...startPos };
         this.state = {
             text: JSON.stringify(pos),
-            pos
+            pos,
         };
 
         this.updatePos = this.updatePos.bind(this);
@@ -70,12 +70,12 @@ export default class extends React.Component<any, { text: string; pos: IPosition
     public updatePos() {
         const pos = {
             lat: this.state.pos.lat + 0.01,
-            lng: this.state.pos.lng + 0.05
+            lng: this.state.pos.lng + 0.05,
         };
 
         this.setState({
             text: JSON.stringify(pos),
-            pos
+            pos,
         });
     }
 }

@@ -5,7 +5,7 @@ import {
   join as joinPaths,
   normalize as normalizePath,
   relative as getRelativePath,
-  sep as pathSeparator
+  sep as pathSeparator,
 } from 'path';
 
 import {
@@ -14,7 +14,7 @@ import {
   IModel,
   IProp,
   ITypeDescr,
-  IWidget
+  IWidget,
 } from '../integration-data-model';
 
 import { convertTypes } from './converter';
@@ -26,7 +26,7 @@ import generateComponent, {
   INestedComponent,
   IOption,
   IPropTyping,
-  ISubscribableOption
+  ISubscribableOption,
 } from './component-generator';
 
 import {
@@ -34,14 +34,14 @@ import {
   removeExtension,
   removePrefix,
   toKebabCase,
-  uppercaseFirst
+  uppercaseFirst,
 } from './helpers';
 
 function generate({
   metaData: rawData,
   components: { baseComponent, extensionComponent, configComponent },
   out,
-  widgetsPackage
+  widgetsPackage,
 }: {
   metaData: IModel,
   components: {
@@ -65,7 +65,7 @@ function generate({
       extensionComponent,
       configComponent,
       rawData.customTypes,
-      widgetsPackage
+      widgetsPackage,
     );
     const widgetFilePath = joinPaths(out.componentsDir, widgetFile.fileName);
     const indexFileDir = getDirName(out.indexFileName);
@@ -73,7 +73,7 @@ function generate({
     writeFile(widgetFilePath, generateComponent(widgetFile.component), { encoding: 'utf8' });
     modulePaths.push({
       name: widgetFile.component.name,
-      path: './' + removeExtension(getRelativePath(indexFileDir, widgetFilePath)).replace(pathSeparator, '/')
+      path: './' + removeExtension(getRelativePath(indexFileDir, widgetFilePath)).replace(pathSeparator, '/'),
     });
 
     writeFile(
@@ -81,8 +81,8 @@ function generate({
       generateReExport(
         normalizePath('./' + removeExtension(getRelativePath(out.oldComponentsDir, widgetFilePath)))
           .replace(pathSeparator, '/'),
-        removeExtension(widgetFile.fileName)
-      )
+        removeExtension(widgetFile.fileName),
+      ),
     );
   });
 
@@ -95,7 +95,7 @@ function mapWidget(
   extensionComponent: string,
   configComponent: string,
   customTypes: ICustomType[],
-  widgetPackage: string
+  widgetPackage: string,
 ): {
   fileName: string;
   component: IComponent
@@ -128,8 +128,8 @@ function mapWidget(
       subscribableOptions: subscribableOptions.length > 0 ? subscribableOptions : undefined,
       nestedComponents: nestedOptions && nestedOptions.length > 0 ? nestedOptions : undefined,
       expectedChildren: raw.nesteds,
-      propTypings: propTypings.length > 0 ? propTypings : undefined
-    }
+      propTypings: propTypings.length > 0 ? propTypings : undefined,
+    },
   };
 }
 
@@ -149,7 +149,7 @@ function extractNestedComponents(props: IComplexProp[], rawWidgetName: string, w
       isCollectionItem: p.isCollectionItem,
       templates: p.templates,
       predefinedProps: p.predefinedProps,
-      expectedChildren: p.nesteds
+      expectedChildren: p.nesteds,
     };
   });
 }
@@ -172,7 +172,7 @@ function createPropTyping(option: IProp, customTypes: Record<string, ICustomType
     return {
       propName: option.name,
       types: types || [],
-      acceptableValues: restrictedTypes[0].acceptableValues
+      acceptableValues: restrictedTypes[0].acceptableValues,
     };
   }
 
@@ -182,7 +182,7 @@ function createPropTyping(option: IProp, customTypes: Record<string, ICustomType
 
   return {
     propName: option.name,
-    types
+    types,
   };
 }
 
@@ -191,12 +191,12 @@ function mapOption(prop: IProp): IOption {
     {
       name: prop.name,
       type: 'any',
-      isSubscribable: prop.isSubscribable || undefined
+      isSubscribable: prop.isSubscribable || undefined,
 
     } : {
       name: prop.name,
       isSubscribable: prop.isSubscribable || undefined,
-      nested: prop.props.map(mapOption)
+      nested: prop.props.map(mapOption),
     };
 }
 
@@ -204,7 +204,7 @@ function mapSubscribableOption(prop: IProp): ISubscribableOption {
   return {
     name: prop.name,
     type: 'any',
-    isSubscribable: prop.isSubscribable || undefined
+    isSubscribable: prop.isSubscribable || undefined,
   };
 }
 

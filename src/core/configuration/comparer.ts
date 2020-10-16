@@ -16,7 +16,7 @@ function getChanges(current: IConfigNode, prev: IConfigNode) {
         templates: {},
         addRemovedValues(currentOptions, prevOptions, path) {
             appendRemovedValues(currentOptions, prevOptions, path, this.removedOptions);
-        }
+        },
     };
 
     compare(current, prev, changesAccum);
@@ -29,7 +29,7 @@ function compare(current: IConfigNode, prev: IConfigNode, changesAccum: IConfigC
         changesAccum.options[current.fullName] = buildNode(
             current,
             changesAccum.templates,
-            true
+            true,
         );
         return;
     }
@@ -94,7 +94,7 @@ function appendRemovedValues(
     current: Record<string, any>,
     prev: Record<string, any>,
     path: string,
-    changesAccum: string[]
+    changesAccum: string[],
 ) {
     const removedKeys = Object.keys(prev).filter((key) => Object.keys(current).indexOf(key) < 0);
 
@@ -106,7 +106,7 @@ function appendRemovedValues(
 function compareCollections(
     current: IConfigNode,
     prev: IConfigNode,
-    changesAccum: IConfigChanges
+    changesAccum: IConfigChanges,
 ) {
     for (const key of Object.keys(current.configCollections)) {
         const currentCollection = current.configCollections[key];
@@ -117,7 +117,7 @@ function compareCollections(
                 (item) => {
                     const config = buildNode(item, changesAccum.templates, true);
                     updatedCollection.push(config);
-                }
+                },
             );
             changesAccum.options[mergeNameParts(current.fullName, key)] = updatedCollection;
             continue;
@@ -130,5 +130,5 @@ function compareCollections(
 }
 
 export {
-    getChanges
+    getChanges,
 };

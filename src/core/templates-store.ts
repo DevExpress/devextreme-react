@@ -19,11 +19,11 @@ class TemplatesStore {
 
     public renderWrappers(): TemplateWrapper[] {
         return Object.getOwnPropertyNames(this._templates).map(
-            (templateId) => this._templates[templateId]()
+            (templateId) => this._templates[templateId](),
         );
     }
 }
 
 export {
-    TemplatesStore
+    TemplatesStore,
 };

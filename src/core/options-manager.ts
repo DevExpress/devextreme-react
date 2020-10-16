@@ -40,7 +40,7 @@ class OptionsManager {
 
         if (this._templatesManager.templatesCount > 0) {
             options.integrationOptions = {
-                templates: this._templatesManager.templates
+                templates: this._templatesManager.templates,
             };
         }
 
@@ -69,8 +69,8 @@ class OptionsManager {
             this._setValue(
                 'integrationOptions',
                 {
-                    templates: this._templatesManager.templates
-                }
+                    templates: this._templatesManager.templates,
+                },
             );
         }
 
@@ -145,7 +145,7 @@ class OptionsManager {
         if (typeof changeEvent.value !== 'function') {
             throw new Error(
                 `Invalid value for the ${eventName} property.
-                ${eventName} must be a function.`
+                ${eventName} must be a function.`,
             );
         }
         changeEvent.value(optionValue);
@@ -189,11 +189,11 @@ class OptionsManager {
 
         this._instance.option(
             name,
-            this._wrapOptionValue(name, value)
+            this._wrapOptionValue(name, value),
         );
     }
 }
 
 export {
-    OptionsManager
+    OptionsManager,
 };

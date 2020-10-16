@@ -23,11 +23,11 @@ function buildConfigTree(widgetDescriptor: IWidgetDescriptor, props: Record<stri
             descriptor: {
                 name: '',
                 isCollection: false,
-                ...widgetDescriptor
+                ...widgetDescriptor,
             },
             props,
         },
-        ''
+        '',
     );
 }
 
@@ -39,7 +39,7 @@ function createConfigNode(element: IOptionElement, path: string): IConfigNode {
     const separatedValues = separateProps(
         element.props,
         element.descriptor.initialValuesProps,
-        element.descriptor.templates
+        element.descriptor.templates,
     );
 
     const childrenData = processChildren(element, fullName);
@@ -48,7 +48,7 @@ function createConfigNode(element: IOptionElement, path: string): IConfigNode {
         const template = getAnonymousTemplate(
             element.props,
             templateMeta,
-            path.length > 0 ? childrenData.hasTranscludedContent : false
+            path.length > 0 ? childrenData.hasTranscludedContent : false,
         );
         if (template) {
             childrenData.templates.push(template);
@@ -62,7 +62,7 @@ function createConfigNode(element: IOptionElement, path: string): IConfigNode {
         options: separatedValues.options,
         templates: childrenData.templates,
         configCollections: childrenData.configCollections,
-        configs: childrenData.configs
+        configs: childrenData.configs,
     };
 }
 
@@ -101,8 +101,8 @@ function processChildren(parentElement: IOptionElement, parentFullName: string) 
                     element,
                     mergeNameParts(
                         parentFullName,
-                        element.descriptor.name
-                    ) + '[' + collection.length + ']'
+                        element.descriptor.name,
+                    ) + '[' + collection.length + ']',
                 );
 
                 collection.push(collectionItem);
@@ -111,21 +111,21 @@ function processChildren(parentElement: IOptionElement, parentFullName: string) 
 
             const configNode = createConfigNode(
                 element,
-                parentFullName
+                parentFullName,
             );
 
             configs[element.descriptor.name] = configNode;
-        }
+        },
     );
 
     return {
         configs,
         configCollections,
         templates,
-        hasTranscludedContent
+        hasTranscludedContent,
     };
 }
 
 export {
-    buildConfigTree
+    buildConfigTree,
 };

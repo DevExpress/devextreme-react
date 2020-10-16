@@ -7,7 +7,7 @@ class ComponentWithTemplates extends TestComponent {
         tmplOption: 'item',
         render: 'itemRender',
         component: 'itemComponent',
-        keyFn: 'itemKeyFn'
+        keyFn: 'itemKeyFn',
     }];
 
     constructor(props: any) {
@@ -34,14 +34,14 @@ describe('useLegacyTemplateEngine', () => {
         );
 
         const component = mount(
-            <ComponentWithTemplates itemRender={ItemTemplate} />
+            <ComponentWithTemplates itemRender={ItemTemplate} />,
         );
 
         const render = WidgetClass.mock.calls[0][1].integrationOptions.templates.item.render;
 
         render({
             container: document.createElement('div'),
-            model: { value: 'Value', key: 'key_1' }
+            model: { value: 'Value', key: 'key_1' },
         });
 
         component.update();
@@ -56,14 +56,14 @@ describe('useLegacyTemplateEngine', () => {
         );
 
         const component = mount(
-            <ComponentWithTemplates itemComponent={ItemTemplate} />
+            <ComponentWithTemplates itemComponent={ItemTemplate} />,
         );
 
         const render = WidgetClass.mock.calls[0][1].integrationOptions.templates.item.render;
 
         render({
             container: document.createElement('div'),
-            model: { value: 'Value', key: 'key_1' }
+            model: { value: 'Value', key: 'key_1' },
         });
 
         component.update();

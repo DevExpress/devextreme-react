@@ -8,7 +8,7 @@ it('deduplicates', () => {
         { type: 'Boolean', isCustomType: false, acceptableValues: [] },
         { type: 'Number', isCustomType: false, acceptableValues: [] },
         { type: 'Object', isCustomType: false, acceptableValues: [] },
-        { type: 'String', isCustomType: false, acceptableValues: [] }
+        { type: 'String', isCustomType: false, acceptableValues: [] },
     ];
 
     const expected = [
@@ -17,7 +17,7 @@ it('deduplicates', () => {
         'func',
         'number',
         'object',
-        'string'
+        'string',
     ];
 
     expect(convertTypes(types)).toEqual(expected);
@@ -28,13 +28,13 @@ it('returns undefiend if finds Any', () => {
     expect(convertTypes([
         { type: 'String', isCustomType: false, acceptableValues: [] },
         { type: 'Any', isCustomType: false, acceptableValues: [] },
-        { type: 'Number', isCustomType: false, acceptableValues: [] }
+        { type: 'Number', isCustomType: false, acceptableValues: [] },
     ])).toBeUndefined();
 });
 
 it('returns object if finds isCustomType', () => {
     expect(convertTypes([
-        { type: 'CustomType', isCustomType: true, acceptableValues: [] }
+        { type: 'CustomType', isCustomType: true, acceptableValues: [] },
     ])).toEqual(['object']);
 });
 
@@ -63,11 +63,11 @@ it('expands custom types', () => {
                 name: 'CustomType',
                 types: [
                     { type: 'String', isCustomType: false, acceptableValues: []},
-                    { type: 'Number', isCustomType: false, acceptableValues: []}
+                    { type: 'Number', isCustomType: false, acceptableValues: []},
                 ],
                 props: [],
-                templates: []
-            }
-        }
+                templates: [],
+            },
+        },
     )).toEqual(['object', 'string', 'number']);
 });

@@ -17,17 +17,17 @@ class NestedOption<P> extends React.PureComponent<P, any> {
                 const childElementInfo = getElementInfo(child);
 
                 return childElementInfo.type === ElementType.Option ? child : null;
-            }
+            },
         );
         return React.createElement(
             React.Fragment,
             {},
-            children
+            children,
         );
     }
 }
 
 export default NestedOption;
 export {
-    INestedOptionMeta
+    INestedOptionMeta,
 };

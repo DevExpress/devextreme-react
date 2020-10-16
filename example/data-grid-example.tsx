@@ -11,7 +11,7 @@ import DataGrid, {
     MasterDetail,
     Pager,
     Paging,
-    Selection
+    Selection,
 } from '../src/data-grid';
 import NumberBox from '../src/number-box';
 
@@ -40,7 +40,7 @@ export default class extends React.Component<any, { expandAll: boolean, pageSize
         super(props);
         this.state = {
             expandAll: true,
-            pageSize: 5
+            pageSize: 5,
         };
 
         this.handleToolbarPreparing = this.handleToolbarPreparing.bind(this);
@@ -101,7 +101,7 @@ export default class extends React.Component<any, { expandAll: boolean, pageSize
     private handleToolbarPreparing(args: any) {
         args.toolbarOptions.items.unshift({
             location: 'after',
-            template: 'toolbarLabel'
+            template: 'toolbarLabel',
           },
           {
             location: 'after',
@@ -112,17 +112,17 @@ export default class extends React.Component<any, { expandAll: boolean, pageSize
                   this.setState((state) => {
                     e.component.option('icon', state.expandAll ? 'chevrondown' : 'chevronup');
                     return {
-                        expandAll: !state.expandAll
+                        expandAll: !state.expandAll,
                     };
                   });
-                }
-            }
+                },
+            },
         });
       }
 
     private handlePageIndexChange(e: any) {
         this.setState({
-            pageSize: e.value
+            pageSize: e.value,
         });
     }
 }

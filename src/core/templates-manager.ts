@@ -28,7 +28,7 @@ const contentCreators = {
         normalizeProps(props);
         return contentGetter()(props.data, props.index);
     },
-    children: (contentGetter: ContentGetter) => () => contentGetter()
+    children: (contentGetter: ContentGetter) => () => contentGetter(),
 };
 
 class TemplatesManager {
@@ -46,7 +46,7 @@ class TemplatesManager {
         this._templates[name] = createDxTemplate(
             contentCreator,
             this._templatesStore,
-            template.keyFn
+            template.keyFn,
         );
     }
 

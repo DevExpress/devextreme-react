@@ -3,7 +3,7 @@ import { lowercaseFirst } from './helpers';
 
 function convertTypes(
     types: ITypeDescr[] | undefined | null,
-    customTypes?: Record<string, ICustomType>
+    customTypes?: Record<string, ICustomType>,
 ): string[] | undefined {
     if (types === undefined || types === null || types.length === 0) {
         return undefined;
@@ -65,9 +65,9 @@ const inputTypes = {
     number: 'Number',
     object: 'Object',
     bool: 'Boolean',
-    func: 'Function'
+    func: 'Function',
 };
 
 export {
-    convertTypes
+    convertTypes,
 };

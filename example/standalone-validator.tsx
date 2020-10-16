@@ -12,7 +12,7 @@ class ValidatorExample extends React.Component<any, any> {
     constructor(props: any) {
         super(props);
         this.state = {
-            isValid: true
+            isValid: true,
         };
 
         this._adapter = {
@@ -22,7 +22,7 @@ class ValidatorExample extends React.Component<any, any> {
             validationRequestsCallbacks: this._callbacks,
             applyValidationResults: (e: any) => {
                 this.setState({ isValid: e.isValid });
-            }
+            },
         };
     }
 

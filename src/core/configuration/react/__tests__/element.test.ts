@@ -19,7 +19,7 @@ class RichConfigurationComponent extends ConfigurationComponent<any> {
         tmplOption: 'template',
         render: 'render',
         component: 'component',
-        keyFn: 'keyFn'
+        keyFn: 'keyFn',
     }];
     public static PredefinedProps = { type: 'numeric' };
 }
@@ -32,7 +32,7 @@ class CollectionConfigurationComponent extends ConfigurationComponent<any> {
         tmplOption: 'template',
         render: 'render',
         component: 'component',
-        keyFn: 'keyFn'
+        keyFn: 'keyFn',
     }];
     public static PredefinedProps = { type: 'numeric' };
 }
@@ -40,13 +40,13 @@ class CollectionConfigurationComponent extends ConfigurationComponent<any> {
 const configurationComponents: any[] = [
     MinimalConfigurationComponent,
     RichConfigurationComponent,
-    CollectionConfigurationComponent
+    CollectionConfigurationComponent,
 ];
 
 const otherComponents = [
     'div',
     ConfigurationComponent,
-    () => React.createElement('div', {}, 'text')
+    () => React.createElement('div', {}, 'text'),
 ];
 
 describe('getElementInfo', () => {
@@ -76,10 +76,10 @@ describe('getElementInfo', () => {
             React.createElement(
                 Template,
                 {
-                    name: 'template-name'
+                    name: 'template-name',
                 },
-                'Template content'
-            )
+                'Template content',
+            ),
         );
 
         const elementInfo = getElementInfo(wrapper.getElement());

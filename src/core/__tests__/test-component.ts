@@ -10,7 +10,7 @@ const Widget = {
     on: (event: string, handler: (e: any) => void) => {
         eventHandlers[event] = handler;
     },
-    dispose: jest.fn()
+    dispose: jest.fn(),
 };
 
 const WidgetClass = jest.fn(() => Widget);
@@ -23,7 +23,7 @@ function fireOptionChange(fullName: string, value: any) {
     eventHandlers.optionChanged({
         name: fullName.split('.')[0],
         fullName,
-        value
+        value,
     });
 }
 
@@ -32,5 +32,5 @@ export {
     Widget,
     WidgetClass,
     eventHandlers,
-    fireOptionChange
+    fireOptionChange,
 };

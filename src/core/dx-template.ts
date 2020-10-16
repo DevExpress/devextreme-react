@@ -19,7 +19,7 @@ interface IDxTemplateData {
 function createDxTemplate(
     createContentProvider: () => (props: ITemplateArgs) => any,
     templatesStore: TemplatesStore,
-    keyFn?: (data: any) => string
+    keyFn?: (data: any) => string,
 ): IDxTemplate {
 
     const renderedTemplates = new DoubleKeyMap<any, HTMLElement | null, string>();
@@ -44,7 +44,7 @@ function createDxTemplate(
             templatesStore.add(templateId, () => {
                 const props: ITemplateArgs = {
                     data: data.model,
-                    index: data.index
+                    index: data.index,
                 };
 
                 const contentProvider = createContentProvider();
@@ -58,13 +58,13 @@ function createDxTemplate(
                             renderedTemplates.delete({ key1: data.model, key2: container });
                         },
                         onRendered: data.onRendered,
-                        key: templateId
-                    }
+                        key: templateId,
+                    },
                 ) as any as TemplateWrapper;
             });
 
             return container;
-        }
+        },
     };
 }
 
@@ -74,5 +74,5 @@ function unwrapElement(element: any): HTMLElement {
 
 export {
     IDxTemplate,
-    createDxTemplate
+    createDxTemplate,
 };

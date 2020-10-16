@@ -24,8 +24,8 @@ export default class extends React.Component<any, IState> {
                 argumentField: 'day',
                 valueField: 'oranges',
                 name: 'My oranges',
-                type: 'line'
-            }]
+                type: 'line',
+            }],
         };
 
         this.updateTime = this.updateTime.bind(this);
@@ -57,7 +57,7 @@ export default class extends React.Component<any, IState> {
 
     private updateTime() {
         this.setState({
-            currentTime: this.GetTimeString()
+            currentTime: this.GetTimeString(),
         });
     }
 
@@ -66,7 +66,7 @@ export default class extends React.Component<any, IState> {
         series[0].name = seriesName;
         this.setState({
             seriesName,
-            series
+            series,
         });
     }
 
@@ -80,7 +80,7 @@ class Updater extends React.Component<{ onChange: (value: string) => void }, { v
     constructor(props: { onChange: (value: string) => void }) {
         super(props);
         this.state = {
-            value: ''
+            value: '',
         };
 
         this.update = this.update.bind(this);
@@ -106,7 +106,7 @@ class Updater extends React.Component<{ onChange: (value: string) => void }, { v
 
     private update(e: any) {
         this.setState({
-            value: e.value
+            value: e.value,
         });
     }
 }
