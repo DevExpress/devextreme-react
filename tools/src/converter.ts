@@ -48,6 +48,8 @@ function convertType(typeDescr: ITypeDescr): string {
 
         case inputTypes.func:
             return "func";
+        default:
+            break;
     }
 
     if (typeDescr.isCustomType) {

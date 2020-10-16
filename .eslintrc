@@ -16,7 +16,7 @@
         "array-callback-return": "off",
         "class-methods-use-this": "off",
         "consistent-return": "off",
-        "default-case": "off",
+        // "default-case": "off",
         "function-paren-newline": "off",
         "implicit-arrow-linebreak": "off",
         "import/extensions": "off",
