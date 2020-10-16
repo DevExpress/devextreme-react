@@ -1,15 +1,15 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { getOption as getConfigOption } from "./config";
-import { ITemplate } from "./configuration/config-node";
-import { createDxTemplate } from "./dx-template";
-import { ITemplateArgs } from "./template";
-import { TemplatesStore } from "./templates-store";
+import { getOption as getConfigOption } from './config';
+import { ITemplate } from './configuration/config-node';
+import { createDxTemplate } from './dx-template';
+import { ITemplateArgs } from './template';
+import { TemplatesStore } from './templates-store';
 
-function normalizeProps(props: ITemplateArgs): ITemplateArgs | ITemplateArgs["data"] {
-    if (getConfigOption("useLegacyTemplateEngine")) {
+function normalizeProps(props: ITemplateArgs): ITemplateArgs | ITemplateArgs['data'] {
+    if (getConfigOption('useLegacyTemplateEngine')) {
         const model = props.data;
-        if (model && model.hasOwnProperty("key")) {
+        if (model && model.hasOwnProperty('key')) {
             model.dxkey = model.key;
         }
         return model;

@@ -1,12 +1,12 @@
-import * as React from "react";
+import * as React from 'react';
 
-import Button from "../src/button";
-import Popup from "../src/popup";
-import ScrollView from "../src/scroll-view";
-import TextBox from "../src/text-box";
-import Example from "./example-block";
+import Button from '../src/button';
+import Popup from '../src/popup';
+import ScrollView from '../src/scroll-view';
+import TextBox from '../src/text-box';
+import Example from './example-block';
 
-const VALID_TEXT = "good";
+const VALID_TEXT = 'good';
 const validateText = (text: string) => text === VALID_TEXT;
 
 export default class extends React.Component<any, { visible: boolean; text: string; }> {
@@ -15,7 +15,7 @@ export default class extends React.Component<any, { visible: boolean; text: stri
         super(props);
         this.state = {
             visible: false,
-            text: "non-" + VALID_TEXT
+            text: 'non-' + VALID_TEXT
         };
 
         this.toggle = this.toggle.bind(this);

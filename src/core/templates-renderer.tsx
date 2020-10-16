@@ -1,7 +1,7 @@
-import { deferUpdate } from "devextreme/core/utils/common";
-import * as React from "react";
+import { deferUpdate } from 'devextreme/core/utils/common';
+import * as React from 'react';
 
-import { TemplatesStore } from "./templates-store";
+import { TemplatesStore } from './templates-store';
 
 class TemplatesRenderer extends React.PureComponent<{ templatesStore: TemplatesStore }> {
     private _updateScheduled: boolean = false;

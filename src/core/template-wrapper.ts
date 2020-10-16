@@ -1,8 +1,8 @@
-import * as events from "devextreme/events";
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import * as events from 'devextreme/events';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 
-import { DX_REMOVE_EVENT } from "./component-base";
+import { DX_REMOVE_EVENT } from './component-base';
 
 interface ITemplateWrapperProps {
     content: any;
@@ -18,7 +18,7 @@ interface ITemplateWrapperState {
 
 type TemplateWrapperRenderer = () => TemplateWrapper;
 
-const removalListenerStyle = { display: "none" };
+const removalListenerStyle = { display: 'none' };
 
 class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps, ITemplateWrapperState> {
     private readonly _removalListenerRef = React.createRef<HTMLElement>();
@@ -37,7 +37,7 @@ class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps, ITempla
 
     public render() {
         const removalListener = this.state.removalListenerRequired
-            ? React.createElement("span", { style: removalListenerStyle, ref: this._removalListenerRef })
+            ? React.createElement('span', { style: removalListenerStyle, ref: this._removalListenerRef })
             : undefined;
 
         return ReactDOM.createPortal(

@@ -1,6 +1,6 @@
-import generate from "./component-generator";
+import generate from './component-generator';
 
-it("generates", () => {
+it('generates', () => {
     //#region EXPECTED
     const EXPECTED = `
 import dxCLASS_NAME, {
@@ -30,15 +30,15 @@ export {
 
     expect(
         generate({
-            name: "CLASS_NAME",
-            baseComponentPath: "BASE_COMPONENT_PATH",
-            extensionComponentPath: "EXTENSION_COMPONENT_PATH",
-            dxExportPath: "DX/WIDGET/PATH"
+            name: 'CLASS_NAME',
+            baseComponentPath: 'BASE_COMPONENT_PATH',
+            extensionComponentPath: 'EXTENSION_COMPONENT_PATH',
+            dxExportPath: 'DX/WIDGET/PATH'
         })
     ).toBe(EXPECTED);
 });
 
-it("generates extension component", () => {
+it('generates extension component', () => {
     //#region EXPECTED
     const EXPECTED = `
 import dxCLASS_NAME, {
@@ -65,18 +65,18 @@ export {
 
     expect(
         generate({
-            name: "CLASS_NAME",
-            baseComponentPath: "BASE_COMPONENT_PATH",
-            extensionComponentPath: "EXTENSION_COMPONENT_PATH",
-            dxExportPath: "DX/WIDGET/PATH",
+            name: 'CLASS_NAME',
+            baseComponentPath: 'BASE_COMPONENT_PATH',
+            extensionComponentPath: 'EXTENSION_COMPONENT_PATH',
+            dxExportPath: 'DX/WIDGET/PATH',
             isExtension: true
         })
     ).toBe(EXPECTED);
 });
 
-describe("template-props generation", () => {
+describe('template-props generation', () => {
 
-    it("processes option", () => {
+    it('processes option', () => {
         //#region EXPECTED
         const EXPECTED = `
 import dxCLASS_NAME, {
@@ -116,16 +116,16 @@ export {
 
         expect(
             generate({
-                name: "CLASS_NAME",
-                baseComponentPath: "BASE_COMPONENT_PATH",
-                extensionComponentPath: "EXTENSION_COMPONENT_PATH",
-                dxExportPath: "DX/WIDGET/PATH",
-                templates: ["optionTemplate"]
+                name: 'CLASS_NAME',
+                baseComponentPath: 'BASE_COMPONENT_PATH',
+                extensionComponentPath: 'EXTENSION_COMPONENT_PATH',
+                dxExportPath: 'DX/WIDGET/PATH',
+                templates: ['optionTemplate']
             })
         ).toBe(EXPECTED);
     });
 
-    it("processes several options", () => {
+    it('processes several options', () => {
         //#region EXPECTED
         const EXPECTED = `
 import dxCLASS_NAME, {
@@ -173,16 +173,16 @@ export {
 
         expect(
             generate({
-                name: "CLASS_NAME",
-                baseComponentPath: "BASE_COMPONENT_PATH",
-                extensionComponentPath: "EXTENSION_COMPONENT_PATH",
-                dxExportPath: "DX/WIDGET/PATH",
-                templates: ["optionTemplate", "anotherOptionTemplate"]
+                name: 'CLASS_NAME',
+                baseComponentPath: 'BASE_COMPONENT_PATH',
+                extensionComponentPath: 'EXTENSION_COMPONENT_PATH',
+                dxExportPath: 'DX/WIDGET/PATH',
+                templates: ['optionTemplate', 'anotherOptionTemplate']
             })
         ).toBe(EXPECTED);
     });
 
-    it("processes single widget-template option", () => {
+    it('processes single widget-template option', () => {
         //#region EXPECTED
         const EXPECTED = `
 import dxCLASS_NAME, {
@@ -222,19 +222,19 @@ export {
 
         expect(
             generate({
-                name: "CLASS_NAME",
-                baseComponentPath: "BASE_COMPONENT_PATH",
-                extensionComponentPath: "EXTENSION_COMPONENT_PATH",
-                dxExportPath: "DX/WIDGET/PATH",
-                templates: ["template"]
+                name: 'CLASS_NAME',
+                baseComponentPath: 'BASE_COMPONENT_PATH',
+                extensionComponentPath: 'EXTENSION_COMPONENT_PATH',
+                dxExportPath: 'DX/WIDGET/PATH',
+                templates: ['template']
             })
         ).toBe(EXPECTED);
     });
 });
 
-describe("props generation", () => {
+describe('props generation', () => {
 
-    it("processes subscribable option", () => {
+    it('processes subscribable option', () => {
         //#region EXPECTED
         const EXPECTED = `
 import dxCLASS_NAME, {
@@ -270,18 +270,18 @@ export {
 
         expect(
             generate({
-                name: "CLASS_NAME",
-                baseComponentPath: "BASE_COMPONENT_PATH",
-                extensionComponentPath: "EXTENSION_COMPONENT_PATH",
-                dxExportPath: "DX/WIDGET/PATH",
+                name: 'CLASS_NAME',
+                baseComponentPath: 'BASE_COMPONENT_PATH',
+                extensionComponentPath: 'EXTENSION_COMPONENT_PATH',
+                dxExportPath: 'DX/WIDGET/PATH',
                 subscribableOptions: [
-                    { name: "option1", type: "someType" }
+                    { name: 'option1', type: 'someType' }
                 ]
             })
         ).toBe(EXPECTED);
     });
 
-    it("processes several subscribable options", () => {
+    it('processes several subscribable options', () => {
         //#region EXPECTED
         const EXPECTED = `
 import dxCLASS_NAME, {
@@ -320,22 +320,22 @@ export {
 
         expect(
             generate({
-                name: "CLASS_NAME",
-                baseComponentPath: "BASE_COMPONENT_PATH",
-                extensionComponentPath: "EXTENSION_COMPONENT_PATH",
-                dxExportPath: "DX/WIDGET/PATH",
+                name: 'CLASS_NAME',
+                baseComponentPath: 'BASE_COMPONENT_PATH',
+                extensionComponentPath: 'EXTENSION_COMPONENT_PATH',
+                dxExportPath: 'DX/WIDGET/PATH',
                 subscribableOptions: [
-                    { name: "option1", type: "someType" },
-                    { name: "option2", type: "anotherType" }
+                    { name: 'option1', type: 'someType' },
+                    { name: 'option2', type: 'anotherType' }
                 ]
             })
         ).toBe(EXPECTED);
     });
 });
 
-describe("nested options", () => {
+describe('nested options', () => {
 
-    it("processes nested options", () => {
+    it('processes nested options', () => {
         //#region EXPECTED
         const EXPECTED = `
 import dxCLASS_NAME, {
@@ -396,34 +396,34 @@ export {
 
         expect(
             generate({
-                name: "CLASS_NAME",
-                baseComponentPath: "BASE_COMPONENT_PATH",
-                extensionComponentPath: "EXTENSION_COMPONENT_PATH",
-                configComponentPath: "CONFIG_COMPONENT_PATH",
-                dxExportPath: "DX/WIDGET/PATH",
+                name: 'CLASS_NAME',
+                baseComponentPath: 'BASE_COMPONENT_PATH',
+                extensionComponentPath: 'EXTENSION_COMPONENT_PATH',
+                configComponentPath: 'CONFIG_COMPONENT_PATH',
+                dxExportPath: 'DX/WIDGET/PATH',
                 nestedComponents: [
                     {
-                        className: "Opt_1_Component",
-                        owners: [ "CLASS_NAME" ],
-                        optionName: "opt_1",
+                        className: 'Opt_1_Component',
+                        owners: [ 'CLASS_NAME' ],
+                        optionName: 'opt_1',
                         options: [
                             {
-                                name: "sub_opt_2",
-                                type: "TYPE_1"
+                                name: 'sub_opt_2',
+                                type: 'TYPE_1'
                             },
                             {
-                                name: "sub_opt_3",
+                                name: 'sub_opt_3',
                                 nested: [
                                     {
-                                        name: "sub_sub_opt_4",
-                                        type: "TYPE_2"
+                                        name: 'sub_sub_opt_4',
+                                        type: 'TYPE_2'
                                     },
                                     {
-                                        name: "sub_sub_opt_5",
+                                        name: 'sub_sub_opt_5',
                                         nested: [
                                             {
-                                                name: "sub_sub_sub_opt_6",
-                                                type: "TYPE_3"
+                                                name: 'sub_sub_sub_opt_6',
+                                                type: 'TYPE_3'
                                             }
                                         ]
                                     }
@@ -432,13 +432,13 @@ export {
                         ]
                     },
                     {
-                        className: "Opt_6_SubComponent",
-                        owners: [ "Opt_1_Component" ],
-                        optionName: "sub_sub_opt_7",
+                        className: 'Opt_6_SubComponent',
+                        owners: [ 'Opt_1_Component' ],
+                        optionName: 'sub_sub_opt_7',
                         options: [
                             {
-                                name: "sub_sub_sub_opt_8",
-                                type: "TYPE_4"
+                                name: 'sub_sub_sub_opt_8',
+                                type: 'TYPE_4'
                             }
                         ]
                     }
@@ -447,7 +447,7 @@ export {
         ).toBe(EXPECTED);
     });
 
-    it("processes nested array option", () => {
+    it('processes nested array option', () => {
         //#region EXPECTED
         const EXPECTED = `
 import dxCLASS_NAME, {
@@ -492,21 +492,21 @@ export {
 
         expect(
             generate({
-                name: "CLASS_NAME",
-                baseComponentPath: "BASE_COMPONENT_PATH",
-                extensionComponentPath: "EXTENSION_COMPONENT_PATH",
-                configComponentPath: "CONFIG_COMPONENT_PATH",
-                dxExportPath: "DX/WIDGET/PATH",
+                name: 'CLASS_NAME',
+                baseComponentPath: 'BASE_COMPONENT_PATH',
+                extensionComponentPath: 'EXTENSION_COMPONENT_PATH',
+                configComponentPath: 'CONFIG_COMPONENT_PATH',
+                dxExportPath: 'DX/WIDGET/PATH',
                 nestedComponents: [
                     {
-                        className: "Opt_1_Component",
-                        owners: [ "CLASS_NAME" ],
-                        optionName: "opt_1",
+                        className: 'Opt_1_Component',
+                        owners: [ 'CLASS_NAME' ],
+                        optionName: 'opt_1',
                         isCollectionItem: true,
                         options: [
                             {
-                                name: "sub_opt_2",
-                                type: "TYPE_1"
+                                name: 'sub_opt_2',
+                                type: 'TYPE_1'
                             }
                         ],
                     },
@@ -515,7 +515,7 @@ export {
         ).toBe(EXPECTED);
     });
 
-    it("generates default props for nested options", () => {
+    it('generates default props for nested options', () => {
         //#region EXPECTED
         const EXPECTED = `
 import dxCLASS_NAME, {
@@ -567,28 +567,28 @@ export {
 
         expect(
             generate({
-                name: "CLASS_NAME",
-                baseComponentPath: "BASE_COMPONENT_PATH",
-                extensionComponentPath: "EXTENSION_COMPONENT_PATH",
-                configComponentPath: "CONFIG_COMPONENT_PATH",
-                dxExportPath: "DX/WIDGET/PATH",
+                name: 'CLASS_NAME',
+                baseComponentPath: 'BASE_COMPONENT_PATH',
+                extensionComponentPath: 'EXTENSION_COMPONENT_PATH',
+                configComponentPath: 'CONFIG_COMPONENT_PATH',
+                dxExportPath: 'DX/WIDGET/PATH',
                 nestedComponents: [
                     {
-                        className: "Opt_1_Component",
-                        owners: [ "CLASS_NAME" ],
-                        optionName: "opt_1",
+                        className: 'Opt_1_Component',
+                        owners: [ 'CLASS_NAME' ],
+                        optionName: 'opt_1',
                         options: [
                             {
-                                name: "sub_opt_2",
-                                type: "TYPE_1",
+                                name: 'sub_opt_2',
+                                type: 'TYPE_1',
                                 isSubscribable: true
                             },
                             {
-                                name: "sub_opt_3",
+                                name: 'sub_opt_3',
                                 nested: [
                                     {
-                                        name: "sub_sub_opt_4",
-                                        type: "TYPE_2",
+                                        name: 'sub_sub_opt_4',
+                                        type: 'TYPE_2',
                                         isSubscribable: true // should not be rendered
                                     }
                                 ]
@@ -600,7 +600,7 @@ export {
         ).toBe(EXPECTED);
     });
 
-    it("generates component/render props for nested options", () => {
+    it('generates component/render props for nested options', () => {
         //#region EXPECTED
         const EXPECTED = `
 import dxCLASS_NAME, {
@@ -653,21 +653,21 @@ export {
 
         expect(
             generate({
-                name: "CLASS_NAME",
-                baseComponentPath: "BASE_COMPONENT_PATH",
-                extensionComponentPath: "EXTENSION_COMPONENT_PATH",
-                configComponentPath: "CONFIG_COMPONENT_PATH",
-                dxExportPath: "DX/WIDGET/PATH",
+                name: 'CLASS_NAME',
+                baseComponentPath: 'BASE_COMPONENT_PATH',
+                extensionComponentPath: 'EXTENSION_COMPONENT_PATH',
+                configComponentPath: 'CONFIG_COMPONENT_PATH',
+                dxExportPath: 'DX/WIDGET/PATH',
                 nestedComponents: [
                     {
-                        className: "Opt_1_Component",
-                        owners: [ "CLASS_NAME" ],
-                        optionName: "opt_1",
-                        templates: ["optionTemplate"],
+                        className: 'Opt_1_Component',
+                        owners: [ 'CLASS_NAME' ],
+                        optionName: 'opt_1',
+                        templates: ['optionTemplate'],
                         options: [
                             {
-                                name: "optionTemplate",
-                                type: "TYPE_1"
+                                name: 'optionTemplate',
+                                type: 'TYPE_1'
                             }
                         ]
                     }
@@ -676,7 +676,7 @@ export {
         ).toBe(EXPECTED);
     });
 
-    it("processes nested option predefined props", () => {
+    it('processes nested option predefined props', () => {
         //#region EXPECTED
         const EXPECTED = `
 import dxCLASS_NAME, {
@@ -724,24 +724,24 @@ export {
 
         expect(
             generate({
-                name: "CLASS_NAME",
-                baseComponentPath: "BASE_COMPONENT_PATH",
-                extensionComponentPath: "EXTENSION_COMPONENT_PATH",
-                configComponentPath: "CONFIG_COMPONENT_PATH",
-                dxExportPath: "DX/WIDGET/PATH",
+                name: 'CLASS_NAME',
+                baseComponentPath: 'BASE_COMPONENT_PATH',
+                extensionComponentPath: 'EXTENSION_COMPONENT_PATH',
+                configComponentPath: 'CONFIG_COMPONENT_PATH',
+                dxExportPath: 'DX/WIDGET/PATH',
                 nestedComponents: [
                     {
-                        className: "Opt_1_Component",
-                        owners: [ "CLASS_NAME" ],
-                        optionName: "opt_1",
+                        className: 'Opt_1_Component',
+                        owners: [ 'CLASS_NAME' ],
+                        optionName: 'opt_1',
                         isCollectionItem: true,
                         predefinedProps: {
-                            predefinedProp_1: "predefined-value"
+                            predefinedProp_1: 'predefined-value'
                         },
                         options: [
                             {
-                                name: "sub_opt_2",
-                                type: "TYPE_1"
+                                name: 'sub_opt_2',
+                                type: 'TYPE_1'
                             }
                         ]
                     }
@@ -751,9 +751,9 @@ export {
     });
 });
 
-describe("prop typings", () => {
+describe('prop typings', () => {
 
-    it("adds check for single type", () => {
+    it('adds check for single type', () => {
         //#region EXPECTED
         const EXPECTED = `
 import dxCLASS_NAME, {
@@ -787,21 +787,21 @@ export {
 
         expect(
             generate({
-                name: "CLASS_NAME",
-                baseComponentPath: "BASE_COMPONENT_PATH",
-                extensionComponentPath: "EXTENSION_COMPONENT_PATH",
-                dxExportPath: "DX/WIDGET/PATH",
+                name: 'CLASS_NAME',
+                baseComponentPath: 'BASE_COMPONENT_PATH',
+                extensionComponentPath: 'EXTENSION_COMPONENT_PATH',
+                dxExportPath: 'DX/WIDGET/PATH',
                 propTypings: [
                     {
-                        propName: "PROP1",
-                        types: ["SOME_TYPE"]
+                        propName: 'PROP1',
+                        types: ['SOME_TYPE']
                     }
                 ]
             })
         ).toBe(EXPECTED);
     });
 
-    it("adds check for acceptable values", () => {
+    it('adds check for acceptable values', () => {
         //#region EXPECTED
         const EXPECTED = `
 import dxCLASS_NAME, {
@@ -838,22 +838,22 @@ export {
 
         expect(
             generate({
-                name: "CLASS_NAME",
-                baseComponentPath: "BASE_COMPONENT_PATH",
-                extensionComponentPath: "EXTENSION_COMPONENT_PATH",
-                dxExportPath: "DX/WIDGET/PATH",
+                name: 'CLASS_NAME',
+                baseComponentPath: 'BASE_COMPONENT_PATH',
+                extensionComponentPath: 'EXTENSION_COMPONENT_PATH',
+                dxExportPath: 'DX/WIDGET/PATH',
                 propTypings: [
                     {
-                        propName: "PROP1",
+                        propName: 'PROP1',
                         types: [],
-                        acceptableValues: ["\"VALUE_1\"", "\"VALUE_2\""],
+                        acceptableValues: ['"VALUE_1"', '"VALUE_2"'],
                     }
                 ]
             })
         ).toBe(EXPECTED);
     });
 
-    it("adds check for several types", () => {
+    it('adds check for several types', () => {
         //#region EXPECTED
         const EXPECTED = `
 import dxCLASS_NAME, {
@@ -890,21 +890,21 @@ export {
 
         expect(
             generate({
-                name: "CLASS_NAME",
-                baseComponentPath: "BASE_COMPONENT_PATH",
-                extensionComponentPath: "EXTENSION_COMPONENT_PATH",
-                dxExportPath: "DX/WIDGET/PATH",
+                name: 'CLASS_NAME',
+                baseComponentPath: 'BASE_COMPONENT_PATH',
+                extensionComponentPath: 'EXTENSION_COMPONENT_PATH',
+                dxExportPath: 'DX/WIDGET/PATH',
                 propTypings: [
                     {
-                        propName: "PROP1",
-                        types: ["SOME_TYPE", "ANOTHER_TYPE"]
+                        propName: 'PROP1',
+                        types: ['SOME_TYPE', 'ANOTHER_TYPE']
                     }
                 ]
             })
         ).toBe(EXPECTED);
     });
 
-    it("adds typings in alphabetic order", () => {
+    it('adds typings in alphabetic order', () => {
         //#region EXPECTED
         const EXPECTED = `
 import dxCLASS_NAME, {
@@ -944,26 +944,26 @@ export {
 
         expect(
             generate({
-                name: "CLASS_NAME",
-                baseComponentPath: "BASE_COMPONENT_PATH",
-                extensionComponentPath: "EXTENSION_COMPONENT_PATH",
-                dxExportPath: "DX/WIDGET/PATH",
+                name: 'CLASS_NAME',
+                baseComponentPath: 'BASE_COMPONENT_PATH',
+                extensionComponentPath: 'EXTENSION_COMPONENT_PATH',
+                dxExportPath: 'DX/WIDGET/PATH',
                 propTypings: [
                     {
-                        propName: "A-PROP",
-                        types: ["TYPE_1", "TYPE_2"]
+                        propName: 'A-PROP',
+                        types: ['TYPE_1', 'TYPE_2']
                     },
                     {
-                        propName: "c-PROP",
-                        types: ["TYPE_2"]
+                        propName: 'c-PROP',
+                        types: ['TYPE_2']
                     },
                     {
-                        propName: "a-PROP",
-                        types: ["TYPE_3"]
+                        propName: 'a-PROP',
+                        types: ['TYPE_3']
                     },
                     {
-                        propName: "B-PROP",
-                        types: ["TYPE_4"]
+                        propName: 'B-PROP',
+                        types: ['TYPE_4']
                     }
                 ]
             })
@@ -971,9 +971,9 @@ export {
     });
 });
 
-describe("child expectation", () => {
+describe('child expectation', () => {
 
-    it("is rendered for widget", () => {
+    it('is rendered for widget', () => {
     //#region EXPECTED
     const EXPECTED = `
 import dxCLASS_NAME, {
@@ -1008,19 +1008,19 @@ export {
 
     expect(
         generate({
-            name: "CLASS_NAME",
-            baseComponentPath: "BASE_COMPONENT_PATH",
-            extensionComponentPath: "EXTENSION_COMPONENT_PATH",
-            dxExportPath: "DX/WIDGET/PATH",
+            name: 'CLASS_NAME',
+            baseComponentPath: 'BASE_COMPONENT_PATH',
+            extensionComponentPath: 'EXTENSION_COMPONENT_PATH',
+            dxExportPath: 'DX/WIDGET/PATH',
             expectedChildren: [
-                { componentName: "expectedOption1", optionName: "expectedName1", isCollectionItem: true },
-                { componentName: "expectedOption2", optionName: "expectedName2" },
+                { componentName: 'expectedOption1', optionName: 'expectedName1', isCollectionItem: true },
+                { componentName: 'expectedOption2', optionName: 'expectedName2' },
             ]
         })
     ).toBe(EXPECTED);
     });
 
-    it("is rendered for nested option", () => {
+    it('is rendered for nested option', () => {
         //#region EXPECTED
         const EXPECTED = `
 import dxCLASS_NAME, {
@@ -1067,26 +1067,26 @@ export {
 
         expect(
             generate({
-                name: "CLASS_NAME",
-                baseComponentPath: "BASE_COMPONENT_PATH",
-                extensionComponentPath: "EXTENSION_COMPONENT_PATH",
-                configComponentPath: "CONFIG_COMPONENT_PATH",
-                dxExportPath: "DX/WIDGET/PATH",
+                name: 'CLASS_NAME',
+                baseComponentPath: 'BASE_COMPONENT_PATH',
+                extensionComponentPath: 'EXTENSION_COMPONENT_PATH',
+                configComponentPath: 'CONFIG_COMPONENT_PATH',
+                dxExportPath: 'DX/WIDGET/PATH',
                 nestedComponents: [
                     {
-                        className: "Opt_1_Component",
-                        owners: [ "CLASS_NAME" ],
-                        optionName: "opt_1",
+                        className: 'Opt_1_Component',
+                        owners: [ 'CLASS_NAME' ],
+                        optionName: 'opt_1',
                         options: [],
                         expectedChildren: [
                             {
-                                componentName: "expectedOption1",
-                                optionName: "expectedName1",
+                                componentName: 'expectedOption1',
+                                optionName: 'expectedName1',
                                 isCollectionItem: true
                             },
                             {
-                                componentName: "expectedOption2",
-                                optionName: "expectedName2"
+                                componentName: 'expectedOption2',
+                                optionName: 'expectedName2'
                             },
                         ]
                     }

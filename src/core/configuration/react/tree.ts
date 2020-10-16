@@ -1,13 +1,13 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { ITemplateMeta, ITemplateProps } from "../../template";
-import { separateProps } from "../../widget-config";
+import { ITemplateMeta, ITemplateProps } from '../../template';
+import { separateProps } from '../../widget-config';
 
-import { ElementType, getElementInfo, IExpectedChild, IOptionElement } from "./element";
+import { ElementType, getElementInfo, IExpectedChild, IOptionElement } from './element';
 
-import { IConfigNode, ITemplate } from "../config-node";
-import { mergeNameParts } from "../utils";
-import { getAnonymousTemplate, getNamedTemplate } from "./templates";
+import { IConfigNode, ITemplate } from '../config-node';
+import { mergeNameParts } from '../utils';
+import { getAnonymousTemplate, getNamedTemplate } from './templates';
 
 interface IWidgetDescriptor {
     templates: ITemplateMeta[];
@@ -21,13 +21,13 @@ function buildConfigTree(widgetDescriptor: IWidgetDescriptor, props: Record<stri
         {
             type: ElementType.Option,
             descriptor: {
-                name: "",
+                name: '',
                 isCollection: false,
                 ...widgetDescriptor
             },
             props,
         },
-        ""
+        ''
     );
 }
 
@@ -102,7 +102,7 @@ function processChildren(parentElement: IOptionElement, parentFullName: string) 
                     mergeNameParts(
                         parentFullName,
                         element.descriptor.name
-                    ) + "[" + collection.length + "]"
+                    ) + '[' + collection.length + ']'
                 );
 
                 collection.push(collectionItem);

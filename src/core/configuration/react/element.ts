@@ -1,4 +1,4 @@
-import { ITemplateMeta, Template } from "../../template";
+import { ITemplateMeta, Template } from '../../template';
 
 enum ElementType {
     Option,

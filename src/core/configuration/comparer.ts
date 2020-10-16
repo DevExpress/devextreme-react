@@ -1,6 +1,6 @@
-import { IConfigNode, ITemplate } from "./config-node";
-import { buildNode, buildTemplates } from "./tree";
-import { mergeNameParts } from "./utils";
+import { IConfigNode, ITemplate } from './config-node';
+import { buildNode, buildTemplates } from './tree';
+import { mergeNameParts } from './utils';
 
 interface IConfigChanges {
     options: Record<string, any>;

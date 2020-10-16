@@ -1,7 +1,7 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { ComponentBase, IHtmlOptions } from "./component-base";
-import { ExtensionComponent } from "./extension-component";
+import { ComponentBase, IHtmlOptions } from './component-base';
+import { ExtensionComponent } from './extension-component';
 
 class Component<P> extends ComponentBase<P> {
   private _extensionCreators: Array<(element: Element) => void> = [];

@@ -1,8 +1,8 @@
-import { ITemplateMeta, ITemplateProps } from "../../../template";
+import { ITemplateMeta, ITemplateProps } from '../../../template';
 
-import { getAnonymousTemplate, getNamedTemplate } from "../templates";
+import { getAnonymousTemplate, getNamedTemplate } from '../templates';
 
-const children = "some text";
+const children = 'some text';
 const render = () => null;
 const component = () => null;
 const keyFn = () => null;
@@ -10,11 +10,11 @@ const keyFn = () => null;
 const positiveCasesForAnonymous = [
     {
         props: { children },
-        templateMeta: { tmplOption: "template" },
+        templateMeta: { tmplOption: 'template' },
         hasTranscludedContent: true,
         expected: {
-            optionName: "template",
-            type: "children",
+            optionName: 'template',
+            type: 'children',
             isAnonymous: true,
             content: children,
             keyFn: undefined
@@ -22,11 +22,11 @@ const positiveCasesForAnonymous = [
     },
     {
         props: { children, itemKeyFn: keyFn },
-        templateMeta: { tmplOption: "template", keyFn: "itemKeyFn" },
+        templateMeta: { tmplOption: 'template', keyFn: 'itemKeyFn' },
         hasTranscludedContent: true,
         expected: {
-            optionName: "template",
-            type: "children",
+            optionName: 'template',
+            type: 'children',
             isAnonymous: true,
             content: children,
             keyFn
@@ -34,11 +34,11 @@ const positiveCasesForAnonymous = [
     },
     {
         props: { renderItem: render },
-        templateMeta: { tmplOption: "itemTemplate", render: "renderItem" },
+        templateMeta: { tmplOption: 'itemTemplate', render: 'renderItem' },
         hasTranscludedContent: false,
         expected: {
-            optionName: "itemTemplate",
-            type: "render",
+            optionName: 'itemTemplate',
+            type: 'render',
             isAnonymous: true,
             content: render,
             keyFn: undefined
@@ -46,11 +46,11 @@ const positiveCasesForAnonymous = [
     },
     {
         props: { renderItem: render, itemKeyFn: keyFn },
-        templateMeta: { tmplOption: "template", render: "renderItem", keyFn: "itemKeyFn" },
+        templateMeta: { tmplOption: 'template', render: 'renderItem', keyFn: 'itemKeyFn' },
         hasTranscludedContent: false,
         expected: {
-            optionName: "template",
-            type: "render",
+            optionName: 'template',
+            type: 'render',
             isAnonymous: true,
             content: render,
             keyFn
@@ -58,11 +58,11 @@ const positiveCasesForAnonymous = [
     },
     {
         props: { itemComponent: component },
-        templateMeta: { tmplOption: "template", component: "itemComponent" },
+        templateMeta: { tmplOption: 'template', component: 'itemComponent' },
         hasTranscludedContent: false,
         expected: {
-            optionName: "template",
-            type: "component",
+            optionName: 'template',
+            type: 'component',
             isAnonymous: true,
             content: component,
             keyFn: undefined
@@ -70,11 +70,11 @@ const positiveCasesForAnonymous = [
     },
     {
         props: { itemComponent: component, itemKeyFn: keyFn },
-        templateMeta: { tmplOption: "template", component: "itemComponent", keyFn: "itemKeyFn" },
+        templateMeta: { tmplOption: 'template', component: 'itemComponent', keyFn: 'itemKeyFn' },
         hasTranscludedContent: false,
         expected: {
-            optionName: "template",
-            type: "component",
+            optionName: 'template',
+            type: 'component',
             isAnonymous: true,
             content: component,
             keyFn
@@ -85,30 +85,30 @@ const positiveCasesForAnonymous = [
 const negativeCasesForAnonymous = [
     {
         props: { children },
-        templateMeta: { tmplOption: "template" },
+        templateMeta: { tmplOption: 'template' },
         hasTranscludedContent: false
     },
     {
         props: { renderItem: render },
-        templateMeta: { tmplOption: "template" },
+        templateMeta: { tmplOption: 'template' },
         hasTranscludedContent: false
     },
     {
         props: { renderItem: render },
-        templateMeta: { tmplOption: "template", component: "itemComponent" },
+        templateMeta: { tmplOption: 'template', component: 'itemComponent' },
         hasTranscludedContent: false
     },
     {
         props: { itemComponent: component },
-        templateMeta: { tmplOption: "template", render: "renderItem" },
+        templateMeta: { tmplOption: 'template', render: 'renderItem' },
         hasTranscludedContent: false
     }
 ];
 
-describe("getAnonymousTemplate", () => {
+describe('getAnonymousTemplate', () => {
     positiveCasesForAnonymous.map(
         (testCase) => {
-            it("returns template", () => {
+            it('returns template', () => {
                 const template = getAnonymousTemplate(
                     testCase.props,
                     testCase.templateMeta as any as ITemplateMeta,
@@ -131,7 +131,7 @@ describe("getAnonymousTemplate", () => {
 
     negativeCasesForAnonymous.map(
         (testCase) => {
-            it("returns null", () => {
+            it('returns null', () => {
                 const template = getAnonymousTemplate(
                     testCase.props,
                     testCase.templateMeta as any as ITemplateMeta,
@@ -147,12 +147,12 @@ describe("getAnonymousTemplate", () => {
 const casesForNamed = [
     {
         props: {
-            name: "template1",
+            name: 'template1',
             component
         },
         expected: {
-            optionName: "template1",
-            type: "component",
+            optionName: 'template1',
+            type: 'component',
             isAnonymous: false,
             content: component,
             keyFn: undefined
@@ -160,13 +160,13 @@ const casesForNamed = [
     },
     {
         props: {
-            name: "template2",
+            name: 'template2',
             component,
             keyFn
         },
         expected: {
-            optionName: "template2",
-            type: "component",
+            optionName: 'template2',
+            type: 'component',
             isAnonymous: false,
             content: component,
             keyFn
@@ -174,12 +174,12 @@ const casesForNamed = [
     },
     {
         props: {
-            name: "template3",
+            name: 'template3',
             render
         },
         expected: {
-            optionName: "template3",
-            type: "render",
+            optionName: 'template3',
+            type: 'render',
             isAnonymous: false,
             content: render,
             keyFn: undefined
@@ -187,13 +187,13 @@ const casesForNamed = [
     },
     {
         props: {
-            name: "template4",
+            name: 'template4',
             render,
             keyFn
         },
         expected: {
-            optionName: "template4",
-            type: "render",
+            optionName: 'template4',
+            type: 'render',
             isAnonymous: false,
             content: render,
             keyFn
@@ -201,12 +201,12 @@ const casesForNamed = [
     },
     {
         props: {
-            name: "template5",
+            name: 'template5',
             children
         },
         expected: {
-            optionName: "template5",
-            type: "children",
+            optionName: 'template5',
+            type: 'children',
             isAnonymous: false,
             content: children,
             keyFn: undefined
@@ -214,13 +214,13 @@ const casesForNamed = [
     },
     {
         props: {
-            name: "template6",
+            name: 'template6',
             children,
             keyFn
         },
         expected: {
-            optionName: "template6",
-            type: "children",
+            optionName: 'template6',
+            type: 'children',
             isAnonymous: false,
             content: children,
             keyFn
@@ -228,11 +228,11 @@ const casesForNamed = [
     },
     {
         props: {
-            name: "template7",
+            name: 'template7',
         },
         expected: {
-            optionName: "template7",
-            type: "children",
+            optionName: 'template7',
+            type: 'children',
             isAnonymous: false,
             content: undefined,
             keyFn: undefined
@@ -240,10 +240,10 @@ const casesForNamed = [
     },
 ];
 
-describe("getNamedTemplate", () => {
+describe('getNamedTemplate', () => {
     casesForNamed.map(
         (testCase) => {
-            it("returns template", () => {
+            it('returns template', () => {
                 const template = getNamedTemplate(testCase.props as ITemplateProps);
 
                 if (template === null) {
@@ -260,7 +260,7 @@ describe("getNamedTemplate", () => {
         }
     );
 
-    it("returns null", () => {
+    it('returns null', () => {
         const template = getNamedTemplate({} as ITemplateProps);
 
         expect(template).toBe(null);

@@ -1,10 +1,10 @@
-import TemplatesManager from "./templates-manager";
+import TemplatesManager from './templates-manager';
 
-import { getChanges } from "./configuration/comparer";
-import { IConfigNode } from "./configuration/config-node";
-import { buildConfig, findValue, ValueType } from "./configuration/tree";
-import { mergeNameParts } from "./configuration/utils";
-import { capitalizeFirstLetter } from "./helpers";
+import { getChanges } from './configuration/comparer';
+import { IConfigNode } from './configuration/config-node';
+import { buildConfig, findValue, ValueType } from './configuration/tree';
+import { mergeNameParts } from './configuration/utils';
+import { capitalizeFirstLetter } from './helpers';
 
 class OptionsManager {
     private readonly _guards: Record<string, number> = {};
@@ -67,7 +67,7 @@ class OptionsManager {
 
         if (this._templatesManager.templatesCount > 0) {
             this._setValue(
-                "integrationOptions",
+                'integrationOptions',
                 {
                     templates: this._templatesManager.templates
                 }
@@ -90,7 +90,7 @@ class OptionsManager {
         }
 
         this._callOptionChangeHandler(e.fullName, e.value);
-        const valueDescriptor = findValue(this._currentConfig, e.fullName.split("."));
+        const valueDescriptor = findValue(this._currentConfig, e.fullName.split('.'));
         if (!valueDescriptor) {
             return;
         }
@@ -127,10 +127,10 @@ class OptionsManager {
     }
 
     private _callOptionChangeHandler(optionName: string, optionValue: any) {
-        const parts = optionName.split(".");
+        const parts = optionName.split('.');
         const propName = parts[parts.length - 1];
 
-        if (propName.startsWith("on")) {
+        if (propName.startsWith('on')) {
             return;
         }
 
@@ -142,7 +142,7 @@ class OptionsManager {
             return;
         }
 
-        if (typeof changeEvent.value !== "function") {
+        if (typeof changeEvent.value !== 'function') {
             throw new Error(
                 `Invalid value for the ${eventName} property.
                 ${eventName} must be a function.`
@@ -152,7 +152,7 @@ class OptionsManager {
     }
 
     private _wrapOptionValue(name: string, value: any) {
-        if (name.substr(0, 2) === "on" && typeof value === "function") {
+        if (name.substr(0, 2) === 'on' && typeof value === 'function') {
             return (...args: any[]) => {
                 if (!this._isUpdating) {
                     value(...args);

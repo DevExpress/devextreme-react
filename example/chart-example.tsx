@@ -1,11 +1,11 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { orangesByDay } from "./data";
-import Example from "./example-block";
+import { orangesByDay } from './data';
+import Example from './example-block';
 
-import Button from "../src/button";
-import Chart from "../src/chart";
-import TextBox from "../src/text-box";
+import Button from '../src/button';
+import Chart from '../src/chart';
+import TextBox from '../src/text-box';
 
 interface IState {
     currentTime: string;
@@ -19,12 +19,12 @@ export default class extends React.Component<any, IState> {
         super(props);
         this.state = {
             currentTime: this.GetTimeString(),
-            seriesName: "My oranges",
+            seriesName: 'My oranges',
             series: [{
-                argumentField: "day",
-                valueField: "oranges",
-                name: "My oranges",
-                type: "line"
+                argumentField: 'day',
+                valueField: 'oranges',
+                name: 'My oranges',
+                type: 'line'
             }]
         };
 
@@ -80,7 +80,7 @@ class Updater extends React.Component<{ onChange: (value: string) => void }, { v
     constructor(props: { onChange: (value: string) => void }) {
         super(props);
         this.state = {
-            value: ""
+            value: ''
         };
 
         this.update = this.update.bind(this);

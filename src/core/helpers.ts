@@ -37,5 +37,5 @@ export function capitalizeFirstLetter(text: string): string {
     if (text.length) {
         return `${text[0].toUpperCase()}${text.substr(1)}`;
     }
-    return "";
+    return '';
 }

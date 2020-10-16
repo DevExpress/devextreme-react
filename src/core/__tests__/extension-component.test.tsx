@@ -1,7 +1,7 @@
-import { ExtensionComponent } from "../../core/extension-component";
-import ConfigurationComponent from "../../core/nested-option";
-import { mount, React, shallow } from "./setup";
-import { TestComponent, Widget, WidgetClass } from "./test-component";
+import { ExtensionComponent } from '../../core/extension-component';
+import ConfigurationComponent from '../../core/nested-option';
+import { mount, React, shallow } from './setup';
+import { TestComponent, Widget, WidgetClass } from './test-component';
 
 const ExtensionWidgetClass = jest.fn(() => Widget);
 
@@ -16,12 +16,12 @@ class TestExtensionComponent<P = any> extends ExtensionComponent<P> {
 }
 
 class NestedComponent extends ConfigurationComponent<{ a: number }> {
-    public static OptionName = "option1";
+    public static OptionName = 'option1';
 }
 
 // tslint:enable:max-classes-per-file
 
-it("is initialized as a plugin-component", () => {
+it('is initialized as a plugin-component', () => {
     const onMounted = jest.fn();
     mount(
         <TestExtensionComponent onMounted={onMounted} />
@@ -32,7 +32,7 @@ it("is initialized as a plugin-component", () => {
     expect(ExtensionWidgetClass).toHaveBeenCalledTimes(0);
 });
 
-it("is initialized as a standalone widget", () => {
+it('is initialized as a standalone widget', () => {
     mount(
         <TestExtensionComponent/>
     );
@@ -40,7 +40,7 @@ it("is initialized as a standalone widget", () => {
     expect(ExtensionWidgetClass).toHaveBeenCalledTimes(1);
 });
 
-it("creates widget on componentDidMount inside another component on same element", () => {
+it('creates widget on componentDidMount inside another component on same element', () => {
     mount(
         <TestComponent>
             <TestExtensionComponent />
@@ -51,7 +51,7 @@ it("creates widget on componentDidMount inside another component on same element
     expect(ExtensionWidgetClass.mock.calls[0][0]).toBe(WidgetClass.mock.calls[0][0]);
 });
 
-it("unmounts without errors", () => {
+it('unmounts without errors', () => {
     const component = shallow(
         <TestExtensionComponent />
     );
@@ -59,7 +59,7 @@ it("unmounts without errors", () => {
     expect(() => component.unmount.bind(component)).not.toThrow();
 });
 
-it("pulls options from a single nested component", () => {
+it('pulls options from a single nested component', () => {
     mount(
         <TestComponent>
             <TestExtensionComponent>
@@ -70,7 +70,7 @@ it("pulls options from a single nested component", () => {
 
     const options = ExtensionWidgetClass.mock.calls[0][1];
 
-    expect(options).toHaveProperty("option1");
+    expect(options).toHaveProperty('option1');
     expect(options.option1).toMatchObject({
         a: 123
     });

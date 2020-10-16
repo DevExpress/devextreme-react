@@ -1,11 +1,11 @@
-import * as React from "react";
-import Example from "./example-block";
+import * as React from 'react';
+import Example from './example-block';
 
-import { Button } from "../src/button";
-import { TextBox } from "../src/text-box";
-import { ValidationGroup } from "../src/validation-group";
-import { ValidationSummary } from "../src/validation-summary";
-import { EmailRule, RequiredRule, Validator } from "../src/validator";
+import { Button } from '../src/button';
+import { TextBox } from '../src/text-box';
+import { ValidationGroup } from '../src/validation-group';
+import { ValidationSummary } from '../src/validation-summary';
+import { EmailRule, RequiredRule, Validator } from '../src/validator';
 
 export default class extends React.Component<any, any> {
 
@@ -19,22 +19,22 @@ export default class extends React.Component<any, any> {
         return (
             <Example title="Validation" state={this.state}>
                 <ValidationGroup>
-                    <TextBox defaultValue={"email@mail.com"}>
+                    <TextBox defaultValue={'email@mail.com'}>
                         <Validator>
-                            <EmailRule message={"Email is invalid."} />
-                            <RequiredRule message={"Email is required."} />
+                            <EmailRule message={'Email is invalid.'} />
+                            <RequiredRule message={'Email is required.'} />
                         </Validator>
                     </TextBox>
                     <br />
-                    <TextBox defaultValue={"password"}>
+                    <TextBox defaultValue={'password'}>
                         <Validator>
-                            <RequiredRule message={"Password is required."} />
+                            <RequiredRule message={'Password is required.'} />
                         </Validator>
                     </TextBox>
                     <ValidationSummary />
                     <br />
                     <Button
-                        text={"Submit"}
+                        text={'Submit'}
                         onClick={this.validate}
                     />
                 </ValidationGroup>

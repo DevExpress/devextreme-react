@@ -1,4 +1,4 @@
-import { ComponentBase } from "./component-base";
+import { ComponentBase } from './component-base';
 
 class ExtensionComponent<P> extends ComponentBase<P> {
   public componentDidMount() {

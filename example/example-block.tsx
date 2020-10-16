@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 
 interface IProps {
     state?: object;
@@ -9,13 +9,13 @@ interface IProps {
 const Example = (props: IProps) => {
     let stateBlock = null;
     if (!!props.state) {
-        stateBlock = <pre className="example-state">{JSON.stringify(props.state, null, "  ")}</pre>;
+        stateBlock = <pre className="example-state">{JSON.stringify(props.state, null, '  ')}</pre>;
     }
 
     return (
         <div className="example-block">
             <div className="example-header">
-                <h4 className="bg-primary example-title">{props.title || "example"}</h4>
+                <h4 className="bg-primary example-title">{props.title || 'example'}</h4>
                 {stateBlock}
             </div>
             {props.children}

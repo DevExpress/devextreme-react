@@ -1,7 +1,7 @@
-import * as React from "react";
-import Example from "./example-block";
+import * as React from 'react';
+import Example from './example-block';
 
-import Map, { Location, Marker, Route, Tooltip } from "../src/map";
+import Map, { Location, Marker, Route, Tooltip } from '../src/map';
 
 interface IPosition {
     lat: number;
@@ -31,23 +31,23 @@ export default class extends React.Component<any, { text: string; pos: IPosition
             <Example title="dxMap" state={this.state}>
                 <button type="button" onClick={this.updatePos}>Move!</button>
                 <Map
-                    provider={"bing"}
+                    provider={'bing'}
                     defaultZoom={11}
                     height={440}
                     controls={true}
                 >
                     <Marker iconSrc="https://js.devexpress.com/Demos/RealtorApp/images/map-marker.png">
-                        <Tooltip text={"Times Square"} />
+                        <Tooltip text={'Times Square'} />
                         <Location lat={40.755833} lng={-73.986389} />
                     </Marker>
 
                     <Marker iconSrc="https://js.devexpress.com/Demos/RealtorApp/images/map-marker.png">
-                        <Tooltip text={"Central Park"} />
+                        <Tooltip text={'Central Park'} />
                         <Location lat={40.7825} lng={-73.966111} />
                     </Marker>
 
                     <Marker iconSrc="https://js.devexpress.com/Demos/RealtorApp/images/map-marker.png">
-                        <Tooltip text={"Start"} />
+                        <Tooltip text={'Start'} />
                         <Location {...startPos} />
                     </Marker>
 
