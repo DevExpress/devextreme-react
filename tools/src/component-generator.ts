@@ -265,8 +265,6 @@ function createPropTypingModel(typing: IPropTyping): IRenderedPropTyping {
   };
 }
 
-// tslint:disable:max-line-length
-
 const renderModule: (model: {
   renderedImports: string;
   renderedOptionsInterface?: string;
@@ -284,7 +282,6 @@ const renderModule: (model: {
 '<#= it.renderedComponent #>' +
 
 '<#? it.renderedNestedComponents #>' +
-    '// tslint:disable:max-classes-per-file' +
     '<#~ it.renderedNestedComponents :nestedComponent #>' + '\n\n' +
         '<#= nestedComponent #>' +
     '<#~#>' + '\n\n' +
@@ -295,7 +292,6 @@ const renderModule: (model: {
 <#= it.renderedExports #>
 };
 `);
-// tslint:enable:max-line-length
 
 const renderImports: (model: {
   dxExportPath: string;
@@ -477,7 +473,6 @@ const renderTemplateOption: (model: {
   }
 `.trim());
 
-// tslint:disable:max-line-length
 const renderPropTyping: (model: IRenderedPropTyping) => string = createTempate(
   '  <#= it.propName #>: ' +
 
@@ -491,7 +486,6 @@ const renderPropTyping: (model: IRenderedPropTyping) => string = createTempate(
     '  ])' +
 '<#?#>',
 );
-// tslint:enable:max-line-length
 
 const renderObjectEntry: (model: {
   key: string;

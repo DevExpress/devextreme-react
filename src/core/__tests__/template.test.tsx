@@ -36,7 +36,6 @@ function testTemplateOption(testedOption: string) {
 
   if (testedOption === 'itemComponent') {
     prepareTemplate = (render) => {
-      // tslint:disable-next-line:max-classes-per-file
       class ItemComponent extends React.PureComponent {
         public props: { data: any, index?: number };
 
@@ -437,8 +436,6 @@ describe('nested template', () => {
 });
 
 describe('component/render in nested options', () => {
-
-  // tslint:disable-next-line:max-classes-per-file
   class NestedComponent extends ConfigurationComponent<{
     item?: any;
     itemRender?: any;
@@ -453,7 +450,6 @@ describe('component/render in nested options', () => {
     }];
   }
 
-  // tslint:disable-next-line:max-classes-per-file
   class CollectionNestedComponent extends ConfigurationComponent<{
     template?: any;
     render?: any;

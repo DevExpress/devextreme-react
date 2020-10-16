@@ -5,7 +5,6 @@ import { TestComponent, Widget, WidgetClass } from './test-component';
 
 const ExtensionWidgetClass = jest.fn(() => Widget);
 
-// tslint:disable:max-classes-per-file
 class TestExtensionComponent<P = any> extends ExtensionComponent<P> {
 
   constructor(props: P) {
@@ -18,8 +17,6 @@ class TestExtensionComponent<P = any> extends ExtensionComponent<P> {
 class NestedComponent extends ConfigurationComponent<{ a: number }> {
   public static OptionName = 'option1';
 }
-
-// tslint:enable:max-classes-per-file
 
 it('is initialized as a plugin-component', () => {
   const onMounted = jest.fn();

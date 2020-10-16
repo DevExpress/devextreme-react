@@ -19,7 +19,6 @@ class DateCell extends React.PureComponent<any> {
   }
 }
 
-// tslint:disable-next-line:max-classes-per-file
 export default class extends React.Component<any, any> {
   public render() {
     return (

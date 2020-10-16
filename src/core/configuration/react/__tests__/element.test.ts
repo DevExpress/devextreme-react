@@ -1,4 +1,3 @@
-// tslint:disable:max-classes-per-file
 import { mount, React } from '../../../__tests__/setup';
 
 import ConfigurationComponent from '../../../../core/nested-option';

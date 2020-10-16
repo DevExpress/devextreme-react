@@ -3,7 +3,6 @@ import ConfigurationComponent from '../../core/nested-option';
 import { mount, React } from './setup';
 import { TestComponent, Widget, WidgetClass } from './test-component';
 
-// tslint:disable:max-classes-per-file
 class NestedComponent extends ConfigurationComponent<{ a: number }> {
   public static OptionName = 'option';
 }

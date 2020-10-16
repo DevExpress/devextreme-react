@@ -18,8 +18,6 @@ interface IControlledComponentProps {
   complexOption?: Record<string, unknown>;
 }
 
-// tslint:disable:max-classes-per-file
-
 class ControlledComponent extends TestComponent<IControlledComponentProps> {
 
   protected _defaults = {
@@ -670,7 +668,6 @@ describe('onXXXChange', () => {
     const onSecondPropChange = jest.fn();
     mount(
             <TestComponent
-                // tslint:disable-next-line: jsx-no-multiline-js
                 arrayOption={[
                   { text: '0', onTextChange: onFirstPropChange },
                   { text: '0', onTextChange: onSecondPropChange },

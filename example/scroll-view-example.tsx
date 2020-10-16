@@ -20,7 +20,6 @@ export default class extends React.Component<any, { text: string }> {
 
   public render() {
     return (
-            // tslint:disable:max-line-length
             <Example title="DxScrollView" state={this.state} >
                 <ScrollView height="150px">
                     <Button text="Show alert" onClick={() => alert('shown')} />

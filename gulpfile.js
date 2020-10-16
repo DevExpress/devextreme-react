@@ -149,9 +149,7 @@ gulp.task(NPM_PACK, gulp.series(
 
 gulp.task(LINT, () => {
   return gulp.src([config.src, config.generator.src, config.example.src])
-  .pipe(eslint({configFile: ".eslintrc"
-  , fix: true
-}))
+  .pipe(eslint({configFile: ".eslintrc", fix: true}))
   .pipe(eslint.format())
   .pipe(gulp.dest(file => file.base))
   .pipe(eslint.formatEach('compact', process.stderr))

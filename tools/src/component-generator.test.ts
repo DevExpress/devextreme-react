@@ -356,7 +356,7 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 
   protected _WidgetClass = dxCLASS_NAME;
 }
-// tslint:disable:max-classes-per-file
+
 
 // owners:
 // CLASS_NAME
@@ -468,7 +468,7 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 
   protected _WidgetClass = dxCLASS_NAME;
 }
-// tslint:disable:max-classes-per-file
+
 
 // owners:
 // CLASS_NAME
@@ -536,7 +536,7 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 
   protected _WidgetClass = dxCLASS_NAME;
 }
-// tslint:disable:max-classes-per-file
+
 
 // owners:
 // CLASS_NAME
@@ -621,7 +621,7 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 
   protected _WidgetClass = dxCLASS_NAME;
 }
-// tslint:disable:max-classes-per-file
+
 
 // owners:
 // CLASS_NAME
@@ -697,7 +697,7 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 
   protected _WidgetClass = dxCLASS_NAME;
 }
-// tslint:disable:max-classes-per-file
+
 
 // owners:
 // CLASS_NAME
@@ -770,7 +770,7 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 
   protected _WidgetClass = dxCLASS_NAME;
 }
-// tslint:disable:max-classes-per-file
+
 
 // owners:
 // CLASS_NAME
@@ -1131,7 +1131,7 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 
   protected _WidgetClass = dxCLASS_NAME;
 }
-// tslint:disable:max-classes-per-file
+
 
 // owners:
 // CLASS_NAME

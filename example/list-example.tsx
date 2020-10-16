@@ -53,7 +53,6 @@ function ItemsRender(item: string) {
 
 const listItems: string[] = ['orange', 'apple', 'potato'];
 
-// tslint:disable-next-line:max-classes-per-file
 export default class extends React.Component<any, { text: string; items: IListItemProps[]; }> {
 
   private dataSource: DataSource;
