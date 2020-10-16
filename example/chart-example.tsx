@@ -74,7 +74,6 @@ export default class extends React.Component<any, IState> {
 
 }
 
-// tslint:disable-next-line:max-classes-per-file
 class Updater extends React.Component<{ onChange: (value: string) => void }, { value: string }> {
 
   constructor(props: { onChange: (value: string) => void }) {
