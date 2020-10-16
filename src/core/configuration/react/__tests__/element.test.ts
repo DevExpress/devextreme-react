@@ -7,105 +7,105 @@ import { Template } from '../../../template';
 import { ElementType, getElementInfo } from '../element';
 
 class MinimalConfigurationComponent extends ConfigurationComponent<any> {
-    public static OptionName = 'option';
+  public static OptionName = 'option';
 
-    public static IsCollectionItem = false;
+  public static IsCollectionItem = false;
 }
 
 class RichConfigurationComponent extends ConfigurationComponent<any> {
-    public static OptionName = 'option';
+  public static OptionName = 'option';
 
-    public static IsCollectionItem = false;
+  public static IsCollectionItem = false;
 
-    public static DefaultsProps = { defaultValue: 'value' };
+  public static DefaultsProps = { defaultValue: 'value' };
 
-    public static TemplateProps = [{
-        tmplOption: 'template',
-        render: 'render',
-        component: 'component',
-        keyFn: 'keyFn',
-    }];
+  public static TemplateProps = [{
+    tmplOption: 'template',
+    render: 'render',
+    component: 'component',
+    keyFn: 'keyFn',
+  }];
 
-    public static PredefinedProps = { type: 'numeric' };
+  public static PredefinedProps = { type: 'numeric' };
 }
 
 class CollectionConfigurationComponent extends ConfigurationComponent<any> {
-    public static OptionName = 'option';
+  public static OptionName = 'option';
 
-    public static IsCollectionItem = true;
+  public static IsCollectionItem = true;
 
-    public static DefaultsProps = { defaultValue: 'value' };
+  public static DefaultsProps = { defaultValue: 'value' };
 
-    public static TemplateProps = [{
-        tmplOption: 'template',
-        render: 'render',
-        component: 'component',
-        keyFn: 'keyFn',
-    }];
+  public static TemplateProps = [{
+    tmplOption: 'template',
+    render: 'render',
+    component: 'component',
+    keyFn: 'keyFn',
+  }];
 
-    public static PredefinedProps = { type: 'numeric' };
+  public static PredefinedProps = { type: 'numeric' };
 }
 
 const configurationComponents: any[] = [
-    MinimalConfigurationComponent,
-    RichConfigurationComponent,
-    CollectionConfigurationComponent,
+  MinimalConfigurationComponent,
+  RichConfigurationComponent,
+  CollectionConfigurationComponent,
 ];
 
 const otherComponents = [
-    'div',
-    ConfigurationComponent,
-    () => React.createElement('div', {}, 'text'),
+  'div',
+  ConfigurationComponent,
+  () => React.createElement('div', {}, 'text'),
 ];
 
 describe('getElementInfo', () => {
-    configurationComponents.map((component) => {
-        it('parses Configuration component', () => {
-            const wrapper = mount(React.createElement(component));
-            const elementInfo = getElementInfo(wrapper.getElement());
+  configurationComponents.map((component) => {
+    it('parses Configuration component', () => {
+      const wrapper = mount(React.createElement(component));
+      const elementInfo = getElementInfo(wrapper.getElement());
 
-            if (elementInfo.type !== ElementType.Option) {
-                expect(elementInfo.type).toEqual(ElementType.Option);
-                return;
-            }
+      if (elementInfo.type !== ElementType.Option) {
+        expect(elementInfo.type).toEqual(ElementType.Option);
+        return;
+      }
 
-            expect(elementInfo.props).toEqual(wrapper.getElement().props);
+      expect(elementInfo.props).toEqual(wrapper.getElement().props);
 
-            const descriptor = elementInfo.descriptor;
-            expect(descriptor.name).toEqual(component.OptionName);
-            expect(descriptor.isCollection).toEqual(component.IsCollectionItem);
-            expect(descriptor.templates).toEqual(component.TemplateProps || []);
-            expect(descriptor.initialValuesProps).toEqual(component.DefaultsProps || {});
-            expect(descriptor.predefinedValuesProps).toEqual(component.PredefinedProps || {});
-        });
+      const descriptor = elementInfo.descriptor;
+      expect(descriptor.name).toEqual(component.OptionName);
+      expect(descriptor.isCollection).toEqual(component.IsCollectionItem);
+      expect(descriptor.templates).toEqual(component.TemplateProps || []);
+      expect(descriptor.initialValuesProps).toEqual(component.DefaultsProps || {});
+      expect(descriptor.predefinedValuesProps).toEqual(component.PredefinedProps || {});
     });
+  });
 
-    it('parses Template component', () => {
-        const wrapper = mount(
-            React.createElement(
-                Template,
-                {
-                    name: 'template-name',
-                },
-                'Template content',
-            ),
-        );
+  it('parses Template component', () => {
+    const wrapper = mount(
+      React.createElement(
+        Template,
+        {
+          name: 'template-name',
+        },
+        'Template content',
+      ),
+    );
 
-        const elementInfo = getElementInfo(wrapper.getElement());
-        if (elementInfo.type !== ElementType.Template) {
-            expect(elementInfo.type).toEqual(ElementType.Template);
-            return;
-        }
+    const elementInfo = getElementInfo(wrapper.getElement());
+    if (elementInfo.type !== ElementType.Template) {
+      expect(elementInfo.type).toEqual(ElementType.Template);
+      return;
+    }
 
-        expect(elementInfo.props).toEqual(wrapper.getElement().props);
+    expect(elementInfo.props).toEqual(wrapper.getElement().props);
+  });
+
+  otherComponents.map((component) => {
+    it('parses Other components', () => {
+      const wrapper = mount(React.createElement(component));
+      const elementInfo = getElementInfo(wrapper.getElement());
+
+      expect(elementInfo.type).toEqual(ElementType.Unknown);
     });
-
-    otherComponents.map((component) => {
-        it('parses Other components', () => {
-            const wrapper = mount(React.createElement(component));
-            const elementInfo = getElementInfo(wrapper.getElement());
-
-            expect(elementInfo.type).toEqual(ElementType.Unknown);
-        });
-    });
+  });
 });

@@ -11,19 +11,19 @@ const validateText = (text: string) => text === VALID_TEXT;
 
 export default class extends React.Component<any, { visible: boolean; text: string; }> {
 
-    constructor(props: any) {
-        super(props);
-        this.state = {
-            visible: false,
-            text: 'non-' + VALID_TEXT,
-        };
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      visible: false,
+      text: 'non-' + VALID_TEXT,
+    };
 
-        this.toggle = this.toggle.bind(this);
-        this.handleTextUpdate = this.handleTextUpdate.bind(this);
-    }
+    this.toggle = this.toggle.bind(this);
+    this.handleTextUpdate = this.handleTextUpdate.bind(this);
+  }
 
-    public render() {
-        return (
+  public render() {
+    return (
             <Example title="DxPopup" state={this.state}>
                 <TextBox value={this.state.text} onValueChanged={this.handleTextUpdate} valueChangeEvent="input" />
                 <br />
@@ -67,18 +67,18 @@ export default class extends React.Component<any, { visible: boolean; text: stri
                     </ScrollView>
                 </Popup>
             </Example>
-        );
-    }
+    );
+  }
 
-    private toggle(visible: boolean) {
-        this.setState({
-            visible: visible || !validateText(this.state.text),
-        });
-    }
+  private toggle(visible: boolean) {
+    this.setState({
+      visible: visible || !validateText(this.state.text),
+    });
+  }
 
-    private handleTextUpdate(e: any) {
-        this.setState({
-            text: e.value,
-        });
-    }
+  private handleTextUpdate(e: any) {
+    this.setState({
+      text: e.value,
+    });
+  }
 }

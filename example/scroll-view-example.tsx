@@ -8,18 +8,18 @@ import TextBox from '../src/text-box';
 
 export default class extends React.Component<any, { text: string }> {
 
-    constructor(props: any) {
-        super(props);
-        this.state = {
-            text: 'Clear me',
-        };
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      text: 'Clear me',
+    };
 
-        this.clearText = this.clearText.bind(this);
-        this.handleTextChange = this.handleTextChange.bind(this);
-    }
+    this.clearText = this.clearText.bind(this);
+    this.handleTextChange = this.handleTextChange.bind(this);
+  }
 
-    public render() {
-        return (
+  public render() {
+    return (
             // tslint:disable:max-line-length
             <Example title="DxScrollView" state={this.state} >
                 <ScrollView height="150px">
@@ -48,18 +48,18 @@ export default class extends React.Component<any, { text: string }> {
                     </div>
                 </ScrollView>
             </Example>
-        );
-    }
+    );
+  }
 
-    private clearText() {
-        this.setState({
-            text: '',
-        });
-    }
+  private clearText() {
+    this.setState({
+      text: '',
+    });
+  }
 
-    private handleTextChange(e: any) {
-        this.setState({
-            text: e.value,
-        });
-    }
+  private handleTextChange(e: any) {
+    this.setState({
+      text: e.value,
+    });
+  }
 }

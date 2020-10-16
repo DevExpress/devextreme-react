@@ -9,14 +9,14 @@ import { EmailRule, RequiredRule, Validator } from '../src/validator';
 
 export default class extends React.Component<any, any> {
 
-    constructor(props: any) {
-        super(props);
+  constructor(props: any) {
+    super(props);
 
-        this.validate = this.validate.bind(this);
-    }
+    this.validate = this.validate.bind(this);
+  }
 
-    public render() {
-        return (
+  public render() {
+    return (
             <Example title="Validation" state={this.state}>
                 <ValidationGroup>
                     <TextBox defaultValue={'email@mail.com'}>
@@ -39,14 +39,14 @@ export default class extends React.Component<any, any> {
                     />
                 </ValidationGroup>
             </Example>
-        );
-    }
+    );
+  }
 
-    private validate(params: any) {
-        const result = params.validationGroup.validate();
-        if (result.isValid) {
-            // form data is valid
-            params.validationGroup.reset();
-        }
+  private validate(params: any) {
+    const result = params.validationGroup.validate();
+    if (result.isValid) {
+      // form data is valid
+      params.validationGroup.reset();
     }
+  }
 }

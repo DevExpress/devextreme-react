@@ -4,30 +4,30 @@ import Example from './example-block';
 import Map, { Location, Marker, Route, Tooltip } from '../src/map';
 
 interface IPosition {
-    lat: number;
-    lng: number;
+  lat: number;
+  lng: number;
 }
 
 const startPos = {
-    lat: 40.71000,
-    lng: -73.91000,
+  lat: 40.71000,
+  lng: -73.91000,
 };
 
 export default class extends React.Component<any, { text: string; pos: IPosition }> {
 
-    constructor(props: any) {
-        super(props);
-        const pos = { ...startPos };
-        this.state = {
-            text: JSON.stringify(pos),
-            pos,
-        };
+  constructor(props: any) {
+    super(props);
+    const pos = { ...startPos };
+    this.state = {
+      text: JSON.stringify(pos),
+      pos,
+    };
 
-        this.updatePos = this.updatePos.bind(this);
-    }
+    this.updatePos = this.updatePos.bind(this);
+  }
 
-    public render() {
-        return (
+  public render() {
+    return (
             <Example title="dxMap" state={this.state}>
                 <button type="button" onClick={this.updatePos}>Move!</button>
                 <Map
@@ -64,18 +64,18 @@ export default class extends React.Component<any, { text: string; pos: IPosition
                     </Route>
                 </Map>
             </Example>
-        );
-    }
+    );
+  }
 
-    public updatePos() {
-        const pos = {
-            lat: this.state.pos.lat + 0.01,
-            lng: this.state.pos.lng + 0.05,
-        };
+  public updatePos() {
+    const pos = {
+      lat: this.state.pos.lat + 0.01,
+      lng: this.state.pos.lng + 0.05,
+    };
 
-        this.setState({
-            text: JSON.stringify(pos),
-            pos,
-        });
-    }
+    this.setState({
+      text: JSON.stringify(pos),
+      pos,
+    });
+  }
 }

@@ -1,18 +1,18 @@
 import * as React from 'react';
 
 interface IProps {
-    state?: object;
-    title: string;
-    children: any;
+  state?: object;
+  title: string;
+  children: any;
 }
 
 const Example = (props: IProps) => {
-    let stateBlock = null;
-    if (!!props.state) {
-        stateBlock = <pre className="example-state">{JSON.stringify(props.state, null, '  ')}</pre>;
-    }
+  let stateBlock = null;
+  if (!!props.state) {
+    stateBlock = <pre className="example-state">{JSON.stringify(props.state, null, '  ')}</pre>;
+  }
 
-    return (
+  return (
         <div className="example-block">
             <div className="example-header">
                 <h4 className="bg-primary example-title">{props.title || 'example'}</h4>
@@ -20,7 +20,7 @@ const Example = (props: IProps) => {
             </div>
             {props.children}
         </div>
-    );
+  );
 };
 
 export default Example;

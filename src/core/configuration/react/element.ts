@@ -1,106 +1,106 @@
 import { ITemplateMeta, Template } from '../../template';
 
 enum ElementType {
-    Option,
-    Template,
-    Unknown
+  Option,
+  Template,
+  Unknown
 }
 
 interface IExpectedChild {
-    optionName: string;
-    isCollectionItem: boolean;
+  optionName: string;
+  isCollectionItem: boolean;
 }
 
 interface IOptionDescriptor {
-    isCollection: boolean;
-    name: string;
-    templates: ITemplateMeta[];
-    initialValuesProps: Record<string, string>;
-    predefinedValuesProps: Record<string, any>;
-    expectedChildren: Record<string, IExpectedChild>;
+  isCollection: boolean;
+  name: string;
+  templates: ITemplateMeta[];
+  initialValuesProps: Record<string, string>;
+  predefinedValuesProps: Record<string, any>;
+  expectedChildren: Record<string, IExpectedChild>;
 }
 
 interface IOptionElement {
-    type: ElementType.Option;
-    descriptor: IOptionDescriptor;
-    props: Record<string, any>;
+  type: ElementType.Option;
+  descriptor: IOptionDescriptor;
+  props: Record<string, any>;
 }
 
 interface ITemplateElement {
-    type: ElementType.Template;
-    props: Record<string, any>;
+  type: ElementType.Template;
+  props: Record<string, any>;
 }
 
 interface IUnknownElement {
-    type: ElementType.Unknown;
+  type: ElementType.Unknown;
 }
 
 type IElement = IOptionElement | ITemplateElement | IUnknownElement;
 
 function getElementInfo(
-    element: React.ReactNode,
-    parentExpectedChildren?: Record<string, IExpectedChild>,
+  element: React.ReactNode,
+  parentExpectedChildren?: Record<string, IExpectedChild>,
 ): IElement {
-    const reactElement = element as any as React.ReactElement;
-    if (!reactElement || !reactElement.type) {
-        return {
-            type: ElementType.Unknown,
-        };
-    }
+  const reactElement = element as any as React.ReactElement;
+  if (!reactElement || !reactElement.type) {
+    return {
+      type: ElementType.Unknown,
+    };
+  }
 
-    if (reactElement.type === Template) {
-        return {
-            type: ElementType.Template,
-            props: reactElement.props,
-        };
-    }
+  if (reactElement.type === Template) {
+    return {
+      type: ElementType.Template,
+      props: reactElement.props,
+    };
+  }
 
-    const elementDescriptor = reactElement.type as any as IElementDescriptor;
+  const elementDescriptor = reactElement.type as any as IElementDescriptor;
 
-    if (elementDescriptor.OptionName) {
-        let name = elementDescriptor.OptionName;
-        let isCollectionItem =  elementDescriptor.IsCollectionItem;
+  if (elementDescriptor.OptionName) {
+    let name = elementDescriptor.OptionName;
+    let isCollectionItem =  elementDescriptor.IsCollectionItem;
 
-        const expectation = parentExpectedChildren && parentExpectedChildren[name];
-        if (expectation) {
-            isCollectionItem = expectation.isCollectionItem;
-            if (expectation.optionName) {
-                name = expectation.optionName;
-            }
-        }
-
-        return {
-            type: ElementType.Option,
-            descriptor: {
-                name,
-                isCollection: isCollectionItem,
-                templates: elementDescriptor.TemplateProps || [],
-                initialValuesProps: elementDescriptor.DefaultsProps || {},
-                predefinedValuesProps: elementDescriptor.PredefinedProps || {},
-                expectedChildren: elementDescriptor.ExpectedChildren || {},
-            },
-            props: reactElement.props,
-        };
+    const expectation = parentExpectedChildren && parentExpectedChildren[name];
+    if (expectation) {
+      isCollectionItem = expectation.isCollectionItem;
+      if (expectation.optionName) {
+        name = expectation.optionName;
+      }
     }
 
     return {
-        type: ElementType.Unknown,
+      type: ElementType.Option,
+      descriptor: {
+        name,
+        isCollection: isCollectionItem,
+        templates: elementDescriptor.TemplateProps || [],
+        initialValuesProps: elementDescriptor.DefaultsProps || {},
+        predefinedValuesProps: elementDescriptor.PredefinedProps || {},
+        expectedChildren: elementDescriptor.ExpectedChildren || {},
+      },
+      props: reactElement.props,
     };
+  }
+
+  return {
+    type: ElementType.Unknown,
+  };
 }
 
 interface IElementDescriptor {
-    OptionName: string;
-    IsCollectionItem: boolean;
-    DefaultsProps: Record<string, string>;
-    TemplateProps: ITemplateMeta[];
-    PredefinedProps: Record<string, any>;
-    ExpectedChildren: Record<string, IExpectedChild>;
+  OptionName: string;
+  IsCollectionItem: boolean;
+  DefaultsProps: Record<string, string>;
+  TemplateProps: ITemplateMeta[];
+  PredefinedProps: Record<string, any>;
+  ExpectedChildren: Record<string, IExpectedChild>;
 }
 
 export {
-    getElementInfo,
-    ElementType,
-    IElement,
-    IOptionElement,
-    IExpectedChild,
+  getElementInfo,
+  ElementType,
+  IElement,
+  IOptionElement,
+  IExpectedChild,
 };

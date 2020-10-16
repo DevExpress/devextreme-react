@@ -6,39 +6,39 @@ import Form, { GroupItem, Item, RequiredRule, SimpleItem } from '../src/form';
 import TextArea from '../src/text-area';
 
 const employee: any = {
-    ID: 1,
-    FirstName: 'John',
-    LastName: 'Heart',
-    Position: 'CEO',
-    BirthDate: '1964/03/16',
-    HireDate: '1995/01/15',
-    Notes: 'John has been in the Audio/Video industry since 1990. He has led DevAv as its CEO since 2003.',
-    Address: '351 S Hill St., Los Angeles, CA',
-    Phone: '360-684-1334',
+  ID: 1,
+  FirstName: 'John',
+  LastName: 'Heart',
+  Position: 'CEO',
+  BirthDate: '1964/03/16',
+  HireDate: '1995/01/15',
+  Notes: 'John has been in the Audio/Video industry since 1990. He has led DevAv as its CEO since 2003.',
+  Address: '351 S Hill St., Los Angeles, CA',
+  Phone: '360-684-1334',
 };
 
 const positions = [
-    'HR Manager',
-    'IT Manager',
-    'CEO',
-    'Controller',
-    'Sales Manager',
-    'Support Manager',
-    'Shipping Manager',
+  'HR Manager',
+  'IT Manager',
+  'CEO',
+  'Controller',
+  'Sales Manager',
+  'Support Manager',
+  'Shipping Manager',
 ];
 
 export default class extends React.Component<any, {disableIdInput: boolean}> {
-    constructor(props: any) {
-        super(props);
+  constructor(props: any) {
+    super(props);
 
-        this.state = {
-            disableIdInput: true,
-        };
-    }
+    this.state = {
+      disableIdInput: true,
+    };
+  }
 
-    public render() {
-        const { disableIdInput } = this.state;
-        return (
+  public render() {
+    const { disableIdInput } = this.state;
+    return (
             <Example title="DxForm">
                 <Form colCount={2} formData={employee} >
                     <GroupItem caption="Form Group Item">
@@ -84,12 +84,12 @@ export default class extends React.Component<any, {disableIdInput: boolean}> {
                     />
                 </Form>
             </Example>
-        );
-    }
+    );
+  }
 
-    private toggleIdInputState = () => this.setState({disableIdInput: !this.state.disableIdInput});
+  private toggleIdInputState = () => this.setState({disableIdInput: !this.state.disableIdInput});
 }
 
 const getTextBoxComponent = (disabled: boolean) => (props: any) => {
-    return <NumberBox disabled={disabled} value={props.data.editorOptions.value} />;
+  return <NumberBox disabled={disabled} value={props.data.editorOptions.value} />;
 };

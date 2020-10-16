@@ -8,22 +8,22 @@ import { RequiredRule, Validator } from '../src/validator';
 
 export default class extends React.Component<any, { text: string; uncontrolledText: string; }> {
 
-    private textBox: dxTextBox;
+  private textBox: dxTextBox;
 
-    constructor(props: any) {
-        super(props);
-        this.state = {
-            text: 'text',
-            uncontrolledText: 'initial text',
-        };
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      text: 'text',
+      uncontrolledText: 'initial text',
+    };
 
-        this.handleChange = this.handleChange.bind(this);
-        this.updateUncontrolledValue = this.updateUncontrolledValue.bind(this);
-        this.setFocusToTextBox = this.setFocusToTextBox.bind(this);
-    }
+    this.handleChange = this.handleChange.bind(this);
+    this.updateUncontrolledValue = this.updateUncontrolledValue.bind(this);
+    this.setFocusToTextBox = this.setFocusToTextBox.bind(this);
+  }
 
-    public render() {
-        return (
+  public render() {
+    return (
             <Example title="DxTextBox" state={this.state}>
                 uncontrolled mode
                 <TextBox
@@ -48,22 +48,22 @@ export default class extends React.Component<any, { text: string; uncontrolledTe
                     </Validator>
                 </TextBox>
             </Example>
-        );
-    }
+    );
+  }
 
-    private updateUncontrolledValue() {
-        this.setState({
-            uncontrolledText: '#' + this.textBox.option('value'),
-        });
-    }
+  private updateUncontrolledValue() {
+    this.setState({
+      uncontrolledText: '#' + this.textBox.option('value'),
+    });
+  }
 
-    private setFocusToTextBox() {
-        this.textBox.focus();
-    }
+  private setFocusToTextBox() {
+    this.textBox.focus();
+  }
 
-    private handleChange(e: any) {
-        this.setState({
-            text: '#' + (e.value as string).toUpperCase().replace('A', '_'),
-        });
-    }
+  private handleChange(e: any) {
+    this.setState({
+      text: '#' + (e.value as string).toUpperCase().replace('A', '_'),
+    });
+  }
 }
