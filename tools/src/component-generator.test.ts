@@ -749,7 +749,7 @@ export {
             }),
         ).toBe(EXPECTED);
     });
-    it("renders [] if nested suboption has array type", () => {
+    it('renders [] if nested suboption has array type', () => {
 //#region EXPECTED
         const EXPECTED = `
 import dxCLASS_NAME, {
@@ -801,42 +801,42 @@ export {
 
         expect(
           generate({
-            name: "CLASS_NAME",
-            baseComponentPath: "BASE_COMPONENT_PATH",
-            extensionComponentPath: "EXTENSION_COMPONENT_PATH",
-            configComponentPath: "CONFIG_COMPONENT_PATH",
-            dxExportPath: "DX/WIDGET/PATH",
+            name: 'CLASS_NAME',
+            baseComponentPath: 'BASE_COMPONENT_PATH',
+            extensionComponentPath: 'EXTENSION_COMPONENT_PATH',
+            configComponentPath: 'CONFIG_COMPONENT_PATH',
+            dxExportPath: 'DX/WIDGET/PATH',
             nestedComponents: [
               {
-                className: "Opt_1_Component",
-                owners: ["CLASS_NAME"],
-                optionName: "opt_1",
+                className: 'Opt_1_Component',
+                owners: ['CLASS_NAME'],
+                optionName: 'opt_1',
                 isCollectionItem: true,
                 predefinedProps: {
-                  predefinedProp_1: "predefined-value"
+                  predefinedProp_1: 'predefined-value',
                 },
                 options: [
                   {
-                    name: "sub_opt_2",
-                    type: "TYPE_1"
+                    name: 'sub_opt_2',
+                    type: 'TYPE_1',
                   },
                   {
-                    name: "sub_opt_3",
+                    name: 'sub_opt_3',
                     nested: [{
-                      name: "subsub_1",
-                      type: "TYPE_3"
+                      name: 'subsub_1',
+                      type: 'TYPE_3',
                     },
                     {
-                      name: "subsub_2",
-                      type: "TYPE_4"
-                    }
+                      name: 'subsub_2',
+                      type: 'TYPE_4',
+                    },
                   ],
-                    isArray: true
-                  }
-                ]
-              }
-            ]
-          })
+                    isArray: true,
+                  },
+                ],
+              },
+            ],
+          }),
         ).toBe(EXPECTED);
 });
 });

@@ -52,11 +52,11 @@ class ValidatorExample extends React.Component<any, any> {
         this._callbacks.forEach((callback: any) => {
             callback();
         });
-    }
+    };
 
     private _onSubmit = (e: any) => {
         e.validationGroup.validate();
-    }
+    };
 }
 
 export default ValidatorExample;
