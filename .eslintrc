@@ -49,7 +49,6 @@
         "padded-blocks": "off",
         "prefer-template": "off",
         "prefer-destructuring": "off",
-        // "react/button-has-type": "off",
         "react/forbid-prop-types": "off",
         "react/jsx-tag-spacing": "off",
         "react/jsx-curly-brace-presence": "off",
