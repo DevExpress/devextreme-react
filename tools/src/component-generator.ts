@@ -7,7 +7,7 @@ import {
     uppercaseFirst,
 } from './helpers';
 
-type IComponent  = {
+type IComponent = {
     name: string;
     baseComponentPath: string;
     extensionComponentPath: string;
@@ -45,6 +45,7 @@ interface ISubscribableOption {
 type IOption = {
     name: string;
     isSubscribable?: true;
+    isArray?: boolean;
 } & ({
     type: string;
     nested?: undefined;
@@ -78,10 +79,11 @@ function generateReExport(path: string, fileName: string): string {
     return renderReExport({ path, fileName });
 }
 
-const renderReExport: (model: {path: string, fileName: string}) => string = createTempate(
-'/** @deprecated Use \'devextreme-react/<#= it.fileName #>\' file instead */\n' +
-'export * from "<#= it.path #>";\n' +
-'export { default } from "<#= it.path #>";\n',
+
+const renderReExport: (model: { path: string, fileName: string }) => string = createTempate(
+`/** @deprecated Use 'devextreme-react/<#= it.fileName #>' file instead */\n` +
+`export * from "<#= it.path #>";\n` +
+`export { default } from "<#= it.path #>";\n`
 );
 
 function generate(component: IComponent): string {
@@ -508,6 +510,7 @@ function renderObject(props: IOption[], indent: number): string {
         result += '\n' + getIndent(indent) + opt.name + '?: ';
         if (opt.nested && isNotEmptyArray(opt.nested)) {
             result += renderObject(opt.nested, indent);
+            if (opt.isArray) { result += "[]"; }
         } else {
             result += opt.type;
         }

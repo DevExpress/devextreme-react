@@ -749,6 +749,96 @@ export {
             }),
         ).toBe(EXPECTED);
     });
+    it("renders [] if nested suboption has array type", () => {
+//#region EXPECTED
+        const EXPECTED = `
+import dxCLASS_NAME, {
+    IOptions
+} from "DX/WIDGET/PATH";
+
+import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
+import NestedOption from "CONFIG_COMPONENT_PATH";
+
+interface ICLASS_NAMEOptions extends IOptions, IHtmlOptions {
+}
+
+class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
+
+  public get instance(): dxCLASS_NAME {
+    return this._instance;
+  }
+
+  protected _WidgetClass = dxCLASS_NAME;
+}
+// tslint:disable:max-classes-per-file
+
+// owners:
+// CLASS_NAME
+interface IOpt_1_ComponentProps {
+  sub_opt_2?: TYPE_1;
+  sub_opt_3?: {
+    subsub_1?: TYPE_3;
+    subsub_2?: TYPE_4;
+  }[];
+}
+class Opt_1_Component extends NestedOption<IOpt_1_ComponentProps> {
+  public static OptionName = "opt_1";
+  public static IsCollectionItem = true;
+  public static PredefinedProps = {
+    predefinedProp_1: "predefined-value"
+  };
+}
+
+export default CLASS_NAME;
+export {
+  CLASS_NAME,
+  ICLASS_NAMEOptions,
+  Opt_1_Component,
+  IOpt_1_ComponentProps
+};
+`.trimLeft();
+    //#endregion
+
+        expect(
+          generate({
+            name: "CLASS_NAME",
+            baseComponentPath: "BASE_COMPONENT_PATH",
+            extensionComponentPath: "EXTENSION_COMPONENT_PATH",
+            configComponentPath: "CONFIG_COMPONENT_PATH",
+            dxExportPath: "DX/WIDGET/PATH",
+            nestedComponents: [
+              {
+                className: "Opt_1_Component",
+                owners: ["CLASS_NAME"],
+                optionName: "opt_1",
+                isCollectionItem: true,
+                predefinedProps: {
+                  predefinedProp_1: "predefined-value"
+                },
+                options: [
+                  {
+                    name: "sub_opt_2",
+                    type: "TYPE_1"
+                  },
+                  {
+                    name: "sub_opt_3",
+                    nested: [{
+                      name: "subsub_1",
+                      type: "TYPE_3"
+                    },
+                    {
+                      name: "subsub_2",
+                      type: "TYPE_4"
+                    }
+                  ],
+                    isArray: true
+                  }
+                ]
+              }
+            ]
+          })
+        ).toBe(EXPECTED);
+});
 });
 
 describe('prop typings', () => {
