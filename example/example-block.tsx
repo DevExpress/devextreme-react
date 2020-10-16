@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 interface IProps {
-  state?: object;
+  state?: Record<string, unknown>;
   title: string;
   children: any;
 }

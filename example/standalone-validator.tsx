@@ -5,7 +5,7 @@ import { RequiredRule } from '../src/validator';
 import Example from './example-block';
 
 class ValidatorExample extends React.Component<any, any> {
-  private _currentValue: string = '';
+  private _currentValue = '';
 
   private _adapter: any;
 

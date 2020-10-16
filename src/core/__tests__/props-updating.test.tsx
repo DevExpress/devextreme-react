@@ -15,7 +15,7 @@ interface IControlledComponentProps {
   onControlledOptionChanged?: () => void;
   everyOption?: number | boolean | null;
   anotherOption?: string;
-  complexOption?: object;
+  complexOption?: Record<string, unknown>;
 }
 
 // tslint:disable:max-classes-per-file
