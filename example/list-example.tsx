@@ -29,10 +29,16 @@ class Item extends React.Component<IListItemProps, { counter: number }> {
   public render() {
     const { data: { text }, index } = this.props;
     return (
-            <i onClick={this.handleClick}>
-                {index + 1}. Component template for item {text}.
-                <b>Clicks: {this.state.counter}</b>
-            </i>
+      <i onClick={this.handleClick}>
+        {index + 1}
+        . Component template for item
+        {text}
+        .
+        <b>
+          Clicks:
+          {this.state.counter}
+        </b>
+      </i>
     );
   }
 
@@ -83,36 +89,36 @@ export default class extends React.Component<any, { text: string; items: IListIt
 
   public render() {
     return (
-            <Example title="DxList" state={this.state} >
-                <hr />
-                <h4>List with inline items</h4>
-                <List>
-                    <ListItem>abc</ListItem>
-                    <ListItem>def</ListItem>
-                    <ListItem>ghi</ListItem>
-                </List>
-                <hr />
-                <h4>List with function template</h4>
-                <List
-                    items={listItems}
-                    itemRender={ItemsRender}
-                />
-                <hr />
-                <h4>List with component template</h4>
-                <List
-                    repaintChangesOnly={true}
-                    items={this.state.items}
-                    itemComponent={Item}
-                    itemKeyFn={ItemKeyGetter}
-                />
+      <Example title="DxList" state={this.state}>
+        <hr />
+        <h4>List with inline items</h4>
+        <List>
+          <ListItem>abc</ListItem>
+          <ListItem>def</ListItem>
+          <ListItem>ghi</ListItem>
+        </List>
+        <hr />
+        <h4>List with function template</h4>
+        <List
+          items={listItems}
+          itemRender={ItemsRender}
+        />
+        <hr />
+        <h4>List with component template</h4>
+        <List
+          repaintChangesOnly
+          items={this.state.items}
+          itemComponent={Item}
+          itemKeyFn={ItemKeyGetter}
+        />
 
-                <hr />
-                <h4>List with dataSource</h4>
-                <List dataSource={this.dataSource} />
-                <hr />
-                <TextBox value={this.state.text} onValueChanged={this.updateText} valueChangeEvent="input" />
-                <Button text="Add to list" onClick={this.addTextToList} />
-            </Example>
+        <hr />
+        <h4>List with dataSource</h4>
+        <List dataSource={this.dataSource} />
+        <hr />
+        <TextBox value={this.state.text} onValueChanged={this.updateText} valueChangeEvent="input" />
+        <Button text="Add to list" onClick={this.addTextToList} />
+      </Example>
     );
   }
 

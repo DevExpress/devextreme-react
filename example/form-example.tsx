@@ -39,51 +39,51 @@ export default class extends React.Component<any, {disableIdInput: boolean}> {
   public render() {
     const { disableIdInput } = this.state;
     return (
-            <Example title="DxForm">
-                <Form colCount={2} formData={employee} >
-                    <GroupItem caption="Form Group Item">
-                        <Item dataField={'ID'} component={getTextBoxComponent(disableIdInput)} />
-                        <Item>
-                            <Button
-                                text={disableIdInput ? 'Enable input' : 'Disable input'}
-                                onClick={this.toggleIdInputState}
-                            />
-                        </Item>
-                    </GroupItem>
-                    <SimpleItem dataField={'FirstName'} editorOptions={{ disabled: true }} />
-                    <SimpleItem dataField={'LastName'} editorOptions={{ disabled: true }} />
-                    <SimpleItem
-                        dataField={'Position'}
-                        editorType={'dxSelectBox'}
-                        editorOptions={{ items: positions, value: '' }}
-                    >
-                        <RequiredRule message={'Position is required'} />
-                    </SimpleItem>
-                    <SimpleItem
-                        dataField={'BirthDate'}
-                        editorType={'dxDateBox'}
-                        editorOptions={{ disabled: true, width: '100%' }}
-                    />
-                    <SimpleItem
-                        dataField={'HireDate'}
-                        editorType={'dxDateBox'}
-                        editorOptions={{ value: null, width: '100%' }}
-                    >
-                        <RequiredRule message={'Hire date is required'} />
-                    </SimpleItem>
-                    <SimpleItem
-                        dataField={'Notes'}
-                        colSpan={2}
-                    >
-                        <TextArea/>
-                    </SimpleItem>
-                    <SimpleItem dataField={'Address'} />
-                    <SimpleItem
-                        dataField={'Phone'}
-                        editorOptions={{ mask: '+1 (X00) 000-0000', maskRules: { X: /[02-9]/ } }}
-                    />
-                </Form>
-            </Example>
+      <Example title="DxForm">
+        <Form colCount={2} formData={employee}>
+          <GroupItem caption="Form Group Item">
+            <Item dataField="ID" component={getTextBoxComponent(disableIdInput)} />
+            <Item>
+              <Button
+                text={disableIdInput ? 'Enable input' : 'Disable input'}
+                onClick={this.toggleIdInputState}
+              />
+            </Item>
+          </GroupItem>
+          <SimpleItem dataField="FirstName" editorOptions={{ disabled: true }} />
+          <SimpleItem dataField="LastName" editorOptions={{ disabled: true }} />
+          <SimpleItem
+            dataField="Position"
+            editorType="dxSelectBox"
+            editorOptions={{ items: positions, value: '' }}
+          >
+            <RequiredRule message="Position is required" />
+          </SimpleItem>
+          <SimpleItem
+            dataField="BirthDate"
+            editorType="dxDateBox"
+            editorOptions={{ disabled: true, width: '100%' }}
+          />
+          <SimpleItem
+            dataField="HireDate"
+            editorType="dxDateBox"
+            editorOptions={{ value: null, width: '100%' }}
+          >
+            <RequiredRule message="Hire date is required" />
+          </SimpleItem>
+          <SimpleItem
+            dataField="Notes"
+            colSpan={2}
+          >
+            <TextArea />
+          </SimpleItem>
+          <SimpleItem dataField="Address" />
+          <SimpleItem
+            dataField="Phone"
+            editorOptions={{ mask: '+1 (X00) 000-0000', maskRules: { X: /[02-9]/ } }}
+          />
+        </Form>
+      </Example>
     );
   }
 

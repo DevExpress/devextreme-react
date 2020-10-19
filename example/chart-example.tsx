@@ -34,24 +34,24 @@ export default class extends React.Component<any, IState> {
 
   public render() {
     return (
-            <Example title="DxChart" state={this.state}>
+      <Example title="DxChart" state={this.state}>
 
-                <div className="paragraph dx-field">
-                    <div className="dx-field-label">
-                        {this.state.currentTime}
-                    </div>
-                    <div className="dx-field-value">
-                        <Button text="Update time" onClick={this.updateTime} />
-                    </div>
-                </div>
+        <div className="paragraph dx-field">
+          <div className="dx-field-label">
+            {this.state.currentTime}
+          </div>
+          <div className="dx-field-value">
+            <Button text="Update time" onClick={this.updateTime} />
+          </div>
+        </div>
 
-                <div className="paragraph">
-                    <Updater onChange={this.updateSeriesName} />
-                </div>
+        <div className="paragraph">
+          <Updater onChange={this.updateSeriesName} />
+        </div>
 
-                <Chart dataSource={orangesByDay} series={this.state.series} />
+        <Chart dataSource={orangesByDay} series={this.state.series} />
 
-            </Example>
+      </Example>
     );
   }
 
@@ -88,14 +88,14 @@ class Updater extends React.Component<{ onChange: (value: string) => void }, { v
 
   public render() {
     return (
-            <div className="dx-field">
-                <div className="dx-field-label">
-                    <TextBox value={this.state.value} onValueChanged={this.update} valueChangeEvent="input" />
-                </div>
-                <div className="dx-field-value">
-                    <Button text="Update series name" onClick={this.fireOnChange} />
-                </div>
-            </div>
+      <div className="dx-field">
+        <div className="dx-field-label">
+          <TextBox value={this.state.value} onValueChanged={this.update} valueChangeEvent="input" />
+        </div>
+        <div className="dx-field-value">
+          <Button text="Update series name" onClick={this.fireOnChange} />
+        </div>
+      </div>
     );
   }
 

@@ -18,11 +18,11 @@ function renderMenuTemplate() {
   }];
 
   return (
-        <React.Fragment>
-            <Toolbar items={items}>
-                <Template name="menuTextTemplate" render={() => <h4>Demo</h4>}/>
-            </Toolbar>
-        </React.Fragment>
+    <>
+      <Toolbar items={items}>
+        <Template name="menuTextTemplate" render={() => <h4>Demo</h4>} />
+      </Toolbar>
+    </>
   );
 }
 
@@ -39,18 +39,18 @@ export default class extends React.Component<any, any> {
 
   public render() {
     return (
-            <Example title="DxSlideOutView" state={this.state}>
-                <Button text={'toggle'} onClick={this.toggle}/>
-                <SlideOutView
-                    height={200}
-                    swipeEnabled={true}
-                    menuVisible={this.state.menuVisible}
-                    menuRender={renderMenuTemplate}
-                    onOptionChanged={this._optionChangeHandler}
-                >
-                    This is SlideOutView content
-                </SlideOutView>
-            </Example>
+      <Example title="DxSlideOutView" state={this.state}>
+        <Button text="toggle" onClick={this.toggle} />
+        <SlideOutView
+          height={200}
+          swipeEnabled
+          menuVisible={this.state.menuVisible}
+          menuRender={renderMenuTemplate}
+          onOptionChanged={this._optionChangeHandler}
+        >
+          This is SlideOutView content
+        </SlideOutView>
+      </Example>
     );
   }
 

@@ -13,13 +13,13 @@ const Example = (props: IProps) => {
   }
 
   return (
-        <div className="example-block">
-            <div className="example-header">
-                <h4 className="bg-primary example-title">{props.title || 'example'}</h4>
-                {stateBlock}
-            </div>
-            {props.children}
-        </div>
+    <div className="example-block">
+      <div className="example-header">
+        <h4 className="bg-primary example-title">{props.title || 'example'}</h4>
+        {stateBlock}
+      </div>
+      {props.children}
+    </div>
   );
 };
 

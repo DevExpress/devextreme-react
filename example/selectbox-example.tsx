@@ -9,16 +9,16 @@ class SelectBoxEditor extends React.Component {
 
   public render() {
     return (
-            <SelectBox
-                searchEnabled={true}
-                showClearButton={true}
-                searchTimeout={0}
-                noDataText="No results found"
-                displayExpr="label"
-                valueExpr="value"
-                items={items}
-                itemComponent={SelectBoxItem}
-            />
+      <SelectBox
+        searchEnabled
+        showClearButton
+        searchTimeout={0}
+        noDataText="No results found"
+        displayExpr="label"
+        valueExpr="value"
+        items={items}
+        itemComponent={SelectBoxItem}
+      />
     );
   }
 }

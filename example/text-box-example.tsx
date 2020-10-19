@@ -24,30 +24,30 @@ export default class extends React.Component<any, { text: string; uncontrolledTe
 
   public render() {
     return (
-            <Example title="DxTextBox" state={this.state}>
-                uncontrolled mode
-                <TextBox
-                    defaultValue={'initial text'}
-                    ref={(ref) => ref && (this.textBox = ref.instance)}
-                />
-                <br />
-                <Button onClick={this.setFocusToTextBox} text="Set focus" />
-                <Button onClick={this.updateUncontrolledValue} text="Update text" />
-                <br />
-                <br />
-                controlled state value
-                <TextBox value={this.state.text} valueChangeEvent="input" />
-                <br />
-                controlled state value with change handling
-                <TextBox value={this.state.text} onValueChanged={this.handleChange} valueChangeEvent="input" />
-                <br />
-                validation (required)
-                <TextBox valueChangeEvent="input" defaultValue={'required text'}>
-                    <Validator >
-                        <RequiredRule message="this is required" />
-                    </Validator>
-                </TextBox>
-            </Example>
+      <Example title="DxTextBox" state={this.state}>
+        uncontrolled mode
+        <TextBox
+          defaultValue="initial text"
+          ref={(ref) => ref && (this.textBox = ref.instance)}
+        />
+        <br />
+        <Button onClick={this.setFocusToTextBox} text="Set focus" />
+        <Button onClick={this.updateUncontrolledValue} text="Update text" />
+        <br />
+        <br />
+        controlled state value
+        <TextBox value={this.state.text} valueChangeEvent="input" />
+        <br />
+        controlled state value with change handling
+        <TextBox value={this.state.text} onValueChanged={this.handleChange} valueChangeEvent="input" />
+        <br />
+        validation (required)
+        <TextBox valueChangeEvent="input" defaultValue="required text">
+          <Validator>
+            <RequiredRule message="this is required" />
+          </Validator>
+        </TextBox>
+      </Example>
     );
   }
 

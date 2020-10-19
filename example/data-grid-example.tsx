@@ -19,10 +19,11 @@ import { sales } from './data';
 
 const DetailComponent = ({ data: { data } }: any) => {
   return (
-        <p>Row data:
-            <br/>
-            {JSON.stringify(data)}
-        </p>
+    <p>
+      Row data:
+      <br />
+      {JSON.stringify(data)}
+    </p>
   );
 };
 
@@ -49,52 +50,52 @@ export default class extends React.Component<any, { expandAll: boolean, pageSize
 
   public render() {
     return (
-            <Example title="DxDataGrid" state={this.state}>
-                <br />
-                <br />
-                <br />
-                Page size:
-                <br />
-                <NumberBox
-                    showSpinButtons={true}
-                    step={5}
-                    value={this.state.pageSize}
-                    onValueChanged={this.handlePageIndexChange}
-                />
-                <br />
-                <DataGrid
-                    dataSource={sales}
-                    allowColumnReordering={true}
-                    onToolbarPreparing={this.handleToolbarPreparing}
-                >
-                    <GroupPanel visible={true} />
-                    <Grouping autoExpandAll={this.state.expandAll} />
-                    <FilterRow visible={true} />
-                    <Selection mode="multiple" />
+      <Example title="DxDataGrid" state={this.state}>
+        <br />
+        <br />
+        <br />
+        Page size:
+        <br />
+        <NumberBox
+          showSpinButtons
+          step={5}
+          value={this.state.pageSize}
+          onValueChanged={this.handlePageIndexChange}
+        />
+        <br />
+        <DataGrid
+          dataSource={sales}
+          allowColumnReordering
+          onToolbarPreparing={this.handleToolbarPreparing}
+        >
+          <GroupPanel visible />
+          <Grouping autoExpandAll={this.state.expandAll} />
+          <FilterRow visible />
+          <Selection mode="multiple" />
 
-                    <Column dataField="orderId" caption="Order ID" width={90} />
-                    <Column dataField="city" cellComponent={CityComponent}/>
-                    <Column dataField="country" groupIndex={0} width={180} />
-                    <Column dataField="region" cellComponent={RegionComponent}/>
-                    <Column dataField="date" dataType="date" />
-                    <Column dataField="amount" dataType="currency" width={90} />
+          <Column dataField="orderId" caption="Order ID" width={90} />
+          <Column dataField="city" cellComponent={CityComponent} />
+          <Column dataField="country" groupIndex={0} width={180} />
+          <Column dataField="region" cellComponent={RegionComponent} />
+          <Column dataField="date" dataType="date" />
+          <Column dataField="amount" dataType="currency" width={90} />
 
-                    <Pager
-                        allowedPageSizes={[5, 10, 15, 20]}
-                        showPageSizeSelector={true}
-                        showInfo={true}
-                    />
-                    <Paging
-                        defaultPageIndex={2}
-                        pageSize={this.state.pageSize}
-                    />
-                    <MasterDetail enabled={true} component={DetailComponent} />
+          <Pager
+            allowedPageSizes={[5, 10, 15, 20]}
+            showPageSizeSelector
+            showInfo
+          />
+          <Paging
+            defaultPageIndex={2}
+            pageSize={this.state.pageSize}
+          />
+          <MasterDetail enabled component={DetailComponent} />
 
-                    <Template name={'toolbarLabel'}>
-                        {this.state.expandAll ? <b>Collapse Groups:</b> : <b>Expand Groups:</b>}
-                    </Template>
-                </DataGrid>
-            </Example>
+          <Template name="toolbarLabel">
+            {this.state.expandAll ? <b>Collapse Groups:</b> : <b>Expand Groups:</b>}
+          </Template>
+        </DataGrid>
+      </Example>
     );
   }
 

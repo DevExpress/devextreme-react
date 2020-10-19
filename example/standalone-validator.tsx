@@ -30,21 +30,21 @@ class ValidatorExample extends React.Component<any, any> {
 
   public render() {
     return (
-            <div>
-                <Example title={'Standalone Validator example'}>
-                    <div style={{ border: this.state.isValid ? 'none' : '1px solid red' }}>
-                        <TextBox onValueChanged={this._onValueChanged} />
-                    </div>
-                    <Validator adapter={this._adapter}>
-                        <RequiredRule message={'This field is required'} />
-                    </Validator>
-                    <ValidationSummary/>
-                    <Button
-                        text={'Submit'}
-                        onClick={this._onSubmit}
-                    />
-                </Example>
-            </div>
+      <div>
+        <Example title="Standalone Validator example">
+          <div style={{ border: this.state.isValid ? 'none' : '1px solid red' }}>
+            <TextBox onValueChanged={this._onValueChanged} />
+          </div>
+          <Validator adapter={this._adapter}>
+            <RequiredRule message="This field is required" />
+          </Validator>
+          <ValidationSummary />
+          <Button
+            text="Submit"
+            onClick={this._onSubmit}
+          />
+        </Example>
+      </div>
     );
   }
 
