@@ -28,11 +28,24 @@ class ValidatorExample extends React.Component<any, any> {
     };
   }
 
+  private _onValueChanged = (e: any) => {
+    this._currentValue = e.value;
+
+    this._callbacks.forEach((callback: any) => {
+      callback();
+    });
+  };
+
+  private _onSubmit = (e: any) => {
+    e.validationGroup.validate();
+  };
+
   public render() {
+    const {isValid} = this.state;
     return (
       <div>
         <Example title="Standalone Validator example">
-          <div style={{ border: this.state.isValid ? 'none' : '1px solid red' }}>
+          <div style={{ border: isValid ? 'none' : '1px solid red' }}>
             <TextBox onValueChanged={this._onValueChanged} />
           </div>
           <Validator adapter={this._adapter}>
@@ -47,18 +60,6 @@ class ValidatorExample extends React.Component<any, any> {
       </div>
     );
   }
-
-  private _onValueChanged = (e: any) => {
-    this._currentValue = e.value;
-
-    this._callbacks.forEach((callback: any) => {
-      callback();
-    });
-  };
-
-  private _onSubmit = (e: any) => {
-    e.validationGroup.validate();
-  };
 }
 
 export default ValidatorExample;

@@ -244,12 +244,14 @@ describe('nested option', () => {
 
   it('is pulled after update', () => {
 
-    const TestContainer = (props: any) => (
-      <TestComponent>
-        <NestedComponent a={props.value} />
-      </TestComponent>
-    );
-
+    const TestContainer = (props: any) => {
+      const {value} = props;
+      return  (
+        <TestComponent>
+          <NestedComponent a={value} />
+        </TestComponent>
+      );
+    };
     mount(<TestContainer value={123} />)
       .setProps({ value: 456 });
 
@@ -274,7 +276,8 @@ describe('nested option', () => {
 
   it('updates widget option when collection item added', () => {
     const TestContainer = (props: any) => {
-      const nesteds = props.children.map((child: any) => (
+      const {children} = props;
+      const nesteds = children.map((child: any) => (
         <CollectionNestedComponent c={child.c} d={child.d} key={child.key} />
       ));
 
@@ -305,7 +308,8 @@ describe('nested option', () => {
 
   it('updates widget option when collection item removed', () => {
     const TestContainer = (props: any) => {
-      const nesteds = props.children.map((child: any) => (
+      const {children} = props;
+      const nesteds = children.map((child: any) => (
         <CollectionNestedComponent c={child.c} d={child.d} key={child.key} />
       ));
 
@@ -470,13 +474,16 @@ describe('nested sub-option', () => {
 
   it('is pulled after update', () => {
 
-    const TestContainer = (props: any) => (
-      <TestComponent>
-        <NestedComponent a={123}>
-          <SubNestedComponent d={props.value} />
-        </NestedComponent>
-      </TestComponent>
-    );
+    const TestContainer = (props: any) => {
+      const {value} = props;
+      return (
+        <TestComponent>
+          <NestedComponent a={123}>
+            <SubNestedComponent d={value} />
+          </NestedComponent>
+        </TestComponent>
+      );
+    };
 
     mount(<TestContainer value="abc" />)
       .setProps({
@@ -527,11 +534,14 @@ describe('nested sub-option', () => {
   });
 });
 
-const ComponentWithConditionalOption = (props: {enableOption: boolean}) => (
-  <TestComponent>
-    {props.enableOption && <NestedComponent a={1} />}
-  </TestComponent>
-);
+const ComponentWithConditionalOption = (props: {enableOption: boolean}) => {
+  const {enableOption} = props;
+  return (
+    <TestComponent>
+      {enableOption && <NestedComponent a={1} />}
+    </TestComponent>
+  );
+};
 
 describe('conditional rendering', () => {
   it('adds option', () => {

@@ -53,16 +53,19 @@ describe('useLegacyTemplateEngine', () => {
   });
 
   it('works for component template', () => {
-    const ItemTemplate = (props: any) => (
-      <div className="template">
-        value:
-        {' '}
-        {props.value}
-        , dxkey:
-        {' '}
-        {props.dxkey}
-      </div>
-    );
+    const ItemTemplate = (props: any) => {
+      const {value, dxkey} = props;
+      return (
+        <div className="template">
+          value:
+          {' '}
+          {value}
+          , dxkey:
+          {' '}
+          {dxkey}
+        </div>
+      );
+    };
 
     const component = mount(
       <ComponentWithTemplates itemComponent={ItemTemplate} />,

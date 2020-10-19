@@ -18,7 +18,20 @@ export default class extends React.Component<any, { text: string }> {
     this.handleTextChange = this.handleTextChange.bind(this);
   }
 
+  private clearText() {
+    this.setState({
+      text: '',
+    });
+  }
+
+  private handleTextChange(e: any) {
+    this.setState({
+      text: e.value,
+    });
+  }
+
   public render() {
+    const {text} = this.state;
     return (
       <Example title="DxScrollView" state={this.state}>
         <ScrollView height="150px">
@@ -26,7 +39,7 @@ export default class extends React.Component<any, { text: string }> {
           <Button text="Clear TextBox" onClick={this.clearText} />
           <br />
           <br />
-          <TextBox value={this.state.text} onValueChanged={this.handleTextChange} valueChangeEvent="keydown" />
+          <TextBox value={text} onValueChanged={this.handleTextChange} valueChangeEvent="keydown" />
           <br />
           <div>
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, eveniet tempore, perspiciatis totam qui est minima dicta beatae dolores, omnis enim ut incidunt. Ut reprehenderit, tempore iusto deserunt doloremque fugit.</p>
@@ -48,17 +61,5 @@ export default class extends React.Component<any, { text: string }> {
         </ScrollView>
       </Example>
     );
-  }
-
-  private clearText() {
-    this.setState({
-      text: '',
-    });
-  }
-
-  private handleTextChange(e: any) {
-    this.setState({
-      text: e.value,
-    });
   }
 }

@@ -22,7 +22,24 @@ export default class extends React.Component<any, { text: string; uncontrolledTe
     this.setFocusToTextBox = this.setFocusToTextBox.bind(this);
   }
 
+  private setFocusToTextBox() {
+    this.textBox.focus();
+  }
+
+  private updateUncontrolledValue() {
+    this.setState({
+      uncontrolledText: '#' + this.textBox.option('value'),
+    });
+  }
+
+  private handleChange(e: any) {
+    this.setState({
+      text: '#' + (e.value as string).toUpperCase().replace('A', '_'),
+    });
+  }
+
   public render() {
+    const {text} = this.state;
     return (
       <Example title="DxTextBox" state={this.state}>
         uncontrolled mode
@@ -36,10 +53,10 @@ export default class extends React.Component<any, { text: string; uncontrolledTe
         <br />
         <br />
         controlled state value
-        <TextBox value={this.state.text} valueChangeEvent="input" />
+        <TextBox value={text} valueChangeEvent="input" />
         <br />
         controlled state value with change handling
-        <TextBox value={this.state.text} onValueChanged={this.handleChange} valueChangeEvent="input" />
+        <TextBox value={text} onValueChanged={this.handleChange} valueChangeEvent="input" />
         <br />
         validation (required)
         <TextBox valueChangeEvent="input" defaultValue="required text">
@@ -49,21 +66,5 @@ export default class extends React.Component<any, { text: string; uncontrolledTe
         </TextBox>
       </Example>
     );
-  }
-
-  private updateUncontrolledValue() {
-    this.setState({
-      uncontrolledText: '#' + this.textBox.option('value'),
-    });
-  }
-
-  private setFocusToTextBox() {
-    this.textBox.focus();
-  }
-
-  private handleChange(e: any) {
-    this.setState({
-      text: '#' + (e.value as string).toUpperCase().replace('A', '_'),
-    });
   }
 }

@@ -1,5 +1,3 @@
-/* tslint:disable:no-string-literal */
-/* tslint:disable:max-classes-per-file */
 import * as events from 'devextreme/events';
 
 import ConfigurationComponent from '../../core/nested-option';
@@ -40,7 +38,8 @@ function testTemplateOption(testedOption: string) {
         public props: { data: any, index?: number };
 
         public render() {
-          return render(this.props.data, this.props.index);
+          const {data, index} = this.props;
+          return render(data, index);
         }
       }
       return ItemComponent;
@@ -347,16 +346,19 @@ describe('component template', () => {
   testTemplateOption('itemComponent');
 
   it('renders index', () => {
-    const ItemTemplate = (props: any) => (
-      <div className="template">
-        value:
-        {' '}
-        {props.data.value}
-        , index:
-        {' '}
-        {props.index}
-      </div>
-    );
+    const ItemTemplate = (props: any) => {
+      const {data, index} = props;
+      return (
+        <div className="template">
+          value:
+          {' '}
+          {data.value}
+          , index:
+          {' '}
+          {index}
+        </div>
+      );
+    };
 
     const component = mount(
       <ComponentWithTemplates itemComponent={ItemTemplate} />,
@@ -722,13 +724,16 @@ describe('component/render in nested options', () => {
   // T748280
   it('renders updates in deeply nested templates', () => {
     const getTemplate = (arg: string) => () => <div className="template">{arg}</div>;
-    const TestContainer = (props: any) => (
-      <TestComponent>
-        <CollectionNestedComponent>
-          <NestedComponent itemComponent={getTemplate(props.value)} />
-        </CollectionNestedComponent>
-      </TestComponent>
-    );
+    const TestContainer = (props: any) => {
+      const {value} = props;
+      return (
+        <TestComponent>
+          <CollectionNestedComponent>
+            <NestedComponent itemComponent={getTemplate(value)} />
+          </CollectionNestedComponent>
+        </TestComponent>
+      );
+    };
     const component = mount(<TestContainer value="test" />);
     component.setProps({value: 'test2'});
     jest.runAllTimers();
@@ -742,11 +747,14 @@ describe('component/render in nested options', () => {
     const renderItem = () => <div>Template</div>;
     const items = [{id: 1, render: renderItem}];
 
-    const TestContainer = (props: any) => (
-      <TestComponent>
-        {props.items.map((item) => <CollectionNestedComponent key={item.id} render={item.render} />)}
-      </TestComponent>
-    );
+    const TestContainer = (props: any) => {
+      const {items} = props;
+      return (
+        <TestComponent>
+          {items.map((item) => <CollectionNestedComponent key={item.id} render={item.render} />)}
+        </TestComponent>
+      );
+    };
 
     const component = mount(<TestContainer items={items} />);
     component.setProps({
@@ -774,11 +782,14 @@ describe('component/render in nested options', () => {
     const renderItem = () => <div>Template</div>;
     const items = [{id: 1, render: renderItem}, {id: 2, render: renderItem}];
 
-    const TestContainer = (props: any) => (
-      <TestComponent>
-        {props.items.map((item) => <CollectionNestedComponent key={item.id} render={item.render} />)}
-      </TestComponent>
-    );
+    const TestContainer = (props: any) => {
+      const {items} = props;
+      return (
+        <TestComponent>
+          {items.map((item) => <CollectionNestedComponent key={item.id} render={item.render} />)}
+        </TestComponent>
+      );
+    };
 
     const component = mount(<TestContainer items={items} />);
     component.setProps({
@@ -796,11 +807,14 @@ describe('component/render in nested options', () => {
     const ItemTemplate = () => <div>Template</div>;
     const items = [{id: 1, render: ItemTemplate}, {id: 2, render: ItemTemplate}];
 
-    const TestContainer = (props: any) => (
-      <TestComponent>
-        {props.items.map((item) => <CollectionNestedComponent key={item.id} render={item.render} />)}
-      </TestComponent>
-    );
+    const TestContainer = (props: any) => {
+      const {items} = props;
+      return (
+        <TestComponent>
+          {items.map((item) => <CollectionNestedComponent key={item.id} render={item.render} />)}
+        </TestComponent>
+      );
+    };
 
     const component = mount(<TestContainer items={items} />);
     component.setProps({

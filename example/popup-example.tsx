@@ -22,14 +22,28 @@ export default class extends React.Component<any, { visible: boolean; text: stri
     this.handleTextUpdate = this.handleTextUpdate.bind(this);
   }
 
+  private toggle(visible: boolean) {
+    const {text} = this.state;
+    this.setState({
+      visible: visible || !validateText(text),
+    });
+  }
+
+  private handleTextUpdate(e: any) {
+    this.setState({
+      text: e.value,
+    });
+  }
+
   public render() {
+    const {text, visible} = this.state;
     return (
       <Example title="DxPopup" state={this.state}>
-        <TextBox value={this.state.text} onValueChanged={this.handleTextUpdate} valueChangeEvent="input" />
+        <TextBox value={text} onValueChanged={this.handleTextUpdate} valueChangeEvent="input" />
         <br />
         <Button text="Show popup" onClick={() => this.toggle(true)} />
         <Popup
-          visible={this.state.visible}
+          visible={visible}
           onHiding={() => this.toggle(false)}
           onShowing={() => this.toggle(true)}
           width={600}
@@ -37,7 +51,7 @@ export default class extends React.Component<any, { visible: boolean; text: stri
         >
           Enter valid text (it should be 'good'):
           <br />
-          <TextBox value={this.state.text} onValueChanged={this.handleTextUpdate} valueChangeEvent="input" />
+          <TextBox value={text} onValueChanged={this.handleTextUpdate} valueChangeEvent="input" />
           <br />
           <ScrollView height={80}>
             <p>
@@ -68,17 +82,5 @@ export default class extends React.Component<any, { visible: boolean; text: stri
         </Popup>
       </Example>
     );
-  }
-
-  private toggle(visible: boolean) {
-    this.setState({
-      visible: visible || !validateText(this.state.text),
-    });
-  }
-
-  private handleTextUpdate(e: any) {
-    this.setState({
-      text: e.value,
-    });
   }
 }

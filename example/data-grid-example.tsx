@@ -28,11 +28,13 @@ const DetailComponent = ({ data: { data } }: any) => {
 };
 
 const CityComponent = (props: any) => {
-  return <i>{props.data.displayValue}</i>;
+  const {data} = props;
+  return <i>{data.displayValue}</i>;
 };
 
 const RegionComponent = (props: any) => {
-  return <b>{props.data.displayValue}</b>;
+  const {data} = props;
+  return <b>{data.displayValue}</b>;
 };
 
 export default class extends React.Component<any, { expandAll: boolean, pageSize: number }> {
@@ -46,57 +48,6 @@ export default class extends React.Component<any, { expandAll: boolean, pageSize
 
     this.handleToolbarPreparing = this.handleToolbarPreparing.bind(this);
     this.handlePageIndexChange = this.handlePageIndexChange.bind(this);
-  }
-
-  public render() {
-    return (
-      <Example title="DxDataGrid" state={this.state}>
-        <br />
-        <br />
-        <br />
-        Page size:
-        <br />
-        <NumberBox
-          showSpinButtons
-          step={5}
-          value={this.state.pageSize}
-          onValueChanged={this.handlePageIndexChange}
-        />
-        <br />
-        <DataGrid
-          dataSource={sales}
-          allowColumnReordering
-          onToolbarPreparing={this.handleToolbarPreparing}
-        >
-          <GroupPanel visible />
-          <Grouping autoExpandAll={this.state.expandAll} />
-          <FilterRow visible />
-          <Selection mode="multiple" />
-
-          <Column dataField="orderId" caption="Order ID" width={90} />
-          <Column dataField="city" cellComponent={CityComponent} />
-          <Column dataField="country" groupIndex={0} width={180} />
-          <Column dataField="region" cellComponent={RegionComponent} />
-          <Column dataField="date" dataType="date" />
-          <Column dataField="amount" dataType="currency" width={90} />
-
-          <Pager
-            allowedPageSizes={[5, 10, 15, 20]}
-            showPageSizeSelector
-            showInfo
-          />
-          <Paging
-            defaultPageIndex={2}
-            pageSize={this.state.pageSize}
-          />
-          <MasterDetail enabled component={DetailComponent} />
-
-          <Template name="toolbarLabel">
-            {this.state.expandAll ? <b>Collapse Groups:</b> : <b>Expand Groups:</b>}
-          </Template>
-        </DataGrid>
-      </Example>
-    );
   }
 
   private handleToolbarPreparing(args: any) {
@@ -125,5 +76,57 @@ export default class extends React.Component<any, { expandAll: boolean, pageSize
     this.setState({
       pageSize: e.value,
     });
+  }
+
+  public render() {
+    const {expandAll, pageSize} = this.state;
+    return (
+      <Example title="DxDataGrid" state={this.state}>
+        <br />
+        <br />
+        <br />
+        Page size:
+        <br />
+        <NumberBox
+          showSpinButtons
+          step={5}
+          value={pageSize}
+          onValueChanged={this.handlePageIndexChange}
+        />
+        <br />
+        <DataGrid
+          dataSource={sales}
+          allowColumnReordering
+          onToolbarPreparing={this.handleToolbarPreparing}
+        >
+          <GroupPanel visible />
+          <Grouping autoExpandAll={expandAll} />
+          <FilterRow visible />
+          <Selection mode="multiple" />
+
+          <Column dataField="orderId" caption="Order ID" width={90} />
+          <Column dataField="city" cellComponent={CityComponent} />
+          <Column dataField="country" groupIndex={0} width={180} />
+          <Column dataField="region" cellComponent={RegionComponent} />
+          <Column dataField="date" dataType="date" />
+          <Column dataField="amount" dataType="currency" width={90} />
+
+          <Pager
+            allowedPageSizes={[5, 10, 15, 20]}
+            showPageSizeSelector
+            showInfo
+          />
+          <Paging
+            defaultPageIndex={2}
+            pageSize={pageSize}
+          />
+          <MasterDetail enabled component={DetailComponent} />
+
+          <Template name="toolbarLabel">
+            {expandAll ? <b>Collapse Groups:</b> : <b>Expand Groups:</b>}
+          </Template>
+        </DataGrid>
+      </Example>
+    );
   }
 }

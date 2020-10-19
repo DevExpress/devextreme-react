@@ -94,11 +94,14 @@ describe('option update', () => {
   });
 
   it('updates nested collection item', () => {
-    const TestContainer = (props: any) => (
-      <TestComponentWithExpectation>
-        <CollectionNestedComponent a={props.value} />
-      </TestComponentWithExpectation>
-    );
+    const TestContainer = (props: any) => {
+      const {value} = props;
+      return (
+        <TestComponentWithExpectation>
+          <CollectionNestedComponent a={value} />
+        </TestComponentWithExpectation>
+      );
+    };
 
     mount(<TestContainer value={123} />)
       .setProps({
@@ -111,14 +114,16 @@ describe('option update', () => {
   });
 
   it('updates sub-nested collection item', () => {
-    const TestContainer = (props: any) => (
-      <TestComponentWithExpectation>
-        <CollectionNestedComponent>
-          <CollectionSubNestedComponent a={props.value} />
-        </CollectionNestedComponent>
-      </TestComponentWithExpectation>
-    );
-
+    const TestContainer = (props: any) => {
+      const {value} = props;
+      return (
+        <TestComponentWithExpectation>
+          <CollectionNestedComponent>
+            <CollectionSubNestedComponent a={value} />
+          </CollectionNestedComponent>
+        </TestComponentWithExpectation>
+      );
+    };
     mount(<TestContainer value={123} />)
       .setProps({
         value: 234,
@@ -426,11 +431,14 @@ describe('cfg-component option control', () => {
   });
 
   it('rolls cfg-component option value back if value has no changes', () => {
-    const TestContainer = (props: any) => (
-      <ControlledComponent>
-        <NestedComponent a={props.value} b="const" />
-      </ControlledComponent>
-    );
+    const TestContainer = (props: any) => {
+      const {value} = props;
+      return (
+        <ControlledComponent>
+          <NestedComponent a={value} b="const" />
+        </ControlledComponent>
+      );
+    };
 
     const container = mount(<TestContainer value={123} />);
 
@@ -444,12 +452,14 @@ describe('cfg-component option control', () => {
   });
 
   it('apply cfg-component option change if value really change', () => {
-    const TestContainer = (props: any) => (
-      <ControlledComponent>
-        <NestedComponent a={props.value} b="const" />
-      </ControlledComponent>
-
-    );
+    const TestContainer = (props: any) => {
+      const {value} = props;
+      return (
+        <ControlledComponent>
+          <NestedComponent a={value} b="const" />
+        </ControlledComponent>
+      );
+    };
 
     const container = mount(<TestContainer value={123} />);
     fireOptionChange('nestedOption.a', 234);
@@ -514,11 +524,14 @@ describe('cfg-component option defaults control', () => {
 
   it('ignores 3rd-party changes in nested default props', () => {
 
-    const TestContainer = (props: any) => (
-      <ControlledComponent>
-        <NestedComponent defaultC={props.optionDefValue} />
-      </ControlledComponent>
-    );
+    const TestContainer = (props: any) => {
+      const {optionDefValue} = props;
+      return (
+        <ControlledComponent>
+          <NestedComponent defaultC={optionDefValue} />
+        </ControlledComponent>
+      );
+    };
 
     mount(<TestContainer optionDefValue="default" />)
       .setProps({

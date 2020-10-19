@@ -26,8 +26,16 @@ class Item extends React.Component<IListItemProps, { counter: number }> {
     this.handleClick = this.handleClick.bind(this);
   }
 
+  private handleClick() {
+    const {counter} = this.state;
+    this.setState({
+      counter: counter + 1,
+    });
+  }
+
   public render() {
     const { data: { text }, index } = this.props;
+    const {counter} = this.state;
     return (
       <i onClick={this.handleClick}>
         {index + 1}
@@ -36,16 +44,10 @@ class Item extends React.Component<IListItemProps, { counter: number }> {
         .
         <b>
           Clicks:
-          {this.state.counter}
+          {counter}
         </b>
       </i>
     );
-  }
-
-  private handleClick() {
-    this.setState({
-      counter: this.state.counter + 1,
-    });
   }
 }
 
@@ -87,7 +89,26 @@ export default class extends React.Component<any, { text: string; items: IListIt
     this.addTextToList = this.addTextToList.bind(this);
   }
 
+  public componentWillUnmount() {
+    this.dataSource.dispose();
+  }
+
+  private updateText(e: any) {
+    this.setState({
+      text: e.value,
+    });
+  }
+
+  private addTextToList() {
+    const {text} = this.state;
+    this.setState({
+      items: [...((o) => o.items)(this.state), { text }],
+      text: '',
+    });
+  }
+
   public render() {
+    const {items, text} = this.state;
     return (
       <Example title="DxList" state={this.state}>
         <hr />
@@ -107,7 +128,7 @@ export default class extends React.Component<any, { text: string; items: IListIt
         <h4>List with component template</h4>
         <List
           repaintChangesOnly
-          items={this.state.items}
+          items={items}
           itemComponent={Item}
           itemKeyFn={ItemKeyGetter}
         />
@@ -116,27 +137,10 @@ export default class extends React.Component<any, { text: string; items: IListIt
         <h4>List with dataSource</h4>
         <List dataSource={this.dataSource} />
         <hr />
-        <TextBox value={this.state.text} onValueChanged={this.updateText} valueChangeEvent="input" />
+        <TextBox value={text} onValueChanged={this.updateText} valueChangeEvent="input" />
         <Button text="Add to list" onClick={this.addTextToList} />
       </Example>
     );
-  }
-
-  public componentWillUnmount() {
-    this.dataSource.dispose();
-  }
-
-  private updateText(e: any) {
-    this.setState({
-      text: e.value,
-    });
-  }
-
-  private addTextToList() {
-    this.setState({
-      items: [...this.state.items, { text: this.state.text }],
-      text: '',
-    });
   }
 }
 

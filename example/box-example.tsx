@@ -25,6 +25,31 @@ class App extends React.Component<any, typeof initialState> {
     this.state = { ...initialState };
   }
 
+  private renderItems = () => {
+    const {items} = this.state;
+    return items.map((item) => (
+      <Item key={item.id} ratio={1}>
+        {item.name}
+      </Item>
+    ));
+  };
+
+  private add = () => {
+    const items = [...((o) => o.items)(this.state)];
+    const id = items.length ? items[items.length - 1].id + 1 : 1;
+    items.push({
+      id,
+      name: `Item #${id}`,
+    });
+
+    this.setState({ items });
+  };
+
+  private remove = () => {
+    const items = ((o) => o.items)(this.state).slice(0, ((o) => o.items)(this.state).length - 1);
+    this.setState({ items });
+  };
+
   public render() {
     return (
       <Example title="Box example">
@@ -42,30 +67,6 @@ class App extends React.Component<any, typeof initialState> {
       </Example>
     );
   }
-
-  private renderItems = () => {
-    return this.state.items.map((item) => (
-      <Item key={item.id} ratio={1}>
-        {item.name}
-      </Item>
-    ));
-  };
-
-  private add = () => {
-    const items = [...this.state.items];
-    const id = items.length ? items[items.length - 1].id + 1 : 1;
-    items.push({
-      id,
-      name: `Item #${id}`,
-    });
-
-    this.setState({ items });
-  };
-
-  private remove = () => {
-    const items = this.state.items.slice(0, this.state.items.length - 1);
-    this.setState({ items });
-  };
 }
 
 export default App;

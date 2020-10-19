@@ -26,7 +26,21 @@ export default class extends React.Component<any, { text: string; pos: IPosition
     this.updatePos = this.updatePos.bind(this);
   }
 
+  public updatePos() {
+    const {pos: {lat, lng}} = this.state;
+    const pos = {
+      lat: lat + 0.01,
+      lng: lng + 0.05,
+    };
+
+    this.setState({
+      text: JSON.stringify(pos),
+      pos,
+    });
+  }
+
   public render() {
+    const {pos} = this.state;
     return (
       <Example title="dxMap" state={this.state}>
         <button type="button" onClick={this.updatePos}>Move!</button>
@@ -52,30 +66,18 @@ export default class extends React.Component<any, { text: string; pos: IPosition
           </Marker>
 
           <Marker>
-            <Tooltip text={JSON.stringify(this.state.pos)} />
-            <Location lat={this.state.pos.lat} lng={this.state.pos.lng} />
+            <Tooltip text={JSON.stringify(pos)} />
+            <Location lat={pos.lat} lng={pos.lng} />
           </Marker>
 
           <Route color="green">
             <Location lat={40.755833} lng={-73.986389} />
             <Location lat={40.7825} lng={-73.966111} />
             <Location lat={startPos.lat} lng={startPos.lng} />
-            <Location lat={this.state.pos.lat} lng={this.state.pos.lng} />
+            <Location lat={pos.lat} lng={pos.lng} />
           </Route>
         </Map>
       </Example>
     );
-  }
-
-  public updatePos() {
-    const pos = {
-      lat: this.state.pos.lat + 0.01,
-      lng: this.state.pos.lng + 0.05,
-    };
-
-    this.setState({
-      text: JSON.stringify(pos),
-      pos,
-    });
   }
 }
