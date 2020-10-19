@@ -69,6 +69,7 @@ function testTemplateOption(testedOption: string) {
     elementOptions[testedOption] = prepareTemplate((data: any) => (
       <div className="template">
         Template
+        {' '}
         {data.text}
       </div>
     ));
@@ -145,6 +146,7 @@ function testTemplateOption(testedOption: string) {
     elementOptions[testedOption] = prepareTemplate((data: any) => (
       <>
         Template
+        {' '}
         {data.text}
       </>
     ));
@@ -163,6 +165,7 @@ function testTemplateOption(testedOption: string) {
         <tr>
           <td>
             Template
+            {' '}
             {data.text}
           </td>
         </tr>
@@ -305,6 +308,7 @@ describe('function template', () => {
     const itemRender: any = jest.fn((text: string) => (
       <div className="template">
         Template
+        {' '}
         {text}
       </div>
     ));
@@ -323,6 +327,7 @@ describe('function template', () => {
       return (
         <div className="template">
           Index
+          {' '}
           {index}
         </div>
       );
