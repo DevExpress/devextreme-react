@@ -1,38 +1,37 @@
-import * as React from "react";
-import Example from "./example-block";
+import * as React from 'react';
+import Example from './example-block';
 
-import { Scheduler } from "../src/scheduler";
+import { Scheduler } from '../src/scheduler';
 
-import { appointments } from "./data";
+import { appointments } from './data';
 
 class DateCell extends React.PureComponent<any> {
-    public render() {
-        const { date: now, text } = this.props.data;
-        const start = new Date(now.getFullYear(), 0, 0).getTime();
-        const dayNumber = Math.floor((now - start) / (1000 * 60 * 60 * 24));
-        return (
-            <div style={{ height: "50px", color: now.getDay() % 6 === 0 ? "red" : "" }}>
+  public render() {
+    const { date: now, text } = this.props.data;
+    const start = new Date(now.getFullYear(), 0, 0).getTime();
+    const dayNumber = Math.floor((now - start) / (1000 * 60 * 60 * 24));
+    return (
+            <div style={{ height: '50px', color: now.getDay() % 6 === 0 ? 'red' : '' }}>
                 <h4>{text}</h4>
                 <h5>{dayNumber}</h5>
             </div>
-        );
-    }
+    );
+  }
 }
 
-// tslint:disable-next-line:max-classes-per-file
 export default class extends React.Component<any, any> {
-    public render() {
-        return (
+  public render() {
+    return (
             <Example title="DxScheduler">
                 <Scheduler
                     dateCellComponent={DateCell}
                     dataSource={appointments}
                     height={400}
                     startDayHour={9}
-                    defaultCurrentView={"week"}
+                    defaultCurrentView={'week'}
                     defaultCurrentDate={new Date(2017, 4, 25)}
                 />
           </Example>
-        );
-    }
+    );
+  }
 }

@@ -1,4 +1,4 @@
-import { createTempate } from "./template";
+import { createTempate } from './template';
 
 interface IReExport {
   name: string;
@@ -19,5 +19,5 @@ const render: (model: IReExport[]) => string = createTempate(`
 
 export default generate;
 export {
-  IReExport
+  IReExport,
 };
