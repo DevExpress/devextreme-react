@@ -78,7 +78,7 @@ interface IValueDescriptor {
 enum ValueType {
   Simple,
   Complex,
-  Array
+  Array,
 }
 
 function findValue(node: IConfigNode, path: string[]): undefined | IValueDescriptor {
