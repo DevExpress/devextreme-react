@@ -1,62 +1,64 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { getOption as getConfigOption } from "./config";
-import { ITemplate } from "./configuration/config-node";
-import { createDxTemplate } from "./dx-template";
-import { ITemplateArgs } from "./template";
-import { TemplatesStore } from "./templates-store";
+import { getOption as getConfigOption } from './config';
+import { ITemplate } from './configuration/config-node';
+import { createDxTemplate } from './dx-template';
+import { ITemplateArgs } from './template';
+import { TemplatesStore } from './templates-store';
 
-function normalizeProps(props: ITemplateArgs): ITemplateArgs | ITemplateArgs["data"] {
-    if (getConfigOption("useLegacyTemplateEngine")) {
-        const model = props.data;
-        if (model && model.hasOwnProperty("key")) {
-            model.dxkey = model.key;
-        }
-        return model;
+function normalizeProps(props: ITemplateArgs): ITemplateArgs | ITemplateArgs['data'] {
+  if (getConfigOption('useLegacyTemplateEngine')) {
+    const model = props.data;
+    if (model && model.hasOwnProperty('key')) {
+      model.dxkey = model.key;
     }
-    return props;
+    return model;
+  }
+  return props;
 }
 
 type ContentGetter = () => any;
 
 const contentCreators = {
-    component: (contentGetter: ContentGetter) => (props: ITemplateArgs) => {
-        props = normalizeProps(props);
-        return React.createElement.bind(null, contentGetter())(props);
-    },
-    render: (contentGetter: ContentGetter) => (props: ITemplateArgs) => {
-        normalizeProps(props);
-        return contentGetter()(props.data, props.index);
-    },
-    children: (contentGetter: ContentGetter) => () => contentGetter()
+  component: (contentGetter: ContentGetter) => (props: ITemplateArgs) => {
+    props = normalizeProps(props);
+    return React.createElement.bind(null, contentGetter())(props);
+  },
+  render: (contentGetter: ContentGetter) => (props: ITemplateArgs) => {
+    normalizeProps(props);
+    return contentGetter()(props.data, props.index);
+  },
+  children: (contentGetter: ContentGetter) => () => contentGetter(),
 };
 
 class TemplatesManager {
-    private _templatesStore: TemplatesStore;
-    private _templates: Record<string, any> = {};
-    private _templatesContent: Record<string, any> = {};
+  private _templatesStore: TemplatesStore;
 
-    constructor(templatesStore: TemplatesStore) {
-        this._templatesStore = templatesStore;
-    }
+  private _templates: Record<string, any> = {};
 
-    public add(name: string, template: ITemplate) {
-        this._templatesContent[name] = template.content;
-        const contentCreator = contentCreators[template.type].bind(this, () => this._templatesContent[name]);
-        this._templates[name] = createDxTemplate(
-            contentCreator,
-            this._templatesStore,
-            template.keyFn
-        );
-    }
+  private _templatesContent: Record<string, any> = {};
 
-    public get templatesCount(): number {
-        return Object.keys(this._templates).length;
-    }
+  constructor(templatesStore: TemplatesStore) {
+    this._templatesStore = templatesStore;
+  }
 
-    public get templates(): Record<string, any> {
-        return this._templates;
-    }
+  public add(name: string, template: ITemplate) {
+    this._templatesContent[name] = template.content;
+    const contentCreator = contentCreators[template.type].bind(this, () => this._templatesContent[name]);
+    this._templates[name] = createDxTemplate(
+      contentCreator,
+      this._templatesStore,
+      template.keyFn,
+    );
+  }
+
+  public get templatesCount(): number {
+    return Object.keys(this._templates).length;
+  }
+
+  public get templates(): Record<string, any> {
+    return this._templates;
+  }
 }
 
 export default TemplatesManager;

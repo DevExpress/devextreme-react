@@ -1,29 +1,28 @@
-import * as React from "react";
+import * as React from 'react';
 
-import Example from "./example-block";
+import Example from './example-block';
 
-import Button from "../src/button";
-import ScrollView from "../src/scroll-view";
-import TextBox from "../src/text-box";
+import Button from '../src/button';
+import ScrollView from '../src/scroll-view';
+import TextBox from '../src/text-box';
 
 export default class extends React.Component<any, { text: string }> {
 
-    constructor(props: any) {
-        super(props);
-        this.state = {
-            text: "Clear me"
-        };
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      text: 'Clear me',
+    };
 
-        this.clearText = this.clearText.bind(this);
-        this.handleTextChange = this.handleTextChange.bind(this);
-    }
+    this.clearText = this.clearText.bind(this);
+    this.handleTextChange = this.handleTextChange.bind(this);
+  }
 
-    public render() {
-        return (
-            // tslint:disable:max-line-length
+  public render() {
+    return (
             <Example title="DxScrollView" state={this.state} >
                 <ScrollView height="150px">
-                    <Button text="Show alert" onClick={() => alert("shown")} />
+                    <Button text="Show alert" onClick={() => alert('shown')} />
                     <Button text="Clear TextBox" onClick={this.clearText} />
                     <br />
                     <br />
@@ -48,18 +47,18 @@ export default class extends React.Component<any, { text: string }> {
                     </div>
                 </ScrollView>
             </Example>
-        );
-    }
+    );
+  }
 
-    private clearText() {
-        this.setState({
-            text: ""
-        });
-    }
+  private clearText() {
+    this.setState({
+      text: '',
+    });
+  }
 
-    private handleTextChange(e: any) {
-        this.setState({
-            text: e.value
-        });
-    }
+  private handleTextChange(e: any) {
+    this.setState({
+      text: e.value,
+    });
+  }
 }

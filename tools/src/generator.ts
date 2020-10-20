@@ -1,12 +1,12 @@
-import { writeFileSync as writeFile } from "fs";
+import { writeFileSync as writeFile } from 'fs';
 
 import {
   dirname as getDirName,
   join as joinPaths,
   normalize as normalizePath,
   relative as getRelativePath,
-  sep as pathSeparator
-} from "path";
+  sep as pathSeparator,
+} from 'path';
 
 import {
   IComplexProp,
@@ -14,11 +14,11 @@ import {
   IModel,
   IProp,
   ITypeDescr,
-  IWidget
-} from "../integration-data-model";
+  IWidget,
+} from '../integration-data-model';
 
-import { convertTypes } from "./converter";
-import generateIndex, { IReExport } from "./index-generator";
+import { convertTypes } from './converter';
+import generateIndex, { IReExport } from './index-generator';
 
 import generateComponent, {
   generateReExport,
@@ -26,8 +26,8 @@ import generateComponent, {
   INestedComponent,
   IOption,
   IPropTyping,
-  ISubscribableOption
-} from "./component-generator";
+  ISubscribableOption,
+} from './component-generator';
 
 import {
   isEmptyArray,
@@ -35,14 +35,14 @@ import {
   removeExtension,
   removePrefix,
   toKebabCase,
-  uppercaseFirst
-} from "./helpers";
+  uppercaseFirst,
+} from './helpers';
 
 function generate({
   metaData: rawData,
   components: { baseComponent, extensionComponent, configComponent },
   out,
-  widgetsPackage
+  widgetsPackage,
 }: {
   metaData: IModel,
   components: {
@@ -66,28 +66,28 @@ function generate({
       extensionComponent,
       configComponent,
       rawData.customTypes,
-      widgetsPackage
+      widgetsPackage,
     );
     const widgetFilePath = joinPaths(out.componentsDir, widgetFile.fileName);
     const indexFileDir = getDirName(out.indexFileName);
 
-    writeFile(widgetFilePath, generateComponent(widgetFile.component), { encoding: "utf8" });
+    writeFile(widgetFilePath, generateComponent(widgetFile.component), { encoding: 'utf8' });
     modulePaths.push({
       name: widgetFile.component.name,
-      path: "./" + removeExtension(getRelativePath(indexFileDir, widgetFilePath)).replace(pathSeparator, "/")
+      path: './' + removeExtension(getRelativePath(indexFileDir, widgetFilePath)).replace(pathSeparator, '/'),
     });
 
     writeFile(
       joinPaths(out.oldComponentsDir, widgetFile.fileName),
       generateReExport(
-        normalizePath("./" + removeExtension(getRelativePath(out.oldComponentsDir, widgetFilePath)))
-          .replace(pathSeparator, "/"),
-        removeExtension(widgetFile.fileName)
-      )
+        normalizePath('./' + removeExtension(getRelativePath(out.oldComponentsDir, widgetFilePath)))
+          .replace(pathSeparator, '/'),
+        removeExtension(widgetFile.fileName),
+      ),
     );
   });
 
-  writeFile(out.indexFileName, generateIndex(modulePaths), { encoding: "utf8" });
+  writeFile(out.indexFileName, generateIndex(modulePaths), { encoding: 'utf8' });
 }
 
 function mapWidget(
@@ -96,12 +96,12 @@ function mapWidget(
   extensionComponent: string,
   configComponent: string,
   customTypes: ICustomType[],
-  widgetPackage: string
+  widgetPackage: string,
 ): {
-  fileName: string;
-  component: IComponent
-} {
-  const name = removePrefix(raw.name, "dx");
+    fileName: string;
+    component: IComponent
+  } {
+  const name = removePrefix(raw.name, 'dx');
   const subscribableOptions: ISubscribableOption[] = raw.options
     .filter((o) => o.isSubscribable)
     .map(mapSubscribableOption);
@@ -129,8 +129,8 @@ function mapWidget(
       subscribableOptions: subscribableOptions.length > 0 ? subscribableOptions : undefined,
       nestedComponents: nestedOptions && nestedOptions.length > 0 ? nestedOptions : undefined,
       expectedChildren: raw.nesteds,
-      propTypings: propTypings.length > 0 ? propTypings : undefined
-    }
+      propTypings: propTypings.length > 0 ? propTypings : undefined,
+    },
   };
 }
 
@@ -150,7 +150,7 @@ function extractNestedComponents(props: IComplexProp[], rawWidgetName: string, w
       isCollectionItem: p.isCollectionItem,
       templates: p.templates,
       predefinedProps: p.predefinedProps,
-      expectedChildren: p.nesteds
+      expectedChildren: p.nesteds,
     };
   });
 }
@@ -173,7 +173,7 @@ function createPropTyping(option: IProp, customTypes: Record<string, ICustomType
     return {
       propName: option.name,
       types: types || [],
-      acceptableValues: restrictedTypes[0].acceptableValues
+      acceptableValues: restrictedTypes[0].acceptableValues,
     };
   }
 
@@ -183,7 +183,7 @@ function createPropTyping(option: IProp, customTypes: Record<string, ICustomType
 
   return {
     propName: option.name,
-    types
+    types,
   };
 }
 
@@ -191,24 +191,24 @@ function mapOption(prop: IProp): IOption {
   return isEmptyArray(prop.props) ?
     {
       name: prop.name,
-      type: "any",
-      isSubscribable: prop.isSubscribable || undefined
+      type: 'any',
+      isSubscribable: prop.isSubscribable || undefined,
 
     } : {
       name: prop.name,
       isSubscribable: prop.isSubscribable || undefined,
       nested: prop.props.map(mapOption),
-      isArray: isNestedOptionArray(prop)
+      isArray: isNestedOptionArray(prop),
     };
 }
 function isNestedOptionArray(prop: IProp): boolean {
-  return isNotEmptyArray(prop.types) && (prop.types[0].type === "Array");
+  return isNotEmptyArray(prop.types) && (prop.types[0].type === 'Array');
 }
 function mapSubscribableOption(prop: IProp): ISubscribableOption {
   return {
     name: prop.name,
-    type: "any",
-    isSubscribable: prop.isSubscribable || undefined
+    type: 'any',
+    isSubscribable: prop.isSubscribable || undefined,
   };
 }
 
