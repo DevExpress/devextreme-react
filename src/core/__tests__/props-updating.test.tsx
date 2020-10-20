@@ -219,7 +219,7 @@ describe('option control', () => {
     });
   });
 
-  [123, false, 0].map((value) => {
+  [123, false, 0, undefined, null].map((value) => {
     it('rolls back controlled simple option', () => {
       shallow(
                 <ControlledComponent everyOption={value} />,

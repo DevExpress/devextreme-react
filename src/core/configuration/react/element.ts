@@ -3,7 +3,7 @@ import { ITemplateMeta, Template } from '../../template';
 enum ElementType {
   Option,
   Template,
-  Unknown
+  Unknown,
 }
 
 interface IExpectedChild {
