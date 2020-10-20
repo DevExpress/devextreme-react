@@ -7,14 +7,14 @@ describe('rendering', () => {
 
   it('renders correctly', () => {
     const component = shallow(
-            <TestComponent />,
+      <TestComponent />,
     );
     expect(component.type()).toBe('div');
   });
 
   it('create widget on componentDidMount', () => {
     shallow(
-            <TestComponent />,
+      <TestComponent />,
     );
 
     expect(WidgetClass.mock.instances.length).toBe(1);
@@ -22,7 +22,7 @@ describe('rendering', () => {
 
   it('pass templatesRenderAsynchronously to widgets', () => {
     shallow(
-            <TestComponent />,
+      <TestComponent />,
     );
 
     expect(WidgetClass.mock.calls[0][1]).toEqual({ templatesRenderAsynchronously: true });
@@ -30,9 +30,9 @@ describe('rendering', () => {
 
   it('creates nested component', () => {
     mount(
-            <TestComponent>
-                <TestComponent />
-            </TestComponent>,
+      <TestComponent>
+        <TestComponent />
+      </TestComponent>,
     );
 
     expect(WidgetClass.mock.instances.length).toBe(2);
@@ -41,9 +41,9 @@ describe('rendering', () => {
 
   it('do not pass children to options', () => {
     mount(
-            <TestComponent>
-                <TestComponent />
-            </TestComponent>,
+      <TestComponent>
+        <TestComponent />
+      </TestComponent>,
     );
 
     expect(WidgetClass.mock.calls[1][1].children).toBeUndefined();
@@ -54,7 +54,7 @@ describe('element attrs management', () => {
 
   it('passes id, className and style to element', () => {
     const component = mount(
-            <TestComponent id={'id1'} className={'class1'} style={{ background: 'red' }} />,
+      <TestComponent id="id1" className="class1" style={{ background: 'red' }} />,
     );
 
     const node = component.getDOMNode();
@@ -66,7 +66,7 @@ describe('element attrs management', () => {
 
   it('updates id, className and style', () => {
     const component = mount(
-            <TestComponent id={'id1'} className={'class1'} style={{ background: 'red' }} />,
+      <TestComponent id="id1" className="class1" style={{ background: 'red' }} />,
     );
 
     const node = component.getDOMNode();
@@ -85,7 +85,7 @@ describe('element attrs management', () => {
 
   it('sets id, className and style after init', () => {
     const component = mount(
-            <TestComponent />,
+      <TestComponent />,
     );
 
     const node = component.getDOMNode();
@@ -104,7 +104,7 @@ describe('element attrs management', () => {
 
   it('cleans className (empty string)', () => {
     const component = mount(
-            <TestComponent className={'class1'} />,
+      <TestComponent className="class1" />,
     );
 
     const node = component.getDOMNode();
@@ -117,7 +117,7 @@ describe('element attrs management', () => {
 
   it('cleans className (undefined)', () => {
     const component = mount(
-            <TestComponent className={'class1'} />,
+      <TestComponent className="class1" />,
     );
 
     const node = component.getDOMNode();
@@ -133,7 +133,7 @@ describe('disposing', () => {
 
   it('call dispose', () => {
     const component = shallow(
-            <TestComponent />,
+      <TestComponent />,
     );
 
     component.unmount();
@@ -144,7 +144,7 @@ describe('disposing', () => {
   it('fires dxremove', () => {
     const handleDxRemove = jest.fn();
     const component = mount(
-            <TestComponent />,
+      <TestComponent />,
     );
 
     events.on(component.getDOMNode(), 'dxremove', handleDxRemove);
@@ -155,7 +155,7 @@ describe('disposing', () => {
 
   it('remove option guards', () => {
     const component = shallow(
-            <TestComponent option1={true} />,
+      <TestComponent option1 />,
     );
 
     fireOptionChange('option1', false);

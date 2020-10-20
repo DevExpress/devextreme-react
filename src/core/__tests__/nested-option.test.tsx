@@ -63,9 +63,9 @@ describe('nested option', () => {
 
   it('is pulled', () => {
     mount(
-            <TestComponent>
-                <NestedComponent a={123} />
-            </TestComponent>,
+      <TestComponent>
+        <NestedComponent a={123} />
+      </TestComponent>,
     );
 
     expect(WidgetClass.mock.calls[0][1]).toEqual({
@@ -78,10 +78,10 @@ describe('nested option', () => {
 
   it('is not pulled during conditional rendering', () => {
     mount(
-            <TestComponent>
-                <NestedComponent a={123} />
-                {false && <NestedComponent a={456} />}
-            </TestComponent>,
+      <TestComponent>
+        <NestedComponent a={123} />
+        {false && <NestedComponent a={456} />}
+      </TestComponent>,
     );
 
     expect(WidgetClass.mock.calls[0][1]).toEqual({
@@ -94,10 +94,10 @@ describe('nested option', () => {
 
   it('is pulled (several options)', () => {
     mount(
-            <TestComponent>
-                <NestedComponent a={123} />
-                <AnotherNestedComponent b="abc" />
-            </TestComponent>,
+      <TestComponent>
+        <NestedComponent a={123} />
+        <AnotherNestedComponent b="abc" />
+      </TestComponent>,
     );
 
     expect(WidgetClass.mock.calls[0][1]).toEqual({
@@ -113,10 +113,10 @@ describe('nested option', () => {
 
   it('is pulled overriden if not a collection item', () => {
     mount(
-            <TestComponent>
-                <NestedComponent a={123} />
-                <NestedComponent a={456} />
-            </TestComponent>,
+      <TestComponent>
+        <NestedComponent a={123} />
+        <NestedComponent a={456} />
+      </TestComponent>,
     );
 
     expect(WidgetClass.mock.calls[0][1]).toEqual({
@@ -129,9 +129,9 @@ describe('nested option', () => {
 
   it('is pulled as a collection item', () => {
     mount(
-            <TestComponent>
-                <CollectionNestedComponent c={123} d="abc" />
-            </TestComponent>,
+      <TestComponent>
+        <CollectionNestedComponent c={123} d="abc" />
+      </TestComponent>,
     );
 
     expect(WidgetClass.mock.calls[0][1]).toEqual({
@@ -144,11 +144,11 @@ describe('nested option', () => {
 
   it('is pulled as a collection item (several items)', () => {
     mount(
-            <TestComponent>
-                <CollectionNestedComponent c={123} d="abc" />
-                <CollectionNestedComponent c={456} />
-                <CollectionNestedComponent d="def" />
-            </TestComponent>,
+      <TestComponent>
+        <CollectionNestedComponent c={123} d="abc" />
+        <CollectionNestedComponent c={456} />
+        <CollectionNestedComponent d="def" />
+      </TestComponent>,
     );
 
     expect(WidgetClass.mock.calls[0][1]).toEqual({
@@ -180,10 +180,10 @@ describe('nested option', () => {
     }
 
     mount(
-            <TestComponentWithExpectation>
-                <NestedComponent a={123} />
-                <CollectionNestedComponent c={456} d="abc" />
-            </TestComponentWithExpectation>,
+      <TestComponentWithExpectation>
+        <NestedComponent a={123} />
+        <CollectionNestedComponent c={456} d="abc" />
+      </TestComponentWithExpectation>,
     );
 
     expect(WidgetClass.mock.calls[0][1]).toEqual({
@@ -197,9 +197,9 @@ describe('nested option', () => {
 
   it('is pulled with predefined props', () => {
     mount(
-            <TestComponent>
-                <NestedComponentWithPredfeinedProps a={123} />
-            </TestComponent>,
+      <TestComponent>
+        <NestedComponentWithPredfeinedProps a={123} />
+      </TestComponent>,
     );
 
     const actualProps = WidgetClass.mock.calls[0][1];
@@ -209,10 +209,10 @@ describe('nested option', () => {
 
   it('is pulled with predefined props (several)', () => {
     mount(
-            <TestComponent>
-                <CollectionNestedWithPredfeinedProps1 a={123} />
-                <CollectionNestedWithPredfeinedProps2 a={456} />
-            </TestComponent>,
+      <TestComponent>
+        <CollectionNestedWithPredfeinedProps1 a={123} />
+        <CollectionNestedWithPredfeinedProps2 a={456} />
+      </TestComponent>,
     );
 
     const actualProps = WidgetClass.mock.calls[0][1];
@@ -224,17 +224,17 @@ describe('nested option', () => {
 
   it('is pulled as a collection item after update', () => {
     const component = mount(
-            <TestComponent>
-                <CollectionNestedComponent key={1} c={123} d="abc" />
-                <CollectionNestedComponent key={2} c={456} />
-                <CollectionNestedComponent key={3} d="def" />
-            </TestComponent>,
+      <TestComponent>
+        <CollectionNestedComponent key={1} c={123} d="abc" />
+        <CollectionNestedComponent key={2} c={456} />
+        <CollectionNestedComponent key={3} d="def" />
+      </TestComponent>,
     );
     component.setProps({
       children: [
-                <CollectionNestedComponent key={1} c={123} d="abc" />,
-                <CollectionNestedComponent key={2} c={999} />,
-                <CollectionNestedComponent key={3} d="def" />,
+        <CollectionNestedComponent key={1} c={123} d="abc" />,
+        <CollectionNestedComponent key={2} c={999} />,
+        <CollectionNestedComponent key={3} d="def" />,
       ]});
     jest.runAllTimers();
 
@@ -244,12 +244,14 @@ describe('nested option', () => {
 
   it('is pulled after update', () => {
 
-    const TestContainer = (props: any) => (
-            <TestComponent>
-                <NestedComponent a={props.value} />
-            </TestComponent>
-    );
-
+    const TestContainer = (props: any) => {
+      const {value} = props;
+      return  (
+        <TestComponent>
+          <NestedComponent a={value} />
+        </TestComponent>
+      );
+    };
     mount(<TestContainer value={123} />)
       .setProps({ value: 456 });
 
@@ -261,9 +263,9 @@ describe('nested option', () => {
   it('is pulled after update without rubbish', () => {
 
     const component = mount(
-            <TestComponent>
-                <NestedComponent a={123} />
-            </TestComponent>,
+      <TestComponent>
+        <NestedComponent a={123} />
+      </TestComponent>,
     );
 
     component.setProps({ children: <NestedComponent a={456} />});
@@ -274,8 +276,9 @@ describe('nested option', () => {
 
   it('updates widget option when collection item added', () => {
     const TestContainer = (props: any) => {
-      const nesteds = props.children.map((child: any) => (
-                <CollectionNestedComponent c={child.c} d={child.d} key={child.key} />
+      const {children} = props;
+      const nesteds = children.map((child: any) => (
+        <CollectionNestedComponent c={child.c} d={child.d} key={child.key} />
       ));
 
       return (<TestComponent>{nesteds}</TestComponent>);
@@ -305,8 +308,9 @@ describe('nested option', () => {
 
   it('updates widget option when collection item removed', () => {
     const TestContainer = (props: any) => {
-      const nesteds = props.children.map((child: any) => (
-                <CollectionNestedComponent c={child.c} d={child.d} key={child.key} />
+      const {children} = props;
+      const nesteds = children.map((child: any) => (
+        <CollectionNestedComponent c={child.c} d={child.d} key={child.key} />
       ));
 
       return (<TestComponent>{nesteds}</TestComponent>);
@@ -336,11 +340,11 @@ describe('nested sub-option', () => {
 
   it('is pulled', () => {
     mount(
-            <TestComponent>
-                <NestedComponent a={123} >
-                    <SubNestedComponent d={'abc'} />
-                </NestedComponent>
-            </TestComponent>,
+      <TestComponent>
+        <NestedComponent a={123}>
+          <SubNestedComponent d="abc" />
+        </NestedComponent>
+      </TestComponent>,
     );
 
     expect(WidgetClass.mock.calls[0][1]).toEqual({
@@ -356,12 +360,12 @@ describe('nested sub-option', () => {
 
   it('is pulled (several options)', () => {
     mount(
-            <TestComponent>
-                <NestedComponent a={123} >
-                    <SubNestedComponent d={'abc'} />
-                    <AnotherSubNestedComponent e={'def'} />
-                </NestedComponent>
-            </TestComponent>,
+      <TestComponent>
+        <NestedComponent a={123}>
+          <SubNestedComponent d="abc" />
+          <AnotherSubNestedComponent e="def" />
+        </NestedComponent>
+      </TestComponent>,
     );
 
     expect(WidgetClass.mock.calls[0][1]).toEqual({
@@ -380,12 +384,12 @@ describe('nested sub-option', () => {
 
   it('is pulled overriden if not a collection item', () => {
     mount(
-            <TestComponent>
-                <NestedComponent a={123} >
-                    <SubNestedComponent d={'abc'} />
-                    <SubNestedComponent d={'def'} />
-                </NestedComponent>
-            </TestComponent>,
+      <TestComponent>
+        <NestedComponent a={123}>
+          <SubNestedComponent d="abc" />
+          <SubNestedComponent d="def" />
+        </NestedComponent>
+      </TestComponent>,
     );
 
     expect(WidgetClass.mock.calls[0][1]).toEqual({
@@ -401,11 +405,11 @@ describe('nested sub-option', () => {
 
   it('is pulled as a collection item', () => {
     mount(
-            <TestComponent>
-                <NestedComponent a={123} >
-                    <CollectionSubNestedComponent c={123} d={'abc'} />
-                </NestedComponent>
-            </TestComponent>,
+      <TestComponent>
+        <NestedComponent a={123}>
+          <CollectionSubNestedComponent c={123} d="abc" />
+        </NestedComponent>
+      </TestComponent>,
     );
 
     expect(WidgetClass.mock.calls[0][1]).toEqual({
@@ -421,13 +425,13 @@ describe('nested sub-option', () => {
 
   it('is pulled as a collection item (several items)', () => {
     mount(
-            <TestComponent>
-                <NestedComponent a={123} >
-                    <CollectionSubNestedComponent c={123} d="abc" />
-                    <CollectionSubNestedComponent c={456} />
-                    <CollectionSubNestedComponent d="def" />
-                </NestedComponent>
-            </TestComponent>,
+      <TestComponent>
+        <NestedComponent a={123}>
+          <CollectionSubNestedComponent c={123} d="abc" />
+          <CollectionSubNestedComponent c={456} />
+          <CollectionSubNestedComponent d="def" />
+        </NestedComponent>
+      </TestComponent>,
     );
 
     expect(WidgetClass.mock.calls[0][1]).toEqual({
@@ -445,21 +449,21 @@ describe('nested sub-option', () => {
 
   it('is pulled as a collection item after update inside another option', () => {
     const component = mount(
-            <TestComponent>
-                <NestedComponent a={123} >
-                    <CollectionSubNestedComponent key={1} c={123} d="abc" />
-                    <CollectionSubNestedComponent key={2} c={456} />
-                    <CollectionSubNestedComponent key={3} d="def" />
-                </NestedComponent>
-            </TestComponent>,
+      <TestComponent>
+        <NestedComponent a={123}>
+          <CollectionSubNestedComponent key={1} c={123} d="abc" />
+          <CollectionSubNestedComponent key={2} c={456} />
+          <CollectionSubNestedComponent key={3} d="def" />
+        </NestedComponent>
+      </TestComponent>,
     );
     component.setProps({
       children: (
-                <NestedComponent a={123} >
-                    <CollectionSubNestedComponent key={1} c={123} d="abc" />
-                    <CollectionSubNestedComponent key={2} c={999} />
-                    <CollectionSubNestedComponent key={3} d="def" />
-                </NestedComponent>
+        <NestedComponent a={123}>
+          <CollectionSubNestedComponent key={1} c={123} d="abc" />
+          <CollectionSubNestedComponent key={2} c={999} />
+          <CollectionSubNestedComponent key={3} d="def" />
+        </NestedComponent>
       ),
     });
     jest.runAllTimers();
@@ -470,15 +474,18 @@ describe('nested sub-option', () => {
 
   it('is pulled after update', () => {
 
-    const TestContainer = (props: any) => (
-            <TestComponent>
-                <NestedComponent a={123} >
-                    <SubNestedComponent d={props.value} />
-                </NestedComponent>
-            </TestComponent>
-    );
+    const TestContainer = (props: any) => {
+      const {value} = props;
+      return (
+        <TestComponent>
+          <NestedComponent a={123}>
+            <SubNestedComponent d={value} />
+          </NestedComponent>
+        </TestComponent>
+      );
+    };
 
-    mount(<TestContainer value={'abc'} />)
+    mount(<TestContainer value="abc" />)
       .setProps({
         value: 'def',
       });
@@ -506,12 +513,12 @@ describe('nested sub-option', () => {
     }
 
     mount(
-            <TestComponent>
-                <NestedComponentWithExpectations a={123}>
-                    <SubNestedComponent d={'abc'} />
-                    <CollectionSubNestedComponent c={456} d={'def'} />
-                </NestedComponentWithExpectations>
-            </TestComponent>,
+      <TestComponent>
+        <NestedComponentWithExpectations a={123}>
+          <SubNestedComponent d="abc" />
+          <CollectionSubNestedComponent c={456} d="def" />
+        </NestedComponentWithExpectations>
+      </TestComponent>,
     );
 
     expect(WidgetClass.mock.calls[0][1]).toEqual({
@@ -527,16 +534,19 @@ describe('nested sub-option', () => {
   });
 });
 
-const ComponentWithConditionalOption = (props: {enableOption: boolean}) => (
+const ComponentWithConditionalOption = (props: {enableOption: boolean}) => {
+  const {enableOption} = props;
+  return (
     <TestComponent>
-    {props.enableOption && <NestedComponent a={1} />}
+      {enableOption && <NestedComponent a={1} />}
     </TestComponent>
-);
+  );
+};
 
 describe('conditional rendering', () => {
   it('adds option', () => {
     const component = mount(
-            <ComponentWithConditionalOption enableOption={false} />,
+      <ComponentWithConditionalOption enableOption={false} />,
     );
 
     component.setProps({enableOption: true});
@@ -547,7 +557,7 @@ describe('conditional rendering', () => {
 
   it('removes option', () => {
     const component = mount(
-            <ComponentWithConditionalOption enableOption={true} />,
+      <ComponentWithConditionalOption enableOption />,
     );
 
     component.setProps({enableOption: false});

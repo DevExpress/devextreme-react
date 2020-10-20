@@ -21,7 +21,7 @@ class NestedComponent extends ConfigurationComponent<{ a: number }> {
 it('is initialized as a plugin-component', () => {
   const onMounted = jest.fn();
   mount(
-        <TestExtensionComponent onMounted={onMounted} />,
+    <TestExtensionComponent onMounted={onMounted} />,
   );
 
   expect(onMounted).toHaveBeenCalledTimes(1);
@@ -31,7 +31,7 @@ it('is initialized as a plugin-component', () => {
 
 it('is initialized as a standalone widget', () => {
   mount(
-        <TestExtensionComponent/>,
+    <TestExtensionComponent />,
   );
 
   expect(ExtensionWidgetClass).toHaveBeenCalledTimes(1);
@@ -39,9 +39,9 @@ it('is initialized as a standalone widget', () => {
 
 it('creates widget on componentDidMount inside another component on same element', () => {
   mount(
-        <TestComponent>
-            <TestExtensionComponent />
-        </TestComponent>,
+    <TestComponent>
+      <TestExtensionComponent />
+    </TestComponent>,
   );
 
   expect(ExtensionWidgetClass).toHaveBeenCalledTimes(1);
@@ -50,7 +50,7 @@ it('creates widget on componentDidMount inside another component on same element
 
 it('unmounts without errors', () => {
   const component = shallow(
-        <TestExtensionComponent />,
+    <TestExtensionComponent />,
   );
 
   expect(() => component.unmount.bind(component)).not.toThrow();
@@ -58,11 +58,11 @@ it('unmounts without errors', () => {
 
 it('pulls options from a single nested component', () => {
   mount(
-        <TestComponent>
-            <TestExtensionComponent>
-                <NestedComponent a={123} />
-            </TestExtensionComponent>
-        </TestComponent>,
+    <TestComponent>
+      <TestExtensionComponent>
+        <NestedComponent a={123} />
+      </TestExtensionComponent>
+    </TestComponent>,
   );
 
   const options = ExtensionWidgetClass.mock.calls[0][1];

@@ -28,26 +28,6 @@ class ValidatorExample extends React.Component<any, any> {
     };
   }
 
-  public render() {
-    return (
-            <div>
-                <Example title={'Standalone Validator example'}>
-                    <div style={{ border: this.state.isValid ? 'none' : '1px solid red' }}>
-                        <TextBox onValueChanged={this._onValueChanged} />
-                    </div>
-                    <Validator adapter={this._adapter}>
-                        <RequiredRule message={'This field is required'} />
-                    </Validator>
-                    <ValidationSummary/>
-                    <Button
-                        text={'Submit'}
-                        onClick={this._onSubmit}
-                    />
-                </Example>
-            </div>
-    );
-  }
-
   private _onValueChanged = (e: any) => {
     this._currentValue = e.value;
 
@@ -59,6 +39,27 @@ class ValidatorExample extends React.Component<any, any> {
   private _onSubmit = (e: any) => {
     e.validationGroup.validate();
   };
+
+  public render() {
+    const {isValid} = this.state;
+    return (
+      <div>
+        <Example title="Standalone Validator example">
+          <div style={{ border: isValid ? 'none' : '1px solid red' }}>
+            <TextBox onValueChanged={this._onValueChanged} />
+          </div>
+          <Validator adapter={this._adapter}>
+            <RequiredRule message="This field is required" />
+          </Validator>
+          <ValidationSummary />
+          <Button
+            text="Submit"
+            onClick={this._onSubmit}
+          />
+        </Example>
+      </div>
+    );
+  }
 }
 
 export default ValidatorExample;

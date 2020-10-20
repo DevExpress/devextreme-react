@@ -22,33 +22,8 @@ export default class extends React.Component<any, { text: string; uncontrolledTe
     this.setFocusToTextBox = this.setFocusToTextBox.bind(this);
   }
 
-  public render() {
-    return (
-            <Example title="DxTextBox" state={this.state}>
-                uncontrolled mode
-                <TextBox
-                    defaultValue={'initial text'}
-                    ref={(ref) => ref && (this.textBox = ref.instance)}
-                />
-                <br />
-                <Button onClick={this.setFocusToTextBox} text="Set focus" />
-                <Button onClick={this.updateUncontrolledValue} text="Update text" />
-                <br />
-                <br />
-                controlled state value
-                <TextBox value={this.state.text} valueChangeEvent="input" />
-                <br />
-                controlled state value with change handling
-                <TextBox value={this.state.text} onValueChanged={this.handleChange} valueChangeEvent="input" />
-                <br />
-                validation (required)
-                <TextBox valueChangeEvent="input" defaultValue={'required text'}>
-                    <Validator >
-                        <RequiredRule message="this is required" />
-                    </Validator>
-                </TextBox>
-            </Example>
-    );
+  private setFocusToTextBox() {
+    this.textBox.focus();
   }
 
   private updateUncontrolledValue() {
@@ -57,13 +32,39 @@ export default class extends React.Component<any, { text: string; uncontrolledTe
     });
   }
 
-  private setFocusToTextBox() {
-    this.textBox.focus();
-  }
-
   private handleChange(e: any) {
     this.setState({
       text: '#' + (e.value as string).toUpperCase().replace('A', '_'),
     });
+  }
+
+  public render() {
+    const {text} = this.state;
+    return (
+      <Example title="DxTextBox" state={this.state}>
+        uncontrolled mode
+        <TextBox
+          defaultValue="initial text"
+          ref={(ref) => ref && (this.textBox = ref.instance)}
+        />
+        <br />
+        <Button onClick={this.setFocusToTextBox} text="Set focus" />
+        <Button onClick={this.updateUncontrolledValue} text="Update text" />
+        <br />
+        <br />
+        controlled state value
+        <TextBox value={text} valueChangeEvent="input" />
+        <br />
+        controlled state value with change handling
+        <TextBox value={text} onValueChanged={this.handleChange} valueChangeEvent="input" />
+        <br />
+        validation (required)
+        <TextBox valueChangeEvent="input" defaultValue="required text">
+          <Validator>
+            <RequiredRule message="this is required" />
+          </Validator>
+        </TextBox>
+      </Example>
+    );
   }
 }

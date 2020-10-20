@@ -1,5 +1,3 @@
-/* tslint:disable:no-string-literal */
-/* tslint:disable:max-classes-per-file */
 import * as events from 'devextreme/events';
 
 import ConfigurationComponent from '../../core/nested-option';
@@ -40,7 +38,8 @@ function testTemplateOption(testedOption: string) {
         public props: { data: any, index?: number };
 
         public render() {
-          return render(this.props.data, this.props.index);
+          const {data, index} = this.props;
+          return render(data, index);
         }
       }
       return ItemComponent;
@@ -67,7 +66,11 @@ function testTemplateOption(testedOption: string) {
   it('renders', () => {
     const elementOptions: Record<string, any> = {};
     elementOptions[testedOption] = prepareTemplate((data: any) => (
-            <div className={'template'}>Template {data.text}</div>
+      <div className="template">
+        Template
+        {' '}
+        {data.text}
+      </div>
     ));
 
     const component = mount(React.createElement(ComponentWithTemplates, elementOptions));
@@ -99,11 +102,11 @@ function testTemplateOption(testedOption: string) {
 
   it('renders new template after component change', () => {
     const elementOptions: Record<string, any> = {};
-    elementOptions[testedOption] = () => <div className={'template'}>First Template</div>;
+    elementOptions[testedOption] = () => <div className="template">First Template</div>;
     const component = mount(React.createElement(ComponentWithTemplates, elementOptions));
 
     const changedElementOptions: Record<string, any> = {};
-    changedElementOptions[testedOption] = () => <div className={'template'}>Second Template</div>;
+    changedElementOptions[testedOption] = () => <div className="template">Second Template</div>;
     component.setProps(changedElementOptions);
 
     renderItemTemplate();
@@ -113,11 +116,11 @@ function testTemplateOption(testedOption: string) {
 
   it('passes component option changes to widget', () => {
     const elementOptions: Record<string, any> = {};
-    elementOptions[testedOption] = () => <div className={'template'}>First Template</div>;
+    elementOptions[testedOption] = () => <div className="template">First Template</div>;
     const component = mount(React.createElement(ComponentWithTemplates, elementOptions));
 
     const changedElementOptions: Record<string, any> = {};
-    changedElementOptions[testedOption] = () => <div className={'template'}>Second Template</div>;
+    changedElementOptions[testedOption] = () => <div className="template">Second Template</div>;
     component.setProps(changedElementOptions);
     jest.runAllTimers();
     const optionCalls = Widget.option.mock.calls;
@@ -129,7 +132,7 @@ function testTemplateOption(testedOption: string) {
 
   it('renders inside unwrapped container', () => {
     const elementOptions: Record<string, any> = {};
-    elementOptions[testedOption] = () => <div className={'template'}>Template</div>;
+    elementOptions[testedOption] = () => <div className="template">Template</div>;
     const component = mount(React.createElement(ComponentWithTemplates, elementOptions));
 
     renderItemTemplate({}, { get: () => document.createElement('div') });
@@ -139,7 +142,13 @@ function testTemplateOption(testedOption: string) {
 
   it('renders template removeEvent listener', () => {
     const elementOptions: Record<string, any> = {};
-    elementOptions[testedOption] = prepareTemplate((data: any) => <>Template {data.text}</>);
+    elementOptions[testedOption] = prepareTemplate((data: any) => (
+      <>
+        Template
+        {' '}
+        {data.text}
+      </>
+    ));
     const component = mount(React.createElement(ComponentWithTemplates, elementOptions));
 
     const container = document.createElement('div');
@@ -151,7 +160,15 @@ function testTemplateOption(testedOption: string) {
   it('does not render template removeEvent listener', () => {
     const elementOptions: Record<string, any> = {};
     elementOptions[testedOption] = prepareTemplate((data: any) => (
-            <tbody><tr><td>Template {data.text}</td></tr></tbody>
+      <tbody>
+        <tr>
+          <td>
+            Template
+            {' '}
+            {data.text}
+          </td>
+        </tr>
+      </tbody>
     ));
     const component = mount(React.createElement(ComponentWithTemplates, elementOptions));
 
@@ -166,7 +183,10 @@ function testTemplateOption(testedOption: string) {
   it('calls onRendered callback', () => {
     const elementOptions: Record<string, any> = {};
     elementOptions[testedOption] = prepareTemplate((data: any) => (
-            <div className={'template'}>Template {data.text}</div>
+      <div className="template">
+        Template
+        {data.text}
+      </div>
     ));
     const component = mount(React.createElement(ComponentWithTemplates, elementOptions));
     const onRendered: () => void = jest.fn();
@@ -189,7 +209,10 @@ function testTemplateOption(testedOption: string) {
   it('has templates with unique ids', () => {
     const elementOptions: Record<string, any> = {};
     elementOptions[testedOption] = prepareTemplate((data: any) => (
-            <div className={'template'}>Template {data.text}</div>
+      <div className="template">
+        Template
+        {data.text}
+      </div>
     ));
     const component = shallow(React.createElement(ComponentWithTemplates, elementOptions));
     const componentInstace = component.instance() as any;
@@ -205,7 +228,10 @@ function testTemplateOption(testedOption: string) {
   it('has templates with ids genetated with keyExpr', () => {
     const elementOptions: Record<string, any> = {};
     elementOptions[testedOption] = prepareTemplate((data: any) => (
-            <div className={'template'}>Template {data.text}</div>
+      <div className="template">
+        Template
+        {data.text}
+      </div>
     ));
     elementOptions.itemKeyFn = (data) => data.text;
     const component = shallow(React.createElement(ComponentWithTemplates, elementOptions));
@@ -223,7 +249,10 @@ function testTemplateOption(testedOption: string) {
   it('removes text template', () => {
     const elementOptions: Record<string, any> = {};
     elementOptions[testedOption] = prepareTemplate((data: any) => (
-            <>Template {data.text}</>
+      <>
+        Template
+        {data.text}
+      </>
     ));
     const component = mount(React.createElement(ComponentWithTemplates, elementOptions));
     const componentInstance = component.instance() as any;
@@ -246,7 +275,10 @@ function testTemplateOption(testedOption: string) {
   it('removes template', () => {
     const elementOptions: Record<string, any> = {
       [testedOption]: prepareTemplate((data: any) => (
-                <div className={'template'}>Template {data.text}</div>
+        <div className="template">
+          Template
+          {data.text}
+        </div>
       )),
     };
 
@@ -272,9 +304,15 @@ describe('function template', () => {
   testTemplateOption('itemRender');
 
   it('renders simple item', () => {
-    const itemRender: any = jest.fn((text: string) => <div className={'template'}>Template {text}</div>);
+    const itemRender: any = jest.fn((text: string) => (
+      <div className="template">
+        Template
+        {' '}
+        {text}
+      </div>
+    ));
     const component = mount(
-            <ComponentWithTemplates itemRender={itemRender} />,
+      <ComponentWithTemplates itemRender={itemRender} />,
     );
     renderItemTemplate('with data');
 
@@ -285,10 +323,16 @@ describe('function template', () => {
 
   it('renders index', () => {
     const itemRender: any = jest.fn((_, index: number) => {
-      return <div className={'template'}>Index {index}</div>;
+      return (
+        <div className="template">
+          Index
+          {' '}
+          {index}
+        </div>
+      );
     });
     const component = mount(
-            <ComponentWithTemplates itemRender={itemRender} />,
+      <ComponentWithTemplates itemRender={itemRender} />,
     );
     renderItemTemplate(undefined, undefined, 5);
 
@@ -302,14 +346,22 @@ describe('component template', () => {
   testTemplateOption('itemComponent');
 
   it('renders index', () => {
-    const ItemTemplate = (props: any) => (
-            <div className={'template'}>
-                value: {props.data.value}, index: {props.index}
-            </div>
-    );
+    const ItemTemplate = (props: any) => {
+      const {data, index} = props;
+      return (
+        <div className="template">
+          value:
+          {' '}
+          {data.value}
+          , index:
+          {' '}
+          {index}
+        </div>
+      );
+    };
 
     const component = mount(
-            <ComponentWithTemplates itemComponent={ItemTemplate} />,
+      <ComponentWithTemplates itemComponent={ItemTemplate} />,
     );
 
     renderItemTemplate({ value: 'Value' }, undefined, 5);
@@ -322,13 +374,13 @@ describe('nested template', () => {
   it('pass integrationOptions to widget', () => {
     const ItemTemplate = () => <div>Template</div>;
     mount(
-            <ComponentWithTemplates>
-                <Template name={'item1'} render={ItemTemplate} />
-                <Template name={'item2'} component={ItemTemplate} />
-                <Template name={'item3'}>
-                    <ItemTemplate/>
-                </Template>
-            </ComponentWithTemplates >,
+      <ComponentWithTemplates>
+        <Template name="item1" render={ItemTemplate} />
+        <Template name="item2" component={ItemTemplate} />
+        <Template name="item3">
+          <ItemTemplate />
+        </Template>
+      </ComponentWithTemplates>,
     );
 
     const options = WidgetClass.mock.calls[0][1];
@@ -351,11 +403,11 @@ describe('nested template', () => {
   });
 
   it('renders nested templates', () => {
-    const FirstTemplate = () => <div className={'template'}>Template</div>;
+    const FirstTemplate = () => <div className="template">Template</div>;
     const component = mount(
-            <ComponentWithTemplates>
-                <Template name={'item1'} render={FirstTemplate} />
-            </ComponentWithTemplates >,
+      <ComponentWithTemplates>
+        <Template name="item1" render={FirstTemplate} />
+      </ComponentWithTemplates>,
     );
     renderTemplate('item1');
     component.update();
@@ -364,11 +416,11 @@ describe('nested template', () => {
 
   it('renders children of nested template', () => {
     const component = mount(
-            <ComponentWithTemplates>
-                <Template name={'item1'}>
-                    <div className={'template'}>Template</div>
-                </Template>
-            </ComponentWithTemplates >,
+      <ComponentWithTemplates>
+        <Template name="item1">
+          <div className="template">Template</div>
+        </Template>
+      </ComponentWithTemplates>,
     );
     renderTemplate('item1');
     component.update();
@@ -376,19 +428,19 @@ describe('nested template', () => {
   });
 
   it('renders new templates after component change', () => {
-    const FirstTemplate = () => <div className={'template'}>First Template</div>;
+    const FirstTemplate = () => <div className="template">First Template</div>;
     const component = mount(
-            <ComponentWithTemplates>
-                <Template name={'item1'} render={FirstTemplate} />
-            </ComponentWithTemplates >,
+      <ComponentWithTemplates>
+        <Template name="item1" render={FirstTemplate} />
+      </ComponentWithTemplates>,
     );
     renderTemplate('item1');
     component.update();
     expect(component.find('.template').html()).toBe('<div class="template">First Template</div>');
 
-    const SecondTemplate = () => <div className={'template'}>Second Template</div>;
+    const SecondTemplate = () => <div className="template">Second Template</div>;
     component.setProps({
-      children: <Template name={'item1'} render={SecondTemplate} />,
+      children: <Template name="item1" render={SecondTemplate} />,
     });
     component.update();
     expect(component.find('.template').html()).toBe('<div class="template">Second Template</div>');
@@ -396,11 +448,11 @@ describe('nested template', () => {
 
   it('renders new templates after children change', () => {
     const component = mount(
-            <ComponentWithTemplates>
-                <Template name={'item1'}>
-                    <div className={'template'}>First Template</div>
-                </Template>
-            </ComponentWithTemplates >,
+      <ComponentWithTemplates>
+        <Template name="item1">
+          <div className="template">First Template</div>
+        </Template>
+      </ComponentWithTemplates>,
     );
     renderTemplate('item1');
     component.update();
@@ -408,9 +460,9 @@ describe('nested template', () => {
 
     component.setProps({
       children: (
-                <Template name={'item1'}>
-                    <div className={'template'}>Second Template</div>
-                </Template>
+        <Template name="item1">
+          <div className="template">Second Template</div>
+        </Template>
       ),
     });
     component.update();
@@ -418,12 +470,12 @@ describe('nested template', () => {
   });
 
   it('has templates with ids genetated by keyFn', () => {
-    const FirstTemplate = () => <div className={'template'}>Template</div>;
+    const FirstTemplate = () => <div className="template">Template</div>;
     const keyExpr = (data) => data.text;
     const component = mount(
-            <ComponentWithTemplates>
-                <Template name={'item1'} render={FirstTemplate} keyFn={keyExpr} />
-            </ComponentWithTemplates >,
+      <ComponentWithTemplates>
+        <Template name="item1" render={FirstTemplate} keyFn={keyExpr} />
+      </ComponentWithTemplates>,
     );
 
     renderTemplate('item1', { text: 1 });
@@ -469,9 +521,9 @@ describe('component/render in nested options', () => {
   it('pass integrationOptions options to widget', () => {
     const ItemTemplate = () => <div>Template</div>;
     mount(
-            <TestComponent>
-                <NestedComponent itemComponent={ItemTemplate} />
-            </TestComponent>,
+      <TestComponent>
+        <NestedComponent itemComponent={ItemTemplate} />
+      </TestComponent>,
     );
 
     const options = WidgetClass.mock.calls[0][1];
@@ -488,10 +540,10 @@ describe('component/render in nested options', () => {
   it('pass integrationOptions to widget with Template component', () => {
     const ItemTemplate = () => <div>Template</div>;
     mount(
-            <ComponentWithTemplates itemComponent={ItemTemplate}>
-                <NestedComponent itemComponent={ItemTemplate} />
-                <Template name={'nested'} render={ItemTemplate} />
-            </ComponentWithTemplates >,
+      <ComponentWithTemplates itemComponent={ItemTemplate}>
+        <NestedComponent itemComponent={ItemTemplate} />
+        <Template name="nested" render={ItemTemplate} />
+      </ComponentWithTemplates>,
     );
 
     const options = WidgetClass.mock.calls[0][1];
@@ -511,10 +563,10 @@ describe('component/render in nested options', () => {
   it('pass integrationOptions options to widget with several templates', () => {
     const UserTemplate = () => <div>Template</div>;
     mount(
-            <TestComponent>
-                <NestedComponent itemComponent={UserTemplate} />
-                <CollectionNestedComponent render={UserTemplate} />
-            </TestComponent>,
+      <TestComponent>
+        <NestedComponent itemComponent={UserTemplate} />
+        <CollectionNestedComponent render={UserTemplate} />
+      </TestComponent>,
     );
 
     const options = WidgetClass.mock.calls[0][1];
@@ -530,20 +582,20 @@ describe('component/render in nested options', () => {
   it('pass integrationOptions options for collection nested components', () => {
     const UserTemplate = () => <div>Template</div>;
     mount(
-            <TestComponent>
-                <CollectionNestedComponent render={UserTemplate} />
-                <CollectionNestedComponent render={UserTemplate} />
-                <CollectionNestedComponent>
-                    <NestedComponent itemRender={UserTemplate}/>
-                </CollectionNestedComponent>
-                <CollectionNestedComponent>
-                    <NestedComponent/>
-                    abc
-                </CollectionNestedComponent>
-                <NestedComponent>
-                    <CollectionNestedComponent render={UserTemplate} />
-                </NestedComponent>
-            </TestComponent>,
+      <TestComponent>
+        <CollectionNestedComponent render={UserTemplate} />
+        <CollectionNestedComponent render={UserTemplate} />
+        <CollectionNestedComponent>
+          <NestedComponent itemRender={UserTemplate} />
+        </CollectionNestedComponent>
+        <CollectionNestedComponent>
+          <NestedComponent />
+          abc
+        </CollectionNestedComponent>
+        <NestedComponent>
+          <CollectionNestedComponent render={UserTemplate} />
+        </NestedComponent>
+      </TestComponent>,
     );
 
     const options = WidgetClass.mock.calls[0][1];
@@ -567,40 +619,40 @@ describe('component/render in nested options', () => {
   it("pass integrationOptions for collection nested component with 'template' option if a child defined", () => {
     const UserTemplate = () => <div>Template</div>;
     mount(
-            <TestComponent>
-                <NestedComponent>
-                    <UserTemplate/>
-                </NestedComponent>
+      <TestComponent>
+        <NestedComponent>
+          <UserTemplate />
+        </NestedComponent>
 
-                <CollectionNestedComponent>
-                    <UserTemplate/>
-                </CollectionNestedComponent>
+        <CollectionNestedComponent>
+          <UserTemplate />
+        </CollectionNestedComponent>
 
-                <CollectionNestedComponent>
-                    <UserTemplate/>
-                </CollectionNestedComponent>
+        <CollectionNestedComponent>
+          <UserTemplate />
+        </CollectionNestedComponent>
 
-                <CollectionNestedComponent>
-                    <NestedComponent/>
-                    <UserTemplate/>
-                </CollectionNestedComponent>
+        <CollectionNestedComponent>
+          <NestedComponent />
+          <UserTemplate />
+        </CollectionNestedComponent>
 
-                <CollectionNestedComponent>
-                    <NestedComponent/>
-                    abc
-                </CollectionNestedComponent>
+        <CollectionNestedComponent>
+          <NestedComponent />
+          abc
+        </CollectionNestedComponent>
 
-                <CollectionNestedComponent>
-                    <NestedComponent/>
-                </CollectionNestedComponent>
+        <CollectionNestedComponent>
+          <NestedComponent />
+        </CollectionNestedComponent>
 
-                <CollectionNestedComponent/>
+        <CollectionNestedComponent />
 
-                <CollectionNestedComponent>
-                    <CollectionNestedComponent/>
-                    <CollectionNestedComponent/>
-                </CollectionNestedComponent>
-            </TestComponent>,
+        <CollectionNestedComponent>
+          <CollectionNestedComponent />
+          <CollectionNestedComponent />
+        </CollectionNestedComponent>
+      </TestComponent>,
     );
 
     const options = WidgetClass.mock.calls[0][1];
@@ -626,17 +678,17 @@ describe('component/render in nested options', () => {
   });
 
   it('renders templates', () => {
-    const FirstTemplate = () => <div className={'template'}>First Template</div>;
+    const FirstTemplate = () => <div className="template">First Template</div>;
     const component = mount(
-            <TestComponent>
-                <NestedComponent itemComponent={FirstTemplate} />
-            </TestComponent >,
+      <TestComponent>
+        <NestedComponent itemComponent={FirstTemplate} />
+      </TestComponent>,
     );
     renderTemplate('option.item');
     component.update();
     expect(component.find('.template').html()).toBe('<div class="template">First Template</div>');
 
-    const SecondTemplate = () => <div className={'template'}>Second Template</div>;
+    const SecondTemplate = () => <div className="template">Second Template</div>;
     component.setProps({
       children: <NestedComponent itemComponent={SecondTemplate} />,
     });
@@ -645,24 +697,24 @@ describe('component/render in nested options', () => {
   });
 
   it('renders static templates', () => {
-    const FirstTemplate = () => <div className={'template'}>First Template</div>;
+    const FirstTemplate = () => <div className="template">First Template</div>;
     const component = mount(
-            <TestComponent>
-                <CollectionNestedComponent>
-                    <FirstTemplate/>
-                </CollectionNestedComponent>
-            </TestComponent >,
+      <TestComponent>
+        <CollectionNestedComponent>
+          <FirstTemplate />
+        </CollectionNestedComponent>
+      </TestComponent>,
     );
     renderTemplate('collection[0].template');
     component.update();
     expect(component.find('.template').html()).toBe('<div class="template">First Template</div>');
 
-    const SecondTemplate = () => <div className={'template'}>Second Template</div>;
+    const SecondTemplate = () => <div className="template">Second Template</div>;
     component.setProps({
       children: (
-                <CollectionNestedComponent>
-                    <SecondTemplate/>
-                </CollectionNestedComponent>
+        <CollectionNestedComponent>
+          <SecondTemplate />
+        </CollectionNestedComponent>
       ),
     });
     component.update();
@@ -672,13 +724,16 @@ describe('component/render in nested options', () => {
   // T748280
   it('renders updates in deeply nested templates', () => {
     const getTemplate = (arg: string) => () => <div className="template">{arg}</div>;
-    const TestContainer = (props: any) => (
-            <TestComponent>
-                <CollectionNestedComponent>
-                    <NestedComponent itemComponent={getTemplate(props.value)}/>
-                </CollectionNestedComponent>
-            </TestComponent>
-    );
+    const TestContainer = (props: any) => {
+      const {value} = props;
+      return (
+        <TestComponent>
+          <CollectionNestedComponent>
+            <NestedComponent itemComponent={getTemplate(value)} />
+          </CollectionNestedComponent>
+        </TestComponent>
+      );
+    };
     const component = mount(<TestContainer value="test" />);
     component.setProps({value: 'test2'});
     jest.runAllTimers();
@@ -692,11 +747,14 @@ describe('component/render in nested options', () => {
     const renderItem = () => <div>Template</div>;
     const items = [{id: 1, render: renderItem}];
 
-    const TestContainer = (props: any) => (
-            <TestComponent>
-                {props.items.map((item) => <CollectionNestedComponent key={item.id} render={item.render} />)}
-            </TestComponent>
-    );
+    const TestContainer = (props: any) => {
+      const {items} = props;
+      return (
+        <TestComponent>
+          {items.map((item) => <CollectionNestedComponent key={item.id} render={item.render} />)}
+        </TestComponent>
+      );
+    };
 
     const component = mount(<TestContainer items={items} />);
     component.setProps({
@@ -724,11 +782,14 @@ describe('component/render in nested options', () => {
     const renderItem = () => <div>Template</div>;
     const items = [{id: 1, render: renderItem}, {id: 2, render: renderItem}];
 
-    const TestContainer = (props: any) => (
-            <TestComponent>
-                {props.items.map((item) => <CollectionNestedComponent key={item.id} render={item.render} />)}
-            </TestComponent>
-    );
+    const TestContainer = (props: any) => {
+      const {items} = props;
+      return (
+        <TestComponent>
+          {items.map((item) => <CollectionNestedComponent key={item.id} render={item.render} />)}
+        </TestComponent>
+      );
+    };
 
     const component = mount(<TestContainer items={items} />);
     component.setProps({
@@ -746,11 +807,14 @@ describe('component/render in nested options', () => {
     const ItemTemplate = () => <div>Template</div>;
     const items = [{id: 1, render: ItemTemplate}, {id: 2, render: ItemTemplate}];
 
-    const TestContainer = (props: any) => (
-            <TestComponent>
-                {props.items.map((item) => <CollectionNestedComponent key={item.id} render={item.render} />)}
-            </TestComponent>
-    );
+    const TestContainer = (props: any) => {
+      const {items} = props;
+      return (
+        <TestComponent>
+          {items.map((item) => <CollectionNestedComponent key={item.id} render={item.render} />)}
+        </TestComponent>
+      );
+    };
 
     const component = mount(<TestContainer items={items} />);
     component.setProps({
@@ -777,9 +841,9 @@ describe('component/render in nested options', () => {
     }
 
     mount(
-            <ComponentWithTranscludedContent>
-                Widget Transcluded Content
-            </ComponentWithTranscludedContent>,
+      <ComponentWithTranscludedContent>
+        Widget Transcluded Content
+      </ComponentWithTranscludedContent>,
     );
 
     const integrationOptions = WidgetClass.mock.calls[0][1].integrationOptions;

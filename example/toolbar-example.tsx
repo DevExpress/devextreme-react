@@ -6,7 +6,7 @@ import { Toolbar } from '../src/toolbar';
 
 const ItemComponent  = (data: {data: {text: string}}) => {
   return (
-        <Button text={data.data.text}/>
+    <Button text={data.data.text} />
   );
 };
 
@@ -15,9 +15,9 @@ const items = [{text: 'Text'}, {text: 'Text2'}];
 export default class extends React.Component<any, any> {
   public render() {
     return (
-            <Example title="Toolbar" state={this.state}>
-                <Toolbar items={items} itemComponent={ItemComponent} />
-            </Example>
+      <Example title="Toolbar" state={this.state}>
+        <Toolbar items={items} itemComponent={ItemComponent} />
+      </Example>
     );
   }
 }

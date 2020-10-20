@@ -18,11 +18,11 @@ function renderMenuTemplate() {
   }];
 
   return (
-        <React.Fragment>
-            <Toolbar items={items}>
-                <Template name="menuTextTemplate" render={() => <h4>Demo</h4>}/>
-            </Toolbar>
-        </React.Fragment>
+    <>
+      <Toolbar items={items}>
+        <Template name="menuTextTemplate" render={() => <h4>Demo</h4>} />
+      </Toolbar>
+    </>
   );
 }
 
@@ -37,30 +37,32 @@ export default class extends React.Component<any, any> {
     this.toggle = this.toggle.bind(this);
   }
 
-  public render() {
-    return (
-            <Example title="DxSlideOutView" state={this.state}>
-                <Button text={'toggle'} onClick={this.toggle}/>
-                <SlideOutView
-                    height={200}
-                    swipeEnabled={true}
-                    menuVisible={this.state.menuVisible}
-                    menuRender={renderMenuTemplate}
-                    onOptionChanged={this._optionChangeHandler}
-                >
-                    This is SlideOutView content
-                </SlideOutView>
-            </Example>
-    );
-  }
-
   public toggle() {
-    this.setState({ menuVisible: !this.state.menuVisible });
+    const {menuVisible} = this.state;
+    this.setState({ menuVisible: !menuVisible });
   }
 
   private _optionChangeHandler(args: {name: string, value: any }) {
     if (args.name === 'menuVisible') {
       this.setState({ menuVisible: args.value });
     }
+  }
+
+  public render() {
+    const {menuVisible} = this.state;
+    return (
+      <Example title="DxSlideOutView" state={this.state}>
+        <Button text="toggle" onClick={this.toggle} />
+        <SlideOutView
+          height={200}
+          swipeEnabled
+          menuVisible={menuVisible}
+          menuRender={renderMenuTemplate}
+          onOptionChanged={this._optionChangeHandler}
+        >
+          This is SlideOutView content
+        </SlideOutView>
+      </Example>
+    );
   }
 }

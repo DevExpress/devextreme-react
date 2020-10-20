@@ -20,20 +20,20 @@ const ItemTitle = (data: IAccordionItemProps) => <div style={{height: 100}}>{dat
 export default class extends React.Component<any, any> {
   public render() {
     return (
-            <Example title="DxAccordion" >
-                <hr />
-                <h4>Simple Accordion</h4>
-                <Accordion
-                    items={items}
-                />
-                <hr />
-                <h4>Accordion with itemTitleRender</h4>
-                <Accordion
-                    collapsible={true}
-                    items={items}
-                    itemTitleRender={ItemTitle}
-                />
-            </Example>
+      <Example title="DxAccordion">
+        <hr />
+        <h4>Simple Accordion</h4>
+        <Accordion
+          items={items}
+        />
+        <hr />
+        <h4>Accordion with itemTitleRender</h4>
+        <Accordion
+          collapsible
+          items={items}
+          itemTitleRender={ItemTitle}
+        />
+      </Example>
     );
   }
 }

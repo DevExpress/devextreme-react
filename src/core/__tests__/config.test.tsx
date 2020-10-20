@@ -24,13 +24,21 @@ describe('useLegacyTemplateEngine', () => {
 
   it('works for render-function template', () => {
     const ItemTemplate = (data: any) => (
-            <div className={'template'}>
-                value: {data.value}, key: {data.key}, dxkey: {data.dxkey}
-            </div>
+      <div className="template">
+        value:
+        {' '}
+        {data.value}
+        , key:
+        {' '}
+        {data.key}
+        , dxkey:
+        {' '}
+        {data.dxkey}
+      </div>
     );
 
     const component = mount(
-            <ComponentWithTemplates itemRender={ItemTemplate} />,
+      <ComponentWithTemplates itemRender={ItemTemplate} />,
     );
 
     const render = WidgetClass.mock.calls[0][1].integrationOptions.templates.item.render;
@@ -45,14 +53,22 @@ describe('useLegacyTemplateEngine', () => {
   });
 
   it('works for component template', () => {
-    const ItemTemplate = (props: any) => (
-            <div className={'template'}>
-                value: {props.value}, dxkey: {props.dxkey}
-            </div>
-    );
+    const ItemTemplate = (props: any) => {
+      const {value, dxkey} = props;
+      return (
+        <div className="template">
+          value:
+          {' '}
+          {value}
+          , dxkey:
+          {' '}
+          {dxkey}
+        </div>
+      );
+    };
 
     const component = mount(
-            <ComponentWithTemplates itemComponent={ItemTemplate} />,
+      <ComponentWithTemplates itemComponent={ItemTemplate} />,
     );
 
     const render = WidgetClass.mock.calls[0][1].integrationOptions.templates.item.render;
