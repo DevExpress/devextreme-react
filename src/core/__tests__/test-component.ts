@@ -1,5 +1,4 @@
 import { Component } from '../../core/component';
-import { capitalizeFirstLetter } from '../helpers';
 
 const eventHandlers: { [index: string]: (e?: any) => void } = {};
 
@@ -18,13 +17,6 @@ const WidgetClass = jest.fn(() => Widget);
 
 class TestComponent<P = any> extends Component<P> {
   protected _WidgetClass = WidgetClass;
-
-  protected _defaults = Object.keys(this.props).reduce((acc, p) => {
-    if (!p.startsWith('on')) {
-      acc[`default${capitalizeFirstLetter(p)}`] = p;
-    }
-    return acc;
-  }, {});
 }
 
 function fireOptionChange(fullName: string, value: any) {
