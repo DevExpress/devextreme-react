@@ -94,5 +94,6 @@ export default class extends React.Component<any, {disableIdInput: boolean}> {
 }
 
 const getTextBoxComponent = (disabled: boolean) => (props: any) => {
-  return <NumberBox disabled={disabled} value={((o) => o.data.editorOptions.value)(props)} />;
+  const {data} = props;
+  return <NumberBox disabled={disabled} value={data.editorOptions.value} />;
 };

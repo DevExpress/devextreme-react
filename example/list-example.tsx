@@ -100,9 +100,9 @@ export default class extends React.Component<any, { text: string; items: IListIt
   }
 
   private addTextToList() {
-    const {text} = this.state;
+    const {items, text} = this.state;
     this.setState({
-      items: [...((o) => o.items)(this.state), { text }],
+      items: [...items, { text }],
       text: '',
     });
   }

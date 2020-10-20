@@ -41,7 +41,8 @@ export default class extends React.Component<any, IState> {
   }
 
   private updateSeriesName(seriesName: string) {
-    const series = [...((o) => o.series)(this.state)];
+    const {series: stateSeries} = this.state;
+    const series = [...stateSeries];
     series[0].name = seriesName;
     this.setState({
       seriesName,

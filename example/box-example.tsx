@@ -35,7 +35,8 @@ class App extends React.Component<any, typeof initialState> {
   };
 
   private add = () => {
-    const items = [...((o) => o.items)(this.state)];
+    const {items: stateItems} = this.state;
+    const items = [...stateItems];
     const id = items.length ? items[items.length - 1].id + 1 : 1;
     items.push({
       id,
@@ -46,7 +47,8 @@ class App extends React.Component<any, typeof initialState> {
   };
 
   private remove = () => {
-    const items = ((o) => o.items)(this.state).slice(0, ((o) => o.items)(this.state).length - 1);
+    const {items: stateItems} = this.state;
+    const items = stateItems.slice(0, stateItems.length - 1);
     this.setState({ items });
   };
 
