@@ -1,3 +1,4 @@
+import { uppercaseFirst } from '../../../tools/src/helpers';
 import { Component } from '../../core/component';
 
 const eventHandlers: { [index: string]: (e?: any) => void } = {};
@@ -17,6 +18,11 @@ const WidgetClass = jest.fn(() => Widget);
 
 class TestComponent<P = any> extends Component<P> {
   protected _WidgetClass = WidgetClass;
+
+  protected _defaults = Object.keys(this.props).reduce((acc, p) => {
+    acc[`default${uppercaseFirst(p)}`] = p;
+    return acc;
+  }, {});
 }
 
 function fireOptionChange(fullName: string, value: any) {

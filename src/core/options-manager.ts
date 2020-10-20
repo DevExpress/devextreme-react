@@ -4,10 +4,12 @@ import { getChanges } from './configuration/comparer';
 import { IConfigNode } from './configuration/config-node';
 import { buildConfig, findValue, ValueType } from './configuration/tree';
 import { mergeNameParts } from './configuration/utils';
-import { capitalizeFirstLetter } from './helpers';
+import { uppercaseFirst } from '../../tools/src/helpers';
 
 class OptionsManager {
   private readonly _guards: Record<string, number> = {};
+
+  private readonly _updatedProp: Set<string> = new Set();
 
   private _templatesManager: TemplatesManager;
 
@@ -79,6 +81,7 @@ class OptionsManager {
     }
 
     for (const key of Object.keys(changes.options)) {
+      this._updatedProp.add(key);
       this._setValue(key, changes.options[key]);
     }
 
@@ -93,7 +96,11 @@ class OptionsManager {
       return;
     }
 
-    this._callOptionChangeHandler(e.fullName, e.value);
+    if (this._updatedProp.has(e.fullName)) {
+      this._updatedProp.delete(e.fullName);
+    } else {
+      this._callOptionChangeHandler(e.fullName, e.value);
+    }
     const valueDescriptor = findValue(this._currentConfig, e.fullName.split('.'));
     if (!valueDescriptor) {
       return;
@@ -138,7 +145,7 @@ class OptionsManager {
       return;
     }
 
-    const eventName = `on${capitalizeFirstLetter(propName)}Change`;
+    const eventName = `on${uppercaseFirst(propName)}Change`;
     parts[parts.length - 1] = eventName;
     const changeEvent = findValue(this._currentConfig, parts);
 

@@ -629,7 +629,7 @@ describe('mutation detection', () => {
 });
 
 describe('onXXXChange', () => {
-  it('is called on component changes option', () => {
+  it('is called on component changes controlled option', () => {
     const onPropChange = jest.fn();
     const component = mount(
             <TestComponent
@@ -641,12 +641,31 @@ describe('onXXXChange', () => {
 
     const sampleProps = { text: '1' };
     component.setProps(sampleProps);
-
+    fireOptionChange('text', '1'); // controlled property calls the "onOptionChanged"
     expect(onPropChange).not.toBeCalled();
 
     fireOptionChange('text', '2');
     expect(onPropChange).toHaveBeenCalledTimes(1);
     expect(onPropChange).toBeCalledWith('2');
+  });
+
+  it('is not called on component changes controlled option using "onXXXChange"', () => {
+    const onPropChange = jest.fn();
+    const component = mount(
+            <TestComponent
+                text="0"
+                onTextChange={onPropChange}
+            />,
+    );
+    onPropChange.mockImplementation((value) => {
+      component.setProps({ text: `X${value}`});
+      fireOptionChange('text', `X${value}`);
+    });
+    expect(onPropChange).not.toBeCalled();
+
+    fireOptionChange('text', '2');
+    expect(onPropChange).toHaveBeenCalledTimes(1);
+    expect(component.prop('text')).toBe('X2');
   });
 
   it('is called on component changes complex option', () => {
