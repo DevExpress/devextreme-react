@@ -20,7 +20,9 @@ class TestComponent<P = any> extends Component<P> {
   protected _WidgetClass = WidgetClass;
 
   protected _defaults = Object.keys(this.props).reduce((acc, p) => {
-    acc[`default${uppercaseFirst(p)}`] = p;
+    if (!p.startsWith('on')) {
+      acc[`default${uppercaseFirst(p)}`] = p;
+    }
     return acc;
   }, {});
 }
