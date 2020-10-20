@@ -9,7 +9,7 @@ import { capitalizeFirstLetter } from './helpers';
 class OptionsManager {
   private readonly _guards: Record<string, number> = {};
 
-  private readonly _updatedProp: Set<string> = new Set();
+  private readonly _updatedOptions: Set<string> = new Set();
 
   private _templatesManager: TemplatesManager;
 
@@ -81,7 +81,7 @@ class OptionsManager {
     }
 
     for (const key of Object.keys(changes.options)) {
-      this._updatedProp.add(key);
+      this._updatedOptions.add(key);
       this._setValue(key, changes.options[key]);
     }
 
@@ -96,8 +96,8 @@ class OptionsManager {
       return;
     }
 
-    if (this._updatedProp.has(e.fullName)) {
-      this._updatedProp.delete(e.fullName);
+    if (this._updatedOptions.has(e.fullName)) {
+      this._updatedOptions.delete(e.fullName);
     } else {
       this._callOptionChangeHandler(e.fullName, e.value);
     }
