@@ -24,4 +24,8 @@ const Example = (props: IProps) => {
   );
 };
 
+Example.defaultProps = {
+  state: {},
+};
+
 export default Example;

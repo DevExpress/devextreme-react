@@ -34,8 +34,7 @@ function testTemplateOption(testedOption: string) {
 
   if (testedOption === 'itemComponent') {
     prepareTemplate = (render) => {
-      class ItemComponent extends React.PureComponent {
-        public props: { data: any, index?: number };
+      class ItemComponent extends React.PureComponent<{data: any, index?: number}> {
 
         public render() {
           const {data, index} = this.props;
