@@ -102,17 +102,13 @@ class OptionsManager {
     const { value, type } = valueDescriptor;
     if (type === ValueType.Complex) {
       for (const key of Object.keys(value)) {
-        if (
-          value[key] === e.value[key]
-        ) {
+        if (value[key] === e.value[key]) {
           continue;
         }
         this._setGuard(mergeNameParts(e.fullName, key), value[key]);
       }
     } else {
-      if (
-        value === e.value
-      ) {
+      if (value === e.value) {
         return;
       }
       this._setGuard(e.fullName, value);
