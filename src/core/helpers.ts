@@ -32,3 +32,10 @@ export class DoubleKeyMap<TKey1, TKey2, TValue> {
     }
   }
 }
+
+export function capitalizeFirstLetter(text: string): string {
+  if (text.length) {
+    return `${text[0].toUpperCase()}${text.substr(1)}`;
+  }
+  return '';
+}

@@ -4,7 +4,7 @@ import { getChanges } from './configuration/comparer';
 import { IConfigNode } from './configuration/config-node';
 import { buildConfig, findValue, ValueType } from './configuration/tree';
 import { mergeNameParts } from './configuration/utils';
-import { uppercaseFirst } from '../../tools/src/helpers';
+import { capitalizeFirstLetter } from './helpers';
 
 class OptionsManager {
   private readonly _guards: Record<string, number> = {};
@@ -145,7 +145,7 @@ class OptionsManager {
       return;
     }
 
-    const eventName = `on${uppercaseFirst(propName)}Change`;
+    const eventName = `on${capitalizeFirstLetter(propName)}Change`;
     parts[parts.length - 1] = eventName;
     const changeEvent = findValue(this._currentConfig, parts);
 

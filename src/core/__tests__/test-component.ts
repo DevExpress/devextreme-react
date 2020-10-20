@@ -1,5 +1,5 @@
-import { uppercaseFirst } from '../../../tools/src/helpers';
 import { Component } from '../../core/component';
+import { capitalizeFirstLetter } from '../helpers';
 
 const eventHandlers: { [index: string]: (e?: any) => void } = {};
 
@@ -21,7 +21,7 @@ class TestComponent<P = any> extends Component<P> {
 
   protected _defaults = Object.keys(this.props).reduce((acc, p) => {
     if (!p.startsWith('on')) {
-      acc[`default${uppercaseFirst(p)}`] = p;
+      acc[`default${capitalizeFirstLetter(p)}`] = p;
     }
     return acc;
   }, {});
