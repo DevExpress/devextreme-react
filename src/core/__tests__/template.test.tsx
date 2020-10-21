@@ -1,18 +1,26 @@
 import * as events from 'devextreme/events';
+import { Component } from '../../core/component';
 
 import ConfigurationComponent from '../../core/nested-option';
 import { Template } from '../../core/template';
 import { mount, React, shallow } from './setup';
 import { TestComponent, Widget, WidgetClass } from './test-component';
 
-class ComponentWithTemplates extends TestComponent {
+const templateProps = [{
+  tmplOption: 'item',
+  render: 'itemRender',
+  component: 'itemComponent',
+  keyFn: 'itemKeyFn',
+}];
 
-  protected _templateProps = [{
-    tmplOption: 'item',
-    render: 'itemRender',
-    component: 'itemComponent',
-    keyFn: 'itemKeyFn',
-  }];
+class ComponentWithTemplates extends TestComponent {
+  protected _templateProps = templateProps;
+}
+
+class ComponentWithAsyncTemplates<P> extends Component<P> {
+  protected _WidgetClass = WidgetClass;
+
+  protected _templateProps = templateProps;
 }
 
 function renderTemplate(name: string, model?: any, container?: any, index?: number, onRendered?: () => void): Element {
@@ -848,5 +856,54 @@ describe('component/render in nested options', () => {
 
     const integrationOptions = WidgetClass.mock.calls[0][1].integrationOptions;
     expect(integrationOptions).toBe(undefined);
+  });
+});
+
+describe('async template', () => {
+  const waitForceUpdateFromTemplateRenderer = () => new Promise((ok) => requestAnimationFrame(ok));
+
+  it('renders', async () => {
+    const elementOptions: Record<string, any> = {};
+    elementOptions.itemRender = (data: any) => (
+      <div className="template">
+        Template
+        {data.text}
+      </div>
+    );
+
+    const component = mount(React.createElement(ComponentWithAsyncTemplates, elementOptions));
+    renderItemTemplate({ text: 'with data' });
+
+    expect(component.find('.template').length).toBe(0);
+
+    await waitForceUpdateFromTemplateRenderer();
+    component.update();
+
+    expect(component.find('.template').html()).toBe('<div class="template">Template with data</div>');
+  });
+
+  it('does not force update on each template', async () => {
+    const elementOptions: Record<string, any> = {};
+    elementOptions.itemRender = (data: any) => (
+      <div className="template">
+        Template
+        {data.text}
+      </div>
+    );
+
+    const component = mount(React.createElement(ComponentWithAsyncTemplates, elementOptions));
+    const componentInstance = component.instance() as any;
+    const renderSpy = jest.spyOn(componentInstance._templatesStore, 'renderWrappers');
+
+    renderItemTemplate({ text: 'with data1' });
+    renderItemTemplate({ text: 'with data2' });
+
+    expect(renderSpy.mock.calls.length).toBe(0);
+
+    await waitForceUpdateFromTemplateRenderer();
+    component.update();
+
+    expect(renderSpy.mock.calls.length).toBe(1);
+    renderSpy.mockRestore();
   });
 });

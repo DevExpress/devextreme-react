@@ -1,4 +1,3 @@
-import { Component } from '../../core/component';
 import ConfigurationComponent from '../../core/nested-option';
 import { mount, React, shallow } from './setup';
 import {
@@ -61,7 +60,7 @@ class CollectionSubNestedComponent extends ConfigurationComponent<{
 (CollectionSubNestedComponent as any).OptionName = 'subItems';
 (CollectionSubNestedComponent as any).IsCollectionItem = true;
 
-class TestComponentWithExpectation<P = any> extends Component<P> {
+class TestComponentWithExpectation<P = any> extends TestComponent<P> {
 
   protected _expectedChildren = {
     items: {
@@ -69,8 +68,6 @@ class TestComponentWithExpectation<P = any> extends Component<P> {
       isCollectionItem: true,
     },
   };
-
-  protected _WidgetClass = WidgetClass;
 }
 
 describe('option update', () => {
@@ -665,10 +662,10 @@ describe('onXXXChange', () => {
   it('is not called on component changes controlled option using "onXXXChange"', () => {
     const onPropChange = jest.fn();
     const component = mount(
-            <TestComponent
-                text="0"
-                onTextChange={onPropChange}
-            />,
+      <TestComponent
+        text="0"
+        onTextChange={onPropChange}
+      />,
     );
     onPropChange.mockImplementation((value) => {
       component.setProps({ text: `X${value}`});

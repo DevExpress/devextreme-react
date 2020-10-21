@@ -1,3 +1,4 @@
+import { requestAnimationFrame } from 'devextreme/animation/frame';
 import { deferUpdate } from 'devextreme/core/utils/common';
 import * as React from 'react';
 
@@ -6,14 +7,15 @@ import { TemplatesStore } from './templates-store';
 class TemplatesRenderer extends React.PureComponent<{ templatesStore: TemplatesStore }> {
   private _updateScheduled = false;
 
-  public scheduleUpdate() {
+  public scheduleUpdate(useDeferUpdate: boolean) {
     if (this._updateScheduled) {
       return;
     }
 
     this._updateScheduled = true;
 
-    deferUpdate(() => {
+    const updateCallback = useDeferUpdate ? deferUpdate : requestAnimationFrame;
+    updateCallback(() => {
       this.forceUpdate();
       this._updateScheduled = false;
     });
