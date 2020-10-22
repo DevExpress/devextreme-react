@@ -8,7 +8,7 @@ it('generates', () => {
     ]),
   ).toBe(EXPECTED_GENERATES);
 });
-//#region EXPECTED_GENERATES
+// #region EXPECTED_GENERATES
 const EXPECTED_GENERATES = `
 export { Template } from "./core/template";
 export { widget } from "./path";

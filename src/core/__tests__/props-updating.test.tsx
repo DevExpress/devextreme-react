@@ -665,10 +665,10 @@ describe('onXXXChange', () => {
   it('is not called on component changes controlled option using "onXXXChange"', () => {
     const onPropChange = jest.fn();
     const component = mount(
-            <TestComponent
-                text="0"
-                onTextChange={onPropChange}
-            />,
+      <TestComponent
+        text="0"
+        onTextChange={onPropChange}
+      />,
     );
     onPropChange.mockImplementation((value) => {
       component.setProps({ text: `X${value}`});

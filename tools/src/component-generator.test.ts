@@ -1,7 +1,7 @@
 import generate from './component-generator';
 
 it('generates', () => {
-  //#region EXPECTED
+  // #region EXPECTED
   const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions
@@ -26,7 +26,7 @@ export {
   ICLASS_NAMEOptions
 };
 `.trimLeft();
-    //#endregion
+    // #endregion
 
   expect(
     generate({
@@ -39,7 +39,7 @@ export {
 });
 
 it('generates extension component', () => {
-  //#region EXPECTED
+  // #region EXPECTED
   const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions as ICLASS_NAMEOptions
@@ -61,7 +61,7 @@ export {
   ICLASS_NAMEOptions
 };
 `.trimLeft();
-    //#endregion
+    // #endregion
 
   expect(
     generate({
@@ -77,7 +77,7 @@ export {
 describe('template-props generation', () => {
 
   it('processes option', () => {
-    //#region EXPECTED
+    // #region EXPECTED
     const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions
@@ -112,7 +112,7 @@ export {
   ICLASS_NAMEOptions
 };
 `.trimLeft();
-    //#endregion
+    // #endregion
 
     expect(
       generate({
@@ -126,7 +126,7 @@ export {
   });
 
   it('processes several options', () => {
-    //#region EXPECTED
+    // #region EXPECTED
     const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions
@@ -169,7 +169,7 @@ export {
   ICLASS_NAMEOptions
 };
 `.trimLeft();
-    //#endregion
+    // #endregion
 
     expect(
       generate({
@@ -183,7 +183,7 @@ export {
   });
 
   it('processes single widget-template option', () => {
-    //#region EXPECTED
+    // #region EXPECTED
     const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions
@@ -218,7 +218,7 @@ export {
   ICLASS_NAMEOptions
 };
 `.trimLeft();
-    //#endregion
+    // #endregion
 
     expect(
       generate({
@@ -235,7 +235,7 @@ export {
 describe('props generation', () => {
 
   it('processes subscribable option', () => {
-    //#region EXPECTED
+    // #region EXPECTED
     const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions
@@ -266,7 +266,7 @@ export {
   ICLASS_NAMEOptions
 };
 `.trimLeft();
-    //#endregion
+    // #endregion
 
     expect(
       generate({
@@ -282,7 +282,7 @@ export {
   });
 
   it('processes several subscribable options', () => {
-    //#region EXPECTED
+    // #region EXPECTED
     const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions
@@ -316,7 +316,7 @@ export {
   ICLASS_NAMEOptions
 };
 `.trimLeft();
-    //#endregion
+    // #endregion
 
     expect(
       generate({
@@ -336,7 +336,7 @@ export {
 describe('nested options', () => {
 
   it('processes nested options', () => {
-    //#region EXPECTED
+    // #region EXPECTED
     const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions
@@ -392,7 +392,7 @@ export {
   IOpt_6_SubComponentProps
 };
 `.trimLeft();
-    //#endregion
+    // #endregion
 
     expect(
       generate({
@@ -448,7 +448,7 @@ export {
   });
 
   it('processes nested array option', () => {
-    //#region EXPECTED
+    // #region EXPECTED
     const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions
@@ -488,7 +488,7 @@ export {
   IOpt_1_ComponentProps
 };
 `.trimLeft();
-    //#endregion
+    // #endregion
 
     expect(
       generate({
@@ -516,7 +516,7 @@ export {
   });
 
   it('generates default props for nested options', () => {
-    //#region EXPECTED
+    // #region EXPECTED
     const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions
@@ -563,7 +563,7 @@ export {
   IOpt_1_ComponentProps
 };
 `.trimLeft();
-    //#endregion
+    // #endregion
 
     expect(
       generate({
@@ -601,7 +601,7 @@ export {
   });
 
   it('generates component/render props for nested options', () => {
-    //#region EXPECTED
+    // #region EXPECTED
     const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions
@@ -649,7 +649,7 @@ export {
   IOpt_1_ComponentProps
 };
 `.trimLeft();
-    //#endregion
+    // #endregion
 
     expect(
       generate({
@@ -677,7 +677,7 @@ export {
   });
 
   it('processes nested option predefined props', () => {
-    //#region EXPECTED
+    // #region EXPECTED
     const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions
@@ -720,7 +720,7 @@ export {
   IOpt_1_ComponentProps
 };
 `.trimLeft();
-    //#endregion
+    // #endregion
 
     expect(
       generate({
@@ -750,7 +750,7 @@ export {
     ).toBe(EXPECTED);
   });
   it('renders [] if nested suboption has array type', () => {
-    //#region EXPECTED
+    // #region EXPECTED
     const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions
@@ -797,7 +797,7 @@ export {
   IOpt_1_ComponentProps
 };
 `.trimLeft();
-    //#endregion
+    // #endregion
 
     expect(
       generate({
@@ -844,7 +844,7 @@ export {
 describe('prop typings', () => {
 
   it('adds check for single type', () => {
-    //#region EXPECTED
+    // #region EXPECTED
     const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions
@@ -873,7 +873,7 @@ export {
   ICLASS_NAMEOptions
 };
 `.trimLeft();
-    //#endregion
+    // #endregion
 
     expect(
       generate({
@@ -892,7 +892,7 @@ export {
   });
 
   it('adds check for acceptable values', () => {
-    //#region EXPECTED
+    // #region EXPECTED
     const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions
@@ -924,7 +924,7 @@ export {
   ICLASS_NAMEOptions
 };
 `.trimLeft();
-    //#endregion
+    // #endregion
 
     expect(
       generate({
@@ -944,7 +944,7 @@ export {
   });
 
   it('adds check for several types', () => {
-    //#region EXPECTED
+    // #region EXPECTED
     const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions
@@ -976,7 +976,7 @@ export {
   ICLASS_NAMEOptions
 };
 `.trimLeft();
-    //#endregion
+    // #endregion
 
     expect(
       generate({
@@ -995,7 +995,7 @@ export {
   });
 
   it('adds typings in alphabetic order', () => {
-    //#region EXPECTED
+    // #region EXPECTED
     const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions
@@ -1030,7 +1030,7 @@ export {
   ICLASS_NAMEOptions
 };
 `.trimLeft();
-    //#endregion
+    // #endregion
 
     expect(
       generate({
@@ -1064,7 +1064,7 @@ export {
 describe('child expectation', () => {
 
   it('is rendered for widget', () => {
-    //#region EXPECTED
+    // #region EXPECTED
     const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions
@@ -1094,7 +1094,7 @@ export {
   ICLASS_NAMEOptions
 };
 `.trimLeft();
-    //#endregion
+    // #endregion
 
     expect(
       generate({
@@ -1111,7 +1111,7 @@ export {
   });
 
   it('is rendered for nested option', () => {
-    //#region EXPECTED
+    // #region EXPECTED
     const EXPECTED = `
 import dxCLASS_NAME, {
     IOptions
@@ -1153,7 +1153,7 @@ export {
   IOpt_1_ComponentProps
 };
 `.trimLeft();
-    //#endregion
+    // #endregion
 
     expect(
       generate({
