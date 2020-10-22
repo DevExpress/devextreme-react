@@ -17,21 +17,19 @@ const items: IAccordionItemProps[] = [
 
 const ItemTitle = (data: IAccordionItemProps) => <div style={{ height: 100 }}>{data.title}</div>;
 
-export default () => {
-  return (
-    <Example title="DxAccordion">
-      <hr />
-      <h4>Simple Accordion</h4>
-      <Accordion
-        items={items}
-      />
-      <hr />
-      <h4>Accordion with itemTitleRender</h4>
-      <Accordion
-        collapsible
-        items={items}
-        itemTitleRender={ItemTitle}
-      />
-    </Example>
-  );
-};
+export default () => (
+  <Example title="DxAccordion">
+    <hr />
+    <h4>Simple Accordion</h4>
+    <Accordion
+      items={items}
+    />
+    <hr />
+    <h4>Accordion with itemTitleRender</h4>
+    <Accordion
+      collapsible
+      items={items}
+      itemTitleRender={ItemTitle}
+    />
+  </Example>
+);

@@ -20,17 +20,15 @@ class DateCell extends React.PureComponent<any> {
   }
 }
 
-export default () => {
-  return (
-    <Example title="DxScheduler">
-      <Scheduler
-        dateCellComponent={DateCell}
-        dataSource={appointments}
-        height={400}
-        startDayHour={9}
-        defaultCurrentView="week"
-        defaultCurrentDate={new Date(2017, 4, 25)}
-      />
-    </Example>
-  );
-};
+export default () => (
+  <Example title="DxScheduler">
+    <Scheduler
+      dateCellComponent={DateCell}
+      dataSource={appointments}
+      height={400}
+      startDayHour={9}
+      defaultCurrentView="week"
+      defaultCurrentDate={new Date(2017, 4, 25)}
+    />
+  </Example>
+);

@@ -17,15 +17,13 @@ import NumberBox from '../src/number-box';
 
 import { sales } from './data';
 
-const DetailComponent = ({ data: { data } }: any) => {
-  return (
-    <p>
-      Row data:
-      <br />
-      {JSON.stringify(data)}
-    </p>
-  );
-};
+const DetailComponent = ({ data: { data } }: any) => (
+  <p>
+    Row data:
+    <br />
+    {JSON.stringify(data)}
+  </p>
+);
 
 const CityComponent = (props: any) => {
   const { data } = props;

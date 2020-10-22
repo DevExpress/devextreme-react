@@ -1,24 +1,20 @@
 import * as React from 'react';
 import { SelectBox } from '../src/select-box';
 
-const SelectBoxItem = (option: any) => {
-  return <span>{option.data.value}</span>;
-};
+const SelectBoxItem = (option: any) => <span>{option.data.value}</span>;
 
-export default () => {
-  return (
-    <SelectBox
-      searchEnabled
-      showClearButton
-      searchTimeout={0}
-      noDataText="No results found"
-      displayExpr="label"
-      valueExpr="value"
-      items={items}
-      itemComponent={SelectBoxItem}
-    />
-  );
-};
+export default () => (
+  <SelectBox
+    searchEnabled
+    showClearButton
+    searchTimeout={0}
+    noDataText="No results found"
+    displayExpr="label"
+    valueExpr="value"
+    items={items}
+    itemComponent={SelectBoxItem}
+  />
+);
 
 const items = [
   {

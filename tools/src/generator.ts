@@ -145,18 +145,16 @@ function extractNestedComponents(
     nameClassMap[p.name] = uppercaseFirst(p.name);
   });
 
-  return props.map((p) => {
-    return {
-      className: nameClassMap[p.name],
-      owners: p.owners.map((o) => nameClassMap[o]),
-      optionName: p.optionName,
-      options: p.props.map(mapOption),
-      isCollectionItem: p.isCollectionItem,
-      templates: p.templates,
-      predefinedProps: p.predefinedProps,
-      expectedChildren: p.nesteds,
-    };
-  });
+  return props.map((p) => ({
+    className: nameClassMap[p.name],
+    owners: p.owners.map((o) => nameClassMap[o]),
+    optionName: p.optionName,
+    options: p.props.map(mapOption),
+    isCollectionItem: p.isCollectionItem,
+    templates: p.templates,
+    predefinedProps: p.predefinedProps,
+    expectedChildren: p.nesteds,
+  }));
 }
 
 function extractPropTypings(

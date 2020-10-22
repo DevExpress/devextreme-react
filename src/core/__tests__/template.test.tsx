@@ -330,15 +330,13 @@ describe('function template', () => {
   });
 
   it('renders index', () => {
-    const itemRender: any = jest.fn((_, index: number) => {
-      return (
-        <div className="template">
-          Index
-          {' '}
-          {index}
-        </div>
-      );
-    });
+    const itemRender: any = jest.fn((_, index: number) => (
+      <div className="template">
+        Index
+        {' '}
+        {index}
+      </div>
+    ));
     const component = mount(
       <ComponentWithTemplates itemRender={itemRender} />,
     );
