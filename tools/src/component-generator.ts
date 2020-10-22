@@ -255,7 +255,7 @@ function formatTemplatePropName(name: string, suffix: string): string {
 }
 
 function createPropTypingModel(typing: IPropTyping): IRenderedPropTyping {
-  const types = typing.types.map((t) => 'PropTypes.' + t);
+  const types = typing.types.map((t) => `PropTypes.${t}`);
   if (typing.acceptableValues && isNotEmptyArray(typing.acceptableValues)) {
     types.push(`PropTypes.oneOf([\n    ${typing.acceptableValues.join(',\n    ')}\n  ])`);
   }
@@ -366,7 +366,7 @@ const renderComponent: (model: {
   renderedTemplateProps?: string[];
   renderedPropTypings?: string[];
 }) => string = createTempate(
-  `class <#= it.className #> extends BaseComponent<<#= it.optionsName #>> {
+  `${`class <#= it.className #> extends BaseComponent<<#= it.optionsName #>> {
 
   public get instance(): <#= it.widgetName #> {
     return this._instance;
@@ -374,20 +374,20 @@ const renderComponent: (model: {
 
   protected _WidgetClass = <#= it.widgetName #>;\n`
 
-+ '<#? it.renderedDefaultProps #>'
-+ L1 + 'protected _defaults = {<#= it.renderedDefaultProps.join(\',\') #>'
-+ L1 + '};\n'
++ '<#? it.renderedDefaultProps #>'}${
+    L1}protected _defaults = {<#= it.renderedDefaultProps.join(',') #>${
+    L1}};\n`
 + '<#?#>'
 
-+ '<#? it.expectedChildren #>'
-+ L1 + 'protected _expectedChildren = {'
++ `<#? it.expectedChildren #>${
+  L1}protected _expectedChildren = {`
 
-+ '<#~ it.expectedChildren : child #>'
-+ L2 + '<#= child.componentName #>:'
++ `<#~ it.expectedChildren : child #>${
+  L2}<#= child.componentName #>:`
     + ' { optionName: "<#= child.optionName #>", isCollectionItem: <#= !!child.isCollectionItem #> },'
-+ '<#~#>\b'
++ `<#~#>\b${
 
-+ L1 + '};\n'
+  L1}};\n`
 + '<#?#>'
 
 + `<#? it.renderedTemplateProps #>
@@ -416,46 +416,46 @@ const renderNestedComponent: (model: {
   renderedTemplateProps?: string[];
   owners: string[];
 }) => string = createTempate(
-  '// owners:\n'
+  `${'// owners:\n'
 + '<#~ it.owners : owner #>'
     + '// <#= owner #>\n'
 + '<#~#>'
 
 + 'interface <#= it.propsType #> <#= it.renderedType #>\n'
 
-+ 'class <#= it.className #> extends NestedOption<<#= it.propsType #>> {'
-+ L1 + 'public static OptionName = "<#= it.optionName #>";'
++ 'class <#= it.className #> extends NestedOption<<#= it.propsType #>> {'}${
+    L1}public static OptionName = "<#= it.optionName #>";`
 
-+ '<#? it.isCollectionItem #>'
-    + L1 + 'public static IsCollectionItem = true;'
++ `<#? it.isCollectionItem #>${
+  L1}public static IsCollectionItem = true;`
 + '<#?#>'
 
-+ '<#? it.renderedSubscribableOptions #>'
-    + L1 + 'public static DefaultsProps = {<#= it.renderedSubscribableOptions.join(\',\') #>'
-    + L1 + '};'
++ `<#? it.renderedSubscribableOptions #>${
+  L1}public static DefaultsProps = {<#= it.renderedSubscribableOptions.join(',') #>${
+  L1}};`
 + '<#?#>'
 
-+ '<#? it.expectedChildren #>'
-    + L1 + 'public static ExpectedChildren = {'
++ `<#? it.expectedChildren #>${
+  L1}public static ExpectedChildren = {`
 
-    + '<#~ it.expectedChildren : child #>'
-    + L2 + '<#= child.componentName #>:'
+    + `<#~ it.expectedChildren : child #>${
+      L2}<#= child.componentName #>:`
         + ' { optionName: "<#= child.optionName #>", isCollectionItem: <#= !!child.isCollectionItem #> },'
-    + '<#~#>\b'
+    + `<#~#>\b${
 
-    + L1 + '};'
+      L1}};`
 + '<#?#>'
 
-+ '<#? it.renderedTemplateProps #>'
-    + L1 + 'public static TemplateProps = [<#= it.renderedTemplateProps.join(\', \') #>];'
++ `<#? it.renderedTemplateProps #>${
+  L1}public static TemplateProps = [<#= it.renderedTemplateProps.join(', ') #>];`
 + '<#?#>'
 
-+ '<#? it.predefinedProps #>'
-    + L1 + 'public static PredefinedProps = {'
-        + '<#~ it.predefinedProps : prop #>'
-            + L2 + '<#= prop.name #>: "<#= prop.value #>",'
-        + '<#~#>\b'
-    + L1 + '};'
++ `<#? it.predefinedProps #>${
+  L1}public static PredefinedProps = {`
+        + `<#~ it.predefinedProps : prop #>${
+          L2}<#= prop.name #>: "<#= prop.value #>",`
+        + `<#~#>\b${
+          L1}};`
 + '<#?#>'
 
 + '\n}',
@@ -501,7 +501,7 @@ function renderObject(props: IOption[], indent: number): string {
   indent += 1;
 
   props.forEach((opt) => {
-    result += '\n' + getIndent(indent) + opt.name + '?: ';
+    result += `\n${getIndent(indent)}${opt.name}?: `;
     if (opt.nested && isNotEmptyArray(opt.nested)) {
       result += renderObject(opt.nested, indent);
       if (opt.isArray) { result += '[]'; }
@@ -512,7 +512,7 @@ function renderObject(props: IOption[], indent: number): string {
   });
 
   indent -= 1;
-  result += '\n' + getIndent(indent) + '}';
+  result += `\n${getIndent(indent)}}`;
   return result;
 }
 

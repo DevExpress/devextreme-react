@@ -74,13 +74,13 @@ function generate({
     writeFile(widgetFilePath, generateComponent(widgetFile.component), { encoding: 'utf8' });
     modulePaths.push({
       name: widgetFile.component.name,
-      path: './' + removeExtension(getRelativePath(indexFileDir, widgetFilePath)).replace(pathSeparator, '/'),
+      path: `./${removeExtension(getRelativePath(indexFileDir, widgetFilePath)).replace(pathSeparator, '/')}`,
     });
 
     writeFile(
       joinPaths(out.oldComponentsDir, widgetFile.fileName),
       generateReExport(
-        normalizePath('./' + removeExtension(getRelativePath(out.oldComponentsDir, widgetFilePath)))
+        normalizePath(`./${removeExtension(getRelativePath(out.oldComponentsDir, widgetFilePath))}`)
           .replace(pathSeparator, '/'),
         removeExtension(widgetFile.fileName),
       ),
