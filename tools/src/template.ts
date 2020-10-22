@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 import { template, templateSettings } from 'dot';
 
 const defaultSettings = {

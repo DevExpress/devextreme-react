@@ -241,7 +241,6 @@ describe('nested option', () => {
   });
 
   it('is pulled after update', () => {
-
     const TestContainer = (props: any) => {
       const { value } = props;
       return  (
@@ -259,7 +258,6 @@ describe('nested option', () => {
   });
 
   it('is pulled after update without rubbish', () => {
-
     const component = mount(
       <TestComponent>
         <NestedComponent a={123} />
@@ -331,11 +329,9 @@ describe('nested option', () => {
       { c: 123, d: 'abc' },
     ]]);
   });
-
 });
 
 describe('nested sub-option', () => {
-
   it('is pulled', () => {
     mount(
       <TestComponent>
@@ -471,7 +467,6 @@ describe('nested sub-option', () => {
   });
 
   it('is pulled after update', () => {
-
     const TestContainer = (props: any) => {
       const { value } = props;
       return (
@@ -494,7 +489,6 @@ describe('nested sub-option', () => {
   });
 
   it('is pulled according to expectations', () => {
-
     class NestedComponentWithExpectations extends ConfigurationComponent<{ a: number }> {
       public static OptionName = 'option';
 
