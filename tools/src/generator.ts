@@ -135,7 +135,10 @@ function mapWidget(
 }
 
 function extractNestedComponents(
-  props: IComplexProp[], rawWidgetName: string, widgetName: string): INestedComponent[] {
+  props: IComplexProp[],
+  rawWidgetName: string,
+  widgetName: string,
+): INestedComponent[] {
   const nameClassMap: Record<string, string> = {};
   nameClassMap[rawWidgetName] = widgetName;
   props.forEach((p) => {
