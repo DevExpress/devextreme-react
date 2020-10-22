@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unused-state */
 import * as React from 'react';
 
 import { orangesByDay } from './data';

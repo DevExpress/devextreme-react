@@ -5,25 +5,20 @@ const SelectBoxItem = (option: any) => {
   return <span>{option.data.value}</span>;
 };
 
-class SelectBoxEditor extends React.Component {
-
-  public render() {
-    return (
-      <SelectBox
-        searchEnabled
-        showClearButton
-        searchTimeout={0}
-        noDataText="No results found"
-        displayExpr="label"
-        valueExpr="value"
-        items={items}
-        itemComponent={SelectBoxItem}
-      />
-    );
-  }
-}
-
-export default SelectBoxEditor;
+export default () => {
+  return (
+    <SelectBox
+      searchEnabled
+      showClearButton
+      searchTimeout={0}
+      noDataText="No results found"
+      displayExpr="label"
+      valueExpr="value"
+      items={items}
+      itemComponent={SelectBoxItem}
+    />
+  );
+};
 
 const items = [
   {

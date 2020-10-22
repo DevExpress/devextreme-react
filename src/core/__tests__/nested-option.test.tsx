@@ -288,7 +288,7 @@ describe('nested option', () => {
       { c: 123, d: 'abc', key: 1 },
       { c: 456, d: 'def', key: 2 },
     ];
-    mount(<TestContainer children={children} />)
+    mount(<TestContainer>{children}</TestContainer>)
       .setProps({
         children: [
           { c: 123, d: 'abc', key: 1 },
@@ -320,7 +320,7 @@ describe('nested option', () => {
       { c: 123, d: 'abc', key: 1 },
       { c: 456, d: 'def', key: 2 },
     ];
-    mount(<TestContainer children={children} />)
+    mount(<TestContainer>{children}</TestContainer>)
       .setProps({
         children: [
           { c: 123, d: 'abc', key: 1 },
