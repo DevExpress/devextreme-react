@@ -867,6 +867,7 @@ describe('async template', () => {
     elementOptions.itemRender = (data: any) => (
       <div className="template">
         Template
+        {' '}
         {data.text}
       </div>
     );
