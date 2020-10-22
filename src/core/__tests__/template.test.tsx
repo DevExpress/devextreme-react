@@ -15,7 +15,12 @@ class ComponentWithTemplates extends TestComponent {
 }
 
 function renderTemplate(
-  name: string, model?: any, container?: any, index?: number, onRendered?: () => void): Element {
+  name: string,
+  model?: any,
+  container?: any,
+  index?: number,
+  onRendered?: () => void,
+): Element {
   model = model || {};
   container = container || document.createElement('div');
   const { render } = WidgetClass.mock.calls[0][1].integrationOptions.templates[name];
