@@ -39,7 +39,8 @@ function compare(current: IConfigNode, prev: IConfigNode, changesAccum: IConfigC
   changesAccum.addRemovedValues(
     current.configCollections,
     prev.configCollections,
-    current.fullName);
+    current.fullName,
+  );
   changesAccum.addRemovedValues(current.configs, prev.configs, current.fullName);
 
   compareCollections(current, prev, changesAccum);
