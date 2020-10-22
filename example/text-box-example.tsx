@@ -45,12 +45,10 @@ export default class extends React.Component<any, { text: string; uncontrolledTe
         uncontrolled mode
         <TextBox
           defaultValue="initial text"
-          ref={(ref: { instance: dxTextBox; }) => {
+          ref={(ref) => {
             if (ref) {
               this.textBox = ref.instance;
-              return ref.instance;
             }
-            return undefined;
           }}
         />
         <br />
