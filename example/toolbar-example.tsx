@@ -4,7 +4,7 @@ import Example from './example-block';
 import { Button } from '../src/button';
 import { Toolbar } from '../src/toolbar';
 
-const ItemComponent  = (data: {data: {text: string}}) => {
+const ItemComponent = (data: {data: {text: string}}) => {
   return (
     <Button text={data.data.text} />
   );

@@ -184,7 +184,7 @@ function generate(component: IComponent): string {
     : undefined;
 
   const hasExtraOptions = !component.isExtension;
-  const widgetName =  `dx${uppercaseFirst(component.name)}`;
+  const widgetName = `dx${uppercaseFirst(component.name)}`;
 
   const renderedPropTypings = component.propTypings
     ? component.propTypings
@@ -374,7 +374,7 @@ const renderComponent: (model: {
 
 + '<#? it.renderedDefaultProps #>'
 + L1 + 'protected _defaults = {<#= it.renderedDefaultProps.join(\',\') #>'
-+ L1 +  '};\n'
++ L1 + '};\n'
 + '<#?#>'
 
 + '<#? it.expectedChildren #>'
@@ -385,7 +385,7 @@ const renderComponent: (model: {
     + ' { optionName: "<#= child.optionName #>", isCollectionItem: <#= !!child.isCollectionItem #> },'
 + '<#~#>' + '\b'
 
-+ L1 +  '};\n'
++ L1 + '};\n'
 + '<#?#>'
 
 + `<#? it.renderedTemplateProps #>
@@ -441,7 +441,7 @@ const renderNestedComponent: (model: {
         + ' { optionName: "<#= child.optionName #>", isCollectionItem: <#= !!child.isCollectionItem #> },'
     + '<#~#>' + '\b'
 
-    + L1 +  '};'
+    + L1 + '};'
 + '<#?#>'
 
 + '<#? it.renderedTemplateProps #>'
@@ -510,7 +510,7 @@ function renderObject(props: IOption[], indent: number): string {
   });
 
   indent -= 1;
-  result +=  '\n' + getIndent(indent) + '}';
+  result += '\n' + getIndent(indent) + '}';
   return result;
 }
 

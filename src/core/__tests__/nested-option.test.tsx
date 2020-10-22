@@ -243,7 +243,7 @@ describe('nested option', () => {
   it('is pulled after update', () => {
     const TestContainer = (props: any) => {
       const { value } = props;
-      return  (
+      return (
         <TestComponent>
           <NestedComponent a={value} />
         </TestComponent>

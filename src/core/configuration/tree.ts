@@ -131,7 +131,7 @@ function findValue(node: IConfigNode, path: string[]): undefined | IValueDescrip
     };
   }
 
-  return;
+  return undefined;
 }
 
 function findValueInObject(obj: any, path: string[]): undefined | IValueDescriptor {
@@ -147,7 +147,7 @@ function findValueInObject(obj: any, path: string[]): undefined | IValueDescript
     return findValueInObject(obj[key], path);
   }
 
-  return;
+  return undefined;
 }
 
 export {
