@@ -130,14 +130,13 @@ function generate(component: IComponent): string {
         let predefinedProps: Array<{ name: string; value: string }> | undefined;
         if (c.predefinedProps) {
           predefinedProps = [];
-          Object.keys(c.predefinedProps).forEach((name) => {
-            if (predefinedProps && c.predefinedProps) {
-              predefinedProps.push({
-                name,
-                value: c.predefinedProps[name],
-              });
-            }
-          });
+          if (c.predefinedProps) {
+            predefinedProps = [];
+            Object.entries(c.predefinedProps).forEach((prop) => {
+              const [name, value] = prop;
+              predefinedProps?.push({ name, value });
+            });
+          }
         }
 
         return {
