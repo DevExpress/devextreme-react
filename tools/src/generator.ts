@@ -160,7 +160,9 @@ function extractNestedComponents(
 }
 
 function extractPropTypings(
-  options: IProp[], customTypes: Record<string, ICustomType>): IPropTyping[] {
+  options: IProp[],
+  customTypes: Record<string, ICustomType>,
+): IPropTyping[] {
   return options
     .map((o) => createPropTyping(o, customTypes))
     .filter((t) => t != null);
