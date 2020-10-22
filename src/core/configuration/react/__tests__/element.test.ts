@@ -1,6 +1,6 @@
 import { mount, React } from '../../../__tests__/setup';
 
-import ConfigurationComponent from '../../../../core/nested-option';
+import ConfigurationComponent from '../../../nested-option';
 import { Template } from '../../../template';
 
 import { ElementType, getElementInfo } from '../element';

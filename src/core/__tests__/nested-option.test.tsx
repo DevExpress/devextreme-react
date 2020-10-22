@@ -1,5 +1,5 @@
-import { Component } from '../../core/component';
-import ConfigurationComponent from '../../core/nested-option';
+import { Component } from '../component';
+import ConfigurationComponent from '../nested-option';
 import { mount, React } from './setup';
 import { TestComponent, Widget, WidgetClass } from './test-component';
 

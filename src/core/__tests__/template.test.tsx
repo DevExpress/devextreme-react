@@ -1,7 +1,7 @@
 import * as events from 'devextreme/events';
 
-import ConfigurationComponent from '../../core/nested-option';
-import { Template } from '../../core/template';
+import ConfigurationComponent from '../nested-option';
+import { Template } from '../template';
 import { mount, React, shallow } from './setup';
 import { TestComponent, Widget, WidgetClass } from './test-component';
 
