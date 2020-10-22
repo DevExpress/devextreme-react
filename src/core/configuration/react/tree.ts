@@ -46,7 +46,7 @@ function createConfigNode(element: IOptionElement, path: string): IConfigNode {
 
   const childrenData = processChildren(element, fullName);
 
-  for (const templateMeta of element.descriptor.templates) {
+  element.descriptor.templates.forEach((templateMeta) => {
     const template = getAnonymousTemplate(
       element.props,
       templateMeta,
@@ -55,7 +55,7 @@ function createConfigNode(element: IOptionElement, path: string): IConfigNode {
     if (template) {
       childrenData.templates.push(template);
     }
-  }
+  });
 
   return {
     fullName,

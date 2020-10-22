@@ -130,12 +130,14 @@ function generate(component: IComponent): string {
         let predefinedProps: Array<{ name: string; value: string }> | undefined;
         if (c.predefinedProps) {
           predefinedProps = [];
-          for (const name of Object.keys(c.predefinedProps)) {
-            predefinedProps.push({
-              name,
-              value: c.predefinedProps[name],
-            });
-          }
+          Object.keys(c.predefinedProps).forEach((name) => {
+            if (predefinedProps && c.predefinedProps) {
+              predefinedProps.push({
+                name,
+                value: c.predefinedProps[name],
+              });
+            }
+          });
         }
 
         return {
@@ -276,21 +278,21 @@ const renderModule: (model: {
   defaultExport: string;
   renderedExports: string;
 }) => string = createTempate(
-  '<#= it.renderedImports #>' + '\n'
+  '<#= it.renderedImports #>\n'
 
 + '<#? it.renderedOptionsInterface #>'
-    + '<#= it.renderedOptionsInterface #>' + '\n' + '\n'
+    + '<#= it.renderedOptionsInterface #>\n\n'
 + '<#?#>'
 
 + '<#= it.renderedComponent #>'
 
 + '<#? it.renderedNestedComponents #>'
-    + '<#~ it.renderedNestedComponents :nestedComponent #>' + '\n\n'
+    + '<#~ it.renderedNestedComponents :nestedComponent #>\n\n'
         + '<#= nestedComponent #>'
-    + '<#~#>' + '\n\n'
+    + '<#~#>\n\n'
 + '<#?#>'
 
-+ 'export default <#= it.defaultExport #>;' + '\n'
++ 'export default <#= it.defaultExport #>;\n'
 + `export {
 <#= it.renderedExports #>
 };
@@ -306,22 +308,22 @@ const renderImports: (model: {
   hasPropTypings: boolean;
   configComponentPath?: string;
 }) => string = createTempate(
-  `import <#= it.widgetName #>, {
-    IOptions` + '<#? it.optionsAliasName #> as <#= it.optionsAliasName #><#?#>' + '\n'
-+ '} from "<#= it.dxExportPath #>";' + '\n' + '\n'
+  'import <#= it.widgetName #>, {\n'
++ '    IOptions<#? it.optionsAliasName #> as <#= it.optionsAliasName #><#?#>\n'
++ '} from "<#= it.dxExportPath #>";\n\n'
 
 + '<#? it.hasPropTypings #>'
-    + 'import * as PropTypes from "prop-types";' + '\n'
+    + 'import * as PropTypes from "prop-types";\n'
 + '<#?#>'
 
 + 'import { <#= it.baseComponentName #> as BaseComponent'
     + '<#? it.hasExtraOptions #>'
         + ', IHtmlOptions'
     + '<#?#>'
-+ ' } from "<#= it.baseComponentPath #>";' + '\n'
++ ' } from "<#= it.baseComponentPath #>";\n'
 
 + '<#? it.configComponentPath #>'
-    + 'import NestedOption from "<#= it.configComponentPath #>";' + '\n'
+    + 'import NestedOption from "<#= it.configComponentPath #>";\n'
 + '<#?#>',
 );
 
@@ -340,20 +342,20 @@ const renderOptionsInterface: (model: {
     type: string;
   }>;
 }) => string = createTempate(
-  'interface <#= it.optionsName #> extends IOptions, IHtmlOptions {' + '\n'
+  'interface <#= it.optionsName #> extends IOptions, IHtmlOptions {\n'
 
 + '<#~ it.templates :template #>'
-    + `  <#= template.render #>?: ${TYPE_RENDER};` + '\n'
-    + `  <#= template.component #>?: ${TYPE_COMPONENT};` + '\n'
-    + `  <#= template.keyFn #>?: ${TYPE_KEY_FN};` + '\n'
+    + `  <#= template.render #>?: ${TYPE_RENDER};\n`
+    + `  <#= template.component #>?: ${TYPE_COMPONENT};\n`
+    + `  <#= template.keyFn #>?: ${TYPE_KEY_FN};\n`
 + '<#~#>'
 
 + '<#~ it.defaultProps :prop #>'
-    + '  <#= prop.name #>?: <#= prop.type #>;' + '\n'
+    + '  <#= prop.name #>?: <#= prop.type #>;\n'
 + '<#~#>'
 
 + '<#~ it.onChangeEvents :prop #>'
-    + '  <#= prop.name #>?: <#= prop.type #>;' + '\n'
+    + '  <#= prop.name #>?: <#= prop.type #>;\n'
 + '<#~#>'
 
 + '}',
@@ -387,19 +389,19 @@ const renderComponent: (model: {
 + '<#~ it.expectedChildren : child #>'
 + L2 + '<#= child.componentName #>:'
     + ' { optionName: "<#= child.optionName #>", isCollectionItem: <#= !!child.isCollectionItem #> },'
-+ '<#~#>' + '\b'
++ '<#~#>\b'
 
 + L1 + '};\n'
 + '<#?#>'
 
 + `<#? it.renderedTemplateProps #>
   protected _templateProps = [<#= it.renderedTemplateProps.join(', ') #>];
-<#?#>}` + '\n'
+<#?#>}\n`
 
 + '<#? it.renderedPropTypings #>'
-    + '(<#= it.className #> as any).propTypes = {' + '\n'
-        + '<#= it.renderedPropTypings.join(\',\\n\') #>' + '\n'
-    + '};' + '\n'
+    + '(<#= it.className #> as any).propTypes = {\n'
+        + '<#= it.renderedPropTypings.join(\',\\n\') #>\n'
+    + '};\n'
 + '<#?#>',
 );
 
@@ -443,7 +445,7 @@ const renderNestedComponent: (model: {
     + '<#~ it.expectedChildren : child #>'
     + L2 + '<#= child.componentName #>:'
         + ' { optionName: "<#= child.optionName #>", isCollectionItem: <#= !!child.isCollectionItem #> },'
-    + '<#~#>' + '\b'
+    + '<#~#>\b'
 
     + L1 + '};'
 + '<#?#>'
@@ -456,7 +458,7 @@ const renderNestedComponent: (model: {
     + L1 + 'public static PredefinedProps = {'
         + '<#~ it.predefinedProps : prop #>'
             + L2 + '<#= prop.name #>: "<#= prop.value #>",'
-        + '<#~#>' + '\b'
+        + '<#~#>\b'
     + L1 + '};'
 + '<#?#>'
 
@@ -484,8 +486,8 @@ const renderPropTyping: (model: IRenderedPropTyping) => string = createTempate(
 
 + '<#??#>'
 
-    + 'PropTypes.oneOfType([' + '\n'
-    + '    <#= it.renderedTypes.join(\',\\n    \') #>' + '\n'
+    + 'PropTypes.oneOfType([\n'
+    + '    <#= it.renderedTypes.join(\',\\n    \') #>\n'
     + '  ])'
 + '<#?#>',
 );

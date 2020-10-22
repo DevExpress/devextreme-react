@@ -45,7 +45,13 @@ export default class extends React.Component<any, { text: string; uncontrolledTe
         uncontrolled mode
         <TextBox
           defaultValue="initial text"
-          ref={(ref) => ref && (this.textBox = ref.instance)}
+          ref={(ref: { instance: dxTextBox; }) => {
+            if (ref) {
+              this.textBox = ref.instance;
+              return ref.instance;
+            }
+            return undefined;
+          }}
         />
         <br />
         <Button onClick={this.setFocusToTextBox} text="Set focus" />
