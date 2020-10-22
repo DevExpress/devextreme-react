@@ -1,7 +1,6 @@
 import { TemplatesStore } from '../templates-store';
 
 describe('templates-store', () => {
-
   it('adds', () => {
     const templatesStore = new TemplatesStore(jest.fn());
 

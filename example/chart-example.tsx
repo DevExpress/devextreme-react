@@ -15,7 +15,6 @@ interface IState {
 }
 
 export default class extends React.Component<any, IState> {
-
   constructor(props: any) {
     super(props);
     this.state = {
@@ -77,7 +76,6 @@ export default class extends React.Component<any, IState> {
 }
 
 class Updater extends React.Component<{ onChange: (value: string) => void }, { value: string }> {
-
   constructor(props: { onChange: (value: string) => void }) {
     super(props);
     this.state = {

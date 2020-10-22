@@ -60,7 +60,6 @@ class CollectionSubNestedComponent extends ConfigurationComponent<{ c?: number, 
 }
 
 describe('nested option', () => {
-
   it('is pulled', () => {
     mount(
       <TestComponent>
@@ -162,9 +161,7 @@ describe('nested option', () => {
   });
 
   it('is pulled according to expectations', () => {
-
     class TestComponentWithExpectation<P = any> extends Component<P> {
-
       protected _expectedChildren = {
         option: {
           optionName: 'expectedItemOptions',

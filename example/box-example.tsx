@@ -18,7 +18,6 @@ const initialState = {
 };
 
 class App extends React.Component<any, typeof initialState> {
-
   constructor(props: any) {
     super(props);
 

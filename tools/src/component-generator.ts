@@ -94,7 +94,6 @@ function generate(component: IComponent): string {
         const nestedSubscribableOptions = options.filter((o) => o.isSubscribable);
         let renderedSubscribableOptions: string[] | undefined;
         if (isNotEmptyArray(nestedSubscribableOptions)) {
-
           nestedSubscribableOptions.forEach((o) => {
             options.push({
               ...o,

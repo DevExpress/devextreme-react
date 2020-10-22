@@ -17,7 +17,6 @@ const startPos = {
 };
 
 export default class extends React.Component<any, { text: string; pos: IPosition }> {
-
   constructor(props: any) {
     super(props);
     const pos = { ...startPos };

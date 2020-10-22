@@ -16,7 +16,6 @@ interface IListItemProps {
 }
 
 class Item extends React.Component<IListItemProps, { counter: number }> {
-
   constructor(props: IListItemProps) {
     super(props);
     this.state = {
@@ -62,7 +61,6 @@ function ItemsRender(item: string) {
 const listItems: string[] = ['orange', 'apple', 'potato'];
 
 export default class extends React.Component<any, { text: string; items: IListItemProps[]; }> {
-
   private dataSource: DataSource;
 
   constructor(props: any) {

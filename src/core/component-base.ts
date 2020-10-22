@@ -164,7 +164,6 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
       ),
     );
   }
-
 }
 
 export {

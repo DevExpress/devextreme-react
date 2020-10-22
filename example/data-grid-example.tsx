@@ -38,7 +38,6 @@ const RegionComponent = (props: any) => {
 };
 
 export default class extends React.Component<any, { expandAll: boolean, pageSize: number }> {
-
   constructor(props: any) {
     super(props);
     this.state = {

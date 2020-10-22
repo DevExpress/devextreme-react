@@ -6,7 +6,6 @@ import {
 } from './test-component';
 
 describe('rendering', () => {
-
   it('renders correctly', () => {
     const component = shallow(
       <TestComponent />,
@@ -53,7 +52,6 @@ describe('rendering', () => {
 });
 
 describe('element attrs management', () => {
-
   it('passes id, className and style to element', () => {
     const component = mount(
       <TestComponent id="id1" className="class1" style={{ background: 'red' }} />,
@@ -132,7 +130,6 @@ describe('element attrs management', () => {
 });
 
 describe('disposing', () => {
-
   it('call dispose', () => {
     const component = shallow(
       <TestComponent />,
@@ -166,5 +163,4 @@ describe('disposing', () => {
 
     expect(Widget.option.mock.calls.length).toBe(0);
   });
-
 });

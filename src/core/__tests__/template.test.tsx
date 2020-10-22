@@ -6,7 +6,6 @@ import { mount, React, shallow } from './setup';
 import { TestComponent, Widget, WidgetClass } from './test-component';
 
 class ComponentWithTemplates extends TestComponent {
-
   protected _templateProps = [{
     tmplOption: 'item',
     render: 'itemRender',
@@ -35,7 +34,6 @@ function testTemplateOption(testedOption: string) {
   if (testedOption === 'itemComponent') {
     prepareTemplate = (render) => {
       class ItemComponent extends React.PureComponent<{data: any, index?: number}> {
-
         public render() {
           const { data, index } = this.props;
           return render(data, index);
@@ -483,7 +481,6 @@ describe('nested template', () => {
     expect(templates.length).toBe(1);
     expect(templates[0]).toBe('1');
   });
-
 });
 
 describe('component/render in nested options', () => {
