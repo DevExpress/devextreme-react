@@ -26,7 +26,11 @@ function renderTemplate(
 }
 
 function renderItemTemplate(
-  model?: any, container?: any, index?: number, onRendered?: () => void): Element {
+  model?: any,
+  container?: any,
+  index?: number,
+  onRendered?: () => void,
+): Element {
   return renderTemplate('item', model, container, index, onRendered);
 }
 
