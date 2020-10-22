@@ -104,11 +104,10 @@ function generate(component: IComponent): string {
             });
           });
 
-          renderedSubscribableOptions = nestedSubscribableOptions.map((o) =>
-            renderObjectEntry({
-              key: `default${uppercaseFirst(o.name)}`,
-              value: o.name,
-            }),
+          renderedSubscribableOptions = nestedSubscribableOptions.map((o) => renderObjectEntry({
+            key: `default${uppercaseFirst(o.name)}`,
+            value: o.name,
+          }),
           );
         }
         const nestedTemplates = createTemplateDto(c.templates);
@@ -222,11 +221,10 @@ function generate(component: IComponent): string {
       widgetName,
       optionsName,
       renderedTemplateProps: templates && templates.map(renderTemplateOption),
-      renderedDefaultProps: defaultProps && defaultProps.map((o) =>
-        renderObjectEntry({
-          key: o.name,
-          value: o.actualOptionName,
-        }),
+      renderedDefaultProps: defaultProps && defaultProps.map((o) => renderObjectEntry({
+        key: o.name,
+        value: o.actualOptionName,
+      }),
       ),
       renderedPropTypings,
       expectedChildren: component.expectedChildren,

@@ -14,7 +14,6 @@
         "class-methods-use-this": "off",
         "consistent-return": "off",
         "function-paren-newline": "off",
-        "implicit-arrow-linebreak": "off",
         "import/extensions": "off",
         "import/no-cycle": "off",
         "import/no-extraneous-dependencies": "off",
