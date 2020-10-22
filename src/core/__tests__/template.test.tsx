@@ -14,7 +14,8 @@ class ComponentWithTemplates extends TestComponent {
   }];
 }
 
-function renderTemplate(name: string, model?: any, container?: any, index?: number, onRendered?: () => void): Element {
+function renderTemplate(
+  name: string, model?: any, container?: any, index?: number, onRendered?: () => void): Element {
   model = model || {};
   container = container || document.createElement('div');
   const { render } = WidgetClass.mock.calls[0][1].integrationOptions.templates[name];
@@ -24,7 +25,8 @@ function renderTemplate(name: string, model?: any, container?: any, index?: numb
   });
 }
 
-function renderItemTemplate(model?: any, container?: any, index?: number, onRendered?: () => void): Element {
+function renderItemTemplate(
+  model?: any, container?: any, index?: number, onRendered?: () => void): Element {
   return renderTemplate('item', model, container, index, onRendered);
 }
 

@@ -44,7 +44,8 @@ class TemplatesManager {
 
   public add(name: string, template: ITemplate) {
     this._templatesContent[name] = template.content;
-    const contentCreator = contentCreators[template.type].bind(this, () => this._templatesContent[name]);
+    const contentCreator = contentCreators[template.type]
+      .bind(this, () => this._templatesContent[name]);
     this._templates[name] = createDxTemplate(
       contentCreator,
       this._templatesStore,
