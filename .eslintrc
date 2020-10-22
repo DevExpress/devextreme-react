@@ -12,7 +12,6 @@
     },
     "rules": {
         "class-methods-use-this": "off",
-        "consistent-return": "off",
         "function-paren-newline": "off",
         "import/extensions": "off",
         "import/no-cycle": "off",
