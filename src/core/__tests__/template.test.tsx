@@ -153,8 +153,7 @@ function testTemplateOption(testedOption: string) {
     const container = document.createElement('div');
     renderItemTemplate({ text: 'with data' }, container);
     component.update();
-    // eslint-disable-next-line no-useless-escape
-    expect(container.innerHTML).toBe('Template with data<span style=\"display: none;\"></span>');
+    expect(container.innerHTML).toBe('Template with data<span style="display: none;"></span>');
   });
 
   it('does not render template removeEvent listener', () => {
