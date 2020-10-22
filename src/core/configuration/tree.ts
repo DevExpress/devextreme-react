@@ -23,29 +23,29 @@ function buildNode(
 ): Record<string, any> {
   const result: Record<string, any> = {};
 
-  for (const key of Object.keys(node.predefinedOptions)) {
+  Object.keys(node.predefinedOptions).forEach((key) => {
     result[key] = node.predefinedOptions[key];
-  }
+  });
 
-  for (const key of Object.keys(node.configs)) {
+  Object.keys(node.configs).forEach((key) => {
     result[key] = buildNode(node.configs[key], templatesAccum, ignoreInitialValues);
-  }
+  });
 
-  for (const key of Object.keys(node.configCollections)) {
+  Object.keys(node.configCollections).forEach((key) => {
     result[key] = node.configCollections[key].map(
       (item) => buildNode(item, templatesAccum, ignoreInitialValues),
     );
-  }
+  });
 
   if (!ignoreInitialValues) {
-    for (const key of Object.keys(node.initialOptions)) {
+    Object.keys(node.initialOptions).forEach((key) => {
       result[key] = node.initialOptions[key];
-    }
+    });
   }
 
-  for (const key of Object.keys(node.options)) {
+  Object.keys(node.options).forEach((key) => {
     result[key] = node.options[key];
-  }
+  });
 
   buildTemplates(node, result, templatesAccum);
 
@@ -131,7 +131,7 @@ function findValue(node: IConfigNode, path: string[]): undefined | IValueDescrip
     };
   }
 
-  return;
+  return undefined;
 }
 
 function findValueInObject(obj: any, path: string[]): undefined | IValueDescriptor {
@@ -147,7 +147,7 @@ function findValueInObject(obj: any, path: string[]): undefined | IValueDescript
     return findValueInObject(obj[key], path);
   }
 
-  return;
+  return undefined;
 }
 
 export {

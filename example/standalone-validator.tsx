@@ -1,5 +1,7 @@
 import * as React from 'react';
-import { Button, TextBox, ValidationSummary, Validator } from '../src';
+import {
+  Button, TextBox, ValidationSummary, Validator,
+} from '../src';
 
 import { RequiredRule } from '../src/validator';
 import Example from './example-block';
@@ -41,7 +43,7 @@ class ValidatorExample extends React.Component<any, any> {
   };
 
   public render() {
-    const {isValid} = this.state;
+    const { isValid } = this.state;
     return (
       <div>
         <Example title="Standalone Validator example">

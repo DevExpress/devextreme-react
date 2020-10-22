@@ -4,13 +4,13 @@ import Example from './example-block';
 import { Button } from '../src/button';
 import { Toolbar } from '../src/toolbar';
 
-const ItemComponent  = (data: {data: {text: string}}) => {
+const ItemComponent = (data: {data: {text: string}}) => {
   return (
     <Button text={data.data.text} />
   );
 };
 
-const items = [{text: 'Text'}, {text: 'Text2'}];
+const items = [{ text: 'Text' }, { text: 'Text2' }];
 
 export default class extends React.Component<any, any> {
   public render() {

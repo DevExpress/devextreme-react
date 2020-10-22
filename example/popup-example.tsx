@@ -10,7 +10,6 @@ const VALID_TEXT = 'good';
 const validateText = (text: string) => text === VALID_TEXT;
 
 export default class extends React.Component<any, { visible: boolean; text: string; }> {
-
   constructor(props: any) {
     super(props);
     this.state = {
@@ -23,7 +22,7 @@ export default class extends React.Component<any, { visible: boolean; text: stri
   }
 
   private toggle(visible: boolean) {
-    const {text} = this.state;
+    const { text } = this.state;
     this.setState({
       visible: visible || !validateText(text),
     });
@@ -36,7 +35,7 @@ export default class extends React.Component<any, { visible: boolean; text: stri
   }
 
   public render() {
-    const {text, visible} = this.state;
+    const { text, visible } = this.state;
     return (
       <Example title="DxPopup" state={this.state}>
         <TextBox value={text} onValueChanged={this.handleTextUpdate} valueChangeEvent="input" />

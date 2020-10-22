@@ -2,7 +2,9 @@
 import * as React from 'react';
 import Example from './example-block';
 
-import Map, { Location, Marker, Route, Tooltip } from '../src/map';
+import Map, {
+  Location, Marker, Route, Tooltip,
+} from '../src/map';
 
 interface IPosition {
   lat: number;
@@ -15,7 +17,6 @@ const startPos = {
 };
 
 export default class extends React.Component<any, { text: string; pos: IPosition }> {
-
   constructor(props: any) {
     super(props);
     const pos = { ...startPos };
@@ -28,7 +29,7 @@ export default class extends React.Component<any, { text: string; pos: IPosition
   }
 
   public updatePos() {
-    const {pos: {lat, lng}} = this.state;
+    const { pos: { lat, lng } } = this.state;
     const pos = {
       lat: lat + 0.01,
       lng: lng + 0.05,
@@ -41,7 +42,7 @@ export default class extends React.Component<any, { text: string; pos: IPosition
   }
 
   public render() {
-    const {pos} = this.state;
+    const { pos } = this.state;
     return (
       <Example title="dxMap" state={this.state}>
         <button type="button" onClick={this.updatePos}>Move!</button>

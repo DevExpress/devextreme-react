@@ -1,7 +1,9 @@
 import * as React from 'react';
 import Example from './example-block';
 
-import { Button, SlideOutView, Template, Toolbar } from '../src';
+import {
+  Button, SlideOutView, Template, Toolbar,
+} from '../src';
 
 function renderMenuTemplate() {
   const items = [{
@@ -27,7 +29,6 @@ function renderMenuTemplate() {
 }
 
 export default class extends React.Component<any, any> {
-
   constructor(props: any) {
     super(props);
     this.state = {
@@ -38,7 +39,7 @@ export default class extends React.Component<any, any> {
   }
 
   public toggle() {
-    const {menuVisible} = this.state;
+    const { menuVisible } = this.state;
     this.setState({ menuVisible: !menuVisible });
   }
 
@@ -49,7 +50,7 @@ export default class extends React.Component<any, any> {
   }
 
   public render() {
-    const {menuVisible} = this.state;
+    const { menuVisible } = this.state;
     return (
       <Example title="DxSlideOutView" state={this.state}>
         <Button text="toggle" onClick={this.toggle} />

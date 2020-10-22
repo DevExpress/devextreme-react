@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import * as React from 'react';
 
 import Example from './example-block';
@@ -7,7 +8,6 @@ import ScrollView from '../src/scroll-view';
 import TextBox from '../src/text-box';
 
 export default class extends React.Component<any, { text: string }> {
-
   constructor(props: any) {
     super(props);
     this.state = {
@@ -31,7 +31,7 @@ export default class extends React.Component<any, { text: string }> {
   }
 
   public render() {
-    const {text} = this.state;
+    const { text } = this.state;
     return (
       <Example title="DxScrollView" state={this.state}>
         <ScrollView height="150px">

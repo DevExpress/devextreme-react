@@ -8,7 +8,6 @@ import { TextBox } from '../src/text-box';
 import { RequiredRule, Validator } from '../src/validator';
 
 export default class extends React.Component<any, { text: string; uncontrolledText: string; }> {
-
   private textBox: dxTextBox;
 
   constructor(props: any) {
@@ -40,13 +39,17 @@ export default class extends React.Component<any, { text: string; uncontrolledTe
   }
 
   public render() {
-    const {text} = this.state;
+    const { text } = this.state;
     return (
       <Example title="DxTextBox" state={this.state}>
         uncontrolled mode
         <TextBox
           defaultValue="initial text"
-          ref={(ref) => ref && (this.textBox = ref.instance)}
+          ref={(ref) => {
+            if (ref) {
+              this.textBox = ref.instance;
+            }
+          }}
         />
         <br />
         <Button onClick={this.setFocusToTextBox} text="Set focus" />

@@ -34,15 +34,14 @@ class OptionsManager {
   public getInitialOptions(rootNode: IConfigNode) {
     const config = buildConfig(rootNode, false);
 
-    for (const key of Object.keys(config.templates)) {
+    Object.keys(config.templates).forEach((key) => {
       this._templatesManager.add(key, config.templates[key]);
-    }
-
+    });
     const options: Record<string, any> = {};
 
-    for (const key of Object.keys(config.options)) {
+    Object.keys(config.options).forEach((key) => {
       options[key] = this._wrapOptionValue(key, config.options[key]);
-    }
+    });
 
     if (this._templatesManager.templatesCount > 0) {
       options.integrationOptions = {
@@ -67,10 +66,9 @@ class OptionsManager {
       this._resetOption(optionName);
     });
 
-    for (const key of Object.keys(changes.templates)) {
+    Object.keys(changes.templates).forEach((key) => {
       this._templatesManager.add(key, changes.templates[key]);
-    }
-
+    });
     if (this._templatesManager.templatesCount > 0) {
       this._setValue(
         'integrationOptions',
@@ -80,10 +78,10 @@ class OptionsManager {
       );
     }
 
-    for (const key of Object.keys(changes.options)) {
+    Object.keys(changes.options).forEach((key) => {
       this._updatedOptions.add(key);
       this._setValue(key, changes.options[key]);
-    }
+    });
 
     this._isUpdating = false;
     this._instance.endUpdate();
@@ -108,12 +106,12 @@ class OptionsManager {
 
     const { value, type } = valueDescriptor;
     if (type === ValueType.Complex) {
-      for (const key of Object.keys(value)) {
+      Object.keys(value).forEach((key) => {
         if (value[key] === e.value[key]) {
-          continue;
+          return;
         }
         this._setGuard(mergeNameParts(e.fullName, key), value[key]);
-      }
+      });
     } else {
       if (value === e.value) {
         return;
@@ -123,10 +121,10 @@ class OptionsManager {
   }
 
   public dispose() {
-    for (const optionName of Object.keys(this._guards)) {
+    Object.keys(this._guards).forEach((optionName) => {
       window.clearTimeout(this._guards[optionName]);
       delete this._guards[optionName];
-    }
+    });
   }
 
   private _callOptionChangeHandler(optionName: string, optionValue: any) {

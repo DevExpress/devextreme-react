@@ -3,7 +3,9 @@ import * as React from 'react';
 import { ITemplateMeta, ITemplateProps } from '../../template';
 import { separateProps } from '../../widget-config';
 
-import { ElementType, getElementInfo, IExpectedChild, IOptionElement } from './element';
+import {
+  ElementType, getElementInfo, IExpectedChild, IOptionElement,
+} from './element';
 
 import { IConfigNode, ITemplate } from '../config-node';
 import { mergeNameParts } from '../utils';
@@ -44,7 +46,7 @@ function createConfigNode(element: IOptionElement, path: string): IConfigNode {
 
   const childrenData = processChildren(element, fullName);
 
-  for (const templateMeta of element.descriptor.templates) {
+  element.descriptor.templates.forEach((templateMeta) => {
     const template = getAnonymousTemplate(
       element.props,
       templateMeta,
@@ -53,7 +55,7 @@ function createConfigNode(element: IOptionElement, path: string): IConfigNode {
     if (template) {
       childrenData.templates.push(template);
     }
-  }
+  });
 
   return {
     fullName,

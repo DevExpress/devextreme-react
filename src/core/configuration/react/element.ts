@@ -59,7 +59,7 @@ function getElementInfo(
 
   if (elementDescriptor.OptionName) {
     let name = elementDescriptor.OptionName;
-    let isCollectionItem =  elementDescriptor.IsCollectionItem;
+    let isCollectionItem = elementDescriptor.IsCollectionItem;
 
     const expectation = parentExpectedChildren && parentExpectedChildren[name];
     if (expectation) {

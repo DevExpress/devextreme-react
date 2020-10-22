@@ -112,11 +112,11 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
 
   private _getElementProps(): Record<string, any> {
     const elementProps: Record<string, any> = {
-      ref: (element: HTMLDivElement) => this._element = element,
+      ref: (element: HTMLDivElement) => { this._element = element; },
     };
 
     elementPropNames.forEach((name) => {
-      const props = this.props;
+      const { props } = this;
       if (name in props) {
         elementProps[name] = props[name];
       }
@@ -146,7 +146,7 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
   }
 
   protected renderChildren() {
-    const {children} = this.props;
+    const { children } = this.props;
     return children;
   }
 
@@ -164,7 +164,6 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
       ),
     );
   }
-
 }
 
 export {

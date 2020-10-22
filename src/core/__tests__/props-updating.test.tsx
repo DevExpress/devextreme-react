@@ -19,7 +19,6 @@ interface IControlledComponentProps {
 }
 
 class ControlledComponent extends TestComponent<IControlledComponentProps> {
-
   protected _defaults = {
     defaultControlledOption: 'controlledOption',
   };
@@ -33,7 +32,6 @@ class NestedComponent extends ConfigurationComponent<{
   value?: number;
   onValueChange?: (value: number) => void;
 }> {
-
   public static DefaultsProps = {
     defaultC: 'c',
   };
@@ -62,7 +60,6 @@ class CollectionSubNestedComponent extends ConfigurationComponent<{
 (CollectionSubNestedComponent as any).IsCollectionItem = true;
 
 class TestComponentWithExpectation<P = any> extends Component<P> {
-
   protected _expectedChildren = {
     items: {
       optionName: 'items',
@@ -74,7 +71,6 @@ class TestComponentWithExpectation<P = any> extends Component<P> {
 }
 
 describe('option update', () => {
-
   it('calls option method on props update', () => {
     const component = mount(
       <TestComponent />,
@@ -95,7 +91,7 @@ describe('option update', () => {
 
   it('updates nested collection item', () => {
     const TestContainer = (props: any) => {
-      const {value} = props;
+      const { value } = props;
       return (
         <TestComponentWithExpectation>
           <CollectionNestedComponent a={value} />
@@ -115,7 +111,7 @@ describe('option update', () => {
 
   it('updates sub-nested collection item', () => {
     const TestContainer = (props: any) => {
-      const {value} = props;
+      const { value } = props;
       return (
         <TestComponentWithExpectation>
           <CollectionNestedComponent>
@@ -133,11 +129,9 @@ describe('option update', () => {
     expect(Widget.option.mock.calls.length).toBe(1);
     expect(Widget.option.mock.calls[0]).toEqual(['items[0].subItems[0].a', 234]);
   });
-
 });
 
 describe('option control', () => {
-
   it('binds callback for optionChanged', () => {
     shallow(
       <ControlledComponent everyOption={123} />,
@@ -147,7 +141,6 @@ describe('option control', () => {
   });
 
   describe('handler option', () => {
-
     it('is not fired when option changed on props updating', () => {
       const handler = jest.fn();
       const component = shallow(
@@ -172,7 +165,6 @@ describe('option control', () => {
       Widget.option('controlledOption', 'controlled');
 
       expect(handler.mock.calls.length).toBe(1);
-
     });
 
     it('is not fired when option changed on props updating (handler updated)', () => {
@@ -328,7 +320,6 @@ describe('option control', () => {
 });
 
 describe('option defaults control', () => {
-
   it('pass default values to widget', () => {
     shallow(
       <ControlledComponent defaultControlledOption="default" />,
@@ -358,11 +349,9 @@ describe('option defaults control', () => {
     jest.runAllTimers();
     expect(Widget.option.mock.calls.length).toBe(0);
   });
-
 });
 
 describe('cfg-component option control', () => {
-
   it('rolls cfg-component option value back', () => {
     mount(
       <ControlledComponent>
@@ -432,7 +421,7 @@ describe('cfg-component option control', () => {
 
   it('rolls cfg-component option value back if value has no changes', () => {
     const TestContainer = (props: any) => {
-      const {value} = props;
+      const { value } = props;
       return (
         <ControlledComponent>
           <NestedComponent a={value} b="const" />
@@ -453,7 +442,7 @@ describe('cfg-component option control', () => {
 
   it('apply cfg-component option change if value really change', () => {
     const TestContainer = (props: any) => {
-      const {value} = props;
+      const { value } = props;
       return (
         <ControlledComponent>
           <NestedComponent a={value} b="const" />
@@ -484,11 +473,9 @@ describe('cfg-component option control', () => {
     jest.runAllTimers();
     expect(Widget.option.mock.calls.length).toBe(0);
   });
-
 });
 
 describe('cfg-component option defaults control', () => {
-
   it('pass nested default values to widget', () => {
     mount(
       <ControlledComponent>
@@ -523,9 +510,8 @@ describe('cfg-component option defaults control', () => {
   });
 
   it('ignores 3rd-party changes in nested default props', () => {
-
     const TestContainer = (props: any) => {
-      const {optionDefValue} = props;
+      const { optionDefValue } = props;
       return (
         <ControlledComponent>
           <NestedComponent defaultC={optionDefValue} />
@@ -565,11 +551,9 @@ describe('cfg-component option defaults control', () => {
     expect(WidgetClass.mock.calls[0][1].nestedOption.c).toBe('controlled');
     expect(WidgetClass.mock.calls[0][1].nestedOption).not.toHaveProperty('defaultC');
   });
-
 });
 
 describe('mutation detection', () => {
-
   it('prevents update if no option changed', () => {
     const component = shallow(
       <TestComponent prop="abc" />,
@@ -665,13 +649,13 @@ describe('onXXXChange', () => {
   it('is not called on component changes controlled option using "onXXXChange"', () => {
     const onPropChange = jest.fn();
     const component = mount(
-            <TestComponent
-                text="0"
-                onTextChange={onPropChange}
-            />,
+      <TestComponent
+        text="0"
+        onTextChange={onPropChange}
+      />,
     );
     onPropChange.mockImplementation((value) => {
-      component.setProps({ text: `X${value}`});
+      component.setProps({ text: `X${value}` });
       fireOptionChange('text', `X${value}`);
     });
     expect(onPropChange).not.toBeCalled();

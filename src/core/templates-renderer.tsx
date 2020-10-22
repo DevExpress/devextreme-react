@@ -20,7 +20,7 @@ class TemplatesRenderer extends React.PureComponent<{ templatesStore: TemplatesS
   }
 
   public render() {
-    const {templatesStore} = this.props;
+    const { templatesStore } = this.props;
     return React.createElement(
       React.Fragment,
       {},

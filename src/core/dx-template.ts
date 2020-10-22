@@ -21,7 +21,6 @@ function createDxTemplate(
   templatesStore: TemplatesStore,
   keyFn?: (data: any) => string,
 ): IDxTemplate {
-
   const renderedTemplates = new DoubleKeyMap<any, HTMLElement | null, string>();
 
   return {

@@ -32,7 +32,7 @@ class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps, ITempla
   }
 
   public componentDidMount() {
-    const {onRendered} = this.props;
+    const { onRendered } = this.props;
     onRendered?.();
 
     this._subscribeOnRemove();
@@ -46,7 +46,7 @@ class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps, ITempla
     // Let React remove it itself
     // eslint-disable-next-line react/no-find-dom-node
     const node = ReactDOM.findDOMNode(this);
-    const {container} = this.props;
+    const { container } = this.props;
 
     if (node) {
       container.appendChild(node);
@@ -63,7 +63,7 @@ class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps, ITempla
   private _subscribeOnRemove() {
     // eslint-disable-next-line react/no-find-dom-node
     const node = ReactDOM.findDOMNode(this);
-    const {removalListenerRequired} = this.state;
+    const { removalListenerRequired } = this.state;
 
     if (node && node.nodeType === Node.ELEMENT_NODE) {
       this._subscribeOnElementRemoval(node as Element);
@@ -86,13 +86,13 @@ class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps, ITempla
   }
 
   private _onDxRemove(): void {
-    const {onRemoved} = this.props;
+    const { onRemoved } = this.props;
     onRemoved();
   }
 
   public render() {
-    const {removalListenerRequired} = this.state;
-    const {content, container} = this.props;
+    const { removalListenerRequired } = this.state;
+    const { content, container } = this.props;
     const removalListener = removalListenerRequired
       ? React.createElement('span', { style: removalListenerStyle, ref: this._removalListenerRef })
       : undefined;

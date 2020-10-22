@@ -6,7 +6,6 @@ import { TestComponent, Widget, WidgetClass } from './test-component';
 const ExtensionWidgetClass = jest.fn(() => Widget);
 
 class TestExtensionComponent<P = any> extends ExtensionComponent<P> {
-
   constructor(props: P) {
     super(props);
 
