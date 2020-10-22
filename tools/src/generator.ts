@@ -169,8 +169,7 @@ function extractPropTypings(
 }
 
 function createPropTyping(option: IProp, customTypes: Record<string, ICustomType>): IPropTyping {
-  const isRestrictedType = (t: ITypeDescr): boolean => t.acceptableValues
-  && t.acceptableValues.length > 0;
+  const isRestrictedType = (t: ITypeDescr): boolean => t.acceptableValues?.length > 0;
 
   const rawTypes = option.types.filter((t) => !isRestrictedType(t));
   const restrictedTypes = option.types.filter((t) => isRestrictedType(t));
