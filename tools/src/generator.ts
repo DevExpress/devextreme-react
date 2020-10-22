@@ -135,7 +135,10 @@ function mapWidget(
 }
 
 function extractNestedComponents(
-  props: IComplexProp[], rawWidgetName: string, widgetName: string): INestedComponent[] {
+  props: IComplexProp[],
+  rawWidgetName: string,
+  widgetName: string,
+): INestedComponent[] {
   const nameClassMap: Record<string, string> = {};
   nameClassMap[rawWidgetName] = widgetName;
   props.forEach((p) => {
@@ -157,15 +160,16 @@ function extractNestedComponents(
 }
 
 function extractPropTypings(
-  options: IProp[], customTypes: Record<string, ICustomType>): IPropTyping[] {
+  options: IProp[],
+  customTypes: Record<string, ICustomType>,
+): IPropTyping[] {
   return options
     .map((o) => createPropTyping(o, customTypes))
     .filter((t) => t != null);
 }
 
 function createPropTyping(option: IProp, customTypes: Record<string, ICustomType>): IPropTyping {
-  const isRestrictedType = (t: ITypeDescr): boolean => t.acceptableValues
-  && t.acceptableValues.length > 0;
+  const isRestrictedType = (t: ITypeDescr): boolean => t.acceptableValues?.length > 0;
 
   const rawTypes = option.types.filter((t) => !isRestrictedType(t));
   const restrictedTypes = option.types.filter((t) => isRestrictedType(t));
