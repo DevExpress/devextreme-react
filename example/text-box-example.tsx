@@ -1,8 +1,8 @@
 /* eslint-disable react/no-unused-state */
 import * as React from 'react';
+import dxTextBox from 'devextreme/ui/text_box';
 import Example from './example-block';
 
-import dxTextBox from 'devextreme/ui/text_box';
 import { Button } from '../src/button';
 import { TextBox } from '../src/text-box';
 import { RequiredRule, Validator } from '../src/validator';

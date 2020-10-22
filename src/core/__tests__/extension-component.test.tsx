@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 import { ExtensionComponent } from '../extension-component';
 import ConfigurationComponent from '../nested-option';
 import { mount, React, shallow } from './setup';
