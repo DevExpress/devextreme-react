@@ -2,7 +2,9 @@ import * as React from 'react';
 import Example from './example-block';
 
 import { Button, NumberBox } from '../src';
-import Form, { GroupItem, Item, RequiredRule, SimpleItem } from '../src/form';
+import Form, {
+  GroupItem, Item, RequiredRule, SimpleItem,
+} from '../src/form';
 import TextArea from '../src/text-area';
 
 const employee: any = {
@@ -37,8 +39,8 @@ export default class extends React.Component<any, {disableIdInput: boolean}> {
   }
 
   private toggleIdInputState = () => {
-    const {disableIdInput} = this.state;
-    this.setState({disableIdInput: !disableIdInput});
+    const { disableIdInput } = this.state;
+    this.setState({ disableIdInput: !disableIdInput });
   };
 
   public render() {
@@ -94,6 +96,6 @@ export default class extends React.Component<any, {disableIdInput: boolean}> {
 }
 
 const getTextBoxComponent = (disabled: boolean) => (props: any) => {
-  const {data} = props;
+  const { data } = props;
   return <NumberBox disabled={disabled} value={data.editorOptions.value} />;
 };

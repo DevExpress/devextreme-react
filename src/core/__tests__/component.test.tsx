@@ -1,7 +1,9 @@
 import * as events from 'devextreme/events';
 
 import { mount, React, shallow } from './setup';
-import { fireOptionChange, TestComponent, Widget, WidgetClass } from './test-component';
+import {
+  fireOptionChange, TestComponent, Widget, WidgetClass,
+} from './test-component';
 
 describe('rendering', () => {
 

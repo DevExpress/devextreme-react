@@ -18,7 +18,7 @@ class ComponentWithTemplates extends TestComponent {
 function renderTemplate(name: string, model?: any, container?: any, index?: number, onRendered?: () => void): Element {
   model = model || {};
   container = container || document.createElement('div');
-  const render = WidgetClass.mock.calls[0][1].integrationOptions.templates[name].render;
+  const { render } = WidgetClass.mock.calls[0][1].integrationOptions.templates[name];
 
   return render({
     container, model, ...(index && { index }), onRendered,
@@ -37,7 +37,7 @@ function testTemplateOption(testedOption: string) {
       class ItemComponent extends React.PureComponent<{data: any, index?: number}> {
 
         public render() {
-          const {data, index} = this.props;
+          const { data, index } = this.props;
           return render(data, index);
         }
       }
@@ -54,7 +54,7 @@ function testTemplateOption(testedOption: string) {
 
     expect(options.item).toBe('item');
 
-    const integrationOptions = options.integrationOptions;
+    const { integrationOptions } = options;
 
     expect(integrationOptions).toBeDefined();
     expect(integrationOptions.templates).toBeDefined();
@@ -151,7 +151,7 @@ function testTemplateOption(testedOption: string) {
     const component = mount(React.createElement(ComponentWithTemplates, elementOptions));
 
     const container = document.createElement('div');
-    renderItemTemplate({ text: 'with data'}, container);
+    renderItemTemplate({ text: 'with data' }, container);
     component.update();
     expect(container.innerHTML).toBe('Template with data<span style=\"display: none;\"></span>');
   });
@@ -172,7 +172,7 @@ function testTemplateOption(testedOption: string) {
     const component = mount(React.createElement(ComponentWithTemplates, elementOptions));
 
     const container = document.createElement('table');
-    renderItemTemplate({ text: 'with data'}, container);
+    renderItemTemplate({ text: 'with data' }, container);
 
     component.update();
     expect(container.innerHTML)
@@ -262,7 +262,7 @@ function testTemplateOption(testedOption: string) {
     component.update();
     const removeListener = container.getElementsByTagName('SPAN')[0];
 
-    const parentElement = removeListener.parentElement;
+    const { parentElement } = removeListener;
     if (!parentElement) { throw new Error(); }
 
     parentElement.innerHTML = '';
@@ -289,7 +289,7 @@ function testTemplateOption(testedOption: string) {
     component.update();
     const templateContent = component.find('.template').getDOMNode();
 
-    const parentElement = templateContent.parentElement;
+    const { parentElement } = templateContent;
     if (!parentElement) { throw new Error(); }
 
     parentElement.removeChild(templateContent);
@@ -346,7 +346,7 @@ describe('component template', () => {
 
   it('renders index', () => {
     const ItemTemplate = (props: any) => {
-      const {data, index} = props;
+      const { data, index } = props;
       return (
         <div className="template">
           value:
@@ -386,7 +386,7 @@ describe('nested template', () => {
 
     expect(options.item).toBeUndefined();
 
-    const integrationOptions = options.integrationOptions;
+    const { integrationOptions } = options;
 
     expect(integrationOptions).toBeDefined();
     expect(integrationOptions.templates).toBeDefined();
@@ -528,7 +528,7 @@ describe('component/render in nested options', () => {
     const options = WidgetClass.mock.calls[0][1];
     expect(options.option.item).toBe('option.item');
 
-    const integrationOptions = options.integrationOptions;
+    const { integrationOptions } = options;
 
     expect(integrationOptions).toBeDefined();
     expect(integrationOptions.templates).toBeDefined();
@@ -547,7 +547,7 @@ describe('component/render in nested options', () => {
 
     const options = WidgetClass.mock.calls[0][1];
 
-    const integrationOptions = options.integrationOptions;
+    const { integrationOptions } = options;
 
     expect(integrationOptions.templates.nested).toBeDefined();
     expect(typeof integrationOptions.templates.nested.render).toBe('function');
@@ -573,7 +573,7 @@ describe('component/render in nested options', () => {
     expect(options.option.item).toBe('option.item');
     expect(options.collection[0].template).toBe('collection[0].template');
 
-    const integrationOptions = options.integrationOptions;
+    const { integrationOptions } = options;
 
     expect(Object.keys(integrationOptions.templates)).toEqual(['option.item', 'collection[0].template']);
   });
@@ -604,7 +604,7 @@ describe('component/render in nested options', () => {
     expect(options.collection[2].option.item).toBe('collection[2].option.item');
     expect(options.option.collection[0].template).toBe('option.collection[0].template');
 
-    const integrationOptions = options.integrationOptions;
+    const { integrationOptions } = options;
 
     expect(Object.keys(integrationOptions.templates)).toEqual([
       'option.collection[0].template',
@@ -666,7 +666,7 @@ describe('component/render in nested options', () => {
     expect(options.option.item).toBe(undefined);
     expect(options.option.template).toBe(undefined);
 
-    const integrationOptions = options.integrationOptions;
+    const { integrationOptions } = options;
 
     expect(Object.keys(integrationOptions.templates)).toEqual([
       'collection[0].template',
@@ -724,7 +724,7 @@ describe('component/render in nested options', () => {
   it('renders updates in deeply nested templates', () => {
     const getTemplate = (arg: string) => () => <div className="template">{arg}</div>;
     const TestContainer = (props: any) => {
-      const {value} = props;
+      const { value } = props;
       return (
         <TestComponent>
           <CollectionNestedComponent>
@@ -734,7 +734,7 @@ describe('component/render in nested options', () => {
       );
     };
     const component = mount(<TestContainer value="test" />);
-    component.setProps({value: 'test2'});
+    component.setProps({ value: 'test2' });
     jest.runAllTimers();
 
     renderTemplate('collection[0].option.item');
@@ -744,10 +744,10 @@ describe('component/render in nested options', () => {
 
   it('adds nested components dynamically', () => {
     const renderItem = () => <div>Template</div>;
-    const items = [{id: 1, render: renderItem}];
+    const items = [{ id: 1, render: renderItem }];
 
     const TestContainer = (props: any) => {
-      const {items} = props;
+      const { items } = props;
       return (
         <TestComponent>
           {items.map((item) => <CollectionNestedComponent key={item.id} render={item.render} />)}
@@ -759,7 +759,7 @@ describe('component/render in nested options', () => {
     component.setProps({
       items: [
         ...items,
-        {id: 2, render: renderItem},
+        { id: 2, render: renderItem },
       ],
     });
 
@@ -779,10 +779,10 @@ describe('component/render in nested options', () => {
 
   it('removes nested components dynamically', () => {
     const renderItem = () => <div>Template</div>;
-    const items = [{id: 1, render: renderItem}, {id: 2, render: renderItem}];
+    const items = [{ id: 1, render: renderItem }, { id: 2, render: renderItem }];
 
     const TestContainer = (props: any) => {
-      const {items} = props;
+      const { items } = props;
       return (
         <TestComponent>
           {items.map((item) => <CollectionNestedComponent key={item.id} render={item.render} />)}
@@ -804,10 +804,10 @@ describe('component/render in nested options', () => {
 
   xit('removes deleted tempalates from integrationOptions', () => {
     const ItemTemplate = () => <div>Template</div>;
-    const items = [{id: 1, render: ItemTemplate}, {id: 2, render: ItemTemplate}];
+    const items = [{ id: 1, render: ItemTemplate }, { id: 2, render: ItemTemplate }];
 
     const TestContainer = (props: any) => {
-      const {items} = props;
+      const { items } = props;
       return (
         <TestComponent>
           {items.map((item) => <CollectionNestedComponent key={item.id} render={item.render} />)}
@@ -845,7 +845,7 @@ describe('component/render in nested options', () => {
       </ComponentWithTranscludedContent>,
     );
 
-    const integrationOptions = WidgetClass.mock.calls[0][1].integrationOptions;
+    const { integrationOptions } = WidgetClass.mock.calls[0][1];
     expect(integrationOptions).toBe(undefined);
   });
 });

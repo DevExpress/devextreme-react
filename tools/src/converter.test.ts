@@ -62,8 +62,8 @@ it('expands custom types', () => {
       CustomType: {
         name: 'CustomType',
         types: [
-          { type: 'String', isCustomType: false, acceptableValues: []},
-          { type: 'Number', isCustomType: false, acceptableValues: []},
+          { type: 'String', isCustomType: false, acceptableValues: [] },
+          { type: 'Number', isCustomType: false, acceptableValues: [] },
         ],
         props: [],
         templates: [],

@@ -10,7 +10,7 @@ const ItemComponent  = (data: {data: {text: string}}) => {
   );
 };
 
-const items = [{text: 'Text'}, {text: 'Text2'}];
+const items = [{ text: 'Text' }, { text: 'Text2' }];
 
 export default class extends React.Component<any, any> {
   public render() {

@@ -15,7 +15,7 @@ const items: IAccordionItemProps[] = [
   { text: '567', title: 'title567' },
 ];
 
-const ItemTitle = (data: IAccordionItemProps) => <div style={{height: 100}}>{data.title}</div>;
+const ItemTitle = (data: IAccordionItemProps) => <div style={{ height: 100 }}>{data.title}</div>;
 
 export default () => {
   return (

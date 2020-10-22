@@ -26,7 +26,7 @@ class App extends React.Component<any, typeof initialState> {
   }
 
   private renderItems = () => {
-    const {items} = this.state;
+    const { items } = this.state;
     return items.map((item) => (
       <Item key={item.id} ratio={1}>
         {item.name}
@@ -35,7 +35,7 @@ class App extends React.Component<any, typeof initialState> {
   };
 
   private add = () => {
-    const {items: stateItems} = this.state;
+    const { items: stateItems } = this.state;
     const items = [...stateItems];
     const id = items.length ? items[items.length - 1].id + 1 : 1;
     items.push({
@@ -47,7 +47,7 @@ class App extends React.Component<any, typeof initialState> {
   };
 
   private remove = () => {
-    const {items: stateItems} = this.state;
+    const { items: stateItems } = this.state;
     const items = stateItems.slice(0, stateItems.length - 1);
     this.setState({ items });
   };

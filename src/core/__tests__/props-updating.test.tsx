@@ -95,7 +95,7 @@ describe('option update', () => {
 
   it('updates nested collection item', () => {
     const TestContainer = (props: any) => {
-      const {value} = props;
+      const { value } = props;
       return (
         <TestComponentWithExpectation>
           <CollectionNestedComponent a={value} />
@@ -115,7 +115,7 @@ describe('option update', () => {
 
   it('updates sub-nested collection item', () => {
     const TestContainer = (props: any) => {
-      const {value} = props;
+      const { value } = props;
       return (
         <TestComponentWithExpectation>
           <CollectionNestedComponent>
@@ -432,7 +432,7 @@ describe('cfg-component option control', () => {
 
   it('rolls cfg-component option value back if value has no changes', () => {
     const TestContainer = (props: any) => {
-      const {value} = props;
+      const { value } = props;
       return (
         <ControlledComponent>
           <NestedComponent a={value} b="const" />
@@ -453,7 +453,7 @@ describe('cfg-component option control', () => {
 
   it('apply cfg-component option change if value really change', () => {
     const TestContainer = (props: any) => {
-      const {value} = props;
+      const { value } = props;
       return (
         <ControlledComponent>
           <NestedComponent a={value} b="const" />
@@ -525,7 +525,7 @@ describe('cfg-component option defaults control', () => {
   it('ignores 3rd-party changes in nested default props', () => {
 
     const TestContainer = (props: any) => {
-      const {optionDefValue} = props;
+      const { optionDefValue } = props;
       return (
         <ControlledComponent>
           <NestedComponent defaultC={optionDefValue} />
@@ -671,7 +671,7 @@ describe('onXXXChange', () => {
       />,
     );
     onPropChange.mockImplementation((value) => {
-      component.setProps({ text: `X${value}`});
+      component.setProps({ text: `X${value}` });
       fireOptionChange('text', `X${value}`);
     });
     expect(onPropChange).not.toBeCalled();

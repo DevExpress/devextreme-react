@@ -31,7 +31,7 @@ export default class extends React.Component<any, { text: string }> {
   }
 
   public render() {
-    const {text} = this.state;
+    const { text } = this.state;
     return (
       <Example title="DxScrollView" state={this.state}>
         <ScrollView height="150px">

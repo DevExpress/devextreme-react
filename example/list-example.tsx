@@ -27,7 +27,7 @@ class Item extends React.Component<IListItemProps, { counter: number }> {
   }
 
   private handleClick() {
-    const {counter} = this.state;
+    const { counter } = this.state;
     this.setState({
       counter: counter + 1,
     });
@@ -35,7 +35,7 @@ class Item extends React.Component<IListItemProps, { counter: number }> {
 
   public render() {
     const { data: { text }, index } = this.props;
-    const {counter} = this.state;
+    const { counter } = this.state;
     return (
       <i onClick={this.handleClick}>
         {index + 1}
@@ -79,7 +79,7 @@ export default class extends React.Component<any, { text: string; items: IListIt
           data: items,
         },
         sort: [
-          { getter: 'text', desc: true},
+          { getter: 'text', desc: true },
         ],
         pageSize: 1,
       },
@@ -100,7 +100,7 @@ export default class extends React.Component<any, { text: string; items: IListIt
   }
 
   private addTextToList() {
-    const {items, text} = this.state;
+    const { items, text } = this.state;
     this.setState({
       items: [...items, { text }],
       text: '',
@@ -108,7 +108,7 @@ export default class extends React.Component<any, { text: string; items: IListIt
   }
 
   public render() {
-    const {items, text} = this.state;
+    const { items, text } = this.state;
     return (
       <Example title="DxList" state={this.state}>
         <hr />

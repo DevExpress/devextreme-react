@@ -188,8 +188,8 @@ function createPropTyping(option: IProp, customTypes: Record<string, ICustomType
 }
 
 function mapOption(prop: IProp): IOption {
-  return isEmptyArray(prop.props) ?
-    {
+  return isEmptyArray(prop.props)
+    ? {
       name: prop.name,
       type: 'any',
       isSubscribable: prop.isSubscribable || undefined,

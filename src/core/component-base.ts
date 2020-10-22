@@ -116,7 +116,7 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
     };
 
     elementPropNames.forEach((name) => {
-      const props = this.props;
+      const { props } = this;
       if (name in props) {
         elementProps[name] = props[name];
       }
@@ -146,7 +146,7 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
   }
 
   protected renderChildren() {
-    const {children} = this.props;
+    const { children } = this.props;
     return children;
   }
 

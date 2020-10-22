@@ -7,7 +7,7 @@ interface IProps {
 }
 
 const Example = (props: IProps) => {
-  const {state, title, children} = props;
+  const { state, title, children } = props;
   let stateBlock = null;
   if (!!state) {
     stateBlock = <pre className="example-state">{JSON.stringify(state, null, '  ')}</pre>;

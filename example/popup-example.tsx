@@ -23,7 +23,7 @@ export default class extends React.Component<any, { visible: boolean; text: stri
   }
 
   private toggle(visible: boolean) {
-    const {text} = this.state;
+    const { text } = this.state;
     this.setState({
       visible: visible || !validateText(text),
     });
@@ -36,7 +36,7 @@ export default class extends React.Component<any, { visible: boolean; text: stri
   }
 
   public render() {
-    const {text, visible} = this.state;
+    const { text, visible } = this.state;
     return (
       <Example title="DxPopup" state={this.state}>
         <TextBox value={text} onValueChanged={this.handleTextUpdate} valueChangeEvent="input" />

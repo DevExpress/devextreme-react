@@ -42,7 +42,7 @@ export default class extends React.Component<any, IState> {
   }
 
   private updateSeriesName(seriesName: string) {
-    const {series: stateSeries} = this.state;
+    const { series: stateSeries } = this.state;
     const series = [...stateSeries];
     series[0].name = seriesName;
     this.setState({
@@ -52,7 +52,7 @@ export default class extends React.Component<any, IState> {
   }
 
   public render() {
-    const {currentTime, series} = this.state;
+    const { currentTime, series } = this.state;
     return (
       <Example title="DxChart" state={this.state}>
 
@@ -89,8 +89,8 @@ class Updater extends React.Component<{ onChange: (value: string) => void }, { v
   }
 
   private fireOnChange() {
-    const {onChange} = this.props;
-    const {value} = this.state;
+    const { onChange } = this.props;
+    const { value } = this.state;
     onChange(value);
   }
 
@@ -101,7 +101,7 @@ class Updater extends React.Component<{ onChange: (value: string) => void }, { v
   }
 
   public render() {
-    const {value} = this.state;
+    const { value } = this.state;
     return (
       <div className="dx-field">
         <div className="dx-field-label">

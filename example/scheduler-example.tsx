@@ -7,7 +7,7 @@ import { appointments } from './data';
 
 class DateCell extends React.PureComponent<any> {
   public render() {
-    const {data} =  this.props;
+    const { data } =  this.props;
     const { date: now, text } = data;
     const start = new Date(now.getFullYear(), 0, 0).getTime();
     const dayNumber = Math.floor((now - start) / (1000 * 60 * 60 * 24));

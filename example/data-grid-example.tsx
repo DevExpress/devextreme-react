@@ -28,12 +28,12 @@ const DetailComponent = ({ data: { data } }: any) => {
 };
 
 const CityComponent = (props: any) => {
-  const {data} = props;
+  const { data } = props;
   return <i>{data.displayValue}</i>;
 };
 
 const RegionComponent = (props: any) => {
-  const {data} = props;
+  const { data } = props;
   return <b>{data.displayValue}</b>;
 };
 
@@ -79,7 +79,7 @@ export default class extends React.Component<any, { expandAll: boolean, pageSize
   }
 
   public render() {
-    const {expandAll, pageSize} = this.state;
+    const { expandAll, pageSize } = this.state;
     return (
       <Example title="DxDataGrid" state={this.state}>
         <br />
