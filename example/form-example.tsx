@@ -2,10 +2,10 @@ import * as React from 'react';
 import Example from './example-block';
 
 import { Button, NumberBox } from '../src';
-import Form, {
-  GroupItem, Item, RequiredRule, SimpleItem,
+import {
+  Form, GroupItem, Item, RequiredRule, SimpleItem,
 } from '../src/form';
-import TextArea from '../src/text-area';
+import { TextArea } from '../src/text-area';
 
 const employee: any = {
   ID: 1,

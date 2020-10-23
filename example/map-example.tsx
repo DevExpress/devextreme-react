@@ -2,8 +2,8 @@
 import * as React from 'react';
 import Example from './example-block';
 
-import Map, {
-  Location, Marker, Route, Tooltip,
+import {
+  Map, Location, Marker, Route, Tooltip,
 } from '../src/map';
 
 interface IPosition {

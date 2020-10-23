@@ -3,7 +3,8 @@ import Example from './example-block';
 
 import { Template } from '../src/core/template';
 
-import DataGrid, {
+import {
+  DataGrid,
   Column,
   FilterRow,
   Grouping,
@@ -13,7 +14,7 @@ import DataGrid, {
   Paging,
   Selection,
 } from '../src/data-grid';
-import NumberBox from '../src/number-box';
+import { NumberBox } from '../src/number-box';
 
 import { sales } from './data';
 
