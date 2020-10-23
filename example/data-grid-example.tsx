@@ -75,7 +75,7 @@ export default class extends React.Component<any, { expandAll: boolean, pageSize
     });
   }
 
-  public render() {
+  public render(): React.ReactNode {
     const { expandAll, pageSize } = this.state;
     return (
       <Example title="DxDataGrid" state={this.state}>

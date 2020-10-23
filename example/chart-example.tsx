@@ -89,7 +89,7 @@ export default class extends React.Component<any, IState> {
     });
   }
 
-  public render() {
+  public render(): React.ReactNode {
     const { currentTime, series } = this.state;
     return (
       <Example title="DxChart" state={this.state}>

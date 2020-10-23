@@ -30,7 +30,7 @@ export default class extends React.Component<any, { text: string }> {
     });
   }
 
-  public render() {
+  public render(): React.ReactNode {
     const { text } = this.state;
     return (
       <Example title="DxScrollView" state={this.state}>

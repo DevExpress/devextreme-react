@@ -26,7 +26,7 @@ const items = [
   },
 ];
 
-export default () => (
+export default (): React.ReactNode => (
   <SelectBox
     searchEnabled
     showClearButton

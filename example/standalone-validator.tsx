@@ -40,7 +40,7 @@ class ValidatorExample extends React.Component<any, any> {
     e.validationGroup.validate();
   };
 
-  public render() {
+  public render(): React.ReactNode {
     const { isValid } = this.state;
     return (
       <div>

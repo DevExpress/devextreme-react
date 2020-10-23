@@ -48,7 +48,7 @@ export default class extends React.Component<any, {disableIdInput: boolean}> {
     this.setState({ disableIdInput: !disableIdInput });
   };
 
-  public render() {
+  public render(): React.ReactNode {
     const { disableIdInput } = this.state;
     return (
       <Example title="DxForm">

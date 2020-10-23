@@ -51,7 +51,7 @@ class App extends React.Component<any, typeof initialState> {
     this.setState({ items });
   };
 
-  public render() {
+  public render(): React.ReactNode {
     return (
       <Example title="Box example">
         <Button

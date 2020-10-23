@@ -22,7 +22,7 @@ interface ITemplateArgs {
 }
 
 class Template extends React.PureComponent<ITemplateProps, any> {
-  public render() {
+  public render(): React.ReactNode {
     return null;
   }
 }

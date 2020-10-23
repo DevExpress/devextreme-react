@@ -91,7 +91,7 @@ function appendRemovedValues(
   });
 }
 
-function getChanges(current: IConfigNode, prev: IConfigNode) {
+function getChanges(current: IConfigNode, prev: IConfigNode): IConfigChanges {
   const changesAccum: IConfigChanges = {
     options: {},
     removedOptions: [],

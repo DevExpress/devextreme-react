@@ -6,7 +6,7 @@ import { TemplatesStore } from './templates-store';
 class TemplatesRenderer extends React.PureComponent<{ templatesStore: TemplatesStore }> {
   private _updateScheduled = false;
 
-  public scheduleUpdate() {
+  public scheduleUpdate(): void {
     if (this._updateScheduled) {
       return;
     }
@@ -19,7 +19,7 @@ class TemplatesRenderer extends React.PureComponent<{ templatesStore: TemplatesS
     });
   }
 
-  public render() {
+  public render(): React.ReactNode {
     const { templatesStore } = this.props;
     return React.createElement(
       React.Fragment,

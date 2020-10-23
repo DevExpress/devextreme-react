@@ -17,7 +17,7 @@ const items: IAccordionItemProps[] = [
 
 const ItemTitle = (data: IAccordionItemProps) => <div style={{ height: 100 }}>{data.title}</div>;
 
-export default () => (
+export default (): React.ReactNode => (
   <Example title="DxAccordion">
     <hr />
     <h4>Simple Accordion</h4>

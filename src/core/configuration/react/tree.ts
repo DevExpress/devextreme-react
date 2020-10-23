@@ -115,7 +115,10 @@ function createConfigNode(element: IOptionElement, path: string): IConfigNode {
   };
 }
 
-function buildConfigTree(widgetDescriptor: IWidgetDescriptor, props: Record<string, any>) {
+function buildConfigTree(
+  widgetDescriptor: IWidgetDescriptor,
+  props: Record<string, any>,
+): IConfigNode {
   return createConfigNode(
     {
       type: ElementType.Option,

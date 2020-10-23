@@ -1,4 +1,4 @@
-export function mergeNameParts(...args: string[]) {
+export function mergeNameParts(...args: string[]): string {
   return args.filter((value) => value).join('.');
 }
 

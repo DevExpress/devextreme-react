@@ -94,7 +94,7 @@ export default class extends React.Component<any, { text: string; items: IListIt
     this.addTextToList = this.addTextToList.bind(this);
   }
 
-  public componentWillUnmount() {
+  public componentWillUnmount(): void {
     this.dataSource.dispose();
   }
 
@@ -112,7 +112,7 @@ export default class extends React.Component<any, { text: string; items: IListIt
     });
   }
 
-  public render() {
+  public render(): React.ReactNode {
     const { items: stateItems, text } = this.state;
     return (
       <Example title="DxList" state={this.state}>

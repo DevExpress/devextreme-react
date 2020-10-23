@@ -34,7 +34,7 @@ export default class extends React.Component<any, { visible: boolean; text: stri
     });
   }
 
-  public render() {
+  public render(): React.ReactNode {
     const { text, visible } = this.state;
     return (
       <Example title="DxPopup" state={this.state}>

@@ -38,7 +38,7 @@ export default class extends React.Component<any, any> {
     this.toggle = this.toggle.bind(this);
   }
 
-  public toggle() {
+  public toggle(): void {
     const { menuVisible } = this.state;
     this.setState({ menuVisible: !menuVisible });
   }
@@ -49,7 +49,7 @@ export default class extends React.Component<any, any> {
     }
   }
 
-  public render() {
+  public render(): React.ReactNode {
     const { menuVisible } = this.state;
     return (
       <Example title="DxSlideOutView" state={this.state}>

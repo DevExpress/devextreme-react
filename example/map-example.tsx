@@ -28,7 +28,7 @@ export default class extends React.Component<any, { text: string; pos: IPosition
     this.updatePos = this.updatePos.bind(this);
   }
 
-  public updatePos() {
+  public updatePos(): void {
     const { pos: { lat, lng } } = this.state;
     const pos = {
       lat: lat + 0.01,
@@ -41,7 +41,7 @@ export default class extends React.Component<any, { text: string; pos: IPosition
     });
   }
 
-  public render() {
+  public render(): React.ReactNode {
     const { pos } = this.state;
     return (
       <Example title="dxMap" state={this.state}>

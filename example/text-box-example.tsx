@@ -38,7 +38,7 @@ export default class extends React.Component<any, { text: string; uncontrolledTe
     });
   }
 
-  public render() {
+  public render(): React.ReactNode {
     const { text } = this.state;
     return (
       <Example title="DxTextBox" state={this.state}>

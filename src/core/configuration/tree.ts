@@ -10,7 +10,7 @@ function buildTemplates(
   node: IConfigNode,
   optionsAccum: Record<string, any>,
   templatesAccum: Record<string, ITemplate>,
-) {
+): void {
   node.templates.forEach(
     (template) => {
       if (template.isAnonymous) {
