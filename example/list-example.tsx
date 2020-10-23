@@ -43,7 +43,7 @@ class Item extends React.Component<IListItemProps, { counter: number }> {
     const { data: { text }, index } = this.props;
     const { counter } = this.state;
     return (
-      <i onClick={this.handleClick}>
+      <button type="button" onClick={this.handleClick}>
         {index + 1}
         . Component template for item
         {text}
@@ -52,7 +52,7 @@ class Item extends React.Component<IListItemProps, { counter: number }> {
           Clicks:
           {counter}
         </b>
-      </i>
+      </button>
     );
   }
 }

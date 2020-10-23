@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 /* eslint-disable max-len */
 import * as React from 'react';
 
