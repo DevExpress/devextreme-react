@@ -6,14 +6,22 @@ interface IConfig {
   templates: Record<string, ITemplate>;
 }
 
-function buildConfig(root: IConfigNode, ignoreInitialValues: boolean): IConfig {
-  const templatesAccum: Record<string, ITemplate> = {};
-  const options = buildNode(root, templatesAccum, ignoreInitialValues);
-
-  return {
-    templates: templatesAccum,
-    options,
-  };
+function buildTemplates(
+  node: IConfigNode,
+  optionsAccum: Record<string, any>,
+  templatesAccum: Record<string, ITemplate>,
+) {
+  node.templates.forEach(
+    (template) => {
+      if (template.isAnonymous) {
+        const templateName = mergeNameParts(node.fullName, template.optionName);
+        optionsAccum[template.optionName] = templateName;
+        templatesAccum[templateName] = template;
+      } else {
+        templatesAccum[template.optionName] = template;
+      }
+    },
+  );
 }
 
 function buildNode(
@@ -52,22 +60,14 @@ function buildNode(
   return result;
 }
 
-function buildTemplates(
-  node: IConfigNode,
-  optionsAccum: Record<string, any>,
-  templatesAccum: Record<string, ITemplate>,
-) {
-  node.templates.forEach(
-    (template) => {
-      if (template.isAnonymous) {
-        const templateName = mergeNameParts(node.fullName, template.optionName);
-        optionsAccum[template.optionName] = templateName;
-        templatesAccum[templateName] = template;
-      } else {
-        templatesAccum[template.optionName] = template;
-      }
-    },
-  );
+function buildConfig(root: IConfigNode, ignoreInitialValues: boolean): IConfig {
+  const templatesAccum: Record<string, ITemplate> = {};
+  const options = buildNode(root, templatesAccum, ignoreInitialValues);
+
+  return {
+    templates: templatesAccum,
+    options,
+  };
 }
 
 interface IValueDescriptor {
@@ -79,6 +79,22 @@ enum ValueType {
   Simple,
   Complex,
   Array,
+}
+
+function findValueInObject(obj: any, path: string[]): undefined | IValueDescriptor {
+  const key = path.shift();
+  if (!key) {
+    return {
+      value: obj,
+      type: ValueType.Simple,
+    };
+  }
+
+  if (Object.keys(obj).includes(key)) {
+    return findValueInObject(obj[key], path);
+  }
+
+  return undefined;
 }
 
 function findValue(node: IConfigNode, path: string[]): undefined | IValueDescriptor {
@@ -129,22 +145,6 @@ function findValue(node: IConfigNode, path: string[]): undefined | IValueDescrip
       value: childCollection.map((item) => buildNode(item, {}, true)),
       type: ValueType.Array,
     };
-  }
-
-  return undefined;
-}
-
-function findValueInObject(obj: any, path: string[]): undefined | IValueDescriptor {
-  const key = path.shift();
-  if (!key) {
-    return {
-      value: obj,
-      type: ValueType.Simple,
-    };
-  }
-
-  if (Object.keys(obj).includes(key)) {
-    return findValueInObject(obj[key], path);
   }
 
   return undefined;

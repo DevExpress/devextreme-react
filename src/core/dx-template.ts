@@ -16,6 +16,10 @@ interface IDxTemplateData {
   onRendered?: () => void;
 }
 
+function unwrapElement(element: any): HTMLElement {
+  return element.get ? element.get(0) : element;
+}
+
 function createDxTemplate(
   createContentProvider: () => (props: ITemplateArgs) => any,
   templatesStore: TemplatesStore,
@@ -65,10 +69,6 @@ function createDxTemplate(
       return container;
     },
   };
-}
-
-function unwrapElement(element: any): HTMLElement {
-  return element.get ? element.get(0) : element;
 }
 
 export {

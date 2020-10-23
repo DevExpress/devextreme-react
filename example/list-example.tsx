@@ -16,6 +16,12 @@ interface IListItemProps {
   index: number;
 }
 
+const items: IListItemProps[] = [
+  { text: '123' },
+  { text: '234' },
+  { text: '567' },
+];
+
 class Item extends React.Component<IListItemProps, { counter: number }> {
   constructor(props: IListItemProps) {
     super(props);
@@ -99,15 +105,15 @@ export default class extends React.Component<any, { text: string; items: IListIt
   }
 
   private addTextToList() {
-    const { items, text } = this.state;
+    const { items: stateItems, text } = this.state;
     this.setState({
-      items: [...items, { text }],
+      items: [...stateItems, { text }],
       text: '',
     });
   }
 
   public render() {
-    const { items, text } = this.state;
+    const { items: stateItems, text } = this.state;
     return (
       <Example title="DxList" state={this.state}>
         <hr />
@@ -127,7 +133,7 @@ export default class extends React.Component<any, { text: string; items: IListIt
         <h4>List with component template</h4>
         <List
           repaintChangesOnly
-          items={items}
+          items={stateItems}
           itemComponent={Item}
           itemKeyFn={ItemKeyGetter}
         />
@@ -142,9 +148,3 @@ export default class extends React.Component<any, { text: string; items: IListIt
     );
   }
 }
-
-const items: IListItemProps[] = [
-  { text: '123' },
-  { text: '234' },
-  { text: '567' },
-];

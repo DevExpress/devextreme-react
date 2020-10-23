@@ -5,6 +5,28 @@ describe('dx-template', () => {
   describe('multiple rendering', () => {
     const container = {};
     const anotherContainer = {};
+    const templatesStore: any = {
+      add: jest.fn(),
+      remove: jest.fn(),
+      renderWrappers: jest.fn(),
+    };
+
+    function tryDoubleRender(model1: any, container1: any, model2: any, container2: any): void {
+      const template = createDxTemplate(
+        jest.fn(),
+        templatesStore as TemplatesStore,
+      );
+
+      template.render({
+        container: container1,
+        model: model1,
+      });
+
+      template.render({
+        container: container2,
+        model: model2,
+      });
+    }
 
     beforeEach(() => {
       jest.resetAllMocks();
@@ -93,27 +115,5 @@ describe('dx-template', () => {
         expect(secondId).not.toBe(firstId);
       });
     });
-
-    const templatesStore: any = {
-      add: jest.fn(),
-      remove: jest.fn(),
-      renderWrappers: jest.fn(),
-    };
-    function tryDoubleRender(model1: any, container1: any, model2: any, container2: any): void {
-      const template = createDxTemplate(
-        jest.fn(),
-        templatesStore as TemplatesStore,
-      );
-
-      template.render({
-        container: container1,
-        model: model1,
-      });
-
-      template.render({
-        container: container2,
-        model: model2,
-      });
-    }
   });
 });

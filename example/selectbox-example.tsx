@@ -3,19 +3,6 @@ import { SelectBox } from '../src/select-box';
 
 const SelectBoxItem = (option: any) => <span>{option.data.value}</span>;
 
-export default () => (
-  <SelectBox
-    searchEnabled
-    showClearButton
-    searchTimeout={0}
-    noDataText="No results found"
-    displayExpr="label"
-    valueExpr="value"
-    items={items}
-    itemComponent={SelectBoxItem}
-  />
-);
-
 const items = [
   {
     label: '1',
@@ -38,3 +25,16 @@ const items = [
     value: '5',
   },
 ];
+
+export default () => (
+  <SelectBox
+    searchEnabled
+    showClearButton
+    searchTimeout={0}
+    noDataText="No results found"
+    displayExpr="label"
+    valueExpr="value"
+    items={items}
+    itemComponent={SelectBoxItem}
+  />
+);

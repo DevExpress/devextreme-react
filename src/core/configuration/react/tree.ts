@@ -18,19 +18,66 @@ interface IWidgetDescriptor {
   expectedChildren: Record<string, IExpectedChild>;
 }
 
-function buildConfigTree(widgetDescriptor: IWidgetDescriptor, props: Record<string, any>) {
-  return createConfigNode(
-    {
-      type: ElementType.Option,
-      descriptor: {
-        name: '',
-        isCollection: false,
-        ...widgetDescriptor,
-      },
-      props,
+function processChildren(parentElement: IOptionElement, parentFullName: string) {
+  const templates: ITemplate[] = [];
+  const configCollections: Record<string, IConfigNode[]> = {};
+  const configs: Record<string, IConfigNode> = {};
+  let hasTranscludedContent = false;
+
+  React.Children.map(
+    parentElement.props.children,
+    (child) => {
+      const element = getElementInfo(child, parentElement.descriptor.expectedChildren);
+      if (element.type === ElementType.Unknown) {
+        hasTranscludedContent = true;
+        return;
+      }
+
+      if (element.type === ElementType.Template) {
+        const template = getNamedTemplate(element.props as ITemplateProps);
+
+        if (template) {
+          templates.push(template);
+        }
+        return;
+      }
+
+      if (element.descriptor.isCollection) {
+        let collection = configCollections[element.descriptor.name];
+        if (!collection) {
+          collection = [];
+          configCollections[element.descriptor.name] = collection;
+        }
+
+        // eslint-disable-next-line @typescript-eslint/no-use-before-define
+        const collectionItem = createConfigNode(
+          element,
+          `${mergeNameParts(
+            parentFullName,
+            element.descriptor.name,
+          )}[${collection.length}]`,
+        );
+
+        collection.push(collectionItem);
+        return;
+      }
+
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
+      const configNode = createConfigNode(
+        element,
+        parentFullName,
+      );
+
+      configs[element.descriptor.name] = configNode;
     },
-    '',
   );
+
+  return {
+    configs,
+    configCollections,
+    templates,
+    hasTranscludedContent,
+  };
 }
 
 function createConfigNode(element: IOptionElement, path: string): IConfigNode {
@@ -68,64 +115,19 @@ function createConfigNode(element: IOptionElement, path: string): IConfigNode {
   };
 }
 
-function processChildren(parentElement: IOptionElement, parentFullName: string) {
-  const templates: ITemplate[] = [];
-  const configCollections: Record<string, IConfigNode[]> = {};
-  const configs: Record<string, IConfigNode> = {};
-  let hasTranscludedContent = false;
-
-  React.Children.map(
-    parentElement.props.children,
-    (child) => {
-      const element = getElementInfo(child, parentElement.descriptor.expectedChildren);
-      if (element.type === ElementType.Unknown) {
-        hasTranscludedContent = true;
-        return;
-      }
-
-      if (element.type === ElementType.Template) {
-        const template = getNamedTemplate(element.props as ITemplateProps);
-
-        if (template) {
-          templates.push(template);
-        }
-        return;
-      }
-
-      if (element.descriptor.isCollection) {
-        let collection = configCollections[element.descriptor.name];
-        if (!collection) {
-          collection = [];
-          configCollections[element.descriptor.name] = collection;
-        }
-
-        const collectionItem = createConfigNode(
-          element,
-          `${mergeNameParts(
-            parentFullName,
-            element.descriptor.name,
-          )}[${collection.length}]`,
-        );
-
-        collection.push(collectionItem);
-        return;
-      }
-
-      const configNode = createConfigNode(
-        element,
-        parentFullName,
-      );
-
-      configs[element.descriptor.name] = configNode;
+function buildConfigTree(widgetDescriptor: IWidgetDescriptor, props: Record<string, any>) {
+  return createConfigNode(
+    {
+      type: ElementType.Option,
+      descriptor: {
+        name: '',
+        isCollection: false,
+        ...widgetDescriptor,
+      },
+      props,
     },
+    '',
   );
-
-  return {
-    configs,
-    configCollections,
-    templates,
-    hasTranscludedContent,
-  };
 }
 
 export {

@@ -754,10 +754,12 @@ describe('component/render in nested options', () => {
     const items = [{ id: 1, render: renderItem }];
 
     const TestContainer = (props: any) => {
-      const { items } = props;
+      const { items: propItems } = props;
       return (
         <TestComponent>
-          {items.map((item) => <CollectionNestedComponent key={item.id} render={item.render} />)}
+          {propItems.map(
+            (item) => <CollectionNestedComponent key={item.id} render={item.render} />,
+          )}
         </TestComponent>
       );
     };
@@ -789,10 +791,12 @@ describe('component/render in nested options', () => {
     const items = [{ id: 1, render: renderItem }, { id: 2, render: renderItem }];
 
     const TestContainer = (props: any) => {
-      const { items } = props;
+      const { items: propItems } = props;
       return (
         <TestComponent>
-          {items.map((item) => <CollectionNestedComponent key={item.id} render={item.render} />)}
+          {propItems.map(
+            (item) => <CollectionNestedComponent key={item.id} render={item.render} />,
+          )}
         </TestComponent>
       );
     };
@@ -814,10 +818,12 @@ describe('component/render in nested options', () => {
     const items = [{ id: 1, render: ItemTemplate }, { id: 2, render: ItemTemplate }];
 
     const TestContainer = (props: any) => {
-      const { items } = props;
+      const { items: propItems } = props;
       return (
         <TestComponent>
-          {items.map((item) => <CollectionNestedComponent key={item.id} render={item.render} />)}
+          {propItems.map(
+            (item) => <CollectionNestedComponent key={item.id} render={item.render} />,
+          )}
         </TestComponent>
       );
     };

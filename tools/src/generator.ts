@@ -38,6 +38,135 @@ import {
   uppercaseFirst,
 } from './helpers';
 
+function mapSubscribableOption(prop: IProp): ISubscribableOption {
+  return {
+    name: prop.name,
+    type: 'any',
+    isSubscribable: prop.isSubscribable || undefined,
+  };
+}
+
+function isNestedOptionArray(prop: IProp): boolean {
+  return isNotEmptyArray(prop.types) && (prop.types[0].type === 'Array');
+}
+
+function mapOption(prop: IProp): IOption {
+  return isEmptyArray(prop.props)
+    ? {
+      name: prop.name,
+      type: 'any',
+      isSubscribable: prop.isSubscribable || undefined,
+
+    } : {
+      name: prop.name,
+      isSubscribable: prop.isSubscribable || undefined,
+      nested: prop.props.map(mapOption),
+      isArray: isNestedOptionArray(prop),
+    };
+}
+
+function extractNestedComponents(
+  props: IComplexProp[],
+  rawWidgetName: string,
+  widgetName: string,
+): INestedComponent[] {
+  const nameClassMap: Record<string, string> = {};
+  nameClassMap[rawWidgetName] = widgetName;
+  props.forEach((p) => {
+    nameClassMap[p.name] = uppercaseFirst(p.name);
+  });
+
+  return props.map((p) => ({
+    className: nameClassMap[p.name],
+    owners: p.owners.map((o) => nameClassMap[o]),
+    optionName: p.optionName,
+    options: p.props.map(mapOption),
+    isCollectionItem: p.isCollectionItem,
+    templates: p.templates,
+    predefinedProps: p.predefinedProps,
+    expectedChildren: p.nesteds,
+  }));
+}
+
+function createPropTyping(option: IProp, customTypes: Record<string, ICustomType>): IPropTyping {
+  const isRestrictedType = (t: ITypeDescr): boolean => t.acceptableValues?.length > 0;
+
+  const rawTypes = option.types.filter((t) => !isRestrictedType(t));
+  const restrictedTypes = option.types.filter((t) => isRestrictedType(t));
+
+  const types = convertTypes(rawTypes, customTypes);
+
+  if (restrictedTypes.length > 0) {
+    return {
+      propName: option.name,
+      types: types || [],
+      acceptableValues: restrictedTypes[0].acceptableValues,
+    };
+  }
+
+  if ((!types || types.length === 0)) {
+    return null;
+  }
+
+  return {
+    propName: option.name,
+    types,
+  };
+}
+
+function extractPropTypings(
+  options: IProp[],
+  customTypes: Record<string, ICustomType>,
+): IPropTyping[] {
+  return options
+    .map((o) => createPropTyping(o, customTypes))
+    .filter((t) => t != null);
+}
+
+function mapWidget(
+  raw: IWidget,
+  baseComponent: string,
+  extensionComponent: string,
+  configComponent: string,
+  customTypes: ICustomType[],
+  widgetPackage: string,
+): {
+    fileName: string;
+    component: IComponent
+  } {
+  const name = removePrefix(raw.name, 'dx');
+  const subscribableOptions: ISubscribableOption[] = raw.options
+    .filter((o) => o.isSubscribable)
+    .map(mapSubscribableOption);
+
+  const nestedOptions = raw.complexOptions
+    ? extractNestedComponents(raw.complexOptions, raw.name, name)
+    : null;
+
+  const customTypeHash = customTypes.reduce((result, type) => {
+    result[type.name] = type;
+    return result;
+  }, {});
+  const propTypings = extractPropTypings(raw.options, customTypeHash);
+
+  return {
+    fileName: `${toKebabCase(name)}.ts`,
+    component: {
+      name,
+      baseComponentPath: baseComponent,
+      extensionComponentPath: extensionComponent,
+      configComponentPath: configComponent,
+      dxExportPath: `${widgetPackage}/${raw.exportPath}`,
+      isExtension: raw.isExtension,
+      templates: raw.templates,
+      subscribableOptions: subscribableOptions.length > 0 ? subscribableOptions : undefined,
+      nestedComponents: nestedOptions && nestedOptions.length > 0 ? nestedOptions : undefined,
+      expectedChildren: raw.nesteds,
+      propTypings: propTypings.length > 0 ? propTypings : undefined,
+    },
+  };
+}
+
 function generate({
   metaData: rawData,
   components: { baseComponent, extensionComponent, configComponent },
@@ -88,133 +217,6 @@ function generate({
   });
 
   writeFile(out.indexFileName, generateIndex(modulePaths), { encoding: 'utf8' });
-}
-
-function mapWidget(
-  raw: IWidget,
-  baseComponent: string,
-  extensionComponent: string,
-  configComponent: string,
-  customTypes: ICustomType[],
-  widgetPackage: string,
-): {
-    fileName: string;
-    component: IComponent
-  } {
-  const name = removePrefix(raw.name, 'dx');
-  const subscribableOptions: ISubscribableOption[] = raw.options
-    .filter((o) => o.isSubscribable)
-    .map(mapSubscribableOption);
-
-  const nestedOptions = raw.complexOptions
-    ? extractNestedComponents(raw.complexOptions, raw.name, name)
-    : null;
-
-  const customTypeHash = customTypes.reduce((result, type) => {
-    result[type.name] = type;
-    return result;
-  }, {});
-  const propTypings = extractPropTypings(raw.options, customTypeHash);
-
-  return {
-    fileName: `${toKebabCase(name)}.ts`,
-    component: {
-      name,
-      baseComponentPath: baseComponent,
-      extensionComponentPath: extensionComponent,
-      configComponentPath: configComponent,
-      dxExportPath: `${widgetPackage}/${raw.exportPath}`,
-      isExtension: raw.isExtension,
-      templates: raw.templates,
-      subscribableOptions: subscribableOptions.length > 0 ? subscribableOptions : undefined,
-      nestedComponents: nestedOptions && nestedOptions.length > 0 ? nestedOptions : undefined,
-      expectedChildren: raw.nesteds,
-      propTypings: propTypings.length > 0 ? propTypings : undefined,
-    },
-  };
-}
-
-function extractNestedComponents(
-  props: IComplexProp[],
-  rawWidgetName: string,
-  widgetName: string,
-): INestedComponent[] {
-  const nameClassMap: Record<string, string> = {};
-  nameClassMap[rawWidgetName] = widgetName;
-  props.forEach((p) => {
-    nameClassMap[p.name] = uppercaseFirst(p.name);
-  });
-
-  return props.map((p) => ({
-    className: nameClassMap[p.name],
-    owners: p.owners.map((o) => nameClassMap[o]),
-    optionName: p.optionName,
-    options: p.props.map(mapOption),
-    isCollectionItem: p.isCollectionItem,
-    templates: p.templates,
-    predefinedProps: p.predefinedProps,
-    expectedChildren: p.nesteds,
-  }));
-}
-
-function extractPropTypings(
-  options: IProp[],
-  customTypes: Record<string, ICustomType>,
-): IPropTyping[] {
-  return options
-    .map((o) => createPropTyping(o, customTypes))
-    .filter((t) => t != null);
-}
-
-function createPropTyping(option: IProp, customTypes: Record<string, ICustomType>): IPropTyping {
-  const isRestrictedType = (t: ITypeDescr): boolean => t.acceptableValues?.length > 0;
-
-  const rawTypes = option.types.filter((t) => !isRestrictedType(t));
-  const restrictedTypes = option.types.filter((t) => isRestrictedType(t));
-
-  const types = convertTypes(rawTypes, customTypes);
-
-  if (restrictedTypes.length > 0) {
-    return {
-      propName: option.name,
-      types: types || [],
-      acceptableValues: restrictedTypes[0].acceptableValues,
-    };
-  }
-
-  if ((!types || types.length === 0)) {
-    return null;
-  }
-
-  return {
-    propName: option.name,
-    types,
-  };
-}
-
-function mapOption(prop: IProp): IOption {
-  return isEmptyArray(prop.props)
-    ? {
-      name: prop.name,
-      type: 'any',
-      isSubscribable: prop.isSubscribable || undefined,
-
-    } : {
-      name: prop.name,
-      isSubscribable: prop.isSubscribable || undefined,
-      nested: prop.props.map(mapOption),
-      isArray: isNestedOptionArray(prop),
-    };
-}
-function isNestedOptionArray(prop: IProp): boolean {
-  return isNotEmptyArray(prop.types) && (prop.types[0].type === 'Array');
-}
-function mapSubscribableOption(prop: IProp): ISubscribableOption {
-  return {
-    name: prop.name,
-    type: 'any',
-    isSubscribable: prop.isSubscribable || undefined,
-  };
 }
 
 export default generate;

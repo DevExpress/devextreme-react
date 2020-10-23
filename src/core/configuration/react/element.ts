@@ -1,4 +1,4 @@
-import { ITemplateMeta, Template } from '../../template';
+import { ITemplateMeta, Template as TemplateFunc } from '../../template';
 
 enum ElementType {
   Option,
@@ -48,7 +48,7 @@ function getElementInfo(
     };
   }
 
-  if (reactElement.type === Template) {
+  if (reactElement.type === TemplateFunc) {
     return {
       type: ElementType.Template,
       props: reactElement.props,

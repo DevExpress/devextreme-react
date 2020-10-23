@@ -29,6 +29,11 @@ const positions = [
   'Shipping Manager',
 ];
 
+const getTextBoxComponent = (disabled: boolean) => (props: any) => {
+  const { data } = props;
+  return <NumberBox disabled={disabled} value={data.editorOptions.value} />;
+};
+
 export default class extends React.Component<any, {disableIdInput: boolean}> {
   constructor(props: any) {
     super(props);
@@ -94,8 +99,3 @@ export default class extends React.Component<any, {disableIdInput: boolean}> {
     );
   }
 }
-
-const getTextBoxComponent = (disabled: boolean) => (props: any) => {
-  const { data } = props;
-  return <NumberBox disabled={disabled} value={data.editorOptions.value} />;
-};
