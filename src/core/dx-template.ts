@@ -33,7 +33,7 @@ function createDxTemplate(
       if (prevTemplateId) {
         templateId = prevTemplateId;
       } else {
-        templateId = keyFn ? keyFn(data.model) : '__template_' + generateID();
+        templateId = keyFn ? keyFn(data.model) : `__template_${generateID()}`;
 
         if (data.model !== undefined) {
           renderedTemplates.set(key, templateId);

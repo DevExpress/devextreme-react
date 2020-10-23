@@ -57,7 +57,7 @@ function buildTemplates(
   optionsAccum: Record<string, any>,
   templatesAccum: Record<string, ITemplate>,
 ) {
-  node.templates.map(
+  node.templates.forEach(
     (template) => {
       if (template.isAnonymous) {
         const templateName = mergeNameParts(node.fullName, template.optionName);
@@ -103,12 +103,12 @@ function findValue(node: IConfigNode, path: string[]): undefined | IValueDescrip
   if (optionInfo.isCollectionItem) {
     const collection = node.configCollections[optionInfo.name];
     if (!collection) {
-      return;
+      return undefined;
     }
 
     const item = collection[optionInfo.index];
     if (!item) {
-      return;
+      return undefined;
     }
 
     return findValue(item, path);
@@ -122,7 +122,7 @@ function findValue(node: IConfigNode, path: string[]): undefined | IValueDescrip
   const childCollection = node.configCollections[optionInfo.name];
   if (childCollection) {
     if (path.length !== 0) {
-      return;
+      return undefined;
     }
 
     return {

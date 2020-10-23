@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 import * as React from 'react';
 
 import DataSource from 'devextreme/data/data_source';

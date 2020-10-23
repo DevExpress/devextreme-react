@@ -1,4 +1,4 @@
-import config, { getOption } from '../../core/config';
+import config, { getOption } from '../config';
 import { mount, React } from './setup';
 import { TestComponent, WidgetClass } from './test-component';
 

@@ -1,5 +1,6 @@
-import { ExtensionComponent } from '../../core/extension-component';
-import ConfigurationComponent from '../../core/nested-option';
+/* eslint-disable max-classes-per-file */
+import { ExtensionComponent } from '../extension-component';
+import ConfigurationComponent from '../nested-option';
 import { mount, React, shallow } from './setup';
 import { TestComponent, Widget, WidgetClass } from './test-component';
 

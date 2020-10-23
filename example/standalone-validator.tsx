@@ -20,9 +20,7 @@ class ValidatorExample extends React.Component<any, any> {
     };
 
     this._adapter = {
-      getValue: () => {
-        return this._currentValue;
-      },
+      getValue: () => this._currentValue,
       validationRequestsCallbacks: this._callbacks,
       applyValidationResults: (e: any) => {
         this.setState({ isValid: e.isValid });

@@ -401,7 +401,7 @@ export {
         nestedComponents: [
           {
             className: 'Opt_1_Component',
-            owners: [ 'CLASS_NAME' ],
+            owners: ['CLASS_NAME'],
             optionName: 'opt_1',
             options: [
               {
@@ -430,7 +430,7 @@ export {
           },
           {
             className: 'Opt_6_SubComponent',
-            owners: [ 'Opt_1_Component' ],
+            owners: ['Opt_1_Component'],
             optionName: 'sub_sub_opt_7',
             options: [
               {
@@ -497,7 +497,7 @@ export {
         nestedComponents: [
           {
             className: 'Opt_1_Component',
-            owners: [ 'CLASS_NAME' ],
+            owners: ['CLASS_NAME'],
             optionName: 'opt_1',
             isCollectionItem: true,
             options: [
@@ -572,7 +572,7 @@ export {
         nestedComponents: [
           {
             className: 'Opt_1_Component',
-            owners: [ 'CLASS_NAME' ],
+            owners: ['CLASS_NAME'],
             optionName: 'opt_1',
             options: [
               {
@@ -658,7 +658,7 @@ export {
         nestedComponents: [
           {
             className: 'Opt_1_Component',
-            owners: [ 'CLASS_NAME' ],
+            owners: ['CLASS_NAME'],
             optionName: 'opt_1',
             templates: ['optionTemplate'],
             options: [
@@ -729,7 +729,7 @@ export {
         nestedComponents: [
           {
             className: 'Opt_1_Component',
-            owners: [ 'CLASS_NAME' ],
+            owners: ['CLASS_NAME'],
             optionName: 'opt_1',
             isCollectionItem: true,
             predefinedProps: {
@@ -1160,7 +1160,7 @@ export {
         nestedComponents: [
           {
             className: 'Opt_1_Component',
-            owners: [ 'CLASS_NAME' ],
+            owners: ['CLASS_NAME'],
             optionName: 'opt_1',
             options: [],
             expectedChildren: [

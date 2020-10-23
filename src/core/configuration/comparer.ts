@@ -39,7 +39,8 @@ function compare(current: IConfigNode, prev: IConfigNode, changesAccum: IConfigC
   changesAccum.addRemovedValues(
     current.configCollections,
     prev.configCollections,
-    current.fullName);
+    current.fullName,
+  );
   changesAccum.addRemovedValues(current.configs, prev.configs, current.fullName);
 
   compareCollections(current, prev, changesAccum);
@@ -114,7 +115,7 @@ function compareCollections(
     const prevCollection = prev.configCollections[key] || [];
     if (!currentCollection || currentCollection.length !== prevCollection.length) {
       const updatedCollection: Array<Record<string, any>> = [];
-      currentCollection.map(
+      currentCollection.forEach(
         (item) => {
           const config = buildNode(item, changesAccum.templates, true);
           updatedCollection.push(config);

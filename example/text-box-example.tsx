@@ -1,8 +1,8 @@
 /* eslint-disable react/no-unused-state */
 import * as React from 'react';
+import dxTextBox from 'devextreme/ui/text_box';
 import Example from './example-block';
 
-import dxTextBox from 'devextreme/ui/text_box';
 import { Button } from '../src/button';
 import { TextBox } from '../src/text-box';
 import { RequiredRule, Validator } from '../src/validator';
@@ -28,13 +28,13 @@ export default class extends React.Component<any, { text: string; uncontrolledTe
 
   private updateUncontrolledValue() {
     this.setState({
-      uncontrolledText: '#' + this.textBox.option('value'),
+      uncontrolledText: `#${this.textBox.option('value')}`,
     });
   }
 
   private handleChange(e: any) {
     this.setState({
-      text: '#' + (e.value as string).toUpperCase().replace('A', '_'),
+      text: `#${(e.value as string).toUpperCase().replace('A', '_')}`,
     });
   }
 

@@ -1,7 +1,8 @@
+/* eslint-disable max-classes-per-file */
 import * as events from 'devextreme/events';
 
-import ConfigurationComponent from '../../core/nested-option';
-import { Template } from '../../core/template';
+import ConfigurationComponent from '../nested-option';
+import { Template } from '../template';
 import { mount, React, shallow } from './setup';
 import { TestComponent, Widget, WidgetClass } from './test-component';
 
@@ -330,15 +331,13 @@ describe('function template', () => {
   });
 
   it('renders index', () => {
-    const itemRender: any = jest.fn((_, index: number) => {
-      return (
-        <div className="template">
-          Index
-          {' '}
-          {index}
-        </div>
-      );
-    });
+    const itemRender: any = jest.fn((_, index: number) => (
+      <div className="template">
+        Index
+        {' '}
+        {index}
+      </div>
+    ));
     const component = mount(
       <ComponentWithTemplates itemRender={itemRender} />,
     );
