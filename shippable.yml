@@ -17,7 +17,7 @@ build:
     - npm run test
 
   post_ci:
-    - ./coverage --dir  shippable/codecoverage/
+    - coverage xml coverage/clovel.xml
   cache: true
   cache_dir_list:
     - $SHIPPABLE_BUILD_DIR/node_modules
