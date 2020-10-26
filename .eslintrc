@@ -7,17 +7,24 @@
         "node": true,
         "jest": true
     },
+    "ignorePatterns": ["src/*.ts", "src/ui/*.ts"],
     "parserOptions": {
         "project": ["./tsconfig.json", "./example/tsconfig.json"]
     },
     "rules": {
         "class-methods-use-this": "off",
-        "import/extensions": "off",
         "import/no-cycle": "off",
         "no-param-reassign": "off",
         "no-underscore-dangle": "off",
         "no-prototype-builtins": "off",
-        "react/forbid-prop-types": "off",
         "@typescript-eslint/no-explicit-any": "off"
-    }
+    },
+    "overrides": [
+        {
+            "files": [ "./example/*.ts", "./example/*.tsx" ],
+            "rules": {
+                "import/extensions": "off"
+            }
+        }
+    ],
 }

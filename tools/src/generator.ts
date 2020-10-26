@@ -88,7 +88,10 @@ function extractNestedComponents(
   }));
 }
 
-function createPropTyping(option: IProp, customTypes: Record<string, ICustomType>): IPropTyping {
+function createPropTyping(
+  option: IProp,
+  customTypes: Record<string, ICustomType>,
+): IPropTyping | null {
   const isRestrictedType = (t: ITypeDescr): boolean => t.acceptableValues?.length > 0;
 
   const rawTypes = option.types.filter((t) => !isRestrictedType(t));
@@ -117,7 +120,7 @@ function createPropTyping(option: IProp, customTypes: Record<string, ICustomType
 function extractPropTypings(
   options: IProp[],
   customTypes: Record<string, ICustomType>,
-): IPropTyping[] {
+): (IPropTyping | null)[] {
   return options
     .map((o) => createPropTyping(o, customTypes))
     .filter((t) => t != null);
@@ -143,7 +146,8 @@ function mapWidget(
     ? extractNestedComponents(raw.complexOptions, raw.name, name)
     : null;
 
-  const customTypeHash = customTypes.reduce((result, type) => {
+  const customTypeHash = customTypes.reduce((accum, type) => {
+    const result = accum;
     result[type.name] = type;
     return result;
   }, {});

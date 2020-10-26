@@ -16,7 +16,7 @@ type IComponent = {
   isExtension?: boolean;
   subscribableOptions?: ISubscribableOption[];
   templates?: string[];
-  propTypings?: IPropTyping[];
+  propTypings?: (IPropTyping | null)[];
 } & ({
   nestedComponents: INestedComponent[];
   configComponentPath: string;
