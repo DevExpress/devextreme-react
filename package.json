@@ -79,7 +79,7 @@
     "build": "npm run clean && npm run lint && npm run generate",
     "generate": "gulp generate",
     "clean": "gulp clean",
-    "test": "jest",
+    "test": "jest --coverage",
     "test-watch": "jest --watch",
     "pack": "gulp npm.pack",
     "update-integration-meta": "dx-tools update-integration-meta --output-path ./tools/integration-data.json"
