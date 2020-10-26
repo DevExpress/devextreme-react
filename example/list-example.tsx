@@ -70,7 +70,7 @@ const listItems: string[] = ['orange', 'apple', 'potato'];
 export default class extends React.Component<any, { text: string; items: IListItemProps[]; }> {
   private dataSource: DataSource;
 
-  constructor(props: any) {
+  constructor(props: unknown) {
     super(props);
     this.state = {
       text: '',

@@ -44,6 +44,6 @@ export function isNotEmptyArray(array: any[] | undefined | null): boolean {
   return !isEmptyArray(array);
 }
 
-export function isPlainObject(value: any): boolean {
+export function isPlainObject(value: Record<string, any>): boolean {
   return value.constructor === Object;
 }

@@ -13,7 +13,7 @@ class ValidatorExample extends React.Component<any, any> {
 
   private _callbacks: any[] = [];
 
-  constructor(props: any) {
+  constructor(props: unknown) {
     super(props);
     this.state = {
       isValid: true,

@@ -10,7 +10,7 @@ const VALID_TEXT = 'good';
 const validateText = (text: string) => text === VALID_TEXT;
 
 export default class extends React.Component<any, { visible: boolean; text: string; }> {
-  constructor(props: any) {
+  constructor(props: unknown) {
     super(props);
     this.state = {
       visible: false,

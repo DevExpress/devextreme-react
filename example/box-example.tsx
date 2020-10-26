@@ -18,7 +18,7 @@ const initialState = {
 };
 
 class App extends React.Component<any, typeof initialState> {
-  constructor(props: any) {
+  constructor(props: unknown) {
     super(props);
 
     this.state = { ...initialState };

@@ -20,7 +20,7 @@ class DateCell extends React.PureComponent<any> {
   }
 }
 
-export default (): React.ReactNode => (
+export default (): React.ReactElement | null => (
   <Example title="DxScheduler">
     <Scheduler
       dateCellComponent={DateCell}

@@ -54,7 +54,7 @@ class Updater extends React.Component<{ onChange: (value: string) => void }, { v
 }
 
 export default class extends React.Component<any, IState> {
-  constructor(props: any) {
+  constructor(props: unknown) {
     super(props);
     this.state = {
       currentTime: this.GetTimeString(),

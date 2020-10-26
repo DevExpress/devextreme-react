@@ -35,7 +35,7 @@ const getTextBoxComponent = (disabled: boolean) => (props: any) => {
 };
 
 export default class extends React.Component<any, {disableIdInput: boolean}> {
-  constructor(props: any) {
+  constructor(props: unknown) {
     super(props);
 
     this.state = {

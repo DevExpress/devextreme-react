@@ -26,7 +26,7 @@ class OptionsManager {
     this._wrapOptionValue = this._wrapOptionValue.bind(this);
   }
 
-  public setInstance(instance: any, config: IConfigNode): void {
+  public setInstance(instance: unknown, config: IConfigNode): void {
     this._instance = instance;
     this._currentConfig = config;
   }

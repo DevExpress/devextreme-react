@@ -19,7 +19,7 @@ class TestComponent<P = any> extends Component<P> {
   protected _WidgetClass = WidgetClass;
 }
 
-function fireOptionChange(fullName: string, value: any): void {
+function fireOptionChange(fullName: string, value: unknown): void {
   eventHandlers.optionChanged({
     name: fullName.split('.')[0],
     fullName,

@@ -9,7 +9,7 @@ import { ScrollView } from '../src/scroll-view';
 import { TextBox } from '../src/text-box';
 
 export default class extends React.Component<any, { text: string }> {
-  constructor(props: any) {
+  constructor(props: unknown) {
     super(props);
     this.state = {
       text: 'Clear me',

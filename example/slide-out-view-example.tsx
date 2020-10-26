@@ -29,7 +29,7 @@ function renderMenuTemplate() {
 }
 
 export default class extends React.Component<any, any> {
-  constructor(props: any) {
+  constructor(props: unknown) {
     super(props);
     this.state = {
       menuVisible: true,
