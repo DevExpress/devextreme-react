@@ -8,7 +8,7 @@ import { ValidationSummary } from '../src/validation-summary';
 import { EmailRule, RequiredRule, Validator } from '../src/validator';
 
 export default class extends React.Component<any, any> {
-  constructor(props: any) {
+  constructor(props: unknown) {
     super(props);
 
     this.validate = this.validate.bind(this);
@@ -22,7 +22,7 @@ export default class extends React.Component<any, any> {
     }
   }
 
-  public render() {
+  public render(): React.ReactNode {
     return (
       <Example title="Validation" state={this.state}>
         <ValidationGroup>

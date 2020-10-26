@@ -26,12 +26,12 @@ class OptionsManager {
     this._wrapOptionValue = this._wrapOptionValue.bind(this);
   }
 
-  public setInstance(instance: any, config: IConfigNode) {
+  public setInstance(instance: unknown, config: IConfigNode): void {
     this._instance = instance;
     this._currentConfig = config;
   }
 
-  public getInitialOptions(rootNode: IConfigNode) {
+  public getInitialOptions(rootNode: IConfigNode): Record<string, any> {
     const config = buildConfig(rootNode, false);
 
     Object.keys(config.templates).forEach((key) => {
@@ -52,7 +52,7 @@ class OptionsManager {
     return options;
   }
 
-  public update(config: IConfigNode) {
+  public update(config: IConfigNode): void {
     const changes = getChanges(config, this._currentConfig);
 
     if (!changes.options && !changes.templates && !changes.removedOptions.length) {
@@ -89,7 +89,7 @@ class OptionsManager {
     this._currentConfig = config;
   }
 
-  public onOptionChanged(e: { name: string, fullName: string, value: any }) {
+  public onOptionChanged(e: { name: string, fullName: string, value: any }): void {
     if (this._isUpdating) {
       return;
     }
@@ -120,7 +120,7 @@ class OptionsManager {
     }
   }
 
-  public dispose() {
+  public dispose(): void {
     Object.keys(this._guards).forEach((optionName) => {
       window.clearTimeout(this._guards[optionName]);
       delete this._guards[optionName];

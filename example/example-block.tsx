@@ -6,7 +6,7 @@ interface IProps {
   children: any;
 }
 
-const Example = (props: IProps) => {
+const Example = (props: IProps): React.ReactNode => {
   const { state, title, children } = props;
   let stateBlock = null;
   if (state) {

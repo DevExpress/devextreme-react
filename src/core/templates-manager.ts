@@ -42,7 +42,7 @@ class TemplatesManager {
     this._templatesStore = templatesStore;
   }
 
-  public add(name: string, template: ITemplate) {
+  public add(name: string, template: ITemplate): void {
     this._templatesContent[name] = template.content;
     const contentCreator = contentCreators[template.type]
       .bind(this, () => this._templatesContent[name]);

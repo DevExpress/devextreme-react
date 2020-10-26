@@ -6,7 +6,7 @@ import { Scheduler } from '../src/scheduler';
 import { appointments } from './data';
 
 class DateCell extends React.PureComponent<any> {
-  public render() {
+  public render(): React.ReactNode {
     const { data } = this.props;
     const { date: now, text } = data;
     const start = new Date(now.getFullYear(), 0, 0).getTime();
@@ -20,7 +20,7 @@ class DateCell extends React.PureComponent<any> {
   }
 }
 
-export default () => (
+export default (): React.ReactElement | null => (
   <Example title="DxScheduler">
     <Scheduler
       dateCellComponent={DateCell}

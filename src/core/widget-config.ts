@@ -3,6 +3,10 @@ import { ITemplateMeta } from './template';
 const elementPropNames = ['style', 'id'];
 const classNamePropName = 'className';
 
+function isIgnoredProp(name: string) {
+  return name === 'children' || name === classNamePropName || elementPropNames.indexOf(name) > -1;
+}
+
 function separateProps(
   props: Record<string, any>,
   defaultsProps: Record<string, string>,
@@ -47,10 +51,6 @@ function separateProps(
 
 function getClassName(props: Record<string, any>): string | undefined {
   return props[classNamePropName];
-}
-
-function isIgnoredProp(name: string) {
-  return name === 'children' || name === classNamePropName || elementPropNames.indexOf(name) > -1;
 }
 
 export {

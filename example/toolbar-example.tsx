@@ -11,7 +11,7 @@ const ItemComponent = (data: {data: {text: string}}) => (
 const items = [{ text: 'Text' }, { text: 'Text2' }];
 
 export default class extends React.Component<any, any> {
-  public render() {
+  public render(): React.ReactNode {
     return (
       <Example title="Toolbar" state={this.state}>
         <Toolbar items={items} itemComponent={ItemComponent} />

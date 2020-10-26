@@ -555,6 +555,20 @@ describe('cfg-component option defaults control', () => {
 });
 
 describe('mutation detection', () => {
+  const expectNoPropsUpdate = () => {
+    expect(Widget.option.mock.calls.length).toBe(0);
+    expect(Widget.beginUpdate.mock.calls.length).toBe(0);
+    expect(Widget.endUpdate.mock.calls.length).toBe(0);
+  };
+
+  const expectPropsUpdated = (expectedPath: string, value: any) => {
+    expect(Widget.option.mock.calls.length).toBe(1);
+    expect(Widget.beginUpdate.mock.calls.length).toBe(1);
+    expect(Widget.endUpdate.mock.calls.length).toBe(1);
+    expect(Widget.option.mock.calls[0][0]).toEqual(expectedPath);
+    expect(Widget.option.mock.calls[0][1]).toEqual(value);
+  };
+
   it('prevents update if no option changed', () => {
     const component = shallow(
       <TestComponent prop="abc" />,
@@ -610,20 +624,6 @@ describe('mutation detection', () => {
 
     expectPropsUpdated('anotherProp', 456);
   });
-
-  const expectNoPropsUpdate = () => {
-    expect(Widget.option.mock.calls.length).toBe(0);
-    expect(Widget.beginUpdate.mock.calls.length).toBe(0);
-    expect(Widget.endUpdate.mock.calls.length).toBe(0);
-  };
-
-  const expectPropsUpdated = (expectedPath: string, value: any) => {
-    expect(Widget.option.mock.calls.length).toBe(1);
-    expect(Widget.beginUpdate.mock.calls.length).toBe(1);
-    expect(Widget.endUpdate.mock.calls.length).toBe(1);
-    expect(Widget.option.mock.calls[0][0]).toEqual(expectedPath);
-    expect(Widget.option.mock.calls[0][1]).toEqual(value);
-  };
 });
 
 describe('onXXXChange', () => {

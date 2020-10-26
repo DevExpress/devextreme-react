@@ -9,7 +9,7 @@ interface INestedOptionMeta {
 }
 
 class NestedOption<P> extends React.PureComponent<P, any> {
-  public render() {
+  public render(): React.ReactNode {
     const { children: stateChildren } = this.props;
     const children = React.Children.map(
       stateChildren,

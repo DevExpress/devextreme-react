@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import Box, { Item } from '../src/box';
-import Button from '../src/button';
+import { Box, Item } from '../src/box';
+import { Button } from '../src/button';
 import Example from './example-block';
 
 const initialState = {
@@ -18,7 +18,7 @@ const initialState = {
 };
 
 class App extends React.Component<any, typeof initialState> {
-  constructor(props: any) {
+  constructor(props: unknown) {
     super(props);
 
     this.state = { ...initialState };
@@ -51,7 +51,7 @@ class App extends React.Component<any, typeof initialState> {
     this.setState({ items });
   };
 
-  public render() {
+  public render(): React.ReactNode {
     return (
       <Example title="Box example">
         <Button

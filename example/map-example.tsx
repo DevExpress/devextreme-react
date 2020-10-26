@@ -2,8 +2,8 @@
 import * as React from 'react';
 import Example from './example-block';
 
-import Map, {
-  Location, Marker, Route, Tooltip,
+import {
+  Map, Location, Marker, Route, Tooltip,
 } from '../src/map';
 
 interface IPosition {
@@ -17,7 +17,7 @@ const startPos = {
 };
 
 export default class extends React.Component<any, { text: string; pos: IPosition }> {
-  constructor(props: any) {
+  constructor(props: unknown) {
     super(props);
     const pos = { ...startPos };
     this.state = {
@@ -28,7 +28,7 @@ export default class extends React.Component<any, { text: string; pos: IPosition
     this.updatePos = this.updatePos.bind(this);
   }
 
-  public updatePos() {
+  public updatePos(): void {
     const { pos: { lat, lng } } = this.state;
     const pos = {
       lat: lat + 0.01,
@@ -41,7 +41,7 @@ export default class extends React.Component<any, { text: string; pos: IPosition
     });
   }
 
-  public render() {
+  public render(): React.ReactNode {
     const { pos } = this.state;
     return (
       <Example title="dxMap" state={this.state}>

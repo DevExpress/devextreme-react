@@ -3,7 +3,8 @@ import Example from './example-block';
 
 import { Template } from '../src/core/template';
 
-import DataGrid, {
+import {
+  DataGrid,
   Column,
   FilterRow,
   Grouping,
@@ -13,7 +14,7 @@ import DataGrid, {
   Paging,
   Selection,
 } from '../src/data-grid';
-import NumberBox from '../src/number-box';
+import { NumberBox } from '../src/number-box';
 
 import { sales } from './data';
 
@@ -36,7 +37,7 @@ const RegionComponent = (props: any) => {
 };
 
 export default class extends React.Component<any, { expandAll: boolean, pageSize: number }> {
-  constructor(props: any) {
+  constructor(props: unknown) {
     super(props);
     this.state = {
       expandAll: true,
@@ -75,7 +76,7 @@ export default class extends React.Component<any, { expandAll: boolean, pageSize
     });
   }
 
-  public render() {
+  public render(): React.ReactNode {
     const { expandAll, pageSize } = this.state;
     return (
       <Example title="DxDataGrid" state={this.state}>

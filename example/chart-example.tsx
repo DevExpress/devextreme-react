@@ -5,75 +5,14 @@ import * as React from 'react';
 import { orangesByDay } from './data';
 import Example from './example-block';
 
-import Button from '../src/button';
-import Chart from '../src/chart';
-import TextBox from '../src/text-box';
+import { Button } from '../src/button';
+import { Chart } from '../src/chart';
+import { TextBox } from '../src/text-box';
 
 interface IState {
   currentTime: string;
   seriesName: string;
   series: any[];
-}
-
-export default class extends React.Component<any, IState> {
-  constructor(props: any) {
-    super(props);
-    this.state = {
-      currentTime: this.GetTimeString(),
-      seriesName: 'My oranges',
-      series: [{
-        argumentField: 'day',
-        valueField: 'oranges',
-        name: 'My oranges',
-        type: 'line',
-      }],
-    };
-
-    this.updateTime = this.updateTime.bind(this);
-    this.updateSeriesName = this.updateSeriesName.bind(this);
-  }
-
-  private GetTimeString = () => new Date().toLocaleTimeString();
-
-  private updateTime() {
-    this.setState({
-      currentTime: this.GetTimeString(),
-    });
-  }
-
-  private updateSeriesName(seriesName: string) {
-    const { series: stateSeries } = this.state;
-    const series = [...stateSeries];
-    series[0].name = seriesName;
-    this.setState({
-      seriesName,
-      series,
-    });
-  }
-
-  public render() {
-    const { currentTime, series } = this.state;
-    return (
-      <Example title="DxChart" state={this.state}>
-
-        <div className="paragraph dx-field">
-          <div className="dx-field-label">
-            {currentTime}
-          </div>
-          <div className="dx-field-value">
-            <Button text="Update time" onClick={this.updateTime} />
-          </div>
-        </div>
-
-        <div className="paragraph">
-          <Updater onChange={this.updateSeriesName} />
-        </div>
-
-        <Chart dataSource={orangesByDay} series={series} />
-
-      </Example>
-    );
-  }
 }
 
 class Updater extends React.Component<{ onChange: (value: string) => void }, { value: string }> {
@@ -110,6 +49,67 @@ class Updater extends React.Component<{ onChange: (value: string) => void }, { v
           <Button text="Update series name" onClick={this.fireOnChange} />
         </div>
       </div>
+    );
+  }
+}
+
+export default class extends React.Component<any, IState> {
+  constructor(props: unknown) {
+    super(props);
+    this.state = {
+      currentTime: this.GetTimeString(),
+      seriesName: 'My oranges',
+      series: [{
+        argumentField: 'day',
+        valueField: 'oranges',
+        name: 'My oranges',
+        type: 'line',
+      }],
+    };
+
+    this.updateTime = this.updateTime.bind(this);
+    this.updateSeriesName = this.updateSeriesName.bind(this);
+  }
+
+  private GetTimeString = () => new Date().toLocaleTimeString();
+
+  private updateTime() {
+    this.setState({
+      currentTime: this.GetTimeString(),
+    });
+  }
+
+  private updateSeriesName(seriesName: string) {
+    const { series: stateSeries } = this.state;
+    const series = [...stateSeries];
+    series[0].name = seriesName;
+    this.setState({
+      seriesName,
+      series,
+    });
+  }
+
+  public render(): React.ReactNode {
+    const { currentTime, series } = this.state;
+    return (
+      <Example title="DxChart" state={this.state}>
+
+        <div className="paragraph dx-field">
+          <div className="dx-field-label">
+            {currentTime}
+          </div>
+          <div className="dx-field-value">
+            <Button text="Update time" onClick={this.updateTime} />
+          </div>
+        </div>
+
+        <div className="paragraph">
+          <Updater onChange={this.updateSeriesName} />
+        </div>
+
+        <Chart dataSource={orangesByDay} series={series} />
+
+      </Example>
     );
   }
 }

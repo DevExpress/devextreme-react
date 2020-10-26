@@ -14,18 +14,10 @@
         "class-methods-use-this": "off",
         "import/extensions": "off",
         "import/no-cycle": "off",
-        "import/no-extraneous-dependencies": "off",
-        "import/no-named-as-default": "off",
-        "jsx-a11y/no-static-element-interactions": "off",
-        "jsx-a11y/click-events-have-key-events": "off",
         "no-param-reassign": "off",
         "no-underscore-dangle": "off",
-        "no-alert": "off",
         "no-prototype-builtins": "off",
         "react/forbid-prop-types": "off",
-        "@typescript-eslint/no-explicit-any": "off",
-        "@typescript-eslint/no-use-before-define": "off",
-        "@typescript-eslint/no-shadow": "off",
-        "@typescript-eslint/explicit-module-boundary-types": "off"
+        "@typescript-eslint/no-explicit-any": "off"
     }
 }

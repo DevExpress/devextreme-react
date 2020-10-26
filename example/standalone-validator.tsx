@@ -13,7 +13,7 @@ class ValidatorExample extends React.Component<any, any> {
 
   private _callbacks: any[] = [];
 
-  constructor(props: any) {
+  constructor(props: unknown) {
     super(props);
     this.state = {
       isValid: true,
@@ -40,7 +40,7 @@ class ValidatorExample extends React.Component<any, any> {
     e.validationGroup.validate();
   };
 
-  public render() {
+  public render(): React.ReactNode {
     const { isValid } = this.state;
     return (
       <div>

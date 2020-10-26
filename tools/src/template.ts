@@ -23,6 +23,10 @@ const createTempate = (templateStr: string): ((model: any) => string) => {
     .replace(/\x08/, '');
 };
 
+function tab(i: number): string {
+  return Array(i * 2 + 1).join(' ');
+}
+
 const L1 = `\n${tab(1)}`;
 const L2 = `\n${tab(2)}`;
 const L3 = `\n${tab(3)}`;
@@ -32,10 +36,6 @@ const TAB1: string = tab(1);
 const TAB2: string = tab(2);
 const TAB3: string = tab(3);
 const TAB4: string = tab(4);
-
-function tab(i: number): string {
-  return Array(i * 2 + 1).join(' ');
-}
 
 export {
   createTempate,

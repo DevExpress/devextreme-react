@@ -1,16 +1,16 @@
 import * as React from 'react';
 
-import Button from '../src/button';
-import Popup from '../src/popup';
-import ScrollView from '../src/scroll-view';
-import TextBox from '../src/text-box';
+import { Button } from '../src/button';
+import { Popup } from '../src/popup';
+import { ScrollView } from '../src/scroll-view';
+import { TextBox } from '../src/text-box';
 import Example from './example-block';
 
 const VALID_TEXT = 'good';
 const validateText = (text: string) => text === VALID_TEXT;
 
 export default class extends React.Component<any, { visible: boolean; text: string; }> {
-  constructor(props: any) {
+  constructor(props: unknown) {
     super(props);
     this.state = {
       visible: false,
@@ -34,7 +34,7 @@ export default class extends React.Component<any, { visible: boolean; text: stri
     });
   }
 
-  public render() {
+  public render(): React.ReactNode {
     const { text, visible } = this.state;
     return (
       <Example title="DxPopup" state={this.state}>

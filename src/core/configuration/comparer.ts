@@ -10,56 +10,6 @@ interface IConfigChanges {
     currentOptions: Record<string, any>, prevOptions: Record<string, any>, path: string): void;
 }
 
-function getChanges(current: IConfigNode, prev: IConfigNode) {
-  const changesAccum: IConfigChanges = {
-    options: {},
-    removedOptions: [],
-    templates: {},
-    addRemovedValues(currentOptions, prevOptions, path) {
-      appendRemovedValues(currentOptions, prevOptions, path, this.removedOptions);
-    },
-  };
-
-  compare(current, prev, changesAccum);
-
-  return changesAccum;
-}
-
-function compare(current: IConfigNode, prev: IConfigNode, changesAccum: IConfigChanges) {
-  if (!prev) {
-    changesAccum.options[current.fullName] = buildNode(
-      current,
-      changesAccum.templates,
-      true,
-    );
-    return;
-  }
-
-  changesAccum.addRemovedValues(current.options, prev.options, current.fullName);
-  changesAccum.addRemovedValues(
-    current.configCollections,
-    prev.configCollections,
-    current.fullName,
-  );
-  changesAccum.addRemovedValues(current.configs, prev.configs, current.fullName);
-
-  compareCollections(current, prev, changesAccum);
-
-  Object.keys(current.configs).forEach((key) => {
-    compare(current.configs[key], prev.configs[key], changesAccum);
-  });
-
-  Object.keys(current.options).forEach((key) => {
-    if (current.options[key] === prev.options[key]) {
-      return;
-    }
-
-    changesAccum.options[mergeNameParts(current.fullName, key)] = current.options[key];
-  });
-
-  compareTemplates(current, prev, changesAccum);
-}
-
 function compareTemplates(current: IConfigNode, prev: IConfigNode, changesAccum: IConfigChanges) {
   const currentTemplatesOptions: Record<string, any> = {};
   const currentTemplates: Record<string, ITemplate> = {};
@@ -92,6 +42,42 @@ function compareTemplates(current: IConfigNode, prev: IConfigNode, changesAccum:
   });
 }
 
+function compare(current: IConfigNode, prev: IConfigNode, changesAccum: IConfigChanges) {
+  if (!prev) {
+    changesAccum.options[current.fullName] = buildNode(
+      current,
+      changesAccum.templates,
+      true,
+    );
+    return;
+  }
+
+  changesAccum.addRemovedValues(current.options, prev.options, current.fullName);
+  changesAccum.addRemovedValues(
+    current.configCollections,
+    prev.configCollections,
+    current.fullName,
+  );
+  changesAccum.addRemovedValues(current.configs, prev.configs, current.fullName);
+
+  // eslint-disable-next-line @typescript-eslint/no-use-before-define
+  compareCollections(current, prev, changesAccum);
+
+  Object.keys(current.configs).forEach((key) => {
+    compare(current.configs[key], prev.configs[key], changesAccum);
+  });
+
+  Object.keys(current.options).forEach((key) => {
+    if (current.options[key] === prev.options[key]) {
+      return;
+    }
+
+    changesAccum.options[mergeNameParts(current.fullName, key)] = current.options[key];
+  });
+
+  compareTemplates(current, prev, changesAccum);
+}
+
 function appendRemovedValues(
   current: Record<string, any>,
   prev: Record<string, any>,
@@ -103,6 +89,21 @@ function appendRemovedValues(
   removedKeys.forEach((key) => {
     changesAccum.push(mergeNameParts(path, key));
   });
+}
+
+function getChanges(current: IConfigNode, prev: IConfigNode): IConfigChanges {
+  const changesAccum: IConfigChanges = {
+    options: {},
+    removedOptions: [],
+    templates: {},
+    addRemovedValues(currentOptions, prevOptions, path) {
+      appendRemovedValues(currentOptions, prevOptions, path, this.removedOptions);
+    },
+  };
+
+  compare(current, prev, changesAccum);
+
+  return changesAccum;
 }
 
 function compareCollections(

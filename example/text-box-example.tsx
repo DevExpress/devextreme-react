@@ -10,7 +10,7 @@ import { RequiredRule, Validator } from '../src/validator';
 export default class extends React.Component<any, { text: string; uncontrolledText: string; }> {
   private textBox: dxTextBox;
 
-  constructor(props: any) {
+  constructor(props: unknown) {
     super(props);
     this.state = {
       text: 'text',
@@ -38,7 +38,7 @@ export default class extends React.Component<any, { text: string; uncontrolledTe
     });
   }
 
-  public render() {
+  public render(): React.ReactNode {
     const { text } = this.state;
     return (
       <Example title="DxTextBox" state={this.state}>

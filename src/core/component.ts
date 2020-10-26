@@ -12,13 +12,13 @@ class Component<P> extends ComponentBase<P> {
     this._registerExtension = this._registerExtension.bind(this);
   }
 
-  public componentDidMount() {
+  public componentDidMount(): void {
     super.componentDidMount();
     this._createWidget();
     this._createExtensions();
   }
 
-  protected renderChildren() {
+  protected renderChildren(): Record<string, unknown>[]|null| undefined {
     return React.Children.map(
       this.props.children,
       (child) => {

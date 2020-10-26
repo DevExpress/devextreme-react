@@ -1,14 +1,15 @@
+/* eslint-disable no-alert */
 /* eslint-disable max-len */
 import * as React from 'react';
 
 import Example from './example-block';
 
-import Button from '../src/button';
-import ScrollView from '../src/scroll-view';
-import TextBox from '../src/text-box';
+import { Button } from '../src/button';
+import { ScrollView } from '../src/scroll-view';
+import { TextBox } from '../src/text-box';
 
 export default class extends React.Component<any, { text: string }> {
-  constructor(props: any) {
+  constructor(props: unknown) {
     super(props);
     this.state = {
       text: 'Clear me',
@@ -30,7 +31,7 @@ export default class extends React.Component<any, { text: string }> {
     });
   }
 
-  public render() {
+  public render(): React.ReactNode {
     const { text } = this.state;
     return (
       <Example title="DxScrollView" state={this.state}>

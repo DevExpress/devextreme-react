@@ -31,18 +31,18 @@ class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps, ITempla
     this._onDxRemove = this._onDxRemove.bind(this);
   }
 
-  public componentDidMount() {
+  public componentDidMount(): void {
     const { onRendered } = this.props;
     onRendered?.();
 
     this._subscribeOnRemove();
   }
 
-  public componentDidUpdate() {
+  public componentDidUpdate(): void {
     this._subscribeOnRemove();
   }
 
-  public componentWillUnmount() {
+  public componentWillUnmount(): void {
     // Let React remove it itself
     // eslint-disable-next-line react/no-find-dom-node
     const node = ReactDOM.findDOMNode(this);
@@ -90,7 +90,7 @@ class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps, ITempla
     onRemoved();
   }
 
-  public render() {
+  public render(): React.ReactNode {
     const { removalListenerRequired } = this.state;
     const { content, container } = this.props;
     const removalListener = removalListenerRequired
