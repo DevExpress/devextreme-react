@@ -17,7 +17,9 @@ build:
     - npm run pack
     - npm run test
   post_ci:
-    - ./node_modules/.bin/istanbul report cobertura --dir shippable/codecoverage/
+    cross-env NODE_ENV=test ./node_modules/.bin/istanbul cover
+    --report lcov --report json --report text --report html _mocha -- --ui bdd
+    --reporter spec --colors --compilers js:babel-core/register server/tests --recursive
   cache: true
   cache_dir_list:
     - $SHIPPABLE_BUILD_DIR/node_modules
