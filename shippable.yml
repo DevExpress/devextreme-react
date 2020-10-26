@@ -9,15 +9,14 @@ build:
     image_name: drydock/u14nod
     image_tag: prod
     pull: true
-
+  env:
+    - XUNIT_FILE=coverage/clover.xml
   ci:
     - npm install
     - npm run lint
     - npm run pack
     - npm run test
 
-  post_ci:
-    - coverage xml coverage/clovel.xml
   cache: true
   cache_dir_list:
     - $SHIPPABLE_BUILD_DIR/node_modules
