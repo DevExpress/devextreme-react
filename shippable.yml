@@ -16,8 +16,8 @@ build:
     - npm run lint
     - npm run pack
     - npm run test
-    post_ci:
-      - ./node_modules/.bin/istanbul cover grunt -- -u tdd
+  post_ci:
+    - ./node_modules/.bin/istanbul report cobertura --dir shippable/codecoverage/
   cache: true
   cache_dir_list:
     - $SHIPPABLE_BUILD_DIR/node_modules
