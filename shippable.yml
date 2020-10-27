@@ -18,7 +18,7 @@ build:
     - npm run test
   post_ci:
     - ./node_modules/.bin/istanbul report cobertura --dir shippable/codecoverage/
-    - ./node_modules/.bin/istanbul test-cover --statements 90 --functions 90 --lines 100
+    - ./node_modules/.bin/istanbul check-coverage --statements 90 --functions 90 --lines 100
   cache: true
   cache_dir_list:
     - $SHIPPABLE_BUILD_DIR/node_modules
