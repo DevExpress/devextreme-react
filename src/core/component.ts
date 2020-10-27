@@ -22,7 +22,7 @@ class Component<P> extends ComponentBase<P> {
     return React.Children.map(
       this.props.children,
       (child) => {
-        if (child && ExtensionComponent.isPrototypeOf((child as any).type)) {
+        if (child && Object.prototype.isPrototypeOf.call(ExtensionComponent, (child as any).type)) {
           return React.cloneElement(
             child as any,
             { onMounted: this._registerExtension },
