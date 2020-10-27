@@ -146,8 +146,7 @@ function mapWidget(
     ? extractNestedComponents(raw.complexOptions, raw.name, name)
     : null;
 
-  const customTypeHash = customTypes.reduce((accum, type) => {
-    const result = accum;
+  const customTypeHash = customTypes.reduce((result, type) => {
     result[type.name] = type;
     return result;
   }, {});
