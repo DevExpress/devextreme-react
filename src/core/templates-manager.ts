@@ -10,7 +10,6 @@ function normalizeProps(props: ITemplateArgs): ITemplateArgs | ITemplateArgs['da
   if (getConfigOption('useLegacyTemplateEngine')) {
     const model = props.data;
     if (model && Object.prototype.hasOwnProperty.call(model, 'key')) {
-    // if (model && model.hasOwnProperty('key')) {
       model.dxkey = model.key;
     }
     return model;
