@@ -15,7 +15,6 @@
         "import/no-cycle": "off",
         "no-param-reassign": "off",
         "no-underscore-dangle": "off",
-        "no-prototype-builtins": "off",
         "@typescript-eslint/no-explicit-any": "off"
     },
     "overrides": [

@@ -9,7 +9,8 @@ import { TemplatesStore } from './templates-store';
 function normalizeProps(props: ITemplateArgs): ITemplateArgs | ITemplateArgs['data'] {
   if (getConfigOption('useLegacyTemplateEngine')) {
     const model = props.data;
-    if (model && model.hasOwnProperty('key')) {
+    if (model && Object.prototype.hasOwnProperty.call(model, 'key')) {
+    // if (model && model.hasOwnProperty('key')) {
       model.dxkey = model.key;
     }
     return model;
