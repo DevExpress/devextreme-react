@@ -1,4 +1,4 @@
-import ConfigurationComponent from '../../core/nested-option';
+import ConfigurationComponent from '../nested-option';
 import { mount, React, shallow } from './setup';
 import {
   eventHandlers,

@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import * as events from 'devextreme/events';
-import { Component } from '../../core/component';
+import { Component } from '../component';
 
 import ConfigurationComponent from '../nested-option';
 import { Template } from '../template';
