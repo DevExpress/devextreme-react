@@ -16,12 +16,15 @@ interface IDxTemplateData {
   onRendered?: () => void;
 }
 
+function unwrapElement(element: any): HTMLElement {
+  return element.get ? element.get(0) : element;
+}
+
 function createDxTemplate(
   createContentProvider: () => (props: ITemplateArgs) => any,
   templatesStore: TemplatesStore,
   keyFn?: (data: any) => string,
 ): IDxTemplate {
-
   const renderedTemplates = new DoubleKeyMap<any, HTMLElement | null, string>();
 
   return {
@@ -34,7 +37,7 @@ function createDxTemplate(
       if (prevTemplateId) {
         templateId = prevTemplateId;
       } else {
-        templateId = keyFn ? keyFn(data.model) : '__template_' + generateID();
+        templateId = keyFn ? keyFn(data.model) : `__template_${generateID()}`;
 
         if (data.model !== undefined) {
           renderedTemplates.set(key, templateId);
@@ -66,10 +69,6 @@ function createDxTemplate(
       return container;
     },
   };
-}
-
-function unwrapElement(element: any): HTMLElement {
-  return element.get ? element.get(0) : element;
 }
 
 export {

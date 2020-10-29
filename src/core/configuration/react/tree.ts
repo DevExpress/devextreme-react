@@ -3,7 +3,9 @@ import * as React from 'react';
 import { ITemplateMeta, ITemplateProps } from '../../template';
 import { separateProps } from '../../widget-config';
 
-import { ElementType, getElementInfo, IExpectedChild, IOptionElement } from './element';
+import {
+  ElementType, getElementInfo, IExpectedChild, IOptionElement,
+} from './element';
 
 import { IConfigNode, ITemplate } from '../config-node';
 import { mergeNameParts } from '../utils';
@@ -14,56 +16,6 @@ interface IWidgetDescriptor {
   initialValuesProps: Record<string, string>;
   predefinedValuesProps: Record<string, any>;
   expectedChildren: Record<string, IExpectedChild>;
-}
-
-function buildConfigTree(widgetDescriptor: IWidgetDescriptor, props: Record<string, any>) {
-  return createConfigNode(
-    {
-      type: ElementType.Option,
-      descriptor: {
-        name: '',
-        isCollection: false,
-        ...widgetDescriptor,
-      },
-      props,
-    },
-    '',
-  );
-}
-
-function createConfigNode(element: IOptionElement, path: string): IConfigNode {
-  const fullName = element.descriptor.isCollection
-    ? path
-    : mergeNameParts(path, element.descriptor.name);
-
-  const separatedValues = separateProps(
-    element.props,
-    element.descriptor.initialValuesProps,
-    element.descriptor.templates,
-  );
-
-  const childrenData = processChildren(element, fullName);
-
-  for (const templateMeta of element.descriptor.templates) {
-    const template = getAnonymousTemplate(
-      element.props,
-      templateMeta,
-      path.length > 0 ? childrenData.hasTranscludedContent : false,
-    );
-    if (template) {
-      childrenData.templates.push(template);
-    }
-  }
-
-  return {
-    fullName,
-    predefinedOptions: element.descriptor.predefinedValuesProps,
-    initialOptions: separatedValues.defaults,
-    options: separatedValues.options,
-    templates: childrenData.templates,
-    configCollections: childrenData.configCollections,
-    configs: childrenData.configs,
-  };
 }
 
 function processChildren(parentElement: IOptionElement, parentFullName: string) {
@@ -97,18 +49,20 @@ function processChildren(parentElement: IOptionElement, parentFullName: string) 
           configCollections[element.descriptor.name] = collection;
         }
 
+        // eslint-disable-next-line @typescript-eslint/no-use-before-define
         const collectionItem = createConfigNode(
           element,
-          mergeNameParts(
+          `${mergeNameParts(
             parentFullName,
             element.descriptor.name,
-          ) + '[' + collection.length + ']',
+          )}[${collection.length}]`,
         );
 
         collection.push(collectionItem);
         return;
       }
 
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
       const configNode = createConfigNode(
         element,
         parentFullName,
@@ -124,6 +78,59 @@ function processChildren(parentElement: IOptionElement, parentFullName: string) 
     templates,
     hasTranscludedContent,
   };
+}
+
+function createConfigNode(element: IOptionElement, path: string): IConfigNode {
+  const fullName = element.descriptor.isCollection
+    ? path
+    : mergeNameParts(path, element.descriptor.name);
+
+  const separatedValues = separateProps(
+    element.props,
+    element.descriptor.initialValuesProps,
+    element.descriptor.templates,
+  );
+
+  const childrenData = processChildren(element, fullName);
+
+  element.descriptor.templates.forEach((templateMeta) => {
+    const template = getAnonymousTemplate(
+      element.props,
+      templateMeta,
+      path.length > 0 ? childrenData.hasTranscludedContent : false,
+    );
+    if (template) {
+      childrenData.templates.push(template);
+    }
+  });
+
+  return {
+    fullName,
+    predefinedOptions: element.descriptor.predefinedValuesProps,
+    initialOptions: separatedValues.defaults,
+    options: separatedValues.options,
+    templates: childrenData.templates,
+    configCollections: childrenData.configCollections,
+    configs: childrenData.configs,
+  };
+}
+
+function buildConfigTree(
+  widgetDescriptor: IWidgetDescriptor,
+  props: Record<string, any>,
+): IConfigNode {
+  return createConfigNode(
+    {
+      type: ElementType.Option,
+      descriptor: {
+        name: '',
+        isCollection: false,
+        ...widgetDescriptor,
+      },
+      props,
+    },
+    '',
+  );
 }
 
 export {

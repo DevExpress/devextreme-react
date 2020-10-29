@@ -58,11 +58,11 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
     this._optionsManager = new OptionsManager(this._templatesManager);
   }
 
-  public componentDidMount() {
+  public componentDidMount(): void {
     this._updateCssClasses(null, this.props);
   }
 
-  public componentDidUpdate(prevProps: P) {
+  public componentDidUpdate(prevProps: P): void {
     this._updateCssClasses(prevProps, this.props);
 
     const config = this._getConfig();
@@ -72,7 +72,7 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
     }
   }
 
-  public componentWillUnmount() {
+  public componentWillUnmount(): void {
     if (this._instance) {
       events.triggerHandler(this._element, DX_REMOVE_EVENT);
       this._instance.dispose();
@@ -80,7 +80,7 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
     this._optionsManager.dispose();
   }
 
-  protected _createWidget(element?: Element) {
+  protected _createWidget(element?: Element): void {
     element = element || this._element;
 
     const config = this._getConfig();
@@ -115,11 +115,11 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
 
   private _getElementProps(): Record<string, any> {
     const elementProps: Record<string, any> = {
-      ref: (element: HTMLDivElement) => this._element = element,
+      ref: (element: HTMLDivElement) => { this._element = element; },
     };
 
     elementPropNames.forEach((name) => {
-      const props = this.props;
+      const { props } = this;
       if (name in props) {
         elementProps[name] = props[name];
       }
@@ -148,12 +148,12 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
     }
   }
 
-  protected renderChildren() {
-    const {children} = this.props;
+  protected renderChildren(): React.ReactNode {
+    const { children } = this.props;
     return children;
   }
 
-  public render() {
+  public render(): React.ReactNode {
     return React.createElement(
       'div',
       this._getElementProps(),
@@ -167,7 +167,6 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
       ),
     );
   }
-
 }
 
 export {

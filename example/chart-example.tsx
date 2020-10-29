@@ -1,11 +1,13 @@
+/* eslint-disable max-classes-per-file */
+/* eslint-disable react/no-unused-state */
 import * as React from 'react';
 
 import { orangesByDay } from './data';
 import Example from './example-block';
 
-import Button from '../src/button';
-import Chart from '../src/chart';
-import TextBox from '../src/text-box';
+import { Button } from '../src/button';
+import { Chart } from '../src/chart';
+import { TextBox } from '../src/text-box';
 
 interface IState {
   currentTime: string;
@@ -13,9 +15,46 @@ interface IState {
   series: any[];
 }
 
-export default class extends React.Component<any, IState> {
+class Updater extends React.Component<{ onChange: (value: string) => void }, { value: string }> {
+  constructor(props: { onChange: (value: string) => void }) {
+    super(props);
+    this.state = {
+      value: '',
+    };
 
-  constructor(props: any) {
+    this.update = this.update.bind(this);
+    this.fireOnChange = this.fireOnChange.bind(this);
+  }
+
+  private fireOnChange() {
+    const { onChange } = this.props;
+    const { value } = this.state;
+    onChange(value);
+  }
+
+  private update(e: any) {
+    this.setState({
+      value: e.value,
+    });
+  }
+
+  public render() {
+    const { value } = this.state;
+    return (
+      <div className="dx-field">
+        <div className="dx-field-label">
+          <TextBox value={value} onValueChanged={this.update} valueChangeEvent="input" />
+        </div>
+        <div className="dx-field-value">
+          <Button text="Update series name" onClick={this.fireOnChange} />
+        </div>
+      </div>
+    );
+  }
+}
+
+export default class extends React.Component<any, IState> {
+  constructor(props: unknown) {
     super(props);
     this.state = {
       currentTime: this.GetTimeString(),
@@ -41,7 +80,7 @@ export default class extends React.Component<any, IState> {
   }
 
   private updateSeriesName(seriesName: string) {
-    const {series: stateSeries} = this.state;
+    const { series: stateSeries } = this.state;
     const series = [...stateSeries];
     series[0].name = seriesName;
     this.setState({
@@ -50,8 +89,8 @@ export default class extends React.Component<any, IState> {
     });
   }
 
-  public render() {
-    const {currentTime, series} = this.state;
+  public render(): React.ReactNode {
+    const { currentTime, series } = this.state;
     return (
       <Example title="DxChart" state={this.state}>
 
@@ -71,45 +110,6 @@ export default class extends React.Component<any, IState> {
         <Chart dataSource={orangesByDay} series={series} />
 
       </Example>
-    );
-  }
-}
-
-class Updater extends React.Component<{ onChange: (value: string) => void }, { value: string }> {
-
-  constructor(props: { onChange: (value: string) => void }) {
-    super(props);
-    this.state = {
-      value: '',
-    };
-
-    this.update = this.update.bind(this);
-    this.fireOnChange = this.fireOnChange.bind(this);
-  }
-
-  private fireOnChange() {
-    const {onChange} = this.props;
-    const {value} = this.state;
-    onChange(value);
-  }
-
-  private update(e: any) {
-    this.setState({
-      value: e.value,
-    });
-  }
-
-  public render() {
-    const {value} = this.state;
-    return (
-      <div className="dx-field">
-        <div className="dx-field-label">
-          <TextBox value={value} onValueChanged={this.update} valueChangeEvent="input" />
-        </div>
-        <div className="dx-field-value">
-          <Button text="Update series name" onClick={this.fireOnChange} />
-        </div>
-      </div>
     );
   }
 }

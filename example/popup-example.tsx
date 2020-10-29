@@ -1,21 +1,20 @@
 import * as React from 'react';
 
-import Button from '../src/button';
-import Popup from '../src/popup';
-import ScrollView from '../src/scroll-view';
-import TextBox from '../src/text-box';
+import { Button } from '../src/button';
+import { Popup } from '../src/popup';
+import { ScrollView } from '../src/scroll-view';
+import { TextBox } from '../src/text-box';
 import Example from './example-block';
 
 const VALID_TEXT = 'good';
 const validateText = (text: string) => text === VALID_TEXT;
 
 export default class extends React.Component<any, { visible: boolean; text: string; }> {
-
-  constructor(props: any) {
+  constructor(props: unknown) {
     super(props);
     this.state = {
       visible: false,
-      text: 'non-' + VALID_TEXT,
+      text: `non-${VALID_TEXT}`,
     };
 
     this.toggle = this.toggle.bind(this);
@@ -23,7 +22,7 @@ export default class extends React.Component<any, { visible: boolean; text: stri
   }
 
   private toggle(visible: boolean) {
-    const {text} = this.state;
+    const { text } = this.state;
     this.setState({
       visible: visible || !validateText(text),
     });
@@ -35,8 +34,8 @@ export default class extends React.Component<any, { visible: boolean; text: stri
     });
   }
 
-  public render() {
-    const {text, visible} = this.state;
+  public render(): React.ReactNode {
+    const { text, visible } = this.state;
     return (
       <Example title="DxPopup" state={this.state}>
         <TextBox value={text} onValueChanged={this.handleTextUpdate} valueChangeEvent="input" />
@@ -49,7 +48,7 @@ export default class extends React.Component<any, { visible: boolean; text: stri
           width={600}
           height={400}
         >
-          Enter valid text (it should be 'good'):
+          Enter valid text (it should be `&apos;`good`&apos;`):
           <br />
           <TextBox value={text} onValueChanged={this.handleTextUpdate} valueChangeEvent="input" />
           <br />

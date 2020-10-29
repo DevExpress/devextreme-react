@@ -1,4 +1,4 @@
-import { Component } from '../../core/component';
+import { Component } from '../component';
 
 const eventHandlers: { [index: string]: (e?: any) => void } = {};
 
@@ -7,7 +7,7 @@ const Widget = {
   resetOption: jest.fn(),
   beginUpdate: jest.fn(),
   endUpdate: jest.fn(),
-  on: (event: string, handler: (e: any) => void) => {
+  on: (event: string, handler: (e: any) => void): void => {
     eventHandlers[event] = handler;
   },
   dispose: jest.fn(),
@@ -26,7 +26,7 @@ class TestComponent<P = any> extends Component<P> {
   }
 }
 
-function fireOptionChange(fullName: string, value: any) {
+function fireOptionChange(fullName: string, value: unknown): void {
   eventHandlers.optionChanged({
     name: fullName.split('.')[0],
     fullName,

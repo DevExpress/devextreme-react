@@ -2,17 +2,37 @@ import { createDxTemplate } from '../dx-template';
 import { TemplatesStore } from '../templates-store';
 
 describe('dx-template', () => {
-
   describe('multiple rendering', () => {
     const container = {};
     const anotherContainer = {};
+    const templatesStore: any = {
+      add: jest.fn(),
+      remove: jest.fn(),
+      renderWrappers: jest.fn(),
+    };
+
+    function tryDoubleRender(model1: any, container1: any, model2: any, container2: any): void {
+      const template = createDxTemplate(
+        jest.fn(),
+        templatesStore as TemplatesStore,
+      );
+
+      template.render({
+        container: container1,
+        model: model1,
+      });
+
+      template.render({
+        container: container2,
+        model: model2,
+      });
+    }
 
     beforeEach(() => {
       jest.resetAllMocks();
     });
 
     describe('is prevented if', () => {
-
       it('is rendered with the same model', () => {
         const model: any = {};
 
@@ -38,11 +58,9 @@ describe('dx-template', () => {
         const secondId = templatesStore.add.mock.calls[1][0];
         expect(secondId).toBe(firstId);
       });
-
     });
 
     describe('is allowed if', () => {
-
       it('is rendered with different models', () => {
         // skip cases when model is undefined since no clear way of how to behave
         const model1: any = {};
@@ -97,28 +115,5 @@ describe('dx-template', () => {
         expect(secondId).not.toBe(firstId);
       });
     });
-
-    const templatesStore: any = {
-      add: jest.fn(),
-      remove: jest.fn(),
-      renderWrappers: jest.fn(),
-    };
-    function tryDoubleRender(model1: any, container1: any, model2: any, container2: any): void {
-      const template = createDxTemplate(
-        jest.fn(),
-        templatesStore as TemplatesStore,
-      );
-
-      template.render({
-        container: container1,
-        model: model1,
-      });
-
-      template.render({
-        container: container2,
-        model: model2,
-      });
-    }
   });
-
 });

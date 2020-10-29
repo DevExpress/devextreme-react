@@ -22,7 +22,7 @@ interface ITemplateArgs {
 }
 
 class Template extends React.PureComponent<ITemplateProps, any> {
-  public render() {
+  public render(): React.ReactNode {
     return null;
   }
 }
@@ -43,7 +43,7 @@ const requiredPropsCheck = (props: Record<string, any>) => {
 
 function findProps(child: React.ReactElement<any>): ITemplateProps | undefined {
   if (child.type !== Template) {
-    return;
+    return undefined;
   }
   return {
     name: child.props.name,

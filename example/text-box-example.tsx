@@ -1,16 +1,16 @@
+/* eslint-disable react/no-unused-state */
 import * as React from 'react';
+import dxTextBox from 'devextreme/ui/text_box';
 import Example from './example-block';
 
-import dxTextBox from 'devextreme/ui/text_box';
 import { Button } from '../src/button';
 import { TextBox } from '../src/text-box';
 import { RequiredRule, Validator } from '../src/validator';
 
 export default class extends React.Component<any, { text: string; uncontrolledText: string; }> {
-
   private textBox: dxTextBox;
 
-  constructor(props: any) {
+  constructor(props: unknown) {
     super(props);
     this.state = {
       text: 'text',
@@ -28,24 +28,28 @@ export default class extends React.Component<any, { text: string; uncontrolledTe
 
   private updateUncontrolledValue() {
     this.setState({
-      uncontrolledText: '#' + this.textBox.option('value'),
+      uncontrolledText: `#${this.textBox.option('value')}`,
     });
   }
 
   private handleChange(e: any) {
     this.setState({
-      text: '#' + (e.value as string).toUpperCase().replace('A', '_'),
+      text: `#${(e.value as string).toUpperCase().replace('A', '_')}`,
     });
   }
 
-  public render() {
-    const {text} = this.state;
+  public render(): React.ReactNode {
+    const { text } = this.state;
     return (
       <Example title="DxTextBox" state={this.state}>
         uncontrolled mode
         <TextBox
           defaultValue="initial text"
-          ref={(ref) => ref && (this.textBox = ref.instance)}
+          ref={(ref) => {
+            if (ref) {
+              this.textBox = ref.instance;
+            }
+          }}
         />
         <br />
         <Button onClick={this.setFocusToTextBox} text="Set focus" />

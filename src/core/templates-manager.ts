@@ -9,7 +9,7 @@ import { TemplatesStore } from './templates-store';
 function normalizeProps(props: ITemplateArgs): ITemplateArgs | ITemplateArgs['data'] {
   if (getConfigOption('useLegacyTemplateEngine')) {
     const model = props.data;
-    if (model && model.hasOwnProperty('key')) {
+    if (model && Object.prototype.hasOwnProperty.call(model, 'key')) {
       model.dxkey = model.key;
     }
     return model;
@@ -42,9 +42,10 @@ class TemplatesManager {
     this._templatesStore = templatesStore;
   }
 
-  public add(name: string, template: ITemplate) {
+  public add(name: string, template: ITemplate): void {
     this._templatesContent[name] = template.content;
-    const contentCreator = contentCreators[template.type].bind(this, () => this._templatesContent[name]);
+    const contentCreator = contentCreators[template.type]
+      .bind(this, () => this._templatesContent[name]);
     this._templates[name] = createDxTemplate(
       contentCreator,
       this._templatesStore,

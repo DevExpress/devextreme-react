@@ -1,25 +1,14 @@
 import { ICustomType, ITypeDescr } from '../integration-data-model';
 import { lowercaseFirst } from './helpers';
 
-function convertTypes(
-  types: ITypeDescr[] | undefined | null,
-  customTypes?: Record<string, ICustomType>,
-): string[] | undefined {
-  if (types === undefined || types === null || types.length === 0) {
-    return undefined;
-  }
-
-  if (customTypes) {
-    types.push(...expandTypes(types, customTypes));
-  }
-
-  const convertedTypes = new Set(types.map(convertType));
-  if (convertedTypes.has('Any')) {
-    return undefined;
-  }
-
-  return Array.from(convertedTypes);
-}
+const inputTypes = {
+  array: 'Array',
+  string: 'String',
+  number: 'Number',
+  object: 'Object',
+  bool: 'Boolean',
+  func: 'Function',
+};
 
 function expandTypes(types: ITypeDescr[], customTypes: Record<string, ICustomType>): ITypeDescr[] {
   const expandedTypes: ITypeDescr[] = [];
@@ -35,7 +24,7 @@ function expandTypes(types: ITypeDescr[], customTypes: Record<string, ICustomTyp
 }
 
 function convertType(typeDescr: ITypeDescr): string {
-  const type = typeDescr.type;
+  const { type } = typeDescr;
   switch (type) {
     case inputTypes.string:
     case inputTypes.number:
@@ -59,14 +48,25 @@ function convertType(typeDescr: ITypeDescr): string {
   return 'Any';
 }
 
-const inputTypes = {
-  array: 'Array',
-  string: 'String',
-  number: 'Number',
-  object: 'Object',
-  bool: 'Boolean',
-  func: 'Function',
-};
+function convertTypes(
+  types: ITypeDescr[] | undefined | null,
+  customTypes?: Record<string, ICustomType>,
+): string[] | undefined {
+  if (types === undefined || types === null || types.length === 0) {
+    return undefined;
+  }
+
+  if (customTypes) {
+    types.push(...expandTypes(types, customTypes));
+  }
+
+  const convertedTypes = new Set(types.map(convertType));
+  if (convertedTypes.has('Any')) {
+    return undefined;
+  }
+
+  return Array.from(convertedTypes);
+}
 
 export {
   convertTypes,

@@ -1,4 +1,4 @@
-import { ITemplateMeta, Template } from '../../template';
+import { ITemplateMeta, Template as TemplateComp } from '../../template';
 
 enum ElementType {
   Option,
@@ -48,7 +48,7 @@ function getElementInfo(
     };
   }
 
-  if (reactElement.type === Template) {
+  if (reactElement.type === TemplateComp) {
     return {
       type: ElementType.Template,
       props: reactElement.props,
@@ -59,7 +59,7 @@ function getElementInfo(
 
   if (elementDescriptor.OptionName) {
     let name = elementDescriptor.OptionName;
-    let isCollectionItem =  elementDescriptor.IsCollectionItem;
+    let isCollectionItem = elementDescriptor.IsCollectionItem;
 
     const expectation = parentExpectedChildren && parentExpectedChildren[name];
     if (expectation) {

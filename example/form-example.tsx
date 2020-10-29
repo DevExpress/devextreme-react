@@ -2,8 +2,10 @@ import * as React from 'react';
 import Example from './example-block';
 
 import { Button, NumberBox } from '../src';
-import Form, { GroupItem, Item, RequiredRule, SimpleItem } from '../src/form';
-import TextArea from '../src/text-area';
+import {
+  Form, GroupItem, Item, RequiredRule, SimpleItem,
+} from '../src/form';
+import { TextArea } from '../src/text-area';
 
 const employee: any = {
   ID: 1,
@@ -27,8 +29,13 @@ const positions = [
   'Shipping Manager',
 ];
 
+const getTextBoxComponent = (disabled: boolean) => (props: any) => {
+  const { data } = props;
+  return <NumberBox disabled={disabled} value={data.editorOptions.value} />;
+};
+
 export default class extends React.Component<any, {disableIdInput: boolean}> {
-  constructor(props: any) {
+  constructor(props: unknown) {
     super(props);
 
     this.state = {
@@ -37,11 +44,11 @@ export default class extends React.Component<any, {disableIdInput: boolean}> {
   }
 
   private toggleIdInputState = () => {
-    const {disableIdInput} = this.state;
-    this.setState({disableIdInput: !disableIdInput});
+    const { disableIdInput } = this.state;
+    this.setState({ disableIdInput: !disableIdInput });
   };
 
-  public render() {
+  public render(): React.ReactNode {
     const { disableIdInput } = this.state;
     return (
       <Example title="DxForm">
@@ -92,8 +99,3 @@ export default class extends React.Component<any, {disableIdInput: boolean}> {
     );
   }
 }
-
-const getTextBoxComponent = (disabled: boolean) => (props: any) => {
-  const {data} = props;
-  return <NumberBox disabled={disabled} value={data.editorOptions.value} />;
-};

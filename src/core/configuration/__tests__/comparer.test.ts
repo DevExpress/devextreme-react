@@ -23,14 +23,14 @@ describe('child config nodes comparing', () => {
         option: {
           ...emptyNode,
           fullName: 'option',
-          options: {a: 1},
+          options: { a: 1 },
         },
       },
     };
 
     const changes = getChanges(currentConfig, prevConfig);
     expect(Object.keys(changes.options).length).toEqual(1);
-    expect(changes.options.option).toEqual({a: 1});
+    expect(changes.options.option).toEqual({ a: 1 });
   });
 });
 
@@ -91,6 +91,6 @@ describe('collections comparing', () => {
 
     const changes = getChanges(currentConfig, prevConfig);
     expect(Object.keys(changes.options).length).toEqual(1);
-    expect(changes.options['items[0].items[0].items']).toEqual([ {a: 11}, {b: 22}, {c: 33} ]);
+    expect(changes.options['items[0].items[0].items']).toEqual([{ a: 11 }, { b: 22 }, { c: 33 }]);
   });
 });

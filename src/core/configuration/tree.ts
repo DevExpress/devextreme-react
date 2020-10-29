@@ -6,58 +6,12 @@ interface IConfig {
   templates: Record<string, ITemplate>;
 }
 
-function buildConfig(root: IConfigNode, ignoreInitialValues: boolean): IConfig {
-  const templatesAccum: Record<string, ITemplate> = {};
-  const options = buildNode(root, templatesAccum, ignoreInitialValues);
-
-  return {
-    templates: templatesAccum,
-    options,
-  };
-}
-
-function buildNode(
-  node: IConfigNode,
-  templatesAccum: Record<string, ITemplate>,
-  ignoreInitialValues: boolean,
-): Record<string, any> {
-  const result: Record<string, any> = {};
-
-  for (const key of Object.keys(node.predefinedOptions)) {
-    result[key] = node.predefinedOptions[key];
-  }
-
-  for (const key of Object.keys(node.configs)) {
-    result[key] = buildNode(node.configs[key], templatesAccum, ignoreInitialValues);
-  }
-
-  for (const key of Object.keys(node.configCollections)) {
-    result[key] = node.configCollections[key].map(
-      (item) => buildNode(item, templatesAccum, ignoreInitialValues),
-    );
-  }
-
-  if (!ignoreInitialValues) {
-    for (const key of Object.keys(node.initialOptions)) {
-      result[key] = node.initialOptions[key];
-    }
-  }
-
-  for (const key of Object.keys(node.options)) {
-    result[key] = node.options[key];
-  }
-
-  buildTemplates(node, result, templatesAccum);
-
-  return result;
-}
-
 function buildTemplates(
   node: IConfigNode,
   optionsAccum: Record<string, any>,
   templatesAccum: Record<string, ITemplate>,
-) {
-  node.templates.map(
+): void {
+  node.templates.forEach(
     (template) => {
       if (template.isAnonymous) {
         const templateName = mergeNameParts(node.fullName, template.optionName);
@@ -70,6 +24,52 @@ function buildTemplates(
   );
 }
 
+function buildNode(
+  node: IConfigNode,
+  templatesAccum: Record<string, ITemplate>,
+  ignoreInitialValues: boolean,
+): Record<string, any> {
+  const result: Record<string, any> = {};
+
+  Object.keys(node.predefinedOptions).forEach((key) => {
+    result[key] = node.predefinedOptions[key];
+  });
+
+  Object.keys(node.configs).forEach((key) => {
+    result[key] = buildNode(node.configs[key], templatesAccum, ignoreInitialValues);
+  });
+
+  Object.keys(node.configCollections).forEach((key) => {
+    result[key] = node.configCollections[key].map(
+      (item) => buildNode(item, templatesAccum, ignoreInitialValues),
+    );
+  });
+
+  if (!ignoreInitialValues) {
+    Object.keys(node.initialOptions).forEach((key) => {
+      result[key] = node.initialOptions[key];
+    });
+  }
+
+  Object.keys(node.options).forEach((key) => {
+    result[key] = node.options[key];
+  });
+
+  buildTemplates(node, result, templatesAccum);
+
+  return result;
+}
+
+function buildConfig(root: IConfigNode, ignoreInitialValues: boolean): IConfig {
+  const templatesAccum: Record<string, ITemplate> = {};
+  const options = buildNode(root, templatesAccum, ignoreInitialValues);
+
+  return {
+    templates: templatesAccum,
+    options,
+  };
+}
+
 interface IValueDescriptor {
   value: any;
   type: ValueType;
@@ -79,6 +79,22 @@ enum ValueType {
   Simple,
   Complex,
   Array,
+}
+
+function findValueInObject(obj: any, path: string[]): undefined | IValueDescriptor {
+  const key = path.shift();
+  if (!key) {
+    return {
+      value: obj,
+      type: ValueType.Simple,
+    };
+  }
+
+  if (Object.keys(obj).includes(key)) {
+    return findValueInObject(obj[key], path);
+  }
+
+  return undefined;
 }
 
 function findValue(node: IConfigNode, path: string[]): undefined | IValueDescriptor {
@@ -103,12 +119,12 @@ function findValue(node: IConfigNode, path: string[]): undefined | IValueDescrip
   if (optionInfo.isCollectionItem) {
     const collection = node.configCollections[optionInfo.name];
     if (!collection) {
-      return;
+      return undefined;
     }
 
     const item = collection[optionInfo.index];
     if (!item) {
-      return;
+      return undefined;
     }
 
     return findValue(item, path);
@@ -122,7 +138,7 @@ function findValue(node: IConfigNode, path: string[]): undefined | IValueDescrip
   const childCollection = node.configCollections[optionInfo.name];
   if (childCollection) {
     if (path.length !== 0) {
-      return;
+      return undefined;
     }
 
     return {
@@ -131,23 +147,7 @@ function findValue(node: IConfigNode, path: string[]): undefined | IValueDescrip
     };
   }
 
-  return;
-}
-
-function findValueInObject(obj: any, path: string[]): undefined | IValueDescriptor {
-  const key = path.shift();
-  if (!key) {
-    return {
-      value: obj,
-      type: ValueType.Simple,
-    };
-  }
-
-  if (Object.keys(obj).includes(key)) {
-    return findValueInObject(obj[key], path);
-  }
-
-  return;
+  return undefined;
 }
 
 export {

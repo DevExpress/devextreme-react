@@ -38,56 +38,92 @@ import {
   uppercaseFirst,
 } from './helpers';
 
-function generate({
-  metaData: rawData,
-  components: { baseComponent, extensionComponent, configComponent },
-  out,
-  widgetsPackage,
-}: {
-  metaData: IModel,
-  components: {
-    baseComponent: string,
-    extensionComponent: string,
-    configComponent: string,
-  },
-  out: {
-    componentsDir: string,
-    oldComponentsDir: string,
-    indexFileName: string
-  },
-  widgetsPackage: string
-}) {
-  const modulePaths: IReExport[] = [];
+function mapSubscribableOption(prop: IProp): ISubscribableOption {
+  return {
+    name: prop.name,
+    type: 'any',
+    isSubscribable: prop.isSubscribable || undefined,
+  };
+}
 
-  rawData.widgets.forEach((data) => {
-    const widgetFile = mapWidget(
-      data,
-      baseComponent,
-      extensionComponent,
-      configComponent,
-      rawData.customTypes,
-      widgetsPackage,
-    );
-    const widgetFilePath = joinPaths(out.componentsDir, widgetFile.fileName);
-    const indexFileDir = getDirName(out.indexFileName);
+function isNestedOptionArray(prop: IProp): boolean {
+  return isNotEmptyArray(prop.types) && (prop.types[0].type === 'Array');
+}
 
-    writeFile(widgetFilePath, generateComponent(widgetFile.component), { encoding: 'utf8' });
-    modulePaths.push({
-      name: widgetFile.component.name,
-      path: './' + removeExtension(getRelativePath(indexFileDir, widgetFilePath)).replace(pathSeparator, '/'),
-    });
+function mapOption(prop: IProp): IOption {
+  return isEmptyArray(prop.props)
+    ? {
+      name: prop.name,
+      type: 'any',
+      isSubscribable: prop.isSubscribable || undefined,
 
-    writeFile(
-      joinPaths(out.oldComponentsDir, widgetFile.fileName),
-      generateReExport(
-        normalizePath('./' + removeExtension(getRelativePath(out.oldComponentsDir, widgetFilePath)))
-          .replace(pathSeparator, '/'),
-        removeExtension(widgetFile.fileName),
-      ),
-    );
+    } : {
+      name: prop.name,
+      isSubscribable: prop.isSubscribable || undefined,
+      nested: prop.props.map(mapOption),
+      isArray: isNestedOptionArray(prop),
+    };
+}
+
+function extractNestedComponents(
+  props: IComplexProp[],
+  rawWidgetName: string,
+  widgetName: string,
+): INestedComponent[] {
+  const nameClassMap: Record<string, string> = {};
+  nameClassMap[rawWidgetName] = widgetName;
+  props.forEach((p) => {
+    nameClassMap[p.name] = uppercaseFirst(p.name);
   });
 
-  writeFile(out.indexFileName, generateIndex(modulePaths), { encoding: 'utf8' });
+  return props.map((p) => ({
+    className: nameClassMap[p.name],
+    owners: p.owners.map((o) => nameClassMap[o]),
+    optionName: p.optionName,
+    options: p.props.map(mapOption),
+    isCollectionItem: p.isCollectionItem,
+    templates: p.templates,
+    predefinedProps: p.predefinedProps,
+    expectedChildren: p.nesteds,
+  }));
+}
+
+function createPropTyping(
+  option: IProp,
+  customTypes: Record<string, ICustomType>,
+): IPropTyping | null {
+  const isRestrictedType = (t: ITypeDescr): boolean => t.acceptableValues?.length > 0;
+
+  const rawTypes = option.types.filter((t) => !isRestrictedType(t));
+  const restrictedTypes = option.types.filter((t) => isRestrictedType(t));
+
+  const types = convertTypes(rawTypes, customTypes);
+
+  if (restrictedTypes.length > 0) {
+    return {
+      propName: option.name,
+      types: types || [],
+      acceptableValues: restrictedTypes[0].acceptableValues,
+    };
+  }
+
+  if ((!types || types.length === 0)) {
+    return null;
+  }
+
+  return {
+    propName: option.name,
+    types,
+  };
+}
+
+function extractPropTypings(
+  options: IProp[],
+  customTypes: Record<string, ICustomType>,
+): (IPropTyping | null)[] {
+  return options
+    .map((o) => createPropTyping(o, customTypes))
+    .filter((t) => t != null);
 }
 
 function mapWidget(
@@ -134,82 +170,56 @@ function mapWidget(
   };
 }
 
-function extractNestedComponents(props: IComplexProp[], rawWidgetName: string, widgetName: string): INestedComponent[] {
-  const nameClassMap: Record<string, string> = {};
-  nameClassMap[rawWidgetName] = widgetName;
-  props.forEach((p) => {
-    nameClassMap[p.name] = uppercaseFirst(p.name);
+function generate({
+  metaData: rawData,
+  components: { baseComponent, extensionComponent, configComponent },
+  out,
+  widgetsPackage,
+}: {
+  metaData: IModel,
+  components: {
+    baseComponent: string,
+    extensionComponent: string,
+    configComponent: string,
+  },
+  out: {
+    componentsDir: string,
+    oldComponentsDir: string,
+    indexFileName: string
+  },
+  widgetsPackage: string
+}): void {
+  const modulePaths: IReExport[] = [];
+
+  rawData.widgets.forEach((data) => {
+    const widgetFile = mapWidget(
+      data,
+      baseComponent,
+      extensionComponent,
+      configComponent,
+      rawData.customTypes,
+      widgetsPackage,
+    );
+    const widgetFilePath = joinPaths(out.componentsDir, widgetFile.fileName);
+    const indexFileDir = getDirName(out.indexFileName);
+
+    writeFile(widgetFilePath, generateComponent(widgetFile.component), { encoding: 'utf8' });
+    modulePaths.push({
+      name: widgetFile.component.name,
+      path: `./${removeExtension(getRelativePath(indexFileDir, widgetFilePath)).replace(pathSeparator, '/')}`,
+    });
+
+    writeFile(
+      joinPaths(out.oldComponentsDir, widgetFile.fileName),
+      generateReExport(
+        normalizePath(`./${removeExtension(getRelativePath(out.oldComponentsDir, widgetFilePath))}`)
+          .replace(pathSeparator, '/'),
+        removeExtension(widgetFile.fileName),
+      ),
+    );
   });
 
-  return props.map((p) => {
-    return {
-      className: nameClassMap[p.name],
-      owners: p.owners.map((o) => nameClassMap[o]),
-      optionName: p.optionName,
-      options: p.props.map(mapOption),
-      isCollectionItem: p.isCollectionItem,
-      templates: p.templates,
-      predefinedProps: p.predefinedProps,
-      expectedChildren: p.nesteds,
-    };
-  });
-}
-
-function extractPropTypings(options: IProp[], customTypes: Record<string, ICustomType>): IPropTyping[] {
-  return options
-    .map((o) => createPropTyping(o, customTypes))
-    .filter((t) => t != null);
-}
-
-function createPropTyping(option: IProp, customTypes: Record<string, ICustomType>): IPropTyping {
-  const isRestrictedType = (t: ITypeDescr): boolean => t.acceptableValues && t.acceptableValues.length > 0;
-
-  const rawTypes = option.types.filter((t) => !isRestrictedType(t));
-  const restrictedTypes = option.types.filter((t) => isRestrictedType(t));
-
-  const types = convertTypes(rawTypes, customTypes);
-
-  if (restrictedTypes.length > 0) {
-    return {
-      propName: option.name,
-      types: types || [],
-      acceptableValues: restrictedTypes[0].acceptableValues,
-    };
-  }
-
-  if ((!types || types.length === 0)) {
-    return null;
-  }
-
-  return {
-    propName: option.name,
-    types,
-  };
-}
-
-function mapOption(prop: IProp): IOption {
-  return isEmptyArray(prop.props) ?
-    {
-      name: prop.name,
-      type: 'any',
-      isSubscribable: prop.isSubscribable || undefined,
-
-    } : {
-      name: prop.name,
-      isSubscribable: prop.isSubscribable || undefined,
-      nested: prop.props.map(mapOption),
-      isArray: isNestedOptionArray(prop),
-    };
-}
-function isNestedOptionArray(prop: IProp): boolean {
-  return isNotEmptyArray(prop.types) && (prop.types[0].type === 'Array');
-}
-function mapSubscribableOption(prop: IProp): ISubscribableOption {
-  return {
-    name: prop.name,
-    type: 'any',
-    isSubscribable: prop.isSubscribable || undefined,
-  };
+  writeFile(out.indexFileName, generateIndex(modulePaths), { encoding: 'utf8' });
 }
 
 export default generate;

@@ -7,23 +7,16 @@ import { ValidationGroup } from '../src/validation-group';
 import { ValidationSummary } from '../src/validation-summary';
 import { EmailRule, RequiredRule, Validator } from '../src/validator';
 
+const validate = (params: any): void => {
+  const result = params.validationGroup.validate();
+  if (result.isValid) {
+    // form data is valid
+    params.validationGroup.reset();
+  }
+};
+
 export default class extends React.Component<any, any> {
-
-  constructor(props: any) {
-    super(props);
-
-    this.validate = this.validate.bind(this);
-  }
-
-  private validate(params: any) {
-    const result = params.validationGroup.validate();
-    if (result.isValid) {
-      // form data is valid
-      params.validationGroup.reset();
-    }
-  }
-
-  public render() {
+  public render(): React.ReactNode {
     return (
       <Example title="Validation" state={this.state}>
         <ValidationGroup>
@@ -43,7 +36,7 @@ export default class extends React.Component<any, any> {
           <br />
           <Button
             text="Submit"
-            onClick={this.validate}
+            onClick={validate}
           />
         </ValidationGroup>
       </Example>

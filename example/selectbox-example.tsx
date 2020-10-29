@@ -1,29 +1,7 @@
 import * as React from 'react';
 import { SelectBox } from '../src/select-box';
 
-const SelectBoxItem = (option: any) => {
-  return <span>{option.data.value}</span>;
-};
-
-class SelectBoxEditor extends React.Component {
-
-  public render() {
-    return (
-      <SelectBox
-        searchEnabled
-        showClearButton
-        searchTimeout={0}
-        noDataText="No results found"
-        displayExpr="label"
-        valueExpr="value"
-        items={items}
-        itemComponent={SelectBoxItem}
-      />
-    );
-  }
-}
-
-export default SelectBoxEditor;
+const SelectBoxItem = (option: any) => <span>{option.data.value}</span>;
 
 const items = [
   {
@@ -47,3 +25,16 @@ const items = [
     value: '5',
   },
 ];
+
+export default (): React.ReactElement | null => (
+  <SelectBox
+    searchEnabled
+    showClearButton
+    searchTimeout={0}
+    noDataText="No results found"
+    displayExpr="label"
+    valueExpr="value"
+    items={items}
+    itemComponent={SelectBoxItem}
+  />
+);

@@ -1,5 +1,7 @@
 import * as React from 'react';
-import { Button, TextBox, ValidationSummary, Validator } from '../src';
+import {
+  Button, TextBox, ValidationSummary, Validator,
+} from '../src';
 
 import { RequiredRule } from '../src/validator';
 import Example from './example-block';
@@ -11,16 +13,14 @@ class ValidatorExample extends React.Component<any, any> {
 
   private _callbacks: any[] = [];
 
-  constructor(props: any) {
+  constructor(props: unknown) {
     super(props);
     this.state = {
       isValid: true,
     };
 
     this._adapter = {
-      getValue: () => {
-        return this._currentValue;
-      },
+      getValue: () => this._currentValue,
       validationRequestsCallbacks: this._callbacks,
       applyValidationResults: (e: any) => {
         this.setState({ isValid: e.isValid });
@@ -40,8 +40,8 @@ class ValidatorExample extends React.Component<any, any> {
     e.validationGroup.validate();
   };
 
-  public render() {
-    const {isValid} = this.state;
+  public render(): React.ReactNode {
+    const { isValid } = this.state;
     return (
       <div>
         <Example title="Standalone Validator example">

@@ -69,7 +69,7 @@ ReactDOM.render(
     <ChartExample />
 
     <Example title="Element attributes">
-      <Button text="Button with style attr" style={{backgroundColor: '#ffc'}} />
+      <Button text="Button with style attr" style={{ backgroundColor: '#ffc' }} />
     </Example>
 
     <Example title="SelectBox example">

@@ -1,5 +1,5 @@
-import config, { getOption } from '../../core/config';
-import { mount, React} from './setup';
+import config, { getOption } from '../config';
+import { mount, React } from './setup';
 import { TestComponent, WidgetClass } from './test-component';
 
 class ComponentWithTemplates extends TestComponent {
@@ -41,7 +41,7 @@ describe('useLegacyTemplateEngine', () => {
       <ComponentWithTemplates itemRender={ItemTemplate} />,
     );
 
-    const render = WidgetClass.mock.calls[0][1].integrationOptions.templates.item.render;
+    const { render } = WidgetClass.mock.calls[0][1].integrationOptions.templates.item;
 
     render({
       container: document.createElement('div'),
@@ -54,7 +54,7 @@ describe('useLegacyTemplateEngine', () => {
 
   it('works for component template', () => {
     const ItemTemplate = (props: any) => {
-      const {value, dxkey} = props;
+      const { value, dxkey } = props;
       return (
         <div className="template">
           value:
@@ -71,7 +71,7 @@ describe('useLegacyTemplateEngine', () => {
       <ComponentWithTemplates itemComponent={ItemTemplate} />,
     );
 
-    const render = WidgetClass.mock.calls[0][1].integrationOptions.templates.item.render;
+    const { render } = WidgetClass.mock.calls[0][1].integrationOptions.templates.item;
 
     render({
       container: document.createElement('div'),

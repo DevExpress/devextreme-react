@@ -1,8 +1,8 @@
 import * as dasherize from 'dasherize';
 import { extname as getPathExtension } from 'path';
 
-export function removeExtension(path: string) {
-  return path.slice(0, - getPathExtension(path).length);
+export function removeExtension(path: string): string {
+  return path.slice(0, -getPathExtension(path).length);
 }
 
 export function removePrefix(value: string, prefix: string): string {
@@ -26,24 +26,24 @@ export function compareStrings(a: string, b: string): number {
 }
 
 export function createKeyComparator<T>(keyGetter: (x: T) => string) {
-  return (a: T, b: T) => compareStrings(keyGetter(a), keyGetter(b));
+  return (a: T, b: T): number => compareStrings(keyGetter(a), keyGetter(b));
 }
 
-export function removeElement<T>(array: T[], element: T) {
+export function removeElement<T>(array: T[], element: T): void {
   const index = array.indexOf(element);
   if (index > -1) {
     array.splice(index, 1);
   }
 }
 
-export function isNotEmptyArray(array: any[] | undefined | null): boolean {
-  return !isEmptyArray(array);
-}
-
 export function isEmptyArray(array: any[] | undefined | null): boolean {
   return array === undefined || array === null || array.length === 0;
 }
 
-export function isPlainObject(value: any): boolean {
+export function isNotEmptyArray(array: any[] | undefined | null): boolean {
+  return !isEmptyArray(array);
+}
+
+export function isPlainObject(value: Record<string, any>): boolean {
   return value.constructor === Object;
 }

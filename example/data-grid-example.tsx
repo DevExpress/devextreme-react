@@ -3,7 +3,8 @@ import Example from './example-block';
 
 import { Template } from '../src/core/template';
 
-import DataGrid, {
+import {
+  DataGrid,
   Column,
   FilterRow,
   Grouping,
@@ -13,33 +14,30 @@ import DataGrid, {
   Paging,
   Selection,
 } from '../src/data-grid';
-import NumberBox from '../src/number-box';
+import { NumberBox } from '../src/number-box';
 
 import { sales } from './data';
 
-const DetailComponent = ({ data: { data } }: any) => {
-  return (
-    <p>
-      Row data:
-      <br />
-      {JSON.stringify(data)}
-    </p>
-  );
-};
+const DetailComponent = ({ data: { data } }: any) => (
+  <p>
+    Row data:
+    <br />
+    {JSON.stringify(data)}
+  </p>
+);
 
 const CityComponent = (props: any) => {
-  const {data} = props;
+  const { data } = props;
   return <i>{data.displayValue}</i>;
 };
 
 const RegionComponent = (props: any) => {
-  const {data} = props;
+  const { data } = props;
   return <b>{data.displayValue}</b>;
 };
 
 export default class extends React.Component<any, { expandAll: boolean, pageSize: number }> {
-
-  constructor(props: any) {
+  constructor(props: unknown) {
     super(props);
     this.state = {
       expandAll: true,
@@ -78,8 +76,8 @@ export default class extends React.Component<any, { expandAll: boolean, pageSize
     });
   }
 
-  public render() {
-    const {expandAll, pageSize} = this.state;
+  public render(): React.ReactNode {
+    const { expandAll, pageSize } = this.state;
     return (
       <Example title="DxDataGrid" state={this.state}>
         <br />

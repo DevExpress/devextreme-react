@@ -1,5 +1,12 @@
 import generate from './index-generator';
 
+// #region EXPECTED_GENERATES
+const EXPECTED_GENERATES = `
+export { Template } from "./core/template";
+export { widget } from "./path";
+export { anotherWidget } from "./another/path";
+`.trimLeft();
+
 it('generates', () => {
   expect(
     generate([
@@ -8,9 +15,3 @@ it('generates', () => {
     ]),
   ).toBe(EXPECTED_GENERATES);
 });
-//#region EXPECTED_GENERATES
-const EXPECTED_GENERATES = `
-export { Template } from "./core/template";
-export { widget } from "./path";
-export { anotherWidget } from "./another/path";
-`.trimLeft();

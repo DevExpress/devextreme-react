@@ -21,8 +21,8 @@ class TemplatesRenderer extends React.PureComponent<{ templatesStore: TemplatesS
     });
   }
 
-  public render() {
-    const {templatesStore} = this.props;
+  public render(): React.ReactNode {
+    const { templatesStore } = this.props;
     return React.createElement(
       React.Fragment,
       {},

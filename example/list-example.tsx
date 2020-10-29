@@ -1,10 +1,11 @@
+/* eslint-disable max-classes-per-file */
 import * as React from 'react';
 
 import DataSource from 'devextreme/data/data_source';
 
-import Button from '../src/button';
-import List, { Item as ListItem } from '../src/list';
-import TextBox from '../src/text-box';
+import { Button } from '../src/button';
+import { List, Item as ListItem } from '../src/list';
+import { TextBox } from '../src/text-box';
 
 import Example from './example-block';
 
@@ -15,8 +16,13 @@ interface IListItemProps {
   index: number;
 }
 
-class Item extends React.Component<IListItemProps, { counter: number }> {
+const items: IListItemProps[] = [
+  { text: '123' },
+  { text: '234' },
+  { text: '567' },
+];
 
+class Item extends React.Component<IListItemProps, { counter: number }> {
   constructor(props: IListItemProps) {
     super(props);
     this.state = {
@@ -27,7 +33,7 @@ class Item extends React.Component<IListItemProps, { counter: number }> {
   }
 
   private handleClick() {
-    const {counter} = this.state;
+    const { counter } = this.state;
     this.setState({
       counter: counter + 1,
     });
@@ -35,9 +41,9 @@ class Item extends React.Component<IListItemProps, { counter: number }> {
 
   public render() {
     const { data: { text }, index } = this.props;
-    const {counter} = this.state;
+    const { counter } = this.state;
     return (
-      <i onClick={this.handleClick}>
+      <button type="button" onClick={this.handleClick}>
         {index + 1}
         . Component template for item
         {text}
@@ -46,7 +52,7 @@ class Item extends React.Component<IListItemProps, { counter: number }> {
           Clicks:
           {counter}
         </b>
-      </i>
+      </button>
     );
   }
 }
@@ -62,10 +68,9 @@ function ItemsRender(item: string) {
 const listItems: string[] = ['orange', 'apple', 'potato'];
 
 export default class extends React.Component<any, { text: string; items: IListItemProps[]; }> {
-
   private dataSource: DataSource;
 
-  constructor(props: any) {
+  constructor(props: unknown) {
     super(props);
     this.state = {
       text: '',
@@ -79,7 +84,7 @@ export default class extends React.Component<any, { text: string; items: IListIt
           data: items,
         },
         sort: [
-          { getter: 'text', desc: true},
+          { getter: 'text', desc: true },
         ],
         pageSize: 1,
       },
@@ -89,7 +94,7 @@ export default class extends React.Component<any, { text: string; items: IListIt
     this.addTextToList = this.addTextToList.bind(this);
   }
 
-  public componentWillUnmount() {
+  public componentWillUnmount(): void {
     this.dataSource.dispose();
   }
 
@@ -100,15 +105,15 @@ export default class extends React.Component<any, { text: string; items: IListIt
   }
 
   private addTextToList() {
-    const {items, text} = this.state;
+    const { items: stateItems, text } = this.state;
     this.setState({
-      items: [...items, { text }],
+      items: [...stateItems, { text }],
       text: '',
     });
   }
 
-  public render() {
-    const {items, text} = this.state;
+  public render(): React.ReactNode {
+    const { items: stateItems, text } = this.state;
     return (
       <Example title="DxList" state={this.state}>
         <hr />
@@ -128,7 +133,7 @@ export default class extends React.Component<any, { text: string; items: IListIt
         <h4>List with component template</h4>
         <List
           repaintChangesOnly
-          items={items}
+          items={stateItems}
           itemComponent={Item}
           itemKeyFn={ItemKeyGetter}
         />
@@ -143,9 +148,3 @@ export default class extends React.Component<any, { text: string; items: IListIt
     );
   }
 }
-
-const items: IListItemProps[] = [
-  { text: '123' },
-  { text: '234' },
-  { text: '567' },
-];

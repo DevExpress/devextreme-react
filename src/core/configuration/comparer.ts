@@ -6,22 +6,40 @@ interface IConfigChanges {
   options: Record<string, any>;
   removedOptions: string[];
   templates: Record<string, ITemplate>;
-  addRemovedValues(currentOptions: Record<string, any>, prevOptions: Record<string, any>, path: string): void;
+  addRemovedValues(
+    currentOptions: Record<string, any>, prevOptions: Record<string, any>, path: string): void;
 }
 
-function getChanges(current: IConfigNode, prev: IConfigNode) {
-  const changesAccum: IConfigChanges = {
-    options: {},
-    removedOptions: [],
-    templates: {},
-    addRemovedValues(currentOptions, prevOptions, path) {
-      appendRemovedValues(currentOptions, prevOptions, path, this.removedOptions);
-    },
-  };
+function compareTemplates(current: IConfigNode, prev: IConfigNode, changesAccum: IConfigChanges) {
+  const currentTemplatesOptions: Record<string, any> = {};
+  const currentTemplates: Record<string, ITemplate> = {};
+  const prevTemplatesOptions: Record<string, any> = {};
+  const prevTemplates: Record<string, ITemplate> = {};
 
-  compare(current, prev, changesAccum);
+  buildTemplates(current, currentTemplatesOptions, currentTemplates);
+  buildTemplates(prev, prevTemplatesOptions, prevTemplates);
 
-  return changesAccum;
+  changesAccum.addRemovedValues(currentTemplatesOptions, prevTemplatesOptions, current.fullName);
+  // TODO: support switching to default templates
+  // appendRemovedValues(currentTemplates, prevTemplates, "", changesAccum.templates);
+
+  Object.keys(currentTemplatesOptions).forEach((key) => {
+    if (currentTemplatesOptions[key] === prevTemplatesOptions[key]) {
+      return;
+    }
+
+    changesAccum.options[mergeNameParts(current.fullName, key)] = currentTemplatesOptions[key];
+  });
+
+  Object.keys(currentTemplates).forEach((key) => {
+    const currentTemplate = currentTemplates[key];
+    const prevTemplate = prevTemplates[key];
+    if (prevTemplate && currentTemplate.content === prevTemplate.content) {
+      return;
+    }
+
+    changesAccum.templates[key] = currentTemplate;
+  });
 }
 
 function compare(current: IConfigNode, prev: IConfigNode, changesAccum: IConfigChanges) {
@@ -38,56 +56,26 @@ function compare(current: IConfigNode, prev: IConfigNode, changesAccum: IConfigC
   changesAccum.addRemovedValues(
     current.configCollections,
     prev.configCollections,
-    current.fullName);
+    current.fullName,
+  );
   changesAccum.addRemovedValues(current.configs, prev.configs, current.fullName);
 
+  // eslint-disable-next-line @typescript-eslint/no-use-before-define
   compareCollections(current, prev, changesAccum);
 
-  for (const key of Object.keys(current.configs)) {
+  Object.keys(current.configs).forEach((key) => {
     compare(current.configs[key], prev.configs[key], changesAccum);
-  }
+  });
 
-  for (const key of Object.keys(current.options)) {
+  Object.keys(current.options).forEach((key) => {
     if (current.options[key] === prev.options[key]) {
-      continue;
+      return;
     }
 
     changesAccum.options[mergeNameParts(current.fullName, key)] = current.options[key];
-  }
+  });
 
   compareTemplates(current, prev, changesAccum);
-}
-
-function compareTemplates(current: IConfigNode, prev: IConfigNode, changesAccum: IConfigChanges) {
-  const currentTemplatesOptions: Record<string, any> = {};
-  const currentTemplates: Record<string, ITemplate> = {};
-  const prevTemplatesOptions: Record<string, any> = {};
-  const prevTemplates: Record<string, ITemplate> = {};
-
-  buildTemplates(current, currentTemplatesOptions, currentTemplates);
-  buildTemplates(prev, prevTemplatesOptions, prevTemplates);
-
-  changesAccum.addRemovedValues(currentTemplatesOptions, prevTemplatesOptions, current.fullName);
-  // TODO: support switching to default templates
-  // appendRemovedValues(currentTemplates, prevTemplates, "", changesAccum.templates);
-
-  for (const key of Object.keys(currentTemplatesOptions)) {
-    if (currentTemplatesOptions[key] === prevTemplatesOptions[key]) {
-      continue;
-    }
-
-    changesAccum.options[mergeNameParts(current.fullName, key)] = currentTemplatesOptions[key];
-  }
-
-  for (const key of Object.keys(currentTemplates)) {
-    const currentTemplate = currentTemplates[key];
-    const prevTemplate = prevTemplates[key];
-    if (prevTemplate && currentTemplate.content === prevTemplate.content) {
-      continue;
-    }
-
-    changesAccum.templates[key] = currentTemplate;
-  }
 }
 
 function appendRemovedValues(
@@ -98,9 +86,24 @@ function appendRemovedValues(
 ) {
   const removedKeys = Object.keys(prev).filter((key) => Object.keys(current).indexOf(key) < 0);
 
-  for (const key of removedKeys) {
+  removedKeys.forEach((key) => {
     changesAccum.push(mergeNameParts(path, key));
-  }
+  });
+}
+
+function getChanges(current: IConfigNode, prev: IConfigNode): IConfigChanges {
+  const changesAccum: IConfigChanges = {
+    options: {},
+    removedOptions: [],
+    templates: {},
+    addRemovedValues(currentOptions, prevOptions, path) {
+      appendRemovedValues(currentOptions, prevOptions, path, this.removedOptions);
+    },
+  };
+
+  compare(current, prev, changesAccum);
+
+  return changesAccum;
 }
 
 function compareCollections(
@@ -108,25 +111,25 @@ function compareCollections(
   prev: IConfigNode,
   changesAccum: IConfigChanges,
 ) {
-  for (const key of Object.keys(current.configCollections)) {
+  Object.keys(current.configCollections).forEach((key) => {
     const currentCollection = current.configCollections[key];
     const prevCollection = prev.configCollections[key] || [];
     if (!currentCollection || currentCollection.length !== prevCollection.length) {
       const updatedCollection: Array<Record<string, any>> = [];
-      currentCollection.map(
+      currentCollection.forEach(
         (item) => {
           const config = buildNode(item, changesAccum.templates, true);
           updatedCollection.push(config);
         },
       );
       changesAccum.options[mergeNameParts(current.fullName, key)] = updatedCollection;
-      continue;
+      return;
     }
 
-    for (let i = 0; i < currentCollection.length; i++) {
+    for (let i = 0; i < currentCollection.length; i += 1) {
       compare(currentCollection[i], prevCollection[i], changesAccum);
     }
-  }
+  });
 }
 
 export {

@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import Box, { Item } from '../src/box';
-import Button from '../src/button';
+import { Box, Item } from '../src/box';
+import { Button } from '../src/button';
 import Example from './example-block';
 
 const initialState = {
@@ -18,15 +18,14 @@ const initialState = {
 };
 
 class App extends React.Component<any, typeof initialState> {
-
-  constructor(props: any) {
+  constructor(props: unknown) {
     super(props);
 
     this.state = { ...initialState };
   }
 
   private renderItems = () => {
-    const {items} = this.state;
+    const { items } = this.state;
     return items.map((item) => (
       <Item key={item.id} ratio={1}>
         {item.name}
@@ -35,7 +34,7 @@ class App extends React.Component<any, typeof initialState> {
   };
 
   private add = () => {
-    const {items: stateItems} = this.state;
+    const { items: stateItems } = this.state;
     const items = [...stateItems];
     const id = items.length ? items[items.length - 1].id + 1 : 1;
     items.push({
@@ -47,12 +46,12 @@ class App extends React.Component<any, typeof initialState> {
   };
 
   private remove = () => {
-    const {items: stateItems} = this.state;
+    const { items: stateItems } = this.state;
     const items = stateItems.slice(0, stateItems.length - 1);
     this.setState({ items });
   };
 
-  public render() {
+  public render(): React.ReactNode {
     return (
       <Example title="Box example">
         <Button

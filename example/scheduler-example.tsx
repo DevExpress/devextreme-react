@@ -6,8 +6,8 @@ import { Scheduler } from '../src/scheduler';
 import { appointments } from './data';
 
 class DateCell extends React.PureComponent<any> {
-  public render() {
-    const {data} =  this.props;
+  public render(): React.ReactNode {
+    const { data } = this.props;
     const { date: now, text } = data;
     const start = new Date(now.getFullYear(), 0, 0).getTime();
     const dayNumber = Math.floor((now - start) / (1000 * 60 * 60 * 24));
@@ -20,19 +20,15 @@ class DateCell extends React.PureComponent<any> {
   }
 }
 
-export default class extends React.Component<any, any> {
-  public render() {
-    return (
-      <Example title="DxScheduler">
-        <Scheduler
-          dateCellComponent={DateCell}
-          dataSource={appointments}
-          height={400}
-          startDayHour={9}
-          defaultCurrentView="week"
-          defaultCurrentDate={new Date(2017, 4, 25)}
-        />
-      </Example>
-    );
-  }
-}
+export default (): React.ReactElement | null => (
+  <Example title="DxScheduler">
+    <Scheduler
+      dateCellComponent={DateCell}
+      dataSource={appointments}
+      height={400}
+      startDayHour={9}
+      defaultCurrentView="week"
+      defaultCurrentDate={new Date(2017, 4, 25)}
+    />
+  </Example>
+);

@@ -6,10 +6,10 @@ interface IProps {
   children: any;
 }
 
-const Example = (props: IProps) => {
-  const {state, title, children} = props;
+const Example = (props: IProps): JSX.Element => {
+  const { state, title, children } = props;
   let stateBlock = null;
-  if (!!state) {
+  if (state) {
     stateBlock = <pre className="example-state">{JSON.stringify(state, null, '  ')}</pre>;
   }
 
@@ -22,6 +22,10 @@ const Example = (props: IProps) => {
       {children}
     </div>
   );
+};
+
+Example.defaultProps = {
+  state: {},
 };
 
 export default Example;
