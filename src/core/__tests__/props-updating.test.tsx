@@ -17,6 +17,7 @@ interface IControlledComponentProps {
   complexOption?: Record<string, unknown>;
 }
 
+/* eslint max-classes-per-file: 0 */
 class ControlledComponent extends TestComponent<IControlledComponentProps> {
   protected _defaults = {
     defaultControlledOption: 'controlledOption',
