@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 import ConfigurationComponent from '../nested-option';
 import { mount, React, shallow } from './setup';
 import {
@@ -17,7 +18,6 @@ interface IControlledComponentProps {
   complexOption?: Record<string, unknown>;
 }
 
-/* eslint max-classes-per-file: 0 */
 class ControlledComponent extends TestComponent<IControlledComponentProps> {
   protected _defaults = {
     defaultControlledOption: 'controlledOption',
