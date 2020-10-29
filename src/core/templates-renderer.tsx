@@ -14,8 +14,8 @@ class TemplatesRenderer extends React.PureComponent<{ templatesStore: TemplatesS
 
     this._updateScheduled = true;
 
-    const updateCallback = useDeferUpdate ? deferUpdate : requestAnimationFrame;
-    updateCallback(() => {
+    const updateFunc = useDeferUpdate ? deferUpdate : requestAnimationFrame;
+    updateFunc(() => {
       this.forceUpdate();
       this._updateScheduled = false;
     });
