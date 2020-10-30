@@ -1,5 +1,4 @@
 /* eslint-disable max-classes-per-file */
-import { Component } from '../component';
 import ConfigurationComponent from '../nested-option';
 import { mount, React, shallow } from './setup';
 import {
@@ -60,15 +59,13 @@ class CollectionSubNestedComponent extends ConfigurationComponent<{
 (CollectionSubNestedComponent as any).OptionName = 'subItems';
 (CollectionSubNestedComponent as any).IsCollectionItem = true;
 
-class TestComponentWithExpectation<P = any> extends Component<P> {
+class TestComponentWithExpectation<P = any> extends TestComponent<P> {
   protected _expectedChildren = {
     items: {
       optionName: 'items',
       isCollectionItem: true,
     },
   };
-
-  protected _WidgetClass = WidgetClass;
 }
 
 describe('option update', () => {
