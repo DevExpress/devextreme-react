@@ -16,7 +16,14 @@ const Widget = {
 const WidgetClass = jest.fn(() => Widget);
 
 class TestComponent<P = any> extends Component<P> {
-    protected _WidgetClass = WidgetClass;
+  protected _WidgetClass = WidgetClass;
+
+  _createWidget(element?: Element): void {
+    Widget.option.mockImplementation((name: string) => name === 'integrationOptions.useDeferUpdateForTemplates');
+
+    super._createWidget(element);
+    Widget.option.mockReset();
+  }
 }
 
 function fireOptionChange(fullName: string, value: any) {
