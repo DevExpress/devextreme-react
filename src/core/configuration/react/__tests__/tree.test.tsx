@@ -32,7 +32,7 @@ describe('processChildren', () => {
       const childrenData = processChildren(createElementWithChildren([]), '');
       expect(childrenData.hasTranscludedContent).toEqual(false);
     });
-    it('process transcluded content', () => {
+    it('process fragmented null', () => {
       const childrenData = processChildren(createElementWithChildren([
         <>{null}</>,
       ]), '');
@@ -40,9 +40,22 @@ describe('processChildren', () => {
     });
     it('process unintendent content', () => {
       const childrenData = processChildren(createElementWithChildren([
-        null, undefined, 'str', 25, false, true,
+        null, undefined, false,
       ]), '');
       expect(childrenData.hasTranscludedContent).toEqual(false);
+    });
+    it('process string and number', () => {
+      const childrenData = processChildren(createElementWithChildren([
+        42, 'string',
+      ]), '');
+      expect(childrenData.hasTranscludedContent).toEqual(true);
+    });
+    it('process user template', () => {
+      const UserTemplate = () => <div> User Template</div>;
+      const childrenData = processChildren(createElementWithChildren([
+        <UserTemplate />,
+      ]), '');
+      expect(childrenData.hasTranscludedContent).toEqual(true);
     });
   });
 });

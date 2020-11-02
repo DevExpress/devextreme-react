@@ -34,7 +34,7 @@ export function processChildren(parentElement: IOptionElement, parentFullName: s
     (child) => {
       const element = getElementInfo(child, parentElement.descriptor.expectedChildren);
       if (element.type === ElementType.Unknown) {
-        if (React.isValidElement(child)) {
+        if (child !== null && child !== undefined && child !== false) {
           hasTranscludedContent = true;
         }
         return;

@@ -627,6 +627,7 @@ describe('component/render in nested options', () => {
       'collection[0].template',
       'collection[1].template',
       'collection[2].option.item',
+      'collection[3].template',
     ]);
   });
 
@@ -674,7 +675,7 @@ describe('component/render in nested options', () => {
     expect(options.collection[0].template).toBe('collection[0].template');
     expect(options.collection[1].template).toBe('collection[1].template');
     expect(options.collection[2].template).toBe('collection[2].template');
-    expect(options.collection[3].template).toBe(undefined);
+    expect(options.collection[3].template).toBe('collection[3].template');
     expect(options.collection[4].template).toBe(undefined);
     expect(options.collection[5].template).toBe(undefined);
     expect(options.collection[6].template).toBe(undefined);
@@ -686,6 +687,7 @@ describe('component/render in nested options', () => {
       'collection[0].template',
       'collection[1].template',
       'collection[2].template',
+      'collection[3].template',
     ]);
   });
   it("pass integrationOptions for collection nested component with 'template' option for different transcluded content", () => {
@@ -699,9 +701,7 @@ describe('component/render in nested options', () => {
           </div>
         </CollectionNestedComponent>
         <CollectionNestedComponent>
-          <>
-            {42}
-          </>
+          {42}
         </CollectionNestedComponent>
         <CollectionNestedComponent>
           <>
@@ -710,17 +710,23 @@ describe('component/render in nested options', () => {
         </CollectionNestedComponent>
         <CollectionNestedComponent>
           <NestedComponent />
-          {false}
           {undefined}
           {null}
-          <UserTemplate />
+          {false}
+          Text
         </CollectionNestedComponent>
         <CollectionNestedComponent>
           <NestedComponent />
           {undefined}
           {null}
           {false}
-          Text
+          <UserTemplate />
+        </CollectionNestedComponent>
+        <CollectionNestedComponent>
+          <NestedComponent />
+          {false}
+          {undefined}
+          {null}
         </CollectionNestedComponent>
       </TestComponent>,
     );
@@ -731,7 +737,7 @@ describe('component/render in nested options', () => {
     expect(options.collection[1].template).toBe('collection[1].template');
     expect(options.collection[2].template).toBe('collection[2].template');
     expect(options.collection[3].template).toBe('collection[3].template');
-    expect(options.collection[4].template).toBe(undefined);
+    expect(options.collection[4].template).toBe('collection[4].template');
 
     const { integrationOptions } = options;
     expect(Object.keys(integrationOptions.templates)).toEqual([
@@ -739,6 +745,7 @@ describe('component/render in nested options', () => {
       'collection[1].template',
       'collection[2].template',
       'collection[3].template',
+      'collection[4].template',
     ]);
   });
 
