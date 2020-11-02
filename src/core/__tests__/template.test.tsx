@@ -618,7 +618,6 @@ describe('component/render in nested options', () => {
       'collection[0].template',
       'collection[1].template',
       'collection[2].option.item',
-      'collection[3].template',
     ]);
   });
 
@@ -666,7 +665,7 @@ describe('component/render in nested options', () => {
     expect(options.collection[0].template).toBe('collection[0].template');
     expect(options.collection[1].template).toBe('collection[1].template');
     expect(options.collection[2].template).toBe('collection[2].template');
-    expect(options.collection[3].template).toBe('collection[3].template');
+    expect(options.collection[3].template).toBe(undefined);
     expect(options.collection[4].template).toBe(undefined);
     expect(options.collection[5].template).toBe(undefined);
     expect(options.collection[6].template).toBe(undefined);
@@ -674,7 +673,58 @@ describe('component/render in nested options', () => {
     expect(options.option.template).toBe(undefined);
 
     const { integrationOptions } = options;
+    expect(Object.keys(integrationOptions.templates)).toEqual([
+      'collection[0].template',
+      'collection[1].template',
+      'collection[2].template',
+    ]);
+  });
+  it("pass integrationOptions for collection nested component with 'template' option for different transcluded content", () => {
+    const UserTemplate = () => <div>Template</div>;
+    mount(
+      <TestComponent>
+        <CollectionNestedComponent>
+          <NestedComponent />
+          <div>
+            SampleText
+          </div>
+        </CollectionNestedComponent>
+        <CollectionNestedComponent>
+          <>
+            {42}
+          </>
+        </CollectionNestedComponent>
+        <CollectionNestedComponent>
+          <>
+            {null}
+          </>
+        </CollectionNestedComponent>
+        <CollectionNestedComponent>
+          <NestedComponent />
+          {false}
+          {undefined}
+          {null}
+          <UserTemplate />
+        </CollectionNestedComponent>
+        <CollectionNestedComponent>
+          <NestedComponent />
+          {undefined}
+          {null}
+          {false}
+          Text
+        </CollectionNestedComponent>
+      </TestComponent>,
+    );
 
+    const options = WidgetClass.mock.calls[0][1];
+
+    expect(options.collection[0].template).toBe('collection[0].template');
+    expect(options.collection[1].template).toBe('collection[1].template');
+    expect(options.collection[2].template).toBe('collection[2].template');
+    expect(options.collection[3].template).toBe('collection[3].template');
+    expect(options.collection[4].template).toBe(undefined);
+
+    const { integrationOptions } = options;
     expect(Object.keys(integrationOptions.templates)).toEqual([
       'collection[0].template',
       'collection[1].template',
