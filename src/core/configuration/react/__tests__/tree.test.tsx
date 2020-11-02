@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { ElementType, IOptionElement } from '../element';
-import { buildConfigTree, processChildren } from '../tree';
+import { processChildren } from '../tree';
 
-function createEmptyParentElementWithChildren(children: Array<any>):IOptionElement {
+function createElementWithChildren(children: Array<any>):IOptionElement {
   return {
     type: ElementType.Option,
     descriptor: {
@@ -27,58 +27,22 @@ function createEmptyParentElementWithChildren(children: Array<any>):IOptionEleme
 }
 
 describe('processChildren', () => {
-  it('process empty', () => {
-    const childrenData = processChildren(createEmptyParentElementWithChildren([]), '');
-    expect(childrenData).toEqual({
-      configs: {},
-      configCollections: {},
-      templates: [],
-      hasTranscludedContent: false,
+  describe('test transcluded content handling', () => {
+    it('process empty', () => {
+      const childrenData = processChildren(createElementWithChildren([]), '');
+      expect(childrenData.hasTranscludedContent).toEqual(false);
     });
-  });
-  it('process transcluded content', () => {
-    const childrenData = processChildren(createEmptyParentElementWithChildren([
-      <>{null}</>,
-    ]), '');
-    expect(childrenData).toEqual({
-      configs: {},
-      configCollections: {},
-      templates: [],
-      hasTranscludedContent: true,
+    it('process transcluded content', () => {
+      const childrenData = processChildren(createElementWithChildren([
+        <>{null}</>,
+      ]), '');
+      expect(childrenData.hasTranscludedContent).toEqual(true);
     });
-  });
-  it('process unintendent content', () => {
-    const childrenData = processChildren(createEmptyParentElementWithChildren([
-      null, undefined, 'str', 25, false, true,
-    ]), '');
-    expect(childrenData).toEqual({
-      configs: {},
-      configCollections: {},
-      templates: [],
-      hasTranscludedContent: false,
-    });
-  });
-});
-
-describe('buildConfigTree', () => {
-  it('builds empty config tree', () => {
-    const config = buildConfigTree(
-      {
-        templates: [],
-        initialValuesProps: {},
-        predefinedValuesProps: {},
-        expectedChildren: {},
-      },
-      { },
-    );
-    expect(config).toEqual({
-      fullName: '',
-      predefinedOptions: {},
-      initialOptions: {},
-      options: {},
-      templates: [],
-      configs: {},
-      configCollections: {},
+    it('process unintendent content', () => {
+      const childrenData = processChildren(createElementWithChildren([
+        null, undefined, 'str', 25, false, true,
+      ]), '');
+      expect(childrenData.hasTranscludedContent).toEqual(false);
     });
   });
 });
