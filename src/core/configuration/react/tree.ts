@@ -66,7 +66,12 @@ function createConfigNode(element: IOptionElement, path: string): IConfigNode {
     };
 }
 
-function processChildren(parentElement: IOptionElement, parentFullName: string) {
+export function processChildren(parentElement: IOptionElement, parentFullName: string): {
+    configs: Record<string, IConfigNode>,
+    configCollections: Record<string, IConfigNode[]>,
+    templates: ITemplate[],
+    hasTranscludedContent: boolean
+  } {
     const templates: ITemplate[] = [];
     const configCollections: Record<string, IConfigNode[]> = {};
     const configs: Record<string, IConfigNode> = {};
@@ -77,7 +82,9 @@ function processChildren(parentElement: IOptionElement, parentFullName: string) 
         (child) => {
             const element = getElementInfo(child, parentElement.descriptor.expectedChildren);
             if (element.type === ElementType.Unknown) {
-                hasTranscludedContent = true;
+                if (child !== null && child !== undefined && child !== false) {
+                    hasTranscludedContent = true;
+                }
                 return;
             }
 
