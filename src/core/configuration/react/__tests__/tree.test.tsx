@@ -38,7 +38,7 @@ describe('processChildren', () => {
       ]), '');
       expect(childrenData.hasTranscludedContent).toEqual(true);
     });
-    it('process unintendent content', () => {
+    it('process unintended content', () => {
       const childrenData = processChildren(createElementWithChildren([
         null, undefined, false,
       ]), '');
