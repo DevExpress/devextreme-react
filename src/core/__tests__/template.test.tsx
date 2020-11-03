@@ -628,7 +628,7 @@ describe("component/render in nested options", () => {
             "collection[3].template"
         ]);
     });
-    
+
     it("pass integrationOptions for collection nested component with 'template' option for different transcluded content", () => {
       const UserTemplate = () => <div>Template</div>;
       mount(
@@ -669,22 +669,21 @@ describe("component/render in nested options", () => {
           </CollectionNestedComponent>
         </TestComponent>,
       );
-  
+
       const options = WidgetClass.mock.calls[0][1];
-  
-      expect(options.collection[0].template).toBe('collection[0].template');
-      expect(options.collection[1].template).toBe('collection[1].template');
-      expect(options.collection[2].template).toBe('collection[2].template');
-      expect(options.collection[3].template).toBe('collection[3].template');
-      expect(options.collection[4].template).toBe('collection[4].template');
-  
+      expect(options.collection[0].template).toBe("collection[0].template");
+      expect(options.collection[1].template).toBe("collection[1].template");
+      expect(options.collection[2].template).toBe("collection[2].template");
+      expect(options.collection[3].template).toBe("collection[3].template");
+      expect(options.collection[4].template).toBe("collection[4].template");
+
       const { integrationOptions } = options;
       expect(Object.keys(integrationOptions.templates)).toEqual([
-        'collection[0].template',
-        'collection[1].template',
-        'collection[2].template',
-        'collection[3].template',
-        'collection[4].template',
+        "collection[0].template",
+        "collection[1].template",
+        "collection[2].template",
+        "collection[3].template",
+        "collection[4].template",
       ]);
     });
 
