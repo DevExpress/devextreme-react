@@ -21,7 +21,7 @@
         {
             "files": [ "./example/*.ts", "./example/*.tsx" ],
             "rules": {
-                "import/extensions": "off"
+                "import/extensions": "warn"
             }
         }
     ]
