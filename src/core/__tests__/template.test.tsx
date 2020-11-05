@@ -690,7 +690,7 @@ describe('component/render in nested options', () => {
       'collection[3].template',
     ]);
   });
-  
+
   it("pass integrationOptions for collection nested component with 'template' option for different transcluded content", () => {
     const UserTemplate = () => <div>Template</div>;
     mount(

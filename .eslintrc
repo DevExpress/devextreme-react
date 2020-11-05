@@ -12,17 +12,17 @@
         "project": ["./tsconfig.json", "./example/tsconfig.json"]
     },
     "rules": {
-        "import/no-cycle": "off",
-        "no-param-reassign": "off",
-        "no-underscore-dangle": "off",
-        "@typescript-eslint/no-explicit-any": "off"
+        "import/no-cycle": "warn",
+        "no-param-reassign": "warn",
+        "no-underscore-dangle": "warn",
+        "@typescript-eslint/no-explicit-any": "warn"
     },
     "overrides": [
         {
             "files": [ "./example/*.ts", "./example/*.tsx" ],
             "rules": {
-                "import/extensions": "off"
+                "import/extensions": "warn"
             }
         }
-    ],
+    ]
 }
