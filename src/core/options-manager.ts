@@ -9,8 +9,6 @@ import { capitalizeFirstLetter } from './helpers';
 class OptionsManager {
   private readonly _guards: Record<string, number> = {};
 
-  private readonly _updatedOptions: Set<string> = new Set();
-
   private _templatesManager: TemplatesManager;
 
   private _instance: any;
@@ -79,7 +77,6 @@ class OptionsManager {
     }
 
     Object.keys(changes.options).forEach((key) => {
-      this._updatedOptions.add(key);
       this._setValue(key, changes.options[key]);
     });
 
@@ -94,12 +91,12 @@ class OptionsManager {
       return;
     }
 
-    if (this._updatedOptions.has(e.fullName)) {
-      this._updatedOptions.delete(e.fullName);
-    } else {
+    let valueDescriptor = findValue(this._currentConfig, e.fullName.split('.'));
+    if (!valueDescriptor || valueDescriptor?.value !== e.value) {
       this._callOptionChangeHandler(e.fullName, e.value);
     }
-    const valueDescriptor = findValue(this._currentConfig, e.fullName.split('.'));
+
+    valueDescriptor = findValue(this._currentConfig, e.fullName.split('.'));
     if (!valueDescriptor) {
       return;
     }

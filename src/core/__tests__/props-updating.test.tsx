@@ -636,7 +636,6 @@ describe('onXXXChange', () => {
 
     const sampleProps = { text: '1' };
     component.setProps(sampleProps);
-    fireOptionChange('text', '1'); // controlled property calls the "onOptionChanged"
     expect(onPropChange).not.toBeCalled();
 
     fireOptionChange('text', '2');
@@ -654,7 +653,6 @@ describe('onXXXChange', () => {
     );
     onPropChange.mockImplementation((value) => {
       component.setProps({ text: `X${value}` });
-      fireOptionChange('text', `X${value}`);
     });
     expect(onPropChange).not.toBeCalled();
 
