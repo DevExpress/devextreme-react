@@ -643,7 +643,7 @@ describe('onXXXChange', () => {
     expect(onPropChange).toBeCalledWith('2');
   });
 
-  it('is not called on component changes controlled option using "onXXXChange"', () => {
+  it('is not called if received value is being modified', () => {
     const onPropChange = jest.fn();
     const component = mount(
       <TestComponent

@@ -7,43 +7,43 @@ import { mergeNameParts } from './configuration/utils';
 import { capitalizeFirstLetter } from './helpers';
 
 class OptionsManager {
-  private readonly _guards: Record<string, number> = {};
+  private readonly guards: Record<string, number> = {};
 
-  private _templatesManager: TemplatesManager;
+  private templatesManager: TemplatesManager;
 
-  private _instance: any;
+  private instance: any;
 
-  private _isUpdating = false;
+  private isUpdating = false;
 
-  private _currentConfig: IConfigNode;
+  private currentConfig: IConfigNode;
 
   constructor(templatesManager: TemplatesManager) {
-    this._templatesManager = templatesManager;
+    this.templatesManager = templatesManager;
 
     this.onOptionChanged = this.onOptionChanged.bind(this);
-    this._wrapOptionValue = this._wrapOptionValue.bind(this);
+    this.wrapOptionValue = this.wrapOptionValue.bind(this);
   }
 
   public setInstance(instance: unknown, config: IConfigNode): void {
-    this._instance = instance;
-    this._currentConfig = config;
+    this.instance = instance;
+    this.currentConfig = config;
   }
 
-  public getInitialOptions(rootNode: IConfigNode): Record<string, any> {
+  public getInitialOptions(rootNode: IConfigNode): Record<string, unknown> {
     const config = buildConfig(rootNode, false);
 
     Object.keys(config.templates).forEach((key) => {
-      this._templatesManager.add(key, config.templates[key]);
+      this.templatesManager.add(key, config.templates[key]);
     });
-    const options: Record<string, any> = {};
+    const options: Record<string, unknown> = {};
 
     Object.keys(config.options).forEach((key) => {
-      options[key] = this._wrapOptionValue(key, config.options[key]);
+      options[key] = this.wrapOptionValue(key, config.options[key]);
     });
 
-    if (this._templatesManager.templatesCount > 0) {
+    if (this.templatesManager.templatesCount > 0) {
       options.integrationOptions = {
-        templates: this._templatesManager.templates,
+        templates: this.templatesManager.templates,
       };
     }
 
@@ -51,52 +51,52 @@ class OptionsManager {
   }
 
   public update(config: IConfigNode): void {
-    const changes = getChanges(config, this._currentConfig);
+    const changes = getChanges(config, this.currentConfig);
 
     if (!changes.options && !changes.templates && !changes.removedOptions.length) {
       return;
     }
 
-    this._instance.beginUpdate();
-    this._isUpdating = true;
+    this.instance.beginUpdate();
+    this.isUpdating = true;
 
     changes.removedOptions.forEach((optionName) => {
-      this._resetOption(optionName);
+      this.resetOption(optionName);
     });
 
     Object.keys(changes.templates).forEach((key) => {
-      this._templatesManager.add(key, changes.templates[key]);
+      this.templatesManager.add(key, changes.templates[key]);
     });
-    if (this._templatesManager.templatesCount > 0) {
-      this._setValue(
+    if (this.templatesManager.templatesCount > 0) {
+      this.setValue(
         'integrationOptions',
         {
-          templates: this._templatesManager.templates,
+          templates: this.templatesManager.templates,
         },
       );
     }
 
     Object.keys(changes.options).forEach((key) => {
-      this._setValue(key, changes.options[key]);
+      this.setValue(key, changes.options[key]);
     });
 
-    this._isUpdating = false;
-    this._instance.endUpdate();
+    this.isUpdating = false;
+    this.instance.endUpdate();
 
-    this._currentConfig = config;
+    this.currentConfig = config;
   }
 
-  public onOptionChanged(e: { name: string, fullName: string, value: any }): void {
-    if (this._isUpdating) {
+  public onOptionChanged(e: { name: string, fullName: string, value: unknown }): void {
+    if (this.isUpdating) {
       return;
     }
 
-    let valueDescriptor = findValue(this._currentConfig, e.fullName.split('.'));
-    if (!valueDescriptor || valueDescriptor?.value !== e.value) {
-      this._callOptionChangeHandler(e.fullName, e.value);
+    let valueDescriptor = findValue(this.currentConfig, e.fullName.split('.'));
+    if (!valueDescriptor || valueDescriptor.value !== e.value) {
+      this.callOptionChangeHandler(e.fullName, e.value);
     }
 
-    valueDescriptor = findValue(this._currentConfig, e.fullName.split('.'));
+    valueDescriptor = findValue(this.currentConfig, e.fullName.split('.'));
     if (!valueDescriptor) {
       return;
     }
@@ -104,27 +104,27 @@ class OptionsManager {
     const { value, type } = valueDescriptor;
     if (type === ValueType.Complex) {
       Object.keys(value).forEach((key) => {
-        if (value[key] === e.value[key]) {
+        if (value[key] === (e.value as Record<string, unknown>)[key]) {
           return;
         }
-        this._setGuard(mergeNameParts(e.fullName, key), value[key]);
+        this.setGuard(mergeNameParts(e.fullName, key), value[key]);
       });
     } else {
       if (value === e.value) {
         return;
       }
-      this._setGuard(e.fullName, value);
+      this.setGuard(e.fullName, value);
     }
   }
 
   public dispose(): void {
-    Object.keys(this._guards).forEach((optionName) => {
-      window.clearTimeout(this._guards[optionName]);
-      delete this._guards[optionName];
+    Object.keys(this.guards).forEach((optionName) => {
+      window.clearTimeout(this.guards[optionName]);
+      delete this.guards[optionName];
     });
   }
 
-  private _callOptionChangeHandler(optionName: string, optionValue: any) {
+  private callOptionChangeHandler(optionName: string, optionValue: unknown) {
     const parts = optionName.split('.');
     const propName = parts[parts.length - 1];
 
@@ -134,7 +134,7 @@ class OptionsManager {
 
     const eventName = `on${capitalizeFirstLetter(propName)}Change`;
     parts[parts.length - 1] = eventName;
-    const changeEvent = findValue(this._currentConfig, parts);
+    const changeEvent = findValue(this.currentConfig, parts);
 
     if (!changeEvent) {
       return;
@@ -149,10 +149,10 @@ class OptionsManager {
     changeEvent.value(optionValue);
   }
 
-  private _wrapOptionValue(name: string, value: any) {
+  private wrapOptionValue(name: string, value: unknown) {
     if (name.substr(0, 2) === 'on' && typeof value === 'function') {
-      return (...args: any[]) => {
-        if (!this._isUpdating) {
+      return (...args: unknown[]) => {
+        if (!this.isUpdating) {
           value(...args);
         }
       };
@@ -161,33 +161,33 @@ class OptionsManager {
     return value;
   }
 
-  private _setGuard(optionName: string, optionValue: any): void {
-    if (this._guards[optionName] !== undefined) {
+  private setGuard(optionName: string, optionValue: unknown): void {
+    if (this.guards[optionName] !== undefined) {
       return;
     }
 
     const guardId = window.setTimeout(() => {
-      this._setValue(optionName, optionValue);
+      this.setValue(optionName, optionValue);
       window.clearTimeout(guardId);
-      delete this._guards[optionName];
+      delete this.guards[optionName];
     });
 
-    this._guards[optionName] = guardId;
+    this.guards[optionName] = guardId;
   }
 
-  private _resetOption(name: string) {
-    this._instance.resetOption(name);
+  private resetOption(name: string) {
+    this.instance.resetOption(name);
   }
 
-  private _setValue(name: string, value: any) {
-    if (this._guards[name]) {
-      window.clearTimeout(this._guards[name]);
-      delete this._guards[name];
+  private setValue(name: string, value: unknown) {
+    if (this.guards[name]) {
+      window.clearTimeout(this.guards[name]);
+      delete this.guards[name];
     }
 
-    this._instance.option(
+    this.instance.option(
       name,
-      this._wrapOptionValue(name, value),
+      this.wrapOptionValue(name, value),
     );
   }
 }
