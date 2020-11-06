@@ -639,7 +639,6 @@ describe('onXXXChange', () => {
     expect(onPropChange).not.toBeCalled();
 
     fireOptionChange('text', '2');
-
     expect(onPropChange).toHaveBeenCalledTimes(1);
     expect(onPropChange).toBeCalledWith('2');
   });
@@ -657,7 +656,6 @@ describe('onXXXChange', () => {
     });
 
     fireOptionChange('text', '2');
-
     expect(onPropChange).toHaveBeenCalledTimes(1);
     expect(component.prop('text')).toBe('X2');
   });
