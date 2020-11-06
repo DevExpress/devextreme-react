@@ -659,7 +659,9 @@ describe('onXXXChange', () => {
     fireOptionChange('text', '2');
     expect(onPropChange).toHaveBeenCalledTimes(1);
     expect(component.prop('text')).toBe('X2');
-    expect(Widget.option.mock.calls[0]).toEqual(['text', 'X2']);
+    expect(Widget.option.mock.calls.length).toBe(1);
+    expect(Widget.option.mock.calls[0][0]).toBe('text');
+    expect(Widget.option.mock.calls[0][1]).toBe('X2');
   });
 
   it('is called on component changes complex option', () => {
