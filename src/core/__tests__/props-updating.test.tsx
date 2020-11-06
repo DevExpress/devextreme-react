@@ -668,7 +668,7 @@ describe('onXXXChange', () => {
     expect(component.prop('text')).toBe('XX22');
   });
 
-  it('is not called new value is equal', () => {
+  it('is not called if new value is equal', () => {
     const onPropChange = jest.fn();
     mount(
       <TestComponent
