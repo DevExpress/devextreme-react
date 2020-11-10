@@ -636,15 +636,18 @@ describe('onXXXChange', () => {
 
     const sampleProps = { text: '1' };
     component.setProps(sampleProps);
-    fireOptionChange('text', '1'); // controlled property calls the "onOptionChanged"
     expect(onPropChange).not.toBeCalled();
 
     fireOptionChange('text', '2');
     expect(onPropChange).toHaveBeenCalledTimes(1);
     expect(onPropChange).toBeCalledWith('2');
+
+    fireOptionChange('text', '3');
+    expect(onPropChange).toHaveBeenCalledTimes(2);
+    expect(onPropChange).toBeCalledWith('3');
   });
 
-  it('is not called on component changes controlled option using "onXXXChange"', () => {
+  it('is not called if received value is being modified', () => {
     const onPropChange = jest.fn();
     const component = mount(
       <TestComponent
@@ -654,13 +657,28 @@ describe('onXXXChange', () => {
     );
     onPropChange.mockImplementation((value) => {
       component.setProps({ text: `X${value}` });
-      fireOptionChange('text', `X${value}`);
     });
-    expect(onPropChange).not.toBeCalled();
 
     fireOptionChange('text', '2');
     expect(onPropChange).toHaveBeenCalledTimes(1);
     expect(component.prop('text')).toBe('X2');
+
+    fireOptionChange('text', 'X22');
+    expect(onPropChange).toHaveBeenCalledTimes(2);
+    expect(component.prop('text')).toBe('XX22');
+  });
+
+  it('is not called if new value is equal', () => {
+    const onPropChange = jest.fn();
+    mount(
+      <TestComponent
+        text="0"
+        onTextChange={onPropChange}
+      />,
+    );
+
+    fireOptionChange('text', '0');
+    expect(onPropChange).toHaveBeenCalledTimes(0);
   });
 
   it('is called on component changes complex option', () => {
