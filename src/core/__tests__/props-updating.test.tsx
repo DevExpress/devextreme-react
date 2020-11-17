@@ -1,5 +1,4 @@
-import { Component } from "../../core/component";
-import ConfigurationComponent from "../../core/nested-option";
+import ConfigurationComponent from "../nested-option";
 import { mount, React, shallow } from "./setup";
 import {
     eventHandlers,
@@ -53,16 +52,13 @@ class CollectionNestedComponent extends ConfigurationComponent<{ a?: number; }> 
 class CollectionSubNestedComponent extends ConfigurationComponent<{ a?: number; }> { }
 (CollectionSubNestedComponent as any).OptionName = "subItems";
 
-class TestComponentWithExpectation<P = any> extends Component<P> {
-
-    protected _expectedChildren = {
-        items: {
-            optionName: "items",
-            isCollectionItem: true
-        }
-    };
-
-    protected _WidgetClass = WidgetClass;
+class TestComponentWithExpectation<P = any> extends TestComponent<P> {
+  protected _expectedChildren = {
+    items: {
+      optionName: "items",
+      isCollectionItem: true
+    }
+  };
 }
 
 describe("option update", () => {
