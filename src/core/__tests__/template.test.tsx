@@ -853,28 +853,28 @@ describe("component/render in nested options", () => {
     });
 });
 
-describe('async template', () => {
+describe("async template", () => {
   const waitForceUpdateFromTemplateRenderer = () => new Promise((ok) => requestAnimationFrame(ok));
 
-  it('renders', async () => {
+  it("renders", async () => {
     const elementOptions: Record<string, any> = {};
     elementOptions.itemRender = (data: any) => (
       <div className="template">
         Template
-        {' '}
+        {" "}
         {data.text}
       </div>
     );
 
     const component = mount(React.createElement(ComponentWithAsyncTemplates, elementOptions));
-    renderItemTemplate({ text: 'with data' });
+    renderItemTemplate({ text: "with data" });
 
-    expect(component.find('.template').length).toBe(0);
+    expect(component.find(".template").length).toBe(0);
 
     await waitForceUpdateFromTemplateRenderer();
     component.update();
 
-    expect(component.find('.template').html()).toBe('<div class="template">Template with data</div>');
+    expect(component.find(".template").html()).toBe('<div class="template">Template with data</div>');
   });
 
   it("does not force update on each template", async () => {
