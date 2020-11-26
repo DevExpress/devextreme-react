@@ -1,5 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import ConfigurationComponent from '../nested-option';
+import { OptionsManager } from '../options-manager';
 import { mount, React, shallow } from './setup';
 import {
   eventHandlers,
@@ -624,6 +625,18 @@ describe('mutation detection', () => {
 });
 
 describe('onXXXChange', () => {
+  let isSubscribable;
+  beforeEach(() => {
+    isSubscribable = jest
+      .spyOn(
+        OptionsManager.prototype as OptionsManager & { isOptionSubscribable: () => boolean; },
+        'isOptionSubscribable',
+      ).mockImplementation(() => true);
+  });
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('is called on component changes controlled option', () => {
     const onPropChange = jest.fn();
     const component = mount(
@@ -776,5 +789,20 @@ describe('onXXXChange', () => {
     );
 
     expect(() => fireOptionChange('text', '1')).toThrow();
+  });
+
+  it('is not called if option is not subscribable', () => {
+    const onPropChange = jest.fn();
+    isSubscribable.mockImplementation(() => false);
+    mount(
+      <TestComponent
+        text="0"
+        onTextChange={onPropChange}
+      />,
+    );
+
+    expect(onPropChange).toHaveBeenCalledTimes(0);
+    fireOptionChange('text', '1');
+    expect(onPropChange).toHaveBeenCalledTimes(0);
   });
 });

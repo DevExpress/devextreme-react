@@ -17,6 +17,8 @@ class OptionsManager {
 
   private currentConfig: IConfigNode;
 
+  private subscribableOptions: Set<string>;
+
   constructor(templatesManager: TemplatesManager) {
     this.templatesManager = templatesManager;
 
@@ -24,9 +26,14 @@ class OptionsManager {
     this.wrapOptionValue = this.wrapOptionValue.bind(this);
   }
 
-  public setInstance(instance: unknown, config: IConfigNode): void {
+  public setInstance(
+    instance: unknown,
+    config: IConfigNode,
+    subscribableOptions: string[],
+  ): void {
     this.instance = instance;
     this.currentConfig = config;
+    this.subscribableOptions = new Set(subscribableOptions);
   }
 
   public getInitialOptions(rootNode: IConfigNode): Record<string, unknown> {
@@ -124,7 +131,15 @@ class OptionsManager {
     });
   }
 
+  private isOptionSubscribable(optionName: string): boolean {
+    return this.subscribableOptions.has(optionName);
+  }
+
   private callOptionChangeHandler(optionName: string, optionValue: unknown) {
+    if (!this.isOptionSubscribable(optionName)) {
+      return;
+    }
+
     const parts = optionName.split('.');
     const propName = parts[parts.length - 1];
 
