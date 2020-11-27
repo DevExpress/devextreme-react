@@ -130,6 +130,8 @@ const renderTemplateOption: (model: {
   }
 `.trim());
 
+const renderStringEntry: (value: string) => string = createTempate('"<#= it #>"');
+
 const renderPropTyping: (model: IRenderedPropTyping) => string = createTempate(
   '  <#= it.propName #>: '
 
@@ -300,12 +302,13 @@ const renderComponent: (model: {
   className: string;
   widgetName: string;
   optionsName: string;
+  subscribableOptions?: string[];
   expectedChildren?: IExpectedChild[];
   renderedDefaultProps?: string[];
   renderedTemplateProps?: string[];
   renderedPropTypings?: string[];
 }) => string = createTempate(
-  `${`class <#= it.className #> extends BaseComponent<<#= it.optionsName #>> {
+  `class <#= it.className #> extends BaseComponent<<#= it.optionsName #>> {
 
   public get instance(): <#= it.widgetName #> {
     return this._instance;
@@ -313,9 +316,13 @@ const renderComponent: (model: {
 
   protected _WidgetClass = <#= it.widgetName #>;\n`
 
-+ '<#? it.renderedDefaultProps #>'}${
-    L1}protected _defaults = {<#= it.renderedDefaultProps.join(',') #>${
-    L1}};\n`
++ `<#? it.subscribableOptions #>${
+  L1}protected subscribableOptions = [<#= it.subscribableOptions.join(',') #>];\n`
++ '<#?#>'
+
++ `<#? it.renderedDefaultProps #>${
+  L1}protected _defaults = {<#= it.renderedDefaultProps.join(',') #>${
+  L1}};\n`
 + '<#?#>'
 
 + `<#? it.expectedChildren #>${
@@ -510,6 +517,7 @@ function generate(component: IComponent): string {
       className: component.name,
       widgetName,
       optionsName,
+      subscribableOptions: component.subscribableOptions?.map((o) => renderStringEntry(o.name)),
       renderedTemplateProps: templates && templates.map(renderTemplateOption),
       renderedDefaultProps: defaultProps && defaultProps.map((o) => renderObjectEntry({
         key: o.name,

@@ -254,6 +254,8 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 
   protected _WidgetClass = dxCLASS_NAME;
 
+  protected subscribableOptions = ["option1"];
+
   protected _defaults = {
     defaultOption1: "option1"
   };
@@ -302,6 +304,8 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
   }
 
   protected _WidgetClass = dxCLASS_NAME;
+
+  protected subscribableOptions = ["option1","option2"];
 
   protected _defaults = {
     defaultOption1: "option1",
