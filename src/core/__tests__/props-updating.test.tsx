@@ -816,7 +816,7 @@ describe('onXXXChange', () => {
     });
   });
 
-  describe('unsubscribable options', () => {
+  describe('non-subscribable options', () => {
     beforeAll(() => {
       jest.spyOn(
           OptionsManager.prototype as OptionsManager & { isOptionSubscribable: () => boolean; },
