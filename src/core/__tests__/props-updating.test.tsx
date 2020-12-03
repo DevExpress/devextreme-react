@@ -628,14 +628,15 @@ describe('onXXXChange', () => {
   describe('subscribable options', () => {
     beforeAll(() => {
       jest.spyOn(
-          OptionsManager.prototype as OptionsManager & { isOptionSubscribable: () => boolean; },
-          'isOptionSubscribable')
+        OptionsManager.prototype as OptionsManager & { isOptionSubscribable: () => boolean; },
+        'isOptionSubscribable',
+      )
         .mockImplementation(() => true);
     });
     afterAll(() => {
       jest.clearAllMocks();
     });
-    
+
     it('is not called on create', () => {
       const onPropChange = jest.fn();
       mount(
@@ -647,7 +648,7 @@ describe('onXXXChange', () => {
 
       expect(onPropChange).toHaveBeenCalledTimes(0);
     });
-  
+
     it('is called on update', () => {
       const onPropChange = jest.fn();
       mount(
@@ -670,20 +671,20 @@ describe('onXXXChange', () => {
         />,
       );
       expect(onPropChange).not.toBeCalled();
-  
+
       const sampleProps = { text: '1' };
       component.setProps(sampleProps);
       expect(onPropChange).not.toBeCalled();
-  
+
       fireOptionChange('text', '2');
       expect(onPropChange).toHaveBeenCalledTimes(1);
       expect(onPropChange).toBeCalledWith('2');
-  
+
       fireOptionChange('text', '3');
       expect(onPropChange).toHaveBeenCalledTimes(2);
       expect(onPropChange).toBeCalledWith('3');
     });
-  
+
     it('is not called if received value is being modified', () => {
       const onPropChange = jest.fn();
       const component = mount(
@@ -695,16 +696,16 @@ describe('onXXXChange', () => {
       onPropChange.mockImplementation((value) => {
         component.setProps({ text: `X${value}` });
       });
-  
+
       fireOptionChange('text', '2');
       expect(onPropChange).toHaveBeenCalledTimes(1);
       expect(component.prop('text')).toBe('X2');
-  
+
       fireOptionChange('text', 'X22');
       expect(onPropChange).toHaveBeenCalledTimes(2);
       expect(component.prop('text')).toBe('XX22');
     });
-  
+
     it('is not called if new value is equal', () => {
       const onPropChange = jest.fn();
       mount(
@@ -713,11 +714,11 @@ describe('onXXXChange', () => {
           onTextChange={onPropChange}
         />,
       );
-  
+
       fireOptionChange('text', '0');
       expect(onPropChange).toHaveBeenCalledTimes(0);
     });
-  
+
     it('is called on component changes complex option', () => {
       const onPropChange = jest.fn();
       mount(
@@ -726,12 +727,12 @@ describe('onXXXChange', () => {
         />,
       );
       expect(onPropChange).not.toBeCalled();
-  
+
       fireOptionChange('complexOption.text', '1');
       expect(onPropChange).toHaveBeenCalledTimes(1);
       expect(onPropChange).toBeCalledWith('1');
     });
-  
+
     it('is called on component changes array option', () => {
       const onFirstPropChange = jest.fn();
       const onSecondPropChange = jest.fn();
@@ -745,18 +746,18 @@ describe('onXXXChange', () => {
       );
       expect(onFirstPropChange).not.toBeCalled();
       expect(onSecondPropChange).not.toBeCalled();
-  
+
       fireOptionChange('arrayOption[0].text', '1');
       expect(onFirstPropChange).toHaveBeenCalledTimes(1);
       expect(onSecondPropChange).not.toBeCalled();
       expect(onFirstPropChange).toHaveBeenCalledWith('1');
-  
+
       fireOptionChange('arrayOption[1].text', '2');
       expect(onFirstPropChange).toHaveBeenCalledTimes(1);
       expect(onSecondPropChange).toHaveBeenCalledTimes(1);
       expect(onSecondPropChange).toHaveBeenCalledWith('2');
     });
-  
+
     it('is called on nested option changed', () => {
       const onNestedPropChange = jest.fn();
       const onSubNestedPropChange = jest.fn();
@@ -786,24 +787,24 @@ describe('onXXXChange', () => {
           </CollectionNestedComponent>
         </TestComponent>,
       );
-  
+
       fireOptionChange('items[1].a', 1);
       expect(onCollectionPropChange).toHaveBeenCalledTimes(1);
       expect(onCollectionPropChange).toBeCalledWith(1);
-  
+
       fireOptionChange('items[1].subItems[0].a', 2);
       expect(onSubCollectionPropChange).toHaveBeenCalledTimes(1);
       expect(onSubCollectionPropChange).toBeCalledWith(2);
-  
+
       fireOptionChange('nestedOption.value', '3');
       expect(onNestedPropChange).toHaveBeenCalledTimes(1);
       expect(onNestedPropChange).toBeCalledWith('3');
-  
+
       fireOptionChange('items[1].nestedOption.value', '4');
       expect(onSubNestedPropChange).toHaveBeenCalledTimes(1);
       expect(onSubNestedPropChange).toBeCalledWith('4');
     });
-  
+
     it('throws an error if handler is not a function', () => {
       mount(
         <TestComponent
@@ -811,7 +812,7 @@ describe('onXXXChange', () => {
           onTextChange="someFunction"
         />,
       );
-  
+
       expect(() => fireOptionChange('text', '1')).toThrow();
     });
   });
@@ -819,14 +820,15 @@ describe('onXXXChange', () => {
   describe('non-subscribable options', () => {
     beforeAll(() => {
       jest.spyOn(
-          OptionsManager.prototype as OptionsManager & { isOptionSubscribable: () => boolean; },
-          'isOptionSubscribable')
+        OptionsManager.prototype as OptionsManager & { isOptionSubscribable: () => boolean; },
+        'isOptionSubscribable',
+      )
         .mockImplementation(() => false);
     });
     afterAll(() => {
       jest.clearAllMocks();
     });
-  
+
     it('is not called on create', () => {
       const onPropChange = jest.fn();
       mount(
@@ -838,7 +840,7 @@ describe('onXXXChange', () => {
 
       expect(onPropChange).toHaveBeenCalledTimes(0);
     });
-  
+
     it('is not called on update', () => {
       const onPropChange = jest.fn();
       mount(
