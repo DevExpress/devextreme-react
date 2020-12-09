@@ -60,7 +60,7 @@ function mapOption(prop: IProp): IOption {
     } : {
       name: prop.name,
       isSubscribable: prop.isSubscribable || undefined,
-      nested: prop.props.map(mapOption),
+      nested: prop.props?.map(mapOption) || [],
       isArray: isNestedOptionArray(prop),
     };
 }
@@ -126,6 +126,26 @@ function extractPropTypings(
     .filter((t) => t != null);
 }
 
+export function collectSubscribableRecursively(options: IProp[], prefix = ''): IProp[] {
+  const result = options.reduce((acc, option) => {
+    if (option.isSubscribable) {
+      acc.push({
+        ...option,
+        name: `${prefix}${option.name}`,
+      });
+    }
+    if (option.props?.length) {
+      acc.push(...collectSubscribableRecursively(
+        option.props,
+        `${option.name}.`,
+      ));
+    }
+    return acc;
+  }, [] as IProp[]);
+
+  return result;
+}
+
 function mapWidget(
   raw: IWidget,
   baseComponent: string,
@@ -138,8 +158,8 @@ function mapWidget(
     component: IComponent
   } {
   const name = removePrefix(raw.name, 'dx');
-  const subscribableOptions: ISubscribableOption[] = raw.options
-    .filter((o) => o.isSubscribable)
+
+  const subscribableOptions: ISubscribableOption[] = collectSubscribableRecursively(raw.options)
     .map(mapSubscribableOption);
 
   const nestedOptions = raw.complexOptions
@@ -150,7 +170,8 @@ function mapWidget(
     result[type.name] = type;
     return result;
   }, {});
-  const propTypings = extractPropTypings(raw.options, customTypeHash);
+  const propTypings = extractPropTypings(raw.options, customTypeHash)
+    .filter((propType) => propType !== null) as IPropTyping[];
 
   return {
     fileName: `${toKebabCase(name)}.ts`,

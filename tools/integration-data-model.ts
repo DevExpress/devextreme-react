@@ -18,7 +18,7 @@ export interface IWidget {
 export interface IProp {
   isSubscribable: boolean;
   name: string;
-  props: IProp[];
+  props?: IProp[];
   types: ITypeDescr[];
 }
 
