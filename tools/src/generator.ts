@@ -38,7 +38,7 @@ import {
   uppercaseFirst,
 } from './helpers';
 
-function mapSubscribableOption(prop: IProp): ISubscribableOption {
+export function mapSubscribableOption(prop: IProp): ISubscribableOption {
   return {
     name: prop.name,
     type: 'any',
@@ -46,11 +46,11 @@ function mapSubscribableOption(prop: IProp): ISubscribableOption {
   };
 }
 
-function isNestedOptionArray(prop: IProp): boolean {
+export function isNestedOptionArray(prop: IProp): boolean {
   return isNotEmptyArray(prop.types) && (prop.types[0].type === 'Array');
 }
 
-function mapOption(prop: IProp): IOption {
+export function mapOption(prop: IProp): IOption {
   return isEmptyArray(prop.props)
     ? {
       name: prop.name,
@@ -60,12 +60,12 @@ function mapOption(prop: IProp): IOption {
     } : {
       name: prop.name,
       isSubscribable: prop.isSubscribable || undefined,
-      nested: prop.props?.map(mapOption) || [],
+      nested: (prop.props as IProp[]).map(mapOption),
       isArray: isNestedOptionArray(prop),
     };
 }
 
-function extractNestedComponents(
+export function extractNestedComponents(
   props: IComplexProp[],
   rawWidgetName: string,
   widgetName: string,
@@ -88,7 +88,7 @@ function extractNestedComponents(
   }));
 }
 
-function createPropTyping(
+export function createPropTyping(
   option: IProp,
   customTypes: Record<string, ICustomType>,
 ): IPropTyping | null {
@@ -117,7 +117,7 @@ function createPropTyping(
   };
 }
 
-function extractPropTypings(
+export function extractPropTypings(
   options: IProp[],
   customTypes: Record<string, ICustomType>,
 ): (IPropTyping | null)[] {
@@ -146,7 +146,7 @@ export function collectSubscribableRecursively(options: IProp[], prefix = ''): I
   return result;
 }
 
-function mapWidget(
+export function mapWidget(
   raw: IWidget,
   baseComponent: string,
   extensionComponent: string,
