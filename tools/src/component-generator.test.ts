@@ -333,6 +333,57 @@ export {
       }),
     ).toBe(EXPECTED);
   });
+
+  it('processes nested subscribable option', () => {
+    // #region EXPECTED
+    const EXPECTED = `
+import dxCLASS_NAME, {
+    IOptions
+} from "DX/WIDGET/PATH";
+
+import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
+
+interface ICLASS_NAMEOptions extends IOptions, IHtmlOptions {
+  defaultOption1?: someType;
+  onOption1Change?: (value: someType) => void;
+}
+
+class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
+
+  public get instance(): dxCLASS_NAME {
+    return this._instance;
+  }
+
+  protected _WidgetClass = dxCLASS_NAME;
+
+  protected subscribableOptions = ["option1","option1.subOption1","option2.subOption1"];
+
+  protected _defaults = {
+    defaultOption1: "option1"
+  };
+}
+export default CLASS_NAME;
+export {
+  CLASS_NAME,
+  ICLASS_NAMEOptions
+};
+`.trimLeft();
+    // #endregion
+
+    expect(
+      generate({
+        name: 'CLASS_NAME',
+        baseComponentPath: 'BASE_COMPONENT_PATH',
+        extensionComponentPath: 'EXTENSION_COMPONENT_PATH',
+        dxExportPath: 'DX/WIDGET/PATH',
+        subscribableOptions: [
+          { name: 'option1', type: 'someType' },
+          { name: 'option1.subOption1', type: 'someType' },
+          { name: 'option2.subOption1', type: 'someType' },
+        ],
+      }),
+    ).toBe(EXPECTED);
+  });
 });
 
 describe('nested options', () => {

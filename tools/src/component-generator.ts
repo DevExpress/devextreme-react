@@ -17,13 +17,10 @@ type IComponent = {
   subscribableOptions?: ISubscribableOption[];
   templates?: string[];
   propTypings?: IPropTyping[];
-} & ({
-  nestedComponents: INestedComponent[];
-  configComponentPath: string;
-} | {
-  nestedComponents?: undefined;
-  configComponentPath?: undefined;
-});
+} & {
+  nestedComponents?: INestedComponent[];
+  configComponentPath?: string;
+};
 
 interface INestedComponent {
   className: string;
@@ -465,15 +462,17 @@ function generate(component: IComponent): string {
   }
 
   const templates = createTemplateDto(component.templates);
-  const defaultProps = component.subscribableOptions
-    ? component.subscribableOptions.map((o) => ({
+  const firstLevelSubscribableOptions = component.subscribableOptions
+    ?.filter(({ name }) => !name.includes('.'));
+  const defaultProps = firstLevelSubscribableOptions
+    ? firstLevelSubscribableOptions.map((o) => ({
       name: `default${uppercaseFirst(o.name)}`,
       type: o.type,
       actualOptionName: o.name,
     }))
     : undefined;
-  const onChangeEvents = component.subscribableOptions
-    ? component.subscribableOptions.map((o) => ({
+  const onChangeEvents = firstLevelSubscribableOptions
+    ? firstLevelSubscribableOptions.map((o) => ({
       name: `on${uppercaseFirst(o.name)}Change`,
       type: `(value: ${o.type}) => void`,
       actualOptionName: o.name,
@@ -517,7 +516,8 @@ function generate(component: IComponent): string {
       className: component.name,
       widgetName,
       optionsName,
-      subscribableOptions: component.subscribableOptions?.map((o) => renderStringEntry(o.name)),
+      subscribableOptions: component.subscribableOptions
+        ?.map((o) => renderStringEntry(o.name)),
       renderedTemplateProps: templates && templates.map(renderTemplateOption),
       renderedDefaultProps: defaultProps && defaultProps.map((o) => renderObjectEntry({
         key: o.name,
