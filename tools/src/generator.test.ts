@@ -16,66 +16,61 @@ describe('collectSubscribableRecursively', () => {
       name: 'option1',
       isSubscribable: true,
       types: [],
+      props: [],
+      firedEvents: [],
     }, {
       name: 'option2',
       isSubscribable: false,
       types: [],
+      props: [],
+      firedEvents: [],
     }, {
       name: 'option3',
       isSubscribable: true,
       types: [],
+      props: [],
+      firedEvents: [],
     }];
 
-    expect(collectSubscribableRecursively(options)).toEqual([{
-      name: 'option1',
-      isSubscribable: true,
-      types: [],
-    }, {
-      name: 'option3',
-      isSubscribable: true,
-      types: [],
-    }]);
+    const subscribableOptions = collectSubscribableRecursively(options);
+    expect(subscribableOptions.length).toBe(2);
+    expect(subscribableOptions[0]).toEqual(options[0]);
+    expect(subscribableOptions[1]).toEqual(options[2]);
   });
 
   it('subscribable nested options', () => {
+    const subOption = {
+      name: 'subOption',
+      isSubscribable: true,
+      types: [],
+      props: [],
+      firedEvents: [],
+    };
     const options: IProp[] = [{
       name: 'option1',
       isSubscribable: false,
       types: [],
-      props: [{
-        name: 'subOption',
-        isSubscribable: true,
-        types: [],
-      }],
+      props: [subOption],
+      firedEvents: [],
     }, {
       name: 'option2',
       isSubscribable: true,
       types: [],
-      props: [{
-        name: 'subOption',
-        isSubscribable: true,
-        types: [],
-      }],
+      props: [subOption],
+      firedEvents: [],
     }];
 
-    expect(collectSubscribableRecursively(options)).toEqual([{
+    const subscribableOptions = collectSubscribableRecursively(options);
+    expect(subscribableOptions.length).toBe(3);
+    expect(subscribableOptions[0]).toEqual({
+      ...subOption,
       name: 'option1.subOption',
-      isSubscribable: true,
-      types: [],
-    }, {
-      name: 'option2',
-      isSubscribable: true,
-      types: [],
-      props: [{
-        name: 'subOption',
-        isSubscribable: true,
-        types: [],
-      }],
-    }, {
+    });
+    expect(subscribableOptions[1]).toEqual(options[1]);
+    expect(subscribableOptions[2]).toEqual({
+      ...subOption,
       name: 'option2.subOption',
-      isSubscribable: true,
-      types: [],
-    }]);
+    });
   });
 });
 
@@ -85,6 +80,8 @@ describe('mapSubscribableOption', () => {
       name: 'option',
       isSubscribable: true,
       types: [],
+      props: [],
+      firedEvents: [],
     })).toEqual({
       name: 'option',
       isSubscribable: true,
@@ -97,6 +94,8 @@ describe('mapSubscribableOption', () => {
       name: 'option',
       isSubscribable: false,
       types: [],
+      props: [],
+      firedEvents: [],
     })).toEqual({
       name: 'option',
       isSubscribable: undefined,
@@ -115,6 +114,8 @@ describe('isNestedOptionArray', () => {
         acceptableValues: [],
         isCustomType: false,
       }],
+      props: [],
+      firedEvents: [],
     })).toBe(true);
   });
 
@@ -123,6 +124,8 @@ describe('isNestedOptionArray', () => {
       name: 'option',
       isSubscribable: true,
       types: [],
+      props: [],
+      firedEvents: [],
     })).toBe(false);
   });
 
@@ -135,6 +138,8 @@ describe('isNestedOptionArray', () => {
         acceptableValues: [],
         isCustomType: false,
       }],
+      props: [],
+      firedEvents: [],
     })).toBe(false);
   });
 });
@@ -146,6 +151,7 @@ describe('mapOption', () => {
       isSubscribable: false,
       types: [],
       props: [],
+      firedEvents: [],
     };
 
     expect(mapOption(option)).toEqual({
@@ -164,7 +170,10 @@ describe('mapOption', () => {
         name: 'subOption',
         isSubscribable: false,
         types: [],
+        props: [],
+        firedEvents: [],
       }],
+      firedEvents: [],
     };
 
     expect(mapOption(option)).toEqual({
@@ -231,6 +240,8 @@ describe('createPropTyping', () => {
       name: 'option1',
       isSubscribable: false,
       types: [],
+      props: [],
+      firedEvents: [],
     };
 
     expect(createPropTyping(option, customTypes)).toEqual(null);
@@ -245,6 +256,8 @@ describe('createPropTyping', () => {
         acceptableValues: [],
         isCustomType: false,
       }],
+      props: [],
+      firedEvents: [],
     };
     const expected = {
       propName: 'option2',
@@ -264,6 +277,8 @@ describe('createPropTyping', () => {
         acceptableValues: [],
         isCustomType: true,
       }],
+      props: [],
+      firedEvents: [],
     };
 
     expect(createPropTyping(option, customTypes)).toEqual({
@@ -279,6 +294,8 @@ describe('extractPropTypings', () => {
       name: 'option1',
       isSubscribable: false,
       types: [],
+      props: [],
+      firedEvents: [],
     }, {
       name: 'option2',
       isSubscribable: false,
@@ -287,6 +304,8 @@ describe('extractPropTypings', () => {
         acceptableValues: [],
         isCustomType: false,
       }],
+      props: [],
+      firedEvents: [],
     }, {
       name: 'option3',
       isSubscribable: false,
@@ -295,6 +314,8 @@ describe('extractPropTypings', () => {
         acceptableValues: [],
         isCustomType: true,
       }],
+      props: [],
+      firedEvents: [],
     }];
     const customTypes = {
       CustomType: {
@@ -371,10 +392,14 @@ describe('mapWidget', () => {
       name: 'option1',
       isSubscribable: true,
       types: [],
+      props: [],
+      firedEvents: [],
     }, {
       name: 'option2',
       isSubscribable: false,
       types: [],
+      props: [],
+      firedEvents: [],
     }, {
       name: 'option3',
       isSubscribable: true,
@@ -383,6 +408,8 @@ describe('mapWidget', () => {
         acceptableValues: [],
         isCustomType: true,
       }],
+      props: [],
+      firedEvents: [],
     }];
 
     const complexOptions: IComplexProp[] = [{
