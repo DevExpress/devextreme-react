@@ -16,9 +16,10 @@ export interface IWidget {
 }
 
 export interface IProp {
+  firedEvents: string[];
   isSubscribable: boolean;
   name: string;
-  props?: IProp[];
+  props: IProp[];
   types: ITypeDescr[];
 }
 
