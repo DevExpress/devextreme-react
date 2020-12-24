@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Example from './example-block';
 
-import { Template } from '../src/core/template';
+import { Template } from '../packages/devextreme-react/src/core/template';
 
 import {
   DataGrid,
@@ -13,8 +13,8 @@ import {
   Pager,
   Paging,
   Selection,
-} from '../src/data-grid';
-import { NumberBox } from '../src/number-box';
+} from '../packages/devextreme-react/src/data-grid';
+import { NumberBox } from '../packages/devextreme-react/src/number-box';
 
 import { sales } from './data';
 

@@ -22,7 +22,7 @@ import TextBoxExample from './text-box-example';
 import ToolbarExample from './toolbar-example';
 import ValidationExample from './validation-example';
 
-import { Button, NumberBox } from '../src';
+import { Button, NumberBox } from '../packages/devextreme-react/src';
 import BoxExample from './box-example';
 
 ReactDOM.render(

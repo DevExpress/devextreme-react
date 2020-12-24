@@ -1,0 +1,37 @@
+{
+  "author": {
+    "name": "Developer Express Inc."
+  },
+  "name": "devextreme-react",
+  "version": "20.2.4",
+  "description": "DevExtreme React UI and Visualization Components",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DevExpress/devextreme-react.git"
+  },
+  "main": "index.js",
+  "types": "index.d.ts",
+  "scripts": {
+    "build": "gulp clean && gulp generate",
+    "pack": "gulp npm.pack"
+  },
+  "keywords": [
+    "react",
+    "devextreme",
+    "devexpress"
+  ],
+  "license": "MIT",
+  "peerDependencies": {
+    "devextreme": "~20.2.4",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0"
+  },
+  "dependencies": {
+    "devextreme-react-generator": "^20.2.4",
+    "prop-types": "^15.6.1"
+  },
+  "devDependencies": {
+    "enzyme": "^3.7.0",
+    "enzyme-adapter-react-16": "^1.6.0"
+  }
+}

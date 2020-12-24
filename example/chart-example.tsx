@@ -5,9 +5,9 @@ import * as React from 'react';
 import { orangesByDay } from './data';
 import Example from './example-block';
 
-import { Button } from '../src/button';
-import { Chart } from '../src/chart';
-import { TextBox } from '../src/text-box';
+import { Button } from '../packages/devextreme-react/src/button';
+import { Chart } from '../packages/devextreme-react/src/chart';
+import { TextBox } from '../packages/devextreme-react/src/text-box';
 
 interface IState {
   currentTime: string;

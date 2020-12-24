@@ -1,0 +1,8 @@
+{
+  "packages": [
+    "packages/*"
+  ],
+  "version": "20.2.4",
+  "npmClient": "npm",
+  "stream": true
+}

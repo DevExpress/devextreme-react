@@ -1,27 +1,11 @@
 {
+  "extends": "./tsconfig.build.json",
+
   "compilerOptions": {
-    "target": "es5",
-    "module": "commonjs",
-    "baseUrl": ".",
-    "outDir": "./temp",
-    "noEmitOnError": true,
-    "jsx": "react",
-    "declaration": true,
-    "experimentalDecorators": true,
-    "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitAny": false,
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "strictNullChecks": true,
-    "lib": ["es2015", "dom"]
-  },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "tools/**/*.ts",
-    "tools/**/*.tsx"
-  ]
+    "baseUrl": "./packages",
+    "paths": {
+      "devextreme-react-generator": ["devextreme-react-generator/src"],
+      "devextreme-react": ["devextreme-react/src"]
+    }
+  }
 }

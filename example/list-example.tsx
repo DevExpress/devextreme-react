@@ -3,9 +3,9 @@ import * as React from 'react';
 
 import DataSource from 'devextreme/data/data_source';
 
-import { Button } from '../src/button';
-import { List, Item as ListItem } from '../src/list';
-import { TextBox } from '../src/text-box';
+import { Button } from '../packages/devextreme-react/src/button';
+import { List, Item as ListItem } from '../packages/devextreme-react/src/list';
+import { TextBox } from '../packages/devextreme-react/src/text-box';
 
 import Example from './example-block';
 

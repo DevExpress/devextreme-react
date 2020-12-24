@@ -4,7 +4,7 @@ import Example from './example-block';
 
 import {
   Map, Location, Marker, Route, Tooltip,
-} from '../src/map';
+} from '../packages/devextreme-react/src/map';
 
 interface IPosition {
   lat: number;

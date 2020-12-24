@@ -7,9 +7,9 @@
         "node": true,
         "jest": true
     },
-    "ignorePatterns": ["src/*.ts", "src/ui/*.ts"],
+    "ignorePatterns": ["**/devextreme-react/src/*.ts", "**/devextreme-react/src/ui/*.ts", "node_modules"],
     "parserOptions": {
-        "project": ["./tsconfig.json", "./example/tsconfig.json"]
+        "project": ["./tsconfig.json", "./packages/**/tsconfig.json", "./example/tsconfig.json"]
     },
     "rules": {
         "import/no-cycle": "warn",

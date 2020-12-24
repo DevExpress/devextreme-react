@@ -15,7 +15,7 @@ import {
   IProp,
   ITypeDescr,
   IWidget,
-} from '../integration-data-model';
+} from './integration-data-model';
 
 import { convertTypes } from './converter';
 import generateIndex, { IReExport } from './index-generator';

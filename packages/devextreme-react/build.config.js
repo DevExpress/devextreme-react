@@ -2,21 +2,19 @@
 module.exports = {
   src: './src/**/*.{ts,tsx}',
   testSrc: './src/**/__tests__/*.*', 
-  generator: {
-    src: './tools/src/**/*.{ts,tsx}',
-    binDir: './tools/bin/',
-    entry: './tools/bin/generator.js'
-  },
-  example: {
-    src: "example/**/*.ts{,x}"
-  },
+  // generator: {
+  //   src: './packages/devextreme-react-generator/src/**/*.{ts,tsx}'
+  // },
+  // example: {
+  //   src: "example/**/*.ts{,x}"
+  // },
   npm: {
     dist: './npm/',
     package: 'package.json',
-    license: 'LICENSE',
-    readme: 'README.md'
+    license: '../../LICENSE',
+    readme: '../../README.md'
   },
-  metadataPath: './tools/integration-data.json',
+  metadataPath: '../devextreme-react-generator/src/integration-data.json',
   generatedComponentsDir: './src',
   coreComponentsDir: './src/core',
   oldComponentsDir: './src/ui',

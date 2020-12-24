@@ -3,7 +3,7 @@ import Example from './example-block';
 
 import {
   Button, SlideOutView, Template, Toolbar,
-} from '../src';
+} from '../packages/devextreme-react/src';
 
 function renderMenuTemplate() {
   const items = [{

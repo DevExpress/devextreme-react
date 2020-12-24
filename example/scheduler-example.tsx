@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Example from './example-block';
 
-import { Scheduler } from '../src/scheduler';
+import { Scheduler } from '../packages/devextreme-react/src/scheduler';
 
 import { appointments } from './data';
 

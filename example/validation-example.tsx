@@ -1,11 +1,11 @@
 import * as React from 'react';
 import Example from './example-block';
 
-import { Button } from '../src/button';
-import { TextBox } from '../src/text-box';
-import { ValidationGroup } from '../src/validation-group';
-import { ValidationSummary } from '../src/validation-summary';
-import { EmailRule, RequiredRule, Validator } from '../src/validator';
+import { Button } from '../packages/devextreme-react/src/button';
+import { TextBox } from '../packages/devextreme-react/src/text-box';
+import { ValidationGroup } from '../packages/devextreme-react/src/validation-group';
+import { ValidationSummary } from '../packages/devextreme-react/src/validation-summary';
+import { EmailRule, RequiredRule, Validator } from '../packages/devextreme-react/src/validator';
 
 const validate = (params: any): void => {
   const result = params.validationGroup.validate();
