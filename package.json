@@ -71,12 +71,12 @@
   "scripts": {
     "start": "npm run build && npm run serve",
     "serve": "webpack-dev-server",
-    "postinstall": "npx lerna bootstrap --no-ci",
-    "build": "npx lerna run build --stream && npm run lint",
+    "postinstall": "lerna bootstrap --no-ci",
+    "build": "lerna run build --stream && npm run lint",
     "lint": "gulp lint",
     "test": "jest --coverage",
     "test-watch": "jest --watch",
-    "pack": "npx lerna run pack --stream",
+    "pack": "lerna run pack --stream",
     "update-integration-meta": "dx-tools update-integration-meta --output-path ./packages/devextreme-react-generator/src/integration-data.json"
   },
   "keywords": [
