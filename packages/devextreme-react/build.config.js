@@ -1,13 +1,7 @@
 
 module.exports = {
   src: './src/**/*.{ts,tsx}',
-  testSrc: './src/**/__tests__/*.*', 
-  // generator: {
-  //   src: './packages/devextreme-react-generator/src/**/*.{ts,tsx}'
-  // },
-  // example: {
-  //   src: "example/**/*.ts{,x}"
-  // },
+  testSrc: './src/**/__tests__/*.*',
   npm: {
     dist: './npm/',
     package: 'package.json',
