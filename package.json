@@ -77,7 +77,7 @@
     "test": "jest --coverage",
     "test-watch": "jest --watch",
     "pack": "npx lerna run pack --stream",
-    "update-integration-meta": "dx-tools update-integration-meta --output-path ../packages/devextreme-react-generator/src/integration-data.json"
+    "update-integration-meta": "dx-tools update-integration-meta --output-path ./packages/devextreme-react-generator/src/integration-data.json"
   },
   "keywords": [
     "react",
