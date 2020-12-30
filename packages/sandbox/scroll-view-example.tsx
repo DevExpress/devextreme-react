@@ -4,9 +4,9 @@ import * as React from 'react';
 
 import Example from './example-block';
 
-import { Button } from '../packages/devextreme-react/src/button';
-import { ScrollView } from '../packages/devextreme-react/src/scroll-view';
-import { TextBox } from '../packages/devextreme-react/src/text-box';
+import { Button } from '../devextreme-react/src/button';
+import { ScrollView } from '../devextreme-react/src/scroll-view';
+import { TextBox } from '../devextreme-react/src/text-box';
 
 export default class extends React.Component<any, { text: string }> {
   constructor(props: unknown) {

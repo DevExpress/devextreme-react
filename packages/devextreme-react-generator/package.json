@@ -1,16 +1,14 @@
 {
-  "author": {
-    "name": "Developer Express Inc."
-  },
+  "author": "Developer Express Inc.",
   "name": "devextreme-react-generator",
-  "version": "20.2.4",
+  "version": "1.0.0",
   "description": "DevExtreme React UI and Visualization Components",
   "repository": {
     "type": "git",
     "url": "https://github.com/DevExpress/devextreme-react.git"
   },
-  "main": "dist/generator",
-  "types": "dist/generator",
+  "main": "dist/src/generator",
+  "types": "dist/src/generator",
   "files": [
     "dist"
   ],
@@ -27,5 +25,8 @@
   "dependencies": {
     "dasherize": "^2.0.0",
     "dot": "^1.1.2"
+  },
+  "devDependencies": {
+    "@types/dot": "^1.1.4"
   }
 }

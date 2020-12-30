@@ -2,15 +2,16 @@
   "extends": "../../tsconfig.build.json",
 
   "compilerOptions": {
-    "declaration": true,
-    "outDir": "./dist"
+    "rootDir": ".",
+    "baseUrl": "./temp"
   },
 
   "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx"
+    "*.ts",
+    "*.tsx"
   ],
+
   "exclude": [
-    "src/**/*.test.ts"
+    "node_modules"
   ]
 }

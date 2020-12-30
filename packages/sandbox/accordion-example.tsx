@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Accordion } from '../packages/devextreme-react/src/accordion';
+import { Accordion } from '../devextreme-react/src/accordion';
 
 import Example from './example-block';
 

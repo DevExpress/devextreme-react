@@ -1,7 +1,8 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-
+// eslint-disable-next-line import/no-extraneous-dependencies
 import 'devextreme/dist/css/dx.common.css';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import 'devextreme/dist/css/dx.light.compact.css';
 
 import AccordionExample from './accordion-example';
@@ -22,7 +23,7 @@ import TextBoxExample from './text-box-example';
 import ToolbarExample from './toolbar-example';
 import ValidationExample from './validation-example';
 
-import { Button, NumberBox } from '../packages/devextreme-react/src';
+import { Button, NumberBox } from '../devextreme-react/src';
 import BoxExample from './box-example';
 
 ReactDOM.render(

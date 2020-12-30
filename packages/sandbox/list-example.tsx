@@ -1,11 +1,11 @@
 /* eslint-disable max-classes-per-file */
 import * as React from 'react';
-
+// eslint-disable-next-line import/no-extraneous-dependencies
 import DataSource from 'devextreme/data/data_source';
 
-import { Button } from '../packages/devextreme-react/src/button';
-import { List, Item as ListItem } from '../packages/devextreme-react/src/list';
-import { TextBox } from '../packages/devextreme-react/src/text-box';
+import { Button } from '../devextreme-react/src/button';
+import { List, Item as ListItem } from '../devextreme-react/src/list';
+import { TextBox } from '../devextreme-react/src/text-box';
 
 import Example from './example-block';
 

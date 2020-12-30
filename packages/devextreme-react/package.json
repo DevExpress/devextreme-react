@@ -1,7 +1,5 @@
 {
-  "author": {
-    "name": "Developer Express Inc."
-  },
+  "author": "Developer Express Inc.",
   "name": "devextreme-react",
   "version": "20.2.4",
   "description": "DevExtreme React UI and Visualization Components",
@@ -27,11 +25,13 @@
     "react-dom": "^16.2.0"
   },
   "dependencies": {
-    "devextreme-react-generator": "^20.2.4",
     "prop-types": "^15.6.1"
   },
   "devDependencies": {
+    "devextreme-react-generator": "^1.0.0",
     "enzyme": "^3.7.0",
-    "enzyme-adapter-react-16": "^1.6.0"
+    "enzyme-adapter-react-16": "^1.6.0",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2"
   }
 }

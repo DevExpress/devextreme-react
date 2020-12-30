@@ -1,11 +1,11 @@
 import * as React from 'react';
 import Example from './example-block';
 
-import { Button, NumberBox } from '../packages/devextreme-react/src';
+import { Button, NumberBox } from '../devextreme-react/src';
 import {
   Form, GroupItem, Item, RequiredRule, SimpleItem,
-} from '../packages/devextreme-react/src/form';
-import { TextArea } from '../packages/devextreme-react/src/text-area';
+} from '../devextreme-react/src/form';
+import { TextArea } from '../devextreme-react/src/text-area';
 
 const employee: any = {
   ID: 1,

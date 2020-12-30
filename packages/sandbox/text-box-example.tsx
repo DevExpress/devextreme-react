@@ -1,11 +1,12 @@
 /* eslint-disable react/no-unused-state */
 import * as React from 'react';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import dxTextBox from 'devextreme/ui/text_box';
 import Example from './example-block';
 
-import { Button } from '../packages/devextreme-react/src/button';
-import { TextBox } from '../packages/devextreme-react/src/text-box';
-import { RequiredRule, Validator } from '../packages/devextreme-react/src/validator';
+import { Button } from '../devextreme-react/src/button';
+import { TextBox } from '../devextreme-react/src/text-box';
+import { RequiredRule, Validator } from '../devextreme-react/src/validator';
 
 export default class extends React.Component<any, { text: string; uncontrolledText: string; }> {
   private textBox: dxTextBox;

@@ -1,9 +1,9 @@
 import * as React from 'react';
 import {
   Button, TextBox, ValidationSummary, Validator,
-} from '../packages/devextreme-react/src';
+} from '../devextreme-react/src';
 
-import { RequiredRule } from '../packages/devextreme-react/src/validator';
+import { RequiredRule } from '../devextreme-react/src/validator';
 import Example from './example-block';
 
 class ValidatorExample extends React.Component<any, any> {

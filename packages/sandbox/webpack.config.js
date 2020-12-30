@@ -1,14 +1,14 @@
 module.exports = {
   mode: "development",
-  entry: "./example/app.tsx",
+  entry: "./app.tsx",
   output: {
-    filename: "./example/public/js/app/bundle.js",
+    filename: "./public/js/app/bundle.js",
   },
   devtool: "source-map",
   devServer: {
     port: 9000,
     open: true,
-    openPage: "example/public/index.html"
+    openPage: "public/index.html"
   },
   resolve: {
     extensions: [".webpack.js", ".web.js", ".ts", ".tsx", ".js"]

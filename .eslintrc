@@ -7,9 +7,9 @@
         "node": true,
         "jest": true
     },
-    "ignorePatterns": ["**/devextreme-react/src/*.ts", "**/devextreme-react/src/ui/*.ts", "node_modules"],
+    "ignorePatterns": ["packages/devextreme-react/src/*.ts", "packages/devextreme-react/src/ui/*.ts", "node_modules", "dist"],
     "parserOptions": {
-        "project": ["./tsconfig.json", "./packages/**/tsconfig.json", "./example/tsconfig.json"]
+        "project": ["./tsconfig.json", "./packages/*/tsconfig.json"]
     },
     "rules": {
         "import/no-cycle": "warn",
@@ -19,7 +19,7 @@
     },
     "overrides": [
         {
-            "files": [ "./example/*.ts", "./example/*.tsx" ],
+            "files": [ "./packages/sandbox/*.ts", "./packages/sandbox/*.tsx" ],
             "rules": {
                 "import/extensions": "warn"
             }

@@ -1,8 +1,6 @@
 {
-  "author": {
-    "name": "Developer Express Inc."
-  },
-  "name": "devextreme-react-monorepo",
+  "author": "Developer Express Inc.",
+  "name": "root",
   "private": true,
   "version": "20.2.4",
   "description": "DevExtreme React UI and Visualization Components",
@@ -10,13 +8,7 @@
     "type": "git",
     "url": "https://github.com/DevExpress/devextreme-react.git"
   },
-  "peerDependencies": {
-    "devextreme": "~20.2.4",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0"
-  },
   "devDependencies": {
-    "@types/dot": "^1.1.4",
     "@types/enzyme": "^3.1.14",
     "@types/enzyme-adapter-react-16": "^1.0.2",
     "@types/jest": "^22.1.2",
@@ -24,7 +16,6 @@
     "@types/react-dom": "^16.0.9",
     "@typescript-eslint/eslint-plugin": "^4.4.1",
     "@typescript-eslint/parser": "^4.4.1",
-    "css-loader": "^2.1.0",
     "del": "^3.0.0",
     "del-cli": "^3.0.1",
     "devextreme": "~20.2.4",
@@ -54,30 +45,20 @@
     "lerna": "^3.22.1",
     "merge": ">=1.2.1",
     "minimatch": ">=3.0.2",
-    "react": "^16.5.2",
-    "react-dom": "^16.5.2",
-    "source-map-loader": "^0.2.4",
-    "style-loader": "^0.23.1",
     "ts-jest": "^24.0.2",
-    "ts-loader": "^5.3.3",
     "tslint": "^5.17.0",
     "tslint-react": "^3.5.1",
-    "typescript": "^3.9.7",
-    "url-loader": "^0.6.2",
-    "webpack": "^4.29.2",
-    "webpack-cli": "^3.2.3",
-    "webpack-dev-server": "^3.1.14"
+    "typescript": "^3.9.7"
   },
   "scripts": {
-    "start": "npm run build && npm run serve",
-    "serve": "webpack-dev-server",
+    "start": "lerna run start",
     "postinstall": "lerna bootstrap --no-ci",
     "build": "lerna run build --stream && npm run lint",
     "lint": "gulp lint",
     "test": "jest --coverage",
     "test-watch": "jest --watch",
     "pack": "lerna run pack --stream",
-    "update-integration-meta": "dx-tools update-integration-meta --output-path ./packages/devextreme-react-generator/src/integration-data.json"
+    "update-integration-meta": "dx-tools update-integration-meta --output-path ./packages/devextreme-react-generator/data/integration-data.json"
   },
   "keywords": [
     "react",

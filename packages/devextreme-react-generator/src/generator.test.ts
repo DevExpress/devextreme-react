@@ -1,4 +1,4 @@
-import { IProp, IComplexProp } from './integration-data-model';
+import { IProp, IComplexProp } from '../data/integration-data-model';
 import {
   collectSubscribableRecursively,
   mapSubscribableOption,
