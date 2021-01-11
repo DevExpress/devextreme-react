@@ -51,7 +51,7 @@
     "typescript": "^3.9.7"
   },
   "scripts": {
-    "start": "lerna run start",
+    "start": "npm run build && lerna run start",
     "postinstall": "lerna bootstrap --no-ci",
     "build": "lerna run build --stream && npm run lint",
     "lint": "gulp lint",

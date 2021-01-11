@@ -13,36 +13,17 @@
     "react-dom": "^16.5.2"
   },
   "devDependencies": {
-    "@types/react": "^16.9.2",
-    "@types/react-dom": "^16.0.9",
-    "@typescript-eslint/eslint-plugin": "^4.4.1",
-    "@typescript-eslint/parser": "^4.4.1",
     "css-loader": "^2.1.0",
-    "eslint": "^7.11.0",
-    "eslint-config-airbnb-base": "^14.2.0",
-    "eslint-config-airbnb-typescript": "^11.4.0",
-    "eslint-config-devextreme": "^0.1.12",
-    "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-jsx-a11y": "^6.3.1",
-    "eslint-plugin-react": "^7.20.3",
-    "eslint-plugin-react-hooks": "^4.0.8",
-    "eslint-plugin-spellcheck": "0.0.17",
-    "eslint-plugin-qunit": "^5.0.0",
-    "gulp-eslint": "^6.0.0",
-    "gulp-tslint": "^8.1.4",
     "source-map-loader": "^0.2.4",
     "style-loader": "^0.23.1",
     "ts-loader": "^5.3.3",
-    "tslint": "^5.17.0",
-    "tslint-react": "^3.5.1",
     "url-loader": "^0.6.2",
     "webpack": "^4.29.2",
     "webpack-cli": "^3.2.3",
     "webpack-dev-server": "^3.1.14"
   },
   "scripts": {
-    "start": "npm run build && npm run serve",
-    "serve": "webpack-dev-server"
+    "start": "webpack-dev-server"
   },
   "license": "MIT"
 }
