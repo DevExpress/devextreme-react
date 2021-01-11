@@ -13,7 +13,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "del ./dist && tsc -p tsconfig.build.json",
+    "build": "del-cli ./dist && tsc -p tsconfig.build.json",
     "pack": "npm run build && npm pack"
   },
   "keywords": [

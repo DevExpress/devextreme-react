@@ -34,30 +34,24 @@
     "eslint-plugin-qunit": "^5.0.0",
     "gulp": "^4.0.0",
     "gulp-eslint": "^6.0.0",
-    "gulp-header": "^2.0.5",
-    "gulp-shell": "^0.6.5",
-    "gulp-tslint": "^8.1.4",
-    "gulp-typescript": "^5.0.0",
-    "hoek": ">=5.0.3",
     "istanbul": "^0.4.5",
     "istanbul-cobertura-badger": "^1.3.1",
     "jest": "^24.8.0",
     "lerna": "^3.22.1",
-    "merge": ">=1.2.1",
-    "minimatch": ">=3.0.2",
     "ts-jest": "^24.0.2",
-    "tslint": "^5.17.0",
-    "tslint-react": "^3.5.1",
     "typescript": "^3.9.7"
   },
+  "resolutions": {
+    "@types/react": "^16.9.2"
+  },
   "scripts": {
-    "start": "npm run build && lerna run start",
+    "start": "lerna run build && lerna run --scope devextreme-react-sandbox start",
     "postinstall": "lerna bootstrap --no-ci",
-    "build": "lerna run build --stream && npm run lint",
+    "build": "lerna run build && npm run lint",
     "lint": "gulp lint",
     "test": "jest --coverage",
     "test-watch": "jest --watch",
-    "pack": "lerna run pack --stream",
+    "pack": "lerna run pack",
     "update-integration-meta": "dx-tools update-integration-meta --output-path ./packages/devextreme-react-generator/data/integration-data.json"
   },
   "keywords": [
