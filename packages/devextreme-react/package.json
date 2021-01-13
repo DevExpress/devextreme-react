@@ -49,5 +49,8 @@
     "gulp-typescript": "^5.0.0",
     "ts-jest": "^24.0.2",
     "typescript": "^3.9.7"
+  },
+  "resolutions": {
+    "@types/react": "^16.9.2"
   }
 }
