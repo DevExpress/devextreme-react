@@ -1,8 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import 'devextreme/dist/css/dx.common.css';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import 'devextreme/dist/css/dx.light.compact.css';
 
 import AccordionExample from './accordion-example';

@@ -13,8 +13,10 @@
     "dist"
   ],
   "scripts": {
-    "build": "del-cli ./dist && tsc -p tsconfig.build.json",
-    "pack": "npm run build && npm pack"
+    "clean": "del-cli ./dist",
+    "build": "npm run clean && tsc -p tsconfig.build.json",
+    "pack": "npm run build && npm pack",
+    "test": "jest"
   },
   "keywords": [
     "react",
@@ -27,6 +29,11 @@
     "dot": "^1.1.2"
   },
   "devDependencies": {
-    "@types/dot": "^1.1.4"
+    "@types/dot": "^1.1.4",
+    "@types/jest": "^22.1.2",
+    "del-cli": "^3.0.1",
+    "jest": "^24.8.0",
+    "ts-jest": "^24.0.2",
+    "typescript": "^3.9.7"
   }
 }

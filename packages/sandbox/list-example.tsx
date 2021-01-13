@@ -1,6 +1,5 @@
 /* eslint-disable max-classes-per-file */
 import * as React from 'react';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import DataSource from 'devextreme/data/data_source';
 
 import { Button } from '../devextreme-react/src/button';

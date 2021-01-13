@@ -1,6 +1,5 @@
 /* eslint-disable react/no-unused-state */
 import * as React from 'react';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import dxTextBox from 'devextreme/ui/text_box';
 import Example from './example-block';
 
