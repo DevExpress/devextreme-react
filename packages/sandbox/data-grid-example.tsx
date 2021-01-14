@@ -1,8 +1,5 @@
 import * as React from 'react';
-import Example from './example-block';
-
-import { Template } from '../devextreme-react/src/core/template';
-
+import { Template } from 'devextreme-react/core/template';
 import {
   DataGrid,
   Column,
@@ -13,9 +10,9 @@ import {
   Pager,
   Paging,
   Selection,
-} from '../devextreme-react/src/data-grid';
-import { NumberBox } from '../devextreme-react/src/number-box';
-
+} from 'devextreme-react/data-grid';
+import { NumberBox } from 'devextreme-react/number-box';
+import Example from './example-block';
 import { sales } from './data';
 
 const DetailComponent = ({ data: { data } }: any) => (

@@ -1,9 +1,9 @@
 import * as React from 'react';
 
-import { Button } from '../devextreme-react/src/button';
-import { Popup } from '../devextreme-react/src/popup';
-import { ScrollView } from '../devextreme-react/src/scroll-view';
-import { TextBox } from '../devextreme-react/src/text-box';
+import { Button } from 'devextreme-react/button';
+import { Popup } from 'devextreme-react/popup';
+import { ScrollView } from 'devextreme-react/scroll-view';
+import { TextBox } from 'devextreme-react/text-box';
 import Example from './example-block';
 
 const VALID_TEXT = 'good';

@@ -1,10 +1,9 @@
 /* eslint-disable max-classes-per-file */
 import * as React from 'react';
 import DataSource from 'devextreme/data/data_source';
-
-import { Button } from '../devextreme-react/src/button';
-import { List, Item as ListItem } from '../devextreme-react/src/list';
-import { TextBox } from '../devextreme-react/src/text-box';
+import { Button } from 'devextreme-react/button';
+import { List, Item as ListItem } from 'devextreme-react/list';
+import { TextBox } from 'devextreme-react/text-box';
 
 import Example from './example-block';
 

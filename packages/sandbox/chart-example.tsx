@@ -1,13 +1,11 @@
 /* eslint-disable max-classes-per-file */
 /* eslint-disable react/no-unused-state */
 import * as React from 'react';
-
+import { Button } from 'devextreme-react/button';
+import { Chart } from 'devextreme-react/chart';
+import { TextBox } from 'devextreme-react/text-box';
 import { orangesByDay } from './data';
 import Example from './example-block';
-
-import { Button } from '../devextreme-react/src/button';
-import { Chart } from '../devextreme-react/src/chart';
-import { TextBox } from '../devextreme-react/src/text-box';
 
 interface IState {
   currentTime: string;

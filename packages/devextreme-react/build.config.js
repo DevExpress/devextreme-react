@@ -8,7 +8,7 @@ module.exports = {
     license: '../../LICENSE',
     readme: '../../README.md'
   },
-  metadataPath: '../devextreme-react-generator/data/integration-data.json',
+  metadataPath: './metadata/integration-data.json',
   generatedComponentsDir: './src',
   coreComponentsDir: './src/core',
   oldComponentsDir: './src/ui',

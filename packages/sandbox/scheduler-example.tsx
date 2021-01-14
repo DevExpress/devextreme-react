@@ -1,8 +1,6 @@
 import * as React from 'react';
+import { Scheduler } from 'devextreme-react/scheduler';
 import Example from './example-block';
-
-import { Scheduler } from '../devextreme-react/src/scheduler';
-
 import { appointments } from './data';
 
 class DateCell extends React.PureComponent<any> {

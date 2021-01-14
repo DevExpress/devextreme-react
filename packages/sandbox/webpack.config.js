@@ -1,3 +1,5 @@
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+
 module.exports = {
   mode: "development",
   entry: "./app.tsx",
@@ -11,7 +13,10 @@ module.exports = {
     openPage: "public/index.html"
   },
   resolve: {
-    extensions: [".webpack.js", ".web.js", ".ts", ".tsx", ".js"]
+    extensions: [".webpack.js", ".web.js", ".ts", ".tsx", ".js"],
+    plugins: [new TsconfigPathsPlugin({
+      configFile: "../../tsconfig.json"
+    })]
   },
   module: {
     rules: [

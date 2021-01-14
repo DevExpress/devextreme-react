@@ -1,12 +1,10 @@
 /* eslint-disable no-alert */
 /* eslint-disable max-len */
 import * as React from 'react';
-
+import { Button } from 'devextreme-react/button';
+import { ScrollView } from 'devextreme-react/scroll-view';
+import { TextBox } from 'devextreme-react/text-box';
 import Example from './example-block';
-
-import { Button } from '../devextreme-react/src/button';
-import { ScrollView } from '../devextreme-react/src/scroll-view';
-import { TextBox } from '../devextreme-react/src/text-box';
 
 export default class extends React.Component<any, { text: string }> {
   constructor(props: unknown) {

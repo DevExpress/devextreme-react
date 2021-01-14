@@ -1,8 +1,7 @@
 import * as React from 'react';
+import { Button } from 'devextreme-react/button';
+import { Toolbar } from 'devextreme-react/toolbar';
 import Example from './example-block';
-
-import { Button } from '../devextreme-react/src/button';
-import { Toolbar } from '../devextreme-react/src/toolbar';
 
 const ItemComponent = (data: {data: {text: string}}) => (
   <Button text={data.data.text} />

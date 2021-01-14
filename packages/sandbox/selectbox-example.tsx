@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { SelectBox } from '../devextreme-react/src/select-box';
+import { SelectBox } from 'devextreme-react/select-box';
 
 const SelectBoxItem = (option: any) => <span>{option.data.value}</span>;
 

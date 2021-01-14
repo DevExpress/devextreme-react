@@ -1,11 +1,29 @@
 {
-  "extends": "./tsconfig.build.json",
-
   "compilerOptions": {
     "baseUrl": "./packages",
     "paths": {
       "devextreme-react-generator": ["devextreme-react-generator/src"],
-      "devextreme-react": ["devextreme-react/src"]
-    }
-  }
+      "devextreme-react": ["devextreme-react/src"],
+      "devextreme-react/*": ["devextreme-react/src/*"]
+    },
+    "target": "es5",
+    "module": "commonjs",
+    "noEmitOnError": true,
+    "jsx": "react",
+    "declaration": true,
+    "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": false,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "strictNullChecks": true,
+    "lib": ["es2015", "dom"]
+  },
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

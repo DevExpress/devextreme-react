@@ -1,9 +1,8 @@
 import * as React from 'react';
-import Example from './example-block';
-
 import {
   Button, SlideOutView, Template, Toolbar,
-} from '../devextreme-react/src';
+} from 'devextreme-react';
+import Example from './example-block';
 
 function renderMenuTemplate() {
   const items = [{

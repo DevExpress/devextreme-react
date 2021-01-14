@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import 'devextreme/dist/css/dx.common.css';
 import 'devextreme/dist/css/dx.light.compact.css';
-
+import { Button, NumberBox } from 'devextreme-react';
 import AccordionExample from './accordion-example';
 import ChartExample from './chart-example';
 import DataGridExample from './data-grid-example';
@@ -20,8 +20,6 @@ import StandaloneValidatorExample from './standalone-validator';
 import TextBoxExample from './text-box-example';
 import ToolbarExample from './toolbar-example';
 import ValidationExample from './validation-example';
-
-import { Button, NumberBox } from '../devextreme-react/src';
 import BoxExample from './box-example';
 
 ReactDOM.render(

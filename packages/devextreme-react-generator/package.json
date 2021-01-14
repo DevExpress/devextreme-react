@@ -7,15 +7,16 @@
     "type": "git",
     "url": "https://github.com/DevExpress/devextreme-react.git"
   },
-  "main": "dist/src/generator",
-  "types": "dist/src/generator",
+  "main": "dist/generator",
+  "types": "dist/generator",
   "files": [
     "dist"
   ],
   "scripts": {
     "clean": "del-cli ./dist",
-    "build": "npm run clean && tsc -p tsconfig.build.json",
+    "build": "npm run clean && tsc",
     "pack": "npm run build && npm pack",
+    "postpack": "cpy './*.tgz' dist && del-cli './*.tgz'",
     "test": "jest"
   },
   "keywords": [
@@ -31,6 +32,7 @@
   "devDependencies": {
     "@types/dot": "^1.1.4",
     "@types/jest": "^22.1.2",
+    "cpy-cli": "^3.1.1",
     "del-cli": "^3.0.1",
     "jest": "^24.8.0",
     "ts-jest": "^24.0.2",

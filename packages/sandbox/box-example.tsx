@@ -1,7 +1,6 @@
 import * as React from 'react';
-
-import { Box, Item } from '../devextreme-react/src/box';
-import { Button } from '../devextreme-react/src/button';
+import { Box, Item } from 'devextreme-react/box';
+import { Button } from 'devextreme-react/button';
 import Example from './example-block';
 
 const initialState = {

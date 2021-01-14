@@ -1,7 +1,5 @@
 import * as React from 'react';
-
-import { Accordion } from '../devextreme-react/src/accordion';
-
+import { Accordion } from 'devextreme-react/accordion';
 import Example from './example-block';
 
 interface IAccordionItemProps {

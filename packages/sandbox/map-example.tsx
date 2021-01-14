@@ -1,10 +1,9 @@
 /* eslint-disable react/no-unused-state */
 import * as React from 'react';
-import Example from './example-block';
-
 import {
   Map, Location, Marker, Route, Tooltip,
-} from '../devextreme-react/src/map';
+} from 'devextreme-react/map';
+import Example from './example-block';
 
 interface IPosition {
   lat: number;
