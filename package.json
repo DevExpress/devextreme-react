@@ -3,7 +3,7 @@
     "name": "Developer Express Inc."
   },
   "name": "devextreme-react",
-  "version": "20.2.4",
+  "version": "20.2.5",
   "description": "DevExtreme React UI and Visualization Components",
   "repository": {
     "type": "git",
@@ -17,7 +17,7 @@
     "dot": "^1.1.2"
   },
   "peerDependencies": {
-    "devextreme": "~20.2.4",
+    "devextreme": "~20.2.5",
     "react": "^16.2.0",
     "react-dom": "^16.2.0"
   },
@@ -32,7 +32,7 @@
     "@typescript-eslint/parser": "^4.4.1",
     "css-loader": "^2.1.0",
     "del": "^3.0.0",
-    "devextreme": "~20.2.4",
+    "devextreme": "~20.2.5",
     "devextreme-internal-tools": "stable",
     "enzyme": "^3.7.0",
     "enzyme-adapter-react-16": "^1.6.0",
