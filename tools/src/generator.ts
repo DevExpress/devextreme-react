@@ -23,6 +23,7 @@ import generateIndex, { IReExport } from './index-generator';
 import generateComponent, {
   generateReExport,
   IComponent,
+  IFreeFunctions,
   INestedComponent,
   IOption,
   IPropTyping,
@@ -126,8 +127,20 @@ export function extractPropTypings(
     .filter((t) => t != null);
 }
 
+export function collectFreeFunctions(options: IProp[]): IFreeFunctions[] {
+  return options.reduce((acc, option) => {
+    if (option.types.filter((type) => type.type === 'Function').length === 1
+        && option.firedEvents?.length === 0
+        && option.name.substr(0, 2) === 'on'
+    ) {
+      acc.push(option);
+    }
+    return acc;
+  }, [] as IFreeFunctions[]);
+}
+
 export function collectSubscribableRecursively(options: IProp[], prefix = ''): IProp[] {
-  const result = options.reduce((acc, option) => {
+  return options.reduce((acc, option) => {
     if (option.isSubscribable) {
       acc.push({
         ...option,
@@ -142,8 +155,6 @@ export function collectSubscribableRecursively(options: IProp[], prefix = ''): I
     }
     return acc;
   }, [] as IProp[]);
-
-  return result;
 }
 
 export function mapWidget(
@@ -161,6 +172,8 @@ export function mapWidget(
 
   const subscribableOptions: ISubscribableOption[] = collectSubscribableRecursively(raw.options)
     .map(mapSubscribableOption);
+
+  const freeFunctions: IFreeFunctions[] = collectFreeFunctions(raw.options);
 
   const nestedOptions = raw.complexOptions
     ? extractNestedComponents(raw.complexOptions, raw.name, name)
@@ -184,6 +197,7 @@ export function mapWidget(
       isExtension: raw.isExtension,
       templates: raw.templates,
       subscribableOptions: subscribableOptions.length > 0 ? subscribableOptions : undefined,
+      freeFunctions: freeFunctions.length > 0 ? freeFunctions : undefined,
       nestedComponents: nestedOptions && nestedOptions.length > 0 ? nestedOptions : undefined,
       expectedChildren: raw.nesteds,
       propTypings: propTypings.length > 0 ? propTypings : undefined,

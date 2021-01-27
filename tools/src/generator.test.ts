@@ -1,5 +1,6 @@
 import { IProp, IComplexProp } from 'tools/integration-data-model';
 import {
+  collectFreeFunctions,
   collectSubscribableRecursively,
   mapSubscribableOption,
   isNestedOptionArray,
@@ -9,6 +10,56 @@ import {
   extractPropTypings,
   mapWidget,
 } from './generator';
+
+describe('collectFreeFunction', () => {
+  it('discard non-free functions', () => {
+    const options: IProp[] = [{
+      name: 'option1',
+      isSubscribable: true,
+      types: [
+        {
+          type: 'Function',
+          acceptableValues: [],
+          isCustomType: true,
+        },
+      ],
+      props: [],
+      firedEvents: ['func1'],
+    }, {
+      name: 'onOption',
+      isSubscribable: false,
+      types: [
+        {
+          type: 'Function',
+          acceptableValues: [],
+          isCustomType: true,
+        },
+      ],
+      props: [],
+      firedEvents: [],
+    }, {
+      name: 'option3',
+      isSubscribable: true,
+      types: [
+        {
+          type: 'Function',
+          acceptableValues: [],
+          isCustomType: true,
+        },
+        {
+          type: 'Number',
+          acceptableValues: [],
+          isCustomType: true,
+        },
+      ],
+      props: [],
+      firedEvents: [],
+    }];
+    const freeFunctions = collectFreeFunctions(options);
+    expect(freeFunctions.length).toBe(1);
+    expect(freeFunctions[0]).toEqual(options[1]);
+  });
+});
 
 describe('collectSubscribableRecursively', () => {
   it('subscribable options', () => {

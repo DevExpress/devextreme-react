@@ -19,6 +19,8 @@ class OptionsManager {
 
   private subscribableOptions: Set<string>;
 
+  private freeFunctions: Set<string>;
+
   constructor(templatesManager: TemplatesManager) {
     this.templatesManager = templatesManager;
 
@@ -30,10 +32,12 @@ class OptionsManager {
     instance: unknown,
     config: IConfigNode,
     subscribableOptions: string[],
+    freeFunctions: string[],
   ): void {
     this.instance = instance;
     this.currentConfig = config;
     this.subscribableOptions = new Set(subscribableOptions);
+    this.freeFunctions = new Set(freeFunctions);
   }
 
   public getInitialOptions(rootNode: IConfigNode): Record<string, unknown> {
@@ -135,6 +139,10 @@ class OptionsManager {
     return this.subscribableOptions.has(optionName);
   }
 
+  private isFunctionFree(optionName: string): boolean {
+    return this.freeFunctions.has(optionName);
+  }
+
   private callOptionChangeHandler(optionName: string, optionValue: unknown) {
     if (!this.isOptionSubscribable(optionName)) {
       return;
@@ -167,7 +175,7 @@ class OptionsManager {
   private wrapOptionValue(name: string, value: unknown) {
     if (name.substr(0, 2) === 'on' && typeof value === 'function') {
       return (...args: unknown[]) => {
-        if (!this.isUpdating) {
+        if (!this.isUpdating || this.isFunctionFree(name)) {
           value(...args);
         }
       };
