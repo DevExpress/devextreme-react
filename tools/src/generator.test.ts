@@ -54,6 +54,40 @@ describe('collectFreeFunction', () => {
       ],
       props: [],
       firedEvents: [],
+    }, {
+      name: 'onOption4',
+      isSubscribable: true,
+      types: [
+        {
+          type: 'Function',
+          acceptableValues: [],
+          isCustomType: true,
+        },
+        {
+          type: 'Number',
+          acceptableValues: [],
+          isCustomType: true,
+        },
+      ],
+      props: [],
+      firedEvents: ['func1'],
+    }, {
+      name: 'option5',
+      isSubscribable: true,
+      types: [
+        {
+          type: 'Function',
+          acceptableValues: [],
+          isCustomType: true,
+        },
+        {
+          type: 'Number',
+          acceptableValues: [],
+          isCustomType: true,
+        },
+      ],
+      props: [],
+      firedEvents: [],
     }];
     const freeFunctions = collectFreeFunctions(options);
     expect(freeFunctions.length).toBe(1);

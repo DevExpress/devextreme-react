@@ -127,16 +127,16 @@ export function extractPropTypings(
     .filter((t) => t != null);
 }
 
-export function collectFreeFunctions(options: IProp[]): IFreeFunctions[] {
+export function collectFreeFunctions(options: IProp[]): IProp[] {
   return options.reduce((acc, option) => {
     if (option.types.filter((type) => type.type === 'Function').length === 1
-        && option.firedEvents?.length === 0
+        && (!option.firedEvents || option.firedEvents.length === 0)
         && option.name.substr(0, 2) === 'on'
     ) {
       acc.push(option);
     }
     return acc;
-  }, [] as IFreeFunctions[]);
+  }, [] as IProp[]);
 }
 
 export function collectSubscribableRecursively(options: IProp[], prefix = ''): IProp[] {
@@ -173,7 +173,8 @@ export function mapWidget(
   const subscribableOptions: ISubscribableOption[] = collectSubscribableRecursively(raw.options)
     .map(mapSubscribableOption);
 
-  const freeFunctions: IFreeFunctions[] = collectFreeFunctions(raw.options);
+  const freeFunctions: IFreeFunctions[] = collectFreeFunctions(raw.options)
+    .map((o:IProp): IFreeFunctions => ({ name: o.name }));
 
   const nestedOptions = raw.complexOptions
     ? extractNestedComponents(raw.complexOptions, raw.name, name)
