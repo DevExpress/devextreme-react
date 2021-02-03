@@ -19,7 +19,7 @@ class OptionsManager {
 
   private subscribableOptions: Set<string>;
 
-  private freeFunctions: Set<string>;
+  private independentEvents: Set<string>;
 
   constructor(templatesManager: TemplatesManager) {
     this.templatesManager = templatesManager;
@@ -32,12 +32,12 @@ class OptionsManager {
     instance: unknown,
     config: IConfigNode,
     subscribableOptions: string[],
-    freeFunctions: string[],
+    independentEvents: string[],
   ): void {
     this.instance = instance;
     this.currentConfig = config;
     this.subscribableOptions = new Set(subscribableOptions);
-    this.freeFunctions = new Set(freeFunctions);
+    this.independentEvents = new Set(independentEvents);
   }
 
   public getInitialOptions(rootNode: IConfigNode): Record<string, unknown> {
@@ -139,8 +139,8 @@ class OptionsManager {
     return this.subscribableOptions.has(optionName);
   }
 
-  private isFunctionFree(optionName: string): boolean {
-    return this.freeFunctions.has(optionName);
+  private isIndependentEvent(optionName: string): boolean {
+    return this.independentEvents.has(optionName);
   }
 
   private callOptionChangeHandler(optionName: string, optionValue: unknown) {
@@ -175,7 +175,7 @@ class OptionsManager {
   private wrapOptionValue(name: string, value: unknown) {
     if (name.substr(0, 2) === 'on' && typeof value === 'function') {
       return (...args: unknown[]) => {
-        if (!this.isUpdating || this.isFunctionFree(name)) {
+        if (!this.isUpdating || this.isIndependentEvent(name)) {
           value(...args);
         }
       };

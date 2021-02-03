@@ -23,7 +23,7 @@ import generateIndex, { IReExport } from './index-generator';
 import generateComponent, {
   generateReExport,
   IComponent,
-  IFreeFunctions,
+  IIndependentEvents,
   INestedComponent,
   IOption,
   IPropTyping,
@@ -44,6 +44,12 @@ export function mapSubscribableOption(prop: IProp): ISubscribableOption {
     name: prop.name,
     type: 'any',
     isSubscribable: prop.isSubscribable || undefined,
+  };
+}
+
+export function mapIndependentEvents(prop: IProp): IIndependentEvents {
+  return {
+    name: prop.name,
   };
 }
 
@@ -127,7 +133,7 @@ export function extractPropTypings(
     .filter((t) => t != null);
 }
 
-export function collectFreeFunctions(options: IProp[]): IProp[] {
+export function collectIndependentEvents(options: IProp[]): IProp[] {
   return options.reduce((acc, option) => {
     if (option.types.filter((type) => type.type === 'Function').length === 1
         && (!option.firedEvents || option.firedEvents.length === 0)
@@ -173,8 +179,8 @@ export function mapWidget(
   const subscribableOptions: ISubscribableOption[] = collectSubscribableRecursively(raw.options)
     .map(mapSubscribableOption);
 
-  const freeFunctions: IFreeFunctions[] = collectFreeFunctions(raw.options)
-    .map((o:IProp): IFreeFunctions => ({ name: o.name }));
+  const independentEvents: IIndependentEvents[] = collectIndependentEvents(raw.options)
+    .map(mapIndependentEvents);
 
   const nestedOptions = raw.complexOptions
     ? extractNestedComponents(raw.complexOptions, raw.name, name)
@@ -198,7 +204,7 @@ export function mapWidget(
       isExtension: raw.isExtension,
       templates: raw.templates,
       subscribableOptions: subscribableOptions.length > 0 ? subscribableOptions : undefined,
-      freeFunctions: freeFunctions.length > 0 ? freeFunctions : undefined,
+      independentEvents: independentEvents.length > 0 ? independentEvents : undefined,
       nestedComponents: nestedOptions && nestedOptions.length > 0 ? nestedOptions : undefined,
       expectedChildren: raw.nesteds,
       propTypings: propTypings.length > 0 ? propTypings : undefined,

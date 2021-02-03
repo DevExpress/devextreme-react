@@ -1,6 +1,6 @@
 import { IProp, IComplexProp } from 'tools/integration-data-model';
 import {
-  collectFreeFunctions,
+  collectIndependentEvents,
   collectSubscribableRecursively,
   mapSubscribableOption,
   isNestedOptionArray,
@@ -89,9 +89,9 @@ describe('collectFreeFunction', () => {
       props: [],
       firedEvents: [],
     }];
-    const freeFunctions = collectFreeFunctions(options);
-    expect(freeFunctions.length).toBe(1);
-    expect(freeFunctions[0]).toEqual(options[1]);
+    const independentEvents = collectIndependentEvents(options);
+    expect(independentEvents.length).toBe(1);
+    expect(independentEvents[0]).toEqual(options[1]);
   });
 });
 
