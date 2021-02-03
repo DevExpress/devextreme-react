@@ -35,6 +35,8 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
 
   protected readonly subscribableOptions: string[];
 
+  protected readonly independentEvents: string[];
+
   private _templatesRendererRef: TemplatesRenderer | null;
 
   private _templatesStore: TemplatesStore;
@@ -94,8 +96,12 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
       },
     );
 
-    this._useDeferUpdateForTemplates = this._instance.option('integrationOptions.useDeferUpdateForTemplates');
-    this._optionsManager.setInstance(this._instance, config, this.subscribableOptions);
+    this._useDeferUpdateForTemplates = this._instance.option(
+      'integrationOptions.useDeferUpdateForTemplates',
+    );
+    this._optionsManager.setInstance(
+      this._instance, config, this.subscribableOptions, this.independentEvents,
+    );
     this._instance.on('optionChanged', this._optionsManager.onOptionChanged);
   }
 
