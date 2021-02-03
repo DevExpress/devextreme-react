@@ -15,6 +15,7 @@ type IComponent = {
   expectedChildren?: IExpectedChild[];
   isExtension?: boolean;
   subscribableOptions?: ISubscribableOption[];
+  independentEvents?: IIndependentEvents[],
   templates?: string[];
   propTypings?: IPropTyping[];
 } & {
@@ -37,6 +38,10 @@ interface ISubscribableOption {
   name: string;
   type: string;
   isSubscribable?: true;
+}
+
+interface IIndependentEvents {
+  name: string;
 }
 
 type IOption = {
@@ -300,6 +305,7 @@ const renderComponent: (model: {
   widgetName: string;
   optionsName: string;
   subscribableOptions?: string[];
+  independentEvents?: string[];
   expectedChildren?: IExpectedChild[];
   renderedDefaultProps?: string[];
   renderedTemplateProps?: string[];
@@ -315,6 +321,10 @@ const renderComponent: (model: {
 
 + `<#? it.subscribableOptions #>${
   L1}protected subscribableOptions = [<#= it.subscribableOptions.join(',') #>];\n`
++ '<#?#>'
+
++ `<#? it.independentEvents #>${
+  L1}protected independentEvents = [<#= it.independentEvents.join(',') #>];\n`
 + '<#?#>'
 
 + `<#? it.renderedDefaultProps #>${
@@ -518,6 +528,7 @@ function generate(component: IComponent): string {
       optionsName,
       subscribableOptions: component.subscribableOptions
         ?.map((o) => renderStringEntry(o.name)),
+      independentEvents: component.independentEvents?.map((f) => renderStringEntry(f.name)),
       renderedTemplateProps: templates && templates.map(renderTemplateOption),
       renderedDefaultProps: defaultProps && defaultProps.map((o) => renderObjectEntry({
         key: o.name,
@@ -537,6 +548,7 @@ function generate(component: IComponent): string {
 export default generate;
 export {
   IComponent,
+  IIndependentEvents,
   INestedComponent,
   IOption,
   ISubscribableOption,

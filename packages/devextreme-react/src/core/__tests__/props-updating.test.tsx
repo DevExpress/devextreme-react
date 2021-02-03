@@ -14,6 +14,7 @@ interface IControlledComponentProps {
   defaultControlledOption?: string;
   controlledOption?: string;
   onControlledOptionChanged?: () => void;
+  onIndependentEvent?: () => void;
   everyOption?: number | boolean | null;
   anotherOption?: string;
   complexOption?: Record<string, unknown>;
@@ -851,6 +852,86 @@ describe('onXXXChange', () => {
       );
 
       fireOptionChange('text', '1');
+      expect(onPropChange).toHaveBeenCalledTimes(0);
+    });
+  });
+
+  describe('independent events', () => {
+    beforeAll(() => {
+      jest.spyOn(
+        OptionsManager.prototype as OptionsManager & { isIndependentEvent: () => boolean; },
+        'isIndependentEvent',
+      )
+        .mockImplementation(() => true);
+    });
+    afterAll(() => {
+      jest.clearAllMocks();
+    });
+
+    it('is not called on create', () => {
+      const onPropChange = jest.fn();
+      mount(
+        <TestComponent
+          text="0"
+          onTextChange={onPropChange}
+        />,
+      );
+
+      expect(onPropChange).toHaveBeenCalledTimes(0);
+    });
+
+    it('it is fired on outher change', () => {
+      const onPropChange = jest.fn();
+      const component = mount(
+        <TestComponent
+          text="0"
+          onTextChange={onPropChange}
+        />,
+      );
+      expect(onPropChange).not.toBeCalled();
+      Widget.option.mockImplementation(
+        (name: string) => {
+          if (name === 'text') {
+            WidgetClass.mock.calls[0][1].onTextChange();
+          }
+        },
+      );
+      const sampleProps = { text: '1' };
+      component.setProps(sampleProps);
+      expect(onPropChange).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('dependent events', () => {
+    beforeAll(() => {
+      jest.spyOn(
+        OptionsManager.prototype as OptionsManager & { isIndependentEvent: () => boolean; },
+        'isIndependentEvent',
+      )
+        .mockImplementation(() => false);
+    });
+    afterAll(() => {
+      jest.clearAllMocks();
+    });
+
+    it('it is fired on outher change', () => {
+      const onPropChange = jest.fn();
+      const component = mount(
+        <TestComponent
+          text="0"
+          onTextChange={onPropChange}
+        />,
+      );
+      expect(onPropChange).not.toBeCalled();
+      Widget.option.mockImplementation(
+        (name: string) => {
+          if (name === 'text') {
+            WidgetClass.mock.calls[0][1].onTextChange();
+          }
+        },
+      );
+      const sampleProps = { text: '1' };
+      component.setProps(sampleProps);
       expect(onPropChange).toHaveBeenCalledTimes(0);
     });
   });

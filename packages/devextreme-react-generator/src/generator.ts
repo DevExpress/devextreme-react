@@ -23,6 +23,7 @@ import generateIndex, { IReExport } from './index-generator';
 import generateComponent, {
   generateReExport,
   IComponent,
+  IIndependentEvents,
   INestedComponent,
   IOption,
   IPropTyping,
@@ -43,6 +44,12 @@ export function mapSubscribableOption(prop: IProp): ISubscribableOption {
     name: prop.name,
     type: 'any',
     isSubscribable: prop.isSubscribable || undefined,
+  };
+}
+
+export function mapIndependentEvents(prop: IProp): IIndependentEvents {
+  return {
+    name: prop.name,
   };
 }
 
@@ -126,8 +133,20 @@ export function extractPropTypings(
     .filter((t) => t != null);
 }
 
+export function collectIndependentEvents(options: IProp[]): IProp[] {
+  return options.reduce((acc, option) => {
+    if (option.types.filter((type) => type.type === 'Function').length === 1
+        && (!option.firedEvents || option.firedEvents.length === 0)
+        && option.name.substr(0, 2) === 'on'
+    ) {
+      acc.push(option);
+    }
+    return acc;
+  }, [] as IProp[]);
+}
+
 export function collectSubscribableRecursively(options: IProp[], prefix = ''): IProp[] {
-  const result = options.reduce((acc, option) => {
+  return options.reduce((acc, option) => {
     if (option.isSubscribable) {
       acc.push({
         ...option,
@@ -142,8 +161,6 @@ export function collectSubscribableRecursively(options: IProp[], prefix = ''): I
     }
     return acc;
   }, [] as IProp[]);
-
-  return result;
 }
 
 export function mapWidget(
@@ -161,6 +178,9 @@ export function mapWidget(
 
   const subscribableOptions: ISubscribableOption[] = collectSubscribableRecursively(raw.options)
     .map(mapSubscribableOption);
+
+  const independentEvents: IIndependentEvents[] = collectIndependentEvents(raw.options)
+    .map(mapIndependentEvents);
 
   const nestedOptions = raw.complexOptions
     ? extractNestedComponents(raw.complexOptions, raw.name, name)
@@ -184,6 +204,7 @@ export function mapWidget(
       isExtension: raw.isExtension,
       templates: raw.templates,
       subscribableOptions: subscribableOptions.length > 0 ? subscribableOptions : undefined,
+      independentEvents: independentEvents.length > 0 ? independentEvents : undefined,
       nestedComponents: nestedOptions && nestedOptions.length > 0 ? nestedOptions : undefined,
       expectedChildren: raw.nesteds,
       propTypings: propTypings.length > 0 ? propTypings : undefined,
