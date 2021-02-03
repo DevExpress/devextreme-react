@@ -11,8 +11,8 @@ import {
   mapWidget,
 } from './generator';
 
-describe('collectFreeFunction', () => {
-  it('discard non-free functions', () => {
+describe('collectIndependentEvents', () => {
+  it('discard dependent events', () => {
     const options: IProp[] = [{
       name: 'option1',
       isSubscribable: true,
