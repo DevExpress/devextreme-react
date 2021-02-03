@@ -1,9 +1,5 @@
 .vscode/launch.json
 node_modules/
-npm/
-src/*
-!src/core
-src/index.ts
-tools/bin/
+dist/
 artifacts/
 coverage/

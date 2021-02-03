@@ -1,19 +1,7 @@
+const base = require('./jest.config.base.js');
+
 module.exports = {
-    "roots": [
-      "<rootDir>/src",
-      "<rootDir>/tools"
-    ],
-    "transform": {
-      "^.+\\.(j|t)sx?$": "ts-jest"
-    },
-    "testURL": "http://localhost",
-    "testRegex": "test\\.(jsx?|tsx?)$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json",
-      "node"
-    ]
-}
+  ...base,
+  projects: ['<rootDir>/packages/*/jest.config.js'],
+  coverageDirectory: '<rootDir>/coverage/',
+};

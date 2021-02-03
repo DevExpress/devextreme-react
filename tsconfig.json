@@ -1,9 +1,13 @@
 {
   "compilerOptions": {
+    "baseUrl": "./packages",
+    "paths": {
+      "devextreme-react-generator": ["devextreme-react-generator/src"],
+      "devextreme-react": ["devextreme-react/src"],
+      "devextreme-react/*": ["devextreme-react/src/*"]
+    },
     "target": "es5",
     "module": "commonjs",
-    "baseUrl": ".",
-    "outDir": "./temp",
     "noEmitOnError": true,
     "jsx": "react",
     "declaration": true,
@@ -18,10 +22,8 @@
     "strictNullChecks": true,
     "lib": ["es2015", "dom"]
   },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "tools/**/*.ts",
-    "tools/**/*.tsx"
+  "exclude": [
+    "node_modules",
+    "dist"
   ]
 }
