@@ -90,7 +90,7 @@ function findValueInObject(obj: any, path: string[]): undefined | IValueDescript
     };
   }
 
-  if (obj instanceof  Object && Object.keys(obj).includes(key)) {
+  if (obj instanceof Object && Object.keys(obj).includes(key)) {
     return findValueInObject(obj[key], path);
   }
 
