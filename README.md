@@ -1,6 +1,6 @@
 # DevExtreme React UI Components #
 
-[![Build Status](https://img.shields.io/shippable/5a9532d976382b0800e7a53c/master.svg?maxAge=43200)](https://app.shippable.com/github/DevExpress/devextreme-react)
+[![Build Status](https://api.shippable.com/projects/5a9532d976382b0800e7a53c/badge?branch=master)]()
 [![NPM](https://img.shields.io/npm/v/devextreme-react.svg?maxAge=43200)](https://www.npmjs.com/package/devextreme-react)
 
 This project allows you to use [DevExtreme widgets](http://js.devexpress.com/Demos/WidgetsGallery/) in [React](https://reactjs.org) applications.
