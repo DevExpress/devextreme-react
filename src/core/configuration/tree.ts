@@ -81,7 +81,7 @@ enum ValueType {
   Array,
 }
 
-function findValueInObject(obj: any, path: string[]): undefined | IValueDescriptor {
+function findValueInObject(obj: unknown, path: string[]): undefined | IValueDescriptor {
   const key = path.shift();
   if (!key) {
     return {
@@ -156,4 +156,5 @@ export {
   buildNode,
   buildTemplates,
   findValue,
+  findValueInObject
 };
