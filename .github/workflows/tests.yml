@@ -34,9 +34,6 @@ jobs:
     - name: Run npm install
       run: npm install --no-audit --no-fund
 
-    - name: Run devextreme-react-generator tests
-      run: npx lerna run --scope devextreme-react-generator test
-
     - name: Run bootstrap
       run: npm run bootstrap
 
