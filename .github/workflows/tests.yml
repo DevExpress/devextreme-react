@@ -29,8 +29,7 @@ jobs:
         npm run build-dist
     - name: Install devextreme package
       run: |
-        cd ./packages/devextreme-vue
-        npm install --save-dev ../../../devextreme-repo/artifacts/npm/devextreme
+        npm install --save-dev ../devextreme-repo/artifacts/npm/devextreme
 
     - name: Run npm install
       run: npm install --no-audit --no-fund
