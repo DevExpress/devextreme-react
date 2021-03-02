@@ -34,9 +34,6 @@ jobs:
     - name: Run npm install
       run: npm install --no-audit --no-fund
 
-    - name: Run bootstrap
-      run: npm run bootstrap
-
     - name: Run lint
       run: npm run lint
 
