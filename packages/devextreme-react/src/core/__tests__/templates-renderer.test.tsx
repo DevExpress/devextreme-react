@@ -20,18 +20,17 @@ jest.mock('devextreme/animation/frame', () => ({
 jest.mock('devextreme/core/utils/common', () => ({
   deferUpdate: jest.fn(),
 }));
+[true, false].forEach((useDeferUpdate) => {
+  describe(`useDeferUpdate === ${useDeferUpdate}`, () => {
+  let updateCallback;
 
-describe('useDeferUpdate ==$(value)', () => {
-  let updateFunc;
-
-  [true, false].forEach((value) => {
     beforeEach(() => {
       (deferUpdate as jest.Mock).mockImplementation((func) => {
-        updateFunc = func;
+        updateCallback = func;
       });
 
       (requestAnimationFrame as jest.Mock).mockImplementation((func) => {
-        updateFunc = func;
+        updateCallback = func;
       });
     });
 
@@ -46,14 +45,14 @@ describe('useDeferUpdate ==$(value)', () => {
       const component = mount(<TemplatesRenderer templatesStore={templatesStore} ref={ref} />);
 
       expect(ref.current).not.toBeNull();
-      expect(() => ref.current?.scheduleUpdate(value)).not.toThrow();
+      expect(() => ref.current?.scheduleUpdate(useDeferUpdate)).not.toThrow();
 
-      expect(() => updateFunc()).not.toThrow();
+      expect(() => updateCallback()).not.toThrow();
 
       component.unmount();
       expect(ref.current).toBeNull();
 
-      expect(() => updateFunc()).not.toThrow();
+      expect(() => updateCallback()).not.toThrow();
     });
 
     it('should work deferUpdate && requestAnimationFrame', async () => {
@@ -61,9 +60,9 @@ describe('useDeferUpdate ==$(value)', () => {
       const templatesStore = new TemplatesStore(() => { });
 
       mount(<TemplatesRenderer templatesStore={templatesStore} ref={ref} />);
-      expect(() => ref.current?.scheduleUpdate(value)).not.toThrow();
+      expect(() => ref.current?.scheduleUpdate(useDeferUpdate)).not.toThrow();
 
-      if (value) {
+      if (useDeferUpdate) {
         expect(deferUpdate).toHaveBeenCalledTimes(1);
       } else {
         expect(requestAnimationFrame).toHaveBeenCalledTimes(1);
@@ -75,11 +74,19 @@ describe('useDeferUpdate ==$(value)', () => {
       const templatesStore = new TemplatesStore(() => { });
 
       mount(<TemplatesRenderer templatesStore={templatesStore} ref={ref} />);
-      ref.current?.scheduleUpdate(value);
-      expect(updateFunc).toHaveBeenCalledTimes(1);
+      ref.current?.scheduleUpdate(useDeferUpdate);
+      if (useDeferUpdate) {
+        expect(deferUpdate).toHaveBeenCalledTimes(1);
+      } else {
+        expect(requestAnimationFrame).toHaveBeenCalledTimes(1);
+      }
 
-      ref.current?.scheduleUpdate(value);
-      expect(updateFunc).toHaveBeenCalledTimes(0);
+      ref.current?.scheduleUpdate(useDeferUpdate);
+      if (useDeferUpdate) {
+        expect(deferUpdate).toHaveBeenCalledTimes(1);
+      } else {
+        expect(requestAnimationFrame).toHaveBeenCalledTimes(1);
+      }
     });
   });
 });
