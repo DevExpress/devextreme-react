@@ -5,6 +5,9 @@ import { React, mount } from './setup';
 import { TemplatesRenderer } from '../templates-renderer';
 import { TemplatesStore } from '../templates-store';
 
+const defaultWarn = global.console.warn;
+const defaultError = global.console.error;
+
 global.console.warn = (message) => {
     throw message;
 };
@@ -20,6 +23,7 @@ jest.mock('devextreme/animation/frame', () => ({
 jest.mock('devextreme/core/utils/common', () => ({
     deferUpdate: jest.fn(),
 }));
+
 [true, false].forEach((useDeferUpdate) => {
     describe(`useDeferUpdate === ${useDeferUpdate}`, () => {
         const updateFunctionMock = useDeferUpdate
@@ -33,6 +37,8 @@ jest.mock('devextreme/core/utils/common', () => ({
         });
         afterEach(() => {
             jest.clearAllMocks();
+            global.console.warn = defaultWarn;
+            global.console.error = defaultError;
         });
         it('should not throw warning when unmounted', async () => {
             const ref = React.createRef<TemplatesRenderer>();
