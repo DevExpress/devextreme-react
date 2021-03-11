@@ -1,8 +1,7 @@
 /* eslint-disable max-classes-per-file */
-import { render } from '@testing-library/react';
 import { requestAnimationFrame } from 'devextreme/animation/frame';
 import { deferUpdate } from 'devextreme/core/utils/common';
-import { React } from './setup';
+import { React, mount } from './setup';
 import { TemplatesRenderer } from '../templates-renderer';
 import { TemplatesStore } from '../templates-store';
 
@@ -44,7 +43,7 @@ describe('useDeferUpdate ==$(value)', () => {
       const ref = React.createRef<TemplatesRenderer>();
       const templatesStore = new TemplatesStore(() => { });
 
-      const component = render(<TemplatesRenderer templatesStore={templatesStore} ref={ref} />);
+      const component = mount(<TemplatesRenderer templatesStore={templatesStore} ref={ref} />);
 
       expect(ref.current).not.toBeNull();
       expect(() => ref.current?.scheduleUpdate(value)).not.toThrow();
@@ -61,7 +60,7 @@ describe('useDeferUpdate ==$(value)', () => {
       const ref = React.createRef<TemplatesRenderer>();
       const templatesStore = new TemplatesStore(() => { });
 
-      render(<TemplatesRenderer templatesStore={templatesStore} ref={ref} />);
+      mount(<TemplatesRenderer templatesStore={templatesStore} ref={ref} />);
       expect(() => ref.current?.scheduleUpdate(value)).not.toThrow();
 
       if (value) {
@@ -75,7 +74,7 @@ describe('useDeferUpdate ==$(value)', () => {
       const ref = React.createRef<TemplatesRenderer>();
       const templatesStore = new TemplatesStore(() => { });
 
-      render(<TemplatesRenderer templatesStore={templatesStore} ref={ref} />);
+      mount(<TemplatesRenderer templatesStore={templatesStore} ref={ref} />);
       ref.current?.scheduleUpdate(value);
       expect(updateFunc).toHaveBeenCalledTimes(1);
 

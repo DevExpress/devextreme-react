@@ -6,7 +6,6 @@ import { TemplatesStore } from './templates-store';
 
 class TemplatesRenderer extends React.PureComponent<{ templatesStore: TemplatesStore }> {
   private updateScheduled = false;
-
   private mounted = false;
 
   public scheduleUpdate(useDeferUpdate: boolean): void {
