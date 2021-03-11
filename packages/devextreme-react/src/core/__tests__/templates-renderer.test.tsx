@@ -22,14 +22,13 @@ jest.mock('devextreme/core/utils/common', () => ({
 }));
 [true, false].forEach((useDeferUpdate) => {
   describe(`useDeferUpdate === ${useDeferUpdate}`, () => {
-  let updateCallback;
+    const updateFunctionMock = useDeferUpdate
+      ? deferUpdate as jest.Mock
+      : requestAnimationFrame as jest.Mock;
+    let updateCallback;
 
     beforeEach(() => {
-      (deferUpdate as jest.Mock).mockImplementation((func) => {
-        updateCallback = func;
-      });
-
-      (requestAnimationFrame as jest.Mock).mockImplementation((func) => {
+      updateFunctionMock.mockImplementation((func) => {
         updateCallback = func;
       });
     });
@@ -55,18 +54,13 @@ jest.mock('devextreme/core/utils/common', () => ({
       expect(() => updateCallback()).not.toThrow();
     });
 
-    it('should work deferUpdate && requestAnimationFrame', async () => {
+    it(`should call ${useDeferUpdate ? 'deferUpdate' : 'requestAnimationFrame'}`, async () => {
       const ref = React.createRef<TemplatesRenderer>();
       const templatesStore = new TemplatesStore(() => { });
 
       mount(<TemplatesRenderer templatesStore={templatesStore} ref={ref} />);
       expect(() => ref.current?.scheduleUpdate(useDeferUpdate)).not.toThrow();
-
-      if (useDeferUpdate) {
-        expect(deferUpdate).toHaveBeenCalledTimes(1);
-      } else {
-        expect(requestAnimationFrame).toHaveBeenCalledTimes(1);
-      }
+      expect(updateFunctionMock).toHaveBeenCalledTimes(1);
     });
 
     it('should not call twice', async () => {
@@ -82,11 +76,7 @@ jest.mock('devextreme/core/utils/common', () => ({
       }
 
       ref.current?.scheduleUpdate(useDeferUpdate);
-      if (useDeferUpdate) {
-        expect(deferUpdate).toHaveBeenCalledTimes(1);
-      } else {
-        expect(requestAnimationFrame).toHaveBeenCalledTimes(1);
-      }
+      expect(updateFunctionMock).toHaveBeenCalledTimes(1);
     });
   });
 });

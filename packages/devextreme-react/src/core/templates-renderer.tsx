@@ -6,7 +6,16 @@ import { TemplatesStore } from './templates-store';
 
 class TemplatesRenderer extends React.PureComponent<{ templatesStore: TemplatesStore }> {
   private updateScheduled = false;
+
   private mounted = false;
+
+  componentDidMount(): void {
+    this.mounted = true;
+  }
+
+  componentWillUnmount(): void {
+    this.mounted = false;
+  }
 
   public scheduleUpdate(useDeferUpdate: boolean): void {
     if (this.updateScheduled) {
@@ -23,14 +32,6 @@ class TemplatesRenderer extends React.PureComponent<{ templatesStore: TemplatesS
 
       this.updateScheduled = false;
     });
-  }
-
-  componentDidMount() {
-    this.mounted = true;
-  }
-
-  componentWillUnmount() {
-    this.mounted = false;
   }
 
   public render(): React.ReactNode {
