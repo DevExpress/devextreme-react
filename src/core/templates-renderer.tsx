@@ -28,8 +28,8 @@ class TemplatesRenderer extends React.PureComponent<{ templatesStore: TemplatesS
     updateFunc(() => {
       if (this.mounted) {
         this.forceUpdate();
-        this.updateScheduled = false;
       }
+      this.updateScheduled = false;
     });
   }
 
