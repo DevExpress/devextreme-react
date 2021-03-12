@@ -1,8 +1,12 @@
+/* eslint-disable max-classes-per-file */
 import { requestAnimationFrame } from 'devextreme/animation/frame';
 import { deferUpdate } from 'devextreme/core/utils/common';
 import { React, mount } from './setup';
 import { TemplatesRenderer } from '../templates-renderer';
 import { TemplatesStore } from '../templates-store';
+
+const defaultWarn = global.console.warn;
+const defaultError = global.console.error;
 
 global.console.warn = (message) => {
   throw message;
@@ -19,7 +23,6 @@ jest.mock('devextreme/animation/frame', () => ({
 jest.mock('devextreme/core/utils/common', () => ({
   deferUpdate: jest.fn(),
 }));
-
 [true, false].forEach((useDeferUpdate) => {
   describe(`useDeferUpdate === ${useDeferUpdate}`, () => {
     const updateFunctionMock = useDeferUpdate
@@ -33,8 +36,13 @@ jest.mock('devextreme/core/utils/common', () => ({
       });
     });
 
-    afterAll(() => {
+    afterEach(() => {
       jest.clearAllMocks();
+    });
+
+    afterAll(() => {
+      global.console.warn = defaultWarn;
+      global.console.error = defaultError;
     });
 
     it('should not throw warning when unmounted', async () => {
@@ -44,8 +52,8 @@ jest.mock('devextreme/core/utils/common', () => ({
       const component = mount(<TemplatesRenderer templatesStore={templatesStore} ref={ref} />);
 
       expect(ref.current).not.toBeNull();
-      expect(() => ref.current?.scheduleUpdate(useDeferUpdate)).not.toThrow();
 
+      expect(() => ref.current?.scheduleUpdate(useDeferUpdate)).not.toThrow();
       expect(() => updateCallback()).not.toThrow();
 
       component.unmount();
