@@ -1,8 +1,10 @@
 /* eslint-disable max-classes-per-file */
 import { requestAnimationFrame } from "devextreme/animation/frame";
 import { deferUpdate } from "devextreme/core/utils/common";
-import { mount, React } from "./setup";
+
 import { TemplatesRenderer } from "../templates-renderer";
+import { mount, React } from "./setup";
+
 import { TemplatesStore } from "../templates-store";
 
 const defaultWarn = global.console.warn;
