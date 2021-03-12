@@ -8,11 +8,11 @@ class TemplatesRenderer extends React.PureComponent<{ templatesStore: TemplatesS
     private _updateScheduled: boolean = false;
     private mounted = false;
 
-    componentDidMount(): void {
+    public componentDidMount(): void {
       this.mounted = true;
     }
-  
-    componentWillUnmount(): void {
+
+    public componentWillUnmount(): void {
       this.mounted = false;
     }
 
@@ -24,10 +24,10 @@ class TemplatesRenderer extends React.PureComponent<{ templatesStore: TemplatesS
 
         const updateFunc = useDeferUpdate ? deferUpdate : requestAnimationFrame;
         updateFunc(() => {
-          if(this.mounted) {
+          if (this.mounted) {
             this.forceUpdate();
           }
-            this._updateScheduled = false;
+          this._updateScheduled = false;
         });
     }
 

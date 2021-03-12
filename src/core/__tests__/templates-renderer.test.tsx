@@ -1,9 +1,9 @@
 /* eslint-disable max-classes-per-file */
-import { requestAnimationFrame } from 'devextreme/animation/frame';
-import { deferUpdate } from 'devextreme/core/utils/common';
-import { React, mount } from './setup';
-import { TemplatesRenderer } from '../templates-renderer';
-import { TemplatesStore } from '../templates-store';
+import { requestAnimationFrame } from "devextreme/animation/frame";
+import { deferUpdate } from "devextreme/core/utils/common";
+import { TemplatesRenderer } from "../templates-renderer";
+import { TemplatesStore } from "../templates-store";
+import { mount, React } from "./setup";
 
 const defaultWarn = global.console.warn;
 const defaultError = global.console.error;
@@ -16,11 +16,11 @@ global.console.error = (message) => {
   throw message;
 };
 
-jest.mock('devextreme/animation/frame', () => ({
+jest.mock("devextreme/animation/frame", () => ({
   requestAnimationFrame: jest.fn(),
 }));
 
-jest.mock('devextreme/core/utils/common', () => ({
+jest.mock("devextreme/core/utils/common", () => ({
   deferUpdate: jest.fn(),
 }));
 [true, false].forEach((useDeferUpdate) => {
@@ -45,9 +45,9 @@ jest.mock('devextreme/core/utils/common', () => ({
       global.console.error = defaultError;
     });
 
-    it('should not throw warning when unmounted', async () => {
+    it("should not throw warning when unmounted", async () => {
       const ref = React.createRef<TemplatesRenderer>();
-      const templatesStore = new TemplatesStore(() => { });
+      const templatesStore = new TemplatesStore(jest.fn());
 
       const component = mount(<TemplatesRenderer templatesStore={templatesStore} ref={ref} />);
 
@@ -62,18 +62,18 @@ jest.mock('devextreme/core/utils/common', () => ({
       expect(() => updateCallback()).not.toThrow();
     });
 
-    it(`should call ${useDeferUpdate ? 'deferUpdate' : 'requestAnimationFrame'}`, async () => {
+    it(`should call ${useDeferUpdate ? "deferUpdate" : "requestAnimationFrame"}`, async () => {
       const ref = React.createRef<TemplatesRenderer>();
-      const templatesStore = new TemplatesStore(() => { });
+      const templatesStore = new TemplatesStore(jest.fn());
 
       mount(<TemplatesRenderer templatesStore={templatesStore} ref={ref} />);
       expect(() => ref.current?.scheduleUpdate(useDeferUpdate)).not.toThrow();
       expect(updateFunctionMock).toHaveBeenCalledTimes(1);
     });
 
-    it('should not call twice', async () => {
+    it("should not call twice", async () => {
       const ref = React.createRef<TemplatesRenderer>();
-      const templatesStore = new TemplatesStore(() => { });
+      const templatesStore = new TemplatesStore(jest.fn());
 
       mount(<TemplatesRenderer templatesStore={templatesStore} ref={ref} />);
       ref.current?.scheduleUpdate(useDeferUpdate);
