@@ -36,8 +36,11 @@ jest.mock('devextreme/core/utils/common', () => ({
       });
     });
 
-    afterAll(() => {
+    afterEach(() => {
       jest.clearAllMocks();
+    });
+
+    afterAll(() => {
       global.console.warn = defaultWarn;
       global.console.error = defaultError;
     });
