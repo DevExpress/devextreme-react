@@ -58,5 +58,9 @@
     "devextreme",
     "devexpress"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@testing-library/react": "^11.2.5",
+    "@testing-library/user-event": "^13.0.1"
+  }
 }

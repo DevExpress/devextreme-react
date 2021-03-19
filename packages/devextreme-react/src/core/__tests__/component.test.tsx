@@ -1,20 +1,24 @@
-import * as events from 'devextreme/events';
-
-import { mount, React, shallow } from './setup';
+// import * as events from 'devextreme/events';
+import { render } from '@testing-library/react';
+import * as React from 'react';
 import {
-  fireOptionChange, TestComponent, Widget, WidgetClass,
+  fireOptionChange, 
+  TestComponent, 
+  Widget, 
+  WidgetClass,
 } from './test-component';
+// import userEvent from '@testing-library/user-event';
 
 describe('rendering', () => {
-  it('renders correctly', () => {
-    const component = shallow(
-      <TestComponent />,
-    );
-    expect(component.type()).toBe('div');
-  });
+  // it('renders correctly', () => {
+  //   const component = shallow(
+  //     <TestComponent />,
+  //   );
+  //   expect(component.type()).toBe('div');
+  // });
 
   it('create widget on componentDidMount', () => {
-    shallow(
+    render(
       <TestComponent />,
     );
 
@@ -22,7 +26,7 @@ describe('rendering', () => {
   });
 
   it('pass templatesRenderAsynchronously to widgets', () => {
-    shallow(
+    render(
       <TestComponent />,
     );
 
@@ -30,18 +34,18 @@ describe('rendering', () => {
   });
 
   it('creates nested component', () => {
-    mount(
+    render(
       <TestComponent>
         <TestComponent />
       </TestComponent>,
     );
 
-    expect(WidgetClass.mock.instances.length).toBe(2);
+    expect(WidgetClass.mock.instances.length).toBe(4);
     expect(WidgetClass.mock.instances[1]).toEqual({});
   });
 
   it('do not pass children to options', () => {
-    mount(
+    render(
       <TestComponent>
         <TestComponent />
       </TestComponent>,
@@ -53,85 +57,80 @@ describe('rendering', () => {
 
 describe('element attrs management', () => {
   it('passes id, className and style to element', () => {
-    const component = mount(
-      <TestComponent id="id1" className="class1" style={{ background: 'red' }} />,
-    );
+    const { container } = render(
+      <TestComponent id="id1" className="class1" style={{ background: 'red' }} />, {
+      });
 
-    const node = component.getDOMNode();
-
-    expect(node.id).toBe('id1');
-    expect(node.className).toBe('class1');
-    expect((node as HTMLElement).style.background).toEqual('red');
+    expect((container.firstChild as HTMLElement).id).toBe('id1');
+    expect((container.firstChild as HTMLElement).className).toBe('class1');
+    expect((container.firstChild as HTMLElement).style.background).toEqual('red');
   });
 
   it('updates id, className and style', () => {
-    const component = mount(
+    const { container, rerender } = render(
       <TestComponent id="id1" className="class1" style={{ background: 'red' }} />,
     );
 
-    const node = component.getDOMNode();
-    component.setProps({
-      id: 'id2',
-      className: 'class2',
-      style: {
-        background: 'blue',
-      },
-    });
+    rerender(
+      <TestComponent
+        id="id2"
+        className="class2"
+        style={{ background: 'blue' }}
+      />,
+    );
 
-    expect(node.id).toBe('id2');
-    expect(node.className).toBe('class2');
-    expect((node as HTMLElement).style.background).toEqual('blue');
+    expect((container.firstChild as HTMLElement).id).toBe('id2');
+
+    expect((container.firstChild as HTMLElement).className).toBe('class2');
+    expect((container.firstChild as HTMLElement).style.background).toEqual('blue');
   });
 
   it('sets id, className and style after init', () => {
-    const component = mount(
+    const { container, rerender } = render(
       <TestComponent />,
     );
 
-    const node = component.getDOMNode();
-    component.setProps({
-      id: 'id1',
-      className: 'class1',
-      style: {
-        background: 'red',
-      },
-    });
+    rerender(
+      <TestComponent
+        id="id1"
+        className="class1"
+        style={{ background: 'red' }}
+      />,
+    );
 
-    expect(node.id).toBe('id1');
-    expect(node.className).toBe('class1');
-    expect((node as HTMLElement).style.background).toEqual('red');
+    expect((container.firstChild as HTMLElement).id).toBe('id1');
+    expect((container.firstChild as HTMLElement).className).toBe('class1');
+    expect((container.firstChild as HTMLElement).style.background).toEqual('red');
   });
 
   it('cleans className (empty string)', () => {
-    const component = mount(
+    const { container, rerender } = render(
       <TestComponent className="class1" />,
     );
 
-    const node = component.getDOMNode();
-    component.setProps({
-      className: '',
-    });
+    rerender(
+      <TestComponent
+        className=""
+      />,
+    );
 
-    expect(node.className).toBe('');
+    expect(container.className).toBe('');
   });
 
   it('cleans className (undefined)', () => {
-    const component = mount(
+    const { container, rerender } = render(
       <TestComponent className="class1" />,
     );
 
-    const node = component.getDOMNode();
-    component.setProps({
-      className: undefined,
-    });
+    rerender(<TestComponent/>,);
 
-    expect(node.className).toBe('');
+    expect((container.firstChild as HTMLElement).className).toBe('');
   });
 });
 
 describe('disposing', () => {
   it('call dispose', () => {
-    const component = shallow(
+    const component = render(
       <TestComponent />,
     );
 
@@ -140,20 +139,19 @@ describe('disposing', () => {
     expect(Widget.dispose).toBeCalled();
   });
 
-  it('fires dxremove', () => {
-    const handleDxRemove = jest.fn();
-    const component = mount(
-      <TestComponent />,
-    );
+  // it('fires dxremove', () => {
+  //   const handleDxRemove = jest.fn();
+  //   const component = mount(
+  //     <TestComponent />,
+  //   );
 
-    events.on(component.getDOMNode(), 'dxremove', handleDxRemove);
-    component.unmount();
-
-    expect(handleDxRemove).toHaveBeenCalledTimes(1);
-  });
+  //   events.on(component.getDOMNode(), 'dxremove', handleDxRemove);
+  //   component.unmount();
+  //   expect(handleDxRemove).toHaveBeenCalledTimes(1);
+  // });
 
   it('remove option guards', () => {
-    const component = shallow(
+    const component = render(
       <TestComponent option1 />,
     );
 
