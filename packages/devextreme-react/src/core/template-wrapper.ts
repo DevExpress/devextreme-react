@@ -22,6 +22,7 @@ const removalListenerStyle = { display: 'none' };
 
 class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps, ITemplateWrapperState> {
   private readonly _removalListenerRef = React.createRef<HTMLElement>();
+  private element: HTMLElement|undefined|null;
 
   constructor(props: ITemplateWrapperProps) {
     super(props);
@@ -29,6 +30,7 @@ class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps, ITempla
     this.state = { removalListenerRequired: false };
 
     this._onDxRemove = this._onDxRemove.bind(this);
+    this.setRef = this.setRef.bind(this);
   }
 
   public componentDidMount(): void {
@@ -43,7 +45,7 @@ class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps, ITempla
   public componentWillUnmount(): void {
     // Let React remove it itself
     // eslint-disable-next-line react/no-find-dom-node
-    const node = ReactDOM.findDOMNode(this);
+    const node = this.element;
     const { container } = this.props;
 
     if (node) {
@@ -58,9 +60,13 @@ class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps, ITempla
     return this._removalListenerRef.current as HTMLElement;
   }
 
+  private setRef(node: HTMLDivElement|null) {
+    this.element = node?.firstChild as HTMLElement;
+  }
+
   private _subscribeOnRemove() {
     // eslint-disable-next-line react/no-find-dom-node
-    const node = ReactDOM.findDOMNode(this);
+    const node = this.element;
     const { removalListenerRequired } = this.state;
 
     if (node && node.nodeType === Node.ELEMENT_NODE) {
@@ -97,8 +103,8 @@ class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps, ITempla
 
     return ReactDOM.createPortal(
       React.createElement(
-        React.Fragment,
-        null,
+        'div',
+        {style: {display: 'contents'}, ref: this.setRef},
         content,
         removalListener,
       ),
