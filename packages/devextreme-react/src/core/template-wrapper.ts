@@ -44,7 +44,6 @@ class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps, ITempla
 
   public componentWillUnmount(): void {
     // Let React remove it itself
-    // eslint-disable-next-line react/no-find-dom-node
     const node = this.element;
     const { container } = this.props;
 
