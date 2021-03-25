@@ -1,5 +1,5 @@
-// import * as events from 'devextreme/events';
-import { render } from '@testing-library/react';
+import * as events from 'devextreme/events';
+import { render, cleanup } from '@testing-library/react';
 import * as React from 'react';
 import {
   fireOptionChange, 
@@ -7,20 +7,24 @@ import {
   Widget, 
   WidgetClass,
 } from './test-component';
-// import userEvent from '@testing-library/user-event';
 
 describe('rendering', () => {
-  // it('renders correctly', () => {
-  //   const component = shallow(
-  //     <TestComponent />,
-  //   );
-  //   expect(component.type()).toBe('div');
-  // });
+
+  afterEach(() => {
+    WidgetClass.mockClear();
+    cleanup();
+  })
+  it('renders correctly', () => {
+     const { container } = render(
+        <TestComponent />,
+    )
+
+    expect((container.firstChild as HTMLElement)?.tagName.toLowerCase()).toBe('div');
+  });
 
   it('create widget on componentDidMount', () => {
-    render(
-      <TestComponent />,
-    );
+        render(<TestComponent />)
+
 
     expect(WidgetClass.mock.instances.length).toBe(1);
   });
@@ -34,13 +38,13 @@ describe('rendering', () => {
   });
 
   it('creates nested component', () => {
-    render(
-      <TestComponent>
-        <TestComponent />
-      </TestComponent>,
-    );
+      render(
+        <TestComponent>
+          <TestComponent />
+        </TestComponent>
+      )
 
-    expect(WidgetClass.mock.instances.length).toBe(4);
+    expect(WidgetClass.mock.instances.length).toBe(2);
     expect(WidgetClass.mock.instances[1]).toEqual({});
   });
 
@@ -139,16 +143,17 @@ describe('disposing', () => {
     expect(Widget.dispose).toBeCalled();
   });
 
-  // it('fires dxremove', () => {
-  //   const handleDxRemove = jest.fn();
-  //   const component = mount(
-  //     <TestComponent />,
-  //   );
+  it('fires dxremove', () => {
+    const handleDxRemove = jest.fn();
+    const { container, unmount } = render(
+      <TestComponent />,
+    );
 
-  //   events.on(component.getDOMNode(), 'dxremove', handleDxRemove);
-  //   component.unmount();
-  //   expect(handleDxRemove).toHaveBeenCalledTimes(1);
-  // });
+    events.on(container.firstChild as HTMLElement, 'dxremove', handleDxRemove);
+
+    unmount();
+    expect(handleDxRemove).toHaveBeenCalledTimes(1);
+  });
 
   it('remove option guards', () => {
     const component = render(
