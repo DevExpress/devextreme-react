@@ -107,7 +107,7 @@ class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps, ITempla
         null,
         content && React.createElement(
           'div',
-          { style: { display: 'contents' }, ref: this.getNextSiblingNode }),
+          { style: { display: 'none' }, ref: this.getNextSiblingNode }),
         content,
         removalListener,
       ),
