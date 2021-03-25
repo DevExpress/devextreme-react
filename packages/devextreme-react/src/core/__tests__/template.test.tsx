@@ -115,7 +115,7 @@ function testTemplateOption(testedOption: string) {
     component.update();
 
     expect(component.html())
-      .toBe('<div>Text<div><div style=\"display: contents;\"><div>Template</div></div></div></div>');
+      .toBe('<div>Text<div><div style=\"display: contents;\"></div><div>Template</div></div></div>');
   });
 
   it('renders new template after component change', () => {
@@ -173,7 +173,7 @@ function testTemplateOption(testedOption: string) {
     renderItemTemplate({ text: 'with data' }, container);
     component.update();
     expect(container.innerHTML).
-      toBe('<div style=\"display: contents;\">Template with data<span style="display: none;"></span></div>');
+      toBe('<div style=\"display: contents;\"></div>Template with data<span style=\"display: none;\"></span>');
   });
 
   it('does not render template removeEvent listener', () => {
@@ -196,7 +196,7 @@ function testTemplateOption(testedOption: string) {
 
     component.update();
     expect(container.innerHTML)
-      .toBe('<div style=\"display: contents;\"><tbody><tr><td>Template with data</td></tr></tbody></div>');
+      .toBe('<div style=\"display: contents;\"></div><tbody><tr><td>Template with data</td></tr></tbody>');
   });
 
   it('calls onRendered callback', () => {

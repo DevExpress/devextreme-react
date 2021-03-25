@@ -22,7 +22,7 @@ const removalListenerStyle = { display: 'none' };
 
 class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps, ITemplateWrapperState> {
   private readonly _removalListenerRef = React.createRef<HTMLElement>();
-  private element: HTMLElement|undefined|null;
+  private element: HTMLElement | undefined | null;
 
   constructor(props: ITemplateWrapperProps) {
     super(props);
@@ -30,7 +30,7 @@ class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps, ITempla
     this.state = { removalListenerRequired: false };
 
     this._onDxRemove = this._onDxRemove.bind(this);
-    this.setRef = this.setRef.bind(this);
+    this.getNextSiblingNode = this.getNextSiblingNode.bind(this);
   }
 
   public componentDidMount(): void {
@@ -60,8 +60,8 @@ class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps, ITempla
     return this._removalListenerRef.current as HTMLElement;
   }
 
-  private setRef(node: HTMLDivElement|null) {
-    this.element = node?.firstChild as HTMLElement;
+  private getNextSiblingNode(node: HTMLDivElement | null) {
+    this.element = node?.nextSibling as HTMLElement;
   }
 
   private _subscribeOnRemove() {
@@ -103,8 +103,11 @@ class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps, ITempla
 
     return ReactDOM.createPortal(
       React.createElement(
-        'div',
-        {style: {display: 'contents'}, ref: this.setRef},
+        React.Fragment,
+        null,
+        content && React.createElement(
+          'div',
+          { style: { display: 'contents' }, ref: this.getNextSiblingNode }),
         content,
         removalListener,
       ),
