@@ -64,7 +64,6 @@ class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps, ITempla
   }
 
   private _subscribeOnRemove() {
-    // eslint-disable-next-line react/no-find-dom-node
     const node = this.element;
     const { removalListenerRequired } = this.state;
 
