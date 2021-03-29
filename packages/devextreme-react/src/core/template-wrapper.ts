@@ -30,7 +30,7 @@ class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps, ITempla
     this.state = { removalListenerRequired: false };
 
     this._onDxRemove = this._onDxRemove.bind(this);
-    this.getNextSiblingNode = this.getNextSiblingNode.bind(this);
+    this.getPreviousSiblingNode = this.getPreviousSiblingNode.bind(this);
   }
 
   public componentDidMount(): void {
@@ -59,8 +59,8 @@ class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps, ITempla
     return this._removalListenerRef.current as HTMLElement;
   }
 
-  private getNextSiblingNode(node: HTMLDivElement | null) {
-    this.element = node?.nextSibling as HTMLElement;
+  private getPreviousSiblingNode(node: HTMLDivElement | null) {
+    this.element = node?.previousSibling as HTMLElement;
   }
 
   private _subscribeOnRemove() {
@@ -103,10 +103,10 @@ class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps, ITempla
       React.createElement(
         React.Fragment,
         null,
+        content,
         content && React.createElement(
           'div',
-          { style: { display: 'none' }, ref: this.getNextSiblingNode }),
-        content,
+          { style: { display: 'none' }, ref: this.getPreviousSiblingNode }),
         removalListener,
       ),
       container,

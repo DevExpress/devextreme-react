@@ -21,10 +21,11 @@ import TextBoxExample from './text-box-example';
 import ToolbarExample from './toolbar-example';
 import ValidationExample from './validation-example';
 import BoxExample from './box-example';
+import DrawerExample from './drawer-example';
 
 ReactDOM.render(
   <div>
-
+    <DrawerExample />
     <Example title="DxButton">
       <Button text="Example Button" />
     </Example>
