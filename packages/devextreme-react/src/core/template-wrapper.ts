@@ -22,6 +22,7 @@ const removalListenerStyle = { display: 'none' };
 
 class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps, ITemplateWrapperState> {
   private readonly _removalListenerRef = React.createRef<HTMLElement>();
+
   private element: HTMLElement | undefined | null;
 
   constructor(props: ITemplateWrapperProps) {
@@ -106,7 +107,8 @@ class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps, ITempla
         content,
         content && React.createElement(
           'div',
-          { style: { display: 'none' }, ref: this.getPreviousSiblingNode }),
+          { style: { display: 'none' }, ref: this.getPreviousSiblingNode },
+        ),
         removalListener,
       ),
       container,
