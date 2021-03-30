@@ -39,7 +39,7 @@ class App extends React.Component<any, { opened:boolean,
       location: 'before',
       options: {
         icon: 'menu',
-        onClick: () => this.setState({ opened: !this.state.opened }),
+        onClick: this.onMenuClick,
       },
     }];
 
@@ -112,8 +112,11 @@ class App extends React.Component<any, { opened:boolean,
     this.setState({ position: value });
   }
 
-  onOutsideClick() : void{
+  onOutsideClick() {
     this.setState({ opened: false });
+  }
+  onMenuClick() {
+    this.setState({ opened: !this.state.opened });
   }
 }
 
