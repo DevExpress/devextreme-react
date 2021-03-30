@@ -7,7 +7,6 @@ import 'devextreme/dist/css/dx.light.compact.css';
 import AccordionExample from './accordion-example';
 import ChartExample from './chart-example';
 import DataGridExample from './data-grid-example';
-import DrawerExample from './drawer-example';
 import EditorExample from './editor-example';
 import Example from './example-block';
 import FormExample from './form-example';
@@ -28,31 +27,16 @@ import BoxExample from './box-example';
 
 ReactDOM.render(
   <div>
-    <AccordionExample />
-
-    <BoxExample />
-
-    <Example title="Element attributes">
-      <Button text="Button with style attr" style={{ backgroundColor: '#ffc' }} />
-    </Example>
 
     <Example title="DxButton">
       <Button text="Example Button" />
     </Example>
 
-    <ChartExample />
+    <PopupExample />
 
-    <DataGridExample />
-
-    <DrawerExample />
-
+    <TextBoxExample />
+    <ToolbarExample />
     <EditorExample />
-
-    <FormExample />
-
-    <ListExample />
-
-    <MapExample />
 
     <Example title="DxNumberBox">
       <NumberBox
@@ -64,25 +48,37 @@ ReactDOM.render(
       />
     </Example>
 
-    <PopupExample />
+    <SlideOutViewExample />
+
+    <ScrollViewExample />
+
+    <ValidationExample />
+
+    <FormExample />
+
+    <ListExample />
+
+    <MapExample />
+
+    <AccordionExample />
+
+    <DataGridExample />
 
     <SchedulerExample />
 
-    <ScrollViewExample />
+    <ChartExample />
+
+    <Example title="Element attributes">
+      <Button text="Button with style attr" style={{ backgroundColor: '#ffc' }} />
+    </Example>
 
     <Example title="SelectBox example">
       <SelectBoxExample />
     </Example>
 
-    <SlideOutViewExample />
-
+    <BoxExample />
     <StandaloneValidatorExample />
 
-    <TextBoxExample />
-
-    <ToolbarExample />
-
-    <ValidationExample />
   </div>,
   document.getElementById('app'),
 );
