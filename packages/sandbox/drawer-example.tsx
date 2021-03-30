@@ -7,11 +7,12 @@ import Example from './example-block';
 
 import NavigationList from './NavigationList';
 
-class App extends React.Component<any, { opened:boolean,
-    openedStateMode: "shrink" | "overlap" | "push" | undefined,
-    revealMode: "slide" | "expand" | undefined,
-    position: "left" | "before" | "right" | "top" | "bottom" | "after" | undefined
-     }> {
+class App extends React.Component<any, {
+  opened: boolean,
+  openedStateMode: "shrink" | "overlap" | "push" | undefined,
+  revealMode: "slide" | "expand" | undefined,
+  position: "left" | "before" | "right" | "top" | "bottom" | "after" | undefined
+}> {
   constructor(props: any) {
     super(props);
 
@@ -27,6 +28,7 @@ class App extends React.Component<any, { opened:boolean,
     this.onPositionChanged = this.onPositionChanged.bind(this);
     this.onPositionChanged = this.onPositionChanged.bind(this);
     this.onOutsideClick = this.onOutsideClick.bind(this);
+    this.onMenuClick = this.onMenuClick.bind(this);
   }
 
   render() {
@@ -57,8 +59,8 @@ class App extends React.Component<any, { opened:boolean,
         >
           <div id="content" className="dx-theme-background-color">
             <div>Lorem ipsum dolor sit amet consectetur,
-                 adipisicing elit. Corrupti fugit culpa similique non illum doloremque,
-                 odio aperiam enim nostrum laboriosam accusantium delectus tempora nesciunt,
+            adipisicing elit. Corrupti fugit culpa similique non illum doloremque,
+            odio aperiam enim nostrum laboriosam accusantium delectus tempora nesciunt,
                  repellendus explicabo laudantium nam. Non, officiis!</div>
           </div>
         </Drawer>
@@ -85,15 +87,15 @@ class App extends React.Component<any, { opened:boolean,
           </div>
           {' '}
           {openedStateMode !== 'push' && (
-          <div className="option">
-            <label>Reveal mode</label>
-            <RadioGroup
-              items={['slide', 'expand']}
-              layout="horizontal"
-              value={revealMode}
-              onValueChanged={this.onRevealModeChanged}
-            />
-          </div>
+            <div className="option">
+              <label>Reveal mode</label>
+              <RadioGroup
+                items={['slide', 'expand']}
+                layout="horizontal"
+                value={revealMode}
+                onValueChanged={this.onRevealModeChanged}
+              />
+            </div>
           )}
         </div>
       </Example>
@@ -115,8 +117,9 @@ class App extends React.Component<any, { opened:boolean,
   onOutsideClick() {
     this.setState({ opened: false });
   }
+
   onMenuClick() {
-    this.setState({ opened: !this.state.opened });
+    this.setState((prevState) => ({ opened: !prevState }));
   }
 }
 
