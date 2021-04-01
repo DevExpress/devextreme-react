@@ -162,8 +162,7 @@ describe('disposing', () => {
 
     fireOptionChange('option1', false);
     component.unmount();
-    jest.runAllTimers();
-
+   useFakeTimers()
     expect(Widget.option.mock.calls.length).toBe(0);
   });
 });

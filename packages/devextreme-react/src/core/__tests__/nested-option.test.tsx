@@ -240,8 +240,7 @@ describe('nested option', () => {
         <CollectionNestedComponent key={3} d="def" />,
       </TestComponent>,
     );
-    jest.runAllTimers();
-
+   useFakeTimers()
     expect(Widget.option.mock.calls.length).toBe(1);
     expect(Widget.option.mock.calls[0]).toEqual(['itemOptions[1].c', 999]);
   });
@@ -258,8 +257,7 @@ describe('nested option', () => {
     const { rerender } = render(<TestContainer value={123} />)
     rerender(<TestContainer value={456} />)
 
-    jest.runAllTimers();
-    expect(Widget.option.mock.calls.length).toBe(1);
+   useFakeTimers()    expect(Widget.option.mock.calls.length).toBe(1);
     expect(Widget.option.mock.calls[0]).toEqual(['option.a', 456]);
   });
 
@@ -273,8 +271,7 @@ describe('nested option', () => {
     rerender(<TestComponent>
       <NestedComponent a={456} />
     </TestComponent>);
-    jest.runAllTimers();
-    expect(Widget.option.mock.calls.length).toBe(1);
+   useFakeTimers()    expect(Widget.option.mock.calls.length).toBe(1);
     expect(Widget.option.mock.calls[0]).toEqual(['option.a', 456]);
   });
 
@@ -301,8 +298,7 @@ describe('nested option', () => {
     const { rerender } = render(<TestContainer>{startChildren}</TestContainer>)
     rerender(<TestContainer>{endChildren}</TestContainer>);
 
-    jest.runAllTimers();
-    expect(Widget.option.mock.calls.length).toBe(1);
+   useFakeTimers()    expect(Widget.option.mock.calls.length).toBe(1);
     expect(Widget.option.mock.calls[0]).toEqual(['itemOptions', [
       { c: 123, d: 'abc' },
       { c: 456, d: 'def' },
@@ -333,8 +329,7 @@ describe('nested option', () => {
 
     rerender(<TestContainer>{endChildren}</TestContainer>);
 
-    jest.runAllTimers();
-    expect(Widget.option.mock.calls.length).toBe(1);
+   useFakeTimers()    expect(Widget.option.mock.calls.length).toBe(1);
     expect(Widget.option.mock.calls[0]).toEqual(['itemOptions', [
       { c: 123, d: 'abc' },
     ]]);
@@ -474,8 +469,7 @@ describe('nested sub-option', () => {
         </NestedComponent>
        </TestComponent>,
     );
-    jest.runAllTimers();
-
+   useFakeTimers()
     expect(Widget.option.mock.calls.length).toBe(1);
     expect(Widget.option.mock.calls[0]).toEqual(['option.subItemsOptions[1].c', 999]);
   });
@@ -495,8 +489,7 @@ describe('nested sub-option', () => {
     const { rerender } = render(<TestContainer value="abc" />)
     rerender(<TestContainer value="def" />)
 
-    jest.runAllTimers();
-    expect(Widget.option.mock.calls.length).toBe(1);
+   useFakeTimers()    expect(Widget.option.mock.calls.length).toBe(1);
     expect(Widget.option.mock.calls[0]).toEqual(['option.subOption.d', 'def']);
   });
 
