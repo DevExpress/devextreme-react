@@ -133,6 +133,9 @@ describe('element attrs management', () => {
 });
 
 describe('disposing', () => {
+  beforeEach(() => {
+    jest.useFakeTimers();
+  })
   it('call dispose', () => {
     const component = render(
       <TestComponent />,
@@ -162,7 +165,8 @@ describe('disposing', () => {
 
     fireOptionChange('option1', false);
     component.unmount();
-   useFakeTimers()
+    jest.runAllTimers();
+
     expect(Widget.option.mock.calls.length).toBe(0);
   });
 });

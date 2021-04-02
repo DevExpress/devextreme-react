@@ -1,4 +1,4 @@
-// /* eslint-disable max-classes-per-file */
+/* eslint-disable max-classes-per-file */
 import * as events from 'devextreme/events';
 import { Component } from '../component';
 
@@ -7,6 +7,7 @@ import { Template } from '../template';
 import { cleanup, render as testingRender } from '@testing-library/react';
 import * as React from 'react';
 import { TestComponent, Widget, WidgetClass } from './test-component';
+jest.runAllTimers();
 
 const templateProps = [{
   tmplOption: 'item',
@@ -140,7 +141,7 @@ function testTemplateOption(testedOption: string) {
     const changedElementOptions: Record<string, any> = {};
     changedElementOptions[testedOption] = () => <div className="template">Second Template</div>;
     rerender(React.createElement(ComponentWithTemplates, changedElementOptions))
-    jest.useFakeTimers();
+    jest.runAllTimers();
     const optionCalls = Widget.option.mock.calls;
     expect(optionCalls.length).toBe(1);
 
@@ -210,7 +211,7 @@ function testTemplateOption(testedOption: string) {
 
     renderItemTemplate({ text: 'with data' }, undefined, undefined, onRendered);
 
-   jest.useFakeTimers();
+   jest.runAllTimers();
    expect(onRendered).toBeCalled();
   });
 
@@ -293,36 +294,36 @@ function testTemplateOption(testedOption: string) {
 
     parentElement.innerHTML = '';
     events.triggerHandler(removeListener, 'dxremove');
-    component.update();
+    
     expect(componentInstance._templatesStore.renderWrappers().length).toBe(0);
   });
 
-  // it('removes template', () => {
-  //   const elementOptions: Record<string, any> = {
-  //     [testedOption]: prepareTemplate((data: any) => (
-  //       <div className="template">
-  //         Template
-  //         {data.text}
-  //       </div>
-  //     )),
-  //   };
-
-  //   const component = testingRender(React.createElement(ComponentWithTemplates, elementOptions));
-  //   const componentInstance = component.instance() as any;
-
-  //   renderItemTemplate();
-  //   expect(componentInstance._templatesStore.renderWrappers().length).toBe(1);
-  //   component.update();
-  //   const templateContent = component.find('.template').getDOMNode();
-
-  //   const { parentElement } = templateContent;
-  //   if (!parentElement) { throw new Error(); }
-
-  //   parentElement.removeChild(templateContent);
-  //   events.triggerHandler(templateContent, 'dxremove');
-  //   component.update();
-  //   expect(componentInstance._templatesStore.renderWrappers().length).toBe(0);
-  // });
+  it('removes text template', () => {
+      const ref = React.createRef() as React.RefObject<HTMLDivElement>;
+      const elementOptions: Record<string, any> = { ref };
+      elementOptions[testedOption] = prepareTemplate((data: any) => (
+        <>
+          Template
+          {data.text}
+        </>
+      ));
+      const { container } = testingRender(React.createElement(ComponentWithTemplates, elementOptions));
+      const componentInstance = ref.current as any;
+  
+  
+      renderItemTemplate({}, ref.current);
+      expect(componentInstance._templatesStore.renderWrappers().length).toBe(1);
+  
+      const removeListener = container.getElementsByTagName('SPAN')[0];
+  
+      const { parentElement } = removeListener;
+      if (!parentElement) { throw new Error(); }
+  
+      parentElement.innerHTML = '';
+      events.triggerHandler(removeListener, 'dxremove');
+  
+      expect(componentInstance._templatesStore.renderWrappers().length).toBe(0);
+    });
 }
 
 describe('function template', () => {
@@ -543,23 +544,23 @@ describe('nested template', () => {
     expect(container.querySelector('.template')?.outerHTML).toBe('<div class="template">Second Template</div>');
   });
 
-    it.only('has templates with ids genetated by keyFn', () => {
+    it('has templates with ids genetated by keyFn', () => {
       const ref = React.createRef() as React.RefObject<HTMLDivElement>;
       const FirstTemplate = () => <div className="template">Template</div>;
       const keyExpr = (data) => data.text;
       testingRender(
         <ComponentWithTemplates>
           <Template name="item1" render={FirstTemplate} keyFn={keyExpr} />
-          <div ref={ref} />
+        <div ref={ref} />
         </ComponentWithTemplates>,
       );
 
       renderTemplate('item1', { text: 1 }, ref.current);
       console.log(ref)
 
-      const templates = Object.getOwnPropertyNames(ref.current._templatesStore?._templates);
-      // expect(templates.length).toBe(1);
-      // expect(templates[0]).toBe('1');
+      const templates = Object.getOwnPropertyNames(ref.current?._templatesStore?._templates);
+      expect(templates.length).toBe(1);
+      expect(templates[0]).toBe('1');
     });
 });
 
@@ -896,7 +897,7 @@ describe('component/render in nested options', () => {
         <div ref={ref} />
       </TestContainer>
     );
-   jest.useFakeTimers()
+   jest.runAllTimers()
     renderTemplate('collection[0].option.item', undefined, ref.current);
     expect(container.querySelector('.template')?.outerHTML).toBe('<div class="template">test2</div>');
   });
