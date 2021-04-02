@@ -258,8 +258,7 @@ describe('option control', () => {
       fireOptionChange('everyOption', 234);
       jest.runAllTimers();
 
-      console.log(Widget.option.mock.calls)
-      expect(Widget.option.mock.calls.length).toBe(0);
+      expect(Widget.option.mock.calls.length).toBe(1);
       expect(Widget.option.mock.calls[0]).toEqual(['everyOption', value]);
     });
   });
@@ -761,9 +760,8 @@ describe('onXXXChange', () => {
       const sampleProps = { text: '1' };
       rerender(
         <TestComponent
-        text="0"
+        {...sampleProps}
         onTextChange={onPropChange}
-        sampleProps={sampleProps}
       />,
       )
       expect(onPropChange).not.toBeCalled();
@@ -778,33 +776,38 @@ describe('onXXXChange', () => {
     });
 
      it('is not called if received value is being modified', () => {
-      const ref = React.createRef() as React.RefObject<HTMLDivElement>;
+      const ref = React.createRef() as React.RefObject<TestComponent>;
+      const onPropChange = jest.fn();
+      const defaultProps = {
+        text:"0",
+        onTextChange:onPropChange,
+        ref
+      }
 
-       const onPropChange = jest.fn();
-       const { rerender, container } = render(
+       const { rerender } = render(
          <TestComponent
-           text="0"
-           onTextChange={onPropChange}
-         >
-           <div ref={ref} />
-          </TestComponent>,
+         {...defaultProps}
+          />
        );
 
        onPropChange.mockImplementation((value) => {
          rerender(
            <TestComponent
+             {...defaultProps}
              text={`X${value}`}
-           />,
+             />,
          )
        });
 
+
        fireOptionChange('text', '2');
+
        expect(onPropChange).toHaveBeenCalledTimes(1);
 
-       expect(container.firstChild).toHaveProperty("text", "X2");
+       expect(ref.current?.props.text).toBe("X2");
        fireOptionChange('text', 'X22');
        expect(onPropChange).toHaveBeenCalledTimes(2);
-       expect(container.firstChild as HTMLElement).toHaveProperty("text", "XX22");
+       expect(ref.current?.props.text).toBe("XX22");
 
      });
 
