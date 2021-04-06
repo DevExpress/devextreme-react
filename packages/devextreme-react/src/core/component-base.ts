@@ -69,9 +69,6 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
 
   public componentDidMount(): void {
     this._updateCssClasses(null, this.props);
-    // if (this.isPortalComponent) {
-    //   this.forceUpdate();
-    // }
   }
 
   public componentDidUpdate(prevProps: P): void {
