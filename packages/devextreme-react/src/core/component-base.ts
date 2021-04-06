@@ -28,7 +28,7 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
 
   protected _element: HTMLDivElement;
 
-  protected portalContainer: React.RefObject<HTMLDivElement> = React.createRef();
+  protected portalContainer: HTMLElement | null;
 
   protected isPortalComponent = false;
 
@@ -69,9 +69,9 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
 
   public componentDidMount(): void {
     this._updateCssClasses(null, this.props);
-    if (this.isPortalComponent) {
-      this.forceUpdate();
-    }
+    // if (this.isPortalComponent) {
+    //   this.forceUpdate();
+    // }
   }
 
   public componentDidUpdate(prevProps: P): void {
@@ -174,18 +174,24 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
 
     return this.isPortalComponent && children
       ? React.createElement('div', {
-        ref: this.portalContainer,
+        ref: (node: HTMLDivElement | null) => {
+          const container = node ? node.parentElement : null;
+          if (container && this.portalContainer !== container) {
+            this.portalContainer = container;
+            this.forceUpdate();
+          }
+        },
         style: {
-          display: 'contents',
+          display: 'none',
         },
       })
       : this.renderChildren();
   }
 
   protected renderPortal(): React.ReactNode {
-    return this.portalContainer.current && createPortal(
+    return this.portalContainer && createPortal(
       this.renderChildren(),
-      this.portalContainer.current,
+      this.portalContainer,
     );
   }
 
