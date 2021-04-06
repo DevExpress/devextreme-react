@@ -335,7 +335,7 @@ function testTemplateOption(testedOption: string) {
     expect(templatesKeys[1]).toBe('2');
   });
 
-  it.only('removes text template', () => {
+  it('removes text template', () => {
     const ref = React.createRef() as React.RefObject<ComponentWithTemplates>;
     const refContainer = React.createRef() as React.RefObject<HTMLDivElement>;
 
