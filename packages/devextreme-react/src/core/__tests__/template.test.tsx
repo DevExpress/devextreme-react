@@ -3,7 +3,7 @@ import * as events from 'devextreme/events';
 import { Component } from '../component';
 import ConfigurationComponent from '../nested-option';
 import { Template } from '../template';
-import { cleanup, render } from '@testing-library/react';
+import { cleanup, render, screen } from '@testing-library/react';
 import * as React from 'react';
 import {
   TestComponent,
@@ -121,16 +121,16 @@ function testTemplateOption(testedOption: string) {
     const elementOptions: Record<string, any> = {};
     elementOptions[testedOption] = () => <div>Template</div>;
 
-    const { container } = render(
+    render(
       <ComponentWithTemplates {...elementOptions}>
-        'Text'
+        Text
         <div ref={ref} />
       </ComponentWithTemplates>
     );
 
     renderItemTemplate({ text: 'with data' }, ref.current);
 
-    expect(container.querySelector('.template')?.outerHTML)
+    expect(screen.getByText("Text")?.outerHTML)
       .toBe('<div>Text<div><div>Template</div><div style=\"display: none;\"></div></div></div>');
   });
 
@@ -335,7 +335,7 @@ function testTemplateOption(testedOption: string) {
     expect(templatesKeys[1]).toBe('2');
   });
 
-  it('removes text template', () => {
+  it.only('removes text template', () => {
     const ref = React.createRef() as React.RefObject<ComponentWithTemplates>;
     const refContainer = React.createRef() as React.RefObject<HTMLDivElement>;
 
@@ -346,25 +346,37 @@ function testTemplateOption(testedOption: string) {
         {data.text}
       </>
     ));
-    const { container } = render(
+     const { container, rerender } = render(
     <ComponentWithTemplates {...elementOptions} ref={ref} >
       <div ref={refContainer}/>
     </ComponentWithTemplates>
     );
+
     const componentInstance = ref.current as unknown as { _templatesStore: TemplatesStore};
 
-    renderItemTemplate({});
+    renderItemTemplate({}, refContainer.current);
+
     expect(componentInstance._templatesStore.renderWrappers().length).toBe(1);
+    
+    expect(screen.getByText('Template').outerHTML)
+      .toBe('<div>Template<div style=\"display: none;\"></div><span style=\"display: none;\"></span></div>');
 
     const removeListener = container.getElementsByTagName('SPAN')[0];
+
 
     const { parentElement } = removeListener;
     if (!parentElement) { throw new Error(); }
 
-    parentElement.innerHTML = '';
     events.triggerHandler(removeListener, 'dxremove');
+    rerender(
+      <ComponentWithTemplates {...elementOptions} ref={ref} >
+      <div ref={refContainer}/>
+    </ComponentWithTemplates>
+    );
 
     expect(componentInstance._templatesStore.renderWrappers().length).toBe(0);
+    expect(screen.queryByText('Template')).toBeNull();
+
   });
 
   it('removes template', () => {
@@ -388,7 +400,7 @@ function testTemplateOption(testedOption: string) {
 
     const componentInstance = ref.current as unknown as { _templatesStore: TemplatesStore};
 
-    renderItemTemplate(undefined, refContainer);
+    renderItemTemplate(undefined, refContainer.current);
 
     expect(componentInstance._templatesStore.renderWrappers().length).toBe(1);
 
