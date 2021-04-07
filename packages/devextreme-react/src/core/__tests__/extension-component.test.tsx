@@ -30,7 +30,7 @@ class NestedComponent extends ConfigurationComponent<{ a: number }> {
   public static OptionName = 'option1';
 }
 
-test('is initialized as a plugin-component', () => {
+it('is initialized as a plugin-component', () => {
   const onMounted = jest.fn();
   render(
     <TestExtensionComponent onMounted={onMounted} />,
@@ -41,7 +41,7 @@ test('is initialized as a plugin-component', () => {
   expect(ExtensionWidgetClass).toHaveBeenCalledTimes(0);
 });
 
-test('is initialized as a standalone widget', () => {
+it('is initialized as a standalone widget', () => {
   render(
     <TestExtensionComponent />,
   );
@@ -49,7 +49,7 @@ test('is initialized as a standalone widget', () => {
   expect(ExtensionWidgetClass).toHaveBeenCalledTimes(1);
 });
 
-test('creates widget on componentDidMount inside another component on same element', () => {
+it('creates widget on componentDidMount inside another component on same element', () => {
   render(
     <TestComponent>
       <TestExtensionComponent />
@@ -60,7 +60,7 @@ test('creates widget on componentDidMount inside another component on same eleme
   expect(ExtensionWidgetClass.mock.calls[0][0]).toBe(WidgetClass.mock.calls[0][0]);
 });
 
-test('unmounts without errors', () => {
+it('unmounts without errors', () => {
   const component = render(
     <TestExtensionComponent />,
   );

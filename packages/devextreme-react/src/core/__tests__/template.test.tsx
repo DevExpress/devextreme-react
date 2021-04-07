@@ -71,7 +71,7 @@ function testTemplateOption(testedOption: string) {
     };
   }
 
-  it('pass integrationOptions to widget', () => {
+  test('pass integrationOptions to widget', () => {
     const ref = React.createRef() as React.RefObject<HTMLDivElement>
     const elementOptions: Record<string, any> = {};
     elementOptions[testedOption] = () => <div>Template</div>;
@@ -427,7 +427,7 @@ describe('function template', () => {
   testTemplateOption('itemRender');
 
   it('renders simple item', () => {
-    const ref = createRef() as React.RefObject<HTMLDivElement>
+    const ref = React.createRef() as React.RefObject<HTMLDivElement>
     const itemRender: any = jest.fn((text: string) => (
       <div className="template">
         Template
