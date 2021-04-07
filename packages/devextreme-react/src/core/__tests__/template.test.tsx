@@ -10,7 +10,6 @@ import {
   Widget,
   WidgetClass
 } from './test-component';
-import { createRef } from 'react';
 import { TemplatesStore } from '../templates-store';
 import { TemplateWrapperRenderer } from '../template-wrapper';
 
@@ -448,7 +447,7 @@ describe('function template', () => {
   });
 
   it('renders index', () => {
-    const ref = createRef() as React.RefObject<HTMLDivElement>
+    const ref = React.createRef() as React.RefObject<HTMLDivElement>
     const itemRender: any = jest.fn((_, index: number) => (
       <div className="template">
         Index
@@ -478,7 +477,7 @@ describe('component template', () => {
   testTemplateOption('itemComponent');
 
   it('renders index', () => {
-    const ref = createRef() as React.RefObject<HTMLDivElement>
+    const ref = React.createRef() as React.RefObject<HTMLDivElement>
     const ItemTemplate = (props: any) => {
       const { data, index } = props;
       return (
