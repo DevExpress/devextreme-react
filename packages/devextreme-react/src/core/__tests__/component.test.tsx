@@ -1,11 +1,9 @@
 import * as events from 'devextreme/events';
-import { TemplatesRenderer } from '../templates-renderer';
 import { render, cleanup } from '@testing-library/react';
 import * as React from 'react';
 import {
   fireOptionChange,
   TestComponent,
-  // TestPortalComponent,
   Widget,
   WidgetClass,
 } from './test-component';

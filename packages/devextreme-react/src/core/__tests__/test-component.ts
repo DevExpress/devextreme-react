@@ -1,4 +1,3 @@
-/* eslint-disable max-classes-per-file */
 import { Component } from '../component';
 
 const eventHandlers: { [index: string]: (e?: any) => void } = {};

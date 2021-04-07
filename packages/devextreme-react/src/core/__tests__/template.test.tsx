@@ -71,7 +71,7 @@ function testTemplateOption(testedOption: string) {
   }
 
   test('pass integrationOptions to widget', () => {
-    const ref = React.createRef() as React.RefObject<HTMLDivElement>
+    const ref = React.createRef() as React.RefObject<HTMLDivElement>;
     const elementOptions: Record<string, any> = {};
     elementOptions[testedOption] = () => <div>Template</div>;
     render(
@@ -93,7 +93,7 @@ function testTemplateOption(testedOption: string) {
   });
 
   it('renders', () => {
-    const ref = React.createRef() as React.RefObject<HTMLDivElement>
+    const ref = React.createRef() as React.RefObject<HTMLDivElement>;
     const elementOptions: Record<string, any> = {};
     elementOptions[testedOption] = prepareTemplate((data: any) => (
       <div className="template">
@@ -116,7 +116,7 @@ function testTemplateOption(testedOption: string) {
 
 
   it('renders with text node inside component', () => {
-    const ref = React.createRef() as React.RefObject<HTMLDivElement>
+    const ref = React.createRef() as React.RefObject<HTMLDivElement>;
     const elementOptions: Record<string, any> = {};
     elementOptions[testedOption] = () => <div>Template</div>;
 
@@ -134,7 +134,7 @@ function testTemplateOption(testedOption: string) {
   });
 
   it('renders new template after component change', () => {
-    const ref = React.createRef() as React.RefObject<HTMLDivElement>
+    const ref = React.createRef() as React.RefObject<HTMLDivElement>;
     const elementOptions: Record<string, any> = { ref };
     elementOptions[testedOption] = () => <div className="template">First Template</div>;
     const { rerender, container } = render(
@@ -417,6 +417,7 @@ function testTemplateOption(testedOption: string) {
 
 describe('function template', () => {
   jest.useFakeTimers();
+  
   afterEach(() => {
     jest.clearAllMocks();
     jest.clearAllTimers();
@@ -426,7 +427,7 @@ describe('function template', () => {
   testTemplateOption('itemRender');
 
   it('renders simple item', () => {
-    const ref = React.createRef() as React.RefObject<HTMLDivElement>
+    const ref = React.createRef() as React.RefObject<HTMLDivElement>;
     const itemRender: any = jest.fn((text: string) => (
       <div className="template">
         Template
@@ -447,7 +448,7 @@ describe('function template', () => {
   });
 
   it('renders index', () => {
-    const ref = React.createRef() as React.RefObject<HTMLDivElement>
+    const ref = React.createRef() as React.RefObject<HTMLDivElement>;
     const itemRender: any = jest.fn((_, index: number) => (
       <div className="template">
         Index
@@ -477,7 +478,7 @@ describe('component template', () => {
   testTemplateOption('itemComponent');
 
   it('renders index', () => {
-    const ref = React.createRef() as React.RefObject<HTMLDivElement>
+    const ref = React.createRef() as React.RefObject<HTMLDivElement>;
     const ItemTemplate = (props: any) => {
       const { data, index } = props;
       return (

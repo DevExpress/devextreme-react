@@ -147,11 +147,7 @@ describe('option control', () => {
     jest.clearAllTimers();
     cleanup();
   })
-  afterAll(() => {
-    jest.clearAllMocks();
-    jest.clearAllTimers();
-    cleanup();
-  })
+
   it('binds callback for optionChanged', () => {
     render(
       <ControlledComponent everyOption={123} />,
@@ -289,8 +285,7 @@ describe('option control', () => {
 
   it('rolls back one simple option and updates other', () => {
     const { rerender } = render(
-      <ControlledComponent everyOption={123} anotherOption="const" >
-      </ControlledComponent>,
+      <ControlledComponent everyOption={123} anotherOption="const" />,
     );
 
     fireOptionChange('anotherOption', 'changed');
@@ -718,9 +713,6 @@ describe('onXXXChange', () => {
       )
         .mockImplementation(() => true);
     });
-    afterAll(() => {
-      jest.clearAllMocks();
-    });
 
     it('is not called on create', () => {
       const onPropChange = jest.fn();
@@ -760,9 +752,9 @@ describe('onXXXChange', () => {
       const sampleProps = { text: '1' };
       rerender(
         <TestComponent
-        {...sampleProps}
-        onTextChange={onPropChange}
-      />,
+          {...sampleProps}
+          onTextChange={onPropChange}
+        />,
       )
       expect(onPropChange).not.toBeCalled();
 
@@ -786,8 +778,8 @@ describe('onXXXChange', () => {
 
        const { rerender } = render(
          <TestComponent
-         {...defaultProps}
-          />
+           {...defaultProps}
+         />
        );
 
        onPropChange.mockImplementation((value) => {
@@ -935,11 +927,6 @@ describe('onXXXChange', () => {
       jest.clearAllTimers();
       cleanup();
     })
-    afterAll(() => {
-      jest.clearAllMocks();
-      jest.clearAllTimers();
-      cleanup();
-    })
 
     it('is not called on create', () => {
       const onPropChange = jest.fn();
@@ -975,6 +962,7 @@ describe('onXXXChange', () => {
       )
         .mockImplementation(() => true);
     });
+    
     afterEach(() => {
       jest.clearAllMocks();
       jest.clearAllTimers();
