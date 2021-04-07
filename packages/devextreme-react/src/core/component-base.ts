@@ -27,10 +27,6 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
 
   protected _element: HTMLDivElement;
 
-  protected portalContainer: HTMLElement | null;
-
-  protected isPortalComponent = false;
-
   protected readonly _defaults: Record<string, string>;
 
   protected readonly _templateProps: ITemplateMeta[] = [];
