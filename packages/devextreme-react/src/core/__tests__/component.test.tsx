@@ -19,7 +19,9 @@ describe('rendering', () => {
       <TestComponent />,
     );
 
-    expect((container.firstChild as HTMLElement)?.tagName.toLowerCase()).toBe('div');
+    const element: HTMLElement|null = container.firstChild as HTMLElement;
+
+    expect(element.tagName.toLowerCase()).toBe('div');
   });
 
 it('create widget on componentDidMount', () => {
@@ -65,9 +67,11 @@ describe('element attrs management', () => {
       <TestComponent id="id1" className="class1" style={{ background: 'red' }} />, {
     });
 
-    expect((container.firstChild as HTMLElement).id).toBe('id1');
-    expect((container.firstChild as HTMLElement).className).toBe('class1');
-    expect((container.firstChild as HTMLElement).style.background).toEqual('red');
+    const element: HTMLElement|null = container.firstChild as HTMLElement;
+
+    expect(element.id).toBe('id1');
+    expect(element.className).toBe('class1');
+    expect(element.style.background).toEqual('red');
   });
 
   it('updates id, className and style', () => {
@@ -83,10 +87,12 @@ describe('element attrs management', () => {
       />,
     );
 
-    expect((container.firstChild as HTMLElement).id).toBe('id2');
+    const element: HTMLElement|null = container.firstChild as HTMLElement;
 
-    expect((container.firstChild as HTMLElement).className).toBe('class2');
-    expect((container.firstChild as HTMLElement).style.background).toEqual('blue');
+    expect(element.id).toBe('id2');
+
+    expect(element.className).toBe('class2');
+    expect(element.style.background).toEqual('blue');
   });
 
   it('sets id, className and style after init', () => {
@@ -102,9 +108,11 @@ describe('element attrs management', () => {
       />,
     );
 
-    expect((container.firstChild as HTMLElement).id).toBe('id1');
-    expect((container.firstChild as HTMLElement).className).toBe('class1');
-    expect((container.firstChild as HTMLElement).style.background).toEqual('red');
+    const element: HTMLElement|null = container.firstChild as HTMLElement;
+
+    expect(element.id).toBe('id1');
+    expect(element.className).toBe('class1');
+    expect(element.style.background).toEqual('red');
   });
 
   it('cleans className (empty string)', () => {
@@ -127,8 +135,9 @@ describe('element attrs management', () => {
     );
 
     rerender(<TestComponent />,);
+    const element: HTMLElement|null = container.firstChild as HTMLElement;
 
-    expect((container.firstChild as HTMLElement).className).toBe('');
+    expect(element.className).toBe('');
   });
 });
 
@@ -152,7 +161,9 @@ describe('disposing', () => {
       <TestComponent />,
     );
 
-    events.on(container.firstChild as HTMLElement, 'dxremove', handleDxRemove);
+    const element: HTMLElement|null = container.firstChild as HTMLElement;
+
+    events.on(element, 'dxremove', handleDxRemove);
 
     unmount();
     expect(handleDxRemove).toHaveBeenCalledTimes(1);
