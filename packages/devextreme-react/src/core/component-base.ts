@@ -12,8 +12,17 @@ import { elementPropNames, getClassName } from './widget-config';
 import { IConfigNode } from './configuration/config-node';
 import { IExpectedChild } from './configuration/react/element';
 import { buildConfigTree } from './configuration/react/tree';
+import { isIE } from './configuration/utils';
 
 const DX_REMOVE_EVENT = 'dxremove';
+const DISPLAY_CONTENTS_STYLE = isIE()
+  ? {
+      width: '100%',
+      height: '100%',
+      padding: 0,
+      margin: 0,
+    }
+  : { display: 'contents' };
 
 interface IHtmlOptions {
   id?: string;
@@ -177,9 +186,7 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
             this.forceUpdate();
           }
         },
-        style: {
-          display: 'contents',
-        },
+        style: DISPLAY_CONTENTS_STYLE,
       })
       : this.renderChildren();
   }
