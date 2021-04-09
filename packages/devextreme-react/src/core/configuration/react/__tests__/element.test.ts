@@ -6,7 +6,7 @@ import ConfigurationComponent from '../../../nested-option';
 import { Template } from '../../../template';
 
 import {
-  ElementType, 
+  ElementType,
   getElementInfo
 } from '../element';
 
@@ -66,7 +66,6 @@ describe('getElementInfo', () => {
   configurationComponents.forEach((component) => {
     it('parses Configuration component', () => {
       const element = React.createElement(component)
-      console.log(element.type===MinimalConfigurationComponent)
 
       const elementInfo = getElementInfo(element);
 
@@ -89,14 +88,14 @@ describe('getElementInfo', () => {
   it('parses Template component', () => {
     const element = React.createElement(
       Template,
-        {
-          name: 'template-name',
-        },
-        'Template content',
+      {
+        name: 'template-name',
+      },
+      'Template content',
     )
 
     const elementInfo = getElementInfo(element);
-    
+
     if (elementInfo?.type !== ElementType.Template) {
       expect(elementInfo).toEqual(ElementType.Template);
       return;
