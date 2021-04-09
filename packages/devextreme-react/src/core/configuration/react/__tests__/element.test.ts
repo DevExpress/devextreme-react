@@ -1,6 +1,5 @@
 /* eslint-disable max-classes-per-file */
 import { render } from '@testing-library/react';
-// import { template } from 'devextreme/core/templates/template';
 import * as React from 'react';
 import ConfigurationComponent from '../../../nested-option';
 import { Template } from '../../../template';
