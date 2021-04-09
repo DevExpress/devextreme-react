@@ -161,7 +161,7 @@ describe('disposing', () => {
       <TestComponent />,
     );
 
-    const element: HTMLElement|null = container.firstChild as HTMLElement;
+    const element: HTMLElement = container.firstChild as HTMLElement;
 
     events.on(element, 'dxremove', handleDxRemove);
 
