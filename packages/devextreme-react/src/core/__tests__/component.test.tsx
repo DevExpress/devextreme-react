@@ -108,7 +108,7 @@ describe('element attrs management', () => {
       />,
     );
 
-    const element: HTMLElement|null = container.firstChild as HTMLElement;
+    const element: HTMLElement = container.firstChild as HTMLElement;
 
     expect(element.id).toBe('id1');
     expect(element.className).toBe('class1');
