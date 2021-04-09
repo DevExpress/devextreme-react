@@ -12,6 +12,7 @@ import {
 } from './test-component';
 import { TemplatesStore } from '../templates-store';
 import { TemplateWrapperRenderer } from '../template-wrapper';
+jest.useFakeTimers();
 
 const templateProps = [{
   tmplOption: 'item',
@@ -416,8 +417,6 @@ function testTemplateOption(testedOption: string) {
 }
 
 describe('function template', () => {
-  jest.useFakeTimers();
-  
   afterEach(() => {
     jest.clearAllMocks();
     jest.clearAllTimers();
