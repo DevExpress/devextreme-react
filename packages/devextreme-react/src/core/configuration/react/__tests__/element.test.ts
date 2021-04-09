@@ -1,10 +1,14 @@
 /* eslint-disable max-classes-per-file */
-import { mount, React } from '../../../__tests__/setup';
-
+import { render } from '@testing-library/react';
+// import { template } from 'devextreme/core/templates/template';
+import * as React from 'react';
 import ConfigurationComponent from '../../../nested-option';
 import { Template } from '../../../template';
 
-import { ElementType, getElementInfo } from '../element';
+import {
+  ElementType, 
+  getElementInfo
+} from '../element';
 
 class MinimalConfigurationComponent extends ConfigurationComponent<any> {
   public static OptionName = 'option';
@@ -61,15 +65,17 @@ const otherComponents = [
 describe('getElementInfo', () => {
   configurationComponents.forEach((component) => {
     it('parses Configuration component', () => {
-      const wrapper = mount(React.createElement(component));
-      const elementInfo = getElementInfo(wrapper.getElement());
+      const element = React.createElement(component)
+      console.log(element.type===MinimalConfigurationComponent)
+
+      const elementInfo = getElementInfo(element);
 
       if (elementInfo.type !== ElementType.Option) {
         expect(elementInfo.type).toEqual(ElementType.Option);
         return;
       }
 
-      expect(elementInfo.props).toEqual(wrapper.getElement().props);
+      expect(elementInfo.props).toEqual(element.props);
 
       const { descriptor } = elementInfo;
       expect(descriptor.name).toEqual(component.OptionName);
@@ -81,29 +87,30 @@ describe('getElementInfo', () => {
   });
 
   it('parses Template component', () => {
-    const wrapper = mount(
-      React.createElement(
-        Template,
+    const element = React.createElement(
+      Template,
         {
           name: 'template-name',
         },
         'Template content',
-      ),
-    );
+    )
 
-    const elementInfo = getElementInfo(wrapper.getElement());
-    if (elementInfo.type !== ElementType.Template) {
-      expect(elementInfo.type).toEqual(ElementType.Template);
+    const elementInfo = getElementInfo(element);
+    
+    if (elementInfo?.type !== ElementType.Template) {
+      expect(elementInfo).toEqual(ElementType.Template);
       return;
     }
 
-    expect(elementInfo.props).toEqual(wrapper.getElement().props);
+    expect(elementInfo.props).toEqual(element.props);
   });
 
   otherComponents.forEach((component) => {
     it('parses Other components', () => {
-      const wrapper = mount(React.createElement(component));
-      const elementInfo = getElementInfo(wrapper.getElement());
+      const element = React.createElement(component)
+
+      render(React.createElement(component));
+      const elementInfo = getElementInfo(element);
 
       expect(elementInfo.type).toEqual(ElementType.Unknown);
     });
