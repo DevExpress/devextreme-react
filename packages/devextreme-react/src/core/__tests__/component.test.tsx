@@ -1,4 +1,5 @@
 import * as events from 'devextreme/events';
+import { isIE } from '../configuration/utils';
 import { TemplatesRenderer } from '../templates-renderer';
 
 import { mount, React, shallow } from './setup';
@@ -6,7 +7,16 @@ import {
   fireOptionChange, TestComponent, TestPortalComponent, Widget, WidgetClass,
 } from './test-component';
 
+jest.mock('../configuration/utils', () => ({
+  ...require.requireActual('../configuration/utils'),
+  isIE: jest.fn(),
+}));
+
 describe('rendering', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('renders component without children correctly', () => {
     const component = mount(
       <TestComponent />,
@@ -69,6 +79,38 @@ describe('rendering', () => {
     expect(content.children().length).toBe(2);
     expect(content
       .findWhere((node) => node.type() === 'div' && node.prop('style')?.display === 'contents')
+      .exists()).toBe(true);
+    expect(content.find(TemplatesRenderer).exists()).toBe(true);
+
+    expect(portal.children().length).toBe(1);
+    expect(portal.find(TestComponent).exists()).toBe(true);
+  });
+
+  it('renders portal component with children correctly (IE11)', () => {
+    (isIE as jest.Mock).mockImplementation(() => true);
+    const ieStyle = {
+      width: '100%',
+      height: '100%',
+      padding: 0,
+      margin: 0,
+    };
+
+    const component = mount(
+      <TestPortalComponent>
+        <TestComponent />
+      </TestPortalComponent>,
+    );
+
+    expect(component.children().length).toBe(2);
+    expect(component.childAt(0).type()).toBe('div');
+    expect(component.childAt(1).name()).toBe('Portal');
+
+    const content = component.childAt(0);
+    const portal = component.childAt(1);
+
+    expect(content.children().length).toBe(2);
+    expect(content
+      .findWhere((node) => node.type() === 'div' && node.prop('style') && JSON.stringify(node.prop('style')) === JSON.stringify(ieStyle))
       .exists()).toBe(true);
     expect(content.find(TemplatesRenderer).exists()).toBe(true);
 

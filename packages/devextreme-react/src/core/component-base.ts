@@ -15,14 +15,6 @@ import { buildConfigTree } from './configuration/react/tree';
 import { isIE } from './configuration/utils';
 
 const DX_REMOVE_EVENT = 'dxremove';
-const DISPLAY_CONTENTS_STYLE = isIE()
-  ? {
-      width: '100%',
-      height: '100%',
-      padding: 0,
-      margin: 0,
-    }
-  : { display: 'contents' };
 
 interface IHtmlOptions {
   id?: string;
@@ -31,6 +23,17 @@ interface IHtmlOptions {
 }
 
 abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent<P> {
+  static get displayContentsStyle(): React.CSSProperties {
+    return isIE()
+      ? {
+        width: '100%',
+        height: '100%',
+        padding: 0,
+        margin: 0,
+      }
+      : { display: 'contents' };
+  }
+
   protected _WidgetClass: any;
 
   protected _instance: any;
@@ -186,7 +189,7 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
             this.forceUpdate();
           }
         },
-        style: DISPLAY_CONTENTS_STYLE,
+        style: ComponentBase.displayContentsStyle,
       })
       : this.renderChildren();
   }
