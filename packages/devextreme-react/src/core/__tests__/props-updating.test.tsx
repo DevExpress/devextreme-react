@@ -26,10 +26,6 @@ class ControlledComponent extends TestComponent<IControlledComponentProps> {
   protected _defaults = {
     defaultControlledOption: 'controlledOption',
   };
-
-  componentDidUpdate(prevProp) {
-    super.componentDidUpdate(prevProp);
-  }
 }
 
 class NestedComponent extends ConfigurationComponent<{
@@ -77,10 +73,6 @@ class TestComponentWithExpectation<P = any> extends TestComponent<P> {
 }
 
 describe('option update', () => {
-  beforeEach(() => {
-    jest.useFakeTimers();
-  })
-
   afterEach(() => {
     jest.clearAllMocks();
     jest.clearAllTimers();
@@ -157,10 +149,6 @@ describe('option control', () => {
   });
 
   describe('handler option', () => {
-    beforeEach(() =>{
-      jest.useFakeTimers();
-    })
-
     afterEach(() => {
       jest.clearAllMocks();
       jest.clearAllTimers();
