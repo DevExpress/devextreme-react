@@ -20,7 +20,7 @@ describe('rendering', () => {
       <TestComponent />,
     );
 
-    const element: HTMLElement|null = container.firstChild as HTMLElement;
+    const element: HTMLElement = container.firstChild as HTMLElement;
 
     expect(element.tagName.toLowerCase()).toBe('div');
   });
