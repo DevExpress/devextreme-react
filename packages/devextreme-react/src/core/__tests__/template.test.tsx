@@ -71,7 +71,7 @@ function testTemplateOption(testedOption: string) {
     };
   }
 
-  test('pass integrationOptions to widget', () => {
+  it('pass integrationOptions to widget', () => {
     const ref = React.createRef() as React.RefObject<HTMLDivElement>;
     const elementOptions: Record<string, any> = {};
     elementOptions[testedOption] = () => <div>Template</div>;
@@ -419,7 +419,6 @@ function testTemplateOption(testedOption: string) {
 describe('function template', () => {
   afterEach(() => {
     jest.clearAllMocks();
-    jest.clearAllTimers();
     cleanup();
   })
 
@@ -470,7 +469,6 @@ describe('function template', () => {
 describe('component template', () => {
   afterEach(() => {
     jest.clearAllMocks();
-    jest.clearAllTimers();
     cleanup();
   })
 
@@ -507,7 +505,6 @@ describe('component template', () => {
 describe('nested template', () => {
   afterEach(() => {
     jest.clearAllMocks();
-    jest.clearAllTimers();
     cleanup();
   })
 
@@ -1094,7 +1091,6 @@ describe('component/render in nested options', () => {
 describe('async template', () => {
   afterEach(() => {
     jest.clearAllMocks();
-    jest.clearAllTimers();
     cleanup();
   })
 

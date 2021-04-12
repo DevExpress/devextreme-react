@@ -7,6 +7,7 @@ import {
   Widget,
   WidgetClass,
 } from './test-component';
+jest.useFakeTimers();
 
 describe('rendering', () => {
 
@@ -142,9 +143,6 @@ describe('element attrs management', () => {
 });
 
 describe('disposing', () => {
-  beforeEach(() => {
-    jest.useFakeTimers();
-  })
   it('call dispose', () => {
     const component = render(
       <TestComponent />,
