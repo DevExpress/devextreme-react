@@ -1,8 +1,8 @@
 import * as events from 'devextreme/events';
 import { render, cleanup } from '@testing-library/react';
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import { isIE } from '../configuration/utils';
-import { TemplatesRenderer } from '../templates-renderer';
 import {
   fireOptionChange,
   TestComponent,
@@ -10,6 +10,7 @@ import {
   Widget,
   WidgetClass,
 } from './test-component';
+import { TemplatesRenderer } from '../templates-renderer';
 
 jest.useFakeTimers();
 
@@ -20,118 +21,108 @@ jest.mock('../configuration/utils', () => ({
 
 describe('rendering', () => {
   afterEach(() => {
-    WidgetClass.mockClear();
+    jest.clearAllMocks();
     cleanup();
   });
 
   it('renders component without children correctly', () => {
-    const component = mount(
-      <TestComponent />,
-    );
+    const templatesRendererRenderFn = jest.spyOn(TemplatesRenderer.prototype, 'render');
+    const { container } = render(<TestComponent />);
 
-    expect(component.children().length).toBe(1);
-    expect(component.childAt(0).type()).toBe('div');
+    expect(container.children.length).toBe(1);
 
-    const content = component.childAt(0);
+    const content = container.firstChild as HTMLElement;
+    expect(content.tagName.toLowerCase()).toBe('div');
 
-    expect(content.children().length).toBe(1);
-    expect(content.find(TemplatesRenderer).exists()).toBe(true);
+    expect(templatesRendererRenderFn).toHaveBeenCalledTimes(1);
   });
 
   it('renders component with children correctly', () => {
-    const component = mount(
+    const templatesRendererRenderFn = jest.spyOn(TemplatesRenderer.prototype, 'render');
+    const { container } = render(
       <TestComponent>
-        <TestComponent />
+        <span />
       </TestComponent>,
     );
 
-    expect(component.children().length).toBe(1);
-    expect(component.childAt(0).type()).toBe('div');
+    expect(container.children.length).toBe(1);
 
-    const content = component.childAt(0);
+    const content = container.firstChild as HTMLElement;
+    expect(content.tagName.toLowerCase()).toBe('div');
+    expect(content.children.length).toBe(1);
+    expect(content.children[0].tagName.toLowerCase()).toBe('span');
 
-    expect(content.children().length).toBe(2);
-    expect(content.find(TestComponent).exists()).toBe(true);
-    expect(content.find(TemplatesRenderer).exists()).toBe(true);
+    expect(templatesRendererRenderFn).toHaveBeenCalledTimes(1);
   });
 
   it('renders portal component without children correctly', () => {
-    const component = mount(
-      <TestPortalComponent />,
-    );
+    const createPortalFn = jest.spyOn(ReactDOM, 'createPortal');
+    const templatesRendererRenderFn = jest.spyOn(TemplatesRenderer.prototype, 'render');
+    const { container } = render(<TestPortalComponent />);
 
-    expect(component.children().length).toBe(1);
-    expect(component.childAt(0).type()).toBe('div');
+    expect(container.children.length).toBe(1);
 
-    const content = component.childAt(0);
+    const content = container.firstChild as HTMLElement;
+    expect(content.tagName.toLowerCase()).toBe('div');
 
-    expect(content.children().length).toBe(1);
-    expect(content.find(TemplatesRenderer).exists()).toBe(true);
+    expect(createPortalFn).not.toHaveBeenCalled();
+    expect(templatesRendererRenderFn).toHaveBeenCalledTimes(1);
   });
 
   it('renders portal component with children correctly', () => {
-    const component = mount(
+    const createPortalFn = jest.spyOn(ReactDOM, 'createPortal');
+    const templatesRendererRenderFn = jest.spyOn(TemplatesRenderer.prototype, 'render');
+    const { container } = render(
       <TestPortalComponent>
-        <TestComponent />
+        <span />
       </TestPortalComponent>,
     );
 
-    expect(component.children().length).toBe(2);
-    expect(component.childAt(0).type()).toBe('div');
-    expect(component.childAt(1).name()).toBe('Portal');
+    expect(container.children.length).toBe(1);
 
-    const content = component.childAt(0);
-    const portal = component.childAt(1);
+    const content = container.firstChild as HTMLElement;
+    expect(content.tagName.toLowerCase()).toBe('div');
+    expect(content.children.length).toBe(1);
 
-    expect(content.children().length).toBe(2);
-    expect(content
-      .findWhere((node) => node.type() === 'div' && node.prop('style')?.display === 'contents')
-      .exists()).toBe(true);
-    expect(content.find(TemplatesRenderer).exists()).toBe(true);
+    const portal = content.firstChild as HTMLElement;
+    expect(portal.tagName.toLowerCase()).toBe('div');
+    expect(portal.style).toMatchObject({
+      display: 'contents',
+    });
+    expect(portal.children.length).toBe(1);
+    expect(portal.children[0].tagName.toLowerCase()).toBe('span');
 
-    expect(portal.children().length).toBe(1);
-    expect(portal.find(TestComponent).exists()).toBe(true);
+    expect(createPortalFn).toHaveBeenCalledTimes(1);
+    expect(templatesRendererRenderFn).toHaveBeenCalledTimes(2);
   });
 
   it('renders portal component with children correctly (IE11)', () => {
     (isIE as jest.Mock).mockImplementation(() => true);
-    const ieStyle = {
-      width: '100%',
-      height: '100%',
-      padding: 0,
-      margin: 0,
-    };
-
-    const component = mount(
+    const templatesRendererRenderFn = jest.spyOn(TemplatesRenderer.prototype, 'render');
+    const { container } = render(
       <TestPortalComponent>
-        <TestComponent />
+        <span />
       </TestPortalComponent>,
     );
 
-    expect(component.children().length).toBe(2);
-    expect(component.childAt(0).type()).toBe('div');
-    expect(component.childAt(1).name()).toBe('Portal');
+    expect(container.children.length).toBe(1);
 
-    const content = component.childAt(0);
-    const portal = component.childAt(1);
+    const content = container.firstChild as HTMLElement;
+    expect(content.tagName.toLowerCase()).toBe('div');
+    expect(content.children.length).toBe(1);
 
-    expect(content.children().length).toBe(2);
-    expect(content
-      .findWhere((node) => node.type() === 'div' && node.prop('style') && JSON.stringify(node.prop('style')) === JSON.stringify(ieStyle))
-      .exists()).toBe(true);
-    expect(content.find(TemplatesRenderer).exists()).toBe(true);
+    const portal = content.firstChild as HTMLElement;
+    expect(portal.tagName.toLowerCase()).toBe('div');
+    expect(portal.style).toMatchObject({
+      width: '100%',
+      height: '100%',
+      padding: '0px',
+      margin: '0px',
+    });
+    expect(portal.children.length).toBe(1);
+    expect(portal.children[0].tagName.toLowerCase()).toBe('span');
 
-    expect(portal.children().length).toBe(1);
-    expect(portal.find(TestComponent).exists()).toBe(true);
-  });
-
-  it('renders correctly', () => {
-    const { container } = render(
-      <TestComponent />,
-    );
-    const element: HTMLElement = container.firstChild as HTMLElement;
-
-    expect(element.tagName.toLowerCase()).toBe('div');
+    expect(templatesRendererRenderFn).toHaveBeenCalledTimes(2);
   });
 
   it('create widget on componentDidMount', () => {
