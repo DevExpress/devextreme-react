@@ -1,8 +1,8 @@
 import * as events from 'devextreme/events';
-import { isIE } from '../configuration/utils';
-import { TemplatesRenderer } from '../templates-renderer';
 import { render, cleanup } from '@testing-library/react';
 import * as React from 'react';
+import { isIE } from '../configuration/utils';
+import { TemplatesRenderer } from '../templates-renderer';
 import {
   fireOptionChange,
   TestComponent,
@@ -10,6 +10,7 @@ import {
   Widget,
   WidgetClass,
 } from './test-component';
+
 jest.useFakeTimers();
 
 jest.mock('../configuration/utils', () => ({
@@ -21,7 +22,7 @@ describe('rendering', () => {
   afterEach(() => {
     WidgetClass.mockClear();
     cleanup();
-  })
+  });
 
   it('renders component without children correctly', () => {
     const component = mount(
@@ -151,7 +152,7 @@ describe('rendering', () => {
     render(
       <TestComponent>
         <TestComponent />
-      </TestComponent>
+      </TestComponent>,
     );
 
     expect(WidgetClass.mock.instances.length).toBe(2);
@@ -173,7 +174,8 @@ describe('element attrs management', () => {
   it('passes id, className and style to element', () => {
     const { container } = render(
       <TestComponent id="id1" className="class1" style={{ background: 'red' }} />, {
-    });
+      },
+    );
 
     const element: HTMLElement = container.firstChild as HTMLElement;
 
@@ -242,7 +244,7 @@ describe('element attrs management', () => {
       <TestComponent className="class1" />,
     );
 
-    rerender(<TestComponent />,);
+    rerender(<TestComponent />);
     const element: HTMLElement = container.firstChild as HTMLElement;
 
     expect(element.className).toBe('');
