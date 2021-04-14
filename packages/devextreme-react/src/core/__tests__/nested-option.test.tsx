@@ -65,7 +65,7 @@ class CollectionSubNestedComponent extends ConfigurationComponent<{ c?: number, 
 
 describe('nested option', () => {
   afterEach(() => {
-    WidgetClass.mockClear();
+    jest.clearAllMocks();
     cleanup();
   });
   it('is pulled', () => {
@@ -238,11 +238,8 @@ describe('nested option', () => {
     rerender(
       <TestComponent>
         <CollectionNestedComponent key={1} c={123} d="abc" />
-        ,
         <CollectionNestedComponent key={2} c={999} />
-        ,
         <CollectionNestedComponent key={3} d="def" />
-        ,
       </TestComponent>,
     );
     jest.runAllTimers();
@@ -277,7 +274,7 @@ describe('nested option', () => {
 
     rerender(<TestComponent>
       <NestedComponent a={456} />
-             </TestComponent>);
+    </TestComponent>);
     jest.runAllTimers();
     expect(Widget.option.mock.calls.length).toBe(1);
     expect(Widget.option.mock.calls[0]).toEqual(['option.a', 456]);
