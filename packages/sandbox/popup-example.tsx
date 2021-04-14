@@ -21,7 +21,7 @@ export default class extends React.Component<any, { visible: boolean; text: stri
     this.handleTextUpdate = this.handleTextUpdate.bind(this);
   }
 
-  private handleTextUpdate(e: any) {
+  private handleTextUpdate(e: unknown) {
     this.setState({
       text: e.value,
     });
