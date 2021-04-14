@@ -95,7 +95,7 @@ describe('collectIndependentEvents', () => {
         firedEvents: [],
       },
       {
-        name: 'onAChanged',
+        name: 'onSomeOptionChanged',
         isSubscribable: true,
         types: [
           {
@@ -121,7 +121,7 @@ describe('collectIndependentEvents', () => {
         firedEvents: [],
       },
       {
-        name: 'onAChanged',
+        name: 'onSomeOptionChanged',
         isSubscribable: true,
         types: [
           {
