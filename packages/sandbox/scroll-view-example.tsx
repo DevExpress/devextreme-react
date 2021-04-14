@@ -17,7 +17,7 @@ export default class extends React.Component<any, { text: string }> {
     this.handleTextChange = this.handleTextChange.bind(this);
   }
 
-  private handleTextChange(e: any) {
+  private handleTextChange(e: unknown) {
     this.setState({
       text: e.value,
     });
