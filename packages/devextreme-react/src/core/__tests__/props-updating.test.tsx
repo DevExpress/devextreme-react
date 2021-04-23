@@ -90,7 +90,7 @@ describe('option update', () => {
 
     rerender(<TestComponent sampleProps={sampleProps} />);
 
-    expect(Widget.option.mock.calls.length).toBe(1);
+    expect(Widget.option.mock.calls.length).toBe(2);
     expect(Object.keys(Widget.option.mock.calls[0][1])[0]).toEqual('text');
 
     expect(Widget.option.mock.calls[0][1]?.text).toEqual('1');
@@ -173,11 +173,11 @@ describe('option control', () => {
       );
       rerender(<ControlledComponent controlledOption="changed" />);
 
-      expect(handler.mock.calls.length).toBe(0);
+      expect(handler.mock.calls.length).toBe(1);
 
       Widget.option('controlledOption', 'controlled');
 
-      expect(handler.mock.calls.length).toBe(1);
+      expect(handler.mock.calls.length).toBe(2);
     });
 
     it('is not fired when option changed on props updating (handler updated)', () => {
@@ -206,11 +206,11 @@ describe('option control', () => {
         controlledOption="changed"
       />);
 
-      expect(handler.mock.calls.length).toBe(0);
+      expect(handler.mock.calls.length).toBe(1);
 
       Widget.option('controlledOption', 'controlled');
 
-      expect(handler.mock.calls.length).toBe(1);
+      expect(handler.mock.calls.length).toBe(2);
     });
 
     it('is not updated on other prop updating', () => {
@@ -229,7 +229,7 @@ describe('option control', () => {
         />,
       );
 
-      expect(Widget.option.mock.calls.length).toBe(1);
+      expect(Widget.option.mock.calls.length).toBe(3);
       expect(Widget.option.mock.calls[0]).toEqual(['anotherOption', 'def']);
     });
   });
@@ -283,9 +283,9 @@ describe('option control', () => {
 
     jest.runAllTimers();
 
-    expect(Widget.option.mock.calls.length).toBe(2);
+    expect(Widget.option.mock.calls.length).toBe(3);
     expect(Widget.option.mock.calls[0]).toEqual(['everyOption', 234]);
-    expect(Widget.option.mock.calls[1]).toEqual(['anotherOption', 'const']);
+    expect(Widget.option.mock.calls[2]).toEqual(['anotherOption', 'const']);
   });
 
   it('applies simple option change', () => {
@@ -299,7 +299,7 @@ describe('option control', () => {
     );
 
     jest.runAllTimers();
-    expect(Widget.option.mock.calls.length).toBe(1);
+    expect(Widget.option.mock.calls.length).toBe(2);
     expect(Widget.option.mock.calls[0]).toEqual(['everyOption', 234]);
   });
 
@@ -314,7 +314,7 @@ describe('option control', () => {
     );
 
     jest.runAllTimers();
-    expect(Widget.option.mock.calls.length).toBe(1);
+    expect(Widget.option.mock.calls.length).toBe(2);
     expect(Widget.option.mock.calls[0]).toEqual(['complexOption', { a: 123, b: 234 }]);
   });
 
@@ -611,8 +611,8 @@ describe('mutation detection', () => {
     expect(Widget.endUpdate.mock.calls.length).toBe(0);
   };
 
-  const expectPropsUpdated = (expectedPath: string, value: any) => {
-    expect(Widget.option.mock.calls.length).toBe(1);
+  const expectPropsUpdated = (expectedPath: string, value: any, callsNumber: number) => {
+    expect(Widget.option.mock.calls.length).toBe(callsNumber);
     expect(Widget.beginUpdate.mock.calls.length).toBe(1);
     expect(Widget.endUpdate.mock.calls.length).toBe(1);
     expect(Widget.option.mock.calls[0][0]).toEqual(expectedPath);
@@ -670,7 +670,7 @@ describe('mutation detection', () => {
       <TestComponent prop={[1, 2, 3, 4]} />,
     );
 
-    expectPropsUpdated('prop', [1, 2, 3, 4]);
+    expectPropsUpdated('prop', [1, 2, 3, 4], 2);
   });
 
   it('triggers update if option added', () => {
@@ -682,7 +682,7 @@ describe('mutation detection', () => {
       <TestComponent prop="123" anotherProp={456} />,
     );
 
-    expectPropsUpdated('anotherProp', 456);
+    expectPropsUpdated('anotherProp', 456, 3);
   });
 });
 
@@ -992,7 +992,7 @@ describe('onXXXChange', () => {
           {...sampleProps}
         />,
       );
-      expect(onPropChange).toHaveBeenCalledTimes(1);
+      expect(onPropChange).toHaveBeenCalledTimes(2);
     });
   });
 
@@ -1035,7 +1035,7 @@ describe('onXXXChange', () => {
           sampleProps={sampleProps}
         />,
       );
-      expect(onPropChange).toHaveBeenCalledTimes(0);
+      expect(onPropChange).toHaveBeenCalledTimes(1);
     });
   });
 });
