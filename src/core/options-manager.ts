@@ -94,7 +94,7 @@ class OptionsManager {
         }
 
         const { value, type } = valueDescriptor;
-        if (type === ValueType.Complex) {
+        if (type === ValueType.Complex && value instanceof Object) {
             for (const key of Object.keys(value)) {
                 if (
                     value[key] === e.value[key]
