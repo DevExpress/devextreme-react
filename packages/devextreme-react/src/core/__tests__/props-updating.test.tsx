@@ -438,7 +438,7 @@ describe('cfg-component option control', () => {
     expect(Widget.option.mock.calls[0]).toEqual(['items[0].a', 1]);
   });
 
-  it('rolls cfg-component option complex values', () => {
+  it('rolls cfg-component option complex value', () => {
     render(
       <ControlledComponent>
         <NestedComponent complexValue={{ a: 123, b: 234 }} />
