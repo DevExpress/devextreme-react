@@ -273,6 +273,29 @@ describe('option control', () => {
     expect(Widget.option.mock.calls[0]).toEqual(['complexOption.a', 123]);
   });
 
+  it.only('extra option call for check changes', () => {
+    const { rerender } = render(
+      <ControlledComponent everyOption={123} anotherOption="const" />,
+    );
+
+    Widget.option.mockImplementation((name: string, value: number) => {
+      console.log(name, value);
+      if (name === 'everyOption') {
+        Widget.option('anotherOption', 'changed');
+      }
+    });
+
+    rerender(
+      <ControlledComponent everyOption={234} anotherOption="const" />,
+    );
+
+    jest.runAllTimers();
+
+    expect(Widget.option.mock.calls.length).toBe(3);
+    expect(Widget.option.mock.calls[0]).toEqual(['everyOption', 234]);
+    expect(Widget.option.mock.calls[1]).toEqual(['anotherOption', 'changed']);
+  });
+
   it('rolls back one simple option and updates other', () => {
     const { rerender } = render(
       <ControlledComponent everyOption={123} anotherOption="const" />,
