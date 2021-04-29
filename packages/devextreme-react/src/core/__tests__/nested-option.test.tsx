@@ -244,7 +244,7 @@ describe('nested option', () => {
     );
     jest.runAllTimers();
 
-    expect(Widget.option.mock.calls.length).toBe(1);
+    expect(Widget.option.mock.calls.length).toBe(2);
     expect(Widget.option.mock.calls[0]).toEqual(['itemOptions[1].c', 999]);
   });
 
@@ -261,7 +261,7 @@ describe('nested option', () => {
     rerender(<TestContainer value={456} />);
 
     jest.runAllTimers();
-    expect(Widget.option.mock.calls.length).toBe(1);
+    expect(Widget.option.mock.calls.length).toBe(2);
     expect(Widget.option.mock.calls[0]).toEqual(['option.a', 456]);
   });
 
@@ -276,7 +276,7 @@ describe('nested option', () => {
       <NestedComponent a={456} />
     </TestComponent>);
     jest.runAllTimers();
-    expect(Widget.option.mock.calls.length).toBe(1);
+    expect(Widget.option.mock.calls.length).toBe(2);
     expect(Widget.option.mock.calls[0]).toEqual(['option.a', 456]);
   });
 
@@ -304,7 +304,7 @@ describe('nested option', () => {
     rerender(<TestContainer>{endChildren}</TestContainer>);
 
     jest.runAllTimers();
-    expect(Widget.option.mock.calls.length).toBe(1);
+    expect(Widget.option.mock.calls.length).toBe(2);
     expect(Widget.option.mock.calls[0]).toEqual(['itemOptions', [
       { c: 123, d: 'abc' },
       { c: 456, d: 'def' },
@@ -336,7 +336,7 @@ describe('nested option', () => {
     rerender(<TestContainer>{endChildren}</TestContainer>);
 
     jest.runAllTimers();
-    expect(Widget.option.mock.calls.length).toBe(1);
+    expect(Widget.option.mock.calls.length).toBe(2);
     expect(Widget.option.mock.calls[0]).toEqual(['itemOptions', [
       { c: 123, d: 'abc' },
     ]]);
@@ -478,7 +478,7 @@ describe('nested sub-option', () => {
     );
     jest.runAllTimers();
 
-    expect(Widget.option.mock.calls.length).toBe(1);
+    expect(Widget.option.mock.calls.length).toBe(2);
     expect(Widget.option.mock.calls[0]).toEqual(['option.subItemsOptions[1].c', 999]);
   });
 
@@ -498,7 +498,7 @@ describe('nested sub-option', () => {
     rerender(<TestContainer value="def" />);
 
     jest.runAllTimers();
-    expect(Widget.option.mock.calls.length).toBe(1);
+    expect(Widget.option.mock.calls.length).toBe(2);
     expect(Widget.option.mock.calls[0]).toEqual(['option.subOption.d', 'def']);
   });
 
@@ -563,7 +563,7 @@ describe('conditional rendering', () => {
       <ComponentWithConditionalOption enableOption />,
     );
 
-    expect(Widget.option.mock.calls.length).toBe(1);
+    expect(Widget.option.mock.calls.length).toBe(2);
     expect(Widget.option.mock.calls[0]).toEqual(['option', { a: 1 }]);
   });
 

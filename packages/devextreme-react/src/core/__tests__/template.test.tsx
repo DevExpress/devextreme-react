@@ -170,7 +170,7 @@ function testTemplateOption(testedOption: string) {
 
     jest.runAllTimers();
     const optionCalls = Widget.option.mock.calls;
-    expect(optionCalls.length).toBe(1);
+    expect(optionCalls.length).toBe(2);
 
     expect(optionCalls[0][0]).toBe('integrationOptions');
     expect(typeof optionCalls[0][1].templates.item.render).toBe('function');
