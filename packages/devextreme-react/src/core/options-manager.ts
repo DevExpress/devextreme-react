@@ -98,9 +98,9 @@ class OptionsManager {
     if (options !== null && options !== undefined) {
       Object.keys(config.options).forEach((propName) => {
         if (config.options[propName] !== options[propName]) {
-          this.instance.option(
-            propName,
-            this.wrapOptionValue(propName, config[propName]),
+          this.setValue(
+              propName,
+              this.wrapOptionValue(propName, config.options[propName]),
           );
         }
       });
