@@ -659,8 +659,8 @@ describe('mutation detection', () => {
     expect(Widget.endUpdate.mock.calls.length).toBe(0);
   };
 
-  const expectPropsUpdated = (expectedPath: string, value: any, callsNumber: number) => {
-    expect(Widget.option.mock.calls.length).toBe(callsNumber);
+  const expectPropsUpdated = (expectedPath: string, value: any) => {
+    expect(Widget.option.mock.calls.length).toBe(2);
     expect(Widget.beginUpdate.mock.calls.length).toBe(1);
     expect(Widget.endUpdate.mock.calls.length).toBe(1);
     expect(Widget.option.mock.calls[0][0]).toEqual(expectedPath);
@@ -718,7 +718,7 @@ describe('mutation detection', () => {
       <TestComponent prop={[1, 2, 3, 4]} />,
     );
 
-    expectPropsUpdated('prop', [1, 2, 3, 4], 2);
+    expectPropsUpdated('prop', [1, 2, 3, 4]);
   });
 
   it('triggers update if option added', () => {
@@ -730,7 +730,7 @@ describe('mutation detection', () => {
       <TestComponent prop="123" anotherProp={456} />,
     );
 
-    expectPropsUpdated('anotherProp', 456, 2);
+    expectPropsUpdated('anotherProp', 456);
   });
 });
 
