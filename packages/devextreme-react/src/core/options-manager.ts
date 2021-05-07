@@ -100,7 +100,7 @@ class OptionsManager {
         if (config.options[propName] !== options[propName]) {
           this.setValue(
               propName,
-              this.wrapOptionValue(propName, config.options[propName]),
+              config.options[propName]
           );
         }
       });
