@@ -273,15 +273,23 @@ describe('option control', () => {
     expect(Widget.option.mock.calls[0]).toEqual(['complexOption.a', 123]);
   });
 
-  it('extra option call for check changes', () => {
+  it.only('extra option call for check changes', () => {
     const { rerender } = render(
       <ControlledComponent everyOption={123} anotherOption="const" />,
     );
 
-    Widget.option.mockImplementation((name: string, value: number) => {
+    Widget.option.mockImplementation((name: string) => {
       if (name === 'everyOption') {
         Widget.option('anotherOption', 'changed');
+        return undefined;
       }
+      if (name === undefined) {
+        return {
+          'everyOption': 234,
+          'abotherOption': 'changed'
+        };
+      }
+      return undefined;
     });
 
     rerender(
@@ -290,9 +298,11 @@ describe('option control', () => {
 
     jest.runAllTimers();
 
-    expect(Widget.option.mock.calls.length).toBe(3);
+    expect(Widget.option.mock.calls.length).toBe(4);
     expect(Widget.option.mock.calls[0]).toEqual(['everyOption', 234]);
     expect(Widget.option.mock.calls[1]).toEqual(['anotherOption', 'changed']);
+    expect(Widget.option.mock.calls[2]).toEqual([]);
+    expect(Widget.option.mock.calls[3]).toEqual(['anotherOption', 'const']);
   });
 
   it('rolls back one simple option and updates other', () => {
