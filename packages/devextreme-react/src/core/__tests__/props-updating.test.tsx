@@ -279,7 +279,6 @@ describe('option control', () => {
     );
 
     Widget.option.mockImplementation((name: string, value: number) => {
-      console.log(name, value);
       if (name === 'everyOption') {
         Widget.option('anotherOption', 'changed');
       }
