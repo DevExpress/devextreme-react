@@ -50,8 +50,10 @@ class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps, ITempla
     const hiddenNode = this.hiddenElement;
     const { container } = this.props;
 
-    if (node && hiddenNode) {
+    if (node) {
       container.appendChild(node);
+    }
+    if(hiddenNode) {
       container.appendChild(hiddenNode);
     }
     if (this._listenerElement) {

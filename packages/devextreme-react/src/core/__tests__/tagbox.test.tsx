@@ -13,7 +13,11 @@ describe('templates', () => {
 
   it('should change value without an error', () => {
     const ref = React.createRef() as React.RefObject<TagBox>;
-    const { container } = render(<TagBox ref={ref} dataSource={['1', '2', '3']} showClearButton value={['1']} tagRender={() => <div>test</div>} />);
+    const { container } = render(<TagBox
+      ref={ref}
+      dataSource={['1', '2', '3']}
+      showClearButton value={['1']}
+      tagRender={() => <div>test</div>} />);
     const instance = ref?.current?.instance;
     instance?.option('value', ['1','2']);
 
