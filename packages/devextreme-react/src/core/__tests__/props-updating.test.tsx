@@ -273,7 +273,7 @@ describe('option control', () => {
     expect(Widget.option.mock.calls[0]).toEqual(['complexOption.a', 123]);
   });
 
-  it.only('extra option call for check changes', () => {
+  it('extra option call for check changes', () => {
     const { rerender } = render(
       <ControlledComponent everyOption={123} anotherOption="const" />,
     );
