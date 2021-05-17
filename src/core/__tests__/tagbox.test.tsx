@@ -1,6 +1,4 @@
-
-import { render, cleanup } from '@testing-library/react';
-import * as React from 'react';
+import { mount, React } from './setup';
 import { TagBox } from '../../tag-box';
 
 jest.useFakeTimers();
@@ -8,20 +6,21 @@ jest.useFakeTimers();
 describe('templates', () => {
   afterEach(() => {
     jest.clearAllMocks();
-    cleanup();
   });
 
   it('should change value without an error', () => {
-    const ref = React.createRef() as React.RefObject<TagBox>;
-    const { container } = render(<TagBox
-      ref={ref}
+    const container = mount(<TagBox
       dataSource={['1', '2', '3']}
-      showClearButton value={['1']}
-      tagRender={() => <div>test</div>} />);
-    const instance = ref?.current?.instance;
-    instance?.option('value', ['1','2']);
+      showClearButton
+      value={['1']}
+      tagRender={() => <div>test</div>}
+    />);
+    const node = container.getDOMNode();
+    container.setProps({
+      value: [1, 2],
+    });
 
     jest.runAllTimers();
-    expect(container.children[0].getElementsByClassName("dx-tag").length).toBe(2);
+    expect(node.getElementsByClassName('dx-tag').length).toBe(2);
   });
 });
