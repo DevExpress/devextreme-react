@@ -306,26 +306,26 @@ describe('mapOption', () => {
       types: [{
         type: 'String',
         acceptableValues: [],
-        isCustomType: false
+        isCustomType: false,
       }, {
         type: 'Number',
         acceptableValues: [],
-        isCustomType: false
+        isCustomType: false,
       }, {
         type: 'MyType',
         acceptableValues: [],
-        isCustomType: false
+        isCustomType: false,
       }],
       props: [{
-        name: "prop1",
+        name: 'prop1',
         firedEvents: [],
         isSubscribable: false,
         props: [],
         types: [{
           type: 'Number',
           acceptableValues: [],
-          isCustomType: false
-        }]
+          isCustomType: false,
+        }],
       }],
       firedEvents: [],
     };
@@ -333,11 +333,11 @@ describe('mapOption', () => {
     expect(mapOption(option)).toEqual({
       isArray: false,
       name: 'option',
-      type: 'string | number | any',
+      type: 'string | number',
       nested: [{
         isSubscribable: undefined,
-        name: "prop1",
-        type: "any",
+        name: 'prop1',
+        type: 'any',
       }],
       isSubscribable: undefined,
     });
@@ -704,7 +704,7 @@ describe('mapWidget', () => {
   });
   describe('convertToBaseType', () => {
     const types = ['Object', 'MyType', 'Number', 'String', 'Boolean', 'Any'];
-    const expected = ['any', 'any', 'number', 'string', 'boolean', 'any'];
+    const expected = ['object', undefined, 'number', 'string', 'boolean', 'any'];
 
     it('should return base types', () => {
       expect(types.map((t) => convertToBaseType(t))).toEqual(expected);
@@ -713,25 +713,25 @@ describe('mapWidget', () => {
 
   describe('getComplexOptionType', () => {
     const types = [{
-        type: 'String',
-        acceptableValues: [],
-        isCustomType: false
-      }, {
-        type: 'Number',
-        acceptableValues: [],
-        isCustomType: false
-      }, {
-        type: 'Object',
-        acceptableValues: [],
-        isCustomType: false
-      }, {
-        type: 'MyType',
-        acceptableValues: [],
-        isCustomType: true
-      }
+      type: 'String',
+      acceptableValues: [],
+      isCustomType: false,
+    }, {
+      type: 'Number',
+      acceptableValues: [],
+      isCustomType: false,
+    }, {
+      type: 'Object',
+      acceptableValues: [],
+      isCustomType: false,
+    }, {
+      type: 'MyType',
+      acceptableValues: [],
+      isCustomType: true,
+    },
     ];
 
-    const expected = 'string | number | any | any';
+    const expected = 'string | number | object';
 
     it('should return base types', () => {
       expect(getComplexOptionType(types)).toEqual(expected);
