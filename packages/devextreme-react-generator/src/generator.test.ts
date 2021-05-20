@@ -299,7 +299,7 @@ describe('mapOption', () => {
     });
   });
 
-  it('without types', () => {
+  it('complex option with types', () => {
     const option = {
       name: 'option',
       isSubscribable: false,
