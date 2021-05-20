@@ -39,6 +39,14 @@ import {
   uppercaseFirst,
 } from './helpers';
 
+enum BaseTypes {
+  Any = 'any',
+  String = 'string',
+  Number = 'number',
+  Boolean = 'boolean',
+  Object = 'any',
+}
+
 export function mapSubscribableOption(prop: IProp): ISubscribableOption {
   return {
     name: prop.name,
@@ -57,6 +65,14 @@ export function isNestedOptionArray(prop: IProp): boolean {
   return isNotEmptyArray(prop.types) && (prop.types[0].type === 'Array');
 }
 
+export function convertToBaseType(type: string) {
+  return BaseTypes[type] || 'any';
+}
+
+export function getComplexOptionType(types: ITypeDescr[]) {
+  return types && isNotEmptyArray(types) ? types.map((t) => convertToBaseType(t.type)).join(' | ') : undefined;
+}
+
 export function mapOption(prop: IProp): IOption {
   return isEmptyArray(prop.props)
     ? {
@@ -67,6 +83,7 @@ export function mapOption(prop: IProp): IOption {
     } : {
       name: prop.name,
       isSubscribable: prop.isSubscribable || undefined,
+      type: getComplexOptionType(prop.types),
       nested: (prop.props as IProp[]).map(mapOption),
       isArray: isNestedOptionArray(prop),
     };
