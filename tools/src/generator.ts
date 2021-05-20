@@ -44,7 +44,7 @@ enum BaseTypes {
   String = 'string',
   Number = 'number',
   Boolean = 'boolean',
-  Object = 'any',
+  Object = 'object'
 }
 
 export function mapSubscribableOption(prop: IProp): ISubscribableOption {
@@ -66,11 +66,13 @@ export function isNestedOptionArray(prop: IProp): boolean {
 }
 
 export function convertToBaseType(type: string) {
-  return BaseTypes[type] || 'any';
+  return BaseTypes[type];
 }
 
 export function getComplexOptionType(types: ITypeDescr[]) {
-  return types && isNotEmptyArray(types) ? types.map((t) => convertToBaseType(t.type)).join(' | ') : undefined;
+  return types && isNotEmptyArray(types) ? types
+    .filter((t) => convertToBaseType(t.type))
+    .map((f) => convertToBaseType(f.type)).join(' | ') : undefined;
 }
 
 export function mapOption(prop: IProp): IOption {
