@@ -355,7 +355,7 @@ function testTemplateOption(testedOption: string) {
     renderItemTemplate({}, refContainer.current);
 
     expect(componentInstance._templatesStore.renderWrappers().length).toBe(1);
-
+    jest.runAllTimers();
     expect(screen.getByText('Template').outerHTML)
       .toBe('<div>Template<div style=\"display: none;\"></div><span style=\"display: none;\"></span></div>');
 
@@ -370,7 +370,7 @@ function testTemplateOption(testedOption: string) {
         <div ref={refContainer} />
       </ComponentWithTemplates>,
     );
-
+    jest.runAllTimers();
     expect(componentInstance._templatesStore.renderWrappers().length).toBe(0);
 
     expect(screen.queryByText('Template')).toBeNull();
@@ -578,7 +578,7 @@ describe('nested template', () => {
       </ComponentWithTemplates>,
     );
     renderTemplate('item1', undefined, ref.current);
-
+    jest.runAllTimers();
     expect(container.querySelector('.template')?.outerHTML).toBe('<div class="template">First Template</div>');
 
     const SecondTemplate = () => <div className="template">Second Template</div>;
@@ -589,7 +589,7 @@ describe('nested template', () => {
         <div ref={ref} />
       </ComponentWithTemplates>,
     );
-
+    jest.runAllTimers();
     expect(container.querySelector('.template')?.outerHTML).toBe('<div class="template">Second Template</div>');
   });
 
@@ -902,7 +902,7 @@ describe('component/render in nested options', () => {
       </TestComponent>,
     );
     renderTemplate('option.item', undefined, ref.current);
-
+    jest.runAllTimers();
     expect(container.querySelector('.template')?.outerHTML).toBe('<div class="template">First Template</div>');
 
     const SecondTemplate = () => <div className="template">Second Template</div>;
@@ -912,7 +912,7 @@ describe('component/render in nested options', () => {
         <div ref={ref} />
       </TestComponent>,
     );
-
+    jest.runAllTimers();
     expect(container.querySelector('.template')?.outerHTML).toBe('<div class="template">Second Template</div>');
   });
 
