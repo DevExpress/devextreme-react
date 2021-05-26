@@ -93,6 +93,7 @@ describe('rendering', () => {
     expect(portal.children[0].tagName.toLowerCase()).toBe('span');
 
     expect(createPortalFn).toHaveBeenCalledTimes(1);
+    jest.runAllTimers();
     expect(templatesRendererRenderFn).toHaveBeenCalledTimes(2);
   });
 
@@ -121,7 +122,7 @@ describe('rendering', () => {
     });
     expect(portal.children.length).toBe(1);
     expect(portal.children[0].tagName.toLowerCase()).toBe('span');
-
+    jest.runAllTimers();
     expect(templatesRendererRenderFn).toHaveBeenCalledTimes(2);
   });
 
