@@ -43,7 +43,7 @@
     "bootstrap": "lerna bootstrap --no-ci --hoist",
     "build": "lerna run build && npm run lint",
     "lint": "gulp lint",
-    "test": "jest --coverage",
+    "test": "lerna run build && jest --coverage",
     "test-watch": "jest --watch",
     "pack": "lerna run pack",
     "update-integration-meta": "dx-tools update-integration-meta --output-path ./packages/devextreme-react/metadata/integration-data.json",
