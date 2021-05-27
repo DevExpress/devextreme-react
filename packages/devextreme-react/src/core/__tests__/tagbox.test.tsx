@@ -1,7 +1,6 @@
-import { cleanup } from '@testing-library/react';
+import { render, cleanup } from '@testing-library/react';
 import * as React from 'react';
 import { TagBox } from '../../tag-box';
-import { mount } from 'enzyme';
 
 jest.useFakeTimers();
 
@@ -13,7 +12,7 @@ describe('templates', () => {
 
   it('should change value without an error', () => {
     const ref = React.createRef() as React.RefObject<TagBox>;
-    const { container } = mount(<TagBox
+    const { container } = render(<TagBox
       ref={ref}
       dataSource={['1', '2', '3']}
       showClearButton
