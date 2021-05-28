@@ -124,7 +124,7 @@ class OptionsManager {
       });
     } else if (value instanceof Array && type === ValueType.Array) {
       for (let i = 0; i < value.length; i += 1) {
-        if (value[i] !== (e.value as Array<undefined>)[i]) {
+        if (value[i] !== (e.value as Array<unknown>)[i]) {
           this.setGuard(e.fullName, [...value]);
           return;
         }
