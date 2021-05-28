@@ -10,7 +10,7 @@ describe('check findValueInObject', () => {
     expect(valueInObject).toEqual(undefined);
   });
 
-  it('array and object different types', () => {
+  it('should return different ValueType', () => {
     const valueInArray = findValueInObject(['ArrayValue'], []);
     expect(valueInArray?.type).toEqual(ValueType.Array);
     const valueInObject = findValueInObject({ value: 'ObjectValue' }, []);

@@ -126,6 +126,7 @@ class OptionsManager {
       for (let i = 0; i < value.length; i += 1) {
         if (value[i] !== (e.value as Array<undefined>)[i]) {
           this.setGuard(e.fullName, [...value]);
+          return;
         }
       }
     } else {
