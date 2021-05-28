@@ -12,7 +12,7 @@ describe('check findValueInObject', () => {
 
   it('array and object different types', () => {
     const valueInArray = findValueInObject(['ArrayValue'], []);
-    expect(valueInArray?.type).toEqual(ValueType.Simple);
+    expect(valueInArray?.type).toEqual(ValueType.Array);
     const valueInObject = findValueInObject({ value: 'ObjectValue' }, []);
     expect(valueInObject?.type).toEqual(ValueType.Complex);
     const valueInSimple = findValueInObject('SimpleValue', []);
