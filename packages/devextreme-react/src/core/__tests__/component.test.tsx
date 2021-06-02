@@ -121,6 +121,7 @@ describe('rendering', () => {
     });
     expect(portal.children.length).toBe(1);
     expect(portal.children[0].tagName.toLowerCase()).toBe('span');
+    
     expect(templatesRendererRenderFn).toHaveBeenCalledTimes(2);
   });
 

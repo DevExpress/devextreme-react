@@ -546,7 +546,7 @@ describe('nested template', () => {
       </ComponentWithTemplates>,
     );
     renderTemplate('item1', undefined, ref.current);
-    jest.runAllTimers();
+
     expect(container.querySelector('.template')?.outerHTML).toBe('<div class="template">Template</div>');
   });
 
@@ -968,7 +968,7 @@ describe('component/render in nested options', () => {
     jest.runAllTimers();
 
     renderTemplate('collection[0].option.item', undefined, ref.current);
-    jest.runAllTimers();
+
     expect(container.querySelector('.template')?.outerHTML).toBe('<div class="template">test2</div>');
   });
 
