@@ -113,22 +113,20 @@ class OptionsManager {
     }
 
     const { value, type } = valueDescriptor;
-    if (type === ValueType.Complex && value instanceof Object
-        && !(value instanceof Array)
-    ) {
+    if (value instanceof Array && type === ValueType.Array) {
+      for (let i = 0; i < value.length; i += 1) {
+        if (value[i] !== (e.value as Array<unknown>)?.[i]) {
+          this.setGuard(e.fullName, value);
+          return;
+        }
+      }
+    } else if (type === ValueType.Complex && value instanceof Object) {
       Object.keys(value).forEach((key) => {
         if (value[key] === (e.value as Record<string, unknown>)?.[key]) {
           return;
         }
         this.setGuard(mergeNameParts(e.fullName, key), value[key]);
       });
-    } else if (value instanceof Array && type === ValueType.Array) {
-      for (let i = 0; i < value.length; i += 1) {
-        if (value[i] !== (e.value as Array<unknown>)?.[i]) {
-          this.setGuard(e.fullName, [...value]);
-          return;
-        }
-      }
     } else {
       if (value === e.value) {
         return;
