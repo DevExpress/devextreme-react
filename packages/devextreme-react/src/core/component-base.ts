@@ -113,9 +113,6 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
       },
     );
 
-    this._useDeferUpdateForTemplates = this._instance.option(
-      'integrationOptions.useDeferUpdateForTemplates',
-    );
     this._optionsManager.setInstance(
       this._instance, config, this.subscribableOptions, this.independentEvents,
     );
