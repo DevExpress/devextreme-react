@@ -33,6 +33,7 @@ class NestedComponent extends ConfigurationComponent<{
   defaultC?: string;
   complexValue?: Record<string, unknown>;
   value?: number;
+  ArrayValue?: Array<unknown> | null;
   onValueChange?: (value: number) => void;
 }> {
   public static DefaultsProps = {
@@ -650,8 +651,9 @@ describe('onXXXChange', () => {
       )
         .mockImplementation(() => true);
     });
-    afterAll(() => {
+    afterEach(() => {
       jest.clearAllMocks();
+      jest.clearAllTimers();
     });
 
     it('is not called on create', () => {
@@ -831,6 +833,32 @@ describe('onXXXChange', () => {
       );
 
       expect(() => fireOptionChange('text', '1')).toThrow();
+    });
+
+    it('is called on nested array option changed', () => {
+      mount(
+        <TestComponent>
+          <NestedComponent
+            ArrayValue={[1, 2]}
+          />
+        </TestComponent>,
+      );
+      fireOptionChange('nestedOption.ArrayValue', [3, 4]);
+      jest.runAllTimers();
+      expect(Widget.option.mock.calls.length).toEqual(1);
+    });
+
+    it('is called on nested null array option changed', () => {
+      mount(
+        <TestComponent>
+          <NestedComponent
+            ArrayValue={null}
+          />
+        </TestComponent>,
+      );
+      fireOptionChange('nestedOption.ArrayValue', [1, 2]);
+      jest.runAllTimers();
+      expect(Widget.option.mock.calls.length).toEqual(1);
     });
   });
 
