@@ -23,7 +23,7 @@ import StandaloneValidatorExample from './standalone-validator';
 import TextBoxExample from './text-box-example';
 import ToolbarExample from './toolbar-example';
 import ValidationExample from './validation-example';
-import DateBoxExample from './date-box-example'
+import DateBoxExample from './date-box-example';
 
 ReactDOM.render(
   <div>

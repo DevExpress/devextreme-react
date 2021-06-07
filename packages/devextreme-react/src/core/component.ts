@@ -15,6 +15,11 @@ class Component<P> extends ComponentBase<P> {
   public componentDidMount(): void {
     super.componentDidMount();
     this._createWidget();
+    if (this.useDeferUpdateForTemplates) {
+      this.useDeferUpdateForTemplates = this._instance.option(
+        'integrationOptions.useDeferUpdateForTemplates',
+      );
+    }
     this._createExtensions();
   }
 
