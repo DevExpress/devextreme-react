@@ -546,7 +546,7 @@ describe('nested template', () => {
       </ComponentWithTemplates>,
     );
     renderTemplate('item1', undefined, ref.current);
-
+    jest.runAllTimers()
     expect(container.querySelector('.template')?.outerHTML).toBe('<div class="template">Template</div>');
   });
 
@@ -965,7 +965,6 @@ describe('component/render in nested options', () => {
     rerender(
       <TestContainer value="test2" />,
     );
-    jest.runAllTimers();
 
     renderTemplate('collection[0].option.item', undefined, ref.current);
 
@@ -1145,6 +1144,7 @@ describe('async template', () => {
 
     renderItemTemplate({ text: 'with data1' }, ref.current);
     renderItemTemplate({ text: 'with data2' }, ref.current);
+
     expect(renderSpy.mock.calls.length).toBe(0);
 
     await waitForceUpdateFromTemplateRenderer();

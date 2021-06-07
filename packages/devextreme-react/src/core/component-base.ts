@@ -62,7 +62,7 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
 
   private _optionsManager: OptionsManager;
 
-  private _useDeferUpdateForTemplates = false;
+  protected useDeferUpdateForTemplates = false;
 
   constructor(props: P) {
     super(props);
@@ -72,7 +72,7 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
 
     this._templatesStore = new TemplatesStore(() => {
       if (this._templatesRendererRef) {
-        this._templatesRendererRef.scheduleUpdate(this._useDeferUpdateForTemplates);
+        this._templatesRendererRef.scheduleUpdate(this.useDeferUpdateForTemplates);
       }
     });
     this._templatesManager = new TemplatesManager(this._templatesStore);
@@ -89,7 +89,7 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
     const config = this._getConfig();
     this._optionsManager.update(config);
     if (this._templatesRendererRef) {
-      this._templatesRendererRef.scheduleUpdate(this._useDeferUpdateForTemplates);
+      this._templatesRendererRef.scheduleUpdate(this.useDeferUpdateForTemplates);
     }
   }
 

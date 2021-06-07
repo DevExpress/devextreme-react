@@ -337,7 +337,7 @@ const renderComponent: (model: {
   protected _WidgetClass = <#= it.widgetName #>;\n`
 
 + `<#? it.useDeferUpdateForTemplates #>${
-  L1}protected useDeferUpdateForTemplates = true;\n`
+  L1}protected useDeferUpdateForTemplates = this._instance('integrationOptions.useDeferUpdateForTemplates', true);\n`
 + '<#?#>'
 
 + `<#? it.isPortalComponent #>${
