@@ -326,7 +326,7 @@ const renderComponent: (model: {
   renderedTemplateProps?: string[];
   renderedPropTypings?: string[];
   isPortalComponent?: boolean;
-  useDeferUpdateForTemplates?: boolean;
+  useDeferUpdateFlag?: boolean;
 }) => string = createTempate(
   `class <#= it.className #> extends BaseComponent<<#= it.optionsName #>> {
 
@@ -336,8 +336,8 @@ const renderComponent: (model: {
 
   protected _WidgetClass = <#= it.widgetName #>;\n`
 
-+ `<#? it.useDeferUpdateForTemplates #>${
-  L1}protected useDeferUpdateForTemplates =  true);\n`
++ `<#? it.useDeferUpdateFlag #>${
+  L1}protected useDeferUpdateFlag = true;\n`
 + '<#?#>'
 
 + `<#? it.isPortalComponent #>${
@@ -561,7 +561,7 @@ function generate(component: IComponent): string {
       })),
       renderedPropTypings,
       expectedChildren: component.expectedChildren,
-      useDeferUpdateForTemplates: USE_DEFER_UPDATE_FOR_TEMPLATE.has(widgetName),
+      useDeferUpdateFlag: USE_DEFER_UPDATE_FOR_TEMPLATE.has(widgetName),
       isPortalComponent: PORTAL_COMPONENTS.has(widgetName),
     }),
 

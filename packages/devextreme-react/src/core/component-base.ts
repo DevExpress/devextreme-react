@@ -62,6 +62,8 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
 
   private _optionsManager: OptionsManager;
 
+  protected useDeferUpdateFlag = false;
+
   protected useDeferUpdateForTemplates = false;
 
   constructor(props: P) {
@@ -112,6 +114,12 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
         ...this._optionsManager.getInitialOptions(config),
       },
     );
+
+    if (this.useDeferUpdateFlag) {
+      this.useDeferUpdateForTemplates = this._instance.option(
+        'integrationOptions.useDeferUpdateForTemplates',
+      );
+    }
 
     this._optionsManager.setInstance(
       this._instance, config, this.subscribableOptions, this.independentEvents,

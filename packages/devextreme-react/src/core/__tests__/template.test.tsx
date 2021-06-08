@@ -15,6 +15,14 @@ import { TemplateWrapperRenderer } from '../template-wrapper';
 
 jest.useFakeTimers();
 
+jest.mock('devextreme/animation/frame', () => ({
+  requestAnimationFrame: (func) => {
+    setTimeout(() => {
+      func();
+    });
+  },
+}));
+
 const templateProps = [{
   tmplOption: 'item',
   render: 'itemRender',
@@ -42,10 +50,11 @@ function renderTemplate(
   model = model || {};
   container = container || document.createElement('div');
   const { render } = WidgetClass.mock.calls[0][1].integrationOptions.templates[name];
-
-  return render({
+  const result = render({
     container, model, ...(index && { index }), onRendered,
   });
+  jest.runAllTimers();
+  return result;
 }
 
 function renderItemTemplate(
@@ -151,7 +160,7 @@ function testTemplateOption(testedOption: string) {
     );
 
     renderItemTemplate(undefined, ref.current);
-
+    jest.runAllTimers();
     expect(container.querySelector('.template')?.outerHTML).toBe('<div class="template">Second Template</div>');
   });
 
@@ -372,7 +381,7 @@ function testTemplateOption(testedOption: string) {
     );
 
     expect(componentInstance._templatesStore.renderWrappers().length).toBe(0);
-
+    jest.runAllTimers();
     expect(screen.queryByText('Template')).toBeNull();
   });
 
@@ -546,7 +555,7 @@ describe('nested template', () => {
       </ComponentWithTemplates>,
     );
     renderTemplate('item1', undefined, ref.current);
-    jest.runAllTimers()
+    jest.runAllTimers();
     expect(container.querySelector('.template')?.outerHTML).toBe('<div class="template">Template</div>');
   });
 
@@ -588,7 +597,7 @@ describe('nested template', () => {
         <div ref={ref} />
       </ComponentWithTemplates>,
     );
-
+    jest.runAllTimers();
     expect(container.querySelector('.template')?.outerHTML).toBe('<div class="template">Second Template</div>');
   });
 
@@ -614,7 +623,7 @@ describe('nested template', () => {
         <div ref={ref} />
       </ComponentWithTemplates>,
     );
-
+    jest.runAllTimers();
     expect(container.querySelector('.template')?.outerHTML).toBe('<div class="template">Second Template</div>');
   });
 
@@ -911,7 +920,7 @@ describe('component/render in nested options', () => {
         <div ref={ref} />
       </TestComponent>,
     );
-
+    jest.runAllTimers();
     expect(container.querySelector('.template')?.outerHTML).toBe('<div class="template">Second Template</div>');
   });
 
@@ -940,7 +949,7 @@ describe('component/render in nested options', () => {
         <div ref={ref} />
       </TestComponent>,
     );
-
+    jest.runAllTimers();
     expect(container.querySelector('.template')?.outerHTML)
       .toBe('<div class="template">Second Template</div>');
   });
@@ -1144,7 +1153,7 @@ describe('async template', () => {
 
     renderItemTemplate({ text: 'with data1' }, ref.current);
     renderItemTemplate({ text: 'with data2' }, ref.current);
-
+    jest.runAllTimers();
     expect(renderSpy.mock.calls.length).toBe(0);
 
     await waitForceUpdateFromTemplateRenderer();
