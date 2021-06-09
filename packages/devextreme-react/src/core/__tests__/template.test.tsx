@@ -306,7 +306,8 @@ function testTemplateOption(testedOption: string) {
       <ComponentWithTemplates {...elementOptions} ref={ref} />,
     );
 
-    const componentInstance = ref.current as unknown as { _templatesStore: { _templates: Record<string, TemplateWrapperRenderer> } };
+    const componentInstance = ref.current as unknown as {
+      _templatesStore: { _templates: Record<string, TemplateWrapperRenderer> } };
 
     renderItemTemplate({ text: 1 });
     renderItemTemplate({ text: 2 });
@@ -1119,6 +1120,7 @@ describe('async template', () => {
         <div ref={ref} />
       </ComponentWithAsyncTemplates>,
     );
+    jest.runAllTimers();
     renderItemTemplate({ text: 'with data' }, ref.current);
 
     expect(container.querySelector('.template')).toBeNull();
@@ -1153,7 +1155,7 @@ describe('async template', () => {
 
     renderItemTemplate({ text: 'with data1' }, ref.current);
     renderItemTemplate({ text: 'with data2' }, ref.current);
-    jest.runAllTimers();
+
     expect(renderSpy.mock.calls.length).toBe(0);
 
     await waitForceUpdateFromTemplateRenderer();

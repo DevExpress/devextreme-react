@@ -14,6 +14,14 @@ import { TemplatesRenderer } from '../templates-renderer';
 
 jest.useFakeTimers();
 
+jest.mock('devextreme/animation/frame', () => ({
+  requestAnimationFrame: (func) => {
+    setTimeout(() => {
+      func();
+    });
+  },
+}));
+
 jest.mock('../configuration/utils', () => ({
   ...require.requireActual('../configuration/utils'),
   isIE: jest.fn(),
@@ -93,6 +101,7 @@ describe('rendering', () => {
     expect(portal.children[0].tagName.toLowerCase()).toBe('span');
 
     expect(createPortalFn).toHaveBeenCalledTimes(1);
+    jest.runAllTimers();
     expect(templatesRendererRenderFn).toHaveBeenCalledTimes(2);
   });
 
@@ -121,7 +130,7 @@ describe('rendering', () => {
     });
     expect(portal.children.length).toBe(1);
     expect(portal.children[0].tagName.toLowerCase()).toBe('span');
-
+    jest.runAllTimers();
     expect(templatesRendererRenderFn).toHaveBeenCalledTimes(2);
   });
 
