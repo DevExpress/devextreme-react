@@ -15,13 +15,7 @@ import { TemplateWrapperRenderer } from '../template-wrapper';
 
 jest.useFakeTimers();
 
-jest.mock('devextreme/animation/frame', () => ({
-  requestAnimationFrame: (func) => {
-    setTimeout(() => {
-      func();
-    });
-  },
-}));
+const waitForceUpdateFromTemplateRenderer = () => new Promise((ok) => requestAnimationFrame(ok));
 
 const templateProps = [{
   tmplOption: 'item',
@@ -53,7 +47,6 @@ function renderTemplate(
   const result = render({
     container, model, ...(index && { index }), onRendered,
   });
-  jest.runAllTimers();
   return result;
 }
 
@@ -977,7 +970,7 @@ describe('component/render in nested options', () => {
     );
 
     renderTemplate('collection[0].option.item', undefined, ref.current);
-
+    jest.runAllTimers();
     expect(container.querySelector('.template')?.outerHTML).toBe('<div class="template">test2</div>');
   });
 
@@ -1101,8 +1094,6 @@ describe('async template', () => {
     cleanup();
   });
 
-  const waitForceUpdateFromTemplateRenderer = () => new Promise((ok) => requestAnimationFrame(ok));
-
   it('renders', async () => {
     const elementOptions: Record<string, any> = {};
     elementOptions.itemRender = (data: any) => (
@@ -1120,7 +1111,7 @@ describe('async template', () => {
         <div ref={ref} />
       </ComponentWithAsyncTemplates>,
     );
-    jest.runAllTimers();
+
     renderItemTemplate({ text: 'with data' }, ref.current);
 
     expect(container.querySelector('.template')).toBeNull();
