@@ -25,16 +25,26 @@ describe('rendering', () => {
     cleanup();
   });
 
-  it('renders component without children correctly', () => {
-    const templatesRendererRenderFn = jest.spyOn(TemplatesRenderer.prototype, 'render');
-    const { container } = render(<TestComponent />);
-
-    expect(container.children.length).toBe(1);
-
-    const content = container.firstChild as HTMLElement;
-    expect(content.tagName.toLowerCase()).toBe('div');
-
-    expect(templatesRendererRenderFn).toHaveBeenCalledTimes(1);
+  it('renders component without children correctly without extra rerendering', () => {
+    it.only('renders component without children correctly', () => {
+      const templatesRendererRenderFn = jest.spyOn(TemplatesRenderer.prototype, 'render');
+      const { rerender } = render(
+        <TestComponent>
+          <TestComponent />
+        </TestComponent>,
+      );
+      rerender(
+        <TestComponent>
+          <TestComponent value="132" />
+        </TestComponent>,
+      );
+      rerender(
+        <TestComponent>
+          <TestComponent value="123" />
+        </TestComponent>,
+      );
+      expect(templatesRendererRenderFn).toHaveBeenCalledTimes(3);
+    });
   });
 
   it('renders component with children correctly', () => {
