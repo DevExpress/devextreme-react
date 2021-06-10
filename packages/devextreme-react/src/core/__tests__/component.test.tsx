@@ -35,6 +35,18 @@ describe('rendering', () => {
 
   it('renders component without children correctly without extra rerendering', () => {
     const templatesRendererRenderFn = jest.spyOn(TemplatesRenderer.prototype, 'render');
+    const { container } = render(<TestComponent />);
+
+    expect(container.children.length).toBe(1);
+
+    const content = container.firstChild as HTMLElement;
+    expect(content.tagName.toLowerCase()).toBe('div');
+
+    expect(templatesRendererRenderFn).toHaveBeenCalledTimes(1);
+  });
+
+  it('renders component without children correctly without extra rerendering', () => {
+    const templatesRendererRenderFn = jest.spyOn(TemplatesRenderer.prototype, 'render');
     const { rerender } = render(
       <TestComponent>
         <TestComponent />
