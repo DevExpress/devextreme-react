@@ -33,7 +33,7 @@ describe('rendering', () => {
     cleanup();
   });
 
-  it('renders component without children correctly without extra rerendering', () => {
+  it('renders component without children correctly', () => {
     const templatesRendererRenderFn = jest.spyOn(TemplatesRenderer.prototype, 'render');
     const { container } = render(<TestComponent />);
 
@@ -121,7 +121,6 @@ describe('rendering', () => {
     expect(portal.children[0].tagName.toLowerCase()).toBe('span');
 
     expect(createPortalFn).toHaveBeenCalledTimes(1);
-
     expect(templatesRendererRenderFn).toHaveBeenCalledTimes(2);
   });
 
