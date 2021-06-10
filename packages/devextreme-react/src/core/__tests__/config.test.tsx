@@ -6,6 +6,16 @@ import {
   WidgetClass,
 } from './test-component';
 
+jest.useFakeTimers();
+
+jest.mock('devextreme/animation/frame', () => ({
+  requestAnimationFrame: (func) => {
+    setTimeout(() => {
+      func();
+    });
+  },
+}));
+
 class ComponentWithTemplates extends TestComponent {
   protected _templateProps = [{
     tmplOption: 'item',
@@ -56,7 +66,9 @@ describe('useLegacyTemplateEngine', () => {
       container: ref.current,
       model: { value: 'Value', key: 'key_1' },
     });
-    expect(container.querySelector('.template')?.textContent).toBe('value: Value, key: key_1, dxkey: key_1');
+    jest.runAllTimers();
+    expect(container.querySelector('.template')?.textContent)
+      .toBe('value: Value, key: key_1, dxkey: key_1');
   });
 
   it('works for component template', () => {
@@ -88,6 +100,7 @@ describe('useLegacyTemplateEngine', () => {
       container: ref.current,
       model: { value: 'Value', key: 'key_1' },
     });
+    jest.runAllTimers();
     expect(container.querySelector('.template')?.textContent).toBe('value: Value, dxkey: key_1');
   });
 });

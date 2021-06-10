@@ -8,13 +8,13 @@ class DateBoxExample extends React.Component<any, {
   value: string[][],
   filterText: string,
   dataSourceText:string
-  }> {
+}> {
   constructor(props) {
     super(props);
     this.state = {
       value: filter,
-      filterText:'',
-      dataSourceText: ''
+      filterText: '',
+      dataSourceText: '',
     };
     this.onValueChanged = this.onValueChanged.bind(this);
     this.updateTexts = this.updateTexts.bind(this);
@@ -51,12 +51,14 @@ class DateBoxExample extends React.Component<any, {
       </div>
     );
   }
+
   updateTexts(e) {
     this.setState({
-      filterText: formatValue(e.component.option('value'),0),
-      dataSourceText: formatValue(e.component.getFilterExpression(),0)
+      filterText: formatValue(e.component.option('value'), 0),
+      dataSourceText: formatValue(e.component.getFilterExpression(), 0),
     });
   }
+
   onValueChanged(e) {
     this.setState({ value: e.value });
     this.updateTexts(e);
@@ -65,9 +67,7 @@ class DateBoxExample extends React.Component<any, {
 
 function calculateFilterExpression(filterValue, field) {
   return filterValue && filterValue.length
-    && Array.prototype.concat.apply([], filterValue.map(function(value) {
-      return [[field.dataField, '=', value], 'or'];
-    })).slice(0, -1);
+    && Array.prototype.concat.apply([], filterValue.map((value) => [[field.dataField, '=', value], 'or'])).slice(0, -1);
 }
 
 export default DateBoxExample;

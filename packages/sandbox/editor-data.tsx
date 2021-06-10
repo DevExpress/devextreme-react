@@ -1,31 +1,31 @@
-export const filter = [["Category", "anyof", ""]];
+export const filter = [['Category', 'anyof', '']];
 export const categories = [
-  "Video Players",
-  "Televisions",
-  "Monitors",
-  "Projectors",
-  "Automation"
+  'Video Players',
+  'Televisions',
+  'Monitors',
+  'Projectors',
+  'Automation',
 ];
-export const groupOperations = ["and", "or"];
+export const groupOperations = ['and', 'or'];
 export const fields = [
   {
-    dataField: "Name"
+    dataField: 'Name',
   },
   {
-    dataField: "Price",
-    dataType: "number",
-    format: "currency"
+    dataField: 'Price',
+    dataType: 'number',
+    format: 'currency',
   },
   {
-    dataField: "Current_Inventory",
-    dataType: "number",
-    caption: "Inventory"
+    dataField: 'Current_Inventory',
+    dataType: 'number',
+    caption: 'Inventory',
   },
   {
-    dataField: "Category",
-    filterOperations: ["=", "anyof"],
+    dataField: 'Category',
+    filterOperations: ['=', 'anyof'],
     lookup: {
-      dataSource: categories
-    }
-  }
+      dataSource: categories,
+    },
+  },
 ];
