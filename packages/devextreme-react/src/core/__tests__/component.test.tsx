@@ -45,6 +45,15 @@ describe('rendering', () => {
     expect(templatesRendererRenderFn).toHaveBeenCalledTimes(1);
   });
 
+  it.only('renders component without children correctly', () => {
+    const templatesRendererRenderFn = jest.spyOn(TemplatesRenderer.prototype, 'render');
+    const { rerender } = render(<TestComponent />);
+    rerender(<TestComponent value="132" />);
+    rerender(<TestComponent value="123" />);
+
+    expect(templatesRendererRenderFn).toHaveBeenCalledTimes(3);
+  });
+
   it('renders component with children correctly', () => {
     const templatesRendererRenderFn = jest.spyOn(TemplatesRenderer.prototype, 'render');
     const { container } = render(
@@ -101,7 +110,7 @@ describe('rendering', () => {
     expect(portal.children[0].tagName.toLowerCase()).toBe('span');
 
     expect(createPortalFn).toHaveBeenCalledTimes(1);
-    jest.runAllTimers();
+
     expect(templatesRendererRenderFn).toHaveBeenCalledTimes(2);
   });
 
@@ -130,7 +139,7 @@ describe('rendering', () => {
     });
     expect(portal.children.length).toBe(1);
     expect(portal.children[0].tagName.toLowerCase()).toBe('span');
-    jest.runAllTimers();
+
     expect(templatesRendererRenderFn).toHaveBeenCalledTimes(2);
   });
 
