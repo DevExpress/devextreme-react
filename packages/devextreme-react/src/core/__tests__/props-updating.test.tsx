@@ -909,26 +909,28 @@ describe('onXXXChange', () => {
       render(
         <TestComponent>
           <NestedComponent
-            ArrayValue={[1, 2]}
+            arrayValue={[1, 2]}
           />
         </TestComponent>,
       );
-      fireOptionChange('nestedOption.ArrayValue', [3, 4]);
+      fireOptionChange('nestedOption.arrayValue', [3, 4]);
       jest.runAllTimers();
       expect(Widget.option.mock.calls.length).toEqual(1);
+      expect(Widget.option.mock.calls[0]).toEqual(['nestedOption.arrayValue', [1, 2]]);
     });
 
     it('is called on nested null array option changed', () => {
       render(
         <TestComponent>
           <NestedComponent
-            ArrayValue={null}
+            arrayValue={null}
           />
         </TestComponent>,
       );
-      fireOptionChange('nestedOption.ArrayValue', [1, 2]);
+      fireOptionChange('nestedOption.arrayValue', [1, 2]);
       jest.runAllTimers();
       expect(Widget.option.mock.calls.length).toEqual(1);
+      expect(Widget.option.mock.calls[0]).toEqual(['nestedOption.arrayValue', null]);
     });
 
     it('throws an error if handler is not a function', () => {
