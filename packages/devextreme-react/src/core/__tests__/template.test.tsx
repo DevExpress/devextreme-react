@@ -153,7 +153,7 @@ function testTemplateOption(testedOption: string) {
     );
 
     renderItemTemplate(undefined, ref.current);
-    jest.runAllTimers();
+
     expect(container.querySelector('.template')?.outerHTML).toBe('<div class="template">Second Template</div>');
   });
 
@@ -375,7 +375,7 @@ function testTemplateOption(testedOption: string) {
     );
 
     expect(componentInstance._templatesStore.renderWrappers().length).toBe(0);
-    jest.runAllTimers();
+
     expect(screen.queryByText('Template')).toBeNull();
   });
 
@@ -549,7 +549,7 @@ describe('nested template', () => {
       </ComponentWithTemplates>,
     );
     renderTemplate('item1', undefined, ref.current);
-    jest.runAllTimers();
+
     expect(container.querySelector('.template')?.outerHTML).toBe('<div class="template">Template</div>');
   });
 
@@ -591,7 +591,7 @@ describe('nested template', () => {
         <div ref={ref} />
       </ComponentWithTemplates>,
     );
-    jest.runAllTimers();
+
     expect(container.querySelector('.template')?.outerHTML).toBe('<div class="template">Second Template</div>');
   });
 
@@ -617,7 +617,7 @@ describe('nested template', () => {
         <div ref={ref} />
       </ComponentWithTemplates>,
     );
-    jest.runAllTimers();
+
     expect(container.querySelector('.template')?.outerHTML).toBe('<div class="template">Second Template</div>');
   });
 
@@ -914,7 +914,7 @@ describe('component/render in nested options', () => {
         <div ref={ref} />
       </TestComponent>,
     );
-    jest.runAllTimers();
+
     expect(container.querySelector('.template')?.outerHTML).toBe('<div class="template">Second Template</div>');
   });
 
@@ -943,7 +943,7 @@ describe('component/render in nested options', () => {
         <div ref={ref} />
       </TestComponent>,
     );
-    jest.runAllTimers();
+
     expect(container.querySelector('.template')?.outerHTML)
       .toBe('<div class="template">Second Template</div>');
   });
@@ -970,7 +970,7 @@ describe('component/render in nested options', () => {
     );
 
     renderTemplate('collection[0].option.item', undefined, ref.current);
-    jest.runAllTimers();
+
     expect(container.querySelector('.template')?.outerHTML).toBe('<div class="template">test2</div>');
   });
 

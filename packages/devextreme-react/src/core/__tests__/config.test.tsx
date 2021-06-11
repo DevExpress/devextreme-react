@@ -66,7 +66,7 @@ describe('useLegacyTemplateEngine', () => {
       container: ref.current,
       model: { value: 'Value', key: 'key_1' },
     });
-    jest.runAllTimers();
+
     expect(container.querySelector('.template')?.textContent)
       .toBe('value: Value, key: key_1, dxkey: key_1');
   });
@@ -100,7 +100,7 @@ describe('useLegacyTemplateEngine', () => {
       container: ref.current,
       model: { value: 'Value', key: 'key_1' },
     });
-    jest.runAllTimers();
+
     expect(container.querySelector('.template')?.textContent).toBe('value: Value, dxkey: key_1');
   });
 });

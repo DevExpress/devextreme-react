@@ -14,14 +14,6 @@ import { TemplatesRenderer } from '../templates-renderer';
 
 jest.useFakeTimers();
 
-jest.mock('devextreme/animation/frame', () => ({
-  requestAnimationFrame: (func) => {
-    setTimeout(() => {
-      func();
-    });
-  },
-}));
-
 jest.mock('../configuration/utils', () => ({
   ...require.requireActual('../configuration/utils'),
   isIE: jest.fn(),
@@ -43,26 +35,6 @@ describe('rendering', () => {
     expect(content.tagName.toLowerCase()).toBe('div');
 
     expect(templatesRendererRenderFn).toHaveBeenCalledTimes(1);
-  });
-
-  it('renders component without children correctly without extra rerendering', () => {
-    const templatesRendererRenderFn = jest.spyOn(TemplatesRenderer.prototype, 'render');
-    const { rerender } = render(
-      <TestComponent>
-        <TestComponent />
-      </TestComponent>,
-    );
-    rerender(
-      <TestComponent>
-        <TestComponent value="132" />
-      </TestComponent>,
-    );
-    rerender(
-      <TestComponent>
-        <TestComponent value="123" />
-      </TestComponent>,
-    );
-    expect(templatesRendererRenderFn).toHaveBeenCalledTimes(6);
   });
 
   it('renders component with children correctly', () => {
