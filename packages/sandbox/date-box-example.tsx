@@ -4,6 +4,11 @@ import { filter, fields, groupOperations } from './editor-data';
 import { formatValue } from './helpers';
 import EditorComponent from './editor-component';
 
+function calculateFilterExpression(filterValue, field) {
+  return filterValue && filterValue.length
+    && Array.prototype.concat.apply([], filterValue.map((value) => [[field.dataField, '=', value], 'or'])).slice(0, -1);
+}
+
 class DateBoxExample extends React.Component<any, {
   value: string[][],
   filterText: string,
@@ -20,12 +25,26 @@ class DateBoxExample extends React.Component<any, {
     this.updateTexts = this.updateTexts.bind(this);
   }
 
-  render() {
+  onValueChanged(e) {
+    this.setState({ value: e.value });
+    this.updateTexts(e);
+  }
+
+  updateTexts(e) {
+    this.setState({
+      filterText: formatValue(e.component.option('value'), 0),
+      dataSourceText: formatValue(e.component.getFilterExpression(), 0),
+    });
+  }
+
+  render(): React.ReactNode {
+    const { value, dataSourceText, filterText } = this.state;
+
     return (
       <div>
         <FilterBuilder
           fields={fields}
-          value={this.state.value}
+          value={value}
           onInitialized={this.updateTexts}
           groupOperations={groupOperations}
           onValueChanged={this.onValueChanged}
@@ -41,33 +60,16 @@ class DateBoxExample extends React.Component<any, {
         <div className="results">
           <div>
             <b>Value</b>
-            <pre>{this.state.filterText}</pre>
+            <pre>{filterText}</pre>
           </div>
           <div>
             <b>DataSource&apos;s filter expression</b>
-            <pre>{this.state.dataSourceText}</pre>
+            <pre>{dataSourceText}</pre>
           </div>
         </div>
       </div>
     );
   }
-
-  updateTexts(e) {
-    this.setState({
-      filterText: formatValue(e.component.option('value'), 0),
-      dataSourceText: formatValue(e.component.getFilterExpression(), 0),
-    });
-  }
-
-  onValueChanged(e) {
-    this.setState({ value: e.value });
-    this.updateTexts(e);
-  }
-}
-
-function calculateFilterExpression(filterValue, field) {
-  return filterValue && filterValue.length
-    && Array.prototype.concat.apply([], filterValue.map((value) => [[field.dataField, '=', value], 'or'])).slice(0, -1);
 }
 
 export default DateBoxExample;
