@@ -33,7 +33,7 @@ class NestedComponent extends ConfigurationComponent<{
   a?: number;
   b?: string;
   c?: string;
-  ArrayValue?: Array<unknown> | null;
+  arrayValue?: Array<unknown> | null;
   defaultC?: string;
   complexValue?: Record<string, unknown>;
   value?: number;
