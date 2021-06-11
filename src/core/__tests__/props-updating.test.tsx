@@ -846,7 +846,6 @@ describe('onXXXChange', () => {
       fireOptionChange('nestedOption.arrayValue', [3, 4]);
       jest.runAllTimers();
       expect(Widget.option.mock.calls.length).toEqual(1);
-      expect(Widget.option.mock.calls.length[0]).toEqual(null);
       expect(Widget.option.mock.calls[0]).toEqual(['nestedOption.arrayValue', [1, 2]]);
     });
 
