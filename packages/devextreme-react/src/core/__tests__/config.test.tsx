@@ -8,14 +8,6 @@ import {
 
 jest.useFakeTimers();
 
-jest.mock('devextreme/animation/frame', () => ({
-  requestAnimationFrame: (func) => {
-    setTimeout(() => {
-      func();
-    });
-  },
-}));
-
 class ComponentWithTemplates extends TestComponent {
   protected _templateProps = [{
     tmplOption: 'item',
