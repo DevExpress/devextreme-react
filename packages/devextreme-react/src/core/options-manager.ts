@@ -94,6 +94,18 @@ class OptionsManager {
     this.isUpdating = false;
     this.instance.endUpdate();
 
+    const options = this.instance.option();
+    if (options !== null && options !== undefined) {
+      Object.keys(config.options).forEach((propName) => {
+        if (config.options[propName] !== options[propName]) {
+          this.setValue(
+              propName,
+              config.options[propName]
+          );
+        }
+      });
+    }
+
     this.currentConfig = config;
   }
 
