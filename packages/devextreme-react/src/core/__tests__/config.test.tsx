@@ -6,8 +6,6 @@ import {
   WidgetClass,
 } from './test-component';
 
-jest.useFakeTimers();
-
 class ComponentWithTemplates extends TestComponent {
   protected _templateProps = [{
     tmplOption: 'item',

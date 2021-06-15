@@ -44,10 +44,9 @@ function renderTemplate(
   model = model || {};
   container = container || document.createElement('div');
   const { render } = WidgetClass.mock.calls[0][1].integrationOptions.templates[name];
-  const result = render({
+  return render({
     container, model, ...(index && { index }), onRendered,
   });
-  return result;
 }
 
 function renderItemTemplate(
