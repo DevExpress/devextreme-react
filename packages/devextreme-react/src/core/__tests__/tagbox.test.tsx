@@ -20,9 +20,9 @@ describe('templates', () => {
       tagRender={() => <div>test</div>}
     />);
     const instance = ref?.current?.instance;
-    instance?.option('value', ['1', '2']);
 
+    instance?.option('value', ['1', '2', '3']);
     jest.runAllTimers();
-    expect(container.children[0].getElementsByClassName('dx-tag').length).toBe(2);
+    expect(container.children[0].getElementsByClassName('dx-tag').length).toBe(3);
   });
 });
