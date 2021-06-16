@@ -278,7 +278,7 @@ describe('option control', () => {
       <ControlledComponent complexOption={{ a: 123, b: 234 }} />,
     );
 
-    fireOptionChange('complexOption', { b: 234, a: 123 });
+    fireOptionChange('complexOption', { a: 123, b: 234 });
     jest.runAllTimers();
 
     expect(Widget.option.mock.calls.length).toBe(0);
