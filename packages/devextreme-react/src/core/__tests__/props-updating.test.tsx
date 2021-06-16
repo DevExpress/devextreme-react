@@ -273,6 +273,17 @@ describe('option control', () => {
     expect(Widget.option.mock.calls[0]).toEqual(['complexOption.a', 123]);
   });
 
+  it('should not rolls back complex option if shallow equals', () => {
+    render(
+      <ControlledComponent complexOption={{ a: 123, b: 234 }} />,
+    );
+
+    fireOptionChange('complexOption', { b: 234, a: 123 });
+    jest.runAllTimers();
+
+    expect(Widget.option.mock.calls.length).toBe(0);
+  });
+
   it('rolls back one simple option and updates other', () => {
     const { rerender } = render(
       <ControlledComponent everyOption={123} anotherOption="const" />,
@@ -449,6 +460,18 @@ describe('cfg-component option control', () => {
     jest.runAllTimers();
     expect(Widget.option.mock.calls.length).toBe(1);
     expect(Widget.option.mock.calls[0]).toEqual(['nestedOption.complexValue', { a: 123, b: 234 }]);
+  });
+
+  it('should not rolls cfg-component option complex value if shallow equals', () => {
+    render(
+      <ControlledComponent>
+        <NestedComponent complexValue={{ a: 123, b: 234 }} />
+      </ControlledComponent>,
+    );
+
+    fireOptionChange('nestedOption.complexValue', { a: 123, b: 234 });
+    jest.runAllTimers();
+    expect(Widget.option.mock.calls.length).toBe(0);
   });
 
   it('rolls cfg-component option value if parent object changes another field', () => {
