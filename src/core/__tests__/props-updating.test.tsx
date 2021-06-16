@@ -244,14 +244,14 @@ describe("option control", () => {
     });
 
     it("should not rolls back complex option if shallow equals", () => {
-      shallow(
-        <ControlledComponent complexOption={{ a: 123, b: 234 }} />,
-      );
-  
-      fireOptionChange("complexOption", { a: 123, b: 234 });
-      jest.runAllTimers();
-  
-      expect(Widget.option.mock.calls.length).toBe(0);
+        shallow(
+            <ControlledComponent complexOption={{ a: 123, b: 234 }} />,
+        );
+
+        fireOptionChange("complexOption", { a: 123, b: 234 });
+        jest.runAllTimers();
+
+        expect(Widget.option.mock.calls.length).toBe(0);
     });
 
     it("rolls back one simple option and updates other", () => {
@@ -400,28 +400,28 @@ describe("cfg-component option control", () => {
     });
 
     it("rolls cfg-component option complex value", () => {
-      shallow(
-        <ControlledComponent>
-          <NestedComponent complexValue={{ a: 123, b: 234 }} />
-        </ControlledComponent>,
-      );
+        shallow(
+            <ControlledComponent>
+            <NestedComponent complexValue={{ a: 123, b: 234 }} />
+            </ControlledComponent>,
+        );
 
-      fireOptionChange("nestedOption.complexValue", {});
-      jest.runAllTimers();
-      expect(Widget.option.mock.calls.length).toBe(1);
-      expect(Widget.option.mock.calls[0]).toEqual(["nestedOption.complexValue", { a: 123, b: 234 }]);
+        fireOptionChange("nestedOption.complexValue", {});
+        jest.runAllTimers();
+        expect(Widget.option.mock.calls.length).toBe(1);
+        expect(Widget.option.mock.calls[0]).toEqual(["nestedOption.complexValue", { a: 123, b: 234 }]);
     });
-  
+
     it("should not rolls cfg-component option complex value if shallow equals", () => {
-      shallow(
-        <ControlledComponent>
-          <NestedComponent complexValue={{ a: 123, b: 234 }} />
-        </ControlledComponent>,
-      );
-  
-      fireOptionChange("nestedOption.complexValue", { a: 123, b: 234 });
-      jest.runAllTimers();
-      expect(Widget.option.mock.calls.length).toBe(0);
+        shallow(
+            <ControlledComponent>
+            <NestedComponent complexValue={{ a: 123, b: 234 }} />
+            </ControlledComponent>,
+        );
+
+        fireOptionChange("nestedOption.complexValue", { a: 123, b: 234 });
+        jest.runAllTimers();
+        expect(Widget.option.mock.calls.length).toBe(0);
     });
 
     it("rolls cfg-component option value if parent object changes another field", () => {
