@@ -29,3 +29,13 @@ interface ICollectionOptionInfo {
     name: string;
     index: number;
 }
+export const shallowEquals = (
+  first: Record<string, unknown>,
+  second: Record<string, unknown>,
+): boolean => {
+  if (Object.keys(first).length !== Object.keys(second).length) {
+    return false;
+  }
+
+  return Object.keys(first).every((key) => first[key] === second[key]);
+};
