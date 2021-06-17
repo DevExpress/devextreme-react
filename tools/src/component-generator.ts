@@ -77,6 +77,9 @@ interface IRenderedPropTyping {
 const TYPE_KEY_FN = '(data: any) => string';
 const TYPE_RENDER = '(...params: any) => React.ReactNode';
 const TYPE_COMPONENT = 'React.ComponentType<any>';
+const USE_DEFER_UPDATE_FOR_TEMPLATE: Set<string> = new Set([
+  'dxDataGrid',
+]);
 
 function getIndent(indent: number) {
   return Array(indent * 2 + 1).join(' ');
@@ -312,6 +315,7 @@ const renderComponent: (model: {
   renderedDefaultProps?: string[];
   renderedTemplateProps?: string[];
   renderedPropTypings?: string[];
+  useDeferUpdateFlag?: boolean;
 }) => string = createTempate(
   `class <#= it.className #> extends BaseComponent<<#= it.optionsName #>> {
 
@@ -320,6 +324,10 @@ const renderComponent: (model: {
   }
 
   protected _WidgetClass = <#= it.widgetName #>;\n`
+
+  + `<#? it.useDeferUpdateFlag #>${
+    L1}protected useDeferUpdateFlag = true;\n`
+  + '<#?#>'
 
 + `<#? it.subscribableOptions #>${
   L1}protected subscribableOptions = [<#= it.subscribableOptions.join(',') #>];\n`
@@ -538,6 +546,7 @@ function generate(component: IComponent): string {
       })),
       renderedPropTypings,
       expectedChildren: component.expectedChildren,
+      useDeferUpdateFlag: USE_DEFER_UPDATE_FOR_TEMPLATE.has(widgetName),
     }),
 
     renderedNestedComponents: nestedComponents && nestedComponents.map(renderNestedComponent),
