@@ -79,6 +79,7 @@ const TYPE_RENDER = '(...params: any) => React.ReactNode';
 const TYPE_COMPONENT = 'React.ComponentType<any>';
 const USE_DEFER_UPDATE_FOR_TEMPLATE: Set<string> = new Set([
   'dxDataGrid',
+  'dxSelectBox',
 ]);
 
 function getIndent(indent: number) {
