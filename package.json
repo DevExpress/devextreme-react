@@ -13,7 +13,7 @@
     "@typescript-eslint/parser": "^4.4.1",
     "cpy-cli": "^3.1.1",
     "del-cli": "^3.0.1",
-    "devextreme-internal-tools": "^4.0.0",
+    "devextreme-internal-tools": "^6.4.4",
     "eslint": "^7.11.0",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-config-airbnb-typescript": "^12.3.1",
@@ -46,12 +46,7 @@
     "test": "lerna run build && jest --coverage",
     "test-watch": "jest --watch",
     "pack": "lerna run pack",
-    "update-integration-meta": "dx-tools update-integration-meta --output-path ./packages/devextreme-react/metadata/integration-data.json",
-    "postupdate-integration-meta": "cpy $npm_package_config_metaModelSrc $npm_package_config_metaModelDest && del-cli $npm_package_config_metaModelSrc"
-  },
-  "config": {
-    "metaModelSrc": "./packages/devextreme-react/metadata/integration-data-model.ts",
-    "metaModelDest": "./packages/devextreme-react-generator/src/"
+    "update-integration-meta": "dx-tools update-integration-meta --js-scripts ../devextreme/js --output-path ./packages/devextreme-react/metadata/integration-data.json"
   },
   "keywords": [
     "react",
