@@ -87,6 +87,7 @@ const PORTAL_COMPONENTS: Set<string> = new Set([
   'dxValidationMessage',
 ]);
 
+// TODO: remove it as soon widgets support requestAnimationFrame
 const USE_REQUEST_ANIMATION_FRAME: Set<string> = new Set([
   'dxChart',
   'dxDateBox',
