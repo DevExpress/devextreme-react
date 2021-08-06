@@ -77,14 +77,10 @@ interface IRenderedPropTyping {
 const TYPE_KEY_FN = '(data: any) => string';
 const TYPE_RENDER = '(...params: any) => React.ReactNode';
 const TYPE_COMPONENT = 'React.ComponentType<any>';
-const USE_DEFER_UPDATE_FOR_TEMPLATE: Set<string> = new Set([
-  'dxDataGrid',
-  'dxTreeList',
-  'dxPivotGrid',
-  'dxSelectBox',
-  'dxTabPanel',
-  'dxAccordion',
-  'dxMultiView',
+// // TODO: remove it as soon widgets support requestAnimationFrame
+const USE_REQUEST_ANIMATION_FRAME: Set<string> = new Set([
+  'dxChart',
+  'dxDateBox',
 ]);
 
 function getIndent(indent: number) {
@@ -321,7 +317,7 @@ const renderComponent: (model: {
   renderedDefaultProps?: string[];
   renderedTemplateProps?: string[];
   renderedPropTypings?: string[];
-  useDeferUpdateFlag?: boolean;
+  useRequestAnimationFrameFlag?: boolean;
 }) => string = createTempate(
   `class <#= it.className #> extends BaseComponent<<#= it.optionsName #>> {
 
@@ -331,8 +327,8 @@ const renderComponent: (model: {
 
   protected _WidgetClass = <#= it.widgetName #>;\n`
 
-  + `<#? it.useDeferUpdateFlag #>${
-    L1}protected useDeferUpdateFlag = true;\n`
+  + `<#? it.useRequestAnimationFrameFlag #>${
+    L1}protected useRequestAnimationFrameFlag = true;\n`
   + '<#?#>'
 
 + `<#? it.subscribableOptions #>${
@@ -552,7 +548,7 @@ function generate(component: IComponent): string {
       })),
       renderedPropTypings,
       expectedChildren: component.expectedChildren,
-      useDeferUpdateFlag: USE_DEFER_UPDATE_FOR_TEMPLATE.has(widgetName),
+      useRequestAnimationFrameFlag: USE_REQUEST_ANIMATION_FRAME.has(widgetName),
     }),
 
     renderedNestedComponents: nestedComponents && nestedComponents.map(renderNestedComponent),
