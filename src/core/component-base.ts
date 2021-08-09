@@ -45,7 +45,7 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
 
   private _optionsManager: OptionsManager;
 
-  protected useDeferUpdateFlag = false;
+  protected useRequestAnimationFrameFlag = false;
 
   private useDeferUpdateForTemplates = false;
 
@@ -98,7 +98,7 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
       },
     );
 
-    if (this.useDeferUpdateFlag) {
+    if (!this.useRequestAnimationFrameFlag) {
       this.useDeferUpdateForTemplates = this._instance.option(
         'integrationOptions.useDeferUpdateForTemplates',
       );
