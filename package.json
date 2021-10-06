@@ -13,7 +13,7 @@
     "@typescript-eslint/parser": "^4.4.1",
     "cpy-cli": "^3.1.1",
     "del-cli": "^3.0.1",
-    "devextreme-internal-tools": "^7.2.2",
+    "devextreme-internal-tools": "^7.2.3",
     "eslint": "^7.11.0",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-config-airbnb-typescript": "^12.3.1",
