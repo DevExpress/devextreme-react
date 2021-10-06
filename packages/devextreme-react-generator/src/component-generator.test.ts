@@ -115,24 +115,21 @@ export {
     ).toBe(EXPECTED);
   });
 
-  it('is not generated for empty parrams array', () => {
+  it('is not generated if params array is empty', () => {
+    const component = {
+      name: 'CLASS_NAME',
+      baseComponentPath: 'BASE_COMPONENT_PATH',
+      extensionComponentPath: 'EXTENSION_COMPONENT_PATH',
+      dxExportPath: 'DX/WIDGET/PATH',
+    };
+    const EXPECTED = generate(component);
+
     expect(
       generate({
-        name: 'CLASS_NAME',
-        baseComponentPath: 'BASE_COMPONENT_PATH',
-        extensionComponentPath: 'EXTENSION_COMPONENT_PATH',
-        dxExportPath: 'DX/WIDGET/PATH',
+        ...component,
         optionsTypeParams: [],
       }),
-    ).toBe(
-      generate({
-        name: 'CLASS_NAME',
-        baseComponentPath: 'BASE_COMPONENT_PATH',
-        extensionComponentPath: 'EXTENSION_COMPONENT_PATH',
-        dxExportPath: 'DX/WIDGET/PATH',
-        optionsTypeParams: [],
-      }),
-    );
+    ).toBe(EXPECTED);
   });
 });
 
