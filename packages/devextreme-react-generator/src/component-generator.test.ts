@@ -78,6 +78,7 @@ describe('generic types clause', () => {
   it('is generated', () => {
     // #region EXPECTED
     const EXPECTED = `
+export { ExplicitTypes } from "DX/WIDGET/PATH";
 import dxCLASS_NAME, {
     Properties
 } from "DX/WIDGET/PATH";

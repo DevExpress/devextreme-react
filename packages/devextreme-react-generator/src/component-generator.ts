@@ -203,9 +203,14 @@ const renderImports: (model: {
   optionsAliasName?: string;
   hasExtraOptions: boolean;
   hasPropTypings: boolean;
+  hasExplicitTypes: boolean;
   configComponentPath?: string;
 }) => string = createTempate(
-  'import <#= it.widgetName #>, {\n'
+  '<#? it.hasExplicitTypes #>'
+    + 'export { ExplicitTypes } from "<#= it.dxExportPath #>";\n'
++ '<#?#>'
+
++ 'import <#= it.widgetName #>, {\n'
 + '    Properties<#? it.optionsAliasName #> as <#= it.optionsAliasName #><#?#>\n'
 + '} from "<#= it.dxExportPath #>";\n\n'
 
@@ -553,6 +558,7 @@ function generate(component: IComponent): string {
       optionsAliasName: hasExtraOptions ? undefined : optionsName,
       hasExtraOptions,
       hasPropTypings: isNotEmptyArray(renderedPropTypings),
+      hasExplicitTypes: !!component.optionsTypeParams?.length,
       configComponentPath: isNotEmptyArray(nestedComponents)
         ? component.configComponentPath
         : undefined,
