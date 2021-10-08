@@ -92,9 +92,8 @@ class OptionsManager {
     });
 
     this.isUpdating = false;
-    this.instance.endUpdate();
-
     this.currentConfig = config;
+    this.instance.endUpdate();
   }
 
   public onOptionChanged(e: { name: string, fullName: string, value: unknown }): void {
