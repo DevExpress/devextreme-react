@@ -3,6 +3,10 @@ import generate from './component-generator';
 it('generates', () => {
   // #region EXPECTED
   const EXPECTED = `
+export {
+  ReexportedMember,
+  OtherReexportedMember,
+} from "DX/WIDGET/PATH";
 import dxCLASS_NAME, {
     Properties
 } from "DX/WIDGET/PATH";
@@ -34,6 +38,7 @@ export {
       baseComponentPath: 'BASE_COMPONENT_PATH',
       extensionComponentPath: 'EXTENSION_COMPONENT_PATH',
       dxExportPath: 'DX/WIDGET/PATH',
+      reexports: ['ReexportedMember', 'OtherReexportedMember'],
     }),
   ).toBe(EXPECTED);
 });
@@ -41,6 +46,10 @@ export {
 it('generates extension component', () => {
   // #region EXPECTED
   const EXPECTED = `
+export {
+  ReexportedMember,
+  OtherReexportedMember,
+} from "DX/WIDGET/PATH";
 import dxCLASS_NAME, {
     Properties as ICLASS_NAMEOptions
 } from "DX/WIDGET/PATH";
@@ -70,6 +79,7 @@ export {
       extensionComponentPath: 'EXTENSION_COMPONENT_PATH',
       dxExportPath: 'DX/WIDGET/PATH',
       isExtension: true,
+      reexports: ['ReexportedMember', 'OtherReexportedMember', 'default'],
     }),
   ).toBe(EXPECTED);
 });
