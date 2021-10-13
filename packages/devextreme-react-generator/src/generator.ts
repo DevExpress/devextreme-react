@@ -229,6 +229,7 @@ export function mapWidget(
       expectedChildren: raw.nesteds,
       propTypings: propTypings.length > 0 ? propTypings : undefined,
       optionsTypeParams: raw.optionsTypeParams,
+      reexports: raw.reexports,
     },
   };
 }
