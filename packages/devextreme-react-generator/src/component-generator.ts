@@ -174,10 +174,10 @@ const renderModule: (model: {
   renderedNestedComponents?: string[];
   defaultExport: string;
   renderedExports: string;
-  renderedReexports?: string;
+  reexports?: string[];
 }) => string = createTempate(
-  '<#? it.renderedReexports #>'
-    + '<#= it.renderedReexports #>'
+  '<#? it.reexports?.length #>'
+    + 'export {\n  <#= reexports.join(",\n  ") #>,\n} from "<#= component.dxExportPath #>";\n'
 + '<#?#>'
 
 + '<#= it.renderedImports #>\n'
@@ -553,12 +553,7 @@ function generate(component: IComponent): string {
     : undefined;
 
   const reexports = component.reexports
-    ?.filter((name) => name !== 'default')
-    ?.filter((name) => name);
-
-  const renderedReexports = reexports?.length
-    ? `export {\n  ${reexports.join(',\n  ')},\n} from "${component.dxExportPath}";\n`
-    : undefined;
+    ?.filter((name) => name && name !== 'default');
 
   return renderModule({
 
@@ -609,7 +604,7 @@ function generate(component: IComponent): string {
 
     defaultExport: component.name,
     renderedExports: renderExports(exportNames),
-    renderedReexports,
+    reexports,
   });
 }
 
