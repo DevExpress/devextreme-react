@@ -62,6 +62,13 @@ class OptionsManager {
   }
 
   public update(config: IConfigNode): void {
+    const changedOptions = {};
+    const optionChangedHandler = (e) => {
+      changedOptions[e.fullName] = e.value;
+      this.onOptionChanged(e);
+    };
+    this.instance.on('optionChanged', optionChangedHandler);
+
     const changes = getChanges(config, this.currentConfig);
 
     if (!changes.options && !changes.templates && !changes.removedOptions.length) {
@@ -91,24 +98,17 @@ class OptionsManager {
       this.setValue(key, changes.options[key]);
     });
 
-    this.currentConfig = config;
-    this.instance.endUpdate();
     this.isUpdating = false;
     this.instance.endUpdate();
-
-    const options = this.instance.option();
-    if (options !== null && options !== undefined) {
-      Object.keys(config.options).forEach((propName) => {
-        if (config.options[propName] !== options[propName]) {
-          this.setValue(
-              propName,
-              config.options[propName]
-          );
-        }
-      });
-    }
-
     this.currentConfig = config;
+
+    // this.instance.off('optionChanged', optionChangedHandler);
+    Object.entries(changedOptions).forEach(([name, value]) => {
+      const currentPropValue = config.options[name];
+      if (currentPropValue !== value) {
+        this.setValue(name, currentPropValue);
+      }
+    });
   }
 
   public onOptionChanged(e: { name: string, fullName: string, value: unknown }): void {
