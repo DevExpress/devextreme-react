@@ -102,7 +102,6 @@ class OptionsManager {
     this.instance.endUpdate();
     this.currentConfig = config;
 
-    // this.instance.off('optionChanged', optionChangedHandler);
     Object.entries(changedOptions).forEach(([name, value]) => {
       const currentPropValue = config.options[name];
       if (currentPropValue !== value) {
