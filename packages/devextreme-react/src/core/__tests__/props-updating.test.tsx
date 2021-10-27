@@ -33,6 +33,7 @@ class NestedComponent extends ConfigurationComponent<{
   a?: number;
   b?: string;
   c?: string;
+  arrayValue?: Array<unknown> | null;
   defaultC?: string;
   complexValue?: Record<string, unknown>;
   value?: number;
@@ -214,6 +215,29 @@ describe('option control', () => {
       expect(handler.mock.calls.length).toBe(1);
     });
 
+    it('should not rollback option if optionChanged is fired in endUpdate on props updating', () => {
+      const { rerender } = render(
+        <ControlledComponent
+          controlledOption="controlled"
+        />,
+      );
+
+      Widget.endUpdate.mockImplementation(
+        () => {
+          fireOptionChange('controlledOption', 'changed');
+        },
+      );
+
+      rerender(<ControlledComponent
+        controlledOption="changed"
+      />);
+
+      jest.runAllTimers(); // it is necessary to test that setGuard is not called
+
+      expect(Widget.option).toHaveBeenCalledTimes(1);
+      expect(Widget.option).toHaveBeenCalledWith('controlledOption', 'changed');
+    });
+
     it('is not updated on other prop updating', () => {
       const controlledOptionChanged = jest.fn();
       const { rerender } = render(
@@ -257,9 +281,8 @@ describe('option control', () => {
     fireOptionChange('complexOption', {});
     jest.runAllTimers();
 
-    expect(Widget.option.mock.calls.length).toBe(2);
-    expect(Widget.option.mock.calls[0]).toEqual(['complexOption.a', 123]);
-    expect(Widget.option.mock.calls[1]).toEqual(['complexOption.b', 234]);
+    expect(Widget.option.mock.calls.length).toBe(1);
+    expect(Widget.option.mock.calls[0]).toEqual(['complexOption', { a: 123, b: 234 }]);
   });
 
   it('rolls back complex option controlled field', () => {
@@ -305,6 +328,17 @@ describe('option control', () => {
     expect(Widget.option.mock.calls[3]).toEqual(['anotherOption', 'const']);
   });
 
+  it('should not rolls back complex option if shallow equals', () => {
+    render(
+      <ControlledComponent complexOption={{ a: 123, b: 234 }} />,
+    );
+
+    fireOptionChange('complexOption', { a: 123, b: 234 });
+    jest.runAllTimers();
+
+    expect(Widget.option.mock.calls.length).toBe(0);
+  });
+
   it('rolls back one simple option and updates other', () => {
     const { rerender } = render(
       <ControlledComponent everyOption={123} anotherOption="const" />,
@@ -348,7 +382,7 @@ describe('option control', () => {
     );
 
     jest.runAllTimers();
-    expect(Widget.option.mock.calls.length).toBe(2);
+    expect(Widget.option.mock.calls.length).toBe(1);
     expect(Widget.option.mock.calls[0]).toEqual(['complexOption', { a: 123, b: 234 }]);
   });
 
@@ -418,7 +452,7 @@ describe('option defaults control', () => {
     );
 
     jest.runAllTimers();
-    expect(Widget.option.mock.calls.length).toBe(1);
+    expect(Widget.option.mock.calls.length).toBe(0);
   });
 });
 
@@ -479,9 +513,20 @@ describe('cfg-component option control', () => {
 
     fireOptionChange('nestedOption.complexValue', {});
     jest.runAllTimers();
-    expect(Widget.option.mock.calls.length).toBe(2);
-    expect(Widget.option.mock.calls[0]).toEqual(['nestedOption.complexValue.a', 123]);
-    expect(Widget.option.mock.calls[1]).toEqual(['nestedOption.complexValue.b', 234]);
+    expect(Widget.option.mock.calls.length).toBe(1);
+    expect(Widget.option.mock.calls[0]).toEqual(['nestedOption.complexValue', { a: 123, b: 234 }]);
+  });
+
+  it('should not rolls cfg-component option complex value if shallow equals', () => {
+    render(
+      <ControlledComponent>
+        <NestedComponent complexValue={{ a: 123, b: 234 }} />
+      </ControlledComponent>,
+    );
+
+    fireOptionChange('nestedOption.complexValue', { a: 123, b: 234 });
+    jest.runAllTimers();
+    expect(Widget.option.mock.calls.length).toBe(0);
   });
 
   it('rolls cfg-component option value if parent object changes another field', () => {
@@ -526,9 +571,9 @@ describe('cfg-component option control', () => {
     rerender(<TestContainer value={234} />);
 
     jest.runAllTimers();
-    expect(Widget.option.mock.calls.length).toBe(3);
+    expect(Widget.option.mock.calls.length).toBe(2);
     expect(Widget.option.mock.calls[0]).toEqual(['nestedOption.a', 234]);
-    expect(Widget.option.mock.calls[2]).toEqual(['nestedOption.b', 'const']);
+    expect(Widget.option.mock.calls[1]).toEqual(['nestedOption.b', 'const']);
   });
 
   it('apply cfg-component option change if value really change', () => {
@@ -547,7 +592,7 @@ describe('cfg-component option control', () => {
     rerender(<TestContainer value={234} />);
 
     jest.runAllTimers();
-    expect(Widget.option.mock.calls.length).toBe(2);
+    expect(Widget.option.mock.calls.length).toBe(1);
     expect(Widget.option.mock.calls[0]).toEqual(['nestedOption.a', 234]);
   });
 
@@ -618,7 +663,7 @@ describe('cfg-component option defaults control', () => {
     rerender(<TestContainer optionDefValue="changed" />);
 
     jest.runAllTimers();
-    expect(Widget.option.mock.calls.length).toBe(1);
+    expect(Widget.option.mock.calls.length).toBe(0);
   });
 
   it('ignores 3rd-party changes in nested default props if parent object changes', () => {
@@ -660,7 +705,7 @@ describe('mutation detection', () => {
   };
 
   const expectPropsUpdated = (expectedPath: string, value: any) => {
-    expect(Widget.option.mock.calls.length).toBe(2);
+    expect(Widget.option.mock.calls.length).toBe(1);
     expect(Widget.beginUpdate.mock.calls.length).toBe(1);
     expect(Widget.endUpdate.mock.calls.length).toBe(1);
     expect(Widget.option.mock.calls[0][0]).toEqual(expectedPath);
@@ -934,6 +979,34 @@ describe('onXXXChange', () => {
       fireOptionChange('items[1].nestedOption.value', '4');
       expect(onSubNestedPropChange).toHaveBeenCalledTimes(1);
       expect(onSubNestedPropChange).toBeCalledWith('4');
+    });
+
+    it('is called on nested array option changed', () => {
+      render(
+        <TestComponent>
+          <NestedComponent
+            arrayValue={[1, 2]}
+          />
+        </TestComponent>,
+      );
+      fireOptionChange('nestedOption.arrayValue', [3, 4]);
+      jest.runAllTimers();
+      expect(Widget.option.mock.calls.length).toEqual(1);
+      expect(Widget.option.mock.calls[0]).toEqual(['nestedOption.arrayValue', [1, 2]]);
+    });
+
+    it('is called on nested null array option changed', () => {
+      render(
+        <TestComponent>
+          <NestedComponent
+            arrayValue={null}
+          />
+        </TestComponent>,
+      );
+      fireOptionChange('nestedOption.arrayValue', [1, 2]);
+      jest.runAllTimers();
+      expect(Widget.option.mock.calls.length).toEqual(1);
+      expect(Widget.option.mock.calls[0]).toEqual(['nestedOption.arrayValue', null]);
     });
 
     it('throws an error if handler is not a function', () => {

@@ -1,9 +1,11 @@
-import { IProp, IComplexProp } from './integration-data-model';
+import { IProp, IComplexProp } from 'devextreme-internal-tools/integration-data-model';
 import {
   collectIndependentEvents,
   collectSubscribableRecursively,
+  getComplexOptionType,
   mapSubscribableOption,
   isNestedOptionArray,
+  convertToBaseType,
   mapOption,
   extractNestedComponents,
   createPropTyping,
@@ -17,6 +19,7 @@ describe('collectIndependentEvents', () => {
       {
         name: 'option1',
         isSubscribable: true,
+        isDeprecated: false,
         types: [
           {
             type: 'Function',
@@ -30,6 +33,7 @@ describe('collectIndependentEvents', () => {
       {
         name: 'onOption',
         isSubscribable: false,
+        isDeprecated: false,
         types: [
           {
             type: 'Function',
@@ -43,6 +47,7 @@ describe('collectIndependentEvents', () => {
       {
         name: 'option3',
         isSubscribable: true,
+        isDeprecated: false,
         types: [
           {
             type: 'Function',
@@ -61,6 +66,7 @@ describe('collectIndependentEvents', () => {
       {
         name: 'onOption4',
         isSubscribable: true,
+        isDeprecated: false,
         types: [
           {
             type: 'Function',
@@ -79,6 +85,7 @@ describe('collectIndependentEvents', () => {
       {
         name: 'option5',
         isSubscribable: true,
+        isDeprecated: false,
         types: [
           {
             type: 'Function',
@@ -97,6 +104,7 @@ describe('collectIndependentEvents', () => {
       {
         name: 'onSomeOptionChanged',
         isSubscribable: true,
+        isDeprecated: false,
         types: [
           {
             type: 'Function',
@@ -110,6 +118,7 @@ describe('collectIndependentEvents', () => {
       {
         name: 'onSomeOptionChange',
         isSubscribable: true,
+        isDeprecated: false,
         types: [
           {
             type: 'Function',
@@ -123,6 +132,40 @@ describe('collectIndependentEvents', () => {
       {
         name: 'onSomeOptionChanged',
         isSubscribable: true,
+        isDeprecated: false,
+        types: [
+          {
+            type: 'Function',
+            acceptableValues: [],
+            isCustomType: true,
+          },
+          {
+            type: 'Number',
+            acceptableValues: [],
+            isCustomType: true,
+          },
+        ],
+        props: [],
+        firedEvents: [],
+      },
+      {
+        name: 'valueChange',
+        isSubscribable: true,
+        isDeprecated: false,
+        types: [
+          {
+            type: 'Function',
+            acceptableValues: [],
+            isCustomType: true,
+          },
+        ],
+        props: [],
+        firedEvents: [],
+      },
+      {
+        name: 'onSomeValueChanged',
+        isSubscribable: true,
+        isDeprecated: false,
         types: [
           {
             type: 'Function',
@@ -140,7 +183,7 @@ describe('collectIndependentEvents', () => {
       },
     ];
     const independentEvents = collectIndependentEvents(options);
-    expect(independentEvents.length).toBe(2);
+    expect(independentEvents.length).toBe(3);
     expect(independentEvents[0]).toEqual(options[1]);
     expect(independentEvents[1]).toEqual(options[6]);
   });
@@ -151,18 +194,21 @@ describe('collectSubscribableRecursively', () => {
     const options: IProp[] = [{
       name: 'option1',
       isSubscribable: true,
+      isDeprecated: false,
       types: [],
       props: [],
       firedEvents: [],
     }, {
       name: 'option2',
       isSubscribable: false,
+      isDeprecated: false,
       types: [],
       props: [],
       firedEvents: [],
     }, {
       name: 'option3',
       isSubscribable: true,
+      isDeprecated: false,
       types: [],
       props: [],
       firedEvents: [],
@@ -178,6 +224,7 @@ describe('collectSubscribableRecursively', () => {
     const subOption = {
       name: 'subOption',
       isSubscribable: true,
+      isDeprecated: false,
       types: [],
       props: [],
       firedEvents: [],
@@ -185,12 +232,14 @@ describe('collectSubscribableRecursively', () => {
     const options: IProp[] = [{
       name: 'option1',
       isSubscribable: false,
+      isDeprecated: false,
       types: [],
       props: [subOption],
       firedEvents: [],
     }, {
       name: 'option2',
       isSubscribable: true,
+      isDeprecated: false,
       types: [],
       props: [subOption],
       firedEvents: [],
@@ -215,6 +264,7 @@ describe('mapSubscribableOption', () => {
     expect(mapSubscribableOption({
       name: 'option',
       isSubscribable: true,
+      isDeprecated: false,
       types: [],
       props: [],
       firedEvents: [],
@@ -229,6 +279,7 @@ describe('mapSubscribableOption', () => {
     expect(mapSubscribableOption({
       name: 'option',
       isSubscribable: false,
+      isDeprecated: false,
       types: [],
       props: [],
       firedEvents: [],
@@ -245,6 +296,7 @@ describe('isNestedOptionArray', () => {
     expect(isNestedOptionArray({
       name: 'option',
       isSubscribable: true,
+      isDeprecated: false,
       types: [{
         type: 'Array',
         acceptableValues: [],
@@ -259,6 +311,7 @@ describe('isNestedOptionArray', () => {
     expect(isNestedOptionArray({
       name: 'option',
       isSubscribable: true,
+      isDeprecated: false,
       types: [],
       props: [],
       firedEvents: [],
@@ -269,6 +322,7 @@ describe('isNestedOptionArray', () => {
     expect(isNestedOptionArray({
       name: 'option',
       isSubscribable: true,
+      isDeprecated: false,
       types: [{
         type: 'String',
         acceptableValues: [],
@@ -285,6 +339,7 @@ describe('mapOption', () => {
     const option = {
       name: 'option',
       isSubscribable: false,
+      isDeprecated: false,
       types: [],
       props: [],
       firedEvents: [],
@@ -297,14 +352,62 @@ describe('mapOption', () => {
     });
   });
 
+  it('complex option with types', () => {
+    const option = {
+      name: 'option',
+      isSubscribable: false,
+      isDeprecated: false,
+      types: [{
+        type: 'String',
+        acceptableValues: [],
+        isCustomType: false,
+      }, {
+        type: 'Number',
+        acceptableValues: [],
+        isCustomType: false,
+      }, {
+        type: 'MyType',
+        acceptableValues: [],
+        isCustomType: false,
+      }],
+      props: [{
+        name: 'prop1',
+        firedEvents: [],
+        isSubscribable: false,
+        isDeprecated: false,
+        props: [],
+        types: [{
+          type: 'Number',
+          acceptableValues: [],
+          isCustomType: false,
+        }],
+      }],
+      firedEvents: [],
+    };
+
+    expect(mapOption(option)).toEqual({
+      isArray: false,
+      name: 'option',
+      type: 'string | number',
+      nested: [{
+        isSubscribable: undefined,
+        name: 'prop1',
+        type: 'any',
+      }],
+      isSubscribable: undefined,
+    });
+  });
+
   it('with props', () => {
     const option = {
       name: 'option',
       isSubscribable: false,
+      isDeprecated: false,
       types: [],
       props: [{
         name: 'subOption',
         isSubscribable: false,
+        isDeprecated: false,
         types: [],
         props: [],
         firedEvents: [],
@@ -375,6 +478,7 @@ describe('createPropTyping', () => {
     const option = {
       name: 'option1',
       isSubscribable: false,
+      isDeprecated: false,
       types: [],
       props: [],
       firedEvents: [],
@@ -387,6 +491,7 @@ describe('createPropTyping', () => {
     const option = {
       name: 'option2',
       isSubscribable: false,
+      isDeprecated: false,
       types: [{
         type: 'Array',
         acceptableValues: [],
@@ -408,6 +513,7 @@ describe('createPropTyping', () => {
     const option = {
       name: 'option3',
       isSubscribable: false,
+      isDeprecated: false,
       types: [{
         type: 'CustomType',
         acceptableValues: [],
@@ -429,12 +535,14 @@ describe('extractPropTypings', () => {
     const options = [{
       name: 'option1',
       isSubscribable: false,
+      isDeprecated: false,
       types: [],
       props: [],
       firedEvents: [],
     }, {
       name: 'option2',
       isSubscribable: false,
+      isDeprecated: false,
       types: [{
         type: 'Array',
         acceptableValues: [],
@@ -445,6 +553,7 @@ describe('extractPropTypings', () => {
     }, {
       name: 'option3',
       isSubscribable: false,
+      isDeprecated: false,
       types: [{
         type: 'CustomType',
         acceptableValues: [],
@@ -494,6 +603,7 @@ describe('mapWidget', () => {
     nesteds: [],
     options: [],
     templates: [],
+    optionsTypeParams: [],
   };
 
   it('should rename widget', () => {
@@ -527,18 +637,21 @@ describe('mapWidget', () => {
     const options: IProp[] = [{
       name: 'option1',
       isSubscribable: true,
+      isDeprecated: false,
       types: [],
       props: [],
       firedEvents: [],
     }, {
       name: 'option2',
       isSubscribable: false,
+      isDeprecated: false,
       types: [],
       props: [],
       firedEvents: [],
     }, {
       name: 'option3',
       isSubscribable: true,
+      isDeprecated: false,
       types: [{
         type: 'CustomType',
         acceptableValues: [],
@@ -654,6 +767,41 @@ describe('mapWidget', () => {
         propName: 'option3',
         types: ['object'],
       }]);
+    });
+  });
+  describe('convertToBaseType', () => {
+    const types = ['Object', 'MyType', 'Number', 'String', 'Boolean', 'Any'];
+    const expected = ['object', undefined, 'number', 'string', 'boolean', 'any'];
+
+    it('should return base types', () => {
+      expect(types.map((t) => convertToBaseType(t))).toEqual(expected);
+    });
+  });
+
+  describe('getComplexOptionType', () => {
+    const types = [{
+      type: 'String',
+      acceptableValues: [],
+      isCustomType: false,
+    }, {
+      type: 'Number',
+      acceptableValues: [],
+      isCustomType: false,
+    }, {
+      type: 'Object',
+      acceptableValues: [],
+      isCustomType: false,
+    }, {
+      type: 'MyType',
+      acceptableValues: [],
+      isCustomType: true,
+    },
+    ];
+
+    const expected = 'string | number | object';
+
+    it('should return base types', () => {
+      expect(getComplexOptionType(types)).toEqual(expected);
     });
   });
 });

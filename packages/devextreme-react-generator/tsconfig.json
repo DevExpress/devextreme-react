@@ -1,15 +1,15 @@
 {
   "extends": "../../tsconfig.json",
 
-  "compilerOptions": {
-    "outDir": "./dist"
-  },
+   "compilerOptions": {
+     "outDir": "./dist"
+   },
 
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx"
-  ],
-  "exclude": [
-    "src/**/*.test.ts"
-  ]
+   "include": [
+     "src/**/*.ts",
+     "src/**/*.tsx"
+   ],
+   "exclude": [
+     "src/**/*.test.ts"
+   ]
 }

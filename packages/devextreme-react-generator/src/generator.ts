@@ -15,7 +15,7 @@ import {
   IProp,
   ITypeDescr,
   IWidget,
-} from './integration-data-model';
+} from 'devextreme-internal-tools/integration-data-model';
 
 import { convertTypes } from './converter';
 import generateIndex, { IReExport } from './index-generator';
@@ -39,6 +39,14 @@ import {
   uppercaseFirst,
 } from './helpers';
 
+enum BaseTypes {
+  Any = 'any',
+  String = 'string',
+  Number = 'number',
+  Boolean = 'boolean',
+  Object = 'object',
+}
+
 export function mapSubscribableOption(prop: IProp): ISubscribableOption {
   return {
     name: prop.name,
@@ -57,6 +65,16 @@ export function isNestedOptionArray(prop: IProp): boolean {
   return isNotEmptyArray(prop.types) && (prop.types[0].type === 'Array');
 }
 
+export function convertToBaseType(type: string) {
+  return BaseTypes[type];
+}
+
+export function getComplexOptionType(types: ITypeDescr[]) {
+  return types && isNotEmptyArray(types) ? types
+    .filter((t) => convertToBaseType(t.type))
+    .map((f) => convertToBaseType(f.type)).join(' | ') : undefined;
+}
+
 export function mapOption(prop: IProp): IOption {
   return isEmptyArray(prop.props)
     ? {
@@ -67,6 +85,7 @@ export function mapOption(prop: IProp): IOption {
     } : {
       name: prop.name,
       isSubscribable: prop.isSubscribable || undefined,
+      type: getComplexOptionType(prop.types),
       nested: (prop.props as IProp[]).map(mapOption),
       isArray: isNestedOptionArray(prop),
     };
@@ -138,7 +157,7 @@ export function collectIndependentEvents(options: IProp[]): IProp[] {
     if (option.types.filter((type) => type.type === 'Function').length === 1
         && (!option.firedEvents || option.firedEvents.length === 0)
         && option.name.substr(0, 2) === 'on'
-        && !option.name.endsWith('Changed')
+        && !option.name.match(/^(?!.*Value).*Changed/)
     ) {
       acc.push(option);
     }
@@ -209,6 +228,7 @@ export function mapWidget(
       nestedComponents: nestedOptions && nestedOptions.length > 0 ? nestedOptions : undefined,
       expectedChildren: raw.nesteds,
       propTypings: propTypings.length > 0 ? propTypings : undefined,
+      optionsTypeParams: raw.optionsTypeParams,
     },
   };
 }
@@ -233,7 +253,6 @@ function generate({
   widgetsPackage: string
 }): void {
   const modulePaths: IReExport[] = [];
-
   rawData.widgets.forEach((data) => {
     const widgetFile = mapWidget(
       data,

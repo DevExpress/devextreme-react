@@ -86,7 +86,7 @@ function findValueInObject(obj: unknown, path: string[]): undefined | IValueDesc
   if (!key) {
     return {
       value: obj,
-      type: obj instanceof Object ? ValueType.Complex : ValueType.Simple,
+      type: ValueType.Simple,
     };
   }
 
