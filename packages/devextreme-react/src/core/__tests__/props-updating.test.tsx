@@ -234,7 +234,7 @@ describe('option control', () => {
 
       jest.runAllTimers(); // it is necessary to test that setGuard is not called
 
-      expect(Widget.option).toHaveBeenCalledTimes(2);
+      expect(Widget.option).toHaveBeenCalledTimes(1);
       expect(Widget.option).toHaveBeenCalledWith('controlledOption', 'changed');
     });
 
@@ -254,7 +254,7 @@ describe('option control', () => {
         />,
       );
 
-      expect(Widget.option.mock.calls.length).toBe(2);
+      expect(Widget.option.mock.calls.length).toBe(1);
       expect(Widget.option.mock.calls[0]).toEqual(['anotherOption', 'def']);
     });
   });
@@ -321,10 +321,9 @@ describe('option control', () => {
 
     jest.runAllTimers();
 
-    expect(Widget.option.mock.calls.length).toBe(3);
+    expect(Widget.option.mock.calls.length).toBe(2);
     expect(Widget.option.mock.calls[0]).toEqual(['everyOption', 234]);
     expect(Widget.option.mock.calls[1]).toEqual(['anotherOption', 'changed']);
-    expect(Widget.option.mock.calls[2]).toEqual(['controlledOption', undefined]);
   });
 
   it('should not rolls back complex option if shallow equals', () => {
@@ -350,9 +349,9 @@ describe('option control', () => {
 
     jest.runAllTimers();
 
-    expect(Widget.option.mock.calls.length).toBe(3);
+    expect(Widget.option.mock.calls.length).toBe(2);
     expect(Widget.option.mock.calls[0]).toEqual(['everyOption', 234]);
-    expect(Widget.option.mock.calls[2]).toEqual(['anotherOption', 'const']);
+    expect(Widget.option.mock.calls[1]).toEqual(['anotherOption', 'const']);
   });
 
   it('applies simple option change', () => {
@@ -366,7 +365,7 @@ describe('option control', () => {
     );
 
     jest.runAllTimers();
-    expect(Widget.option.mock.calls.length).toBe(2);
+    expect(Widget.option.mock.calls.length).toBe(1);
     expect(Widget.option.mock.calls[0]).toEqual(['everyOption', 234]);
   });
 
@@ -381,7 +380,7 @@ describe('option control', () => {
     );
 
     jest.runAllTimers();
-    expect(Widget.option.mock.calls.length).toBe(2);
+    expect(Widget.option.mock.calls.length).toBe(1);
     expect(Widget.option.mock.calls[0]).toEqual(['complexOption', { a: 123, b: 234 }]);
   });
 
@@ -451,7 +450,7 @@ describe('option defaults control', () => {
     );
 
     jest.runAllTimers();
-    expect(Widget.option.mock.calls.length).toBe(1);
+    expect(Widget.option.mock.calls.length).toBe(0);
   });
 });
 
@@ -570,9 +569,9 @@ describe('cfg-component option control', () => {
     rerender(<TestContainer value={234} />);
 
     jest.runAllTimers();
-    expect(Widget.option.mock.calls.length).toBe(3);
+    expect(Widget.option.mock.calls.length).toBe(2);
     expect(Widget.option.mock.calls[0]).toEqual(['nestedOption.a', 234]);
-    expect(Widget.option.mock.calls[1]).toEqual(['controlledOption', undefined]);
+    expect(Widget.option.mock.calls[1]).toEqual(['nestedOption.b', 'const']);
   });
 
   it('apply cfg-component option change if value really change', () => {
@@ -591,7 +590,7 @@ describe('cfg-component option control', () => {
     rerender(<TestContainer value={234} />);
 
     jest.runAllTimers();
-    expect(Widget.option.mock.calls.length).toBe(2);
+    expect(Widget.option.mock.calls.length).toBe(1);
     expect(Widget.option.mock.calls[0]).toEqual(['nestedOption.a', 234]);
   });
 
@@ -662,7 +661,7 @@ describe('cfg-component option defaults control', () => {
     rerender(<TestContainer optionDefValue="changed" />);
 
     jest.runAllTimers();
-    expect(Widget.option.mock.calls.length).toBe(1);
+    expect(Widget.option.mock.calls.length).toBe(0);
   });
 
   it('ignores 3rd-party changes in nested default props if parent object changes', () => {
@@ -704,7 +703,7 @@ describe('mutation detection', () => {
   };
 
   const expectPropsUpdated = (expectedPath: string, value: any) => {
-    expect(Widget.option.mock.calls.length).toBe(2);
+    expect(Widget.option.mock.calls.length).toBe(1);
     expect(Widget.beginUpdate.mock.calls.length).toBe(1);
     expect(Widget.endUpdate.mock.calls.length).toBe(1);
     expect(Widget.option.mock.calls[0][0]).toEqual(expectedPath);
@@ -817,68 +816,6 @@ describe('onXXXChange', () => {
 
       fireOptionChange('text', '1');
       expect(onPropChange).toHaveBeenCalledTimes(1);
-    });
-
-    it('is called on component changes controlled option', () => {
-      const onPropChange = jest.fn();
-      const { rerender } = render(
-        <TestComponent
-          text="0"
-          onTextChange={onPropChange}
-        />,
-      );
-      expect(onPropChange).not.toBeCalled();
-
-      const sampleProps = { text: '1' };
-      rerender(
-        <TestComponent
-          {...sampleProps}
-          onTextChange={onPropChange}
-        />,
-      );
-      expect(onPropChange).not.toBeCalled();
-
-      fireOptionChange('text', '2');
-      expect(onPropChange).toHaveBeenCalledTimes(1);
-      expect(onPropChange).toBeCalledWith('2');
-
-      fireOptionChange('text', '3');
-      expect(onPropChange).toHaveBeenCalledTimes(2);
-      expect(onPropChange).toBeCalledWith('3');
-    });
-
-    it('is not called if received value is being modified', () => {
-      const ref = React.createRef() as React.RefObject<TestComponent>;
-      const onPropChange = jest.fn();
-      const defaultProps = {
-        text: '0',
-        onTextChange: onPropChange,
-        ref,
-      };
-
-      const { rerender } = render(
-        <TestComponent
-          {...defaultProps}
-        />,
-      );
-
-      onPropChange.mockImplementation((value) => {
-        rerender(
-          <TestComponent
-            {...defaultProps}
-            text={`X${value}`}
-          />,
-        );
-      });
-
-      fireOptionChange('text', '2');
-
-      expect(onPropChange).toHaveBeenCalledTimes(1);
-
-      expect(ref.current?.props.text).toBe('X2');
-      fireOptionChange('text', 'X22');
-      expect(onPropChange).toHaveBeenCalledTimes(2);
-      expect(ref.current?.props.text).toBe('XX22');
     });
 
     it('is not called if new value is equal', () => {
