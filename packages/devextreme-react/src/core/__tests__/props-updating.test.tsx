@@ -765,6 +765,68 @@ describe('onXXXChange', () => {
       expect(onPropChange).toHaveBeenCalledTimes(1);
     });
 
+    it('is called on component changes controlled option', () => {
+      const onPropChange = jest.fn();
+      const { rerender } = render(
+        <TestComponent
+          text="0"
+          onTextChange={onPropChange}
+        />,
+      );
+      expect(onPropChange).not.toBeCalled();
+
+      const sampleProps = { text: '1' };
+      rerender(
+        <TestComponent
+          {...sampleProps}
+          onTextChange={onPropChange}
+        />,
+      );
+      expect(onPropChange).not.toBeCalled();
+
+      fireOptionChange('text', '2');
+      expect(onPropChange).toHaveBeenCalledTimes(1);
+      expect(onPropChange).toBeCalledWith('2');
+
+      fireOptionChange('text', '3');
+      expect(onPropChange).toHaveBeenCalledTimes(2);
+      expect(onPropChange).toBeCalledWith('3');
+    });
+
+    it('is not called if received value is being modified', () => {
+      const ref = React.createRef() as React.RefObject<TestComponent>;
+      const onPropChange = jest.fn();
+      const defaultProps = {
+        text: '0',
+        onTextChange: onPropChange,
+        ref,
+      };
+
+      const { rerender } = render(
+        <TestComponent
+          {...defaultProps}
+        />,
+      );
+
+      onPropChange.mockImplementation((value) => {
+        rerender(
+          <TestComponent
+            {...defaultProps}
+            text={`X${value}`}
+          />,
+        );
+      });
+
+      fireOptionChange('text', '2');
+
+      expect(onPropChange).toHaveBeenCalledTimes(1);
+
+      expect(ref.current?.props.text).toBe('X2');
+      fireOptionChange('text', 'X22');
+      expect(onPropChange).toHaveBeenCalledTimes(2);
+      expect(ref.current?.props.text).toBe('XX22');
+    });
+
     it('is not called if new value is equal', () => {
       const onPropChange = jest.fn();
       render(
