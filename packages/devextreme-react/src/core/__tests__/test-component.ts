@@ -18,7 +18,6 @@ const Widget = {
   },
   off: (event: string, handler: (e: any) => void) => {
     eventHandlers[event] = eventHandlers[event].filter(e=>e !== handler);
-    console.log(eventHandlers[event]);
   },
   dispose: jest.fn(),
 };
