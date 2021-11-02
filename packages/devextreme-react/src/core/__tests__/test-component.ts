@@ -1,7 +1,7 @@
 /* eslint-disable max-classes-per-file */
 import { Component } from '../component';
 
-const eventHandlers: { [index: string]: (e?: any) => void } = {};
+const eventHandlers: { [index: string]: ((e?: any) => void)[] } = {};
 
 const Widget = {
   option: jest.fn(),
@@ -9,9 +9,17 @@ const Widget = {
   beginUpdate: jest.fn(),
   endUpdate: jest.fn(),
   on: (event: string, handler: (e: any) => void): void => {
-    eventHandlers[event] = handler;
+    if (eventHandlers[event]){
+      eventHandlers[event].push(handler);
+    }
+    else {
+      eventHandlers[event] = [handler];
+    }
   },
-  off: jest.fn(),
+  off: (event: string, handler: (e: any) => void) => {
+    eventHandlers[event] = eventHandlers[event].filter(e=>e !== handler);
+    console.log(eventHandlers[event]);
+  },
   dispose: jest.fn(),
 };
 
@@ -23,6 +31,7 @@ class TestComponent<P = any> extends Component<P> {
   protected useDeferUpdateFlag = true;
 
   _createWidget(element?: Element): void {
+    eventHandlers.optionChanged = [];
     Widget.option.mockImplementation((name: string) => name === 'integrationOptions.useDeferUpdateForTemplates');
 
     super._createWidget(element);
@@ -34,11 +43,11 @@ class TestPortalComponent<P = any> extends TestComponent<P> {
 }
 
 function fireOptionChange(fullName: string, value: unknown): void {
-  eventHandlers.optionChanged({
+  eventHandlers.optionChanged?.forEach(e => e({
     name: fullName.split('.')[0],
     fullName,
     value,
-  });
+  }));
 }
 
 export {
