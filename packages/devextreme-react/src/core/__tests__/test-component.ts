@@ -9,15 +9,14 @@ const Widget = {
   beginUpdate: jest.fn(),
   endUpdate: jest.fn(),
   on: (event: string, handler: (e: any) => void): void => {
-    if (eventHandlers[event]){
+    if (eventHandlers[event]) {
       eventHandlers[event].push(handler);
-    }
-    else {
+    } else {
       eventHandlers[event] = [handler];
     }
   },
   off: (event: string, handler: (e: any) => void) => {
-    eventHandlers[event] = eventHandlers[event].filter(e=>e !== handler);
+    eventHandlers[event] = eventHandlers[event].filter((e) => e !== handler);
   },
   dispose: jest.fn(),
 };
@@ -42,7 +41,7 @@ class TestPortalComponent<P = any> extends TestComponent<P> {
 }
 
 function fireOptionChange(fullName: string, value: unknown): void {
-  eventHandlers.optionChanged?.forEach(e => e({
+  eventHandlers.optionChanged?.forEach((e) => e({
     name: fullName.split('.')[0],
     fullName,
     value,
