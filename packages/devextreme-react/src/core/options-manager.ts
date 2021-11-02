@@ -102,7 +102,7 @@ class OptionsManager {
 
     changedOptions.forEach(([name, value]) => {
       const currentPropValue = config.options[name];
-      if (currentPropValue && currentPropValue !== value) {
+      if (currentPropValue !== undefined && currentPropValue !== value) {
         this.setValue(name, currentPropValue);
       }
     });
