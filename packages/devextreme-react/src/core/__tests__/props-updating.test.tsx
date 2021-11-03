@@ -285,6 +285,24 @@ describe('option control', () => {
     expect(Widget.option.mock.calls[0]).toEqual(['complexOption', { a: 123, b: 234 }]);
   });
 
+  // T1037806
+  it('no rolls back option. skipOptionsRallBack = true', () => {
+    render(
+      <ControlledComponent complexOption={{ a: 123, b: 234 }} />,
+    );
+
+    try {
+      Widget.skipOptionsRallBack = true;
+
+      fireOptionChange('complexOption', {});
+      jest.runAllTimers();
+
+      expect(Widget.option.mock.calls.length).toBe(0);
+    } finally {
+      Widget.skipOptionsRallBack = false;
+    }
+  });
+
   it('rolls back complex option controlled field', () => {
     render(
       <ControlledComponent complexOption={{ a: 123 }} />,
