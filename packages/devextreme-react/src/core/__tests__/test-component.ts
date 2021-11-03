@@ -12,7 +12,7 @@ const Widget = {
     eventHandlers[event] = handler;
   },
   dispose: jest.fn(),
-  skipOptionsRallBack: false,
+  skipOptionsRollBack: false,
 };
 
 const WidgetClass = jest.fn(() => Widget);
