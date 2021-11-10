@@ -18,6 +18,10 @@ jobs:
     - name: Get sources
       uses: actions/checkout@v2
 
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '16'
+
     - name: Clone devextreme repo from PR author fork
       continue-on-error: true
       if: github.event_name == 'pull_request'
