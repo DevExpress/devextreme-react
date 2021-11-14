@@ -19,6 +19,7 @@ type IComponent = {
   templates?: string[];
   propTypings?: IPropTyping[];
   optionsTypeParams?: string[];
+  reexports?: string[];
 } & {
   nestedComponents?: INestedComponent[];
   configComponentPath?: string;
@@ -173,8 +174,13 @@ const renderModule: (model: {
   renderedNestedComponents?: string[];
   defaultExport: string;
   renderedExports: string;
+  reexports?: string[];
 }) => string = createTempate(
-  '<#= it.renderedImports #>\n'
+  '<#? it.reexports?.length #>'
+    + 'export {\n  <#= reexports.join(",\n  ") #>,\n} from "<#= component.dxExportPath #>";\n'
++ '<#?#>'
+
++ '<#= it.renderedImports #>\n'
 
 + '<#? it.renderedOptionsInterface #>'
     + '<#= it.renderedOptionsInterface #>\n\n'
@@ -546,6 +552,9 @@ function generate(component: IComponent): string {
       .map((t) => renderPropTyping(createPropTypingModel(t)))
     : undefined;
 
+  const reexports = component.reexports
+    ?.filter((name) => name && name !== 'default');
+
   return renderModule({
 
     renderedImports: renderImports({
@@ -595,6 +604,7 @@ function generate(component: IComponent): string {
 
     defaultExport: component.name,
     renderedExports: renderExports(exportNames),
+    reexports,
   });
 }
 
