@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "devextreme": "22.1-next",
-    "devextreme-react": "~22.1.0",
+    "devextreme-react": "22.1-next",
     "react": "^16.5.2",
     "react-dom": "^16.5.2"
   },
