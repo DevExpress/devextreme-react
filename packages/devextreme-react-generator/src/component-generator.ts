@@ -353,7 +353,7 @@ const renderComponent: (model: {
 }) => string = createTempate(
   `class <#= it.className #>${TYPE_PARAMS_WITH_DEFAULTS} extends BaseComponent<<#= it.optionsName #>${TYPE_PARAMS}> {
 
-  public get instance(): <#= it.widgetName #> {
+  public get instance(): <#= it.widgetName #>${TYPE_PARAMS} {
     return this._instance;
   }
 
