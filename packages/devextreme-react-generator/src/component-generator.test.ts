@@ -89,7 +89,7 @@ interface ICLASS_NAMEOptions<T1 = any, T2 = any> extends Properties<T1, T2>, IHt
   dataSource?: Properties<T1, T2>["dataSource"];
 }
 
-class CLASS_NAME<T1, T2> extends BaseComponent<ICLASS_NAMEOptions<T1, T2>> {
+class CLASS_NAME<T1 = any, T2 = any> extends BaseComponent<ICLASS_NAMEOptions<T1, T2>> {
 
   public get instance(): dxCLASS_NAME {
     return this._instance;

@@ -351,7 +351,7 @@ const renderComponent: (model: {
   useRequestAnimationFrameFlag?: boolean;
   typeParams: string[] | undefined;
 }) => string = createTempate(
-  `class <#= it.className #>${TYPE_PARAMS} extends BaseComponent<<#= it.optionsName #>${TYPE_PARAMS}> {
+  `class <#= it.className #>${TYPE_PARAMS_WITH_DEFAULTS} extends BaseComponent<<#= it.optionsName #>${TYPE_PARAMS}> {
 
   public get instance(): <#= it.widgetName #> {
     return this._instance;
