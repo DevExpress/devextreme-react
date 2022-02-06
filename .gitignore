@@ -3,3 +3,4 @@ node_modules/
 dist/
 artifacts/
 coverage/
+packages/devextreme-react/metadata/integration-data.json
