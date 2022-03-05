@@ -71,7 +71,7 @@ jobs:
       run: npm run test
     
     - name: Archive internal-tools artifacts
-      uses: actions/upload-artifact@v2
-        with:
-          name: internal-tools-artifacts
-          path: /artifacts/internal-tools/
+      uses: actions/upload-artifact@v3
+      with:
+        name: internal-tools-artifacts
+        path: artifacts/internal-tools/
