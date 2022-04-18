@@ -42,12 +42,8 @@ jobs:
 
     - name: Install devextreme package
       run: |
-        cd ./packages/devextreme-react
-        npm install --save-dev ../../../devextreme/artifacts/npm/devextreme
-        cd ../sandbox
-        npm install --save-dev ../../../devextreme/artifacts/npm/devextreme
-        cd ../../
-        npm install --save-dev ../devextreme/artifacts/npm/devextreme
+        npx add ../devextreme/artifacts/npm/devextreme packages/devextreme-react --dev
+        npx add ../devextreme/artifacts/npm/devextreme packages/sandbox --dev
 
     - name: Run npm install
       run: npm install --no-audit --no-fund
