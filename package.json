@@ -35,6 +35,7 @@
     "ts-jest": "^24.0.2"
   },
   "scripts": {
+    "add-genrator": "npx lerna add devextreme-react-generator --scope=devextreme-react --dev",
     "clean": "npm run clean:packages && npm run clean:root",
     "clean:packages": "lerna clean --yes",
     "clean:root": "del-cli node_modules",
@@ -46,7 +47,7 @@
     "test": "npm run update-integration-meta && lerna run build && jest --coverage",
     "test-watch": "jest --watch",
     "pack": "npm run update-integration-meta && lerna run pack",
-    "update-integration-meta": "dx-tools integration-data-generator --js-scripts ../devextreme/js  --declarations-path ../../../devextreme/artifacts/internal-tools/Declarations.json --output-path ./packages/devextreme-react/metadata/integration-data.json --version 22_1"
+    "update-integration-meta": "npm run add-genrator && dx-tools integration-data-generator --js-scripts ../devextreme/js  --declarations-path ../../../devextreme/artifacts/internal-tools/Declarations.json --output-path ./packages/devextreme-react/metadata/integration-data.json --version 22_1"
   },
   "keywords": [
     "react",

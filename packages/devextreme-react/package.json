@@ -11,9 +11,8 @@
   "types": "index.d.ts",
   "scripts": {
     "clean": "gulp clean",
-    "add-generator": "npx lerna add devextreme-react-generator --scope=devextreme-react --dev",
-    "build": "npm run clean && npm run add-generator && gulp generate",
-    "pack": "npm run clean && npm run add-generator && gulp npm.pack",
+    "build": "npm run clean && gulp generate",
+    "pack": "npm run clean && gulp npm.pack",
     "test": "npm run build && jest"
   },
   "keywords": [
