@@ -29,7 +29,7 @@ jobs:
     - name: Use Node.js 16
       uses: actions/setup-node@v2
       with:
-        node-version: '16'
+        node-version: '15'
 
     - name: Install packages in devextreme repo
       run: |
@@ -42,8 +42,12 @@ jobs:
 
     - name: Install devextreme package
       run: |
-        npx lerna add ../devextreme/artifacts/npm/devextreme packages/devextreme-react --dev --no-bootstrap
-        npx lerna add ../devextreme/artifacts/npm/devextreme packages/sandbox --dev --no-bootstrap
+        cd ./packages/devextreme-react
+        npm install --save-dev ../../../devextreme/artifacts/npm/devextreme
+        cd ../sandbox
+        npm install --save-dev ../../../devextreme/artifacts/npm/devextreme
+        cd ../../
+        npm install --save-dev ../devextreme/artifacts/npm/devextreme
 
     - name: Run npm install
       run: npm install --no-audit --no-fund
