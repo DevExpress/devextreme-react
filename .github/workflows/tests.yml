@@ -42,12 +42,8 @@ jobs:
 
     - name: Install devextreme package
       run: |
-        cd ./packages/devextreme-react
-        npm install --save-dev ../../../devextreme/artifacts/npm/devextreme
-        cd ../sandbox
-        npm install --save-dev ../../../devextreme/artifacts/npm/devextreme
-        cd ../../
-        npm install --save-dev ../devextreme/artifacts/npm/devextreme
+        npx lerna add devextreme@file:../devextreme/artifacts/npm/devextreme/ --dev --no-bootstrap --scope=devextreme-react --exact
+        npx lerna add devextreme@file:../devextreme/artifacts/npm/devextreme/ --dev --no-bootstrap --scope=sandbox --exact
 
     - name: Run npm install
       run: npm install --no-audit --no-fund
