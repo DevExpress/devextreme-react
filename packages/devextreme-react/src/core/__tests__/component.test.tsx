@@ -55,6 +55,26 @@ describe('rendering', () => {
     expect(templatesRendererRenderFn).toHaveBeenCalledTimes(1);
   });
 
+  it('renders component with children correctly after unmount', () => {
+    console.log('ddddd')
+    const component = <TestComponent>
+      <div>Test</div>
+    </TestComponent>;
+    const { container, unmount, rerender } = render(
+      component,
+    );
+
+    unmount();
+    rerender(component);
+
+    expect(container.children.length).toBe(1);
+
+    const content = container.firstChild as HTMLElement;
+    expect(content.tagName.toLowerCase()).toBe('div');
+    expect(content.children.length).toBe(1);
+    expect(content.children[0].tagName.toLowerCase()).toBe('div');
+  });
+
   it('renders portal component without children correctly', () => {
     const createPortalFn = jest.spyOn(ReactDOM, 'createPortal');
     const templatesRendererRenderFn = jest.spyOn(TemplatesRenderer.prototype, 'render');
