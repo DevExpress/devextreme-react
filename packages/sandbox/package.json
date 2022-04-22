@@ -11,12 +11,12 @@
   "dependencies": {
     "devextreme": "22.1-next",
     "devextreme-react": "~22.1.0",
-    "react": "^16.5.2",
-    "react-dom": "^16.5.2"
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
   },
   "devDependencies": {
-    "@types/react": "^16.9.2",
-    "@types/react-dom": "^16.0.9",
+    "@types/react": "^18.0.5",
+    "@types/react-dom": "^18.0.1",
     "css-loader": "^2.1.0",
     "source-map-loader": "^0.2.4",
     "style-loader": "^0.23.1",
