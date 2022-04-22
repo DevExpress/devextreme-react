@@ -7,7 +7,15 @@
         "node": true,
         "jest": true
     },
-    "ignorePatterns": ["packages/devextreme-react/src/*.ts", "packages/devextreme-react/src/ui/*.ts", "node_modules", "dist"],
+    "ignorePatterns": [
+        "packages/devextreme-react/src/*.ts",
+        "packages/devextreme-react/src/ui/*.ts",
+        "node_modules",
+        "dist",
+        "packages/devextreme-react/**/*.test.tsx",
+        "packages/devextreme-react/**/*.test.ts",
+        "packages/sandbox"
+    ],
     "parserOptions": {
         "project": ["./tsconfig.json", "./packages/*/tsconfig.json"]
     },
@@ -15,7 +23,8 @@
         "import/no-cycle": "warn",
         "no-param-reassign": "warn",
         "no-underscore-dangle": "warn",
-        "@typescript-eslint/no-explicit-any": "warn"
+        "@typescript-eslint/no-explicit-any": "warn",
+        "no-restricted-globals": "off"
     },
     "overrides": [
         {
