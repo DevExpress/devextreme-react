@@ -335,6 +335,8 @@ const renderOptionsInterface: (model: {
     + '  <#= prop.name #>?: <#= prop.type #>;\n'
 + '<#~#>'
 
++ '  children?: unknown;\n'
+
 + '}',
 );
 
@@ -490,6 +492,11 @@ function generate(component: IComponent): string {
             });
           }
         }
+
+        options.push({
+          name: 'children',
+          type: 'unknown',
+        });
 
         return {
           className: c.className,

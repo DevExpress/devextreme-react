@@ -10,6 +10,7 @@ import dxCLASS_NAME, {
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 
 interface ICLASS_NAMEOptions extends Properties, IHtmlOptions {
+  children?: unknown;
 }
 
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
@@ -87,6 +88,7 @@ import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 
 interface ICLASS_NAMEOptions<T1 = any, T2 = any> extends Properties<T1, T2>, IHtmlOptions {
   dataSource?: Properties<T1, T2>["dataSource"];
+  children?: unknown;
 }
 
 class CLASS_NAME<T1 = any, T2 = any> extends BaseComponent<ICLASS_NAMEOptions<T1, T2>> {
@@ -148,6 +150,7 @@ interface ICLASS_NAMEOptions extends Properties, IHtmlOptions {
   optionRender?: (...params: any) => React.ReactNode;
   optionComponent?: React.ComponentType<any>;
   optionKeyFn?: (data: any) => string;
+  children?: unknown;
 }
 
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
@@ -200,6 +203,7 @@ interface ICLASS_NAMEOptions extends Properties, IHtmlOptions {
   anotherOptionRender?: (...params: any) => React.ReactNode;
   anotherOptionComponent?: React.ComponentType<any>;
   anotherOptionKeyFn?: (data: any) => string;
+  children?: unknown;
 }
 
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
@@ -254,6 +258,7 @@ interface ICLASS_NAMEOptions extends Properties, IHtmlOptions {
   render?: (...params: any) => React.ReactNode;
   component?: React.ComponentType<any>;
   keyFn?: (data: any) => string;
+  children?: unknown;
 }
 
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
@@ -304,6 +309,7 @@ import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 interface ICLASS_NAMEOptions extends Properties, IHtmlOptions {
   defaultOption1?: someType;
   onOption1Change?: (value: someType) => void;
+  children?: unknown;
 }
 
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
@@ -355,6 +361,7 @@ interface ICLASS_NAMEOptions extends Properties, IHtmlOptions {
   defaultOption2?: anotherType;
   onOption1Change?: (value: someType) => void;
   onOption2Change?: (value: anotherType) => void;
+  children?: unknown;
 }
 
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
@@ -406,6 +413,7 @@ import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 interface ICLASS_NAMEOptions extends Properties, IHtmlOptions {
   defaultOption1?: someType;
   onOption1Change?: (value: someType) => void;
+  children?: unknown;
 }
 
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
@@ -458,6 +466,7 @@ import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 import NestedOption from "CONFIG_COMPONENT_PATH";
 
 interface ICLASS_NAMEOptions extends Properties, IHtmlOptions {
+  children?: unknown;
 }
 
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
@@ -480,6 +489,7 @@ interface IOpt_1_ComponentProps {
       sub_sub_sub_opt_6?: TYPE_3;
     };
   };
+  children?: unknown;
 }
 class Opt_1_Component extends NestedOption<IOpt_1_ComponentProps> {
   public static OptionName = "opt_1";
@@ -489,6 +499,7 @@ class Opt_1_Component extends NestedOption<IOpt_1_ComponentProps> {
 // Opt_1_Component
 interface IOpt_6_SubComponentProps {
   sub_sub_sub_opt_8?: TYPE_4;
+  children?: unknown;
 }
 class Opt_6_SubComponent extends NestedOption<IOpt_6_SubComponentProps> {
   public static OptionName = "sub_sub_opt_7";
@@ -572,6 +583,7 @@ import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 import NestedOption from "CONFIG_COMPONENT_PATH";
 
 interface ICLASS_NAMEOptions extends Properties, IHtmlOptions {
+  children?: unknown;
 }
 
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
@@ -588,6 +600,7 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 // CLASS_NAME
 interface IOpt_1_ComponentProps {
   sub_opt_2?: TYPE_1;
+  children?: unknown;
 }
 class Opt_1_Component extends NestedOption<IOpt_1_ComponentProps> {
   public static OptionName = "opt_1";
@@ -640,6 +653,7 @@ import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 import NestedOption from "CONFIG_COMPONENT_PATH";
 
 interface ICLASS_NAMEOptions extends Properties, IHtmlOptions {
+  children?: unknown;
 }
 
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
@@ -661,6 +675,7 @@ interface IOpt_1_ComponentProps {
   };
   defaultSub_opt_2?: TYPE_1;
   onSub_opt_2Change?: (value: TYPE_1) => void;
+  children?: unknown;
 }
 class Opt_1_Component extends NestedOption<IOpt_1_ComponentProps> {
   public static OptionName = "opt_1";
@@ -725,6 +740,7 @@ import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 import NestedOption from "CONFIG_COMPONENT_PATH";
 
 interface ICLASS_NAMEOptions extends Properties, IHtmlOptions {
+  children?: unknown;
 }
 
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
@@ -744,6 +760,7 @@ interface IOpt_1_ComponentProps {
   optionRender?: (...params: any) => React.ReactNode;
   optionComponent?: React.ComponentType<any>;
   optionKeyFn?: (data: any) => string;
+  children?: unknown;
 }
 class Opt_1_Component extends NestedOption<IOpt_1_ComponentProps> {
   public static OptionName = "opt_1";
@@ -801,6 +818,7 @@ import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 import NestedOption from "CONFIG_COMPONENT_PATH";
 
 interface ICLASS_NAMEOptions extends Properties, IHtmlOptions {
+  children?: unknown;
 }
 
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
@@ -817,6 +835,7 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 // CLASS_NAME
 interface IOpt_1_ComponentProps {
   sub_opt_2?: TYPE_1;
+  children?: unknown;
 }
 class Opt_1_Component extends NestedOption<IOpt_1_ComponentProps> {
   public static OptionName = "opt_1";
@@ -874,6 +893,7 @@ import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 import NestedOption from "CONFIG_COMPONENT_PATH";
 
 interface ICLASS_NAMEOptions extends Properties, IHtmlOptions {
+  children?: unknown;
 }
 
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
@@ -894,6 +914,7 @@ interface IOpt_1_ComponentProps {
     subsub_1?: TYPE_3;
     subsub_2?: TYPE_4;
   }[];
+  children?: unknown;
 }
 class Opt_1_Component extends NestedOption<IOpt_1_ComponentProps> {
   public static OptionName = "opt_1";
@@ -967,6 +988,7 @@ import * as PropTypes from "prop-types";
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 
 interface ICLASS_NAMEOptions extends Properties, IHtmlOptions {
+  children?: unknown;
 }
 
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
@@ -1015,6 +1037,7 @@ import * as PropTypes from "prop-types";
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 
 interface ICLASS_NAMEOptions extends Properties, IHtmlOptions {
+  children?: unknown;
 }
 
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
@@ -1067,6 +1090,7 @@ import * as PropTypes from "prop-types";
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 
 interface ICLASS_NAMEOptions extends Properties, IHtmlOptions {
+  children?: unknown;
 }
 
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
@@ -1118,6 +1142,7 @@ import * as PropTypes from "prop-types";
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 
 interface ICLASS_NAMEOptions extends Properties, IHtmlOptions {
+  children?: unknown;
 }
 
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
@@ -1185,6 +1210,7 @@ import dxCLASS_NAME, {
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 
 interface ICLASS_NAMEOptions extends Properties, IHtmlOptions {
+  children?: unknown;
 }
 
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
@@ -1233,6 +1259,7 @@ import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 import NestedOption from "CONFIG_COMPONENT_PATH";
 
 interface ICLASS_NAMEOptions extends Properties, IHtmlOptions {
+  children?: unknown;
 }
 
 class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
@@ -1248,6 +1275,7 @@ class CLASS_NAME extends BaseComponent<ICLASS_NAMEOptions> {
 // owners:
 // CLASS_NAME
 interface IOpt_1_ComponentProps {
+  children?: unknown;
 }
 class Opt_1_Component extends NestedOption<IOpt_1_ComponentProps> {
   public static OptionName = "opt_1";
