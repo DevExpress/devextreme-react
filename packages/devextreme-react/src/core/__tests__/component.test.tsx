@@ -56,10 +56,11 @@ describe('rendering', () => {
   });
 
   it('renders component with children correctly after unmount', () => {
-    console.log('ddddd')
-    const component = <TestComponent>
-      <div>Test</div>
-    </TestComponent>;
+    const component = (
+      <TestComponent>
+        <div>Test</div>
+      </TestComponent>
+    );
     const { container, unmount, rerender } = render(
       component,
     );
