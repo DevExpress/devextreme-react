@@ -24,15 +24,7 @@ class TemplatesStore {
     }
   }
 
-  // public addPendingRemove(templateId: string): void {
-  //   this._pendingTemplates.push(templateId);
-  // }
-
-  // public removePendingRemove(templateId: string): void {
-  //   this._pendingTemplates.splice(this._pendingTemplates.indexOf(templateId), 1);
-  // }
-
-  protected removeDefferedTemplate(): void {
+  private removeDefferedTemplate(): void {
     Object.entries(this._templates)
       .filter(([, templateInfo]) => (templateInfo.isDeferredRemove))
       .forEach(([templateId]) => {
