@@ -243,7 +243,7 @@ const renderNestedComponent: (model: {
     + '// <#= owner #>\n'
 + '<#~#>'
 
-+ 'interface <#= it.propsType #> <#= it.renderedType #>\n'
++ 'type <#= it.propsType #> = React.PropsWithChildren<<#= it.renderedType #>>\n'
 
 + 'class <#= it.className #> extends NestedOption<<#= it.propsType #>> {'}${
     L1}public static OptionName = "<#= it.optionName #>";`
@@ -298,7 +298,7 @@ const renderOptionsInterface: (model: {
     type: string;
   }>;
 }) => string = createTempate(
-  'interface <#= it.optionsName #> extends IOptions, IHtmlOptions {\n'
+  'type <#= it.optionsName #> = React.PropsWithChildren<IOptions & IHtmlOptions & {\n'
 
 + '<#~ it.templates :template #>'
     + `  <#= template.render #>?: ${TYPE_RENDER};\n`
@@ -314,7 +314,7 @@ const renderOptionsInterface: (model: {
     + '  <#= prop.name #>?: <#= prop.type #>;\n'
 + '<#~#>'
 
-+ '}',
++ '}>',
 );
 
 const renderComponent: (model: {
