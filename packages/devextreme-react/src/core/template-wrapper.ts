@@ -8,7 +8,7 @@ interface ITemplateWrapperProps {
   content: any;
   container: Element;
   onRemoved: () => void;
-  onRendered?: () => void;
+  onDidMount?: () => void;
   key: string;
 }
 
@@ -38,7 +38,7 @@ class TemplateWrapper extends React.PureComponent<ITemplateWrapperProps, ITempla
 
   public componentDidMount(): void {
     this._subscribeOnRemove();
-    this.props.onRendered?.();
+    this.props.onDidMount?.();
   }
 
   public componentDidUpdate(): void {
