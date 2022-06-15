@@ -330,7 +330,7 @@ const renderComponent: (model: {
   isPortalComponent?: boolean;
   useRequestAnimationFrameFlag?: boolean;
 }) => string = createTempate(
-  `class <#= it.className #> extends BaseComponent<<#= it.optionsName #>> {
+  `class <#= it.className #> extends BaseComponent<React.PropsWithChildren<<#= it.optionsName #>>> {
 
   public get instance(): <#= it.widgetName #> {
     return this._instance;
