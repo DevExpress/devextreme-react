@@ -15,7 +15,7 @@
     "del-cli": "^3.0.1",
     "devextreme-internal-tools": "^8.0.0",
     "eslint": "^7.32.0",
-    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-airbnb-typescript": "^12.3.1",
     "eslint-config-devextreme": "^0.1.12",
     "eslint-plugin-import": "^2.22.1",
