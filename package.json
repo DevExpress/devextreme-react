@@ -26,7 +26,7 @@
     "eslint-plugin-react": "^7.20.3",
     "eslint-plugin-react-hooks": "^4.0.8",
     "eslint-plugin-spellcheck": "0.0.19",
-    "gulp": "^4.0.0",
+    "gulp": "^4.0.2",
     "gulp-eslint": "^6.0.0",
     "istanbul": "^0.4.5",
     "istanbul-cobertura-badger": "^1.3.1",
