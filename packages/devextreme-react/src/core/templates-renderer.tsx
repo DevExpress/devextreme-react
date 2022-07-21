@@ -26,11 +26,10 @@ class TemplatesRenderer extends React.PureComponent<{ templatesStore: TemplatesS
 
     const updateFunc = useDeferUpdate ? deferUpdate : requestAnimationFrame;
     updateFunc(() => {
+      this.updateScheduled = false;
       if (this.mounted) {
         this.forceUpdate();
       }
-
-      this.updateScheduled = false;
     });
   }
 
