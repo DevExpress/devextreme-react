@@ -93,7 +93,7 @@ global.console.error = (message) => {
 });
 
 describe('option update', () => {
-  it('should call forceUpdateCallback and reset "updateScheduled" after forceUpdateCallback', async () => {
+  it('should call forceUpdateCallback and reset flag "updateScheduled" after forceUpdateCallback', async () => {
     const ref = React.createRef<TemplatesRenderer>();
     const templatesStore = new TemplatesStore(() => { });
 
@@ -107,6 +107,7 @@ describe('option update', () => {
 
     const current = ref.current;
     const spyForceUpdateCallback = jest.spyOn(current, 'forceUpdateCallback');
+    const forceUpdateCallback = current.forceUpdateCallback;
 
     current.scheduleUpdate(true);
 
@@ -114,17 +115,14 @@ describe('option update', () => {
 
     spyForceUpdateCallback.mockClear();
 
-    const forceUpdateCallback = current.forceUpdateCallback;
-
     current.forceUpdateCallback = () => {
-      expect(current['updateScheduled']).toEqual(true)
+      expect((current as any).updateScheduled).toEqual(true);
+
       forceUpdateCallback();
 
-      expect(current['updateScheduled']).toEqual(false)
+      expect((current as any).updateScheduled).toEqual(false);
     }
 
-    current.scheduleUpdate(true)
-
-    current.forceUpdateCallback = forceUpdateCallback;
+    current.scheduleUpdate(true);
   })
 })
