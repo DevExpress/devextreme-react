@@ -17,15 +17,17 @@ global.console.error = (message) => {
   throw message;
 };
 
-jest.mock('devextreme/animation/frame', () => ({
-  requestAnimationFrame: jest.fn(),
-}));
 
-jest.mock('devextreme/core/utils/common', () => ({
-  deferUpdate: jest.fn(),
-}));
 [true, false].forEach((useDeferUpdate) => {
   describe(`useDeferUpdate === ${useDeferUpdate}`, () => {
+    jest.mock('devextreme/animation/frame', () => ({
+      requestAnimationFrame: jest.fn(),
+    }));
+
+    jest.mock('devextreme/core/utils/common', () => ({
+      deferUpdate: jest.fn(),
+    }));
+
     const updateFunctionMock = useDeferUpdate
       ? deferUpdate as jest.Mock
       : requestAnimationFrame as jest.Mock;
@@ -89,3 +91,40 @@ jest.mock('devextreme/core/utils/common', () => ({
     });
   });
 });
+
+describe('option update', () => {
+  it('should call forceUpdateCallback and reset "updateScheduled" after forceUpdateCallback', async () => {
+    const ref = React.createRef<TemplatesRenderer>();
+    const templatesStore = new TemplatesStore(() => { });
+
+    render(<TemplatesRenderer templatesStore={templatesStore} ref={ref} />);
+
+    expect(ref.current).toBeInstanceOf(TemplatesRenderer);
+
+    if (!ref.current) {
+      return;
+    }
+
+    const current = ref.current;
+    const spyForceUpdateCallback = jest.spyOn(current, 'forceUpdateCallback');
+
+    current.scheduleUpdate(true);
+
+    expect(spyForceUpdateCallback).toHaveBeenCalledTimes(1);
+
+    spyForceUpdateCallback.mockClear();
+
+    const forceUpdateCallback = current.forceUpdateCallback;
+
+    current.forceUpdateCallback = () => {
+      expect(current['updateScheduled']).toEqual(true)
+      forceUpdateCallback();
+
+      expect(current['updateScheduled']).toEqual(false)
+    }
+
+    current.scheduleUpdate(true)
+
+    current.forceUpdateCallback = forceUpdateCallback;
+  })
+})
