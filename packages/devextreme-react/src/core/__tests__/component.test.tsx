@@ -11,6 +11,12 @@ import {
   WidgetClass,
 } from './test-component';
 import { TemplatesRenderer } from '../templates-renderer';
+import {
+  DataGrid,
+  Column,
+  GroupPanel,
+  SearchPanel,
+} from '../../data-grid';
 
 jest.useFakeTimers();
 
@@ -260,6 +266,23 @@ describe('element attrs management', () => {
     const element: HTMLElement = container.firstChild as HTMLElement;
 
     expect(element.className).toBe('');
+  });
+});
+
+describe('apply defaults', () => {
+  it('data-grid apply defaults options', () => {
+    const { container } = render(
+      <DataGrid
+        dataSource={[]}
+        keyExpr="ID"
+      >
+        <GroupPanel defaultVisible />
+        <SearchPanel defaultVisible />
+        <Column dataField="State" dataType="string" groupIndex={0} />
+      </DataGrid>,
+    );
+
+    expect(container.querySelectorAll('.dx-datagrid-group-panel, .dx-datagrid-search-panel').length).toEqual(2);
   });
 });
 
