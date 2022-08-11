@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-globals */
 import TemplatesManager from './templates-manager';
 
 import { getChanges } from './configuration/comparer';
@@ -6,8 +7,17 @@ import { buildConfig, findValue, ValueType } from './configuration/tree';
 import { mergeNameParts, shallowEquals } from './configuration/utils';
 import { capitalizeFirstLetter } from './helpers';
 
+const optionsManagers = new Set<OptionsManager>();
+
+export function scheduleGuards(): void {
+  optionsManagers.forEach((optionManager) => optionManager.scheduleGuards());
+}
+export function unscheduleGuards(): void {
+  optionsManagers.forEach((optionManager) => optionManager.unscheduleGuards());
+}
+
 class OptionsManager {
-  private readonly guards: Record<string, number> = {};
+  private readonly guards: Record<string, { handler: ()=> void, guardId?: number }> = {};
 
   private templatesManager: TemplatesManager;
 
@@ -23,6 +33,7 @@ class OptionsManager {
 
   constructor(templatesManager: TemplatesManager) {
     this.templatesManager = templatesManager;
+    optionsManagers.add(this);
 
     this.onOptionChanged = this.onOptionChanged.bind(this);
     this.wrapOptionValue = this.wrapOptionValue.bind(this);
@@ -103,7 +114,8 @@ class OptionsManager {
 
     changedOptions.forEach(([name, value]) => {
       const currentPropValue = config.options[name];
-      if (config.options.hasOwnProperty(name) && currentPropValue !== value) {
+      if (Object.prototype.hasOwnProperty.call(config.options, name)
+      && currentPropValue !== value) {
         this.setValue(name, currentPropValue);
       }
     });
@@ -156,10 +168,30 @@ class OptionsManager {
   }
 
   public dispose(): void {
+    optionsManagers.delete(this);
     Object.keys(this.guards).forEach((optionName) => {
-      window.clearTimeout(this.guards[optionName]);
+      window.clearTimeout(this.guards[optionName].guardId);
       delete this.guards[optionName];
     });
+  }
+
+  public unscheduleGuards(): void {
+    Object.values(this.guards)
+      .forEach((guardInfo) => {
+        window.clearTimeout(guardInfo.guardId);
+      });
+  }
+
+  public scheduleGuards() {
+    Object.values(this.guards)
+      .forEach((guardInfo) => {
+        window.clearTimeout(guardInfo.guardId);
+        // eslint-disable-next-line no-param-reassign
+        guardInfo.guardId = window.setTimeout(() => {
+          window.clearTimeout(guardInfo.guardId);
+          guardInfo.handler();
+        });
+      });
   }
 
   private isOptionSubscribable(optionName: string): boolean {
@@ -215,14 +247,11 @@ class OptionsManager {
     if (this.guards[optionName] !== undefined) {
       return;
     }
-
-    const guardId = window.setTimeout(() => {
+    const handler = () => {
       this.setValue(optionName, optionValue);
-      window.clearTimeout(guardId);
       delete this.guards[optionName];
-    });
-
-    this.guards[optionName] = guardId;
+    };
+    this.guards[optionName] = { handler, guardId: window.setTimeout(() => { handler(); }) };
   }
 
   private resetOption(name: string) {
@@ -231,7 +260,7 @@ class OptionsManager {
 
   private setValue(name: string, value: unknown) {
     if (this.guards[name]) {
-      window.clearTimeout(this.guards[name]);
+      window.clearTimeout(this.guards[name].guardId);
       delete this.guards[name];
     }
 

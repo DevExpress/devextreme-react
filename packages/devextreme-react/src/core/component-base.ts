@@ -2,7 +2,7 @@ import * as events from 'devextreme/events';
 import * as React from 'react';
 import { createPortal } from 'react-dom';
 
-import { OptionsManager } from './options-manager';
+import { OptionsManager, scheduleGuards, unscheduleGuards } from './options-manager';
 import { ITemplateMeta } from './template';
 import TemplatesManager from './templates-manager';
 import { TemplatesRenderer } from './templates-renderer';
@@ -94,12 +94,12 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
 
   public componentDidUpdate(prevProps: P): void {
     this._updateCssClasses(prevProps, this.props);
-
     const config = this._getConfig();
     this._optionsManager.update(config);
     if (this._templatesRendererRef) {
-      this._templatesRendererRef.scheduleUpdate(this.useDeferUpdateForTemplates);
+      this._templatesRendererRef.scheduleUpdate(this.useDeferUpdateForTemplates, scheduleGuards);
     }
+    unscheduleGuards();
   }
 
   public componentWillUnmount(): void {
