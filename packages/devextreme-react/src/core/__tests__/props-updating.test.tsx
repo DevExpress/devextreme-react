@@ -617,7 +617,7 @@ describe('cfg-component option control', () => {
       beginUpdate: jest.fn(),
       endUpdate: jest.fn(),
     }, config, [], []);
-    jest.spyOn(optionsManager as any, 'setGuard');
+    jest.spyOn(optionsManager as any, 'addGuard');
     jest.spyOn(optionsManager as any, 'setValue');
     jest.spyOn(OptionsManagerModule, 'scheduleGuards');
     jest.spyOn(OptionsManagerModule, 'unscheduleGuards');
@@ -637,7 +637,7 @@ describe('cfg-component option control', () => {
     // simulate option changing in jQuery control
     optionsManager.onOptionChanged({ name: 'value', value: 2, fullName: 'value' });
     // add guards for restore value
-    expect((optionsManager as any).setGuard).toBeCalled();
+    expect((optionsManager as any).addGuard).toBeCalled();
     // but no call it
     expect((optionsManager as any).setValue).not.toBeCalled();
     // re-render container. Unschedule guards and wait template render for schedule it back

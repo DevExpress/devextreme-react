@@ -8,14 +8,14 @@ import type TemplatesManager from './templates-manager';
 import type { IConfigNode } from './configuration/config-node';
 
 const optionsManagers = new Set<OptionsManager>();
-let guadtTimeoutHandler = -1;
+let guardTimeoutHandler = -1;
 
 export function unscheduleGuards(): void {
-  clearTimeout(guadtTimeoutHandler);
+  clearTimeout(guardTimeoutHandler);
 }
 export function scheduleGuards(): void {
   unscheduleGuards();
-  guadtTimeoutHandler = window.setTimeout(() => {
+  guardTimeoutHandler = window.setTimeout(() => {
     optionsManagers.forEach((optionManager) => optionManager.execGuards());
   });
 }

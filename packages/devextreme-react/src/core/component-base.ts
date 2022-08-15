@@ -2,6 +2,10 @@ import * as events from 'devextreme/events';
 import * as React from 'react';
 import { createPortal } from 'react-dom';
 
+import TemplatesManager from './templates-manager';
+import { TemplatesRenderer } from './templates-renderer';
+import { TemplatesStore } from './templates-store';
+
 import { OptionsManager, scheduleGuards, unscheduleGuards } from './options-manager';
 import { ITemplateMeta } from './template';
 import { elementPropNames, getClassName } from './widget-config';
@@ -10,10 +14,6 @@ import { IConfigNode } from './configuration/config-node';
 import { IExpectedChild } from './configuration/react/element';
 import { buildConfigTree } from './configuration/react/tree';
 import { isIE } from './configuration/utils';
-
-import type { TemplatesRenderer } from './templates-renderer';
-import type { TemplatesStore } from './templates-store';
-import type TemplatesManager from './templates-manager';
 
 const DX_REMOVE_EVENT = 'dxremove';
 
