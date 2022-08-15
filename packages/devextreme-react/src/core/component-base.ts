@@ -4,15 +4,16 @@ import { createPortal } from 'react-dom';
 
 import { OptionsManager, scheduleGuards, unscheduleGuards } from './options-manager';
 import { ITemplateMeta } from './template';
-import TemplatesManager from './templates-manager';
-import { TemplatesRenderer } from './templates-renderer';
-import { TemplatesStore } from './templates-store';
 import { elementPropNames, getClassName } from './widget-config';
 
 import { IConfigNode } from './configuration/config-node';
 import { IExpectedChild } from './configuration/react/element';
 import { buildConfigTree } from './configuration/react/tree';
 import { isIE } from './configuration/utils';
+
+import type { TemplatesRenderer } from './templates-renderer';
+import type { TemplatesStore } from './templates-store';
+import type TemplatesManager from './templates-manager';
 
 const DX_REMOVE_EVENT = 'dxremove';
 

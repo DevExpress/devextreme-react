@@ -1,23 +1,27 @@
 /* eslint-disable no-restricted-globals */
-import TemplatesManager from './templates-manager';
-
 import { getChanges } from './configuration/comparer';
-import { IConfigNode } from './configuration/config-node';
 import { buildConfig, findValue, ValueType } from './configuration/tree';
 import { mergeNameParts, shallowEquals } from './configuration/utils';
 import { capitalizeFirstLetter } from './helpers';
 
-const optionsManagers = new Set<OptionsManager>();
+import type TemplatesManager from './templates-manager';
+import type { IConfigNode } from './configuration/config-node';
 
-export function scheduleGuards(): void {
-  optionsManagers.forEach((optionManager) => optionManager.scheduleGuards());
-}
+const optionsManagers = new Set<OptionsManager>();
+let guadtTimeoutHandler = -1;
+
 export function unscheduleGuards(): void {
-  optionsManagers.forEach((optionManager) => optionManager.unscheduleGuards());
+  clearTimeout(guadtTimeoutHandler);
+}
+export function scheduleGuards(): void {
+  unscheduleGuards();
+  guadtTimeoutHandler = window.setTimeout(() => {
+    optionsManagers.forEach((optionManager) => optionManager.execGuards());
+  });
 }
 
 class OptionsManager {
-  private readonly guards: Record<string, { handler: ()=> void, guardId?: number }> = {};
+  private readonly guards: Record<string, ()=> void> = {};
 
   private templatesManager: TemplatesManager;
 
@@ -73,7 +77,7 @@ class OptionsManager {
   }
 
   public update(config: IConfigNode): void {
-    const changedOptions:Array<[string, any]> = [];
+    const changedOptions:Array<[string, unknown]> = [];
     const optionChangedHandler = ({ value, fullName }) => {
       changedOptions.push([fullName, value]);
     };
@@ -141,7 +145,7 @@ class OptionsManager {
     if (value instanceof Array && type === ValueType.Array) {
       for (let i = 0; i < value.length; i += 1) {
         if (value[i] !== (e.value as Array<unknown>)?.[i]) {
-          this.setGuard(e.fullName, value);
+          this.addGuard(e.fullName, value);
           return;
         }
       }
@@ -150,7 +154,7 @@ class OptionsManager {
         if (value[key] === (e.value as Record<string, unknown>)?.[key]) {
           return;
         }
-        this.setGuard(mergeNameParts(e.fullName, key), value[key]);
+        this.addGuard(mergeNameParts(e.fullName, key), value[key]);
       });
     } else {
       const valuesAreEqual = value === e.value;
@@ -163,35 +167,15 @@ class OptionsManager {
         return;
       }
 
-      this.setGuard(e.fullName, value);
+      this.addGuard(e.fullName, value);
     }
   }
 
   public dispose(): void {
     optionsManagers.delete(this);
     Object.keys(this.guards).forEach((optionName) => {
-      window.clearTimeout(this.guards[optionName].guardId);
       delete this.guards[optionName];
     });
-  }
-
-  public unscheduleGuards(): void {
-    Object.values(this.guards)
-      .forEach((guardInfo) => {
-        window.clearTimeout(guardInfo.guardId);
-      });
-  }
-
-  public scheduleGuards() {
-    Object.values(this.guards)
-      .forEach((guardInfo) => {
-        window.clearTimeout(guardInfo.guardId);
-        // eslint-disable-next-line no-param-reassign
-        guardInfo.guardId = window.setTimeout(() => {
-          window.clearTimeout(guardInfo.guardId);
-          guardInfo.handler();
-        });
-      });
   }
 
   private isOptionSubscribable(optionName: string): boolean {
@@ -243,7 +227,7 @@ class OptionsManager {
     return value;
   }
 
-  private setGuard(optionName: string, optionValue: unknown): void {
+  private addGuard(optionName: string, optionValue: unknown): void {
     if (this.guards[optionName] !== undefined) {
       return;
     }
@@ -251,7 +235,13 @@ class OptionsManager {
       this.setValue(optionName, optionValue);
       delete this.guards[optionName];
     };
-    this.guards[optionName] = { handler, guardId: window.setTimeout(() => { handler(); }) };
+    this.guards[optionName] = handler;
+    scheduleGuards();
+  }
+
+  public execGuards(): void {
+    Object.values(this.guards)
+      .forEach((handler) => handler());
   }
 
   private resetOption(name: string) {
@@ -260,7 +250,6 @@ class OptionsManager {
 
   private setValue(name: string, value: unknown) {
     if (this.guards[name]) {
-      window.clearTimeout(this.guards[name].guardId);
       delete this.guards[name];
     }
 

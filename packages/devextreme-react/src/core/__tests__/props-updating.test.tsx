@@ -596,7 +596,7 @@ describe('cfg-component option control', () => {
   });
 
   // T1106899
-  it.skip('apply cfg-component option value if value has changes', () => {
+  it('apply cfg-component option value if value has changes', () => {
     const optionsManager = new OptionsManagerModule.OptionsManager(
       new TemplatesManager(new TemplatesStore(() => {})),
     );
