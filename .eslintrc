@@ -1,6 +1,7 @@
 {
     "extends": [
-        "devextreme/typescript"
+        "devextreme/typescript",
+        "devextreme/spell-check"
     ],
     "env": {
         "browser": true,
@@ -15,14 +16,30 @@
         "import/no-cycle": "warn",
         "no-param-reassign": "warn",
         "no-underscore-dangle": "warn",
-        "@typescript-eslint/no-explicit-any": "warn"
+        "@typescript-eslint/no-explicit-any": "warn",
+        "spellcheck/spell-checker": [1, {
+            "lang": "en_US",
+            "comments": false,
+            "strings": false,
+            "identifiers": true,
+            "templates": false,
+            "skipIfMatch": [ "^\\$?..$" ],
+            "skipWords": [
+               "unschedule",
+               "subscribable",
+               "renderer",
+               "rerender"
+            ]
+        }
+    ]
     },
     "overrides": [
         {
-            "files": [ "./packages/sandbox/*.ts", "./packages/sandbox/*.tsx" ],
+            "files": [ "./packages/sandbox/*.ts", "./packages/sandbox/*.tsx", "packages/devextreme-react/src/*.ts" ],
             "rules": {
-                "import/extensions": "warn"
+                "import/extensions": "warn",
             }
         }
     ]
 }
+
