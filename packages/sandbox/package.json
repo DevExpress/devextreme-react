@@ -9,7 +9,7 @@
     "url": "https://github.com/DevExpress/devextreme-react.git"
   },
   "dependencies": {
-    "devextreme": "22.2-next",
+    "devextreme": "22.2.0",
     "devextreme-react": "~22.2.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0"
