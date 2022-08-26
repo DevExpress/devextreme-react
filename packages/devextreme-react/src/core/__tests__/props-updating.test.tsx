@@ -88,6 +88,7 @@ describe('option update', () => {
   it('calls option method on props update', () => {
     const { rerender } = render(
       <TestComponent />,
+      {legacyRoot: true}
     );
     expect(Widget.option.mock.calls.length).toBe(0);
 
@@ -111,7 +112,7 @@ describe('option update', () => {
       );
     };
 
-    const { rerender } = render(<TestContainer value={123} />);
+    const { rerender } = render(<TestContainer value={123} />, {legacyRoot: true});
     rerender(<TestContainer value={234} />);
 
     jest.runAllTimers();
@@ -130,7 +131,7 @@ describe('option update', () => {
         </TestComponentWithExpectation>
       );
     };
-    const { rerender } = render(<TestContainer value={123} />);
+    const { rerender } = render(<TestContainer value={123} />, {legacyRoot: true});
     rerender(<TestContainer value={234} />);
 
     jest.runAllTimers();
@@ -149,6 +150,7 @@ describe('option control', () => {
   it('binds callback for optionChanged', () => {
     render(
       <ControlledComponent everyOption={123} />,
+      {legacyRoot: true}
     );
 
     expect(eventHandlers).toHaveProperty('optionChanged');
@@ -168,6 +170,7 @@ describe('option control', () => {
           controlledOption="controlled"
           onControlledOptionChanged={handler}
         />,
+        {legacyRoot: true}
       );
       Widget.option.mockImplementation(
         (name: string) => {
@@ -193,6 +196,7 @@ describe('option control', () => {
           controlledOption="controlled"
           onControlledOptionChanged={jest.fn()}
         />,
+        {legacyRoot: true}
       );
 
       Widget.option.mockImplementation(
@@ -223,6 +227,7 @@ describe('option control', () => {
         <ControlledComponent
           controlledOption="controlled"
         />,
+        {legacyRoot: true}
       );
 
       Widget.endUpdate.mockImplementation(
@@ -248,6 +253,7 @@ describe('option control', () => {
           anotherOption="abc"
           onControlledOptionChanged={controlledOptionChanged}
         />,
+        {legacyRoot: true}
       );
 
       rerender(
@@ -266,6 +272,7 @@ describe('option control', () => {
     it('rolls back controlled simple option', () => {
       render(
         <ControlledComponent everyOption={value} />,
+        {legacyRoot: true}
       );
 
       fireOptionChange('everyOption', 234);
@@ -279,6 +286,7 @@ describe('option control', () => {
   it('rolls back controlled complex option', () => {
     render(
       <ControlledComponent complexOption={{ a: 123, b: 234 }} />,
+      {legacyRoot: true}
     );
 
     fireOptionChange('complexOption', {});
@@ -292,6 +300,7 @@ describe('option control', () => {
   it('no rolls back option. skipOptionsRollBack = true', () => {
     render(
       <ControlledComponent complexOption={{ a: 123, b: 234 }} />,
+      {legacyRoot: true}
     );
 
     try {
@@ -309,6 +318,7 @@ describe('option control', () => {
   it('rolls back complex option controlled field', () => {
     render(
       <ControlledComponent complexOption={{ a: 123 }} />,
+      {legacyRoot: true}
     );
 
     fireOptionChange('complexOption.a', 234);
@@ -320,6 +330,7 @@ describe('option control', () => {
   it('extra option call for check changes', () => {
     const { rerender } = render(
       <ControlledComponent everyOption={123} anotherOption="const" />,
+      {legacyRoot: true}
     );
 
     Widget.option.mockImplementation((name: string) => {
@@ -350,6 +361,7 @@ describe('option control', () => {
   it('should not rolls back complex option if shallow equals', () => {
     render(
       <ControlledComponent complexOption={{ a: 123, b: 234 }} />,
+      {legacyRoot: true}
     );
 
     fireOptionChange('complexOption', { a: 123, b: 234 });
@@ -361,6 +373,7 @@ describe('option control', () => {
   it('rolls back one simple option and updates other', () => {
     const { rerender } = render(
       <ControlledComponent everyOption={123} anotherOption="const" />,
+      {legacyRoot: true}
     );
 
     fireOptionChange('anotherOption', 'changed');
@@ -378,6 +391,7 @@ describe('option control', () => {
   it('applies simple option change', () => {
     const { rerender } = render(
       <ControlledComponent everyOption={123} />,
+      {legacyRoot: true}
     );
 
     fireOptionChange('everyOption', 234);
@@ -393,6 +407,7 @@ describe('option control', () => {
   it('applies complex option change', () => {
     const { rerender } = render(
       <ControlledComponent complexOption={{ a: 123 }} />,
+      {legacyRoot: true}
     );
 
     fireOptionChange('complexOption.b', 234);
@@ -408,6 +423,7 @@ describe('option control', () => {
   it('does not roll back not controlled simple option', () => {
     render(
       <ControlledComponent />,
+      {legacyRoot: true}
     );
 
     fireOptionChange('everyOption', 123);
@@ -418,6 +434,7 @@ describe('option control', () => {
   it('does not roll back controlled complex option not controlled field', () => {
     render(
       <ControlledComponent complexOption={{ a: 123 }} />,
+      {legacyRoot: true}
     );
 
     fireOptionChange('complexOption.b', 234);
@@ -428,6 +445,7 @@ describe('option control', () => {
   it('does not roll back not controlled complex option', () => {
     render(
       <ControlledComponent />,
+      {legacyRoot: true}
     );
 
     fireOptionChange('complexOption.b', 234);
@@ -446,6 +464,7 @@ describe('option defaults control', () => {
   it('pass default values to widget', () => {
     render(
       <ControlledComponent defaultControlledOption="default" />,
+      {legacyRoot: true}
     );
 
     expect(WidgetClass.mock.calls[0][1].controlledOption).toBe('default');
@@ -455,6 +474,7 @@ describe('option defaults control', () => {
   it('ignores option with default prefix', () => {
     render(
       <ControlledComponent defaultControlledOption="default" />,
+      {legacyRoot: true}
     );
 
     fireOptionChange('controlledOption', 'changed');
@@ -465,6 +485,7 @@ describe('option defaults control', () => {
   it('ignores 3rd-party changes in default props', () => {
     const { rerender } = render(
       <ControlledComponent defaultControlledOption="default" />,
+      {legacyRoot: true}
     );
     rerender(
       <ControlledComponent defaultControlledOption="changed" />,
@@ -487,6 +508,7 @@ describe('cfg-component option control', () => {
       <ControlledComponent>
         <NestedComponent a={123} />
       </ControlledComponent>,
+      {legacyRoot: true}
     );
 
     fireOptionChange('nestedOption.a', 234);
@@ -501,6 +523,7 @@ describe('cfg-component option control', () => {
         <CollectionNestedComponent a={1} />
         <CollectionNestedComponent a={2} />
       </TestComponentWithExpectation>,
+      {legacyRoot: true}
     );
 
     fireOptionChange('items', []);
@@ -515,6 +538,7 @@ describe('cfg-component option control', () => {
         <CollectionNestedComponent a={1} />
         <CollectionNestedComponent a={2} />
       </TestComponentWithExpectation>,
+      {legacyRoot: true}
     );
 
     fireOptionChange('items[0]', { a: 3 });
@@ -528,6 +552,7 @@ describe('cfg-component option control', () => {
       <ControlledComponent>
         <NestedComponent complexValue={{ a: 123, b: 234 }} />
       </ControlledComponent>,
+      {legacyRoot: true}
     );
 
     fireOptionChange('nestedOption.complexValue', {});
@@ -553,6 +578,7 @@ describe('cfg-component option control', () => {
       <ControlledComponent>
         <NestedComponent a={123} />
       </ControlledComponent>,
+      {legacyRoot: true}
     );
 
     fireOptionChange('nestedOption', { b: 'abc' });
@@ -566,6 +592,7 @@ describe('cfg-component option control', () => {
       <ControlledComponent>
         <NestedComponent a={123} />
       </ControlledComponent>,
+      {legacyRoot: true}
     );
 
     fireOptionChange('nestedOption', { a: 456, b: 'abc' });
@@ -584,7 +611,7 @@ describe('cfg-component option control', () => {
       );
     };
 
-    const { rerender } = render(<TestContainer value={123} />);
+    const { rerender } = render(<TestContainer value={123} />, {legacyRoot: true});
 
     fireOptionChange('nestedOption.b', 'changed');
     rerender(<TestContainer value={234} />);
@@ -632,7 +659,7 @@ describe('cfg-component option control', () => {
       );
     };
 
-    const { rerender } = render(<TestContainer value={2} />);
+    const { rerender } = render(<TestContainer value={2} />, {legacyRoot: true});
     jest.runAllTimers();
     // simulate option changing in jQuery control
     optionsManager.onOptionChanged({ name: 'value', value: 2, fullName: 'value' });
@@ -668,7 +695,7 @@ describe('cfg-component option control', () => {
       );
     };
 
-    const { rerender } = render(<TestContainer value={123} />);
+    const { rerender } = render(<TestContainer value={123} />, {legacyRoot: true});
     fireOptionChange('nestedOption.a', 234);
 
     rerender(<TestContainer value={234} />);
@@ -683,6 +710,7 @@ describe('cfg-component option control', () => {
       <ControlledComponent>
         <NestedComponent a={123} />
       </ControlledComponent>,
+      {legacyRoot: true}
     );
 
     fireOptionChange('nestedOption.b', 'abc');
@@ -703,6 +731,7 @@ describe('cfg-component option defaults control', () => {
       <ControlledComponent>
         <NestedComponent defaultC="default" />
       </ControlledComponent>,
+      {legacyRoot: true}
     );
 
     expect(WidgetClass.mock.calls[0][1].nestedOption.c).toBe('default');
@@ -712,6 +741,7 @@ describe('cfg-component option defaults control', () => {
   it('does not pass default values to widget if controlledOption set', () => {
     render(
       <ControlledComponent defaultControlledOption="default" controlledOption="controlled" />,
+      {legacyRoot: true}
     );
 
     expect(Widget.option.mock.calls.length).toBe(0);
@@ -724,6 +754,7 @@ describe('cfg-component option defaults control', () => {
       <ControlledComponent>
         <NestedComponent defaultC="default" />
       </ControlledComponent>,
+      {legacyRoot: true}
     );
 
     fireOptionChange('nestedOption.c', 'changed');
@@ -741,7 +772,7 @@ describe('cfg-component option defaults control', () => {
       );
     };
 
-    const { rerender } = render(<TestContainer optionDefValue="default" />);
+    const { rerender } = render(<TestContainer optionDefValue="default" />, {legacyRoot: true});
     rerender(<TestContainer optionDefValue="changed" />);
 
     jest.runAllTimers();
@@ -753,6 +784,7 @@ describe('cfg-component option defaults control', () => {
       <ControlledComponent>
         <NestedComponent defaultC="default" />
       </ControlledComponent>,
+      {legacyRoot: true}
     );
 
     fireOptionChange('nestedOption', { a: 456, b: 'abc' });
@@ -765,6 +797,7 @@ describe('cfg-component option defaults control', () => {
       <ControlledComponent>
         <NestedComponent defaultC="default" c="controlled" />
       </ControlledComponent>,
+      {legacyRoot: true}
     );
 
     expect(Widget.option.mock.calls.length).toBe(0);
@@ -797,6 +830,7 @@ describe('mutation detection', () => {
   it('prevents update if no option changed', () => {
     const { rerender } = render(
       <TestComponent prop="abc" />,
+      {legacyRoot: true}
     );
 
     rerender(
@@ -810,6 +844,7 @@ describe('mutation detection', () => {
     const arr = [1, 2, 3];
     const { rerender } = render(
       <TestComponent prop={arr} />,
+      {legacyRoot: true}
     );
 
     arr[0] = 123;
@@ -826,6 +861,7 @@ describe('mutation detection', () => {
     };
     const { rerender } = render(
       <TestComponent prop={obj} />,
+      {legacyRoot: true}
     );
 
     obj.field = 456;
@@ -839,6 +875,7 @@ describe('mutation detection', () => {
   it('triggers update if object-option replaced', () => {
     const { rerender } = render(
       <TestComponent prop={[1, 2, 3]} />,
+      {legacyRoot: true}
     );
 
     rerender(
@@ -851,6 +888,7 @@ describe('mutation detection', () => {
   it('triggers update if option added', () => {
     const { rerender } = render(
       <TestComponent prop="123" />,
+      {legacyRoot: true}
     );
 
     rerender(
@@ -885,6 +923,7 @@ describe('onXXXChange', () => {
           text="0"
           onTextChange={onPropChange}
         />,
+        {legacyRoot: true}
       );
 
       expect(onPropChange).toHaveBeenCalledTimes(0);
@@ -897,6 +936,7 @@ describe('onXXXChange', () => {
           text="0"
           onTextChange={onPropChange}
         />,
+        {legacyRoot: true}
       );
 
       fireOptionChange('text', '1');
@@ -910,6 +950,7 @@ describe('onXXXChange', () => {
           text="0"
           onTextChange={onPropChange}
         />,
+        {legacyRoot: true}
       );
       expect(onPropChange).not.toBeCalled();
 
@@ -944,6 +985,7 @@ describe('onXXXChange', () => {
         <TestComponent
           {...defaultProps}
         />,
+        {legacyRoot: true}
       );
 
       onPropChange.mockImplementation((value) => {
@@ -972,6 +1014,7 @@ describe('onXXXChange', () => {
           text="0"
           onTextChange={onPropChange}
         />,
+        {legacyRoot: true}
       );
 
       fireOptionChange('text', '0');
@@ -984,6 +1027,7 @@ describe('onXXXChange', () => {
         <TestComponent
           complexOption={{ text: '0', onTextChange: onPropChange }}
         />,
+        {legacyRoot: true}
       );
       expect(onPropChange).not.toBeCalled();
 
@@ -1002,6 +1046,7 @@ describe('onXXXChange', () => {
             { text: '0', onTextChange: onSecondPropChange },
           ]}
         />,
+        {legacyRoot: true}
       );
       expect(onFirstPropChange).not.toBeCalled();
       expect(onSecondPropChange).not.toBeCalled();
@@ -1045,6 +1090,7 @@ describe('onXXXChange', () => {
             />
           </CollectionNestedComponent>
         </TestComponent>,
+        {legacyRoot: true}
       );
 
       fireOptionChange('items[1].a', 1);
@@ -1071,6 +1117,7 @@ describe('onXXXChange', () => {
             arrayValue={[1, 2]}
           />
         </TestComponent>,
+        {legacyRoot: true}
       );
       fireOptionChange('nestedOption.arrayValue', [3, 4]);
       jest.runAllTimers();
@@ -1085,6 +1132,7 @@ describe('onXXXChange', () => {
             arrayValue={null}
           />
         </TestComponent>,
+        {legacyRoot: true}
       );
       fireOptionChange('nestedOption.arrayValue', [1, 2]);
       jest.runAllTimers();
@@ -1098,6 +1146,7 @@ describe('onXXXChange', () => {
           text="0"
           onTextChange="someFunction"
         />,
+        {legacyRoot: true}
       );
 
       expect(() => fireOptionChange('text', '1')).toThrow();
@@ -1126,6 +1175,7 @@ describe('onXXXChange', () => {
           text="0"
           onTextChange={onPropChange}
         />,
+        {legacyRoot: true}
       );
 
       expect(onPropChange).toHaveBeenCalledTimes(0);
@@ -1138,6 +1188,7 @@ describe('onXXXChange', () => {
           text="0"
           onTextChange={onPropChange}
         />,
+        {legacyRoot: true}
       );
 
       fireOptionChange('text', '1');
@@ -1168,6 +1219,7 @@ describe('onXXXChange', () => {
           text="0"
           onTextChange={onPropChange}
         />,
+        {legacyRoot: true}
       );
 
       expect(onPropChange).toHaveBeenCalledTimes(0);
@@ -1183,6 +1235,7 @@ describe('onXXXChange', () => {
         >
           <div ref={ref} />
         </TestComponent>,
+        {legacyRoot: true}
       );
       expect(onPropChange).not.toBeCalled();
       Widget.option.mockImplementation(
@@ -1225,6 +1278,7 @@ describe('onXXXChange', () => {
           text="0"
           onTextChange={onPropChange}
         />,
+        {legacyRoot: true}
       );
       expect(onPropChange).not.toBeCalled();
       Widget.option.mockImplementation(

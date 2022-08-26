@@ -73,6 +73,7 @@ describe('nested option', () => {
       <TestComponent>
         <NestedComponent a={123} />
       </TestComponent>,
+      {legacyRoot: true}
     );
 
     expect(WidgetClass.mock.calls[0][1]).toEqual({
@@ -89,6 +90,7 @@ describe('nested option', () => {
         <NestedComponent a={123} />
         {false && <NestedComponent a={456} />}
       </TestComponent>,
+      {legacyRoot: true}
     );
 
     expect(WidgetClass.mock.calls[0][1]).toEqual({
@@ -105,6 +107,7 @@ describe('nested option', () => {
         <NestedComponent a={123} />
         <AnotherNestedComponent b="abc" />
       </TestComponent>,
+      {legacyRoot: true}
     );
 
     expect(WidgetClass.mock.calls[0][1]).toEqual({
@@ -124,6 +127,7 @@ describe('nested option', () => {
         <NestedComponent a={123} />
         <NestedComponent a={456} />
       </TestComponent>,
+      {legacyRoot: true}
     );
 
     expect(WidgetClass.mock.calls[0][1]).toEqual({
@@ -139,6 +143,7 @@ describe('nested option', () => {
       <TestComponent>
         <CollectionNestedComponent c={123} d="abc" />
       </TestComponent>,
+      {legacyRoot: true}
     );
 
     expect(WidgetClass.mock.calls[0][1]).toEqual({
@@ -156,6 +161,7 @@ describe('nested option', () => {
         <CollectionNestedComponent c={456} />
         <CollectionNestedComponent d="def" />
       </TestComponent>,
+      {legacyRoot: true}
     );
 
     expect(WidgetClass.mock.calls[0][1]).toEqual({
@@ -189,6 +195,7 @@ describe('nested option', () => {
         <NestedComponent a={123} />
         <CollectionNestedComponent c={456} d="abc" />
       </TestComponentWithExpectation>,
+      {legacyRoot: true}
     );
 
     expect(WidgetClass.mock.calls[0][1]).toEqual({
@@ -205,6 +212,7 @@ describe('nested option', () => {
       <TestComponent>
         <NestedComponentWithPredfeinedProps a={123} />
       </TestComponent>,
+      {legacyRoot: true}
     );
 
     const actualProps = WidgetClass.mock.calls[0][1];
@@ -218,6 +226,7 @@ describe('nested option', () => {
         <CollectionNestedWithPredfeinedProps1 a={123} />
         <CollectionNestedWithPredfeinedProps2 a={456} />
       </TestComponent>,
+      {legacyRoot: true}
     );
 
     const actualProps = WidgetClass.mock.calls[0][1];
@@ -234,6 +243,7 @@ describe('nested option', () => {
         <CollectionNestedComponent key={2} c={456} />
         <CollectionNestedComponent key={3} d="def" />
       </TestComponent>,
+      {legacyRoot: true}
     );
     rerender(
       <TestComponent>
@@ -257,7 +267,7 @@ describe('nested option', () => {
         </TestComponent>
       );
     };
-    const { rerender } = render(<TestContainer value={123} />);
+    const { rerender } = render(<TestContainer value={123} />, {legacyRoot: true});
     rerender(<TestContainer value={456} />);
 
     jest.runAllTimers();
@@ -270,6 +280,7 @@ describe('nested option', () => {
       <TestComponent>
         <NestedComponent a={123} />
       </TestComponent>,
+      {legacyRoot: true}
     );
 
     rerender(<TestComponent>
@@ -300,7 +311,7 @@ describe('nested option', () => {
       { c: 456, d: 'def', key: 2 },
       { c: 789, d: 'ghi', key: 3 },
     ];
-    const { rerender } = render(<TestContainer>{startChildren}</TestContainer>);
+    const { rerender } = render(<TestContainer>{startChildren}</TestContainer>, {legacyRoot: true});
     rerender(<TestContainer>{endChildren}</TestContainer>);
 
     jest.runAllTimers();
@@ -331,7 +342,7 @@ describe('nested option', () => {
       { c: 123, d: 'abc', key: 1 },
     ];
 
-    const { rerender } = render(<TestContainer>{startChildren}</TestContainer>);
+    const { rerender } = render(<TestContainer>{startChildren}</TestContainer>, {legacyRoot: true});
 
     rerender(<TestContainer>{endChildren}</TestContainer>);
 
@@ -355,6 +366,7 @@ describe('nested sub-option', () => {
           <SubNestedComponent d="abc" />
         </NestedComponent>
       </TestComponent>,
+      {legacyRoot: true}
     );
 
     expect(WidgetClass.mock.calls[0][1]).toEqual({
@@ -376,6 +388,7 @@ describe('nested sub-option', () => {
           <AnotherSubNestedComponent e="def" />
         </NestedComponent>
       </TestComponent>,
+      {legacyRoot: true}
     );
 
     expect(WidgetClass.mock.calls[0][1]).toEqual({
@@ -400,6 +413,7 @@ describe('nested sub-option', () => {
           <SubNestedComponent d="def" />
         </NestedComponent>
       </TestComponent>,
+      {legacyRoot: true}
     );
 
     expect(WidgetClass.mock.calls[0][1]).toEqual({
@@ -420,6 +434,7 @@ describe('nested sub-option', () => {
           <CollectionSubNestedComponent c={123} d="abc" />
         </NestedComponent>
       </TestComponent>,
+      {legacyRoot: true}
     );
 
     expect(WidgetClass.mock.calls[0][1]).toEqual({
@@ -442,6 +457,7 @@ describe('nested sub-option', () => {
           <CollectionSubNestedComponent d="def" />
         </NestedComponent>
       </TestComponent>,
+      {legacyRoot: true}
     );
 
     expect(WidgetClass.mock.calls[0][1]).toEqual({
@@ -466,6 +482,7 @@ describe('nested sub-option', () => {
           <CollectionSubNestedComponent key={3} d="def" />
         </NestedComponent>
       </TestComponent>,
+      {legacyRoot: true}
     );
     rerender(
       <TestComponent>
@@ -494,7 +511,7 @@ describe('nested sub-option', () => {
       );
     };
 
-    const { rerender } = render(<TestContainer value="abc" />);
+    const { rerender } = render(<TestContainer value="abc" />, {legacyRoot: true});
     rerender(<TestContainer value="def" />);
 
     jest.runAllTimers();
@@ -525,6 +542,7 @@ describe('nested sub-option', () => {
           <CollectionSubNestedComponent c={456} d="def" />
         </NestedComponentWithExpectations>
       </TestComponent>,
+      {legacyRoot: true}
     );
 
     expect(WidgetClass.mock.calls[0][1]).toEqual({
@@ -557,6 +575,7 @@ describe('conditional rendering', () => {
   it('adds option', () => {
     const { rerender } = render(
       <ComponentWithConditionalOption enableOption={false} />,
+      {legacyRoot: true}
     );
 
     rerender(
@@ -570,6 +589,7 @@ describe('conditional rendering', () => {
   it('removes option', () => {
     const { rerender } = render(
       <ComponentWithConditionalOption enableOption />,
+      {legacyRoot: true}
     );
 
     rerender(
