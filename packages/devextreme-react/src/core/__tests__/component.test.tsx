@@ -27,7 +27,7 @@ describe('rendering', () => {
 
   it('renders component without children correctly', () => {
     const templatesRendererRenderFn = jest.spyOn(TemplatesRenderer.prototype, 'render');
-    const { container } = render(<TestComponent />, {legacyRoot: true});
+    const { container } = render(<TestComponent />);
 
     expect(container.children.length).toBe(1);
 
@@ -43,7 +43,6 @@ describe('rendering', () => {
       <TestComponent>
         <span />
       </TestComponent>,
-      {legacyRoot: true}
     );
 
     expect(container.children.length).toBe(1);
@@ -64,7 +63,6 @@ describe('rendering', () => {
     );
     const { container, unmount, rerender } = render(
       component,
-      {legacyRoot: true}
     );
 
     unmount();
@@ -81,7 +79,7 @@ describe('rendering', () => {
   it('renders portal component without children correctly', () => {
     const createPortalFn = jest.spyOn(ReactDOM, 'createPortal');
     const templatesRendererRenderFn = jest.spyOn(TemplatesRenderer.prototype, 'render');
-    const { container } = render(<TestPortalComponent />, {legacyRoot: true});
+    const { container } = render(<TestPortalComponent />);
 
     expect(container.children.length).toBe(1);
 
@@ -99,7 +97,6 @@ describe('rendering', () => {
       <TestPortalComponent>
         <span />
       </TestPortalComponent>,
-      {legacyRoot: true}
     );
 
     expect(container.children.length).toBe(1);
@@ -127,7 +124,6 @@ describe('rendering', () => {
       <TestPortalComponent>
         <span />
       </TestPortalComponent>,
-      {legacyRoot: true}
     );
 
     expect(container.children.length).toBe(1);
@@ -151,14 +147,14 @@ describe('rendering', () => {
   });
 
   it('create widget on componentDidMount', () => {
-    render(<TestComponent />, {legacyRoot: true});
+    render(<TestComponent />);
 
     expect(WidgetClass.mock.instances.length).toBe(1);
   });
 
   it('pass templatesRenderAsynchronously to widgets', () => {
     render(
-      <TestComponent />, {legacyRoot: true}
+      <TestComponent />,
     );
 
     expect(WidgetClass.mock.calls[0][1]).toEqual({ templatesRenderAsynchronously: true });
@@ -169,7 +165,6 @@ describe('rendering', () => {
       <TestComponent>
         <TestComponent />
       </TestComponent>,
-      {legacyRoot: true}
     );
 
     expect(WidgetClass.mock.instances.length).toBe(2);
@@ -181,7 +176,6 @@ describe('rendering', () => {
       <TestComponent>
         <TestComponent />
       </TestComponent>,
-      {legacyRoot: true}
     );
 
     expect(WidgetClass.mock.calls[1][1].children).toBeUndefined();
@@ -191,8 +185,8 @@ describe('rendering', () => {
 describe('element attrs management', () => {
   it('passes id, className and style to element', () => {
     const { container } = render(
-      <TestComponent id="id1" className="class1" style={{ background: 'red' }} />,
-      {legacyRoot: true},
+      <TestComponent id="id1" className="class1" style={{ background: 'red' }} />, {
+      },
     );
 
     const element: HTMLElement = container.firstChild as HTMLElement;
@@ -205,7 +199,6 @@ describe('element attrs management', () => {
   it('updates id, className and style', () => {
     const { container, rerender } = render(
       <TestComponent id="id1" className="class1" style={{ background: 'red' }} />,
-      {legacyRoot: true}
     );
 
     rerender(
@@ -227,7 +220,6 @@ describe('element attrs management', () => {
   it('sets id, className and style after init', () => {
     const { container, rerender } = render(
       <TestComponent />,
-      {legacyRoot: true}
     );
 
     rerender(
@@ -248,7 +240,6 @@ describe('element attrs management', () => {
   it('cleans className (empty string)', () => {
     const { container, rerender } = render(
       <TestComponent className="class1" />,
-      {legacyRoot: true}
     );
 
     rerender(
@@ -263,7 +254,6 @@ describe('element attrs management', () => {
   it('cleans className (undefined)', () => {
     const { container, rerender } = render(
       <TestComponent className="class1" />,
-      {legacyRoot: true}
     );
 
     rerender(<TestComponent />);
@@ -277,7 +267,6 @@ describe('disposing', () => {
   it('call dispose', () => {
     const component = render(
       <TestComponent />,
-      {legacyRoot: true}
     );
 
     component.unmount();
@@ -289,7 +278,6 @@ describe('disposing', () => {
     const handleDxRemove = jest.fn();
     const { container, unmount } = render(
       <TestComponent />,
-      {legacyRoot: true}
     );
 
     const element: HTMLElement = container.firstChild as HTMLElement;
@@ -303,7 +291,6 @@ describe('disposing', () => {
   it('remove option guards', () => {
     const component = render(
       <TestComponent option1 />,
-      {legacyRoot: true}
     );
 
     fireOptionChange('option1', false);

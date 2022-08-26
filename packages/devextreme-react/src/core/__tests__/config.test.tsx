@@ -48,7 +48,6 @@ describe('useLegacyTemplateEngine', () => {
       <ComponentWithTemplates itemRender={ItemTemplate}>
         <div ref={ref} />
       </ComponentWithTemplates>,
-      {legacyRoot: true}
     );
 
     const { render } = WidgetClass.mock.calls[0][1].integrationOptions.templates.item;
@@ -83,7 +82,6 @@ describe('useLegacyTemplateEngine', () => {
       <ComponentWithTemplates itemComponent={ItemTemplate}>
         <div ref={ref} />
       </ComponentWithTemplates>,
-      {legacyRoot: true}
     );
 
     const { render } = WidgetClass.mock.calls[0][1].integrationOptions.templates.item;

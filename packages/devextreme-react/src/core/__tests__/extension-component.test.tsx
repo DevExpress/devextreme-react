@@ -33,7 +33,6 @@ it('is initialized as a plugin-component', () => {
   const onMounted = jest.fn();
   render(
     <TestExtensionComponent onMounted={onMounted} />,
-    {legacyRoot: true}
   );
 
   expect(onMounted).toHaveBeenCalledTimes(1);
@@ -44,7 +43,6 @@ it('is initialized as a plugin-component', () => {
 it('is initialized as a standalone widget', () => {
   render(
     <TestExtensionComponent />,
-    {legacyRoot: true}
   );
 
   expect(ExtensionWidgetClass).toHaveBeenCalledTimes(1);
@@ -55,7 +53,6 @@ it('creates widget on componentDidMount inside another component on same element
     <TestComponent>
       <TestExtensionComponent />
     </TestComponent>,
-    {legacyRoot: true}
   );
 
   expect(ExtensionWidgetClass).toHaveBeenCalledTimes(1);
@@ -65,7 +62,6 @@ it('creates widget on componentDidMount inside another component on same element
 it('unmounts without errors', () => {
   const component = render(
     <TestExtensionComponent />,
-    {legacyRoot: true}
   );
 
   expect(() => component.unmount.bind(component)).not.toThrow();
@@ -78,7 +74,6 @@ it('pulls options from a single nested component', () => {
         <NestedComponent a={123} />
       </TestExtensionComponent>
     </TestComponent>,
-    {legacyRoot: true}
   );
 
   const options = ExtensionWidgetClass.mock.calls[0][1];

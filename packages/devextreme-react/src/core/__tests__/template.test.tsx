@@ -81,7 +81,6 @@ function testTemplateOption(testedOption: string) {
       <ComponentWithTemplates {...elementOptions}>
         <div ref={ref} />
       </ComponentWithTemplates>,
-      {legacyRoot: true}
     );
 
     const options = WidgetClass.mock.calls[0][1];
@@ -111,7 +110,6 @@ function testTemplateOption(testedOption: string) {
       <ComponentWithTemplates {...elementOptions}>
         <div ref={ref} />
       </ComponentWithTemplates>,
-      {legacyRoot: true}
     );
 
     renderItemTemplate({ text: 'with data' }, ref.current);
@@ -129,7 +127,6 @@ function testTemplateOption(testedOption: string) {
         Text
         <div ref={ref} />
       </ComponentWithTemplates>,
-      {legacyRoot: true}
     );
 
     renderItemTemplate({ text: 'with data' }, ref.current);
@@ -144,7 +141,6 @@ function testTemplateOption(testedOption: string) {
     elementOptions[testedOption] = () => <div className="template">First Template</div>;
     const { rerender, container } = render(
       <ComponentWithTemplates {...elementOptions} />,
-      {legacyRoot: true}
     );
 
     const changedElementOptions: Record<string, any> = { ref };
@@ -165,7 +161,6 @@ function testTemplateOption(testedOption: string) {
     elementOptions[testedOption] = () => <div className="template">First Template</div>;
     const { rerender } = render(
       <ComponentWithTemplates {...elementOptions} />,
-      {legacyRoot: true}
     );
 
     const changedElementOptions: Record<string, any> = {};
@@ -190,7 +185,6 @@ function testTemplateOption(testedOption: string) {
       <ComponentWithTemplates {...elementOptions}>
         <div ref={ref} />
       </ComponentWithTemplates>,
-      {legacyRoot: true}
     );
 
     renderItemTemplate({}, ref.current);
@@ -213,7 +207,6 @@ function testTemplateOption(testedOption: string) {
       <ComponentWithTemplates {...elementOptions}>
         <div ref={ref} />
       </ComponentWithTemplates>,
-      {legacyRoot: true}
     );
 
     renderItemTemplate({ text: 'with data' }, ref.current);
@@ -241,7 +234,6 @@ function testTemplateOption(testedOption: string) {
       <ComponentWithTemplates {...elementOptions}>
         <div ref={ref} />
       </ComponentWithTemplates>,
-      {legacyRoot: true}
     );
 
     const table = document.createElement('table');
@@ -268,7 +260,6 @@ function testTemplateOption(testedOption: string) {
       <ComponentWithTemplates {...elementOptions}>
         <div ref={ref} />
       </ComponentWithTemplates>,
-      {legacyRoot: true}
     );
 
     const table = document.createElement('tbody');
@@ -292,7 +283,6 @@ function testTemplateOption(testedOption: string) {
       <ComponentWithTemplates {...elementOptions}>
         <div ref={ref} />
       </ComponentWithTemplates>,
-      {legacyRoot: true}
     );
     const onRendered: () => void = jest.fn();
 
@@ -312,7 +302,6 @@ function testTemplateOption(testedOption: string) {
       <ComponentWithTemplates {...elementOptions}>
         <div ref={ref} />
       </ComponentWithTemplates>,
-      {legacyRoot: true}
     );
 
     renderItemTemplate({ text: 1 }, ref.current);
@@ -333,7 +322,6 @@ function testTemplateOption(testedOption: string) {
     ));
     render(
       <ComponentWithTemplates {...elementOptions} ref={ref} />,
-      {legacyRoot: true}
     );
 
     const componentInstance = ref.current as unknown as {
@@ -359,7 +347,6 @@ function testTemplateOption(testedOption: string) {
     ));
     render(
         <ComponentWithTemplates {...elementOptions} ref={ref} />,
-        {legacyRoot: true}
     );
 
     const componentInstance = ref.current as unknown as {
@@ -387,7 +374,6 @@ function testTemplateOption(testedOption: string) {
     elementOptions.itemKeyFn = (data) => data.text;
     render(
       <ComponentWithTemplates {...elementOptions} ref={ref} />,
-      {legacyRoot: true}
     );
 
     renderItemTemplate({ text: 1 });
@@ -416,7 +402,6 @@ function testTemplateOption(testedOption: string) {
       <ComponentWithTemplates {...elementOptions} ref={ref}>
         <div ref={refContainer} />
       </ComponentWithTemplates>,
-      {legacyRoot: true}
     );
 
     const componentInstance = ref.current as unknown as { _templatesStore: TemplatesStore };
@@ -462,7 +447,6 @@ function testTemplateOption(testedOption: string) {
       <ComponentWithTemplates {...elementOptions} ref={ref}>
         <div ref={refContainer} />
       </ComponentWithTemplates>,
-      {legacyRoot: true}
     );
 
     const componentInstance = ref.current as unknown as { _templatesStore: TemplatesStore };
@@ -504,7 +488,6 @@ describe('function template', () => {
       <ComponentWithTemplates itemRender={itemRender}>
         <div ref={ref} />
       </ComponentWithTemplates>,
-      {legacyRoot: true}
     );
     renderItemTemplate('with data', ref.current);
 
@@ -526,7 +509,6 @@ describe('function template', () => {
       <ComponentWithTemplates itemRender={itemRender}>
         <div ref={ref} />
       </ComponentWithTemplates>,
-      {legacyRoot: true}
     );
     renderItemTemplate(undefined, ref.current, 5);
 
@@ -563,7 +545,6 @@ describe('component template', () => {
       <ComponentWithTemplates itemComponent={ItemTemplate}>
         <div ref={ref} />
       </ComponentWithTemplates>,
-      {legacyRoot: true}
     );
 
     renderItemTemplate({ value: 'Value' }, ref.current, 5);
@@ -588,7 +569,6 @@ describe('nested template', () => {
           <ItemTemplate />
         </Template>
       </ComponentWithTemplates>,
-      {legacyRoot: true}
     );
 
     const options = WidgetClass.mock.calls[0][1];
@@ -618,7 +598,6 @@ describe('nested template', () => {
         <Template name="item1" render={FirstTemplate} />
         <div ref={ref} />
       </ComponentWithTemplates>,
-      {legacyRoot: true}
     );
     renderTemplate('item1', undefined, ref.current);
 
@@ -634,7 +613,6 @@ describe('nested template', () => {
         </Template>
         <div ref={ref} />
       </ComponentWithTemplates>,
-      {legacyRoot: true}
     );
     renderTemplate('item1', undefined, ref.current);
 
@@ -651,7 +629,6 @@ describe('nested template', () => {
         <Template name="item1" render={FirstTemplate} />
         <div ref={ref} />
       </ComponentWithTemplates>,
-      {legacyRoot: true}
     );
     renderTemplate('item1', undefined, ref.current);
 
@@ -678,7 +655,6 @@ describe('nested template', () => {
         </Template>
         <div ref={ref} />
       </ComponentWithTemplates>,
-      {legacyRoot: true}
     );
     renderTemplate('item1', undefined, ref.current);
 
@@ -704,7 +680,6 @@ describe('nested template', () => {
       <ComponentWithTemplates ref={ref}>
         <Template name="item1" render={FirstTemplate} keyFn={keyExpr} />
       </ComponentWithTemplates>,
-      {legacyRoot: true}
     );
 
     renderTemplate('item1', { text: 1 });
@@ -758,7 +733,6 @@ describe('component/render in nested options', () => {
       <TestComponent>
         <NestedComponent itemComponent={ItemTemplate} />
       </TestComponent>,
-      {legacyRoot: true}
     );
 
     const options = WidgetClass.mock.calls[0][1];
@@ -779,7 +753,6 @@ describe('component/render in nested options', () => {
         <NestedComponent itemComponent={ItemTemplate} />
         <Template name="nested" render={ItemTemplate} />
       </ComponentWithTemplates>,
-      {legacyRoot: true}
     );
 
     const options = WidgetClass.mock.calls[0][1];
@@ -803,7 +776,6 @@ describe('component/render in nested options', () => {
         <NestedComponent itemComponent={UserTemplate} />
         <CollectionNestedComponent render={UserTemplate} />
       </TestComponent>,
-      {legacyRoot: true}
     );
 
     const options = WidgetClass.mock.calls[0][1];
@@ -833,7 +805,6 @@ describe('component/render in nested options', () => {
           <CollectionNestedComponent render={UserTemplate} />
         </NestedComponent>
       </TestComponent>,
-      {legacyRoot: true}
     );
 
     const options = WidgetClass.mock.calls[0][1];
@@ -891,7 +862,6 @@ describe('component/render in nested options', () => {
           <CollectionNestedComponent />
         </CollectionNestedComponent>
       </TestComponent>,
-      {legacyRoot: true}
     );
 
     const options = WidgetClass.mock.calls[0][1];
@@ -954,7 +924,6 @@ describe('component/render in nested options', () => {
           {null}
         </CollectionNestedComponent>
       </TestComponent>,
-      {legacyRoot: true}
     );
 
     const options = WidgetClass.mock.calls[0][1];
@@ -984,7 +953,6 @@ describe('component/render in nested options', () => {
         <NestedComponent itemComponent={FirstTemplate} />
         <div ref={ref} />
       </TestComponent>,
-      {legacyRoot: true}
     );
     renderTemplate('option.item', undefined, ref.current);
 
@@ -1012,7 +980,6 @@ describe('component/render in nested options', () => {
         </CollectionNestedComponent>
         <div ref={ref} />
       </TestComponent>,
-      {legacyRoot: true}
     );
     renderTemplate('collection[0].template', undefined, ref.current);
 
@@ -1048,7 +1015,7 @@ describe('component/render in nested options', () => {
         </TestComponent>
       );
     };
-    const { container, rerender } = render(<TestContainer value="test" />, {legacyRoot: true});
+    const { container, rerender } = render(<TestContainer value="test" />);
     rerender(
       <TestContainer value="test2" />,
     );
@@ -1073,7 +1040,7 @@ describe('component/render in nested options', () => {
       );
     };
 
-    const { rerender } = render(<TestContainer items={items} />, {legacyRoot: true});
+    const { rerender } = render(<TestContainer items={items} />);
 
     rerender(<TestContainer items={[
       ...items,
@@ -1110,7 +1077,7 @@ describe('component/render in nested options', () => {
       );
     };
 
-    const { rerender } = render(<TestContainer items={items} />, {legacyRoot: true});
+    const { rerender } = render(<TestContainer items={items} />);
     rerender(
       <TestContainer items={items.slice(0, 1)} />,
     );
@@ -1137,7 +1104,7 @@ describe('component/render in nested options', () => {
       );
     };
 
-    const { rerender } = render(<TestContainer items={items} />, {legacyRoot: true});
+    const { rerender } = render(<TestContainer items={items} />);
     rerender(
       <TestContainer items={items.slice(0, 1)} />,
     );
@@ -1165,7 +1132,6 @@ describe('component/render in nested options', () => {
       <ComponentWithTranscludedContent>
         Widget Transcluded Content
       </ComponentWithTranscludedContent>,
-      {legacyRoot: true}
     );
 
     const { integrationOptions } = WidgetClass.mock.calls[0][1];
@@ -1195,7 +1161,6 @@ describe('async template', () => {
       <ComponentWithAsyncTemplates {...elementOptions}>
         <div ref={ref} />
       </ComponentWithAsyncTemplates>,
-      {legacyRoot: true}
     );
 
     renderItemTemplate({ text: 'with data' }, ref.current);
@@ -1223,7 +1188,6 @@ describe('async template', () => {
       <ComponentWithAsyncTemplates {...elementOptions}>
         <div ref={ref} />
       </ComponentWithAsyncTemplates>,
-      {legacyRoot: true}
     );
 
     const renderSpy = jest.spyOn(
