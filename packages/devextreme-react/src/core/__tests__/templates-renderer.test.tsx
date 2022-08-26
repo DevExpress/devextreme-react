@@ -50,7 +50,7 @@ jest.mock('devextreme/core/utils/common', () => ({
       const ref = React.createRef<TemplatesRenderer>();
       const templatesStore = new TemplatesStore(() => { });
 
-      const { unmount } = render(<TemplatesRenderer templatesStore={templatesStore} ref={ref} />, {legacyRoot: true});
+      const { unmount } = render(<TemplatesRenderer templatesStore={templatesStore} ref={ref} />);
 
       expect(ref.current).not.toBeNull();
 
@@ -67,7 +67,7 @@ jest.mock('devextreme/core/utils/common', () => ({
       const ref = React.createRef<TemplatesRenderer>();
       const templatesStore = new TemplatesStore(() => { });
 
-      render(<TemplatesRenderer templatesStore={templatesStore} ref={ref} />, {legacyRoot: true});
+      render(<TemplatesRenderer templatesStore={templatesStore} ref={ref} />);
       expect(() => ref.current?.scheduleUpdate(useDeferUpdate)).not.toThrow();
       expect(updateFunctionMock).toHaveBeenCalledTimes(1);
     });
@@ -76,7 +76,7 @@ jest.mock('devextreme/core/utils/common', () => ({
       const ref = React.createRef<TemplatesRenderer>();
       const templatesStore = new TemplatesStore(() => { });
 
-      render(<TemplatesRenderer templatesStore={templatesStore} ref={ref} />, {legacyRoot: true});
+      render(<TemplatesRenderer templatesStore={templatesStore} ref={ref} />);
       ref.current?.scheduleUpdate(useDeferUpdate);
       if (useDeferUpdate) {
         expect(deferUpdate).toHaveBeenCalledTimes(1);
@@ -99,7 +99,7 @@ describe('option update', () => {
       func();
     });
 
-    render(<TemplatesRenderer templatesStore={templatesStore} ref={ref} />, {legacyRoot: true});
+    render(<TemplatesRenderer templatesStore={templatesStore} ref={ref} />);
     const current = ref.current!;
     const onRendered = jest.fn();
     const spyForceUpdateCallback = jest.spyOn(current, 'forceUpdate').mockImplementation((cb) => {
