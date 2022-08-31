@@ -1,0 +1,35 @@
+name: Guard - Up version generator if sourcies files changed 
+
+on:
+  push:
+    branches:
+    - master
+    - '[12][0-9].[12]'
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+    - name: Get sources
+      uses: actions/checkout@v2
+
+    - name: Get changed files in generators src
+      id: src-changed
+      uses: tj-actions/changed-files@v29.0.2
+      with:
+        path: ./packages/devextreme-react-generator/src
+
+    - name: package.json in generators changed
+      id: package-changed
+      uses: tj-actions/changed-files@v29.0.2
+      with:
+        path: ./packages/devextreme-react-generator/package.json
+    
+    - name: Guard
+      if: steps.src-changed.any_changed == true && steps.package-changed.any_changed == false
+      run: exit 1
