@@ -29,7 +29,13 @@ jobs:
       uses: tj-actions/changed-files@v29.0.2
       with:
         files: ./packages/devextreme-react-generator/package.json
-    
+        
+    - name: Run step if all listed files above have been deleted
+      run: |
+        for file in ${{ steps.src-changed.outputs.all_changed_files }}; do
+          echo "$file was changed"
+        done
+
     - name: Guard
-      if: steps.src-changed.any_changed == true && steps.package-changed.any_changed == false
+      if: steps.src-changed.outputs.any_changed == 'true' && steps.outputs.any_changed == 'false'
       run: exit 1
