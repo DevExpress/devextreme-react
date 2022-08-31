@@ -1,4 +1,3 @@
-/// test
 import { createTempate, L1, L2 } from './template';
 
 import {
