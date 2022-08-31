@@ -47,7 +47,7 @@ jobs:
         done
     - name: Is src changed   
       env:
-        SRC_CHANGED: contains(steps.changed.outputs.all_changed_files, 'devextreme-react-generator/src/')
+        SRC_CHANGED: ${{ contains(steps.changed.outputs.all_changed_files, 'devextreme-react-generator/src/') }}
       run: echo "$SRC_CHANGED"
 
     - name: Guard
