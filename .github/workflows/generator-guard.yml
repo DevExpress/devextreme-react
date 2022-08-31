@@ -28,7 +28,7 @@ jobs:
       id: package-changed
       uses: tj-actions/changed-files@v29.0.2
       with:
-        path: ./packages/devextreme-react-generator/package.json
+        files: ./packages/devextreme-react-generator/package.json
     
     - name: Guard
       if: steps.src-changed.any_changed == true && steps.package-changed.any_changed == false
