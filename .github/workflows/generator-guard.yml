@@ -51,5 +51,5 @@ jobs:
       run: echo "$SRC_CHANGED"
 
     - name: Guard
-      if: contains(steps.changed.outputs.all_changed_files, 'packages/devextreme-react-generator/src') && contains(steps.changed.outputs.all_changed_files, 'packages/devextreme-react-generator/package.json')
+      if: ${{ contains(steps.changed.outputs.all_changed_files, 'devextreme-react-generator/src') && !contains(steps.changed.outputs.all_changed_files, 'devextreme-react-generator/package.json') }}
       run: exit 1
