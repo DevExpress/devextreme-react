@@ -21,8 +21,6 @@ jobs:
     - name: Get changed files in generators src
       id: changed
       uses: tj-actions/changed-files@v29.0.2
-      with:
-        path: ./packages/devextreme-react-generator/src
 
     - name: Get changed files in generators src
       id: src-changed
