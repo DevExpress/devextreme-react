@@ -22,34 +22,8 @@ jobs:
       id: changed
       uses: tj-actions/changed-files@v29.0.2
 
-    - name: Get changed files in generators src
-      id: src-changed
-      uses: tj-actions/changed-files@v29.0.2
-      with:
-        path: packages/devextreme-react-generator/src
-
-    - name: package.json in generators changed
-      id: package-changed
-      uses: tj-actions/changed-files@v29.0.2
-      with:
-        files: ./packages/devextreme-react-generator/package.json
-
-    - name: Run step if all listed files above have been deleted
+    - name: Check changes
+      if: ${{ contains(steps.changed.outputs.all_changed_files, 'devextreme-react-generator/src') && contains(steps.changed.outputs.all_changed_files, 'devextreme-react-generator/package.json') }}
       run: |
-        for file in ${{ steps.changed.outputs.all_changed_files }}; do
-          echo "$file was changed"
-        done
-
-    - name: Run step if all listed files above have been deleted
-      run: |
-        for file in ${{ steps.src-changed.outputs.all_changed_files }}; do
-          echo "$file was changed"
-        done
-    - name: Is src changed   
-      env:
-        SRC_CHANGED: ${{ contains(steps.changed.outputs.all_changed_files, 'devextreme-react-generator/src/') }}
-      run: echo "$SRC_CHANGED"
-
-    - name: Guard
-      if: ${{ contains(steps.changed.outputs.all_changed_files, 'devextreme-react-generator/src') && !contains(steps.changed.outputs.all_changed_files, 'devextreme-react-generator/package.json') }}
-      run: exit 1
+        echo "Please update generator version."
+        exit 1
