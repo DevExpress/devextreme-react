@@ -23,7 +23,7 @@ jobs:
       uses: tj-actions/changed-files@v29.0.2
 
     - name: Check changes
-      if: ${{ contains(steps.changed.outputs.all_changed_files, 'devextreme-react-generator/src') && contains(steps.changed.outputs.all_changed_files, 'devextreme-react-generator/package.json') }}
+      if: ${{ contains(steps.changed.outputs.all_changed_files, 'devextreme-react-generator/src') && !contains(steps.changed.outputs.all_changed_files, 'devextreme-react-generator/package.json') }}
       run: |
         echo "Please update generator version."
         exit 1
