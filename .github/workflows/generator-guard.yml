@@ -10,7 +10,7 @@ on:
       - '**'
 
 jobs:
-  test:
+  guard:
     runs-on: ubuntu-latest
     timeout-minutes: 60
 
@@ -45,10 +45,10 @@ jobs:
         for file in ${{ steps.src-changed.outputs.all_changed_files }}; do
           echo "$file was changed"
         done
-      env:
-        SRC_CHANGED: contains(steps.changed.outputs.all_changed_files, 'packages/devextreme-react-generator/src')
     - name: Is src changed   
-      run: echo "$ SRC_CHANGED"
+      env:
+        SRC_CHANGED: contains(steps.changed.outputs.all_changed_files, 'devextreme-react-generator/src/')
+      run: echo "$SRC_CHANGED"
 
     - name: Guard
       if: contains(steps.changed.outputs.all_changed_files, 'packages/devextreme-react-generator/src') && contains(steps.changed.outputs.all_changed_files, 'packages/devextreme-react-generator/package.json')
