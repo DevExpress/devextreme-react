@@ -1,5 +1,6 @@
-import { render as testingRender, cleanup } from '@testing-library/react';
+import { render as testingRender, cleanup, waitFor } from '@testing-library/react';
 import * as React from 'react';
+import { act } from 'react-dom/test-utils';
 import config, { getOption } from '../config';
 import {
   TestComponent,
@@ -28,7 +29,7 @@ describe('useLegacyTemplateEngine', () => {
     cleanup();
   });
 
-  it('works for render-function template', () => {
+  it('works for render-function template', async () => {
     const ItemTemplate = (data: any) => (
       <div className="template">
         value:
@@ -52,16 +53,16 @@ describe('useLegacyTemplateEngine', () => {
 
     const { render } = WidgetClass.mock.calls[0][1].integrationOptions.templates.item;
 
-    render({
+    act(() => { render({
       container: ref.current,
       model: { value: 'Value', key: 'key_1' },
-    });
+    }) });
 
-    expect(container.querySelector('.template')?.textContent)
-      .toBe('value: Value, key: key_1, dxkey: key_1');
+    await waitFor(() => expect(container.querySelector('.template')?.textContent)
+      .toBe('value: Value, key: key_1, dxkey: key_1'));
   });
 
-  it('works for component template', () => {
+  it('works for component template', async () => {
     const ItemTemplate = (props: any) => {
       const { value, dxkey } = props;
       return (
@@ -86,11 +87,11 @@ describe('useLegacyTemplateEngine', () => {
 
     const { render } = WidgetClass.mock.calls[0][1].integrationOptions.templates.item;
 
-    render({
+    act(() => render({
       container: ref.current,
       model: { value: 'Value', key: 'key_1' },
-    });
+    }));
 
-    expect(container.querySelector('.template')?.textContent).toBe('value: Value, dxkey: key_1');
+    await waitFor(() => expect(container.querySelector('.template')?.textContent).toBe('value: Value, dxkey: key_1'));
   });
 });

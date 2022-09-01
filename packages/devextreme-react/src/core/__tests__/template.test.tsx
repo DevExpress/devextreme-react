@@ -1,7 +1,8 @@
 /* eslint-disable max-classes-per-file */
 import * as events from 'devextreme/events';
-import { cleanup, render, screen } from '@testing-library/react';
+import { cleanup, render, screen, waitFor } from '@testing-library/react';
 import * as React from 'react';
+import { act } from 'react-dom/test-utils';
 import { Component } from '../component';
 import ConfigurationComponent from '../nested-option';
 import { Template } from '../template';
@@ -15,7 +16,7 @@ import { TemplateWrapperRenderer } from '../template-wrapper';
 
 jest.useFakeTimers();
 
-const waitForceUpdateFromTemplateRenderer = () => new Promise((ok) => requestAnimationFrame(ok));
+const waitForceUpdateFromTemplateRenderer = () => act(() => new Promise((ok: any) => requestAnimationFrame(ok)));
 
 const templateProps = [{
   tmplOption: 'item',
@@ -95,7 +96,7 @@ function testTemplateOption(testedOption: string) {
     expect(typeof integrationOptions.templates.item.render).toBe('function');
   });
 
-  it('renders', () => {
+  it('renders', async () => {
     const ref = React.createRef() as React.RefObject<HTMLDivElement>;
     const elementOptions: Record<string, any> = {};
     elementOptions[testedOption] = prepareTemplate((data: any) => (
@@ -112,12 +113,12 @@ function testTemplateOption(testedOption: string) {
       </ComponentWithTemplates>,
     );
 
-    renderItemTemplate({ text: 'with data' }, ref.current);
+    act(() => { renderItemTemplate({ text: 'with data' }, ref.current) });
 
-    expect(container.querySelector('.template')?.outerHTML).toBe('<div class="template">Template with data</div>');
+    await waitFor(() => expect(container.querySelector('.template')?.outerHTML).toBe('<div class="template">Template with data</div>'));
   });
 
-  it('renders with text node inside component', () => {
+  it('renders with text node inside component', async () => {
     const ref = React.createRef() as React.RefObject<HTMLDivElement>;
     const elementOptions: Record<string, any> = {};
     elementOptions[testedOption] = () => <div>Template</div>;
@@ -129,13 +130,13 @@ function testTemplateOption(testedOption: string) {
       </ComponentWithTemplates>,
     );
 
-    renderItemTemplate({ text: 'with data' }, ref.current);
+    act(() => { renderItemTemplate({ text: 'with data' }, ref.current) });
 
-    expect(screen.getByText('Text')?.outerHTML)
-      .toBe('<div>Text<div><div>Template</div><div style=\"display: none;\"></div></div></div>');
+    await waitFor(() => expect(screen.getByText('Text')?.outerHTML)
+      .toBe('<div>Text<div><div>Template</div><div style=\"display: none;\"></div></div></div>'));
   });
 
-  it('renders new template after component change', () => {
+  it('renders new template after component change', async () => {
     const ref = React.createRef() as React.RefObject<HTMLDivElement>;
     const elementOptions: Record<string, any> = { ref };
     elementOptions[testedOption] = () => <div className="template">First Template</div>;
@@ -151,9 +152,9 @@ function testTemplateOption(testedOption: string) {
       </ComponentWithTemplates>,
     );
 
-    renderItemTemplate(undefined, ref.current);
+    act(() => { renderItemTemplate(undefined, ref.current) });
 
-    expect(container.querySelector('.template')?.outerHTML).toBe('<div class="template">Second Template</div>');
+    await waitFor(() => expect(container.querySelector('.template')?.outerHTML).toBe('<div class="template">Second Template</div>'));
   });
 
   it('passes component option changes to widget', () => {
@@ -177,7 +178,7 @@ function testTemplateOption(testedOption: string) {
     expect(typeof optionCalls[0][1].templates.item.render).toBe('function');
   });
 
-  it('renders inside unwrapped container', () => {
+  it('renders inside unwrapped container', async () => {
     const ref = React.createRef() as React.RefObject<HTMLDivElement>;
     const elementOptions: Record<string, any> = {};
     elementOptions[testedOption] = () => <div className="template">Template</div>;
@@ -187,12 +188,12 @@ function testTemplateOption(testedOption: string) {
       </ComponentWithTemplates>,
     );
 
-    renderItemTemplate({}, ref.current);
+    act(() => { renderItemTemplate({}, ref.current) });
 
-    expect(container.querySelector('.template')?.outerHTML).toBe('<div class="template">Template</div>');
+    await waitFor(() => expect(container.querySelector('.template')?.outerHTML).toBe('<div class="template">Template</div>'));
   });
 
-  it('renders template removeEvent listener', () => {
+  it('renders template removeEvent listener', async () => {
     const ref = React.createRef() as React.RefObject<HTMLDivElement>;
 
     const elementOptions: Record<string, any> = {};
@@ -209,13 +210,13 @@ function testTemplateOption(testedOption: string) {
       </ComponentWithTemplates>,
     );
 
-    renderItemTemplate({ text: 'with data' }, ref.current);
+    act(() => { renderItemTemplate({ text: 'with data' }, ref.current) });
 
-    expect((container.firstChild?.firstChild as HTMLDivElement).outerHTML)
-      .toContain('<div>Template with data<div style=\"display: none;\"></div><span style=\"display: none;\"></span></div>');
+    await waitFor(() => expect((container.firstChild?.firstChild as HTMLDivElement).outerHTML)
+      .toContain('<div>Template with data<div style=\"display: none;\"></div><span style=\"display: none;\"></span></div>'));
   });
 
-  it('does not render template removeEvent listener', () => {
+  it('does not render template removeEvent listener', async () => {
     const ref = React.createRef() as React.RefObject<HTMLDivElement>;
 
     const elementOptions: Record<string, any> = {};
@@ -237,13 +238,13 @@ function testTemplateOption(testedOption: string) {
     );
 
     const table = document.createElement('table');
-    renderItemTemplate({ text: 'with data' }, table);
+    act(() => { renderItemTemplate({ text: 'with data' }, table) });
 
-    expect(table.innerHTML)
-      .toBe('<tbody><tr><td>Template with data</td></tr></tbody><tbody style=\"display: none;\"></tbody>');
+    await waitFor(() => expect(table.innerHTML)
+      .toBe('<tbody><tr><td>Template with data</td></tr></tbody><tbody style=\"display: none;\"></tbody>'));
   });
 
-  it('render invisible element as tr tag', () => {
+  it('render invisible element as tr tag', async () => {
     const ref = React.createRef() as React.RefObject<HTMLDivElement>;
 
     const elementOptions: Record<string, any> = {};
@@ -263,13 +264,13 @@ function testTemplateOption(testedOption: string) {
     );
 
     const table = document.createElement('tbody');
-    renderItemTemplate({ text: 'with data' }, table);
+    act(() => { renderItemTemplate({ text: 'with data' }, table) });
 
-    expect(table.innerHTML)
-      .toBe('<tr><td>Template with data</td></tr><tr style=\"display: none;\"></tr>');
+    await waitFor(() => expect(table.innerHTML)
+      .toBe('<tr><td>Template with data</td></tr><tr style=\"display: none;\"></tr>'));
   });
 
-  it('calls onRendered callback', () => {
+  it('calls onRendered callback', async () => {
     const ref = React.createRef() as React.RefObject<HTMLDivElement>;
 
     const elementOptions: Record<string, any> = {};
@@ -286,13 +287,13 @@ function testTemplateOption(testedOption: string) {
     );
     const onRendered: () => void = jest.fn();
 
-    renderItemTemplate({ text: 'with data' }, undefined, undefined, onRendered);
+    act(() => { renderItemTemplate({ text: 'with data' }, undefined, undefined, onRendered) });
 
     jest.runAllTimers();
-    expect(onRendered).toBeCalled();
+    await waitFor(() => expect(onRendered).toBeCalled());
   });
 
-  it('renders empty template without errors', () => {
+  it('renders empty template without errors', async () => {
     const ref = React.createRef() as React.RefObject<HTMLDivElement>;
 
     const elementOptions: Record<string, any> = {};
@@ -304,13 +305,13 @@ function testTemplateOption(testedOption: string) {
       </ComponentWithTemplates>,
     );
 
-    renderItemTemplate({ text: 1 }, ref.current);
-    expect(() => rerender(
+    act(() => { renderItemTemplate({ text: 1 }, ref.current) });
+    await waitFor(() => expect(() => rerender(
       <ComponentWithTemplates {...elementOptions} />,
-    )).not.toThrow();
+    )).not.toThrow());
   });
 
-  it('has templates with unique ids', () => {
+  it('has templates with unique ids', async () => {
     const ref = React.createRef() as React.RefObject<ComponentWithTemplates>;
 
     const elementOptions: Record<string, any> = {};
@@ -327,15 +328,17 @@ function testTemplateOption(testedOption: string) {
     const componentInstance = ref.current as unknown as {
       _templatesStore: { _templates: Record<string, TemplateWrapperRenderer> } };
 
-    renderItemTemplate({ text: 1 });
-    renderItemTemplate({ text: 2 });
+    act(() => { renderItemTemplate({ text: 1 }) });
+    act(() => { renderItemTemplate({ text: 2 }) });
 
-    const templatesKeys = Object.getOwnPropertyNames(componentInstance._templatesStore._templates);
-    expect(templatesKeys.length).toBe(2);
-    expect(templatesKeys[0]).not.toBe(templatesKeys[1]);
+    await waitFor(() => {
+      const templatesKeys = Object.getOwnPropertyNames(componentInstance._templatesStore._templates);
+      expect(templatesKeys.length).toBe(2);
+      expect(templatesKeys[0]).not.toBe(templatesKeys[1])
+    });
   });
 
-  it('removes previous template if its container was removed', () => {
+  it('removes previous template if its container was removed', async () => {
     const ref = React.createRef() as React.RefObject<ComponentWithTemplates>;
 
     const elementOptions: Record<string, any> = {};
@@ -353,15 +356,17 @@ function testTemplateOption(testedOption: string) {
       _templatesStore: { _templates: Record<string, TemplateWrapperRenderer> } };
 
     const container = document.createElement('div');
-    renderItemTemplate({ text: 1 }, container);
+    act(() => { renderItemTemplate({ text: 1 }, container) });
     events.triggerHandler(container, 'dxremove');
-    renderItemTemplate({ text: 1 }, document.createElement('div'));
+    act(() => { renderItemTemplate({ text: 1 }, document.createElement('div')) });
 
-    const templatesKeys = Object.getOwnPropertyNames(componentInstance._templatesStore._templates);
-    expect(templatesKeys.length).toBe(1);
+    await waitFor(() => {
+      const templatesKeys = Object.getOwnPropertyNames(componentInstance._templatesStore._templates);
+      expect(templatesKeys.length).toBe(1);
+    })
   });
 
-  it('has templates with ids genetated with keyExpr', () => {
+  it('has templates with ids genetated with keyExpr', async () => {
     const ref = React.createRef() as React.RefObject<ComponentWithTemplates>;
 
     const elementOptions: Record<string, unknown> = {};
@@ -376,18 +381,20 @@ function testTemplateOption(testedOption: string) {
       <ComponentWithTemplates {...elementOptions} ref={ref} />,
     );
 
-    renderItemTemplate({ text: 1 });
-    renderItemTemplate({ text: 2 });
+    act(() => { renderItemTemplate({ text: 1 }) });
+    act(() => { renderItemTemplate({ text: 2 }) });
 
     const componentInstance = ref.current as unknown as { _templatesStore: { _templates: Record<string, TemplateWrapperRenderer> } };
 
-    const templatesKeys = Object.getOwnPropertyNames(componentInstance._templatesStore._templates);
-    expect(templatesKeys.length).toBe(2);
-    expect(templatesKeys[0]).toBe('1');
-    expect(templatesKeys[1]).toBe('2');
+    await waitFor(() => {
+      const templatesKeys = Object.getOwnPropertyNames(componentInstance._templatesStore._templates);
+      expect(templatesKeys.length).toBe(2);
+      expect(templatesKeys[0]).toBe('1');
+      expect(templatesKeys[1]).toBe('2');
+    });
   });
 
-  it('removes text template', () => {
+  it('removes text template', async () => {
     const ref = React.createRef() as React.RefObject<ComponentWithTemplates>;
     const refContainer = React.createRef() as React.RefObject<HTMLDivElement>;
 
@@ -406,12 +413,13 @@ function testTemplateOption(testedOption: string) {
 
     const componentInstance = ref.current as unknown as { _templatesStore: TemplatesStore };
 
-    renderItemTemplate({}, refContainer.current);
+    act(() => { renderItemTemplate({}, refContainer.current) });
+    await waitFor(() => {
+      expect(componentInstance._templatesStore.renderWrappers().length).toBe(1);
 
-    expect(componentInstance._templatesStore.renderWrappers().length).toBe(1);
-
-    expect(screen.getByText('Template').outerHTML)
-      .toBe('<div>Template<div style=\"display: none;\"></div><span style=\"display: none;\"></span></div>');
+      expect(screen.getByText('Template').outerHTML)
+        .toBe('<div>Template<div style=\"display: none;\"></div><span style=\"display: none;\"></span></div>');
+    });
 
     const removeListener = container.getElementsByTagName('SPAN')[0];
 
@@ -430,7 +438,7 @@ function testTemplateOption(testedOption: string) {
     expect(screen.queryByText('Template')).toBeNull();
   });
 
-  it('removes template', () => {
+  it('removes template', async () => {
     const ref = React.createRef() as React.RefObject<ComponentWithTemplates>;
     const refContainer = React.createRef() as React.RefObject<HTMLDivElement>;
 
@@ -451,19 +459,19 @@ function testTemplateOption(testedOption: string) {
 
     const componentInstance = ref.current as unknown as { _templatesStore: TemplatesStore };
 
-    renderItemTemplate(undefined, refContainer.current);
+    act(() => { renderItemTemplate(undefined, refContainer.current) });
+    await waitFor(() => {
+      expect(componentInstance._templatesStore.renderWrappers().length).toBe(1);
+      const templateContent = container.querySelector('.template') as HTMLElement;
 
-    expect(componentInstance._templatesStore.renderWrappers().length).toBe(1);
+      const { parentElement } = templateContent;
+      if (!parentElement) { throw new Error(); }
 
-    const templateContent = container.querySelector('.template') as HTMLElement;
+      parentElement.removeChild(templateContent);
+      events.triggerHandler(templateContent, 'dxremove');
+    });
 
-    const { parentElement } = templateContent;
-    if (!parentElement) { throw new Error(); }
-
-    parentElement.removeChild(templateContent);
-    events.triggerHandler(templateContent, 'dxremove');
-
-    expect(componentInstance._templatesStore.renderWrappers().length).toBe(0);
+    await waitFor(() => expect(componentInstance._templatesStore.renderWrappers().length).toBe(0));
   });
 }
 
@@ -475,7 +483,7 @@ describe('function template', () => {
 
   testTemplateOption('itemRender');
 
-  it('renders simple item', () => {
+  it('renders simple item', async () => {
     const ref = React.createRef() as React.RefObject<HTMLDivElement>;
     const itemRender: any = jest.fn((text: string) => (
       <div className="template">
@@ -489,14 +497,16 @@ describe('function template', () => {
         <div ref={ref} />
       </ComponentWithTemplates>,
     );
-    renderItemTemplate('with data', ref.current);
+    act(() => { renderItemTemplate('with data', ref.current) });
+    await waitFor(() => {
+      expect(itemRender).toBeCalled();
 
-    expect(itemRender).toBeCalled();
-
-    expect(container.querySelector('.template')?.outerHTML).toBe('<div class="template">Template with data</div>');
+      expect(container.querySelector('.template')?.outerHTML).toBe('<div class="template">Template with data</div>');
+    });
+    
   });
 
-  it('renders index', () => {
+  it('renders index', async () => {
     const ref = React.createRef() as React.RefObject<HTMLDivElement>;
     const itemRender: any = jest.fn((_, index: number) => (
       <div className="template">
@@ -510,10 +520,12 @@ describe('function template', () => {
         <div ref={ref} />
       </ComponentWithTemplates>,
     );
-    renderItemTemplate(undefined, ref.current, 5);
-
-    expect(itemRender).toBeCalled();
-    expect(container.querySelector('.template')?.outerHTML).toBe('<div class="template">Index 5</div>');
+    act(() => { renderItemTemplate(undefined, ref.current, 5) });
+    await waitFor(() => {
+      expect(itemRender).toBeCalled();
+      expect(container.querySelector('.template')?.outerHTML).toBe('<div class="template">Index 5</div>');
+    });
+    
   });
 });
 
@@ -525,7 +537,7 @@ describe('component template', () => {
 
   testTemplateOption('itemComponent');
 
-  it('renders index', () => {
+  it('renders index', async () => {
     const ref = React.createRef() as React.RefObject<HTMLDivElement>;
     const ItemTemplate = (props: any) => {
       const { data, index } = props;
@@ -547,9 +559,9 @@ describe('component template', () => {
       </ComponentWithTemplates>,
     );
 
-    renderItemTemplate({ value: 'Value' }, ref.current, 5);
+    act(() => { renderItemTemplate({ value: 'Value' }, ref.current, 5) });
 
-    expect(container.querySelector('.template')?.textContent).toBe('value: Value, index: 5');
+    await waitFor(() => expect(container.querySelector('.template')?.textContent).toBe('value: Value, index: 5'));
   });
 });
 
@@ -590,7 +602,7 @@ describe('nested template', () => {
     expect(typeof integrationOptions.templates.item3.render).toBe('function');
   });
 
-  it('renders nested templates', () => {
+  it('renders nested templates', async () => {
     const ref = React.createRef() as React.RefObject<HTMLDivElement>;
     const FirstTemplate = () => <div className="template">Template</div>;
     const { container } = render(
@@ -599,12 +611,12 @@ describe('nested template', () => {
         <div ref={ref} />
       </ComponentWithTemplates>,
     );
-    renderTemplate('item1', undefined, ref.current);
+    act(() => { renderTemplate('item1', undefined, ref.current) });
 
-    expect(container.querySelector('.template')?.outerHTML).toBe('<div class="template">Template</div>');
+    await waitFor(() => expect(container.querySelector('.template')?.outerHTML).toBe('<div class="template">Template</div>'));
   });
 
-  it('renders children of nested template', () => {
+  it('renders children of nested template', async () => {
     const ref = React.createRef() as React.RefObject<HTMLDivElement>;
     const { container } = render(
       <ComponentWithTemplates>
@@ -614,13 +626,13 @@ describe('nested template', () => {
         <div ref={ref} />
       </ComponentWithTemplates>,
     );
-    renderTemplate('item1', undefined, ref.current);
+    act(() => { renderTemplate('item1', undefined, ref.current) });
 
-    expect(container.querySelector('.template')?.outerHTML)
-      .toBe('<div class="template">Template</div>');
+    await waitFor(() => expect(container.querySelector('.template')?.outerHTML)
+      .toBe('<div class="template">Template</div>'));
   });
 
-  it('renders new templates after component change', () => {
+  it('renders new templates after component change', async () => {
     const ref = React.createRef() as React.RefObject<HTMLDivElement>;
 
     const FirstTemplate = () => <div className="template">First Template</div>;
@@ -630,9 +642,9 @@ describe('nested template', () => {
         <div ref={ref} />
       </ComponentWithTemplates>,
     );
-    renderTemplate('item1', undefined, ref.current);
+    act(() => { renderTemplate('item1', undefined, ref.current) });
 
-    expect(container.querySelector('.template')?.outerHTML).toBe('<div class="template">First Template</div>');
+    await waitFor(() => expect(container.querySelector('.template')?.outerHTML).toBe('<div class="template">First Template</div>'));
 
     const SecondTemplate = () => <div className="template">Second Template</div>;
 
@@ -643,10 +655,10 @@ describe('nested template', () => {
       </ComponentWithTemplates>,
     );
 
-    expect(container.querySelector('.template')?.outerHTML).toBe('<div class="template">Second Template</div>');
+    await waitFor(() => expect(container.querySelector('.template')?.outerHTML).toBe('<div class="template">Second Template</div>'));
   });
 
-  it('renders new templates after children change', () => {
+  it('renders new templates after children change', async () => {
     const ref = React.createRef() as React.RefObject<HTMLDivElement>;
     const { container, rerender } = render(
       <ComponentWithTemplates>
@@ -656,9 +668,9 @@ describe('nested template', () => {
         <div ref={ref} />
       </ComponentWithTemplates>,
     );
-    renderTemplate('item1', undefined, ref.current);
+    act(() => { renderTemplate('item1', undefined, ref.current) });
 
-    expect(container.querySelector('.template')?.outerHTML).toBe('<div class="template">First Template</div>');
+    await waitFor(() => expect(container.querySelector('.template')?.outerHTML).toBe('<div class="template">First Template</div>'));
 
     rerender(
       <ComponentWithTemplates>
@@ -672,7 +684,7 @@ describe('nested template', () => {
     expect(container.querySelector('.template')?.outerHTML).toBe('<div class="template">Second Template</div>');
   });
 
-  it('has templates with ids genetated by keyFn', () => {
+  it('has templates with ids genetated by keyFn', async () => {
     const ref = React.createRef() as React.RefObject<ComponentWithTemplates>;
     const FirstTemplate = () => <div className="template">Template</div>;
     const keyExpr = (data) => data.text;
@@ -682,11 +694,13 @@ describe('nested template', () => {
       </ComponentWithTemplates>,
     );
 
-    renderTemplate('item1', { text: 1 });
-    const componentInstance = ref.current as any;
-    const templates = Object.getOwnPropertyNames(componentInstance._templatesStore._templates);
-    expect(templates.length).toBe(1);
-    expect(templates[0]).toBe('1');
+    act(() => { renderTemplate('item1', { text: 1 }) });
+    await waitFor(() => {
+      const componentInstance = ref.current as any;
+      const templates = Object.getOwnPropertyNames(componentInstance._templatesStore._templates);
+      expect(templates.length).toBe(1);
+      expect(templates[0]).toBe('1');
+    });
   });
 });
 
@@ -944,7 +958,7 @@ describe('component/render in nested options', () => {
     ]);
   });
 
-  it('renders templates', () => {
+  it('renders templates', async () => {
     const ref = React.createRef() as React.RefObject<HTMLDivElement>;
 
     const FirstTemplate = () => <div className="template">First Template</div>;
@@ -954,9 +968,9 @@ describe('component/render in nested options', () => {
         <div ref={ref} />
       </TestComponent>,
     );
-    renderTemplate('option.item', undefined, ref.current);
+    act(() => { renderTemplate('option.item', undefined, ref.current) });
 
-    expect(container.querySelector('.template')?.outerHTML).toBe('<div class="template">First Template</div>');
+    await waitFor(() => expect(container.querySelector('.template')?.outerHTML).toBe('<div class="template">First Template</div>'));
 
     const SecondTemplate = () => <div className="template">Second Template</div>;
     rerender(
@@ -966,10 +980,10 @@ describe('component/render in nested options', () => {
       </TestComponent>,
     );
 
-    expect(container.querySelector('.template')?.outerHTML).toBe('<div class="template">Second Template</div>');
+    await waitFor(() => expect(container.querySelector('.template')?.outerHTML).toBe('<div class="template">Second Template</div>'));
   });
 
-  it('renders static templates', () => {
+  it('renders static templates', async () => {
     const ref = React.createRef() as React.RefObject<HTMLDivElement>;
 
     const FirstTemplate = () => <div className="template">First Template</div>;
@@ -981,9 +995,9 @@ describe('component/render in nested options', () => {
         <div ref={ref} />
       </TestComponent>,
     );
-    renderTemplate('collection[0].template', undefined, ref.current);
+    act(() => { renderTemplate('collection[0].template', undefined, ref.current) });
 
-    expect(container.querySelector('.template')?.outerHTML).toBe('<div class="template">First Template</div>');
+    await waitFor(() => expect(container.querySelector('.template')?.outerHTML).toBe('<div class="template">First Template</div>'));
 
     const SecondTemplate = () => <div className="template">Second Template</div>;
     rerender(
@@ -995,12 +1009,12 @@ describe('component/render in nested options', () => {
       </TestComponent>,
     );
 
-    expect(container.querySelector('.template')?.outerHTML)
-      .toBe('<div class="template">Second Template</div>');
+    await waitFor(() => expect(container.querySelector('.template')?.outerHTML)
+      .toBe('<div class="template">Second Template</div>'));
   });
 
   // T748280
-  it('renders updates in deeply nested templates', () => {
+  it('renders updates in deeply nested templates', async () => {
     const ref = React.createRef() as React.RefObject<HTMLDivElement>;
 
     const getTemplate = (arg: string) => () => <div className="template">{arg}</div>;
@@ -1020,12 +1034,12 @@ describe('component/render in nested options', () => {
       <TestContainer value="test2" />,
     );
 
-    renderTemplate('collection[0].option.item', undefined, ref.current);
+    act(() => { renderTemplate('collection[0].option.item', undefined, ref.current) });
 
-    expect(container.querySelector('.template')?.outerHTML).toBe('<div class="template">test2</div>');
+    await waitFor(() => expect(container.querySelector('.template')?.outerHTML).toBe('<div class="template">test2</div>'));
   });
 
-  it('adds nested components dynamically', () => {
+  it('adds nested components dynamically', async () => {
     const renderItem = () => <div>Template</div>;
     const items = [{ id: 1, render: renderItem }];
 
@@ -1050,16 +1064,16 @@ describe('component/render in nested options', () => {
 
     const updatedOptions = Widget.option.mock.calls;
 
-    expect(updatedOptions[0][0]).toBe('integrationOptions');
-    expect(Object.keys(updatedOptions[0][1].templates)).toEqual([
-      'collection[0].template',
-      'collection[1].template',
-    ]);
-
-    expect(updatedOptions[1][0]).toBe('collection');
-    expect(updatedOptions[1][1].length).toBe(2);
-    expect(updatedOptions[1][1][0].template).toBe('collection[0].template');
-    expect(updatedOptions[1][1][1].template).toBe('collection[1].template');
+    await waitFor(() => {expect(updatedOptions[0][0]).toBe('integrationOptions');
+      expect(Object.keys(updatedOptions[0][1].templates)).toEqual([
+        'collection[0].template',
+        'collection[1].template',
+      ]);
+      expect(updatedOptions[1][0]).toBe('collection');
+      expect(updatedOptions[1][1].length).toBe(2);
+      expect(updatedOptions[1][1][0].template).toBe('collection[0].template');
+      expect(updatedOptions[1][1][1].template).toBe('collection[1].template');
+    });
   });
 
   it('removes nested components dynamically', () => {
@@ -1163,14 +1177,14 @@ describe('async template', () => {
       </ComponentWithAsyncTemplates>,
     );
 
-    renderItemTemplate({ text: 'with data' }, ref.current);
+    act(() => { renderItemTemplate({ text: 'with data' }, ref.current) });
 
     expect(container.querySelector('.template')).toBeNull();
 
     await waitForceUpdateFromTemplateRenderer();
 
-    expect(container.querySelector('.template')?.outerHTML)
-      .toBe('<div class="template">Template with data</div>');
+    await waitFor(() => expect(container.querySelector('.template')?.outerHTML)
+      .toBe('<div class="template">Template with data</div>'));
   });
 
   it('does not force update on each template', async () => {
@@ -1195,14 +1209,14 @@ describe('async template', () => {
       'renderWrappers',
     );
 
-    renderItemTemplate({ text: 'with data1' }, ref.current);
-    renderItemTemplate({ text: 'with data2' }, ref.current);
+    act(() => { renderItemTemplate({ text: 'with data1' }, ref.current) });
+    act(() => { renderItemTemplate({ text: 'with data2' }, ref.current) });
 
-    expect(renderSpy.mock.calls.length).toBe(0);
+    await waitFor(() => expect(renderSpy.mock.calls.length).toBe(0));
 
     await waitForceUpdateFromTemplateRenderer();
 
-    expect(renderSpy.mock.calls.length).toBe(1);
+    await waitFor(() => expect(renderSpy.mock.calls.length).toBe(1));
     renderSpy.mockRestore();
   });
 });
