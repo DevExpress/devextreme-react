@@ -1,4 +1,4 @@
-import { render as testingRender, cleanup, waitFor } from '@testing-library/react';
+import { render as testingRender, cleanup } from '@testing-library/react';
 import * as React from 'react';
 import { act } from 'react-dom/test-utils';
 import config, { getOption } from '../config';
@@ -29,7 +29,7 @@ describe('useLegacyTemplateEngine', () => {
     cleanup();
   });
 
-  it('works for render-function template', async () => {
+  it('works for render-function template', () => {
     const ItemTemplate = (data: any) => (
       <div className="template">
         value:
@@ -58,11 +58,11 @@ describe('useLegacyTemplateEngine', () => {
       model: { value: 'Value', key: 'key_1' },
     }) });
 
-    await waitFor(() => expect(container.querySelector('.template')?.textContent)
-      .toBe('value: Value, key: key_1, dxkey: key_1'));
+    expect(container.querySelector('.template')?.textContent)
+      .toBe('value: Value, key: key_1, dxkey: key_1');
   });
 
-  it('works for component template', async () => {
+  it('works for component template', () => {
     const ItemTemplate = (props: any) => {
       const { value, dxkey } = props;
       return (
@@ -92,6 +92,6 @@ describe('useLegacyTemplateEngine', () => {
       model: { value: 'Value', key: 'key_1' },
     }));
 
-    await waitFor(() => expect(container.querySelector('.template')?.textContent).toBe('value: Value, dxkey: key_1'));
+    expect(container.querySelector('.template')?.textContent).toBe('value: Value, dxkey: key_1');
   });
 });
