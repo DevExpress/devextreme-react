@@ -25,6 +25,7 @@
     "eslint-plugin-qunit": "^4.3.0",
     "eslint-plugin-react": "^7.30.1",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-spellcheck": "0.0.14",
     "gulp": "^4.0.2",
     "gulp-eslint": "^6.0.0",
     "istanbul": "^0.4.5",
