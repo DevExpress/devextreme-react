@@ -26,7 +26,7 @@ jobs:
     - name: Clone devextreme repo
       run: test -d ../devextreme || git clone -b 22_2 https://github.com/devexpress/devextreme ../devextreme
 
-    - name: Use Node.js 15
+    - name: Use Node.js 16
       uses: actions/setup-node@v2
       with:
         node-version: '15'
@@ -39,18 +39,11 @@ jobs:
       run: |
         cd ../devextreme
         npm run build-dist
-    - name: Use Node.js 14
-      uses: actions/setup-node@v2
-      with:
-        node-version: '14'
+
     - name: Install devextreme package
       run: |
-        cd ./packages/devextreme-react
-        npm install --save-dev ../../../devextreme/artifacts/npm/devextreme
-        cd ../sandbox
-        npm install --save-dev ../../../devextreme/artifacts/npm/devextreme
-        cd ../../
-        npm install --save-dev ../devextreme/artifacts/npm/devextreme
+        npx lerna add devextreme@file:../devextreme/artifacts/npm/devextreme/ --dev --no-bootstrap --scope=devextreme-react --exact --peer
+        npx lerna add devextreme@file:../devextreme/artifacts/npm/devextreme/ --no-bootstrap --scope=devextreme-react-sandbox --exact
 
     - name: Run npm install
       run: npm install --no-audit --no-fund
