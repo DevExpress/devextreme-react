@@ -9,15 +9,15 @@
     "url": "https://github.com/DevExpress/devextreme-react.git"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^4.33.0",
-    "@typescript-eslint/parser": "^4.33.0",
+    "@typescript-eslint/eslint-plugin": "^5.32.0",
+    "@typescript-eslint/parser": "^5.32.0",
     "cpy-cli": "^3.1.1",
     "del-cli": "^3.0.1",
     "devextreme-internal-tools": "^8.0.2",
     "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-airbnb-typescript": "^12.3.1",
-    "eslint-config-devextreme": "^0.1.40",
+    "eslint-config-devextreme": "^0.1.41",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jest": "^23.20.0",
     "eslint-plugin-jest-formatting": "^1.2.0",
