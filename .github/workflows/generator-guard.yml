@@ -1,4 +1,4 @@
-name: Guard - Up version generator if sourcies files changed 
+name: Guard - Up version generator if source files changed
 
 on:
   push:
@@ -17,13 +17,10 @@ jobs:
     steps:
     - name: Get sources
       uses: actions/checkout@v2
+      with:
+        fetch-depth: 2
 
-    - name: Get changed files
-      id: changed
-      uses: tj-actions/changed-files@v29.0.2
-
-    - name: Check changes
-      if: ${{ contains(steps.changed.outputs.all_changed_files, 'devextreme-react-generator/src/') && !contains(steps.changed.outputs.all_changed_files, 'devextreme-react-generator/package.json') }}
-      run: |
-        echo "Please update version in packages/devextreme-react-generator/package.json"
-        exit 1
+    - name: Detect version bump
+      uses: DevExpress/github-actions/generator-version-guard@main
+      with:
+        generator_path: packages/devextreme-react-generator
