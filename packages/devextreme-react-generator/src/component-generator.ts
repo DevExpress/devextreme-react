@@ -95,7 +95,6 @@ const PORTAL_COMPONENTS: Set<string> = new Set([
 const USE_REQUEST_ANIMATION_FRAME: Set<string> = new Set([
   'dxChart',
   'dxDateBox',
-  'dxDataGrid',
 ]);
 
 function getIndent(indent: number) {
