@@ -118,18 +118,19 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
     element = element || this._element;
 
     const config = this._getConfig();
-    const options: Record<string, unknown> = {
-      templatesRenderAsynchronously: true,
-      ...this._optionsManager.getInitialOptions(config),
-    };
+    const initialOptions = this._optionsManager.getInitialOptions(config);
+    const hasDetachedFlag = Object.keys(initialOptions).includes('allowRenderToDetachedTable');
 
-    if (this.allowRenderToDetachedTable) {
-      options.allowRenderToDetachedTable = true;
+    if (!hasDetachedFlag && this.allowRenderToDetachedTable) {
+      initialOptions.allowRenderToDetachedTable = true;
     }
 
     this._instance = new this._WidgetClass(
       element,
-      options,
+      {
+        templatesRenderAsynchronously: true,
+        ...initialOptions,
+      },
     );
 
     if (!this.useRequestAnimationFrameFlag) {
