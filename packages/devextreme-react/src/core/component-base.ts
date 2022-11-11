@@ -67,6 +67,8 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
 
   protected useRequestAnimationFrameFlag = false;
 
+  protected allowRenderToDetachedTable = false;
+
   protected useDeferUpdateForTemplates = false;
 
   constructor(props: P) {
@@ -116,12 +118,18 @@ abstract class ComponentBase<P extends IHtmlOptions> extends React.PureComponent
     element = element || this._element;
 
     const config = this._getConfig();
+    const options: Record<string, unknown> = {
+      templatesRenderAsynchronously: true,
+      ...this._optionsManager.getInitialOptions(config),
+    };
+
+    if (this.allowRenderToDetachedTable) {
+      options.allowRenderToDetachedTable = true;
+    }
+
     this._instance = new this._WidgetClass(
       element,
-      {
-        templatesRenderAsynchronously: true,
-        ...this._optionsManager.getInitialOptions(config),
-      },
+      options,
     );
 
     if (!this.useRequestAnimationFrameFlag) {
