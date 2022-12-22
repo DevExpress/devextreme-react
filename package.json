@@ -46,7 +46,7 @@
     "test": "npm run update-integration-meta && lerna run build && jest --coverage",
     "test-watch": "jest --watch",
     "pack": "npm run update-integration-meta && lerna run pack",
-    "update-integration-meta": "dx-tools integration-data-generator --js-scripts ../devextreme/js  --artifacts ../devextreme/artifacts/internal-tools --output-path ./packages/devextreme-react/metadata/integration-data.json --version 22_2"
+    "update-integration-meta": "dx-tools integration-data-generator --js-scripts ../devextreme/js  --artifacts ../devextreme/artifacts/internal-tools --output-path ./packages/devextreme-react/metadata/integration-data.json --version 23_1"
   },
   "keywords": [
     "react",
