@@ -26,14 +26,24 @@ class TemplatesRenderer extends React.PureComponent<{
 
     this.updateScheduled = true;
 
+    const { templatesStore } = this.props;
+
     const updateFunc = useDeferUpdate ? deferUpdate : requestAnimationFrame;
+
     updateFunc(() => {
       if (this.mounted) {
+        const templatesStoreStateMark = templatesStore.getStateMark();
+
         this.forceUpdate(() => {
           this.updateScheduled = false;
           onRendered?.();
         });
+
+        if (templatesStoreStateMark !== templatesStore.getStateMark()) {
+          this.forceUpdate();
+        }
       }
+
       this.updateScheduled = false;
     });
   }

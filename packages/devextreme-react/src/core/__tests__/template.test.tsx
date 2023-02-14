@@ -113,7 +113,11 @@ function testTemplateOption(testedOption: string) {
       </ComponentWithTemplates>,
     );
 
-    act(() => { renderItemTemplate({ text: 'with data' }, ref.current) });
+    act(() => {
+      renderItemTemplate({ text: 'with data' }, ref.current, 0, () => {
+        renderItemTemplate({ text: 'with other data' }, ref.current);
+      });
+    });
 
     expect(container.querySelector('.template')?.outerHTML).toBe('<div class="template">Template with data</div>');
   });
@@ -1199,5 +1203,32 @@ describe('async template', () => {
 
     expect(renderSpy.mock.calls.length).toBe(1);
     renderSpy.mockRestore();
+  });
+
+  /* T1124149 */
+  it('should render template if it is added while previous rendering', async () => {
+    const ref = React.createRef() as React.RefObject<HTMLDivElement>;
+    const elementOptions: Record<string, any> = {};
+    elementOptions.itemRender = (data: any) => (
+      <div className={`template ${data.cls}`}>
+        Template
+      </div>
+    );
+
+    const { container } = render(
+      <ComponentWithAsyncTemplates {...elementOptions}>
+        <div ref={ref} />
+      </ComponentWithAsyncTemplates>,
+    );
+
+    act(() => {
+      renderItemTemplate({ cls: 'data1' }, ref.current, 0, () => {
+        renderItemTemplate({ cls: 'data2' }, ref.current, 0);
+      });
+    });
+
+    await waitForceUpdateFromTemplateRenderer();
+
+    expect(container.querySelector('.template.data2')?.outerHTML).toBe('<div class="template data2">Template</div>');
   });
 });
