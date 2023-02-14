@@ -9,6 +9,7 @@ module.exports = {
     readme: '../../README.md'
   },
   metadataPath: './metadata/integration-data.json',
+  modulesMetadataPath: './metadata/modules-meta.json',
   generatedComponentsDir: './src',
   coreComponentsDir: './src/core',
   oldComponentsDir: './src/ui',

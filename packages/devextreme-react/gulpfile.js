@@ -36,6 +36,7 @@ gulp.task(OLD_OUTPUTDIR_CREATE, (done) =>
 gulp.task(GEN_RUN, (done) => {
   generateSync({
     metaData: JSON.parse(fs.readFileSync(config.metadataPath).toString()),
+    modulesMetadata: JSON.parse(fs.readFileSync(config.modulesMetadataPath).toString()),
     components: {
       baseComponent: config.baseComponent,
       extensionComponent: config.extensionComponent,

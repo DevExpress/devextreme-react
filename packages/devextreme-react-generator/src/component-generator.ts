@@ -24,6 +24,7 @@ type IComponent = {
 } & {
   nestedComponents?: INestedComponent[];
   configComponentPath?: string;
+  reExports?: string[];
 };
 
 interface INestedComponent {
@@ -177,6 +178,7 @@ const renderModule: (model: {
   renderedNestedComponents?: string[];
   defaultExport: string;
   renderedExports: string;
+  renderedReExports: string;
 }) => string = createTempate(
   '<#= it.renderedImports #>\n'
 
@@ -196,7 +198,8 @@ const renderModule: (model: {
 + `export {
 <#= it.renderedExports #>
 };
-`,
+`
++ '<#= it.renderedReExports #>',
 );
 
 const renderImports: (model: {
@@ -412,6 +415,18 @@ function renderExports(exportsNames: string[]) {
     .join(',\n');
 }
 
+function renderReExports(exportsNames: string[], exportPath: string) {
+  if (!exportsNames.length) {
+    return '';
+  }
+  const exports = exportsNames
+    .map((exportName) => getIndent(1) + exportName)
+    .join(',\n');
+  return `export {
+${exports}
+  } from '${exportPath}';`;
+}
+
 function formatTemplatePropName(name: string, suffix: string): string {
   return lowercaseFirst(name.replace(/template$/i, suffix));
 }
@@ -608,6 +623,8 @@ function generate(component: IComponent): string {
 
     defaultExport: component.name,
     renderedExports: renderExports(exportNames),
+    renderedReExports: component.reExports
+      ? renderReExports(component.reExports, component.dxExportPath) : '',
   });
 }
 
