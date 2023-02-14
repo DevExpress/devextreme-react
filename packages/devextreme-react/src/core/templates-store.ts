@@ -9,6 +9,8 @@ class TemplatesStore {
 
   private readonly _onTemplateAdded: () => void;
 
+  private _lastAddedTemplateId: string;
+
   constructor(onTemplateAdded: () => void) {
     this._onTemplateAdded = onTemplateAdded;
   }
@@ -16,12 +18,17 @@ class TemplatesStore {
   public add(templateId: string, templateFunc: TemplateWrapperRenderer): void {
     this._templates[templateId] = { template: templateFunc, isDeferredRemove: false };
     this._onTemplateAdded();
+    this._lastAddedTemplateId = templateId;
   }
 
   public setDeferredRemove(templateId: string, isDeferredRemove: boolean): void {
     if (this._templates[templateId]) {
       this._templates[templateId].isDeferredRemove = isDeferredRemove;
     }
+  }
+
+  public getStateMark(): string {
+    return this._lastAddedTemplateId;
   }
 
   private removeDefferedTemplate(): void {
