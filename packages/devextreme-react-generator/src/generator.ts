@@ -191,6 +191,7 @@ export function mapWidget(
   configComponent: string,
   customTypes: ICustomType[],
   widgetPackage: string,
+  modulesMetadata: any,
 ): {
     fileName: string;
     component: IComponent
@@ -214,6 +215,9 @@ export function mapWidget(
   const propTypings = extractPropTypings(raw.options, customTypeHash)
     .filter((propType) => propType !== null) as IPropTyping[];
 
+  const dxExportPath = `${widgetPackage}/${raw.exportPath}`;
+  const reExports = modulesMetadata.Modules[raw.exportPath]
+    ? Object.keys(modulesMetadata.Modules[raw.exportPath]).filter((key) => key !== 'default') : undefined;
   return {
     fileName: `${toKebabCase(name)}.ts`,
     component: {
@@ -221,7 +225,7 @@ export function mapWidget(
       baseComponentPath: baseComponent,
       extensionComponentPath: extensionComponent,
       configComponentPath: configComponent,
-      dxExportPath: `${widgetPackage}/${raw.exportPath}`,
+      dxExportPath,
       isExtension: raw.isExtension,
       templates: raw.templates,
       subscribableOptions: subscribableOptions.length > 0 ? subscribableOptions : undefined,
@@ -230,17 +234,20 @@ export function mapWidget(
       expectedChildren: raw.nesteds,
       propTypings: propTypings.length > 0 ? propTypings : undefined,
       optionsTypeParams: raw.optionsTypeParams,
+      reExports,
     },
   };
 }
 
 function generate({
   metaData: rawData,
+  modulesMetadata,
   components: { baseComponent, extensionComponent, configComponent },
   out,
   widgetsPackage,
 }: {
   metaData: IModel,
+  modulesMetadata: any,
   components: {
     baseComponent: string,
     extensionComponent: string,
@@ -262,16 +269,15 @@ function generate({
       configComponent,
       rawData.customTypes,
       widgetsPackage,
+      modulesMetadata,
     );
     const widgetFilePath = joinPaths(out.componentsDir, widgetFile.fileName);
     const indexFileDir = getDirName(out.indexFileName);
-
     writeFile(widgetFilePath, generateComponent(widgetFile.component), { encoding: 'utf8' });
     modulePaths.push({
       name: widgetFile.component.name,
       path: `./${removeExtension(getRelativePath(indexFileDir, widgetFilePath)).replace(pathSeparator, '/')}`,
     });
-
     writeFile(
       joinPaths(out.oldComponentsDir, widgetFile.fileName),
       generateReExport(
