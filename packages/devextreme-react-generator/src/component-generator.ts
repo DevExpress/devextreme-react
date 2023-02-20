@@ -419,9 +419,7 @@ function renderReExports(exportsNames: string[], exportPath: string) {
   if (!exportsNames.length) {
     return '';
   }
-  const exports = exportsNames
-    .map((exportName) => getIndent(1) + exportName)
-    .join(',\n');
+  const exports = renderExports(exportsNames);
   return `export {
 ${exports}
   } from '${exportPath}';`;
