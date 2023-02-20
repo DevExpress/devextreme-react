@@ -191,7 +191,6 @@ export function mapWidget(
   configComponent: string,
   customTypes: ICustomType[],
   widgetPackage: string,
-  modulesMetadata: any,
 ): {
     fileName: string;
     component: IComponent
@@ -216,8 +215,6 @@ export function mapWidget(
     .filter((propType) => propType !== null) as IPropTyping[];
 
   const dxExportPath = `${widgetPackage}/${raw.exportPath}`;
-  const reExports = modulesMetadata.Modules[raw.exportPath]
-    ? Object.keys(modulesMetadata.Modules[raw.exportPath]).filter((key) => key !== 'default') : undefined;
   return {
     fileName: `${toKebabCase(name)}.ts`,
     component: {
@@ -234,20 +231,18 @@ export function mapWidget(
       expectedChildren: raw.nesteds,
       propTypings: propTypings.length > 0 ? propTypings : undefined,
       optionsTypeParams: raw.optionsTypeParams,
-      reExports,
+      reexports: raw.reexports,
     },
   };
 }
 
 function generate({
   metaData: rawData,
-  modulesMetadata,
   components: { baseComponent, extensionComponent, configComponent },
   out,
   widgetsPackage,
 }: {
   metaData: IModel,
-  modulesMetadata: any,
   components: {
     baseComponent: string,
     extensionComponent: string,
@@ -269,7 +264,6 @@ function generate({
       configComponent,
       rawData.customTypes,
       widgetsPackage,
-      modulesMetadata,
     );
     const widgetFilePath = joinPaths(out.componentsDir, widgetFile.fileName);
     const indexFileDir = getDirName(out.indexFileName);
