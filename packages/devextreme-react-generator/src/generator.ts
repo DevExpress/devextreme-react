@@ -1,4 +1,4 @@
-import { writeFileSync as writeFile } from 'fs';
+import { writeFileSync as writeFile, existsSync, mkdirSync } from 'fs';
 
 import {
   dirname as getDirName,
@@ -19,6 +19,7 @@ import {
 
 import { convertTypes } from './converter';
 import generateIndex, { IReExport } from './index-generator';
+import generateCommonReexports from './common-reexports-generator';
 
 import generateComponent, {
   generateReExport,
@@ -283,6 +284,19 @@ function generate({
   });
 
   writeFile(out.indexFileName, generateIndex(modulePaths), { encoding: 'utf8' });
+
+  const commonPath = joinPaths(out.componentsDir, 'common');
+  if (!existsSync(commonPath)) {
+    mkdirSync(commonPath);
+  }
+  // eslint-disable-next-line guard-for-in, no-restricted-syntax
+  for (const key in rawData.commonReexports) {
+    writeFile(
+      joinPaths(commonPath, `${key.replace('common/', '')}.ts`),
+      generateCommonReexports(key, rawData.commonReexports[key]),
+      { encoding: 'utf8' },
+    );
+  }
 }
 
 export default generate;
