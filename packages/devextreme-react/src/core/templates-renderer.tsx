@@ -11,7 +11,9 @@ class TemplatesRenderer extends React.PureComponent<{
 
   private mounted = false;
 
-  private shouldRenderNewTemplate = false;
+  private shouldRepeatForceUpdate = false;
+
+  private isUpdateFuncStarted = false;
 
   componentDidMount(): void {
     this.mounted = true;
@@ -23,30 +25,28 @@ class TemplatesRenderer extends React.PureComponent<{
 
   public scheduleUpdate(useDeferUpdate: boolean, onRendered?: () => void): void {
     if (this.updateScheduled) {
-      this.shouldRenderNewTemplate = true;
+      this.shouldRepeatForceUpdate = this.isUpdateFuncStarted;
       return;
     }
 
     this.updateScheduled = true;
 
-    const { templatesStore } = this.props;
-
     const updateFunc = useDeferUpdate ? deferUpdate : requestAnimationFrame;
 
     updateFunc(() => {
       if (this.mounted) {
-        const templatesStoreStateMark = templatesStore.getStateMark();
+        this.isUpdateFuncStarted = true;
 
         this.forceUpdate(() => {
           this.updateScheduled = false;
           onRendered?.();
-        });
 
-        if (this.shouldRenderNewTemplate
-            && templatesStoreStateMark !== templatesStore.getStateMark()) {
-          this.shouldRenderNewTemplate = false;
-          this.forceUpdate();
-        }
+          if (this.shouldRepeatForceUpdate) {
+            this.shouldRepeatForceUpdate = false;
+            this.isUpdateFuncStarted = false;
+            this.forceUpdate();
+          }
+        });
       }
 
       this.updateScheduled = false;
