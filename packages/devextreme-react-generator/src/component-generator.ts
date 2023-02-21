@@ -178,7 +178,7 @@ const renderModule: (model: {
   renderedNestedComponents?: string[];
   defaultExport: string;
   renderedExports: string;
-  renderedReExports: string;
+  renderedReExports?: string;
 }) => string = createTempate(
   '<#= it.renderedImports #>\n'
 
@@ -199,7 +199,9 @@ const renderModule: (model: {
 <#= it.renderedExports #>
 };
 `
-+ '<#= it.renderedReExports #>',
++ '<#? it.renderedReExports #>'
+    + '<#= it.renderedReExports #>\n\n'
++ '<#?#>',
 );
 
 const renderImports: (model: {
@@ -622,7 +624,7 @@ function generate(component: IComponent): string {
     defaultExport: component.name,
     renderedExports: renderExports(exportNames),
     renderedReExports: component.reexports
-      ? renderReExports(component.reexports, component.dxExportPath) : '',
+      ? renderReExports(component.reexports, component.dxExportPath) : undefined,
   });
 }
 
