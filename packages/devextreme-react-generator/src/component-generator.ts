@@ -424,7 +424,7 @@ function renderReExports(exportsNames: string[], exportPath: string) {
   const exports = renderExports(exportsNames);
   return `export {
 ${exports}
-  } from '${exportPath}';`;
+} from '${exportPath}';`;
 }
 
 function formatTemplatePropName(name: string, suffix: string): string {
