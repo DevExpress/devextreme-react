@@ -13,7 +13,7 @@ class TemplatesRenderer extends React.PureComponent<{
 
   private shouldRepeatForceUpdate = false;
 
-  private isUpdateFuncStarted = false;
+  private isUpdateFuncLaunched = false;
 
   componentDidMount(): void {
     this.mounted = true;
@@ -25,7 +25,7 @@ class TemplatesRenderer extends React.PureComponent<{
 
   public scheduleUpdate(useDeferUpdate: boolean, onRendered?: () => void): void {
     if (this.updateScheduled) {
-      this.shouldRepeatForceUpdate = this.isUpdateFuncStarted;
+      this.shouldRepeatForceUpdate = this.isUpdateFuncLaunched;
       return;
     }
 
@@ -35,7 +35,7 @@ class TemplatesRenderer extends React.PureComponent<{
 
     updateFunc(() => {
       if (this.mounted) {
-        this.isUpdateFuncStarted = true;
+        this.isUpdateFuncLaunched = true;
 
         this.forceUpdate(() => {
           this.updateScheduled = false;
@@ -43,12 +43,12 @@ class TemplatesRenderer extends React.PureComponent<{
 
           if (this.shouldRepeatForceUpdate) {
             this.shouldRepeatForceUpdate = false;
-            this.isUpdateFuncStarted = false;
             this.forceUpdate();
           }
         });
       }
 
+      this.isUpdateFuncLaunched = false;
       this.updateScheduled = false;
     });
   }
