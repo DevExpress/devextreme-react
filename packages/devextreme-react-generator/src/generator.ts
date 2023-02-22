@@ -289,14 +289,13 @@ function generate({
   if (!existsSync(commonPath)) {
     mkdirSync(commonPath);
   }
-  // eslint-disable-next-line guard-for-in, no-restricted-syntax
-  for (const key in rawData.commonReexports) {
+  Object.keys(rawData.commonReexports).forEach((key) => {
     writeFile(
       joinPaths(commonPath, `${key.replace('common/', '')}.ts`),
       generateCommonReexports(key, rawData.commonReexports[key]),
       { encoding: 'utf8' },
     );
-  }
+  });
 }
 
 export default generate;
