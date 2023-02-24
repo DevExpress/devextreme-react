@@ -576,14 +576,13 @@ function generate(component: IComponent): string {
 
   const hasExplicitTypes = !!component.optionsTypeParams?.length;
 
-  const filterReexports = (reexports?: string[]) : string[] => {
-    if (!reexports) {
-      return [];
-    }
-    return reexports.filter(
-      (item) => item !== 'default' && (hasExplicitTypes && item !== 'ExplicitTypes'),
-    );
-  };
+  const filterReexports = (reexports?: string[]) : string[] => (
+    reexports
+      ? reexports.filter(
+        (item) => item !== 'default' && (hasExplicitTypes && item !== 'ExplicitTypes'),
+      )
+      : []
+  );
 
   return renderModule({
 
