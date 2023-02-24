@@ -419,7 +419,7 @@ function renderExports(exportsNames: string[]) {
 
 function renderReExports(exportsNames: string[], exportPath: string) {
   if (!exportsNames.length) {
-    return '';
+    return undefined;
   }
   const exports = renderExports(exportsNames);
   return `export {
@@ -574,6 +574,17 @@ function generate(component: IComponent): string {
       .map((t) => renderPropTyping(createPropTypingModel(t)))
     : undefined;
 
+  const hasExplicitTypes = !!component.optionsTypeParams?.length;
+
+  const filterReexports = (reexports?: string[]) : string[] => {
+    if (!reexports) {
+      return [];
+    }
+    return reexports.filter(
+      (item) => item !== 'default' && (hasExplicitTypes && item !== 'ExplicitTypes'),
+    );
+  };
+
   return renderModule({
 
     renderedImports: renderImports({
@@ -586,7 +597,7 @@ function generate(component: IComponent): string {
       optionsAliasName: hasExtraOptions ? undefined : optionsName,
       hasExtraOptions,
       hasPropTypings: isNotEmptyArray(renderedPropTypings),
-      hasExplicitTypes: !!component.optionsTypeParams?.length,
+      hasExplicitTypes,
       configComponentPath: isNotEmptyArray(nestedComponents)
         ? component.configComponentPath
         : undefined,
@@ -623,8 +634,9 @@ function generate(component: IComponent): string {
 
     defaultExport: component.name,
     renderedExports: renderExports(exportNames),
-    renderedReExports: component.reexports
-      ? renderReExports(component.reexports, component.dxExportPath) : undefined,
+    renderedReExports: renderReExports(
+      filterReexports(component.reexports), component.dxExportPath,
+    ),
   });
 }
 
