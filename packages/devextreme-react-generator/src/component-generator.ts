@@ -456,7 +456,7 @@ function createPropTypingModel(typing: IPropTyping): IRenderedPropTyping {
   };
 }
 
-function generate(component: IComponent): string {
+function generate(component: IComponent, generateReexports = false): string {
   const nestedComponents = component.nestedComponents
     ? component.nestedComponents
       .sort(createKeyComparator<INestedComponent>((o) => o.className))
@@ -623,9 +623,11 @@ function generate(component: IComponent): string {
 
     defaultExport: component.name,
     renderedExports: renderExports(exportNames),
-    renderedReExports: renderReExports(
-      filterReexports(component.reexports), component.dxExportPath,
-    ),
+    renderedReExports: generateReexports
+      ? renderReExports(
+        filterReexports(component.reexports), component.dxExportPath,
+      )
+      : undefined,
   });
 }
 
