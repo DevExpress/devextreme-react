@@ -238,6 +238,7 @@ function generate({
   components: { baseComponent, extensionComponent, configComponent },
   out,
   widgetsPackage,
+  generateReexports,
 }: {
   metaData: IModel,
   components: {
@@ -249,7 +250,8 @@ function generate({
     componentsDir: string,
     indexFileName: string
   },
-  widgetsPackage: string
+  widgetsPackage: string,
+  generateReexports?: boolean
 }): void {
   const modulePaths: IReExport[] = [];
   rawData.widgets.forEach((data) => {
@@ -273,7 +275,7 @@ function generate({
 
   writeFile(out.indexFileName, generateIndex(modulePaths), { encoding: 'utf8' });
 
-  if (rawData.commonReexports) {
+  if (generateReexports && rawData.commonReexports) {
     const commonPath = joinPaths(out.componentsDir, 'common');
     if (!existsSync(commonPath)) {
       mkdirSync(commonPath);

@@ -40,7 +40,8 @@ gulp.task(GEN_RUN, (done) => {
       componentsDir: config.generatedComponentsDir,
       indexFileName: config.indexFileName
     },
-    widgetsPackage: 'devextreme'
+    widgetsPackage: 'devextreme',
+    generateReexports: true,
   });
 
   done();
