@@ -569,7 +569,7 @@ function generate(component: IComponent, generateReexports = false): string {
   const filterReexports = (reexports?: string[]) : string[] => (
     reexports
       ? reexports.filter(
-        (item) => item !== 'default' && (hasExplicitTypes && item !== 'ExplicitTypes'),
+        (item) => item !== 'default' && item !== 'ExplicitTypes',
       )
       : []
   );
