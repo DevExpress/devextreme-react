@@ -24,7 +24,6 @@ type IComponent = {
 } & {
   nestedComponents?: INestedComponent[];
   configComponentPath?: string;
-  reexports?: string[];
 };
 
 interface INestedComponent {
@@ -407,14 +406,8 @@ function renderExports(exportsNames: string[]) {
     .join(',\n');
 }
 
-function renderReExports(exportsNames: string[], exportPath: string) {
-  if (!exportsNames.length) {
-    return undefined;
-  }
-  const exports = renderExports(exportsNames);
-  return `export {
-${exports}
-} from '${exportPath}';`;
+function renderReExports(componentName: string, exportPath: string) {
+  return `export * as ${componentName}Types from '${exportPath}_types';`;
 }
 
 function formatTemplatePropName(name: string, suffix: string): string {
@@ -566,14 +559,6 @@ function generate(component: IComponent, generateReexports = false): string {
 
   const hasExplicitTypes = !!component.optionsTypeParams?.length;
 
-  const filterReexports = (reexports?: string[]) : string[] => (
-    reexports
-      ? reexports.filter(
-        (item) => item !== 'default' && item !== 'ExplicitTypes',
-      )
-      : []
-  );
-
   return renderModule({
 
     renderedImports: renderImports({
@@ -624,9 +609,7 @@ function generate(component: IComponent, generateReexports = false): string {
     defaultExport: component.name,
     renderedExports: renderExports(exportNames),
     renderedReExports: generateReexports
-      ? renderReExports(
-        filterReexports(component.reexports), component.dxExportPath,
-      )
+      ? renderReExports(component.name, component.dxExportPath)
       : undefined,
   });
 }
