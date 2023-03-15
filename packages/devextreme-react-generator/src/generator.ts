@@ -87,7 +87,7 @@ export function getComplexOptionType(types: ITypeDescr[]): string | undefined {
 
   function formatObjectDescriptor(objectDescriptor: IObjectDescr): string {
     const fields = objectDescriptor.fields.map((f) => `${f.name}: ${getComplexOptionType(f.types) || BaseTypes.Any}`);
-    return fields ? `{${fields.join(', ')}}` : BaseTypes.Object;
+    return fields ? `{ ${fields.join(', ')} }` : BaseTypes.Object;
   }
 
   function formatTypeDescriptor(typeDescriptor: ITypeDescr): string {
