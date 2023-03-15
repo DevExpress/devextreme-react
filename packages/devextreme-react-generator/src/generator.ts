@@ -97,6 +97,7 @@ export function getComplexOptionType(types: ITypeDescr[]): string | undefined {
     if (isFunctionDescriptor(typeDescriptor)) {
       const result = formatFunctionDescriptor(typeDescriptor);
       if (typeCount > 1) {
+        // TS1385
         return `(${result})`;
       }
       return result;
