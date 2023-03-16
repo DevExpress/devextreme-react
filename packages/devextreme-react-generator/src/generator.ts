@@ -47,6 +47,9 @@ enum BaseTypes {
   Number = 'number',
   Boolean = 'boolean',
   Object = 'object',
+  Null = 'null',
+  True = 'true',
+  False = 'false',
 }
 
 function isFunctionDescriptor(typeDescriptor: ITypeDescr): typeDescriptor is IFunctionDescr {
@@ -68,29 +71,28 @@ export function convertToBaseType(type: string): BaseTypes {
 export function getComplexOptionType(types: ITypeDescr[]): string | undefined {
   const typeCount = types.length;
 
-  function formatArrayDescriptor(arrayDescriptor: IArrayDescr): string {
-    const itemTypes = arrayDescriptor.itemTypes?.map((t) => convertToBaseType(t.type))
-      .filter((t) => t !== undefined)
-      .join(' | ')
-    || BaseTypes.Any;
-    return `Array<${itemTypes}>`;
-  }
-
-  function formatFunctionDescriptor(functionDescriptor: IFunctionDescr): string {
-    const parameters = functionDescriptor.params?.map((p) => `${p.name}: ${getComplexOptionType(p.types) || BaseTypes.Any}`)
-      .join(', ') || '';
-    const returnType = (
-      functionDescriptor.returnValueType && (convertToBaseType(functionDescriptor.returnValueType.type) || (functionDescriptor.returnValueType.type === 'void' && 'void'))
-    ) || BaseTypes.Any;
-    return `(${parameters}) => ${returnType}`;
-  }
-
-  function formatObjectDescriptor(objectDescriptor: IObjectDescr): string {
-    const fields = objectDescriptor.fields.map((f) => `${f.name}: ${getComplexOptionType(f.types) || BaseTypes.Any}`);
-    return fields ? `{ ${fields.join(', ')} }` : BaseTypes.Object;
-  }
-
   function formatTypeDescriptor(typeDescriptor: ITypeDescr): string {
+    function formatArrayDescriptor(arrayDescriptor: IArrayDescr): string {
+      const itemTypes = arrayDescriptor.itemTypes?.map((t) => formatTypeDescriptor(t))
+        .join(' | ')
+      || BaseTypes.Any;
+      return `Array<${itemTypes}>`;
+    }
+
+    function formatFunctionDescriptor(functionDescriptor: IFunctionDescr): string {
+      const parameters = functionDescriptor.params?.map((p) => `${p.name}: ${getComplexOptionType(p.types) || BaseTypes.Any}`)
+        .join(', ') || '';
+      const returnType = (
+        functionDescriptor.returnValueType && (convertToBaseType(functionDescriptor.returnValueType.type) || (functionDescriptor.returnValueType.type === 'void' && 'void'))
+      ) || BaseTypes.Any;
+      return `(${parameters}) => ${returnType}`;
+    }
+
+    function formatObjectDescriptor(objectDescriptor: IObjectDescr): string {
+      const fields = objectDescriptor.fields.map((f) => `${f.name}: ${getComplexOptionType(f.types) || BaseTypes.Any}`);
+      return fields ? `{ ${fields.join(', ')} }` : BaseTypes.Object;
+    }
+
     if (isArrayDescriptor(typeDescriptor)) {
       return formatArrayDescriptor(typeDescriptor);
     }
