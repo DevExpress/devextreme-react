@@ -388,11 +388,11 @@ describe('mapOption', () => {
     expect(mapOption(option)).toEqual({
       isArray: false,
       name: 'option',
-      type: 'string | number',
+      type: 'string | number | any',
       nested: [{
         isSubscribable: undefined,
         name: 'prop1',
-        type: 'any',
+        type: 'number',
       }],
       isSubscribable: undefined,
     });
@@ -799,7 +799,7 @@ describe('mapWidget', () => {
     },
     ];
 
-    const expected = 'string | number | object';
+    const expected = 'string | number | object | any';
 
     it('should return base types', () => {
       expect(getComplexOptionType(types)).toEqual(expected);

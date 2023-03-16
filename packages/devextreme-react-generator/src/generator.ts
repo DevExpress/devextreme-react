@@ -107,7 +107,8 @@ export function getComplexOptionType(types: ITypeDescr[]): string | undefined {
     if (isObjectDescriptor(typeDescriptor)) {
       return formatObjectDescriptor(typeDescriptor);
     }
-    if (typeDescriptor.acceptableValues !== undefined) {
+    if (typeDescriptor.acceptableValues !== undefined
+       && typeDescriptor.acceptableValues.length > 0) {
       return typeDescriptor.acceptableValues.join(' | ');
     }
     return convertToBaseType(typeDescriptor.type) || BaseTypes.Any;
