@@ -74,6 +74,7 @@ export function getComplexOptionType(types: ITypeDescr[]): string | undefined {
   function formatTypeDescriptor(typeDescriptor: ITypeDescr): string {
     function formatArrayDescriptor(arrayDescriptor: IArrayDescr): string {
       const itemTypes = arrayDescriptor.itemTypes?.map((t) => formatTypeDescriptor(t))
+        .filter((t) => t !== undefined)
         .join(' | ')
       || BaseTypes.Any;
       return `Array<${itemTypes}>`;
@@ -111,11 +112,12 @@ export function getComplexOptionType(types: ITypeDescr[]): string | undefined {
        && typeDescriptor.acceptableValues.length > 0) {
       return typeDescriptor.acceptableValues.join(' | ');
     }
-    return convertToBaseType(typeDescriptor.type) || BaseTypes.Any;
+    return convertToBaseType(typeDescriptor.type);
   }
 
   return types && isNotEmptyArray(types) ? types
     .map((t) => formatTypeDescriptor(t))
+    .filter((t) => t !== undefined)
     .join(' | ') : undefined;
 }
 
