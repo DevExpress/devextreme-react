@@ -69,8 +69,6 @@ export function convertToBaseType(type: string): BaseTypes {
 }
 
 export function getComplexOptionType(types: ITypeDescr[]): string | undefined {
-  const typeCount = types.length;
-
   function formatTypeDescriptor(typeDescriptor: ITypeDescr): string {
     function formatArrayDescriptor(arrayDescriptor: IArrayDescr): string {
       const itemTypes = arrayDescriptor.itemTypes?.map((t) => formatTypeDescriptor(t))
@@ -99,11 +97,8 @@ export function getComplexOptionType(types: ITypeDescr[]): string | undefined {
     }
     if (isFunctionDescriptor(typeDescriptor)) {
       const result = formatFunctionDescriptor(typeDescriptor);
-      if (typeCount > 1) {
-        // TS1385
-        return `(${result})`;
-      }
-      return result;
+      // TS1385
+      return `(${result})`;
     }
     if (isObjectDescriptor(typeDescriptor)) {
       return formatObjectDescriptor(typeDescriptor);
