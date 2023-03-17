@@ -408,7 +408,8 @@ function renderExports(exportsNames: string[]) {
 }
 
 function renderReExports(componentName: string, exportPath: string) {
-  return `export * as ${componentName}Types from '${exportPath}_types';`;
+  return `import type * as ${componentName}Types from '${exportPath}_types';\n`
+  + `export { ${componentName}Types };`;
 }
 
 function formatTemplatePropName(name: string, suffix: string): string {

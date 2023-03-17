@@ -230,7 +230,7 @@ export function mapWidget(
       expectedChildren: raw.nesteds,
       propTypings: propTypings.length > 0 ? propTypings : undefined,
       optionsTypeParams: raw.optionsTypeParams,
-      containsReexports: raw.reexports.filter((r) => r !== 'default').length > 0,
+      containsReexports: !!raw.reexports.filter((r) => r !== 'default').length,
     },
   };
 }
