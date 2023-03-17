@@ -24,6 +24,7 @@ type IComponent = {
 } & {
   nestedComponents?: INestedComponent[];
   configComponentPath?: string;
+  containsReexports?: boolean
 };
 
 interface INestedComponent {
@@ -608,7 +609,7 @@ function generate(component: IComponent, generateReexports = false): string {
 
     defaultExport: component.name,
     renderedExports: renderExports(exportNames),
-    renderedReExports: generateReexports
+    renderedReExports: generateReexports && component.containsReexports
       ? renderReExports(component.name, component.dxExportPath)
       : undefined,
   });
