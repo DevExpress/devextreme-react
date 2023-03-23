@@ -1,4 +1,6 @@
-import { writeFileSync as writeFile, existsSync, mkdirSync } from 'fs';
+import {
+  writeFileSync as writeFile, existsSync, mkdirSync,
+} from 'fs';
 
 import {
   dirname as getDirName,
@@ -18,6 +20,8 @@ import {
   ITypeDescr,
   IWidget,
 } from 'devextreme-internal-tools/integration-data-model';
+
+import { importOverrides, defaultImports } from './import-overrides.json';
 
 import { convertTypes } from './converter';
 import generateIndex, { IReExport } from './index-generator';
@@ -68,7 +72,9 @@ export function convertToBaseType(type: string): BaseTypes {
   return BaseTypes[type];
 }
 
-export function getComplexOptionType(types: ITypeDescr[]): string | undefined {
+const widgetCustomTypes: Set<string> = new Set();
+
+export function getComplexOptionType(types: ITypeDescr[], widget: IWidget): string | undefined {
   function formatTypeDescriptor(typeDescriptor: ITypeDescr): string {
     function formatArrayDescriptor(arrayDescriptor: IArrayDescr): string {
       const itemTypes = arrayDescriptor.itemTypes?.map((t) => formatTypeDescriptor(t))
@@ -79,16 +85,16 @@ export function getComplexOptionType(types: ITypeDescr[]): string | undefined {
     }
 
     function formatFunctionDescriptor(functionDescriptor: IFunctionDescr): string {
-      const parameters = functionDescriptor.params?.map((p) => `${p.name}: ${getComplexOptionType(p.types) || BaseTypes.Any}`)
+      const parameters = functionDescriptor.params?.map((p) => `${p.name}: ${getComplexOptionType(p.types, widget) || BaseTypes.Any}`)
         .join(', ') || '';
       const returnType = (
-        functionDescriptor.returnValueType && (convertToBaseType(functionDescriptor.returnValueType.type) || (functionDescriptor.returnValueType.type === 'void' && 'void'))
+        functionDescriptor.returnValueType && (formatTypeDescriptor(functionDescriptor.returnValueType) || (functionDescriptor.returnValueType.type === 'void' && 'void'))
       ) || BaseTypes.Any;
       return `(${parameters}) => ${returnType}`;
     }
 
     function formatObjectDescriptor(objectDescriptor: IObjectDescr): string {
-      const fields = objectDescriptor.fields.map((f) => `${f.name}: ${getComplexOptionType(f.types) || BaseTypes.Any}`);
+      const fields = objectDescriptor.fields.map((f) => `${f.name}: ${getComplexOptionType(f.types, widget) || BaseTypes.Any}`);
       return fields ? `{ ${fields.join(', ')} }` : BaseTypes.Object;
     }
 
@@ -107,6 +113,13 @@ export function getComplexOptionType(types: ITypeDescr[]): string | undefined {
        && typeDescriptor.acceptableValues.length > 0) {
       return typeDescriptor.acceptableValues.join(' | ');
     }
+    if (typeDescriptor.isCustomType) {
+      if (widget.reexports.includes(typeDescriptor.type)) { // TODO: Works incorrectly, need another approach to check if it is reexported
+        return `${removePrefix(widget.name, 'dx')}Types.${typeDescriptor.type}`;
+      }
+      widgetCustomTypes.add(typeDescriptor.type);
+      return typeDescriptor.type;
+    }
     return convertToBaseType(typeDescriptor.type);
   }
 
@@ -116,10 +129,10 @@ export function getComplexOptionType(types: ITypeDescr[]): string | undefined {
     .join(' | ') : undefined;
 }
 
-export function mapSubscribableOption(prop: IProp): ISubscribableOption {
+export function mapSubscribableOption(prop: IProp, widget: IWidget): ISubscribableOption {
   return {
     name: prop.name,
-    type: getComplexOptionType(prop.types) || BaseTypes.Any,
+    type: getComplexOptionType(prop.types, widget) || BaseTypes.Any,
     isSubscribable: prop.isSubscribable || undefined,
   };
 }
@@ -134,18 +147,18 @@ export function isNestedOptionArray(prop: IProp): boolean {
   return isNotEmptyArray(prop.types) && (prop.types[0].type === 'Array');
 }
 
-export function mapOption(prop: IProp): IOption {
+export function mapOption(prop: IProp, widget: IWidget): IOption {
   return isEmptyArray(prop.props)
     ? {
       name: prop.name,
-      type: getComplexOptionType(prop.types) || BaseTypes.Any,
+      type: getComplexOptionType(prop.types, widget) || BaseTypes.Any,
       isSubscribable: prop.isSubscribable || undefined,
 
     } : {
       name: prop.name,
       isSubscribable: prop.isSubscribable || undefined,
-      type: getComplexOptionType(prop.types),
-      nested: (prop.props as IProp[]).map(mapOption),
+      type: getComplexOptionType(prop.types, widget),
+      nested: (prop.props as IProp[]).map((p) => mapOption(p, widget)),
       isArray: isNestedOptionArray(prop),
     };
 }
@@ -154,6 +167,7 @@ export function extractNestedComponents(
   props: IComplexProp[],
   rawWidgetName: string,
   widgetName: string,
+  widget: IWidget,
 ): INestedComponent[] {
   const nameClassMap: Record<string, string> = {};
   nameClassMap[rawWidgetName] = widgetName;
@@ -165,7 +179,7 @@ export function extractNestedComponents(
     className: nameClassMap[p.name],
     owners: p.owners.map((o) => nameClassMap[o]),
     optionName: p.optionName,
-    options: p.props.map(mapOption),
+    options: p.props.map((prop) => mapOption(prop, widget)),
     isCollectionItem: p.isCollectionItem,
     templates: p.templates,
     predefinedProps: p.predefinedProps,
@@ -257,13 +271,13 @@ export function mapWidget(
   const name = removePrefix(raw.name, 'dx');
 
   const subscribableOptions: ISubscribableOption[] = collectSubscribableRecursively(raw.options)
-    .map(mapSubscribableOption);
+    .map((option) => mapSubscribableOption(option, raw));
 
   const independentEvents: IIndependentEvents[] = collectIndependentEvents(raw.options)
     .map(mapIndependentEvents);
 
   const nestedOptions = raw.complexOptions
-    ? extractNestedComponents(raw.complexOptions, raw.name, name)
+    ? extractNestedComponents(raw.complexOptions, raw.name, name, raw)
     : null;
 
   const customTypeHash = customTypes.reduce((result, type) => {
@@ -313,10 +327,11 @@ function generate({
     indexFileName: string
   },
   widgetsPackage: string,
-  generateReexports?: boolean
+  generateReexports?: boolean,
 }): void {
   const modulePaths: IReExport[] = [];
   rawData.widgets.forEach((data) => {
+    widgetCustomTypes.clear();
     const widgetFile = mapWidget(
       data,
       baseComponent,
@@ -327,7 +342,29 @@ function generate({
     );
     const widgetFilePath = joinPaths(out.componentsDir, widgetFile.fileName);
     const indexFileDir = getDirName(out.indexFileName);
-    writeFile(widgetFilePath, generateComponent(widgetFile.component, generateReexports), { encoding: 'utf8' });
+
+    const customTypeImports: Record<string, Array<string>> = {};
+    const defaultTypeImports: Record<string, string> = {};
+
+    widgetCustomTypes.forEach((t) => {
+      if (defaultImports[t]) {
+        defaultTypeImports[t] = defaultImports[t];
+        return;
+      }
+      const customType = rawData.customTypes.find((item) => item.name === t);
+
+      const module = importOverrides[t] || (customType && `devextreme/${customType.module}`);
+      if (module) {
+        customTypeImports[module] = [
+          ...(customTypeImports[module] || []),
+          t,
+        ];
+      } else {
+        console.log(`"${t}": "",`);
+      }
+    });
+
+    writeFile(widgetFilePath, generateComponent(widgetFile.component, customTypeImports, defaultTypeImports, generateReexports), { encoding: 'utf8' });
     modulePaths.push({
       name: widgetFile.component.name,
       path: `./${removeExtension(getRelativePath(indexFileDir, widgetFilePath)).replace(pathSeparator, '/')}`,

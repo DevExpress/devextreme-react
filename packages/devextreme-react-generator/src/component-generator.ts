@@ -204,6 +204,8 @@ const renderImports: (model: {
   hasPropTypings: boolean;
   hasExplicitTypes: boolean;
   configComponentPath?: string;
+  customTypeImports?: Record<string, Array<string>>;
+  defaultTypeImports?: Record<string, string>;
 }) => string = createTempate(
   '<#? it.hasExplicitTypes #>'
     + 'export { ExplicitTypes } from "<#= it.dxExportPath #>";\n'
@@ -225,6 +227,20 @@ const renderImports: (model: {
 
 + '<#? it.configComponentPath #>'
     + 'import NestedOption from "<#= it.configComponentPath #>";\n'
++ '<#?#>'
+
++ '<#? it.customTypeImports && Object.keys(it.customTypeImports).length #>\n'
+  + '<#~ Object.keys(it.customTypeImports) : module #>'
+  + 'import { <#= it.customTypeImports[module].join(", ")#> } from "<#= module #>";\n'
+  + '<#~#>'
++ '<#?#>'
+
++ '<#? it.defaultTypeImports && Object.keys(it.defaultTypeImports).length #>\n'
+  + '<#~ Object.keys(it.defaultTypeImports) : defaultImport #>'
+    + '<#? defaultImport !== it.widgetName #>'
+      + 'import <#= defaultImport #> from "<#= it.defaultTypeImports[defaultImport] #>";\n'
+    + '<#?#>'
+  + '<#~#>'
 + '<#?#>',
 );
 
@@ -451,7 +467,12 @@ function createPropTypingModel(typing: IPropTyping): IRenderedPropTyping {
   };
 }
 
-function generate(component: IComponent, generateReexports = false): string {
+function generate(
+  component: IComponent,
+  customTypeImports: Record<string, Array<string>>,
+  defaultTypeImports: Record<string, string>,
+  generateReexports = false,
+): string {
   const nestedComponents = component.nestedComponents
     ? component.nestedComponents
       .sort(createKeyComparator<INestedComponent>((o) => o.className))
@@ -560,7 +581,8 @@ function generate(component: IComponent, generateReexports = false): string {
     : undefined;
 
   const hasExplicitTypes = !!component.optionsTypeParams?.length;
-
+  // console.log('==========================');
+  // console.log(customTypeImports);
   return renderModule({
 
     renderedImports: renderImports({
@@ -577,6 +599,8 @@ function generate(component: IComponent, generateReexports = false): string {
       configComponentPath: isNotEmptyArray(nestedComponents)
         ? component.configComponentPath
         : undefined,
+      customTypeImports,
+      defaultTypeImports,
     }),
 
     renderedOptionsInterface: !hasExtraOptions ? undefined : renderOptionsInterface({
