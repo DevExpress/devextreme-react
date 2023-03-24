@@ -35,7 +35,7 @@
         "dxButtonGroupItem": "devextreme/ui/button",
         "dxButtonOptions": "devextreme/ui/button",
         "dxCalendarOptions": "devextreme/ui/button",
-        "dxChartOptions.commonSeriesSettings": "devextreme/",
+        "dxChartCommonSeriesSettings": "devextreme/viz/chart",
         "dxContextMenuItem": "devextreme/ui/context_menu",
         "dxDataGridColumn": "devextreme/ui/data_grid",
         "dxDataGridColumnButton": "devextreme/ui/data_grid",
@@ -51,7 +51,7 @@
         "dxFormOptions": "devextreme/ui/form",
         "dxFormSimpleItem": "devextreme/ui/form",
         "dxFormTabbedItem": "devextreme/ui/form",
-        "dxFunnelItem": "devextreme/ui/funnel",
+        "dxFunnelItem": "devextreme/viz/funnel",
         "dxGalleryItem": "devextreme/ui/gallery",
         "dxGanttContextMenuItem": "devextreme/ui/gantt",
         "dxGanttToolbarItem": "devextreme/ui/gantt",
@@ -76,21 +76,25 @@
         "dxTreeListColumn": "devextreme/ui/tree_list",
         "dxTreeListColumnButton": "devextreme/ui/tree_list",
         "dxTreeViewItem": "devextreme/ui/tree_view",
-        "EmptyItem": "devextreme/ui/*",
-        "ExcelDataGridCell": "devextreme/ui/*",
-        "ExcelPivotGridCell": "devextreme/ui/*",
-        "GradientColor": "devextreme/ui/*",
         "GridBase": "devextreme/common/grids",
-        "GroupItem": "devextreme/ui/*",
-        "Item": "devextreme/ui/*",
-        "label": "devextreme/ui/*",
-        "PdfDataGridCell": "devextreme/ui/*",
-        "PdfExportGanttFont": "devextreme/ui/*",
-        "PivotGridDataSourceOptions": "devextreme/ui/*",
-        "point": "devextreme/ui/*",
-        "SimpleItem": "devextreme/ui/*",
-        "size": "devextreme/ui/*",
-        "TabbedItem": "devextreme/ui/*",
-        "XmlaStoreOptions": "devextreme/ui/*"
+        "ValidationRule": "devextreme/common"
+    },
+    "nameResolutions": {
+        "Font": "BaseWidget_Font",
+        "Format": "Localization_Format",
+        "ValidationRule": "ValidationRuleBase",
+        "VisualRange": "Charts_VisualRange"
+    },
+    "typeResolutions": {
+        "dxChartOptions.commonSeriesSettings": "dxChartCommonSeriesSettings",
+        "AsyncRule": "ValidationRule",
+        "CompareRule": "ValidationRule",
+        "CustomRule": "ValidationRule",
+        "EmailRule": "ValidationRule",
+        "NumericRule": "ValidationRule",
+        "PatternRule": "ValidationRule",
+        "RangeRule": "ValidationRule",
+        "RequiredRule": "ValidationRule",
+        "StringLengthRule": "ValidationRule"
     }
 }

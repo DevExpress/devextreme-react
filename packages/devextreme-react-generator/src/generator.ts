@@ -21,7 +21,9 @@ import {
   IWidget,
 } from 'devextreme-internal-tools/integration-data-model';
 
-import { importOverrides, defaultImports } from './import-overrides.json';
+import {
+  importOverrides, defaultImports, nameResolutions, typeResolutions,
+} from './import-overrides.json';
 
 import { convertTypes } from './converter';
 import generateIndex, { IReExport } from './index-generator';
@@ -77,10 +79,11 @@ const widgetCustomTypes: Set<string> = new Set();
 export function getComplexOptionType(types: ITypeDescr[], widget: IWidget): string | undefined {
   function formatTypeDescriptor(typeDescriptor: ITypeDescr): string {
     function formatArrayDescriptor(arrayDescriptor: IArrayDescr): string {
-      const itemTypes = arrayDescriptor.itemTypes?.map((t) => formatTypeDescriptor(t))
-        .filter((t) => t !== undefined)
-        .join(' | ')
-      || BaseTypes.Any;
+      const filteredDescriptors = arrayDescriptor.itemTypes?.map((t) => formatTypeDescriptor(t))
+        .filter((t) => t !== undefined);
+      const itemTypes = filteredDescriptors && filteredDescriptors.length
+        ? Array.from(new Set(filteredDescriptors)).join(' | ')
+        : BaseTypes.Any;
       return `Array<${itemTypes}>`;
     }
 
@@ -111,19 +114,17 @@ export function getComplexOptionType(types: ITypeDescr[], widget: IWidget): stri
     }
     if (typeDescriptor.acceptableValues !== undefined
        && typeDescriptor.acceptableValues.length > 0) {
-      return typeDescriptor.acceptableValues.join(' | ');
+      return Array.from(new Set(typeDescriptor.acceptableValues)).join(' | ');
     }
     if (typeDescriptor.isCustomType) {
-      if (widget.reexports.includes(typeDescriptor.type)) { // TODO: Works incorrectly, need another approach to check if it is reexported
-        return `${removePrefix(widget.name, 'dx')}Types.${typeDescriptor.type}`;
-      }
-      widgetCustomTypes.add(typeDescriptor.type);
-      return typeDescriptor.type;
+      const resultingType = typeResolutions[typeDescriptor.type] || typeDescriptor.type;
+      widgetCustomTypes.add(resultingType);
+      return nameResolutions[resultingType] || resultingType;
     }
     return convertToBaseType(typeDescriptor.type);
   }
 
-  return types && isNotEmptyArray(types) ? types
+  return types && isNotEmptyArray(types) ? Array.from(new Set(types))
     .map((t) => formatTypeDescriptor(t))
     .filter((t) => t !== undefined)
     .join(' | ') : undefined;
@@ -357,7 +358,7 @@ function generate({
       if (module) {
         customTypeImports[module] = [
           ...(customTypeImports[module] || []),
-          t,
+          nameResolutions[t] ? `${t} as ${nameResolutions[t]}` : t,
         ];
       } else {
         console.log(`"${t}": "",`);
