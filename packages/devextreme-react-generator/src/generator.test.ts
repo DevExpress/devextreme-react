@@ -712,7 +712,7 @@ describe('mapWidget', () => {
       }, {
         name: 'option3',
         isSubscribable: true,
-        type: 'any',
+        type: 'CustomType',
       }]);
     });
 
@@ -733,7 +733,7 @@ describe('mapWidget', () => {
       }, {
         name: 'option3',
         isSubscribable: true,
-        type: 'any',
+        type: 'CustomType',
       }]);
     });
 
@@ -799,7 +799,7 @@ describe('mapWidget', () => {
     },
     ];
 
-    const expected = 'string | number | object';
+    const expected = 'string | number | object | MyType';
 
     it('should return base types', () => {
       expect(getComplexOptionType(types)).toEqual(expected);
