@@ -76,7 +76,7 @@ export function convertToBaseType(type: string): BaseTypes {
 
 const widgetCustomTypes: Set<string> = new Set();
 
-export function getComplexOptionType(types: ITypeDescr[], widget: IWidget): string | undefined {
+export function getComplexOptionType(types: ITypeDescr[]): string | undefined {
   function formatTypeDescriptor(typeDescriptor: ITypeDescr): string {
     function formatArrayDescriptor(arrayDescriptor: IArrayDescr): string {
       const filteredDescriptors = arrayDescriptor.itemTypes?.map((t) => formatTypeDescriptor(t))
@@ -88,7 +88,7 @@ export function getComplexOptionType(types: ITypeDescr[], widget: IWidget): stri
     }
 
     function formatFunctionDescriptor(functionDescriptor: IFunctionDescr): string {
-      const parameters = functionDescriptor.params?.map((p) => `${p.name}: ${getComplexOptionType(p.types, widget) || BaseTypes.Any}`)
+      const parameters = functionDescriptor.params?.map((p) => `${p.name}: ${getComplexOptionType(p.types) || BaseTypes.Any}`)
         .join(', ') || '';
       const returnType = (
         functionDescriptor.returnValueType && (formatTypeDescriptor(functionDescriptor.returnValueType) || (functionDescriptor.returnValueType.type === 'void' && 'void'))
@@ -97,7 +97,7 @@ export function getComplexOptionType(types: ITypeDescr[], widget: IWidget): stri
     }
 
     function formatObjectDescriptor(objectDescriptor: IObjectDescr): string {
-      const fields = objectDescriptor.fields.map((f) => `${f.name}: ${getComplexOptionType(f.types, widget) || BaseTypes.Any}`);
+      const fields = objectDescriptor.fields.map((f) => `${f.name}: ${getComplexOptionType(f.types) || BaseTypes.Any}`);
       return fields ? `{ ${fields.join(', ')} }` : BaseTypes.Object;
     }
 
@@ -131,10 +131,10 @@ export function getComplexOptionType(types: ITypeDescr[], widget: IWidget): stri
     .join(' | ') : undefined;
 }
 
-export function mapSubscribableOption(prop: IProp, widget: IWidget): ISubscribableOption {
+export function mapSubscribableOption(prop: IProp): ISubscribableOption {
   return {
     name: prop.name,
-    type: getComplexOptionType(prop.types, widget) || BaseTypes.Any,
+    type: getComplexOptionType(prop.types) || BaseTypes.Any,
     isSubscribable: prop.isSubscribable || undefined,
   };
 }
@@ -149,18 +149,18 @@ export function isNestedOptionArray(prop: IProp): boolean {
   return isNotEmptyArray(prop.types) && (prop.types[0].type === 'Array');
 }
 
-export function mapOption(prop: IProp, widget: IWidget): IOption {
+export function mapOption(prop: IProp): IOption {
   return isEmptyArray(prop.props)
     ? {
       name: prop.name,
-      type: getComplexOptionType(prop.types, widget) || BaseTypes.Any,
+      type: getComplexOptionType(prop.types) || BaseTypes.Any,
       isSubscribable: prop.isSubscribable || undefined,
 
     } : {
       name: prop.name,
       isSubscribable: prop.isSubscribable || undefined,
-      type: getComplexOptionType(prop.types, widget),
-      nested: (prop.props as IProp[]).map((p) => mapOption(p, widget)),
+      type: getComplexOptionType(prop.types),
+      nested: (prop.props as IProp[]).map(mapOption),
       isArray: isNestedOptionArray(prop),
     };
 }
@@ -169,7 +169,6 @@ export function extractNestedComponents(
   props: IComplexProp[],
   rawWidgetName: string,
   widgetName: string,
-  widget: IWidget,
 ): INestedComponent[] {
   const nameClassMap: Record<string, string> = {};
   nameClassMap[rawWidgetName] = widgetName;
@@ -181,7 +180,7 @@ export function extractNestedComponents(
     className: nameClassMap[p.name],
     owners: p.owners.map((o) => nameClassMap[o]),
     optionName: p.optionName,
-    options: p.props.map((prop) => mapOption(prop, widget)),
+    options: p.props.map((prop) => mapOption(prop)),
     isCollectionItem: p.isCollectionItem,
     templates: p.templates,
     predefinedProps: p.predefinedProps,
@@ -273,13 +272,13 @@ export function mapWidget(
   const name = removePrefix(raw.name, 'dx');
 
   const subscribableOptions: ISubscribableOption[] = collectSubscribableRecursively(raw.options)
-    .map((option) => mapSubscribableOption(option, raw));
+    .map((option) => mapSubscribableOption(option));
 
   const independentEvents: IIndependentEvents[] = collectIndependentEvents(raw.options)
     .map(mapIndependentEvents);
 
   const nestedOptions = raw.complexOptions
-    ? extractNestedComponents(raw.complexOptions, raw.name, name, raw)
+    ? extractNestedComponents(raw.complexOptions, raw.name, name)
     : null;
 
   const customTypeHash = customTypes.reduce((result, type) => {

@@ -469,8 +469,8 @@ function createPropTypingModel(typing: IPropTyping): IRenderedPropTyping {
 
 function generate(
   component: IComponent,
-  customTypeImports: Record<string, Array<string>>,
-  defaultTypeImports: Record<string, string>,
+  customTypeImports?: Record<string, Array<string>>,
+  defaultTypeImports?: Record<string, string>,
   generateReexports = false,
 ): string {
   const nestedComponents = component.nestedComponents
