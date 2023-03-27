@@ -22,7 +22,7 @@ import {
 } from 'devextreme-internal-tools/integration-data-model';
 
 import {
-  importOverrides, defaultImports, nameResolutions, typeResolutions,
+  importOverrides, defaultImports, nameResolutions, typeResolutions, generics,
 } from './import-overrides.json';
 
 import { convertTypes } from './converter';
@@ -117,9 +117,10 @@ export function getComplexOptionType(types: ITypeDescr[], widget: IWidget): stri
       return Array.from(new Set(typeDescriptor.acceptableValues)).join(' | ');
     }
     if (typeDescriptor.isCustomType) {
-      const resultingType = typeResolutions[typeDescriptor.type] || typeDescriptor.type;
-      widgetCustomTypes.add(resultingType);
-      return nameResolutions[resultingType] || resultingType;
+      const resolvedType = typeResolutions[typeDescriptor.type] || typeDescriptor.type;
+      widgetCustomTypes.add(resolvedType);
+      const resultingType = nameResolutions[resolvedType] || resolvedType;
+      return generics[resultingType] ? `${resultingType}<any>` : resultingType;
     }
     return convertToBaseType(typeDescriptor.type);
   }

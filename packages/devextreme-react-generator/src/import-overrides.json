@@ -1,5 +1,6 @@
 {
     "defaultImports": {
+        "CollectionWidget": "devextreme/ui/collection/ui.collection_widget.base",
         "DataSource": "devextreme/data/data_source",
         "DOMComponent": "devextreme/core/dom_component",
         "dxButton": "devextreme/ui/button",
@@ -20,9 +21,17 @@
         "UploadInfo": "devextreme/file_management/upload_info",
         "Widget": "devextreme/ui/widget/ui.widget"
     },
+    "generics": {
+        "CollectionWidget": {},
+        "Component": {},
+        "dxOverlay": {},
+        "dxPopupOptions": {},
+        "EventInfo": {},
+        "NativeEventInfo": {},
+        "Widget": {}
+    },
     "importOverrides": {
         "ButtonItem": "devextreme/ui/button",
-        "CollectionWidget": "devextreme/ui/collection",
         "commonSeriesSettings": "devextreme/ui/chart",
         "Component": "devextreme/core/component",
         "ComponentOptions": "devextreme/core/component",
@@ -86,10 +95,10 @@
         "VisualRange": "Charts_VisualRange"
     },
     "typeResolutions": {
-        "dxChartOptions.commonSeriesSettings": "dxChartCommonSeriesSettings",
         "AsyncRule": "ValidationRule",
         "CompareRule": "ValidationRule",
         "CustomRule": "ValidationRule",
+        "dxChartOptions.commonSeriesSettings": "dxChartCommonSeriesSettings",
         "EmailRule": "ValidationRule",
         "NumericRule": "ValidationRule",
         "PatternRule": "ValidationRule",
