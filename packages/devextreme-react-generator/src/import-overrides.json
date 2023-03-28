@@ -21,7 +21,7 @@
         "UploadInfo": "devextreme/file_management/upload_info",
         "Widget": "devextreme/ui/widget/ui.widget"
     },
-    "generics": {
+    "genericTypes": {
         "CollectionWidget": {},
         "Component": {},
         "dxOverlay": {},
@@ -89,10 +89,10 @@
         "ValidationRule": "devextreme/common"
     },
     "nameResolutions": {
-        "Font": "BaseWidget_Font",
-        "Format": "Localization_Format",
+        "Font": "BaseWidgetFont",
+        "Format": "LocalizationFormat",
         "ValidationRule": "ValidationRuleBase",
-        "VisualRange": "Charts_VisualRange"
+        "VisualRange": "ChartsVisualRange"
     },
     "typeResolutions": {
         "AsyncRule": "ValidationRule",
