@@ -88,11 +88,11 @@
         "GridBase": "devextreme/common/grids",
         "ValidationRule": "devextreme/common"
     },
-    "nameResolutions": {
-        "Font": "BaseWidgetFont",
-        "Format": "LocalizationFormat",
-        "ValidationRule": "ValidationRuleBase",
-        "VisualRange": "ChartsVisualRange"
+    "nameConflictsResolutionNamespaces": {
+        "Font": "BaseWidgetTypes",
+        "Format": "LocalizationTypes",
+        "ValidationRule": "CommonTypes",
+        "VisualRange": "CommonChartTypes"
     },
     "typeResolutions": {
         "AsyncRule": "ValidationRule",

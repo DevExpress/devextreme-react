@@ -206,6 +206,7 @@ const renderImports: (model: {
   configComponentPath?: string;
   customTypeImports?: Record<string, Array<string>>;
   defaultTypeImports?: Record<string, string>;
+  wildcardTypeImports?: Record<string, string>;
 }) => string = createTempate(
   '<#? it.hasExplicitTypes #>'
     + 'export { ExplicitTypes } from "<#= it.dxExportPath #>";\n'
@@ -231,15 +232,21 @@ const renderImports: (model: {
 
 + '<#? it.customTypeImports && Object.keys(it.customTypeImports).length #>\n'
   + '<#~ Object.keys(it.customTypeImports) : module #>'
-  + 'import { <#= it.customTypeImports[module].join(", ")#> } from "<#= module #>";\n'
+  + 'import type { <#= it.customTypeImports[module].join(", ")#> } from "<#= module #>";\n'
   + '<#~#>'
 + '<#?#>'
 
 + '<#? it.defaultTypeImports && Object.keys(it.defaultTypeImports).length #>\n'
   + '<#~ Object.keys(it.defaultTypeImports) : defaultImport #>'
     + '<#? defaultImport !== it.widgetName #>'
-      + 'import <#= defaultImport #> from "<#= it.defaultTypeImports[defaultImport] #>";\n'
+      + 'import type <#= defaultImport #> from "<#= it.defaultTypeImports[defaultImport] #>";\n'
     + '<#?#>'
+  + '<#~#>'
++ '<#?#>'
+
++ '<#? it.wildcardTypeImports && Object.keys(it.wildcardTypeImports).length #>\n'
+  + '<#~ Object.keys(it.wildcardTypeImports) : wildcardImportModule #>'
+    + 'import type * as <#= it.wildcardTypeImports[wildcardImportModule] #> from "<#= wildcardImportModule #>";\n'
   + '<#~#>'
 + '<#?#>',
 );
@@ -469,9 +476,10 @@ function createPropTypingModel(typing: IPropTyping): IRenderedPropTyping {
 
 function generate(
   component: IComponent,
+  generateReexports = false,
   customTypeImports?: Record<string, Array<string>>,
   defaultTypeImports?: Record<string, string>,
-  generateReexports = false,
+  wildcardTypeImports?: Record<string, string>,
 ): string {
   const nestedComponents = component.nestedComponents
     ? component.nestedComponents
@@ -601,6 +609,7 @@ function generate(
         : undefined,
       customTypeImports,
       defaultTypeImports,
+      wildcardTypeImports,
     }),
 
     renderedOptionsInterface: !hasExtraOptions ? undefined : renderOptionsInterface({

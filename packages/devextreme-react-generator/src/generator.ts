@@ -22,7 +22,7 @@ import {
 } from 'devextreme-internal-tools/integration-data-model';
 
 import {
-  importOverrides, defaultImports, nameResolutions, typeResolutions, genericTypes,
+  importOverrides, defaultImports, nameConflictsResolutionNamespaces, typeResolutions, genericTypes,
 } from './import-overrides.json';
 
 import { convertTypes } from './converter';
@@ -119,7 +119,7 @@ export function getComplexOptionType(types: ITypeDescr[]): string | undefined {
     if (typeDescriptor.isCustomType) {
       const resolvedType = typeResolutions[typeDescriptor.type] || typeDescriptor.type;
       widgetCustomTypes.add(resolvedType);
-      const resultingType = nameResolutions[resolvedType] || resolvedType;
+      const resultingType = nameConflictsResolutionNamespaces[resolvedType] ? `${nameConflictsResolutionNamespaces[resolvedType]}.${resolvedType}` : resolvedType;
       return genericTypes[resultingType] ? `${resultingType}<any>` : resultingType;
     }
     return convertToBaseType(typeDescriptor.type);
@@ -346,6 +346,7 @@ function generate({
 
     const customTypeImports: Record<string, Array<string>> = {};
     const defaultTypeImports: Record<string, string> = {};
+    const wildcardTypeImports: Record<string, string> = {};
 
     widgetCustomTypes.forEach((t) => {
       if (defaultImports[t]) {
@@ -356,16 +357,15 @@ function generate({
 
       const module = importOverrides[t] || (customType && `devextreme/${customType.module}`);
       if (module) {
-        customTypeImports[module] = [
-          ...(customTypeImports[module] || []),
-          nameResolutions[t] ? `${t} as ${nameResolutions[t]}` : t,
-        ];
-      } else {
-        console.log(`"${t}": "",`);
+        if (nameConflictsResolutionNamespaces[t]) {
+          wildcardTypeImports[module] = nameConflictsResolutionNamespaces[t];
+        } else {
+          customTypeImports[module] = [...(customTypeImports[module] || []), t];
+        }
       }
     });
 
-    writeFile(widgetFilePath, generateComponent(widgetFile.component, customTypeImports, defaultTypeImports, generateReexports), { encoding: 'utf8' });
+    writeFile(widgetFilePath, generateComponent(widgetFile.component, generateReexports, customTypeImports, defaultTypeImports, wildcardTypeImports), { encoding: 'utf8' });
     modulePaths.push({
       name: widgetFile.component.name,
       path: `./${removeExtension(getRelativePath(indexFileDir, widgetFilePath)).replace(pathSeparator, '/')}`,
