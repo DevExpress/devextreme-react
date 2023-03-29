@@ -21,9 +21,7 @@ import {
   IWidget,
 } from 'devextreme-internal-tools/integration-data-model';
 
-import {
-  importOverrides, defaultImports, nameConflictsResolutionNamespaces, typeResolutions, genericTypes,
-} from './import-overrides.json';
+import * as defaultImportOverridesMetadata from './import-overrides.json';
 
 import { convertTypes } from './converter';
 import generateIndex, { IReExport } from './index-generator';
@@ -58,6 +56,16 @@ enum BaseTypes {
   False = 'false',
 }
 
+type ImportOverridesMetadata = {
+  importOverrides?: Record<string, string>,
+  genericTypes?: Record<string, unknown>,
+  defaultImports?: Record<string, string>,
+  nameConflictsResolutionNamespaces?: Record<string, string>,
+  typeResolutions?: Record<string, string>,
+};
+
+type TypeResolver = (typeDescriptor: ITypeDescr) => string;
+
 function isFunctionDescriptor(typeDescriptor: ITypeDescr): typeDescriptor is IFunctionDescr {
   return typeDescriptor.type === 'Function';
 }
@@ -74,9 +82,22 @@ export function convertToBaseType(type: string): BaseTypes {
   return BaseTypes[type];
 }
 
-const widgetCustomTypes: Set<string> = new Set();
+export function createCustomTypeResolver(
+  importOverridesMetadata: ImportOverridesMetadata, widgetCustomTypesCollector: Set<string>,
+): TypeResolver {
+  return (typeDescriptor: ITypeDescr) => {
+    const resolvedType = importOverridesMetadata.typeResolutions?.[typeDescriptor.type]
+      || typeDescriptor.type;
+    widgetCustomTypesCollector.add(resolvedType);
+    const resultingType = importOverridesMetadata.nameConflictsResolutionNamespaces?.[resolvedType]
+      ? `${importOverridesMetadata.nameConflictsResolutionNamespaces[resolvedType]}.${resolvedType}` : resolvedType;
+    return importOverridesMetadata.genericTypes?.[resultingType] ? `${resultingType}<any>` : resultingType;
+  };
+}
 
-export function getComplexOptionType(types: ITypeDescr[]): string | undefined {
+export function getComplexOptionType(
+  types: ITypeDescr[], resolveCustomType?: TypeResolver,
+): string | undefined {
   function formatTypeDescriptor(typeDescriptor: ITypeDescr): string {
     function formatArrayDescriptor(arrayDescriptor: IArrayDescr): string {
       const filteredDescriptors = arrayDescriptor.itemTypes?.map((t) => formatTypeDescriptor(t))
@@ -88,7 +109,7 @@ export function getComplexOptionType(types: ITypeDescr[]): string | undefined {
     }
 
     function formatFunctionDescriptor(functionDescriptor: IFunctionDescr): string {
-      const parameters = functionDescriptor.params?.map((p) => `${p.name}: ${getComplexOptionType(p.types) || BaseTypes.Any}`)
+      const parameters = functionDescriptor.params?.map((p) => `${p.name}: ${getComplexOptionType(p.types, resolveCustomType) || BaseTypes.Any}`)
         .join(', ') || '';
       const returnType = (
         functionDescriptor.returnValueType && (formatTypeDescriptor(functionDescriptor.returnValueType) || (functionDescriptor.returnValueType.type === 'void' && 'void'))
@@ -97,7 +118,7 @@ export function getComplexOptionType(types: ITypeDescr[]): string | undefined {
     }
 
     function formatObjectDescriptor(objectDescriptor: IObjectDescr): string {
-      const fields = objectDescriptor.fields.map((f) => `${f.name}: ${getComplexOptionType(f.types) || BaseTypes.Any}`);
+      const fields = objectDescriptor.fields.map((f) => `${f.name}: ${getComplexOptionType(f.types, resolveCustomType) || BaseTypes.Any}`);
       return fields ? `{ ${fields.join(', ')} }` : BaseTypes.Object;
     }
 
@@ -116,11 +137,8 @@ export function getComplexOptionType(types: ITypeDescr[]): string | undefined {
        && typeDescriptor.acceptableValues.length > 0) {
       return Array.from(new Set(typeDescriptor.acceptableValues)).join(' | ');
     }
-    if (typeDescriptor.isCustomType) {
-      const resolvedType = typeResolutions[typeDescriptor.type] || typeDescriptor.type;
-      widgetCustomTypes.add(resolvedType);
-      const resultingType = nameConflictsResolutionNamespaces[resolvedType] ? `${nameConflictsResolutionNamespaces[resolvedType]}.${resolvedType}` : resolvedType;
-      return genericTypes[resultingType] ? `${resultingType}<any>` : resultingType;
+    if (typeDescriptor.isCustomType && resolveCustomType) {
+      return resolveCustomType(typeDescriptor);
     }
     return convertToBaseType(typeDescriptor.type);
   }
@@ -131,10 +149,12 @@ export function getComplexOptionType(types: ITypeDescr[]): string | undefined {
     .join(' | ') : undefined;
 }
 
-export function mapSubscribableOption(prop: IProp): ISubscribableOption {
+export function mapSubscribableOption(
+  prop: IProp, typeResolver?: TypeResolver,
+): ISubscribableOption {
   return {
     name: prop.name,
-    type: getComplexOptionType(prop.types) || BaseTypes.Any,
+    type: getComplexOptionType(prop.types, typeResolver) || BaseTypes.Any,
     isSubscribable: prop.isSubscribable || undefined,
   };
 }
@@ -149,18 +169,18 @@ export function isNestedOptionArray(prop: IProp): boolean {
   return isNotEmptyArray(prop.types) && (prop.types[0].type === 'Array');
 }
 
-export function mapOption(prop: IProp): IOption {
+export function mapOption(prop: IProp, typeResolver?: TypeResolver): IOption {
   return isEmptyArray(prop.props)
     ? {
       name: prop.name,
-      type: getComplexOptionType(prop.types) || BaseTypes.Any,
+      type: getComplexOptionType(prop.types, typeResolver) || BaseTypes.Any,
       isSubscribable: prop.isSubscribable || undefined,
 
     } : {
       name: prop.name,
       isSubscribable: prop.isSubscribable || undefined,
-      type: getComplexOptionType(prop.types),
-      nested: (prop.props as IProp[]).map(mapOption),
+      type: getComplexOptionType(prop.types, typeResolver),
+      nested: (prop.props as IProp[]).map((p) => mapOption(p, typeResolver)),
       isArray: isNestedOptionArray(prop),
     };
 }
@@ -169,6 +189,7 @@ export function extractNestedComponents(
   props: IComplexProp[],
   rawWidgetName: string,
   widgetName: string,
+  typeResolver?: TypeResolver,
 ): INestedComponent[] {
   const nameClassMap: Record<string, string> = {};
   nameClassMap[rawWidgetName] = widgetName;
@@ -180,7 +201,7 @@ export function extractNestedComponents(
     className: nameClassMap[p.name],
     owners: p.owners.map((o) => nameClassMap[o]),
     optionName: p.optionName,
-    options: p.props.map((prop) => mapOption(prop)),
+    options: p.props.map((prop) => mapOption(prop, typeResolver)),
     isCollectionItem: p.isCollectionItem,
     templates: p.templates,
     predefinedProps: p.predefinedProps,
@@ -265,20 +286,29 @@ export function mapWidget(
   configComponent: string,
   customTypes: ICustomType[],
   widgetPackage: string,
+  importOverridesMetadata?: ImportOverridesMetadata,
 ): {
     fileName: string;
-    component: IComponent
+    component: IComponent,
+    customTypeImports?: Record<string, Array<string>>,
+    defaultTypeImports?: Record<string, string>,
+    wildcardTypeImports?: Record<string, string>,
   } {
   const name = removePrefix(raw.name, 'dx');
 
+  const widgetCustomTypes = new Set<string>();
+
+  const typeResolver = importOverridesMetadata
+    ? createCustomTypeResolver(importOverridesMetadata, widgetCustomTypes) : undefined;
+
   const subscribableOptions: ISubscribableOption[] = collectSubscribableRecursively(raw.options)
-    .map((option) => mapSubscribableOption(option));
+    .map((option) => mapSubscribableOption(option, typeResolver));
 
   const independentEvents: IIndependentEvents[] = collectIndependentEvents(raw.options)
     .map(mapIndependentEvents);
 
   const nestedOptions = raw.complexOptions
-    ? extractNestedComponents(raw.complexOptions, raw.name, name)
+    ? extractNestedComponents(raw.complexOptions, raw.name, name, typeResolver)
     : null;
 
   const customTypeHash = customTypes.reduce((result, type) => {
@@ -287,6 +317,27 @@ export function mapWidget(
   }, {});
   const propTypings = extractPropTypings(raw.options, customTypeHash)
     .filter((propType) => propType !== null) as IPropTyping[];
+
+  const customTypeImports: Record<string, Array<string>> = {};
+  const defaultTypeImports: Record<string, string> = {};
+  const wildcardTypeImports: Record<string, string> = {};
+
+  widgetCustomTypes.forEach((t) => {
+    if (importOverridesMetadata?.defaultImports?.[t]) {
+      defaultTypeImports[t] = importOverridesMetadata.defaultImports[t];
+      return;
+    }
+    const customType = customTypes.find((item) => item.name === t);
+
+    const module = importOverridesMetadata?.importOverrides?.[t] || (customType && customType.module && `devextreme/${customType.module}`);
+    if (module) {
+      if (importOverridesMetadata?.nameConflictsResolutionNamespaces?.[t]) {
+        wildcardTypeImports[module] = importOverridesMetadata.nameConflictsResolutionNamespaces[t];
+      } else {
+        customTypeImports[module] = [...(customTypeImports[module] || []), t];
+      }
+    }
+  });
 
   const dxExportPath = `${widgetPackage}/${raw.exportPath}`;
   return {
@@ -307,6 +358,9 @@ export function mapWidget(
       optionsTypeParams: raw.optionsTypeParams,
       containsReexports: !!raw.reexports.filter((r) => r !== 'default').length,
     },
+    customTypeImports,
+    defaultTypeImports,
+    wildcardTypeImports,
   };
 }
 
@@ -316,6 +370,7 @@ function generate({
   out,
   widgetsPackage,
   generateReexports,
+  importOverridesMetadata = defaultImportOverridesMetadata,
 }: {
   metaData: IModel,
   components: {
@@ -329,10 +384,10 @@ function generate({
   },
   widgetsPackage: string,
   generateReexports?: boolean,
+  importOverridesMetadata?: ImportOverridesMetadata,
 }): void {
   const modulePaths: IReExport[] = [];
   rawData.widgets.forEach((data) => {
-    widgetCustomTypes.clear();
     const widgetFile = mapWidget(
       data,
       baseComponent,
@@ -340,32 +395,12 @@ function generate({
       configComponent,
       rawData.customTypes,
       widgetsPackage,
+      importOverridesMetadata,
     );
     const widgetFilePath = joinPaths(out.componentsDir, widgetFile.fileName);
     const indexFileDir = getDirName(out.indexFileName);
 
-    const customTypeImports: Record<string, Array<string>> = {};
-    const defaultTypeImports: Record<string, string> = {};
-    const wildcardTypeImports: Record<string, string> = {};
-
-    widgetCustomTypes.forEach((t) => {
-      if (defaultImports[t]) {
-        defaultTypeImports[t] = defaultImports[t];
-        return;
-      }
-      const customType = rawData.customTypes.find((item) => item.name === t);
-
-      const module = importOverrides[t] || (customType && `devextreme/${customType.module}`);
-      if (module) {
-        if (nameConflictsResolutionNamespaces[t]) {
-          wildcardTypeImports[module] = nameConflictsResolutionNamespaces[t];
-        } else {
-          customTypeImports[module] = [...(customTypeImports[module] || []), t];
-        }
-      }
-    });
-
-    writeFile(widgetFilePath, generateComponent(widgetFile.component, generateReexports, customTypeImports, defaultTypeImports, wildcardTypeImports), { encoding: 'utf8' });
+    writeFile(widgetFilePath, generateComponent(widgetFile.component, generateReexports, widgetFile.customTypeImports, widgetFile.defaultTypeImports, widgetFile.wildcardTypeImports), { encoding: 'utf8' });
     modulePaths.push({
       name: widgetFile.component.name,
       path: `./${removeExtension(getRelativePath(indexFileDir, widgetFilePath)).replace(pathSeparator, '/')}`,

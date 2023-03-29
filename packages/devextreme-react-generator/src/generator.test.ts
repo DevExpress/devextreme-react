@@ -11,6 +11,7 @@ import {
   createPropTyping,
   extractPropTypings,
   mapWidget,
+  createCustomTypeResolver,
 } from './generator';
 
 describe('collectIndependentEvents', () => {
@@ -418,7 +419,7 @@ describe('mapOption', () => {
     expect(mapOption(option)).toEqual({
       name: 'option',
       isSubscribable: undefined,
-      nested: option.props.map(mapOption),
+      nested: option.props.map((p) => mapOption(p)),
       isArray: isNestedOptionArray(option),
     });
   });
@@ -712,11 +713,11 @@ describe('mapWidget', () => {
       }, {
         name: 'option3',
         isSubscribable: true,
-        type: 'CustomType',
+        type: 'any',
       }]);
     });
 
-    it('should process subscribable options', () => {
+    it('should process subscribable options with empty import overrides metadata', () => {
       const { component } = mapWidget(
         widgetWithOptions,
         '',
@@ -724,6 +725,7 @@ describe('mapWidget', () => {
         '',
         customTypes,
         '',
+        {},
       );
 
       expect(component.subscribableOptions).toEqual([{
@@ -799,10 +801,38 @@ describe('mapWidget', () => {
     },
     ];
 
-    const expected = 'string | number | object | MyType';
+    const expected = 'string | number | object';
 
     it('should return base types', () => {
       expect(getComplexOptionType(types)).toEqual(expected);
+    });
+  });
+
+  describe('getComplexOptionType with custom type resolver', () => {
+    const types = [{
+      type: 'String',
+      acceptableValues: [],
+      isCustomType: false,
+    }, {
+      type: 'Number',
+      acceptableValues: [],
+      isCustomType: false,
+    }, {
+      type: 'Object',
+      acceptableValues: [],
+      isCustomType: false,
+    }, {
+      type: 'MyType',
+      acceptableValues: [],
+      isCustomType: true,
+    },
+    ];
+
+    const typeResolver = createCustomTypeResolver({}, new Set());
+    const expected = 'string | number | object | MyType';
+
+    it('should return base types', () => {
+      expect(getComplexOptionType(types, typeResolver)).toEqual(expected);
     });
   });
 });
