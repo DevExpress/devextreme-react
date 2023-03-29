@@ -12,6 +12,7 @@ import {
   extractPropTypings,
   mapWidget,
   createCustomTypeResolver,
+  ImportOverridesMetadata,
 } from './generator';
 
 describe('collectIndependentEvents', () => {
@@ -696,6 +697,120 @@ describe('mapWidget', () => {
       complexOptions,
     };
 
+    const widgetWithCustomTypes = {
+      ...rawWidget,
+      options: [{
+        name: 'option1',
+        isSubscribable: true,
+        isDeprecated: false,
+        types: [{
+          type: 'CustomTypeWithModule',
+          acceptableValues: [],
+          isCustomType: true,
+        }],
+        props: [],
+        firedEvents: [],
+      },
+      {
+        name: 'option2',
+        isSubscribable: true,
+        isDeprecated: false,
+        types: [{
+          type: 'CustomTypeWithoutModule',
+          acceptableValues: [],
+          isCustomType: true,
+        }],
+        props: [],
+        firedEvents: [],
+      },
+      {
+        name: 'option3',
+        isSubscribable: true,
+        isDeprecated: false,
+        types: [{
+          type: 'CustomTypeWithTypeResolution',
+          acceptableValues: [],
+          isCustomType: true,
+        }],
+        props: [],
+        firedEvents: [],
+      },
+      {
+        name: 'option4',
+        isSubscribable: true,
+        isDeprecated: false,
+        types: [{
+          type: 'CustomTypeWithNameConflict',
+          acceptableValues: [],
+          isCustomType: true,
+        }],
+        props: [],
+        firedEvents: [],
+      },
+      {
+        name: 'option5',
+        isSubscribable: true,
+        isDeprecated: false,
+        types: [{
+          type: 'CustomTypeWithDefaultImport',
+          acceptableValues: [],
+          isCustomType: true,
+        }],
+        props: [],
+        firedEvents: [],
+      },
+      {
+        name: 'option6',
+        isSubscribable: true,
+        isDeprecated: false,
+        types: [{
+          type: 'CustomGenericType',
+          acceptableValues: [],
+          isCustomType: true,
+        }],
+        props: [],
+        firedEvents: [],
+      }],
+    };
+
+    const customTypesWithModules = [{
+      name: 'CustomTypeWithModule',
+      props: [],
+      templates: [],
+      types: [],
+      module: 'custom/type/module',
+    },
+    {
+      name: 'CustomTypeWithoutModule',
+      props: [],
+      templates: [],
+      types: [],
+    },
+    {
+      name: 'CustomTypeWithTypeResolution',
+      props: [],
+      templates: [],
+      types: [],
+    },
+    {
+      name: 'CustomTypeWithNameConflict',
+      props: [],
+      templates: [],
+      types: [],
+    },
+    {
+      name: 'CustomTypeWithDefaultImport',
+      props: [],
+      templates: [],
+      types: [],
+    },
+    {
+      name: 'CustomGenericType',
+      props: [],
+      templates: [],
+      types: [],
+    }];
+
     it('should process subscribable options', () => {
       const { component } = mapWidget(
         widgetWithOptions,
@@ -770,6 +885,57 @@ describe('mapWidget', () => {
         propName: 'option3',
         types: ['object'],
       }]);
+    });
+    it('should process custom types with type resolver with overrides', () => {
+      const importOverridesMetadata: ImportOverridesMetadata = {
+        importOverrides: {
+          CustomTypeWithoutModule: 'overridden/module',
+          CustomTypeWithNameConflict: 'another/overridden/module',
+        },
+        genericTypes: {
+          CustomGenericType: {},
+        },
+        defaultImports: {
+          CustomTypeWithDefaultImport: 'module/with/default/import',
+        },
+        nameConflictsResolutionNamespaces: {
+          CustomTypeWithNameConflict: 'NoConflictNamespace',
+        },
+        typeResolutions: {
+          CustomTypeWithTypeResolution: 'CustomTypeWithModule',
+        },
+      };
+
+      const {
+        component, defaultTypeImports, wildcardTypeImports, customTypeImports,
+      } = mapWidget(
+        widgetWithCustomTypes,
+        '',
+        '',
+        '',
+        customTypesWithModules,
+        '',
+        importOverridesMetadata,
+      );
+
+      const resultOptions = component.subscribableOptions!.reduce(
+        (result, option) => {
+          result[option.name] = option; return result;
+        }, {},
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      ) as any;
+
+      expect(resultOptions.option1.type).toEqual('CustomTypeWithModule');
+      expect(resultOptions.option2.type).toEqual('CustomTypeWithoutModule');
+      expect(resultOptions.option3.type).toEqual('CustomTypeWithModule');
+      expect(resultOptions.option4.type).toEqual('NoConflictNamespace.CustomTypeWithNameConflict');
+      expect(resultOptions.option5.type).toEqual('CustomTypeWithDefaultImport');
+      expect(resultOptions.option6.type).toEqual('CustomGenericType<any>');
+
+      expect(customTypeImports!['devextreme/custom/type/module']).toEqual(['CustomTypeWithModule']);
+      expect(customTypeImports!['overridden/module']).toEqual(['CustomTypeWithoutModule']);
+      expect(defaultTypeImports).toEqual({ CustomTypeWithDefaultImport: 'module/with/default/import' });
+      expect(wildcardTypeImports).toEqual({ 'another/overridden/module': 'NoConflictNamespace' });
     });
   });
   describe('convertToBaseType', () => {

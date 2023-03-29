@@ -56,7 +56,7 @@ enum BaseTypes {
   False = 'false',
 }
 
-type ImportOverridesMetadata = {
+export type ImportOverridesMetadata = {
   importOverrides?: Record<string, string>,
   genericTypes?: Record<string, unknown>,
   defaultImports?: Record<string, string>,
