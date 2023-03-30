@@ -66,6 +66,12 @@ export type ImportOverridesMetadata = {
 
 type TypeResolver = (typeDescriptor: ITypeDescr) => string;
 
+type TypeGenerationOptions = {
+  generateReexports?: boolean,
+  generateCustomTypes?: boolean
+  importOverridesMetadata?: ImportOverridesMetadata,
+};
+
 function isFunctionDescriptor(typeDescriptor: ITypeDescr): typeDescriptor is IFunctionDescr {
   return typeDescriptor.type === 'Function';
 }
@@ -286,7 +292,7 @@ export function mapWidget(
   configComponent: string,
   customTypes: ICustomType[],
   widgetPackage: string,
-  importOverridesMetadata?: ImportOverridesMetadata,
+  typeGenerationOptions?: TypeGenerationOptions,
 ): {
     fileName: string;
     component: IComponent,
@@ -298,8 +304,10 @@ export function mapWidget(
 
   const widgetCustomTypes = new Set<string>();
 
-  const typeResolver = importOverridesMetadata
-    ? createCustomTypeResolver(importOverridesMetadata, widgetCustomTypes) : undefined;
+  const typeResolver = typeGenerationOptions?.generateCustomTypes
+    ? createCustomTypeResolver(
+      typeGenerationOptions?.importOverridesMetadata || {}, widgetCustomTypes,
+    ) : undefined;
 
   const subscribableOptions: ISubscribableOption[] = collectSubscribableRecursively(raw.options)
     .map((option) => mapSubscribableOption(option, typeResolver));
@@ -323,16 +331,17 @@ export function mapWidget(
   const wildcardTypeImports: Record<string, string> = {};
 
   widgetCustomTypes.forEach((t) => {
-    if (importOverridesMetadata?.defaultImports?.[t]) {
-      defaultTypeImports[t] = importOverridesMetadata.defaultImports[t];
+    if (typeGenerationOptions?.importOverridesMetadata?.defaultImports?.[t]) {
+      defaultTypeImports[t] = typeGenerationOptions.importOverridesMetadata.defaultImports[t];
       return;
     }
     const customType = customTypes.find((item) => item.name === t);
 
-    const module = importOverridesMetadata?.importOverrides?.[t] || (customType && customType.module && `devextreme/${customType.module}`);
+    const module = typeGenerationOptions?.importOverridesMetadata?.importOverrides?.[t] || (customType && customType.module && `devextreme/${customType.module}`);
     if (module) {
-      if (importOverridesMetadata?.nameConflictsResolutionNamespaces?.[t]) {
-        wildcardTypeImports[module] = importOverridesMetadata.nameConflictsResolutionNamespaces[t];
+      if (typeGenerationOptions?.importOverridesMetadata?.nameConflictsResolutionNamespaces?.[t]) {
+        wildcardTypeImports[module] = typeGenerationOptions
+          .importOverridesMetadata.nameConflictsResolutionNamespaces[t];
       } else {
         customTypeImports[module] = [...(customTypeImports[module] || []), t];
       }
@@ -369,8 +378,7 @@ function generate({
   components: { baseComponent, extensionComponent, configComponent },
   out,
   widgetsPackage,
-  generateReexports,
-  importOverridesMetadata = defaultImportOverridesMetadata,
+  typeGenerationOptions = {},
 }: {
   metaData: IModel,
   components: {
@@ -383,10 +391,15 @@ function generate({
     indexFileName: string
   },
   widgetsPackage: string,
-  generateReexports?: boolean,
-  importOverridesMetadata?: ImportOverridesMetadata,
+  typeGenerationOptions?: TypeGenerationOptions,
 }): void {
   const modulePaths: IReExport[] = [];
+  const {
+    generateReexports,
+    generateCustomTypes,
+    importOverridesMetadata,
+  } = typeGenerationOptions;
+
   rawData.widgets.forEach((data) => {
     const widgetFile = mapWidget(
       data,
@@ -395,7 +408,10 @@ function generate({
       configComponent,
       rawData.customTypes,
       widgetsPackage,
-      importOverridesMetadata,
+      {
+        generateCustomTypes,
+        importOverridesMetadata: importOverridesMetadata || defaultImportOverridesMetadata,
+      },
     );
     const widgetFilePath = joinPaths(out.componentsDir, widgetFile.fileName);
     const indexFileDir = getDirName(out.indexFileName);

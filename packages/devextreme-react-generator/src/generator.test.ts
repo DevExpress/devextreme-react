@@ -473,6 +473,7 @@ describe('createPropTyping', () => {
         acceptableValues: [],
         isCustomType: false,
       }],
+      module: '',
     },
   };
 
@@ -574,6 +575,7 @@ describe('extractPropTypings', () => {
           acceptableValues: [],
           isCustomType: false,
         }],
+        module: '',
       },
     };
 
@@ -689,6 +691,7 @@ describe('mapWidget', () => {
       props: [],
       templates: [],
       types: [],
+      module: '',
     }];
 
     const widgetWithOptions = {
@@ -785,30 +788,35 @@ describe('mapWidget', () => {
       props: [],
       templates: [],
       types: [],
+      module: '',
     },
     {
       name: 'CustomTypeWithTypeResolution',
       props: [],
       templates: [],
       types: [],
+      module: '',
     },
     {
       name: 'CustomTypeWithNameConflict',
       props: [],
       templates: [],
       types: [],
+      module: '',
     },
     {
       name: 'CustomTypeWithDefaultImport',
       props: [],
       templates: [],
       types: [],
+      module: '',
     },
     {
       name: 'CustomGenericType',
       props: [],
       templates: [],
       types: [],
+      module: '',
     }];
 
     it('should process subscribable options', () => {
@@ -840,7 +848,10 @@ describe('mapWidget', () => {
         '',
         customTypes,
         '',
-        {},
+        {
+          generateCustomTypes: true,
+          importOverridesMetadata: {},
+        },
       );
 
       expect(component.subscribableOptions).toEqual([{
@@ -915,7 +926,10 @@ describe('mapWidget', () => {
         '',
         customTypesWithModules,
         '',
-        importOverridesMetadata,
+        {
+          generateCustomTypes: true,
+          importOverridesMetadata,
+        },
       );
 
       const resultOptions = component.subscribableOptions!.reduce(
