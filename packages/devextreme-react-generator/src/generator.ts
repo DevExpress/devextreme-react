@@ -303,11 +303,10 @@ export function mapWidget(
   const name = removePrefix(raw.name, 'dx');
 
   const widgetCustomTypes = new Set<string>();
+  const { importOverridesMetadata, generateCustomTypes } = typeGenerationOptions || {};
 
-  const typeResolver = typeGenerationOptions?.generateCustomTypes
-    ? createCustomTypeResolver(
-      typeGenerationOptions?.importOverridesMetadata || {}, widgetCustomTypes,
-    ) : undefined;
+  const typeResolver = generateCustomTypes
+    ? createCustomTypeResolver(importOverridesMetadata || {}, widgetCustomTypes) : undefined;
 
   const subscribableOptions: ISubscribableOption[] = collectSubscribableRecursively(raw.options)
     .map((option) => mapSubscribableOption(option, typeResolver));
@@ -331,17 +330,17 @@ export function mapWidget(
   const wildcardTypeImports: Record<string, string> = {};
 
   widgetCustomTypes.forEach((t) => {
-    if (typeGenerationOptions?.importOverridesMetadata?.defaultImports?.[t]) {
-      defaultTypeImports[t] = typeGenerationOptions.importOverridesMetadata.defaultImports[t];
+    if (importOverridesMetadata?.defaultImports?.[t]) {
+      defaultTypeImports[t] = importOverridesMetadata.defaultImports[t];
       return;
     }
     const customType = customTypes.find((item) => item.name === t);
 
-    const module = typeGenerationOptions?.importOverridesMetadata?.importOverrides?.[t] || (customType && customType.module && `devextreme/${customType.module}`);
+    const module = importOverridesMetadata?.importOverrides?.[t] || (customType && customType.module && `devextreme/${customType.module}`);
     if (module) {
-      if (typeGenerationOptions?.importOverridesMetadata?.nameConflictsResolutionNamespaces?.[t]) {
-        wildcardTypeImports[module] = typeGenerationOptions
-          .importOverridesMetadata.nameConflictsResolutionNamespaces[t];
+      const moduleImportNamespace = importOverridesMetadata?.nameConflictsResolutionNamespaces?.[t];
+      if (moduleImportNamespace) {
+        wildcardTypeImports[module] = moduleImportNamespace;
       } else {
         customTypeImports[module] = [...(customTypeImports[module] || []), t];
       }

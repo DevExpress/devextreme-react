@@ -589,8 +589,7 @@ function generate(
     : undefined;
 
   const hasExplicitTypes = !!component.optionsTypeParams?.length;
-  // console.log('==========================');
-  // console.log(customTypeImports);
+
   return renderModule({
 
     renderedImports: renderImports({
