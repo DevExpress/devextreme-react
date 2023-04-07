@@ -1,3 +1,4 @@
+.idea
 .vscode/launch.json
 node_modules/
 dist/
