@@ -18,32 +18,13 @@ jobs:
     - name: Get sources
       uses: actions/checkout@v2
 
-    - name: Clone devextreme repo from PR author fork
-      continue-on-error: true
-      if: github.event_name == 'pull_request'
-      run: git clone -b ${{github.event.pull_request.head.ref}} https://github.com/${{github.event.pull_request.user.login}}/devextreme ../devextreme
-
-    - name: Clone devextreme repo
-      run: test -d ../devextreme || git clone -b 23_1 https://github.com/devexpress/devextreme ../devextreme
-
     - name: Use Node.js 15
       uses: actions/setup-node@v3
       with:
         node-version: '15'
 
-    - name: Install packages in devextreme repo
-      run: |
-        cd ../devextreme
-        npm install --no-audit --no-fund
-    - name: Build devextreme repo
-      run: |
-        cd ../devextreme
-        npm run build-dist
-
-    - name: Install devextreme package
-      run: |
-        npx lerna add devextreme@file:../devextreme/artifacts/npm/devextreme/ --dev --no-bootstrap --scope=devextreme-react --exact --peer
-        npx lerna add devextreme@file:../devextreme/artifacts/npm/devextreme/ --no-bootstrap --scope=devextreme-react-sandbox --exact
+    - name: Restore devextreme
+      run: npm run restore-devextreme
 
     - name: Run npm install
       run: npm install --no-audit --no-fund
