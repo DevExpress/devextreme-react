@@ -32,9 +32,6 @@ jobs:
     - name: Run devextreme-react-generator tests
       run: npx lerna run --scope devextreme-react-generator test
 
-    - name: Run bootstrap
-      run: npm run bootstrap
-
     - name: Run lint
       run: npm run lint
 
