@@ -33,6 +33,8 @@ jobs:
       run: npx lerna run --scope devextreme-react-generator test
 
     - name: Run build
+      env:
+        NODE_OPTIONS: "--max-old-space-size=4096"
       run: npm run build
 
     - name: Run tests with React
