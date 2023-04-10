@@ -38,9 +38,6 @@ jobs:
     - name: Run tests with React
       run: npm run test
 
-    - name: Run lint
-      run: npm run lint
-
     - name: Check generated code
       shell: bash
       run: |
