@@ -18,6 +18,11 @@ class Component<P> extends ComponentBase<P> {
     this._createExtensions();
   }
 
+  public componentWillUnmount(): void {
+    super.componentWillUnmount();
+    this._clearExtensions();
+  }
+
   protected renderChildren(): Record<string, unknown>[] | null | undefined {
     return React.Children.map(
       this.props.children,
@@ -40,6 +45,10 @@ class Component<P> extends ComponentBase<P> {
 
   private _createExtensions() {
     this._extensionCreators.forEach((creator) => creator(this._element));
+  }
+
+  private _clearExtensions() {
+    this._extensionCreators = [];
   }
 }
 
