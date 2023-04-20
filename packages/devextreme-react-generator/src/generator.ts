@@ -355,8 +355,14 @@ export function mapWidget(
   const subscribableOptions: ISubscribableOption[] = collectSubscribableRecursively(raw.options)
     .map((option) => mapSubscribableOption(option, typeResolver));
 
-  const independentEvents: IIndependentEvents[] = collectIndependentEvents(raw.options)
-    .map(mapIndependentEvents);
+  const eventOptions = collectIndependentEvents(raw.options);
+
+  const hasNarrowedEventArgument = (option) => option.types[0].params[0].types[0].isImportedType;
+  const narrowedEvents = eventOptions
+    .filter(hasNarrowedEventArgument)
+    .map((prop) => mapOption(prop, typeResolver));
+
+  const independentEvents: IIndependentEvents[] = eventOptions.map(mapIndependentEvents);
 
   const nestedOptions = raw.complexOptions
     ? extractNestedComponents(raw.complexOptions, raw.name, name, typeResolver)
@@ -409,6 +415,7 @@ export function mapWidget(
       propTypings: propTypings.length > 0 ? propTypings : undefined,
       optionsTypeParams: raw.optionsTypeParams,
       containsReexports: !!raw.reexports.filter((r) => r !== 'default').length,
+      narrowedEvents: narrowedEvents && narrowedEvents.length ? narrowedEvents : undefined,
     },
     customTypeImports,
     defaultTypeImports,

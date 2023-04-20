@@ -24,7 +24,8 @@ type IComponent = {
 } & {
   nestedComponents?: INestedComponent[];
   configComponentPath?: string;
-  containsReexports?: boolean
+  containsReexports?: boolean,
+  narrowedEvents?: IOption[]
 };
 
 interface INestedComponent {
@@ -335,21 +336,17 @@ const renderOptionsInterface: (model: {
     name: string;
     type: string;
   }>;
-  narrowedEvents?: string[]
+  renderedNarrowedEvents?: string | undefined
 }) => string = createTemplate(
-//   'type NarrowerFieldTypes<TSource, TReplacement> = {\n'
-// + '  [P in keyof TSource]: P extends keyof TReplacement ? TReplacement[P] : TSource[P];\n'
-// + '}\n\n'
-
-  '<#? it.narrowedEvents && it.narrowedEvents.length #>'
-+ 'type <#= it.optionsName #>ImportedTypes = {\n'
-+ '<#~ it.narrowedEvents :event #>'
-    + '  <#= event #>\n'
-+ '<#~#>'
+  '<#? it.renderedNarrowedEvents #>'
++ 'type ReplaceFieldTypes<TSource, TReplacement> = {\n'
++ '  [P in keyof TSource]: P extends keyof TReplacement ? TReplacement[P] : TSource[P];\n'
 + '}\n\n'
+
++ 'type <#= it.optionsName #>NarrowedOptions = <#= it.renderedNarrowedEvents #>\n\n'
 + '<#?#>'
 
-+ `type <#= it.optionsName #>${TYPE_PARAMS_WITH_DEFAULTS} = React.PropsWithChildren<<#? it.narrowedEvents && it.narrowedEvents.length #>NarrowerFieldTypes<<#?#>Properties${TYPE_PARAMS}<#? it.narrowedEvents && it.narrowedEvents.length #>, <#= it.optionsName #>ImportedTypes><#?#> & IHtmlOptions & {\n`
++ `type <#= it.optionsName #>${TYPE_PARAMS_WITH_DEFAULTS} = React.PropsWithChildren<<#? it.renderedNarrowedEvents #>ReplaceFieldTypes<<#?#>Properties${TYPE_PARAMS}<#? it.renderedNarrowedEvents #>, <#= it.optionsName #>NarrowedOptions><#?#> & IHtmlOptions & {\n`
 
 + '<#? it.typeParams #>'
     + `  dataSource?: Properties${TYPE_PARAMS}["dataSource"];\n`
@@ -630,6 +627,8 @@ function generate(
       onChangeEvents: onChangeEvents || [],
       templates: templates || [],
       typeParams: component.optionsTypeParams?.length ? component.optionsTypeParams : undefined,
+      renderedNarrowedEvents: component.narrowedEvents
+        ? renderObject(component.narrowedEvents, 0) : undefined,
     }),
 
     renderedComponent: renderComponent({
