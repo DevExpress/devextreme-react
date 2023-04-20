@@ -335,8 +335,21 @@ const renderOptionsInterface: (model: {
     name: string;
     type: string;
   }>;
+  narrowedEvents?: string[]
 }) => string = createTemplate(
-  `type <#= it.optionsName #>${TYPE_PARAMS_WITH_DEFAULTS} = React.PropsWithChildren<Properties${TYPE_PARAMS} & IHtmlOptions & {\n`
+//   'type NarrowerFieldTypes<TSource, TReplacement> = {\n'
+// + '  [P in keyof TSource]: P extends keyof TReplacement ? TReplacement[P] : TSource[P];\n'
+// + '}\n\n'
+
+  '<#? it.narrowedEvents && it.narrowedEvents.length #>'
++ 'type <#= it.optionsName #>ImportedTypes = {\n'
++ '<#~ it.narrowedEvents :event #>'
+    + '  <#= event #>\n'
++ '<#~#>'
++ '}\n\n'
++ '<#?#>'
+
++ `type <#= it.optionsName #>${TYPE_PARAMS_WITH_DEFAULTS} = React.PropsWithChildren<<#? it.narrowedEvents && it.narrowedEvents.length #>NarrowerFieldTypes<<#?#>Properties${TYPE_PARAMS}<#? it.narrowedEvents && it.narrowedEvents.length #>, <#= it.optionsName #>ImportedTypes><#?#> & IHtmlOptions & {\n`
 
 + '<#? it.typeParams #>'
     + `  dataSource?: Properties${TYPE_PARAMS}["dataSource"];\n`

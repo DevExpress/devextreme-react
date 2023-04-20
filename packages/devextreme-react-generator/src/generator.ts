@@ -89,14 +89,23 @@ export function convertToBaseType(type: string): BaseTypes {
 }
 
 export function createCustomTypeResolver(
+  customTypeHash: Record<string, ICustomType>,
   importOverridesMetadata: ImportOverridesMetadata,
-  widgetCustomTypesCollector: Set<string>,
+  customTypeModulesCollector: Record<string, string | undefined>,
   resolveNameConflicts: (string) => string = (typeName) => typeName,
 ): TypeResolver {
   return (typeDescriptor: ITypeDescr) => {
     const resolvedType = importOverridesMetadata.typeResolutions?.[typeDescriptor.type]
       || typeDescriptor.type;
-    widgetCustomTypesCollector.add(resolvedType);
+
+    const customType = customTypeHash[resolvedType];
+
+    const moduleImport = typeDescriptor.type === resolvedType && typeDescriptor.isImportedType
+      ? typeDescriptor.importPath
+      : customType && customType.module;
+
+    customTypeModulesCollector[resolvedType] = moduleImport ? `devextreme/${moduleImport}` : undefined;
+
     const resultingType = resolveNameConflicts(
       importOverridesMetadata.nameConflictsResolutionNamespaces?.[resolvedType]
         ? `${importOverridesMetadata.nameConflictsResolutionNamespaces[resolvedType]}.${resolvedType}` : resolvedType,
@@ -147,7 +156,7 @@ export function getComplexOptionType(
        && typeDescriptor.acceptableValues.length > 0) {
       return Array.from(new Set(typeDescriptor.acceptableValues)).join(' | ');
     }
-    if (typeDescriptor.isCustomType && resolveCustomType) {
+    if ((typeDescriptor.isCustomType || typeDescriptor.isImportedType) && resolveCustomType) {
       return resolveCustomType(typeDescriptor);
     }
     return convertToBaseType(typeDescriptor.type);
@@ -310,7 +319,6 @@ export function mapWidget(
   } {
   const name = removePrefix(raw.name, 'dx');
 
-  const widgetCustomTypes = new Set<string>();
   const { importOverridesMetadata, generateCustomTypes } = typeGenerationOptions || {};
 
   const generatedComponentNames = Object.values(
@@ -330,10 +338,17 @@ export function mapWidget(
     typeAliases[typeName] ? `${typeName} as ${typeAliases[typeName]}` : typeName
   );
 
+  const customTypeHash = customTypes.reduce<Record<string, ICustomType>>((result, type) => {
+    result[type.name] = type;
+    return result;
+  }, {});
+
+  const customTypeModules: Record<string, string | undefined> = {};
   const typeResolver = generateCustomTypes
     ? createCustomTypeResolver(
+      customTypeHash,
       importOverridesMetadata || {},
-      widgetCustomTypes,
+      customTypeModules,
       resolveGeneratedComponentNamesConflict,
     ) : undefined;
 
@@ -347,10 +362,6 @@ export function mapWidget(
     ? extractNestedComponents(raw.complexOptions, raw.name, name, typeResolver)
     : null;
 
-  const customTypeHash = customTypes.reduce((result, type) => {
-    result[type.name] = type;
-    return result;
-  }, {});
   const propTypings = extractPropTypings(raw.options, customTypeHash)
     .filter((propType) => propType !== null) as IPropTyping[];
 
@@ -358,14 +369,15 @@ export function mapWidget(
   const defaultTypeImports: Record<string, string> = {};
   const wildcardTypeImports: Record<string, string> = {};
 
-  widgetCustomTypes.forEach((t) => {
+  Object.keys(customTypeModules).forEach((t) => {
     if (importOverridesMetadata?.defaultImports?.[t]) {
       defaultTypeImports[t] = importOverridesMetadata.defaultImports[t];
       return;
     }
-    const customType = customTypes.find((item) => item.name === t);
 
-    const module = importOverridesMetadata?.importOverrides?.[t] || (customType && customType.module && `devextreme/${customType.module}`);
+    const module = importOverridesMetadata?.importOverrides?.[t]
+     || customTypeModules[t];
+
     if (module) {
       const moduleImportNamespace = importOverridesMetadata?.nameConflictsResolutionNamespaces?.[t];
       if (moduleImportNamespace) {
