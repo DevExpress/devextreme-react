@@ -915,6 +915,22 @@ describe('mapWidget', () => {
           props: [],
           firedEvents: [],
         },
+        {
+          name: 'optionThatConflictsWithComponent2',
+          isSubscribable: true,
+          isDeprecated: false,
+          types: [
+            {
+              type: 'ComplexOption2',
+              acceptableValues: [],
+              isCustomType: true,
+              importPath: '',
+              isImportedType: false,
+            },
+          ],
+          props: [],
+          firedEvents: [],
+        },
       ],
     };
 
@@ -966,7 +982,14 @@ describe('mapWidget', () => {
         props: [],
         templates: [],
         types: [],
-        module: 'complex/option/module',
+        module: 'complex/option/some_super-module',
+      },
+      {
+        name: 'ComplexOption2',
+        props: [],
+        templates: [],
+        types: [],
+        module: '',
       },
     ];
 
@@ -1017,6 +1040,12 @@ describe('mapWidget', () => {
       expect(component.nestedComponents?.[1].optionName).toBe('widgetComplexOption2');
     });
     it('should resolve name conflicts in complex options', () => {
+      const importOverridesMetadata: ImportOverridesMetadata = {
+        importOverrides: {
+          ComplexOption2: 'yet/another/overidden/module',
+        },
+      };
+
       const { component, customTypeImports } = mapWidget(
         { ...widgetWithCustomTypes, complexOptions },
         '',
@@ -1026,12 +1055,17 @@ describe('mapWidget', () => {
         '',
         {
           generateCustomTypes: true,
+          importOverridesMetadata,
         },
       );
       expect(component.nestedComponents?.length).toBe(2);
       expect(component.nestedComponents?.[0].className).toBe('ComplexOption1');
-      expect(customTypeImports!['devextreme/complex/option/module']).toEqual([
-        'ComplexOption1 as ComplexOption1Aliased',
+      expect(component.nestedComponents?.[1].className).toBe('ComplexOption2');
+      expect(customTypeImports!['devextreme/complex/option/some_super-module']).toEqual([
+        'ComplexOption1 as ComplexOption1SomeSuperModule',
+      ]);
+      expect(customTypeImports!['yet/another/overidden/module']).toEqual([
+        'ComplexOption2 as ComplexOption2Aliased',
       ]);
     });
 
@@ -1056,9 +1090,9 @@ describe('mapWidget', () => {
       );
       expect(component.nestedComponents?.length).toBe(2);
       expect(component.nestedComponents?.[0].className).toBe('ComplexOption1');
-      expect(customTypeImports!['devextreme/complex/option/module']).toBeUndefined();
+      expect(customTypeImports!['devextreme/complex/option/some_super-module']).toBeUndefined();
       expect(wildcardTypeImports).toEqual({
-        'devextreme/complex/option/module': 'NamespaceForNestedComponentNamesConflict',
+        'devextreme/complex/option/some_super-module': 'NamespaceForNestedComponentNamesConflict',
       });
     });
 

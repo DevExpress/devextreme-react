@@ -92,7 +92,7 @@ export function createCustomTypeResolver(
   customTypeHash: Record<string, ICustomType>,
   importOverridesMetadata: ImportOverridesMetadata,
   customTypeModulesCollector: Record<string, string | undefined>,
-  resolveNameConflicts: (string) => string = (typeName) => typeName,
+  resolveNameConflicts: (typeName: string, module?: string) => string = (typeName) => typeName,
 ): TypeResolver {
   return (typeDescriptor: ITypeDescr) => {
     const resolvedType = importOverridesMetadata.typeResolutions?.[typeDescriptor.type]
@@ -103,12 +103,22 @@ export function createCustomTypeResolver(
     const moduleImport = typeDescriptor.type === resolvedType && typeDescriptor.isImportedType
       ? typeDescriptor.importPath
       : customType && customType.module;
+    const fullModuleImport = moduleImport ? `devextreme/${moduleImport}` : undefined;
 
-    customTypeModulesCollector[resolvedType] = moduleImport ? `devextreme/${moduleImport}` : undefined;
+    if (customTypeModulesCollector[resolvedType]
+        && fullModuleImport !== customTypeModulesCollector[resolvedType]
+    ) {
+      console.log('Duplicated type: ', resolvedType);
+      console.log(customTypeModulesCollector[resolvedType]);
+      console.log(fullModuleImport);
+    }
+
+    customTypeModulesCollector[resolvedType] = fullModuleImport;
 
     const resultingType = resolveNameConflicts(
       importOverridesMetadata.nameConflictsResolutionNamespaces?.[resolvedType]
         ? `${importOverridesMetadata.nameConflictsResolutionNamespaces[resolvedType]}.${resolvedType}` : resolvedType,
+      fullModuleImport,
     );
     return importOverridesMetadata.genericTypes?.[resultingType] ? `${resultingType}<any>` : resultingType;
   };
@@ -325,17 +335,30 @@ export function mapWidget(
     getWidgetComponentNames(raw.name, name, raw.complexOptions || []),
   );
 
-  const typeAliases: Record<string, string> = {};
-  const resolveGeneratedComponentNamesConflict = (typeName: string) => {
+  const UNKNOWN_MODULE = 'UNKNOWN_MODULE';
+  const typeAliases: Record<string, Record<string, string>> = {};
+
+  const resolveGeneratedComponentNamesConflict = (
+    typeName: string, module: string = UNKNOWN_MODULE,
+  ) => {
     if (generatedComponentNames.includes(typeName)) {
-      const aliasedTypeName = `${typeName}Aliased`;
-      typeAliases[typeName] = aliasedTypeName;
+      const typePostfix = module === UNKNOWN_MODULE || !module.length
+        ? 'Aliased'
+        : module
+          .substring(module.lastIndexOf('/') + 1)
+          .split(/[-_]+/)
+          .map((s) => (s.charAt(0).toUpperCase() + s.slice(1)))
+          .join('');
+      const aliasedTypeName = `${typeName}${typePostfix}`;
+      const moduleKey = module && module.length ? module : UNKNOWN_MODULE;
+      typeAliases[typeName] = { ...(typeAliases[typeName] || {}), [moduleKey]: aliasedTypeName };
       return aliasedTypeName;
     }
     return typeName;
   };
-  const getTypeImportStatement = (typeName: string) => (
-    typeAliases[typeName] ? `${typeName} as ${typeAliases[typeName]}` : typeName
+
+  const getTypeImportStatement = (typeName: string, module: string = UNKNOWN_MODULE) => (
+    typeAliases[typeName] ? `${typeName} as ${typeAliases[typeName][module]}` : typeName
   );
 
   const customTypeHash = customTypes.reduce<Record<string, ICustomType>>((result, type) => {
@@ -391,7 +414,7 @@ export function mapWidget(
       } else {
         customTypeImports[module] = [
           ...(customTypeImports[module] || []),
-          getTypeImportStatement(t),
+          getTypeImportStatement(t, customTypeModules[t]),
         ];
       }
     }
