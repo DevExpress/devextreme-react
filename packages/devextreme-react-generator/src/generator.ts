@@ -415,7 +415,7 @@ export function mapWidget(
       propTypings: propTypings.length > 0 ? propTypings : undefined,
       optionsTypeParams: raw.optionsTypeParams,
       containsReexports: !!raw.reexports.filter((r) => r !== 'default').length,
-      narrowedEvents: narrowedEvents && narrowedEvents.length ? narrowedEvents : undefined,
+      narrowedEvents,
     },
     customTypeImports,
     defaultTypeImports,

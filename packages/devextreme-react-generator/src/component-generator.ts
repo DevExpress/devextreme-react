@@ -343,10 +343,10 @@ const renderOptionsInterface: (model: {
 + '  [P in keyof TSource]: P extends keyof TReplacement ? TReplacement[P] : TSource[P];\n'
 + '}\n\n'
 
-+ 'type <#= it.optionsName #>NarrowedOptions = <#= it.renderedNarrowedEvents #>\n\n'
++ 'type <#= it.optionsName #>NarrowedEvents = <#= it.renderedNarrowedEvents #>\n\n'
 + '<#?#>'
 
-+ `type <#= it.optionsName #>${TYPE_PARAMS_WITH_DEFAULTS} = React.PropsWithChildren<<#? it.renderedNarrowedEvents #>ReplaceFieldTypes<<#?#>Properties${TYPE_PARAMS}<#? it.renderedNarrowedEvents #>, <#= it.optionsName #>NarrowedOptions><#?#> & IHtmlOptions & {\n`
++ `type <#= it.optionsName #>${TYPE_PARAMS_WITH_DEFAULTS} = React.PropsWithChildren<<#? it.renderedNarrowedEvents #>ReplaceFieldTypes<<#?#>Properties${TYPE_PARAMS}<#? it.renderedNarrowedEvents #>, <#= it.optionsName #>NarrowedEvents><#?#> & IHtmlOptions & {\n`
 
 + '<#? it.typeParams #>'
     + `  dataSource?: Properties${TYPE_PARAMS}["dataSource"];\n`
@@ -627,7 +627,7 @@ function generate(
       onChangeEvents: onChangeEvents || [],
       templates: templates || [],
       typeParams: component.optionsTypeParams?.length ? component.optionsTypeParams : undefined,
-      renderedNarrowedEvents: component.narrowedEvents
+      renderedNarrowedEvents: component.narrowedEvents && component.narrowedEvents.length
         ? renderObject(component.narrowedEvents, 0) : undefined,
     }),
 
