@@ -56,6 +56,9 @@ enum BaseTypes {
   False = 'false',
 }
 
+const UNKNOWN_MODULE = 'UNKNOWN_MODULE';
+const LOCAL_MODULE = 'LOCAL_MODULE';
+
 export type ImportOverridesMetadata = {
   importOverrides?: Record<string, string>,
   genericTypes?: Record<string, unknown>,
@@ -91,7 +94,7 @@ export function convertToBaseType(type: string): BaseTypes {
 export function createCustomTypeResolver(
   customTypeHash: Record<string, ICustomType>,
   importOverridesMetadata: ImportOverridesMetadata,
-  customTypeModulesCollector: Record<string, string | undefined>,
+  customTypeModulesCollector: Record<string, string[]>,
   resolveNameConflicts: (typeName: string, module?: string) => string = (typeName) => typeName,
 ): TypeResolver {
   return (typeDescriptor: ITypeDescr) => {
@@ -103,23 +106,16 @@ export function createCustomTypeResolver(
     const moduleImport = typeDescriptor.type === resolvedType && typeDescriptor.isImportedType
       ? typeDescriptor.importPath
       : customType && customType.module;
-    const fullModuleImport = moduleImport ? `devextreme/${moduleImport}` : undefined;
+    const fullModuleImport = moduleImport ? `devextreme/${moduleImport}` : UNKNOWN_MODULE;
 
-    if (customTypeModulesCollector[resolvedType]
-        && fullModuleImport !== customTypeModulesCollector[resolvedType]
-    ) {
-      console.log('Duplicated type: ', resolvedType);
-      console.log(customTypeModulesCollector[resolvedType]);
-      console.log(fullModuleImport);
-    }
-
-    customTypeModulesCollector[resolvedType] = fullModuleImport;
-
-    const resultingType = resolveNameConflicts(
-      importOverridesMetadata.nameConflictsResolutionNamespaces?.[resolvedType]
-        ? `${importOverridesMetadata.nameConflictsResolutionNamespaces[resolvedType]}.${resolvedType}` : resolvedType,
+    customTypeModulesCollector[resolvedType] = [
+      ...(customTypeModulesCollector[resolvedType] || []),
       fullModuleImport,
-    );
+    ];
+
+    const resultingType = importOverridesMetadata.nameConflictsResolutionNamespaces?.[resolvedType]
+      ? `${importOverridesMetadata.nameConflictsResolutionNamespaces[resolvedType]}.${resolvedType}`
+      : resolveNameConflicts(resolvedType, fullModuleImport);
     return importOverridesMetadata.genericTypes?.[resultingType] ? `${resultingType}<any>` : resultingType;
   };
 }
@@ -331,17 +327,28 @@ export function mapWidget(
 
   const { importOverridesMetadata, generateCustomTypes } = typeGenerationOptions || {};
 
-  const generatedComponentNames = Object.values(
+  const existingTypes: Record<string, string[]> = Object.values(
     getWidgetComponentNames(raw.name, name, raw.complexOptions || []),
-  );
+  ).reduce((result, current) => {
+    result[current] = [LOCAL_MODULE];
+    return result;
+  }, {});
 
-  const UNKNOWN_MODULE = 'UNKNOWN_MODULE';
   const typeAliases: Record<string, Record<string, string>> = {};
 
   const resolveGeneratedComponentNamesConflict = (
     typeName: string, module: string = UNKNOWN_MODULE,
   ) => {
-    if (generatedComponentNames.includes(typeName)) {
+    const existingTypeEntry = existingTypes[typeName] || [];
+    const isModuleProcessed = existingTypeEntry.includes(module);
+    const isConflicted = existingTypeEntry.length && (
+      existingTypeEntry[0] === LOCAL_MODULE || !isModuleProcessed
+    );
+    if (!isModuleProcessed) {
+      existingTypeEntry.push(module);
+      existingTypes[typeName] = existingTypeEntry;
+    }
+    if (isConflicted) {
       const typePostfix = module === UNKNOWN_MODULE || !module.length
         ? 'Aliased'
         : module
@@ -349,6 +356,7 @@ export function mapWidget(
           .split(/[-_]+/)
           .map((s) => (s.charAt(0).toUpperCase() + s.slice(1)))
           .join('');
+
       const aliasedTypeName = `${typeName}${typePostfix}`;
       const moduleKey = module && module.length ? module : UNKNOWN_MODULE;
       typeAliases[typeName] = { ...(typeAliases[typeName] || {}), [moduleKey]: aliasedTypeName };
@@ -358,7 +366,7 @@ export function mapWidget(
   };
 
   const getTypeImportStatement = (typeName: string, module: string = UNKNOWN_MODULE) => (
-    typeAliases[typeName] ? `${typeName} as ${typeAliases[typeName][module]}` : typeName
+    typeAliases[typeName]?.[module] ? `${typeName} as ${typeAliases[typeName][module]}` : typeName
   );
 
   const customTypeHash = customTypes.reduce<Record<string, ICustomType>>((result, type) => {
@@ -366,7 +374,7 @@ export function mapWidget(
     return result;
   }, {});
 
-  const customTypeModules: Record<string, string | undefined> = {};
+  const customTypeModules: Record<string, string[]> = {};
   const typeResolver = generateCustomTypes
     ? createCustomTypeResolver(
       customTypeHash,
@@ -394,7 +402,7 @@ export function mapWidget(
   const propTypings = extractPropTypings(raw.options, customTypeHash)
     .filter((propType) => propType !== null) as IPropTyping[];
 
-  const customTypeImports: Record<string, Array<string>> = {};
+  const customTypeImports: Record<string, string[]> = {};
   const defaultTypeImports: Record<string, string> = {};
   const wildcardTypeImports: Record<string, string> = {};
 
@@ -404,19 +412,23 @@ export function mapWidget(
       return;
     }
 
-    const module = importOverridesMetadata?.importOverrides?.[t]
-     || customTypeModules[t];
+    const modules = customTypeModules[t].map(
+      (m) => (importOverridesMetadata?.importOverrides?.[t] ?? m),
+    );
 
-    if (module) {
-      const moduleImportNamespace = importOverridesMetadata?.nameConflictsResolutionNamespaces?.[t];
-      if (moduleImportNamespace) {
-        wildcardTypeImports[module] = moduleImportNamespace;
-      } else {
-        customTypeImports[module] = [
-          ...(customTypeImports[module] || []),
-          getTypeImportStatement(t, customTypeModules[t]),
-        ];
-      }
+    if (modules.length) {
+      modules
+        .forEach((module, index) => {
+          const importNamespace = importOverridesMetadata?.nameConflictsResolutionNamespaces?.[t];
+          if (importNamespace) {
+            wildcardTypeImports[module] = importNamespace;
+          } else {
+            const moduleImports = new Set(customTypeImports[module]);
+            const initialModule = customTypeModules[t][index];
+            moduleImports.add(getTypeImportStatement(t, initialModule));
+            customTypeImports[module] = Array.from(moduleImports);
+          }
+        });
     }
   });
 
