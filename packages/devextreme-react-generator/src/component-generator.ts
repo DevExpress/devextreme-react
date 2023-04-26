@@ -133,6 +133,23 @@ function renderObject(props: IOption[], indent: number): string {
   return result;
 }
 
+function renderNarrowedEvents(events: IOption[], typeParams?: string[]) {
+  let result = '{';
+  const typeArguments = typeParams && typeParams.length
+    ? `<${typeParams.join(', ')}>`
+    : '';
+  let indent = 1;
+
+  events.forEach((event) => {
+    const patchedType = event.type.replace(') =>', `${typeArguments}) =>`);
+    result += `\n${getIndent(indent)}${event.name}?: ${patchedType};`;
+  });
+
+  indent -= 1;
+  result += `\n${getIndent(indent)}}`;
+  return result;
+}
+
 const renderTemplateOption: (model: {
   actualOptionName: string;
   render: string;
@@ -343,10 +360,10 @@ const renderOptionsInterface: (model: {
 + '  [P in keyof TSource]: P extends keyof TReplacement ? TReplacement[P] : TSource[P];\n'
 + '}\n\n'
 
-+ 'type <#= it.optionsName #>NarrowedEvents = <#= it.renderedNarrowedEvents #>\n\n'
++ `type <#= it.optionsName #>NarrowedEvents${TYPE_PARAMS_WITH_DEFAULTS} = <#= it.renderedNarrowedEvents #>\n\n`
 + '<#?#>'
 
-+ `type <#= it.optionsName #>${TYPE_PARAMS_WITH_DEFAULTS} = React.PropsWithChildren<<#? it.renderedNarrowedEvents #>ReplaceFieldTypes<<#?#>Properties${TYPE_PARAMS}<#? it.renderedNarrowedEvents #>, <#= it.optionsName #>NarrowedEvents><#?#> & IHtmlOptions & {\n`
++ `type <#= it.optionsName #>${TYPE_PARAMS_WITH_DEFAULTS} = React.PropsWithChildren<<#? it.renderedNarrowedEvents #>ReplaceFieldTypes<<#?#>Properties${TYPE_PARAMS}<#? it.renderedNarrowedEvents #>, <#= it.optionsName #>NarrowedEvents${TYPE_PARAMS}><#?#> & IHtmlOptions & {\n`
 
 + '<#? it.typeParams #>'
     + `  dataSource?: Properties${TYPE_PARAMS}["dataSource"];\n`
@@ -599,6 +616,7 @@ function generate(
     : undefined;
 
   const hasExplicitTypes = !!component.optionsTypeParams?.length;
+  const typeParams = component.optionsTypeParams?.length ? component.optionsTypeParams : undefined;
 
   return renderModule({
 
@@ -626,9 +644,9 @@ function generate(
       defaultProps: defaultProps || [],
       onChangeEvents: onChangeEvents || [],
       templates: templates || [],
-      typeParams: component.optionsTypeParams?.length ? component.optionsTypeParams : undefined,
+      typeParams,
       renderedNarrowedEvents: component.narrowedEvents && component.narrowedEvents.length
-        ? renderObject(component.narrowedEvents, 0) : undefined,
+        ? renderNarrowedEvents(component.narrowedEvents, typeParams) : undefined,
     }),
 
     renderedComponent: renderComponent({
