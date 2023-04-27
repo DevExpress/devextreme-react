@@ -2,7 +2,7 @@
   "author": "Developer Express Inc.",
   "name": "devextreme-react-sandbox",
   "private": true,
-  "version": "22.1.8",
+  "version": "22.1.9",
   "description": "DevExtreme React UI and Visualization Components Sandbox",
   "repository": {
     "type": "git",
@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "devextreme": "22.1-next",
-    "devextreme-react": "~22.1.8",
+    "devextreme-react": "~22.1.9",
     "react": "^16.5.2",
     "react-dom": "^16.5.2"
   },
