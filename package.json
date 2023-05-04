@@ -13,7 +13,7 @@
     "@typescript-eslint/parser": "^4.33.0",
     "cpy-cli": "^3.1.1",
     "del-cli": "^3.0.1",
-    "devextreme-internal-tools": "10.0.0-beta.5",
+    "devextreme-internal-tools": "^10.0.0-beta.6",
     "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-airbnb-typescript": "^12.3.1",
@@ -38,8 +38,10 @@
     "devextreme": "./devextreme"
   },
   "scripts": {
-    "restore-devextreme": "git submodule init && git submodule update && cd devextreme && git add . && cd .. && git submodule update --force --checkout && npm i --prefix ./devextreme",
-    "pull-devextreme": "npm run restore-devextreme -- --remote && npm i --prefix ./devextreme",
+    "link-devextreme": "npm run build-npm-devextreme --prefix $npm_package_config_devextreme && npm link $npm_package_config_devextreme/artifacts/npm/devextreme --legacy-peer-deps --prefix ./packages/devextreme-react",
+    "restore-submodule": "git submodule init && git submodule update && cd devextreme && git add . && cd .. && git submodule update --force --checkout",
+    "restore-devextreme": "npm run restore-submodule && npm i --prefix ./devextreme",
+    "pull-devextreme": "npm run restore-submodule -- --remote && npm i --prefix ./devextreme",
     "generate-metadata:discover": "npm run discover-declarations --prefix $npm_package_config_devextreme",
     "generate-metadata:integration": "dx-tools integration-data-generator --js-scripts $npm_package_config_devextreme/js --artifacts $npm_package_config_devextreme/artifacts/internal-tools --output-path ./packages/devextreme-react/metadata/integration-data.json",
     "generate-metadata": "npm run generate-metadata:discover && npm run generate-metadata:integration",
