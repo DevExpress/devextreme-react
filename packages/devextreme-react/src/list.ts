@@ -19,7 +19,6 @@ import type dxSortable from "devextreme/ui/sortable";
 import type dxDraggable from "devextreme/ui/draggable";
 import type DOMComponent from "devextreme/core/dom_component";
 import type dxButton from "devextreme/ui/button";
-import type Widget from "devextreme/ui/widget/ui.widget";
 import type Editor from "devextreme/ui/editor/editor";
 
 type IListOptions<TItem = any, TKey = any> = React.PropsWithChildren<Properties<TItem, TKey> & IHtmlOptions & {
@@ -272,7 +271,6 @@ type IItemDraggingProps = React.PropsWithChildren<{
   bindingOptions?: object;
   boundary?: any | string;
   container?: any | string;
-  contentTemplate?: (() => string) | template;
   cursorOffset?: object | string | {
     x?: number;
     y?: number;
@@ -296,16 +294,12 @@ type IItemDraggingProps = React.PropsWithChildren<{
   onDragStart?: ((e: { cancel: boolean, component: dxSortable, element: any, event: event, fromData: any, fromIndex: number, itemData: any, itemElement: any, model: any }) => void);
   onInitialized?: ((e: { component: Component<any>, element: any }) => void);
   onOptionChanged?: ((e: { component: DOMComponent, element: any, fullName: string, model: any, name: string, previousValue: any, value: any }) => void);
-  onPlaceholderPrepared?: ((e: { component: dxSortable, fromData: any, toData: any, dropInsideItem: boolean, element: any, model: object, event: event, cancel: boolean, itemData: any, itemElement: any, fromIndex: number, toIndex: number }) => void);
   onRemove?: ((e: { component: dxSortable, element: any, event: event, fromComponent: dxSortable | dxDraggable, fromData: any, fromIndex: number, itemData: any, itemElement: any, model: any, toComponent: dxSortable | dxDraggable, toData: any, toIndex: number }) => void);
   onReorder?: ((e: { component: dxSortable, dropInsideItem: boolean, element: any, event: event, fromComponent: dxSortable | dxDraggable, fromData: any, fromIndex: number, itemData: any, itemElement: any, model: any, promise: any, toComponent: dxSortable | dxDraggable, toData: any, toIndex: number }) => void);
   rtlEnabled?: boolean;
   scrollSensitivity?: number;
   scrollSpeed?: number;
   width?: (() => number) | number | string;
-  contentRender?: (...params: any) => React.ReactNode;
-  contentComponent?: React.ComponentType<any>;
-  contentKeyFn?: (data: any) => string;
   dragRender?: (...params: any) => React.ReactNode;
   dragComponent?: React.ComponentType<any>;
   dragKeyFn?: (data: any) => string;
@@ -316,11 +310,6 @@ class ItemDragging extends NestedOption<IItemDraggingProps> {
     cursorOffset: { optionName: "cursorOffset", isCollectionItem: false }
   };
   public static TemplateProps = [{
-    tmplOption: "contentTemplate",
-    render: "contentRender",
-    component: "contentComponent",
-    keyFn: "contentKeyFn"
-  }, {
     tmplOption: "dragTemplate",
     render: "dragRender",
     component: "dragComponent",
@@ -355,8 +344,6 @@ type IOptionsProps = React.PropsWithChildren<{
   onClick?: ((e: { component: dxButton, element: any, event: event, model: any, validationGroup: object }) => void);
   onContentReady?: ((e: EventInfo<any>) => void);
   onDisposing?: ((e: EventInfo<any>) => void);
-  onFocusIn?: ((e: { component: Widget<any>, element: any, model: object }) => void);
-  onFocusOut?: ((e: { component: Widget<any>, element: any, model: object }) => void);
   onInitialized?: ((e: { component: Component<any>, element: any }) => void);
   onOptionChanged?: ((e: { component: DOMComponent, element: any, fullName: string, model: any, name: string, previousValue: any, value: any }) => void);
   rtlEnabled?: boolean;

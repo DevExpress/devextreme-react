@@ -14,7 +14,6 @@ import type { Store } from "devextreme/data/abstract_store";
 import type DataSource from "devextreme/data/data_source";
 
 import type * as BaseWidgetTypes from "devextreme/viz/core/base_widget";
-import type * as LocalizationTypes from "devextreme/localization";
 
 type IVectorMapOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
   defaultLoadingIndicator?: object;
@@ -374,20 +373,6 @@ class Font extends NestedOption<IFontProps> {
 }
 
 // owners:
-// Tooltip
-type IFormatProps = React.PropsWithChildren<{
-  currency?: string;
-  formatter?: ((value: number | any) => string);
-  parser?: ((value: string) => number);
-  precision?: number;
-  type?: "billions" | "currency" | "day" | "decimal" | "exponential" | "fixedPoint" | "largeNumber" | "longDate" | "longTime" | "millions" | "millisecond" | "month" | "monthAndDay" | "monthAndYear" | "percent" | "quarter" | "quarterAndYear" | "shortDate" | "shortTime" | "thousands" | "trillions" | "year" | "dayOfWeek" | "hour" | "longDateLongTime" | "minute" | "second" | "shortDateShortTime";
-  useCurrencyAccountingStyle?: boolean;
-}>
-class Format extends NestedOption<IFormatProps> {
-  public static OptionName = "format";
-}
-
-// owners:
 // Annotation
 type IImageProps = React.PropsWithChildren<{
   height?: number;
@@ -724,7 +709,6 @@ type ITooltipProps = React.PropsWithChildren<{
   customizeTooltip?: ((info: MapLayerElement) => object);
   enabled?: boolean;
   font?: BaseWidgetTypes.Font;
-  format?: LocalizationTypes.Format;
   opacity?: number;
   paddingLeftRight?: number;
   paddingTopBottom?: number;
@@ -745,7 +729,6 @@ class Tooltip extends NestedOption<ITooltipProps> {
   public static ExpectedChildren = {
     border: { optionName: "border", isCollectionItem: false },
     font: { optionName: "font", isCollectionItem: false },
-    format: { optionName: "format", isCollectionItem: false },
     shadow: { optionName: "shadow", isCollectionItem: false },
     tooltipBorder: { optionName: "border", isCollectionItem: false }
   };
@@ -840,8 +823,6 @@ export {
   IExportProps,
   Font,
   IFontProps,
-  Format,
-  IFormatProps,
   Image,
   IImageProps,
   Label,

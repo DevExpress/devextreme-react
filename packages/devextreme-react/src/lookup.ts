@@ -14,10 +14,8 @@ import type { PositionConfig } from "devextreme/animation/position";
 import type { dxPopupToolbarItem } from "devextreme/ui/popup";
 import type { CollectionWidgetItem } from "devextreme/ui/collection/ui.collection_widget.base";
 
-import type Widget from "devextreme/ui/widget/ui.widget";
 import type dxOverlay from "devextreme/ui/overlay";
 import type DOMComponent from "devextreme/core/dom_component";
-import type dxPopover from "devextreme/ui/popover";
 import type dxPopup from "devextreme/ui/popup";
 
 type ILookupOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
@@ -263,8 +261,6 @@ class Collision extends NestedOption<ICollisionProps> {
 // owners:
 // Lookup
 type IDropDownOptionsProps = React.PropsWithChildren<{
-  accessKey?: string;
-  activeStateEnabled?: boolean;
   animation?: object | {
     hide?: AnimationConfig;
     show?: AnimationConfig;
@@ -276,13 +272,8 @@ type IDropDownOptionsProps = React.PropsWithChildren<{
   copyRootClassesToWrapper?: boolean;
   deferRendering?: boolean;
   disabled?: boolean;
-  dragAndResizeArea?: any | string;
-  dragEnabled?: boolean;
-  dragOutsideBoundary?: boolean;
   elementAttr?: any;
   enableBodyScroll?: boolean;
-  focusStateEnabled?: boolean;
-  fullScreen?: boolean;
   height?: (() => number) | number | string;
   hideEvent?: object | string | {
     delay?: number;
@@ -298,21 +289,14 @@ type IDropDownOptionsProps = React.PropsWithChildren<{
   minWidth?: (() => number) | number | string;
   onContentReady?: ((e: EventInfo<any>) => void);
   onDisposing?: ((e: EventInfo<any>) => void);
-  onFocusIn?: ((e: { component: Widget<any>, element: any, model: object }) => void);
-  onFocusOut?: ((e: { component: Widget<any>, element: any, model: object }) => void);
   onHidden?: ((e: EventInfo<any>) => void);
   onHiding?: ((e: { cancel: boolean | any, component: dxOverlay<any>, element: any, model: any }) => void);
   onInitialized?: ((e: { component: Component<any>, element: any }) => void);
   onOptionChanged?: ((e: { component: DOMComponent, element: any, fullName: string, model: any, name: string, previousValue: any, value: any }) => void);
-  onResize?: ((e: { component: dxPopover, element: any, model: object }) => void);
-  onResizeEnd?: ((e: { component: dxPopover, element: any, model: object }) => void);
-  onResizeStart?: ((e: { component: dxPopover, element: any, model: object }) => void);
   onShowing?: ((e: { cancel: boolean | any, component: dxOverlay<any>, element: any, model: any }) => void);
   onShown?: ((e: EventInfo<any>) => void);
   onTitleRendered?: ((e: { component: dxPopup, element: any, model: any, titleElement: any }) => void);
   position?: PositionConfig | "bottom" | "left" | "right" | "top";
-  resizeEnabled?: boolean;
-  restorePosition?: boolean;
   rtlEnabled?: boolean;
   shading?: boolean;
   shadingColor?: string;
@@ -322,7 +306,6 @@ type IDropDownOptionsProps = React.PropsWithChildren<{
     name?: string;
   };
   showTitle?: boolean;
-  tabIndex?: number;
   target?: any | string;
   title?: string;
   titleTemplate?: ((titleElement: any) => string) | template;

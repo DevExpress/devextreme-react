@@ -453,7 +453,7 @@ type ICommonSeriesSettingsProps = React.PropsWithChildren<{
       step?: number;
       width?: number;
     };
-    lightening?: boolean;
+    highlight?: boolean;
   };
   label?: object | {
     argumentFormat?: LocalizationTypes.Format;
@@ -497,7 +497,7 @@ type ICommonSeriesSettingsProps = React.PropsWithChildren<{
       step?: number;
       width?: number;
     };
-    lightening?: boolean;
+    highlight?: boolean;
   };
   smallValuesGrouping?: object | {
     groupName?: string;
@@ -612,7 +612,7 @@ type IHoverStyleProps = React.PropsWithChildren<{
     step?: number;
     width?: number;
   };
-  lightening?: boolean;
+  highlight?: boolean;
 }>
 class HoverStyle extends NestedOption<IHoverStyleProps> {
   public static OptionName = "hoverStyle";
@@ -897,7 +897,7 @@ type ISelectionStyleProps = React.PropsWithChildren<{
     step?: number;
     width?: number;
   };
-  lightening?: boolean;
+  highlight?: boolean;
 }>
 class SelectionStyle extends NestedOption<ISelectionStyleProps> {
   public static OptionName = "selectionStyle";
@@ -936,7 +936,7 @@ type ISeriesProps = React.PropsWithChildren<{
       step?: number;
       width?: number;
     };
-    lightening?: boolean;
+    highlight?: boolean;
   };
   label?: object | {
     argumentFormat?: LocalizationTypes.Format;
@@ -981,7 +981,7 @@ type ISeriesProps = React.PropsWithChildren<{
       step?: number;
       width?: number;
     };
-    lightening?: boolean;
+    highlight?: boolean;
   };
   smallValuesGrouping?: object | {
     groupName?: string;

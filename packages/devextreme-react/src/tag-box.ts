@@ -15,7 +15,6 @@ import type { PositionConfig } from "devextreme/animation/position";
 import type { dxPopupToolbarItem } from "devextreme/ui/popup";
 import type { CollectionWidgetItem } from "devextreme/ui/collection/ui.collection_widget.base";
 
-import type Widget from "devextreme/ui/widget/ui.widget";
 import type dxOverlay from "devextreme/ui/overlay";
 import type DOMComponent from "devextreme/core/dom_component";
 import type dxPopup from "devextreme/ui/popup";
@@ -305,7 +304,6 @@ class Collision extends NestedOption<ICollisionProps> {
 // TagBox
 type IDropDownOptionsProps = React.PropsWithChildren<{
   accessKey?: string;
-  activeStateEnabled?: boolean;
   animation?: object | {
     hide?: AnimationConfig;
     show?: AnimationConfig;
@@ -335,8 +333,6 @@ type IDropDownOptionsProps = React.PropsWithChildren<{
   minWidth?: (() => number) | number | string;
   onContentReady?: ((e: EventInfo<any>) => void);
   onDisposing?: ((e: EventInfo<any>) => void);
-  onFocusIn?: ((e: { component: Widget<any>, element: any, model: object }) => void);
-  onFocusOut?: ((e: { component: Widget<any>, element: any, model: object }) => void);
   onHidden?: ((e: EventInfo<any>) => void);
   onHiding?: ((e: { cancel: boolean | any, component: dxOverlay<any>, element: any, model: any }) => void);
   onInitialized?: ((e: { component: Component<any>, element: any }) => void);
@@ -500,8 +496,6 @@ type IOptionsProps = React.PropsWithChildren<{
   onClick?: ((e: { component: dxButton, element: any, event: event, model: any, validationGroup: object }) => void);
   onContentReady?: ((e: EventInfo<any>) => void);
   onDisposing?: ((e: EventInfo<any>) => void);
-  onFocusIn?: ((e: { component: Widget<any>, element: any, model: object }) => void);
-  onFocusOut?: ((e: { component: Widget<any>, element: any, model: object }) => void);
   onInitialized?: ((e: { component: Component<any>, element: any }) => void);
   onOptionChanged?: ((e: { component: DOMComponent, element: any, fullName: string, model: any, name: string, previousValue: any, value: any }) => void);
   rtlEnabled?: boolean;

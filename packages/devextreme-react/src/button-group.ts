@@ -104,7 +104,6 @@ type IItemProps = React.PropsWithChildren<{
   disabled?: boolean;
   elementAttr?: object;
   hint?: string;
-  html?: string;
   icon?: string;
   template?: ((itemData: CollectionWidgetItem, itemIndex: number, itemElement: any) => string) | template;
   text?: string;

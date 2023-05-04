@@ -246,7 +246,6 @@ class Label extends NestedOption<ILabelProps> {
 // CircularGauge
 type ILoadingIndicatorProps = React.PropsWithChildren<{
   backgroundColor?: string;
-  enabled?: boolean;
   font?: BaseWidgetTypes.Font;
   show?: boolean;
   text?: string;

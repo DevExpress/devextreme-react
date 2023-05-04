@@ -249,7 +249,6 @@ type IItemProps = React.PropsWithChildren<{
   beginGroup?: boolean;
   closeMenuOnClick?: boolean;
   disabled?: boolean;
-  html?: string;
   icon?: string;
   items?: Array<dxContextMenuItem>;
   selectable?: boolean;

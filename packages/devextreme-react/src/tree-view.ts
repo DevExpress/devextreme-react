@@ -16,7 +16,6 @@ import type { Component } from "devextreme/core/component";
 import type { dxTextEditorButton } from "devextreme/ui/text_box/ui.text_editor.base";
 
 import type dxButton from "devextreme/ui/button";
-import type Widget from "devextreme/ui/widget/ui.widget";
 import type DOMComponent from "devextreme/core/dom_component";
 import type Editor from "devextreme/ui/editor/editor";
 
@@ -247,8 +246,6 @@ type IOptionsProps = React.PropsWithChildren<{
   onClick?: ((e: { component: dxButton, element: any, event: event, model: any, validationGroup: object }) => void);
   onContentReady?: ((e: EventInfo<any>) => void);
   onDisposing?: ((e: EventInfo<any>) => void);
-  onFocusIn?: ((e: { component: Widget<any>, element: any, model: object }) => void);
-  onFocusOut?: ((e: { component: Widget<any>, element: any, model: object }) => void);
   onInitialized?: ((e: { component: Component<any>, element: any }) => void);
   onOptionChanged?: ((e: { component: DOMComponent, element: any, fullName: string, model: any, name: string, previousValue: any, value: any }) => void);
   rtlEnabled?: boolean;

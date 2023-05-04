@@ -460,7 +460,6 @@ class LegendTitleSubtitle extends NestedOption<ILegendTitleSubtitleProps> {
 // BarGauge
 type ILoadingIndicatorProps = React.PropsWithChildren<{
   backgroundColor?: string;
-  enabled?: boolean;
   font?: BaseWidgetTypes.Font;
   show?: boolean;
   text?: string;

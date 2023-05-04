@@ -118,7 +118,6 @@ type IFieldProps = React.PropsWithChildren<{
   customizeText?: ((fieldInfo: { value: string | number | any, valueText: string }) => string);
   dataField?: string;
   dataType?: "string" | "number" | "date" | "boolean" | "object" | "datetime";
-  defaultFilterOperation?: "=" | "<>" | "<" | "<=" | ">" | ">=" | "contains" | "endswith" | "isblank" | "isnotblank" | "notcontains" | "startswith" | "between";
   editorOptions?: any;
   editorTemplate?: ((conditionInfo: { field: dxFilterBuilderField, filterOperation: string, setValue: (() => void), value: string | number | any }, container: any) => string) | template;
   falseText?: string;

@@ -17,7 +17,6 @@ import type { DataSourceOptions } from "devextreme/data/data_source";
 import type { Store } from "devextreme/data/abstract_store";
 
 import type dxButton from "devextreme/ui/button";
-import type Widget from "devextreme/ui/widget/ui.widget";
 import type DOMComponent from "devextreme/core/dom_component";
 import type DataSource from "devextreme/data/data_source";
 import type CollectionWidget from "devextreme/ui/collection/ui.collection_widget.base";
@@ -183,8 +182,6 @@ type IButtonOptionsProps = React.PropsWithChildren<{
   onClick?: ((e: { component: dxButton, element: any, event: event, model: any, validationGroup: object }) => void);
   onContentReady?: ((e: EventInfo<any>) => void);
   onDisposing?: ((e: EventInfo<any>) => void);
-  onFocusIn?: ((e: { component: Widget<any>, element: any, model: object }) => void);
-  onFocusOut?: ((e: { component: Widget<any>, element: any, model: object }) => void);
   onInitialized?: ((e: { component: Component<any>, element: any }) => void);
   onOptionChanged?: ((e: { component: DOMComponent, element: any, fullName: string, model: any, name: string, previousValue: any, value: any }) => void);
   rtlEnabled?: boolean;
@@ -345,7 +342,6 @@ type IItemProps = React.PropsWithChildren<{
   template?: ((itemData: CollectionWidgetItem, itemIndex: number, itemElement: any) => string) | template;
   text?: string;
   title?: string;
-  visible?: boolean;
   colSpan?: number;
   cssClass?: string;
   dataField?: string;
@@ -364,6 +360,7 @@ type IItemProps = React.PropsWithChildren<{
   };
   name?: string;
   validationRules?: Array<CommonTypes.ValidationRule>;
+  visible?: boolean;
   visibleIndex?: number;
   alignItemLabels?: boolean;
   caption?: string;
@@ -674,7 +671,6 @@ type ITabPanelOptionsProps = React.PropsWithChildren<{
   deferRendering?: boolean;
   disabled?: boolean;
   elementAttr?: object;
-  focusedElement?: any;
   focusStateEnabled?: boolean;
   height?: (() => number) | number | string;
   hint?: string;
@@ -683,22 +679,15 @@ type ITabPanelOptionsProps = React.PropsWithChildren<{
   items?: Array<any | dxTabPanelItem | string>;
   itemTemplate?: ((itemData: object, itemIndex: number, itemElement: any) => string) | template;
   itemTitleTemplate?: ((itemData: object, itemIndex: number, itemElement: any) => string) | template;
-  keyExpr?: (() => void) | string;
   loop?: boolean;
-  loopItemFocus?: boolean;
   noDataText?: string;
   onContentReady?: ((e: EventInfo<any>) => void);
   onDisposing?: ((e: EventInfo<any>) => void);
-  onFocusIn?: ((e: { component: Widget<any>, element: any, model: object }) => void);
-  onFocusOut?: ((e: { component: Widget<any>, element: any, model: object }) => void);
   onInitialized?: ((e: { component: Component<any>, element: any }) => void);
   onItemClick?: ((e: { component: CollectionWidget<any>, element: any, event: event, itemData: object, itemElement: any, itemIndex: number, model: any }) => void);
   onItemContextMenu?: ((e: { component: CollectionWidget<any>, element: any, event: event, itemData: object, itemElement: any, itemIndex: number, model: any }) => void);
-  onItemDeleted?: ((e: { component: CollectionWidget<any>, element: any, model: object, itemData: object, itemElement: any, itemIndex: number | object }) => void);
-  onItemDeleting?: ((e: { component: CollectionWidget<any>, element: any, model: object, itemData: object, itemElement: any, itemIndex: number | object, cancel: boolean | any }) => void);
   onItemHold?: ((e: { component: CollectionWidget<any>, element: any, event: event, itemData: object, itemElement: any, itemIndex: number, model: any }) => void);
   onItemRendered?: ((e: { component: CollectionWidget<any>, element: any, itemData: object, itemElement: any, itemIndex: number, model: any }) => void);
-  onItemReordered?: ((e: { component: CollectionWidget<any>, element: any, model: object, itemData: object, itemElement: any, itemIndex: number | object, fromIndex: number, toIndex: number }) => void);
   onOptionChanged?: ((e: { component: DOMComponent, element: any, fullName: string, model: any, name: string, previousValue: any, value: any }) => void);
   onSelectionChanged?: ((e: { addedItems: Array<any>, component: CollectionWidget<any>, element: any, model: any, removedItems: Array<any> }) => void);
   onTitleClick?: ((e: { component: dxTabPanel, element: any, event: event, itemData: object, itemElement: any, model: any }) => void);
@@ -710,11 +699,6 @@ type ITabPanelOptionsProps = React.PropsWithChildren<{
   scrollingEnabled?: boolean;
   selectedIndex?: number;
   selectedItem?: any;
-  selectedItemKeys?: Array<any>;
-  selectedItems?: Array<any>;
-  selectionMode?: "multiple" | "single" | "all" | "none";
-  selectionRequired?: boolean;
-  selectOnFocus?: boolean;
   showNavButtons?: boolean;
   swipeEnabled?: boolean;
   tabIndex?: number;
@@ -726,10 +710,6 @@ type ITabPanelOptionsProps = React.PropsWithChildren<{
   onSelectedIndexChange?: (value: number) => void;
   defaultSelectedItem?: any;
   onSelectedItemChange?: (value: any) => void;
-  defaultSelectedItemKeys?: Array<any>;
-  onSelectedItemKeysChange?: (value: Array<any>) => void;
-  defaultSelectedItems?: Array<any>;
-  onSelectedItemsChange?: (value: Array<any>) => void;
   itemRender?: (...params: any) => React.ReactNode;
   itemComponent?: React.ComponentType<any>;
   itemKeyFn?: (data: any) => string;
@@ -742,9 +722,7 @@ class TabPanelOptions extends NestedOption<ITabPanelOptionsProps> {
   public static DefaultsProps = {
     defaultItems: "items",
     defaultSelectedIndex: "selectedIndex",
-    defaultSelectedItem: "selectedItem",
-    defaultSelectedItemKeys: "selectedItemKeys",
-    defaultSelectedItems: "selectedItems"
+    defaultSelectedItem: "selectedItem"
   };
   public static ExpectedChildren = {
     item: { optionName: "items", isCollectionItem: true },
@@ -774,7 +752,6 @@ type ITabPanelOptionsItemProps = React.PropsWithChildren<{
   template?: ((itemData: CollectionWidgetItem, itemIndex: number, itemElement: any) => string) | template;
   text?: string;
   title?: string;
-  visible?: boolean;
   tabRender?: (...params: any) => React.ReactNode;
   tabComponent?: React.ComponentType<any>;
   tabKeyFn?: (data: any) => string;

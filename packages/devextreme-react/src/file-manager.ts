@@ -7,7 +7,6 @@ import { Component as BaseComponent, IHtmlOptions } from "./core/component";
 import NestedOption from "./core/nested-option";
 
 import type { dxFileManagerContextMenuItem, dxFileManagerDetailsColumn, dxFileManagerToolbarItem } from "devextreme/ui/file_manager";
-import type { template } from "devextreme/core/templates/template";
 
 type IFileManagerOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
 }>
@@ -140,28 +139,17 @@ type IContextMenuItemProps = React.PropsWithChildren<{
   beginGroup?: boolean;
   closeMenuOnClick?: boolean;
   disabled?: boolean;
-  html?: string;
   icon?: string;
   items?: Array<dxFileManagerContextMenuItem>;
   name?: "create" | "upload" | "refresh" | "download" | "move" | "copy" | "rename" | "delete";
   selectable?: boolean;
   selected?: boolean;
-  template?: (() => string) | template;
   text?: string;
   visible?: boolean;
-  render?: (...params: any) => React.ReactNode;
-  component?: React.ComponentType<any>;
-  keyFn?: (data: any) => string;
 }>
 class ContextMenuItem extends NestedOption<IContextMenuItemProps> {
   public static OptionName = "items";
   public static IsCollectionItem = true;
-  public static TemplateProps = [{
-    tmplOption: "template",
-    render: "render",
-    component: "component",
-    keyFn: "keyFn"
-  }];
 }
 
 // owners:
@@ -181,39 +169,19 @@ class Details extends NestedOption<IDetailsProps> {
 type IFileSelectionItemProps = React.PropsWithChildren<{
   cssClass?: string;
   disabled?: boolean;
-  html?: string;
   icon?: string;
   locateInMenu?: "always" | "auto" | "never";
   location?: "after" | "before" | "center";
-  menuItemTemplate?: (() => string) | template;
   name?: "showNavPane" | "create" | "upload" | "refresh" | "switchView" | "download" | "move" | "copy" | "rename" | "delete" | "clearSelection" | "separator";
   options?: any;
   showText?: "always" | "inMenu";
-  template?: (() => string) | template;
   text?: string;
   visible?: boolean;
   widget?: "dxAutocomplete" | "dxButton" | "dxCheckBox" | "dxDateBox" | "dxMenu" | "dxSelectBox" | "dxTabs" | "dxTextBox" | "dxButtonGroup" | "dxDropDownButton";
-  menuItemRender?: (...params: any) => React.ReactNode;
-  menuItemComponent?: React.ComponentType<any>;
-  menuItemKeyFn?: (data: any) => string;
-  render?: (...params: any) => React.ReactNode;
-  component?: React.ComponentType<any>;
-  keyFn?: (data: any) => string;
 }>
 class FileSelectionItem extends NestedOption<IFileSelectionItemProps> {
   public static OptionName = "fileSelectionItems";
   public static IsCollectionItem = true;
-  public static TemplateProps = [{
-    tmplOption: "menuItemTemplate",
-    render: "menuItemRender",
-    component: "menuItemComponent",
-    keyFn: "menuItemKeyFn"
-  }, {
-    tmplOption: "template",
-    render: "render",
-    component: "component",
-    keyFn: "keyFn"
-  }];
 }
 
 // owners:
@@ -224,43 +192,23 @@ type IItemProps = React.PropsWithChildren<{
   beginGroup?: boolean;
   closeMenuOnClick?: boolean;
   disabled?: boolean;
-  html?: string;
   icon?: string;
   items?: Array<dxFileManagerContextMenuItem>;
   name?: "create" | "upload" | "refresh" | "download" | "move" | "copy" | "rename" | "delete";
   selectable?: boolean;
   selected?: boolean;
-  template?: (() => string) | template;
   text?: string;
   visible?: boolean;
   cssClass?: string;
   locateInMenu?: "always" | "auto" | "never";
   location?: "after" | "before" | "center";
-  menuItemTemplate?: (() => string) | template;
   options?: any;
   showText?: "always" | "inMenu";
   widget?: "dxAutocomplete" | "dxButton" | "dxCheckBox" | "dxDateBox" | "dxMenu" | "dxSelectBox" | "dxTabs" | "dxTextBox" | "dxButtonGroup" | "dxDropDownButton";
-  render?: (...params: any) => React.ReactNode;
-  component?: React.ComponentType<any>;
-  keyFn?: (data: any) => string;
-  menuItemRender?: (...params: any) => React.ReactNode;
-  menuItemComponent?: React.ComponentType<any>;
-  menuItemKeyFn?: (data: any) => string;
 }>
 class Item extends NestedOption<IItemProps> {
   public static OptionName = "items";
   public static IsCollectionItem = true;
-  public static TemplateProps = [{
-    tmplOption: "template",
-    render: "render",
-    component: "component",
-    keyFn: "keyFn"
-  }, {
-    tmplOption: "menuItemTemplate",
-    render: "menuItemRender",
-    component: "menuItemComponent",
-    keyFn: "menuItemKeyFn"
-  }];
 }
 
 // owners:
@@ -325,39 +273,19 @@ class Toolbar extends NestedOption<IToolbarProps> {
 type IToolbarItemProps = React.PropsWithChildren<{
   cssClass?: string;
   disabled?: boolean;
-  html?: string;
   icon?: string;
   locateInMenu?: "always" | "auto" | "never";
   location?: "after" | "before" | "center";
-  menuItemTemplate?: (() => string) | template;
   name?: "showNavPane" | "create" | "upload" | "refresh" | "switchView" | "download" | "move" | "copy" | "rename" | "delete" | "clearSelection" | "separator";
   options?: any;
   showText?: "always" | "inMenu";
-  template?: (() => string) | template;
   text?: string;
   visible?: boolean;
   widget?: "dxAutocomplete" | "dxButton" | "dxCheckBox" | "dxDateBox" | "dxMenu" | "dxSelectBox" | "dxTabs" | "dxTextBox" | "dxButtonGroup" | "dxDropDownButton";
-  menuItemRender?: (...params: any) => React.ReactNode;
-  menuItemComponent?: React.ComponentType<any>;
-  menuItemKeyFn?: (data: any) => string;
-  render?: (...params: any) => React.ReactNode;
-  component?: React.ComponentType<any>;
-  keyFn?: (data: any) => string;
 }>
 class ToolbarItem extends NestedOption<IToolbarItemProps> {
   public static OptionName = "items";
   public static IsCollectionItem = true;
-  public static TemplateProps = [{
-    tmplOption: "menuItemTemplate",
-    render: "menuItemRender",
-    component: "menuItemComponent",
-    keyFn: "menuItemKeyFn"
-  }, {
-    tmplOption: "template",
-    render: "render",
-    component: "component",
-    keyFn: "keyFn"
-  }];
 }
 
 // owners:

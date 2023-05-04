@@ -91,14 +91,12 @@ class ActionSheet<TItem = any, TKey = any> extends BaseComponent<React.PropsWith
 // ActionSheet
 type IItemProps = React.PropsWithChildren<{
   disabled?: boolean;
-  html?: string;
   icon?: string;
   onClick?: ((e: NativeEventInfo<any>) => void);
   stylingMode?: "text" | "outlined" | "contained";
   template?: ((itemData: CollectionWidgetItem, itemIndex: number, itemElement: any) => string) | template;
   text?: string;
   type?: "back" | "danger" | "default" | "normal" | "success";
-  visible?: boolean;
   render?: (...params: any) => React.ReactNode;
   component?: React.ComponentType<any>;
   keyFn?: (data: any) => string;

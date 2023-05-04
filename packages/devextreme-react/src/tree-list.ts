@@ -8,25 +8,29 @@ import { Component as BaseComponent, IHtmlOptions } from "./core/component";
 import NestedOption from "./core/nested-option";
 
 import type { dxTreeListColumn, dxTreeListRowObject, dxTreeListColumnButton, dxTreeListToolbarItem } from "devextreme/ui/tree_list";
-import type { DataChange, GridBase } from "devextreme/common/grids";
+import type { DataChange, ColumnHeaderFilterSearchConfig, ColumnChooserSearchConfig, ColumnChooserSelectionConfig, GridBase, HeaderFilterSearchConfig } from "devextreme/common/grids";
 import type { AnimationConfig, AnimationState } from "devextreme/animation/fx";
-import type { event, EventInfo } from "devextreme/events/index";
+import type { event, NativeEventInfo, EventInfo } from "devextreme/events/index";
 import type { template } from "devextreme/core/templates/template";
+import type { dxButtonOptions } from "devextreme/ui/button";
 import type { dxFormSimpleItem, dxFormOptions, dxFormGroupItem, dxFormTabbedItem, dxFormEmptyItem, dxFormButtonItem } from "devextreme/ui/form";
 import type { DataSourceOptions } from "devextreme/data/data_source";
 import type { Store } from "devextreme/data/abstract_store";
+import type { PositionConfig } from "devextreme/animation/position";
+import type { dxTextBoxOptions } from "devextreme/ui/text_box";
 import type { dxFilterBuilderField, dxFilterBuilderCustomOperation } from "devextreme/ui/filter_builder";
 import type { dxPopupOptions, dxPopupToolbarItem } from "devextreme/ui/popup";
+import type { dxTextEditorButton } from "devextreme/ui/text_box/ui.text_editor.base";
 import type { Component } from "devextreme/core/component";
-import type { PositionConfig } from "devextreme/animation/position";
 import type { CollectionWidgetItem } from "devextreme/ui/collection/ui.collection_widget.base";
 
-import type dxFilterBuilder from "devextreme/ui/filter_builder";
-import type Widget from "devextreme/ui/widget/ui.widget";
 import type DOMComponent from "devextreme/core/dom_component";
+import type Editor from "devextreme/ui/editor/editor";
+import type dxFilterBuilder from "devextreme/ui/filter_builder";
 import type dxOverlay from "devextreme/ui/overlay";
 import type dxPopup from "devextreme/ui/popup";
 import type dxForm from "devextreme/ui/form";
+import type dxButton from "devextreme/ui/button";
 import type dxSortable from "devextreme/ui/sortable";
 import type dxDraggable from "devextreme/ui/draggable";
 
@@ -107,7 +111,8 @@ class TreeList<TRowData = any, TKey = any> extends BaseComponent<React.PropsWith
     sorting: { optionName: "sorting", isCollectionItem: false },
     stateStoring: { optionName: "stateStoring", isCollectionItem: false },
     toolbar: { optionName: "toolbar", isCollectionItem: false },
-    treeListHeaderFilter: { optionName: "headerFilter", isCollectionItem: false }
+    treeListHeaderFilter: { optionName: "headerFilter", isCollectionItem: false },
+    treeListSelection: { optionName: "selection", isCollectionItem: false }
   };
 }
 (TreeList as any).propTypes = {
@@ -342,6 +347,7 @@ class BoundaryOffset extends NestedOption<IBoundaryOffsetProps> {
 
 // owners:
 // Column
+// EditorOptions
 type IButtonProps = React.PropsWithChildren<{
   cssClass?: string;
   disabled?: boolean | ((options: { column: dxTreeListColumn, component: dxTreeList, row: dxTreeListRowObject }) => boolean);
@@ -352,6 +358,8 @@ type IButtonProps = React.PropsWithChildren<{
   template?: ((cellElement: any, cellInfo: { column: dxTreeListColumn, columnIndex: number, component: dxTreeList, data: object, key: any, row: dxTreeListRowObject, rowIndex: number, rowType: string }) => string) | template;
   text?: string;
   visible?: boolean | ((options: { column: dxTreeListColumn, component: dxTreeList, row: dxTreeListRowObject }) => boolean);
+  location?: "after" | "before";
+  options?: dxButtonOptions;
   render?: (...params: any) => React.ReactNode;
   component?: React.ComponentType<any>;
   keyFn?: (data: any) => string;
@@ -443,9 +451,11 @@ type IColumnProps = React.PropsWithChildren<{
   headerCellTemplate?: ((columnHeader: any, headerInfo: { column: dxTreeListColumn, columnIndex: number, component: dxTreeList }) => any) | template;
   headerFilter?: object | {
     allowSearch?: boolean;
+    allowSelectAll?: boolean;
     dataSource?: Array<any> | DataSourceOptions | ((options: { component: object, dataSource: DataSourceOptions | null }) => void) | null | Store;
     groupInterval?: number | "day" | "hour" | "minute" | "month" | "quarter" | "second" | "year";
     height?: number;
+    search?: ColumnHeaderFilterSearchConfig;
     searchMode?: "contains" | "startswith" | "equals";
     width?: number;
   };
@@ -481,6 +491,8 @@ type IColumnProps = React.PropsWithChildren<{
   onFilterValuesChange?: (value: Array<any>) => void;
   defaultSelectedFilterOperation?: "<" | "<=" | "<>" | "=" | ">" | ">=" | "between" | "contains" | "endswith" | "notcontains" | "startswith";
   onSelectedFilterOperationChange?: (value: "<" | "<=" | "<>" | "=" | ">" | ">=" | "between" | "contains" | "endswith" | "notcontains" | "startswith") => void;
+  defaultSortIndex?: number;
+  onSortIndexChange?: (value: number) => void;
   defaultSortOrder?: "asc" | "desc";
   onSortOrderChange?: (value: "asc" | "desc") => void;
   defaultVisible?: boolean;
@@ -504,6 +516,7 @@ class Column extends NestedOption<IColumnProps> {
     defaultFilterValue: "filterValue",
     defaultFilterValues: "filterValues",
     defaultSelectedFilterOperation: "selectedFilterOperation",
+    defaultSortIndex: "sortIndex",
     defaultSortOrder: "sortOrder",
     defaultVisible: "visible",
     defaultVisibleIndex: "visibleIndex"
@@ -511,6 +524,7 @@ class Column extends NestedOption<IColumnProps> {
   public static ExpectedChildren = {
     AsyncRule: { optionName: "validationRules", isCollectionItem: true },
     button: { optionName: "buttons", isCollectionItem: true },
+    columnButton: { optionName: "buttons", isCollectionItem: true },
     columnHeaderFilter: { optionName: "headerFilter", isCollectionItem: false },
     columnLookup: { optionName: "lookup", isCollectionItem: false },
     CompareRule: { optionName: "validationRules", isCollectionItem: true },
@@ -546,6 +560,33 @@ class Column extends NestedOption<IColumnProps> {
 }
 
 // owners:
+// Column
+type IColumnButtonProps = React.PropsWithChildren<{
+  cssClass?: string;
+  disabled?: boolean | ((options: { column: dxTreeListColumn, component: dxTreeList, row: dxTreeListRowObject }) => boolean);
+  hint?: string;
+  icon?: string;
+  name?: "add" | "cancel" | "delete" | "edit" | "save" | "undelete";
+  onClick?: ((e: { column: dxTreeListColumn, component: dxTreeList, element: any, event: event, model: any, row: dxTreeListRowObject }) => void);
+  template?: ((cellElement: any, cellInfo: { column: dxTreeListColumn, columnIndex: number, component: dxTreeList, data: object, key: any, row: dxTreeListRowObject, rowIndex: number, rowType: string }) => string) | template;
+  text?: string;
+  visible?: boolean | ((options: { column: dxTreeListColumn, component: dxTreeList, row: dxTreeListRowObject }) => boolean);
+  render?: (...params: any) => React.ReactNode;
+  component?: React.ComponentType<any>;
+  keyFn?: (data: any) => string;
+}>
+class ColumnButton extends NestedOption<IColumnButtonProps> {
+  public static OptionName = "buttons";
+  public static IsCollectionItem = true;
+  public static TemplateProps = [{
+    tmplOption: "template",
+    render: "render",
+    component: "component",
+    keyFn: "keyFn"
+  }];
+}
+
+// owners:
 // TreeList
 type IColumnChooserProps = React.PropsWithChildren<{
   allowSearch?: boolean;
@@ -553,13 +594,48 @@ type IColumnChooserProps = React.PropsWithChildren<{
   enabled?: boolean;
   height?: number;
   mode?: "dragAndDrop" | "select";
+  position?: PositionConfig;
+  search?: ColumnChooserSearchConfig;
   searchTimeout?: number;
+  selection?: ColumnChooserSelectionConfig;
   sortOrder?: "asc" | "desc";
   title?: string;
   width?: number;
 }>
 class ColumnChooser extends NestedOption<IColumnChooserProps> {
   public static OptionName = "columnChooser";
+  public static ExpectedChildren = {
+    columnChooserSearch: { optionName: "search", isCollectionItem: false },
+    columnChooserSelection: { optionName: "selection", isCollectionItem: false },
+    position: { optionName: "position", isCollectionItem: false },
+    search: { optionName: "search", isCollectionItem: false },
+    selection: { optionName: "selection", isCollectionItem: false }
+  };
+}
+
+// owners:
+// ColumnChooser
+type IColumnChooserSearchProps = React.PropsWithChildren<{
+  editorOptions?: dxTextBoxOptions;
+  enabled?: boolean;
+  timeout?: number;
+}>
+class ColumnChooserSearch extends NestedOption<IColumnChooserSearchProps> {
+  public static OptionName = "search";
+  public static ExpectedChildren = {
+    editorOptions: { optionName: "editorOptions", isCollectionItem: false }
+  };
+}
+
+// owners:
+// ColumnChooser
+type IColumnChooserSelectionProps = React.PropsWithChildren<{
+  allowSelectAll?: boolean;
+  recursive?: boolean;
+  selectByClick?: boolean;
+}>
+class ColumnChooserSelection extends NestedOption<IColumnChooserSelectionProps> {
+  public static OptionName = "selection";
 }
 
 // owners:
@@ -597,14 +673,36 @@ class ColumnFixingTexts extends NestedOption<IColumnFixingTextsProps> {
 // Column
 type IColumnHeaderFilterProps = React.PropsWithChildren<{
   allowSearch?: boolean;
+  allowSelectAll?: boolean;
   dataSource?: Array<any> | DataSourceOptions | ((options: { component: object, dataSource: DataSourceOptions | null }) => void) | null | Store;
   groupInterval?: number | "day" | "hour" | "minute" | "month" | "quarter" | "second" | "year";
   height?: number;
+  search?: ColumnHeaderFilterSearchConfig;
   searchMode?: "contains" | "startswith" | "equals";
   width?: number;
 }>
 class ColumnHeaderFilter extends NestedOption<IColumnHeaderFilterProps> {
   public static OptionName = "headerFilter";
+  public static ExpectedChildren = {
+    columnHeaderFilterSearch: { optionName: "search", isCollectionItem: false },
+    search: { optionName: "search", isCollectionItem: false }
+  };
+}
+
+// owners:
+// ColumnHeaderFilter
+type IColumnHeaderFilterSearchProps = React.PropsWithChildren<{
+  editorOptions?: dxTextBoxOptions;
+  enabled?: boolean;
+  mode?: "contains" | "startswith" | "equals";
+  searchExpr?: Array<(() => any) | string> | (() => any) | string;
+  timeout?: number;
+}>
+class ColumnHeaderFilterSearch extends NestedOption<IColumnHeaderFilterSearchProps> {
+  public static OptionName = "search";
+  public static ExpectedChildren = {
+    editorOptions: { optionName: "editorOptions", isCollectionItem: false }
+  };
 }
 
 // owners:
@@ -767,6 +865,90 @@ class EditingTexts extends NestedOption<IEditingTextsProps> {
 }
 
 // owners:
+// ColumnHeaderFilterSearch
+// ColumnChooserSearch
+type IEditorOptionsProps = React.PropsWithChildren<{
+  accessKey?: string;
+  activeStateEnabled?: boolean;
+  bindingOptions?: object;
+  buttons?: Array<dxTextEditorButton | string | "clear">;
+  disabled?: boolean;
+  elementAttr?: object;
+  focusStateEnabled?: boolean;
+  height?: (() => number) | number | string;
+  hint?: string;
+  hoverStateEnabled?: boolean;
+  inputAttr?: any;
+  isValid?: boolean;
+  label?: string;
+  labelMode?: "static" | "floating" | "hidden";
+  mask?: string;
+  maskChar?: string;
+  maskInvalidMessage?: string;
+  maskRules?: any;
+  maxLength?: number | string;
+  mode?: "email" | "password" | "search" | "tel" | "text" | "url";
+  name?: string;
+  onChange?: ((e: NativeEventInfo<any>) => void);
+  onContentReady?: ((e: EventInfo<any>) => void);
+  onCopy?: ((e: NativeEventInfo<any>) => void);
+  onCut?: ((e: NativeEventInfo<any>) => void);
+  onDisposing?: ((e: EventInfo<any>) => void);
+  onEnterKey?: ((e: NativeEventInfo<any>) => void);
+  onFocusIn?: ((e: NativeEventInfo<any>) => void);
+  onFocusOut?: ((e: NativeEventInfo<any>) => void);
+  onInitialized?: ((e: { component: Component<any>, element: any }) => void);
+  onInput?: ((e: NativeEventInfo<any>) => void);
+  onKeyDown?: ((e: NativeEventInfo<any>) => void);
+  onKeyUp?: ((e: NativeEventInfo<any>) => void);
+  onOptionChanged?: ((e: { component: DOMComponent, element: any, fullName: string, model: any, name: string, previousValue: any, value: any }) => void);
+  onPaste?: ((e: NativeEventInfo<any>) => void);
+  onValueChanged?: ((e: { component: Editor, element: any, event: event, model: any, previousValue: object, value: object }) => void);
+  placeholder?: string;
+  readOnly?: boolean;
+  rtlEnabled?: boolean;
+  showClearButton?: boolean;
+  showMaskMode?: "always" | "onFocus";
+  spellcheck?: boolean;
+  stylingMode?: "outlined" | "underlined" | "filled";
+  tabIndex?: number;
+  text?: string;
+  useMaskedValue?: boolean;
+  validationError?: any;
+  validationErrors?: Array<any>;
+  validationMessageMode?: "always" | "auto";
+  validationMessagePosition?: "bottom" | "left" | "right" | "top";
+  validationStatus?: "valid" | "invalid" | "pending";
+  value?: string;
+  valueChangeEvent?: string;
+  visible?: boolean;
+  width?: (() => number) | number | string;
+  defaultValue?: string;
+  onValueChange?: (value: string) => void;
+}>
+class EditorOptions extends NestedOption<IEditorOptionsProps> {
+  public static OptionName = "editorOptions";
+  public static DefaultsProps = {
+    defaultValue: "value"
+  };
+}
+
+// owners:
+// EditorOptions
+type IEditorOptionsButtonProps = React.PropsWithChildren<{
+  location?: "after" | "before";
+  name?: string;
+  options?: dxButtonOptions;
+}>
+class EditorOptionsButton extends NestedOption<IEditorOptionsButtonProps> {
+  public static OptionName = "buttons";
+  public static IsCollectionItem = true;
+  public static ExpectedChildren = {
+    options: { optionName: "options", isCollectionItem: false }
+  };
+}
+
+// owners:
 // FormItem
 // Column
 type IEmailRuleProps = React.PropsWithChildren<{
@@ -790,7 +972,6 @@ type IFieldProps = React.PropsWithChildren<{
   customizeText?: ((fieldInfo: { value: string | number | any, valueText: string }) => string);
   dataField?: string;
   dataType?: "string" | "number" | "date" | "boolean" | "object" | "datetime";
-  defaultFilterOperation?: "=" | "<>" | "<" | "<=" | ">" | ">=" | "contains" | "endswith" | "isblank" | "isnotblank" | "notcontains" | "startswith" | "between";
   editorOptions?: any;
   editorTemplate?: ((conditionInfo: { field: dxFilterBuilderField, filterOperation: string, setValue: (() => void), value: string | number | any }, container: any) => string) | template;
   falseText?: string;
@@ -878,8 +1059,6 @@ type IFilterBuilderProps = React.PropsWithChildren<{
   onDisposing?: ((e: EventInfo<any>) => void);
   onEditorPrepared?: ((e: { component: dxFilterBuilder, dataField: string, disabled: boolean, editorElement: any, editorName: string, element: any, filterOperation: string, model: any, readOnly: boolean, rtlEnabled: boolean, setValue(newValue): any, updateValueTimeout: number, value: any, width: number }) => void);
   onEditorPreparing?: ((e: { cancel: boolean, component: dxFilterBuilder, dataField: string, disabled: boolean, editorElement: any, editorName: string, editorOptions: object, element: any, filterOperation: string, model: any, readOnly: boolean, rtlEnabled: boolean, setValue(newValue): any, updateValueTimeout: number, value: any, width: number }) => void);
-  onFocusIn?: ((e: { component: Widget<any>, element: any, model: object }) => void);
-  onFocusOut?: ((e: { component: Widget<any>, element: any, model: object }) => void);
   onInitialized?: ((e: { component: Component<any>, element: any }) => void);
   onOptionChanged?: ((e: { component: DOMComponent, element: any, fullName: string, model: any, name: string, previousValue: any, value: any }) => void);
   onValueChanged?: ((e: { component: dxFilterBuilder, element: any, model: any, previousValue: object, value: object }) => void);
@@ -908,7 +1087,6 @@ class FilterBuilder extends NestedOption<IFilterBuilderProps> {
 // TreeList
 type IFilterBuilderPopupProps = React.PropsWithChildren<{
   accessKey?: string;
-  activeStateEnabled?: boolean;
   animation?: object | {
     hide?: AnimationConfig;
     show?: AnimationConfig;
@@ -938,8 +1116,6 @@ type IFilterBuilderPopupProps = React.PropsWithChildren<{
   minWidth?: (() => number) | number | string;
   onContentReady?: ((e: EventInfo<any>) => void);
   onDisposing?: ((e: EventInfo<any>) => void);
-  onFocusIn?: ((e: { component: Widget<any>, element: any, model: object }) => void);
-  onFocusOut?: ((e: { component: Widget<any>, element: any, model: object }) => void);
   onHidden?: ((e: EventInfo<any>) => void);
   onHiding?: ((e: { cancel: boolean | any, component: dxOverlay<any>, element: any, model: any }) => void);
   onInitialized?: ((e: { component: Component<any>, element: any }) => void);
@@ -1121,8 +1297,6 @@ type IFormProps = React.PropsWithChildren<{
   onDisposing?: ((e: EventInfo<any>) => void);
   onEditorEnterKey?: ((e: { component: dxForm, dataField: string, element: any, model: any }) => void);
   onFieldDataChanged?: ((e: { component: dxForm, dataField: string, element: any, model: any, value: object }) => void);
-  onFocusIn?: ((e: { component: Widget<any>, element: any, model: object }) => void);
-  onFocusOut?: ((e: { component: Widget<any>, element: any, model: object }) => void);
   onInitialized?: ((e: { component: Component<any>, element: any }) => void);
   onOptionChanged?: ((e: { component: DOMComponent, element: any, fullName: string, model: any, name: string, previousValue: any, value: any }) => void);
   optionalMark?: string;
@@ -1252,9 +1426,11 @@ class GroupOperationDescriptions extends NestedOption<IGroupOperationDescription
 // TreeList
 type IHeaderFilterProps = React.PropsWithChildren<{
   allowSearch?: boolean;
+  allowSelectAll?: boolean;
   dataSource?: Array<any> | DataSourceOptions | ((options: { component: object, dataSource: DataSourceOptions | null }) => void) | null | Store;
   groupInterval?: number | "day" | "hour" | "minute" | "month" | "quarter" | "second" | "year";
   height?: number;
+  search?: ColumnHeaderFilterSearchConfig;
   searchMode?: "contains" | "startswith" | "equals";
   width?: number;
   searchTimeout?: number;
@@ -1452,6 +1628,48 @@ class OperationDescriptions extends NestedOption<IOperationDescriptionsProps> {
 }
 
 // owners:
+// EditorOptionsButton
+type IOptionsProps = React.PropsWithChildren<{
+  accessKey?: string;
+  activeStateEnabled?: boolean;
+  bindingOptions?: object;
+  disabled?: boolean;
+  elementAttr?: object;
+  focusStateEnabled?: boolean;
+  height?: (() => number) | number | string;
+  hint?: string;
+  hoverStateEnabled?: boolean;
+  icon?: string;
+  onClick?: ((e: { component: dxButton, element: any, event: event, model: any, validationGroup: object }) => void);
+  onContentReady?: ((e: EventInfo<any>) => void);
+  onDisposing?: ((e: EventInfo<any>) => void);
+  onInitialized?: ((e: { component: Component<any>, element: any }) => void);
+  onOptionChanged?: ((e: { component: DOMComponent, element: any, fullName: string, model: any, name: string, previousValue: any, value: any }) => void);
+  rtlEnabled?: boolean;
+  stylingMode?: "text" | "outlined" | "contained";
+  tabIndex?: number;
+  template?: ((buttonData: { icon: string, text: string }, contentElement: any) => string) | template;
+  text?: string;
+  type?: "back" | "danger" | "default" | "normal" | "success";
+  useSubmitBehavior?: boolean;
+  validationGroup?: string;
+  visible?: boolean;
+  width?: (() => number) | number | string;
+  render?: (...params: any) => React.ReactNode;
+  component?: React.ComponentType<any>;
+  keyFn?: (data: any) => string;
+}>
+class Options extends NestedOption<IOptionsProps> {
+  public static OptionName = "options";
+  public static TemplateProps = [{
+    tmplOption: "template",
+    render: "render",
+    component: "component",
+    keyFn: "keyFn"
+  }];
+}
+
+// owners:
 // TreeList
 type IPagerProps = React.PropsWithChildren<{
   allowedPageSizes?: Array<number | "all" | "auto"> | "auto";
@@ -1507,7 +1725,6 @@ class PatternRule extends NestedOption<IPatternRuleProps> {
 // Editing
 type IPopupProps = React.PropsWithChildren<{
   accessKey?: string;
-  activeStateEnabled?: boolean;
   animation?: object | {
     hide?: AnimationConfig;
     show?: AnimationConfig;
@@ -1537,8 +1754,6 @@ type IPopupProps = React.PropsWithChildren<{
   minWidth?: (() => number) | number | string;
   onContentReady?: ((e: EventInfo<any>) => void);
   onDisposing?: ((e: EventInfo<any>) => void);
-  onFocusIn?: ((e: { component: Widget<any>, element: any, model: object }) => void);
-  onFocusOut?: ((e: { component: Widget<any>, element: any, model: object }) => void);
   onHidden?: ((e: EventInfo<any>) => void);
   onHiding?: ((e: { cancel: boolean | any, component: dxOverlay<any>, element: any, model: any }) => void);
   onInitialized?: ((e: { component: Component<any>, element: any }) => void);
@@ -1608,6 +1823,7 @@ class Popup extends NestedOption<IPopupProps> {
 // owners:
 // From
 // Popup
+// ColumnChooser
 type IPositionProps = React.PropsWithChildren<{
   at?: object | "bottom" | "center" | "left" | "left bottom" | "left top" | "right" | "right bottom" | "right top" | "top" | {
     x?: "center" | "left" | "right";
@@ -1746,6 +1962,21 @@ class Scrolling extends NestedOption<IScrollingProps> {
 }
 
 // owners:
+// ColumnHeaderFilter
+// ColumnChooser
+// TreeListHeaderFilter
+type ISearchProps = React.PropsWithChildren<{
+  editorOptions?: dxTextBoxOptions;
+  enabled?: boolean;
+  mode?: "contains" | "startswith" | "equals";
+  searchExpr?: Array<(() => any) | string> | (() => any) | string;
+  timeout?: number;
+}>
+class Search extends NestedOption<ISearchProps> {
+  public static OptionName = "search";
+}
+
+// owners:
 // TreeList
 type ISearchPanelProps = React.PropsWithChildren<{
   highlightCaseSensitive?: boolean;
@@ -1767,10 +1998,12 @@ class SearchPanel extends NestedOption<ISearchPanelProps> {
 
 // owners:
 // TreeList
+// ColumnChooser
 type ISelectionProps = React.PropsWithChildren<{
   allowSelectAll?: boolean;
   mode?: "single" | "multiple" | "none";
   recursive?: boolean;
+  selectByClick?: boolean;
 }>
 class Selection extends NestedOption<ISelectionProps> {
   public static OptionName = "selection";
@@ -1943,7 +2176,9 @@ class ToolbarItem extends NestedOption<IToolbarItemProps> {
 // TreeList
 type ITreeListHeaderFilterProps = React.PropsWithChildren<{
   allowSearch?: boolean;
+  allowSelectAll?: boolean;
   height?: number;
+  search?: HeaderFilterSearchConfig;
   searchTimeout?: number;
   texts?: object | {
     cancel?: string;
@@ -1956,9 +2191,23 @@ type ITreeListHeaderFilterProps = React.PropsWithChildren<{
 class TreeListHeaderFilter extends NestedOption<ITreeListHeaderFilterProps> {
   public static OptionName = "headerFilter";
   public static ExpectedChildren = {
+    search: { optionName: "search", isCollectionItem: false },
     texts: { optionName: "texts", isCollectionItem: false },
+    treeListHeaderFilterSearch: { optionName: "search", isCollectionItem: false },
     treeListHeaderFilterTexts: { optionName: "texts", isCollectionItem: false }
   };
+}
+
+// owners:
+// TreeListHeaderFilter
+type ITreeListHeaderFilterSearchProps = React.PropsWithChildren<{
+  editorOptions?: dxTextBoxOptions;
+  enabled?: boolean;
+  mode?: "contains" | "startswith" | "equals";
+  timeout?: number;
+}>
+class TreeListHeaderFilterSearch extends NestedOption<ITreeListHeaderFilterSearchProps> {
+  public static OptionName = "search";
 }
 
 // owners:
@@ -1970,6 +2219,17 @@ type ITreeListHeaderFilterTextsProps = React.PropsWithChildren<{
 }>
 class TreeListHeaderFilterTexts extends NestedOption<ITreeListHeaderFilterTextsProps> {
   public static OptionName = "texts";
+}
+
+// owners:
+// TreeList
+type ITreeListSelectionProps = React.PropsWithChildren<{
+  allowSelectAll?: boolean;
+  mode?: "single" | "multiple" | "none";
+  recursive?: boolean;
+}>
+class TreeListSelection extends NestedOption<ITreeListSelectionProps> {
+  public static OptionName = "selection";
 }
 
 // owners:
@@ -2018,14 +2278,22 @@ export {
   ICollisionProps,
   Column,
   IColumnProps,
+  ColumnButton,
+  IColumnButtonProps,
   ColumnChooser,
   IColumnChooserProps,
+  ColumnChooserSearch,
+  IColumnChooserSearchProps,
+  ColumnChooserSelection,
+  IColumnChooserSelectionProps,
   ColumnFixing,
   IColumnFixingProps,
   ColumnFixingTexts,
   IColumnFixingTextsProps,
   ColumnHeaderFilter,
   IColumnHeaderFilterProps,
+  ColumnHeaderFilterSearch,
+  IColumnHeaderFilterSearchProps,
   ColumnLookup,
   IColumnLookupProps,
   CompareRule,
@@ -2040,6 +2308,10 @@ export {
   IEditingProps,
   EditingTexts,
   IEditingTextsProps,
+  EditorOptions,
+  IEditorOptionsProps,
+  EditorOptionsButton,
+  IEditorOptionsButtonProps,
   EmailRule,
   IEmailRuleProps,
   Field,
@@ -2090,6 +2362,8 @@ export {
   IOffsetProps,
   OperationDescriptions,
   IOperationDescriptionsProps,
+  Options,
+  IOptionsProps,
   Pager,
   IPagerProps,
   Paging,
@@ -2110,6 +2384,8 @@ export {
   IRowDraggingProps,
   Scrolling,
   IScrollingProps,
+  Search,
+  ISearchProps,
   SearchPanel,
   ISearchPanelProps,
   Selection,
@@ -2132,8 +2408,12 @@ export {
   IToolbarItemProps,
   TreeListHeaderFilter,
   ITreeListHeaderFilterProps,
+  TreeListHeaderFilterSearch,
+  ITreeListHeaderFilterSearchProps,
   TreeListHeaderFilterTexts,
   ITreeListHeaderFilterTextsProps,
+  TreeListSelection,
+  ITreeListSelectionProps,
   ValidationRule,
   IValidationRuleProps
 };

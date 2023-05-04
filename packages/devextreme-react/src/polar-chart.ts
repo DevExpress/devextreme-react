@@ -735,7 +735,6 @@ class CommonAxisSettingsTick extends NestedOption<ICommonAxisSettingsTickProps> 
 type ICommonSeriesSettingsProps = React.PropsWithChildren<{
   area?: any;
   argumentField?: string;
-  axis?: string;
   bar?: any;
   barPadding?: number;
   barWidth?: number;
@@ -764,7 +763,7 @@ type ICommonSeriesSettingsProps = React.PropsWithChildren<{
       step?: number;
       width?: number;
     };
-    lightening?: boolean;
+    highlight?: boolean;
     width?: number;
   };
   ignoreEmptyPoints?: boolean;
@@ -848,7 +847,7 @@ type ICommonSeriesSettingsProps = React.PropsWithChildren<{
       step?: number;
       width?: number;
     };
-    lightening?: boolean;
+    highlight?: boolean;
     width?: number;
   };
   showInLegend?: boolean;
@@ -905,7 +904,7 @@ type ICommonSeriesSettingsHoverStyleProps = React.PropsWithChildren<{
     step?: number;
     width?: number;
   };
-  lightening?: boolean;
+  highlight?: boolean;
   width?: number;
 }>
 class CommonSeriesSettingsHoverStyle extends NestedOption<ICommonSeriesSettingsHoverStyleProps> {
@@ -972,7 +971,7 @@ type ICommonSeriesSettingsSelectionStyleProps = React.PropsWithChildren<{
     step?: number;
     width?: number;
   };
-  lightening?: boolean;
+  highlight?: boolean;
   width?: number;
 }>
 class CommonSeriesSettingsSelectionStyle extends NestedOption<ICommonSeriesSettingsSelectionStyleProps> {
@@ -1168,7 +1167,7 @@ type IHoverStyleProps = React.PropsWithChildren<{
     step?: number;
     width?: number;
   };
-  lightening?: boolean;
+  highlight?: boolean;
   width?: number;
   size?: number;
 }>
@@ -1639,7 +1638,7 @@ type ISelectionStyleProps = React.PropsWithChildren<{
     step?: number;
     width?: number;
   };
-  lightening?: boolean;
+  highlight?: boolean;
   width?: number;
 }>
 class SelectionStyle extends NestedOption<ISelectionStyleProps> {
@@ -1650,7 +1649,6 @@ class SelectionStyle extends NestedOption<ISelectionStyleProps> {
 // PolarChart
 type ISeriesProps = React.PropsWithChildren<{
   argumentField?: string;
-  axis?: string;
   barPadding?: number;
   barWidth?: number;
   border?: object | {
@@ -1678,7 +1676,7 @@ type ISeriesProps = React.PropsWithChildren<{
       step?: number;
       width?: number;
     };
-    lightening?: boolean;
+    highlight?: boolean;
     width?: number;
   };
   ignoreEmptyPoints?: boolean;
@@ -1761,7 +1759,7 @@ type ISeriesProps = React.PropsWithChildren<{
       step?: number;
       width?: number;
     };
-    lightening?: boolean;
+    highlight?: boolean;
     width?: number;
   };
   showInLegend?: boolean;

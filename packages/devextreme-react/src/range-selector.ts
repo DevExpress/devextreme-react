@@ -353,7 +353,7 @@ type ICommonSeriesSettingsProps = React.PropsWithChildren<{
       step?: number;
       width?: number;
     };
-    lightening?: boolean;
+    highlight?: boolean;
     width?: number;
   };
   ignoreEmptyPoints?: boolean;
@@ -461,7 +461,7 @@ type ICommonSeriesSettingsProps = React.PropsWithChildren<{
       step?: number;
       width?: number;
     };
-    lightening?: boolean;
+    highlight?: boolean;
     width?: number;
   };
   showInLegend?: boolean;
@@ -530,7 +530,7 @@ type ICommonSeriesSettingsHoverStyleProps = React.PropsWithChildren<{
     step?: number;
     width?: number;
   };
-  lightening?: boolean;
+  highlight?: boolean;
   width?: number;
 }>
 class CommonSeriesSettingsHoverStyle extends NestedOption<ICommonSeriesSettingsHoverStyleProps> {
@@ -600,7 +600,7 @@ type ICommonSeriesSettingsSelectionStyleProps = React.PropsWithChildren<{
     step?: number;
     width?: number;
   };
-  lightening?: boolean;
+  highlight?: boolean;
   width?: number;
 }>
 class CommonSeriesSettingsSelectionStyle extends NestedOption<ICommonSeriesSettingsSelectionStyleProps> {
@@ -726,7 +726,7 @@ type IHoverStyleProps = React.PropsWithChildren<{
     step?: number;
     width?: number;
   };
-  lightening?: boolean;
+  highlight?: boolean;
   width?: number;
   size?: number;
 }>
@@ -1268,7 +1268,7 @@ type ISelectionStyleProps = React.PropsWithChildren<{
     step?: number;
     width?: number;
   };
-  lightening?: boolean;
+  highlight?: boolean;
   width?: number;
 }>
 class SelectionStyle extends NestedOption<ISelectionStyleProps> {
@@ -1315,7 +1315,7 @@ type ISeriesProps = React.PropsWithChildren<{
       step?: number;
       width?: number;
     };
-    lightening?: boolean;
+    highlight?: boolean;
     width?: number;
   };
   ignoreEmptyPoints?: boolean;
@@ -1420,7 +1420,7 @@ type ISeriesProps = React.PropsWithChildren<{
       step?: number;
       width?: number;
     };
-    lightening?: boolean;
+    highlight?: boolean;
     width?: number;
   };
   showInLegend?: boolean;

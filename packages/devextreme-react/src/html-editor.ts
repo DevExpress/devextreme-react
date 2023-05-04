@@ -17,7 +17,6 @@ import type { Store } from "devextreme/data/abstract_store";
 
 import type UploadInfo from "devextreme/file_management/upload_info";
 import type dxFileUploader from "devextreme/ui/file_uploader";
-import type Widget from "devextreme/ui/widget/ui.widget";
 import type DOMComponent from "devextreme/core/dom_component";
 import type DataSource from "devextreme/data/data_source";
 
@@ -146,7 +145,6 @@ type IFileUploaderOptionsProps = React.PropsWithChildren<{
   disabled?: boolean;
   dropZone?: any | string;
   elementAttr?: object;
-  extendSelection?: boolean;
   focusStateEnabled?: boolean;
   height?: (() => number) | number | string;
   hint?: string;
@@ -167,8 +165,6 @@ type IFileUploaderOptionsProps = React.PropsWithChildren<{
   onDropZoneEnter?: ((e: { component: dxFileUploader, dropZoneElement: any, element: any, event: event, model: any }) => void);
   onDropZoneLeave?: ((e: { component: dxFileUploader, dropZoneElement: any, element: any, event: event, model: any }) => void);
   onFilesUploaded?: ((e: { component: dxFileUploader, element: any, model: any }) => void);
-  onFocusIn?: ((e: { component: Widget<any>, element: any, model: object }) => void);
-  onFocusOut?: ((e: { component: Widget<any>, element: any, model: object }) => void);
   onInitialized?: ((e: { component: Component<any>, element: any }) => void);
   onOptionChanged?: ((e: { component: DOMComponent, element: any, fullName: string, model: any, name: string, previousValue: any, value: any }) => void);
   onProgress?: ((e: { bytesLoaded: number, bytesTotal: number, component: dxFileUploader, element: any, event: event, file: any, model: any, request: any, segmentSize: number }) => void);
@@ -183,7 +179,6 @@ type IFileUploaderOptionsProps = React.PropsWithChildren<{
   rtlEnabled?: boolean;
   selectButtonText?: string;
   showFileList?: boolean;
-  stylingMode?: "outlined" | "underlined" | "filled";
   tabIndex?: number;
   uploadAbortedMessage?: string;
   uploadButtonText?: string;
@@ -198,8 +193,6 @@ type IFileUploaderOptionsProps = React.PropsWithChildren<{
   uploadUrl?: string;
   validationError?: any;
   validationErrors?: Array<any>;
-  validationMessageMode?: "always" | "auto";
-  validationMessagePosition?: "bottom" | "left" | "right" | "top";
   validationStatus?: "valid" | "invalid" | "pending";
   value?: Array<any>;
   visible?: boolean;
@@ -239,7 +232,6 @@ type IItemProps = React.PropsWithChildren<{
   beginGroup?: boolean;
   closeMenuOnClick?: boolean;
   disabled?: boolean;
-  html?: string;
   icon?: string;
   items?: Array<dxHtmlEditorTableContextMenuItem | "background" | "bold" | "color" | "font" | "italic" | "link" | "image" | "strike" | "subscript" | "superscript" | "underline" | "blockquote" | "increaseIndent" | "decreaseIndent" | "orderedList" | "bulletList" | "alignLeft" | "alignCenter" | "alignRight" | "alignJustify" | "codeBlock" | "variable" | "undo" | "redo" | "clear" | "insertTable" | "insertHeaderRow" | "insertRowAbove" | "insertRowBelow" | "insertColumnLeft" | "insertColumnRight" | "deleteColumn" | "deleteRow" | "deleteTable" | "cellProperties" | "tableProperties">;
   name?: "background" | "bold" | "color" | "font" | "italic" | "link" | "image" | "strike" | "subscript" | "superscript" | "underline" | "blockquote" | "increaseIndent" | "decreaseIndent" | "orderedList" | "bulletList" | "alignLeft" | "alignCenter" | "alignRight" | "alignJustify" | "codeBlock" | "variable" | "undo" | "redo" | "clear" | "insertTable" | "insertHeaderRow" | "insertRowAbove" | "insertRowBelow" | "insertColumnLeft" | "insertColumnRight" | "deleteColumn" | "deleteRow" | "deleteTable" | "cellProperties" | "tableProperties";
@@ -252,6 +244,7 @@ type IItemProps = React.PropsWithChildren<{
   cssClass?: string;
   formatName?: "background" | "bold" | "color" | "font" | "italic" | "link" | "image" | "size" | "strike" | "subscript" | "superscript" | "underline" | "blockquote" | "header" | "increaseIndent" | "decreaseIndent" | "orderedList" | "bulletList" | "alignLeft" | "alignCenter" | "alignRight" | "alignJustify" | "codeBlock" | "variable" | "separator" | "undo" | "redo" | "clear" | "cellProperties" | "tableProperties" | "insertTable" | "insertHeaderRow" | "insertRowAbove" | "insertRowBelow" | "insertColumnLeft" | "insertColumnRight" | "deleteColumn" | "deleteRow" | "deleteTable";
   formatValues?: Array<boolean | number | string>;
+  html?: string;
   locateInMenu?: "always" | "auto" | "never";
   location?: "after" | "before" | "center";
   menuItemTemplate?: (() => string) | template;
@@ -357,7 +350,6 @@ type ITableContextMenuItemProps = React.PropsWithChildren<{
   beginGroup?: boolean;
   closeMenuOnClick?: boolean;
   disabled?: boolean;
-  html?: string;
   icon?: string;
   items?: Array<dxHtmlEditorTableContextMenuItem | "background" | "bold" | "color" | "font" | "italic" | "link" | "image" | "strike" | "subscript" | "superscript" | "underline" | "blockquote" | "increaseIndent" | "decreaseIndent" | "orderedList" | "bulletList" | "alignLeft" | "alignCenter" | "alignRight" | "alignJustify" | "codeBlock" | "variable" | "undo" | "redo" | "clear" | "insertTable" | "insertHeaderRow" | "insertRowAbove" | "insertRowBelow" | "insertColumnLeft" | "insertColumnRight" | "deleteColumn" | "deleteRow" | "deleteTable" | "cellProperties" | "tableProperties">;
   name?: "background" | "bold" | "color" | "font" | "italic" | "link" | "image" | "strike" | "subscript" | "superscript" | "underline" | "blockquote" | "increaseIndent" | "decreaseIndent" | "orderedList" | "bulletList" | "alignLeft" | "alignCenter" | "alignRight" | "alignJustify" | "codeBlock" | "variable" | "undo" | "redo" | "clear" | "insertTable" | "insertHeaderRow" | "insertRowAbove" | "insertRowBelow" | "insertColumnLeft" | "insertColumnRight" | "deleteColumn" | "deleteRow" | "deleteTable" | "cellProperties" | "tableProperties";

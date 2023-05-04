@@ -14,7 +14,6 @@ import type { PositionConfig } from "devextreme/animation/position";
 import type { dxPopupToolbarItem } from "devextreme/ui/popup";
 import type { CollectionWidgetItem } from "devextreme/ui/collection/ui.collection_widget.base";
 
-import type Widget from "devextreme/ui/widget/ui.widget";
 import type dxOverlay from "devextreme/ui/overlay";
 import type DOMComponent from "devextreme/core/dom_component";
 import type dxPopup from "devextreme/ui/popup";
@@ -162,7 +161,6 @@ class Collision extends NestedOption<ICollisionProps> {
 // DropDownButton
 type IDropDownOptionsProps = React.PropsWithChildren<{
   accessKey?: string;
-  activeStateEnabled?: boolean;
   animation?: object | {
     hide?: AnimationConfig;
     show?: AnimationConfig;
@@ -192,8 +190,6 @@ type IDropDownOptionsProps = React.PropsWithChildren<{
   minWidth?: (() => number) | number | string;
   onContentReady?: ((e: EventInfo<any>) => void);
   onDisposing?: ((e: EventInfo<any>) => void);
-  onFocusIn?: ((e: { component: Widget<any>, element: any, model: object }) => void);
-  onFocusOut?: ((e: { component: Widget<any>, element: any, model: object }) => void);
   onHidden?: ((e: EventInfo<any>) => void);
   onHiding?: ((e: { cancel: boolean | any, component: dxOverlay<any>, element: any, model: any }) => void);
   onInitialized?: ((e: { component: Component<any>, element: any }) => void);
@@ -305,9 +301,7 @@ type IItemProps = React.PropsWithChildren<{
   disabled?: boolean;
   html?: string;
   icon?: string;
-  key?: string;
   onClick?: ((e: { component: dxDropDownButton, element: any, event: event, itemData: object, itemElement: any, model: any }) => void);
-  showChevron?: boolean;
   template?: ((itemData: CollectionWidgetItem, itemIndex: number, itemElement: any) => string) | template;
   text?: string;
   visible?: boolean;
