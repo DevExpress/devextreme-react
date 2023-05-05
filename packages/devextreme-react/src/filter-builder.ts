@@ -26,6 +26,8 @@ class FilterBuilder extends BaseComponent<React.PropsWithChildren<IFilterBuilder
 
   protected _WidgetClass = dxFilterBuilder;
 
+  protected useRequestAnimationFrameFlag = true;
+
   protected subscribableOptions = ['value'];
 
   protected independentEvents = ['onContentReady', 'onDisposing', 'onEditorPrepared', 'onEditorPreparing', 'onInitialized', 'onValueChanged'];

@@ -3,21 +3,10 @@ import dxPivotGrid, {
 } from 'devextreme/ui/pivot_grid';
 
 import * as PropTypes from 'prop-types';
-
-import type { dxButtonOptions } from 'devextreme/ui/button';
-import type { dxTextEditorButton } from 'devextreme/ui/text_box/ui.text_editor.base';
-import type { NativeEventInfo, EventInfo, event } from 'devextreme/events/index';
-import type { Component } from 'devextreme/core/component';
 import type { HeaderFilterSearchConfig } from 'devextreme/common/grids';
-import type { template } from 'devextreme/core/templates/template';
-import type { dxTextBoxOptions } from 'devextreme/ui/text_box';
-
-import type DOMComponent from 'devextreme/core/dom_component';
-import type Editor from 'devextreme/ui/editor/editor';
-import type dxButton from 'devextreme/ui/button';
 import type * as PivotGridTypes from 'devextreme/ui/pivot_grid_types';
-import NestedOption from './core/nested-option';
 import { Component as BaseComponent, IHtmlOptions } from './core/component';
+import NestedOption from './core/nested-option';
 
 type IPivotGridOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
 }>;
@@ -109,96 +98,6 @@ class PivotGrid extends BaseComponent<React.PropsWithChildren<IPivotGridOptions>
   ]),
   wordWrapEnabled: PropTypes.bool,
 };
-
-// owners:
-// EditorOptions
-type IButtonProps = React.PropsWithChildren<{
-  location?: 'after' | 'before';
-  name?: string;
-  options?: dxButtonOptions;
-}>;
-class Button extends NestedOption<IButtonProps> {
-  public static OptionName = 'buttons';
-
-  public static IsCollectionItem = true;
-
-  public static ExpectedChildren = {
-    options: { optionName: 'options', isCollectionItem: false },
-  };
-}
-
-// owners:
-// Search
-type IEditorOptionsProps = React.PropsWithChildren<{
-  accessKey?: string;
-  activeStateEnabled?: boolean;
-  bindingOptions?: object;
-  buttons?: Array<dxTextEditorButton | string | 'clear'>;
-  disabled?: boolean;
-  elementAttr?: object;
-  focusStateEnabled?: boolean;
-  height?: (() => number) | number | string;
-  hint?: string;
-  hoverStateEnabled?: boolean;
-  inputAttr?: any;
-  isValid?: boolean;
-  label?: string;
-  labelMode?: 'static' | 'floating' | 'hidden';
-  mask?: string;
-  maskChar?: string;
-  maskInvalidMessage?: string;
-  maskRules?: any;
-  maxLength?: number | string;
-  mode?: 'email' | 'password' | 'search' | 'tel' | 'text' | 'url';
-  name?: string;
-  onChange?: ((e: NativeEventInfo<any>) => void);
-  onContentReady?: ((e: EventInfo<any>) => void);
-  onCopy?: ((e: NativeEventInfo<any>) => void);
-  onCut?: ((e: NativeEventInfo<any>) => void);
-  onDisposing?: ((e: EventInfo<any>) => void);
-  onEnterKey?: ((e: NativeEventInfo<any>) => void);
-  onFocusIn?: ((e: NativeEventInfo<any>) => void);
-  onFocusOut?: ((e: NativeEventInfo<any>) => void);
-  onInitialized?: ((e: { component: Component<any>, element: any }) => void);
-  onInput?: ((e: NativeEventInfo<any>) => void);
-  onKeyDown?: ((e: NativeEventInfo<any>) => void);
-  onKeyUp?: ((e: NativeEventInfo<any>) => void);
-  onOptionChanged?: ((e: { component: DOMComponent, element: any, fullName: string, model: any, name: string, previousValue: any, value: any }) => void);
-  onPaste?: ((e: NativeEventInfo<any>) => void);
-  onValueChanged?: ((e: { component: Editor, element: any, event: event, model: any, previousValue: object, value: object }) => void);
-  placeholder?: string;
-  readOnly?: boolean;
-  rtlEnabled?: boolean;
-  showClearButton?: boolean;
-  showMaskMode?: 'always' | 'onFocus';
-  spellcheck?: boolean;
-  stylingMode?: 'outlined' | 'underlined' | 'filled';
-  tabIndex?: number;
-  text?: string;
-  useMaskedValue?: boolean;
-  validationError?: any;
-  validationErrors?: Array<any>;
-  validationMessageMode?: 'always' | 'auto';
-  validationMessagePosition?: 'bottom' | 'left' | 'right' | 'top';
-  validationStatus?: 'valid' | 'invalid' | 'pending';
-  value?: string;
-  valueChangeEvent?: string;
-  visible?: boolean;
-  width?: (() => number) | number | string;
-  defaultValue?: string;
-  onValueChange?: (value: string) => void;
-}>;
-class EditorOptions extends NestedOption<IEditorOptionsProps> {
-  public static OptionName = 'editorOptions';
-
-  public static DefaultsProps = {
-    defaultValue: 'value',
-  };
-
-  public static ExpectedChildren = {
-    button: { optionName: 'buttons', isCollectionItem: true },
-  };
-}
 
 // owners:
 // PivotGrid
@@ -342,49 +241,6 @@ class LoadPanel extends NestedOption<ILoadPanelProps> {
 }
 
 // owners:
-// Button
-type IOptionsProps = React.PropsWithChildren<{
-  accessKey?: string;
-  activeStateEnabled?: boolean;
-  bindingOptions?: object;
-  disabled?: boolean;
-  elementAttr?: object;
-  focusStateEnabled?: boolean;
-  height?: (() => number) | number | string;
-  hint?: string;
-  hoverStateEnabled?: boolean;
-  icon?: string;
-  onClick?: ((e: { component: dxButton, element: any, event: event, model: any, validationGroup: object }) => void);
-  onContentReady?: ((e: EventInfo<any>) => void);
-  onDisposing?: ((e: EventInfo<any>) => void);
-  onInitialized?: ((e: { component: Component<any>, element: any }) => void);
-  onOptionChanged?: ((e: { component: DOMComponent, element: any, fullName: string, model: any, name: string, previousValue: any, value: any }) => void);
-  rtlEnabled?: boolean;
-  stylingMode?: 'text' | 'outlined' | 'contained';
-  tabIndex?: number;
-  template?: ((buttonData: { icon: string, text: string }, contentElement: any) => string) | template;
-  text?: string;
-  type?: 'back' | 'danger' | 'default' | 'normal' | 'success';
-  useSubmitBehavior?: boolean;
-  validationGroup?: string;
-  visible?: boolean;
-  width?: (() => number) | number | string;
-  render?: (...params: any) => React.ReactNode;
-  component?: React.ComponentType<any>;
-  keyFn?: (data: any) => string;
-}>;
-class Options extends NestedOption<IOptionsProps> {
-  public static OptionName = 'options';
-
-  public static TemplateProps = [{
-    tmplOption: 'template',
-    render: 'render',
-    component: 'component',
-    keyFn: 'keyFn',
-  }];
-}
-
-// owners:
 // PivotGrid
 type IPivotGridTextsProps = React.PropsWithChildren<{
   collapseAll?: string;
@@ -416,17 +272,13 @@ class Scrolling extends NestedOption<IScrollingProps> {
 // owners:
 // HeaderFilter
 type ISearchProps = React.PropsWithChildren<{
-  editorOptions?: dxTextBoxOptions;
+  editorOptions?: any;
   enabled?: boolean;
   mode?: 'contains' | 'startswith' | 'equals';
   timeout?: number;
 }>;
 class Search extends NestedOption<ISearchProps> {
   public static OptionName = 'search';
-
-  public static ExpectedChildren = {
-    editorOptions: { optionName: 'editorOptions', isCollectionItem: false },
-  };
 }
 
 // owners:
@@ -481,10 +333,6 @@ export default PivotGrid;
 export {
   PivotGrid,
   IPivotGridOptions,
-  Button,
-  IButtonProps,
-  EditorOptions,
-  IEditorOptionsProps,
   Export,
   IExportProps,
   FieldChooser,
@@ -501,8 +349,6 @@ export {
   IHeaderFilterTextsProps,
   LoadPanel,
   ILoadPanelProps,
-  Options,
-  IOptionsProps,
   PivotGridTexts,
   IPivotGridTextsProps,
   Scrolling,

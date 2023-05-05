@@ -4,27 +4,19 @@ import dxGantt, {
 
 import * as PropTypes from 'prop-types';
 
-import type { dxButtonOptions } from 'devextreme/ui/button';
 import type { dxTreeListColumn, dxTreeListRowObject } from 'devextreme/ui/tree_list';
 import type { template } from 'devextreme/core/templates/template';
 import type { DataSourceOptions } from 'devextreme/data/data_source';
 import type { Store } from 'devextreme/data/abstract_store';
 import type { ColumnHeaderFilterSearchConfig, HeaderFilterSearchConfig } from 'devextreme/common/grids';
-import type { dxTextBoxOptions } from 'devextreme/ui/text_box';
 import type {
   dxGanttContextMenuItem, dxGanttFilterRowOperationDescriptions, dxGanttHeaderFilterTexts, dxGanttToolbarItem,
 } from 'devextreme/ui/gantt';
 import type { dxContextMenuItem } from 'devextreme/ui/context_menu';
 import type { CollectionWidgetItem } from 'devextreme/ui/collection/ui.collection_widget.base';
-import type { dxTextEditorButton } from 'devextreme/ui/text_box/ui.text_editor.base';
-import type { NativeEventInfo, EventInfo, event } from 'devextreme/events/index';
-import type { Component } from 'devextreme/core/component';
 
 import type dxTreeList from 'devextreme/ui/tree_list';
 import type DataSource from 'devextreme/data/data_source';
-import type DOMComponent from 'devextreme/core/dom_component';
-import type Editor from 'devextreme/ui/editor/editor';
-import type dxButton from 'devextreme/ui/button';
 
 import type * as LocalizationTypes from 'devextreme/localization';
 import type * as GanttTypes from 'devextreme/ui/gantt_types';
@@ -199,23 +191,6 @@ class Gantt extends BaseComponent<React.PropsWithChildren<IGanttOptions>> {
 };
 
 // owners:
-// EditorOptions
-type IButtonProps = React.PropsWithChildren<{
-  location?: 'after' | 'before';
-  name?: string;
-  options?: dxButtonOptions;
-}>;
-class Button extends NestedOption<IButtonProps> {
-  public static OptionName = 'buttons';
-
-  public static IsCollectionItem = true;
-
-  public static ExpectedChildren = {
-    options: { optionName: 'options', isCollectionItem: false },
-  };
-}
-
-// owners:
 // Gantt
 type IColumnProps = React.PropsWithChildren<{
   alignment?: 'center' | 'left' | 'right';
@@ -338,7 +313,7 @@ class ColumnHeaderFilter extends NestedOption<IColumnHeaderFilterProps> {
 // owners:
 // ColumnHeaderFilter
 type IColumnHeaderFilterSearchProps = React.PropsWithChildren<{
-  editorOptions?: dxTextBoxOptions;
+  editorOptions?: any;
   enabled?: boolean;
   mode?: 'contains' | 'startswith' | 'equals';
   searchExpr?: Array<(() => any) | string> | (() => any) | string;
@@ -346,10 +321,6 @@ type IColumnHeaderFilterSearchProps = React.PropsWithChildren<{
 }>;
 class ColumnHeaderFilterSearch extends NestedOption<IColumnHeaderFilterSearchProps> {
   public static OptionName = 'search';
-
-  public static ExpectedChildren = {
-    editorOptions: { optionName: 'editorOptions', isCollectionItem: false },
-  };
 }
 
 // owners:
@@ -430,79 +401,6 @@ class Editing extends NestedOption<IEditingProps> {
 }
 
 // owners:
-// ColumnHeaderFilterSearch
-type IEditorOptionsProps = React.PropsWithChildren<{
-  accessKey?: string;
-  activeStateEnabled?: boolean;
-  bindingOptions?: object;
-  buttons?: Array<dxTextEditorButton | string | 'clear'>;
-  disabled?: boolean;
-  elementAttr?: object;
-  focusStateEnabled?: boolean;
-  height?: (() => number) | number | string;
-  hint?: string;
-  hoverStateEnabled?: boolean;
-  inputAttr?: any;
-  isValid?: boolean;
-  label?: string;
-  labelMode?: 'static' | 'floating' | 'hidden';
-  mask?: string;
-  maskChar?: string;
-  maskInvalidMessage?: string;
-  maskRules?: any;
-  maxLength?: number | string;
-  mode?: 'email' | 'password' | 'search' | 'tel' | 'text' | 'url';
-  name?: string;
-  onChange?: ((e: NativeEventInfo<any>) => void);
-  onContentReady?: ((e: EventInfo<any>) => void);
-  onCopy?: ((e: NativeEventInfo<any>) => void);
-  onCut?: ((e: NativeEventInfo<any>) => void);
-  onDisposing?: ((e: EventInfo<any>) => void);
-  onEnterKey?: ((e: NativeEventInfo<any>) => void);
-  onFocusIn?: ((e: NativeEventInfo<any>) => void);
-  onFocusOut?: ((e: NativeEventInfo<any>) => void);
-  onInitialized?: ((e: { component: Component<any>, element: any }) => void);
-  onInput?: ((e: NativeEventInfo<any>) => void);
-  onKeyDown?: ((e: NativeEventInfo<any>) => void);
-  onKeyUp?: ((e: NativeEventInfo<any>) => void);
-  onOptionChanged?: ((e: { component: DOMComponent, element: any, fullName: string, model: any, name: string, previousValue: any, value: any }) => void);
-  onPaste?: ((e: NativeEventInfo<any>) => void);
-  onValueChanged?: ((e: { component: Editor, element: any, event: event, model: any, previousValue: object, value: object }) => void);
-  placeholder?: string;
-  readOnly?: boolean;
-  rtlEnabled?: boolean;
-  showClearButton?: boolean;
-  showMaskMode?: 'always' | 'onFocus';
-  spellcheck?: boolean;
-  stylingMode?: 'outlined' | 'underlined' | 'filled';
-  tabIndex?: number;
-  text?: string;
-  useMaskedValue?: boolean;
-  validationError?: any;
-  validationErrors?: Array<any>;
-  validationMessageMode?: 'always' | 'auto';
-  validationMessagePosition?: 'bottom' | 'left' | 'right' | 'top';
-  validationStatus?: 'valid' | 'invalid' | 'pending';
-  value?: string;
-  valueChangeEvent?: string;
-  visible?: boolean;
-  width?: (() => number) | number | string;
-  defaultValue?: string;
-  onValueChange?: (value: string) => void;
-}>;
-class EditorOptions extends NestedOption<IEditorOptionsProps> {
-  public static OptionName = 'editorOptions';
-
-  public static DefaultsProps = {
-    defaultValue: 'value',
-  };
-
-  public static ExpectedChildren = {
-    button: { optionName: 'buttons', isCollectionItem: true },
-  };
-}
-
-// owners:
 // Gantt
 type IFilterRowProps = React.PropsWithChildren<{
   betweenEndText?: string;
@@ -560,7 +458,7 @@ class GanttHeaderFilter extends NestedOption<IGanttHeaderFilterProps> {
 // owners:
 // GanttHeaderFilter
 type IGanttHeaderFilterSearchProps = React.PropsWithChildren<{
-  editorOptions?: dxTextBoxOptions;
+  editorOptions?: any;
   enabled?: boolean;
   mode?: 'contains' | 'startswith' | 'equals';
   timeout?: number;
@@ -657,49 +555,6 @@ class OperationDescriptions extends NestedOption<IOperationDescriptionsProps> {
 }
 
 // owners:
-// Button
-type IOptionsProps = React.PropsWithChildren<{
-  accessKey?: string;
-  activeStateEnabled?: boolean;
-  bindingOptions?: object;
-  disabled?: boolean;
-  elementAttr?: object;
-  focusStateEnabled?: boolean;
-  height?: (() => number) | number | string;
-  hint?: string;
-  hoverStateEnabled?: boolean;
-  icon?: string;
-  onClick?: ((e: { component: dxButton, element: any, event: event, model: any, validationGroup: object }) => void);
-  onContentReady?: ((e: EventInfo<any>) => void);
-  onDisposing?: ((e: EventInfo<any>) => void);
-  onInitialized?: ((e: { component: Component<any>, element: any }) => void);
-  onOptionChanged?: ((e: { component: DOMComponent, element: any, fullName: string, model: any, name: string, previousValue: any, value: any }) => void);
-  rtlEnabled?: boolean;
-  stylingMode?: 'text' | 'outlined' | 'contained';
-  tabIndex?: number;
-  template?: ((buttonData: { icon: string, text: string }, contentElement: any) => string) | template;
-  text?: string;
-  type?: 'back' | 'danger' | 'default' | 'normal' | 'success';
-  useSubmitBehavior?: boolean;
-  validationGroup?: string;
-  visible?: boolean;
-  width?: (() => number) | number | string;
-  render?: (...params: any) => React.ReactNode;
-  component?: React.ComponentType<any>;
-  keyFn?: (data: any) => string;
-}>;
-class Options extends NestedOption<IOptionsProps> {
-  public static OptionName = 'options';
-
-  public static TemplateProps = [{
-    tmplOption: 'template',
-    render: 'render',
-    component: 'component',
-    keyFn: 'keyFn',
-  }];
-}
-
-// owners:
 // Gantt
 type IResourceAssignmentsProps = React.PropsWithChildren<{
   dataSource?: Array<any> | DataSource | DataSourceOptions | null | Store | string;
@@ -737,7 +592,7 @@ class ScaleTypeRange extends NestedOption<IScaleTypeRangeProps> {
 // ColumnHeaderFilter
 // GanttHeaderFilter
 type ISearchProps = React.PropsWithChildren<{
-  editorOptions?: dxTextBoxOptions;
+  editorOptions?: any;
   enabled?: boolean;
   mode?: 'contains' | 'startswith' | 'equals';
   searchExpr?: Array<(() => any) | string> | (() => any) | string;
@@ -871,8 +726,6 @@ export default Gantt;
 export {
   Gantt,
   IGanttOptions,
-  Button,
-  IButtonProps,
   Column,
   IColumnProps,
   ColumnHeaderFilter,
@@ -887,8 +740,6 @@ export {
   IDependenciesProps,
   Editing,
   IEditingProps,
-  EditorOptions,
-  IEditorOptionsProps,
   FilterRow,
   IFilterRowProps,
   Format,
@@ -903,8 +754,6 @@ export {
   IItemProps,
   OperationDescriptions,
   IOperationDescriptionsProps,
-  Options,
-  IOptionsProps,
   ResourceAssignments,
   IResourceAssignmentsProps,
   Resources,

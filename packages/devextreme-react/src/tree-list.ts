@@ -11,29 +11,24 @@ import type {
   DataChange, ColumnHeaderFilterSearchConfig, ColumnChooserSearchConfig, ColumnChooserSelectionConfig, GridBase, HeaderFilterSearchConfig,
 } from 'devextreme/common/grids';
 import type { AnimationConfig, AnimationState } from 'devextreme/animation/fx';
-import type { event, NativeEventInfo, EventInfo } from 'devextreme/events/index';
+import type { event, EventInfo } from 'devextreme/events/index';
 import type { template } from 'devextreme/core/templates/template';
-import type { dxButtonOptions } from 'devextreme/ui/button';
 import type {
   dxFormSimpleItem, dxFormOptions, dxFormGroupItem, dxFormTabbedItem, dxFormEmptyItem, dxFormButtonItem,
 } from 'devextreme/ui/form';
 import type { DataSourceOptions } from 'devextreme/data/data_source';
 import type { Store } from 'devextreme/data/abstract_store';
 import type { PositionConfig } from 'devextreme/animation/position';
-import type { dxTextBoxOptions } from 'devextreme/ui/text_box';
 import type { dxFilterBuilderField, dxFilterBuilderCustomOperation } from 'devextreme/ui/filter_builder';
 import type { dxPopupOptions, dxPopupToolbarItem } from 'devextreme/ui/popup';
-import type { dxTextEditorButton } from 'devextreme/ui/text_box/ui.text_editor.base';
 import type { Component } from 'devextreme/core/component';
 import type { CollectionWidgetItem } from 'devextreme/ui/collection/ui.collection_widget.base';
 
-import type DOMComponent from 'devextreme/core/dom_component';
-import type Editor from 'devextreme/ui/editor/editor';
 import type dxFilterBuilder from 'devextreme/ui/filter_builder';
+import type DOMComponent from 'devextreme/core/dom_component';
 import type dxOverlay from 'devextreme/ui/overlay';
 import type dxPopup from 'devextreme/ui/popup';
 import type dxForm from 'devextreme/ui/form';
-import type dxButton from 'devextreme/ui/button';
 import type dxSortable from 'devextreme/ui/sortable';
 import type dxDraggable from 'devextreme/ui/draggable';
 
@@ -356,7 +351,6 @@ class BoundaryOffset extends NestedOption<IBoundaryOffsetProps> {
 
 // owners:
 // Column
-// EditorOptions
 type IButtonProps = React.PropsWithChildren<{
   cssClass?: string;
   disabled?: boolean | ((options: { column: dxTreeListColumn, component: dxTreeList, row: dxTreeListRowObject }) => boolean);
@@ -367,8 +361,6 @@ type IButtonProps = React.PropsWithChildren<{
   template?: ((cellElement: any, cellInfo: { column: dxTreeListColumn, columnIndex: number, component: dxTreeList, data: object, key: any, row: dxTreeListRowObject, rowIndex: number, rowType: string }) => string) | template;
   text?: string;
   visible?: boolean | ((options: { column: dxTreeListColumn, component: dxTreeList, row: dxTreeListRowObject }) => boolean);
-  location?: 'after' | 'before';
-  options?: dxButtonOptions;
   render?: (...params: any) => React.ReactNode;
   component?: React.ComponentType<any>;
   keyFn?: (data: any) => string;
@@ -539,7 +531,6 @@ class Column extends NestedOption<IColumnProps> {
   public static ExpectedChildren = {
     AsyncRule: { optionName: 'validationRules', isCollectionItem: true },
     button: { optionName: 'buttons', isCollectionItem: true },
-    columnButton: { optionName: 'buttons', isCollectionItem: true },
     columnHeaderFilter: { optionName: 'headerFilter', isCollectionItem: false },
     columnLookup: { optionName: 'lookup', isCollectionItem: false },
     CompareRule: { optionName: 'validationRules', isCollectionItem: true },
@@ -576,35 +567,6 @@ class Column extends NestedOption<IColumnProps> {
 }
 
 // owners:
-// Column
-type IColumnButtonProps = React.PropsWithChildren<{
-  cssClass?: string;
-  disabled?: boolean | ((options: { column: dxTreeListColumn, component: dxTreeList, row: dxTreeListRowObject }) => boolean);
-  hint?: string;
-  icon?: string;
-  name?: 'add' | 'cancel' | 'delete' | 'edit' | 'save' | 'undelete';
-  onClick?: ((e: { column: dxTreeListColumn, component: dxTreeList, element: any, event: event, model: any, row: dxTreeListRowObject }) => void);
-  template?: ((cellElement: any, cellInfo: { column: dxTreeListColumn, columnIndex: number, component: dxTreeList, data: object, key: any, row: dxTreeListRowObject, rowIndex: number, rowType: string }) => string) | template;
-  text?: string;
-  visible?: boolean | ((options: { column: dxTreeListColumn, component: dxTreeList, row: dxTreeListRowObject }) => boolean);
-  render?: (...params: any) => React.ReactNode;
-  component?: React.ComponentType<any>;
-  keyFn?: (data: any) => string;
-}>;
-class ColumnButton extends NestedOption<IColumnButtonProps> {
-  public static OptionName = 'buttons';
-
-  public static IsCollectionItem = true;
-
-  public static TemplateProps = [{
-    tmplOption: 'template',
-    render: 'render',
-    component: 'component',
-    keyFn: 'keyFn',
-  }];
-}
-
-// owners:
 // TreeList
 type IColumnChooserProps = React.PropsWithChildren<{
   allowSearch?: boolean;
@@ -635,16 +597,12 @@ class ColumnChooser extends NestedOption<IColumnChooserProps> {
 // owners:
 // ColumnChooser
 type IColumnChooserSearchProps = React.PropsWithChildren<{
-  editorOptions?: dxTextBoxOptions;
+  editorOptions?: any;
   enabled?: boolean;
   timeout?: number;
 }>;
 class ColumnChooserSearch extends NestedOption<IColumnChooserSearchProps> {
   public static OptionName = 'search';
-
-  public static ExpectedChildren = {
-    editorOptions: { optionName: 'editorOptions', isCollectionItem: false },
-  };
 }
 
 // owners:
@@ -714,7 +672,7 @@ class ColumnHeaderFilter extends NestedOption<IColumnHeaderFilterProps> {
 // owners:
 // ColumnHeaderFilter
 type IColumnHeaderFilterSearchProps = React.PropsWithChildren<{
-  editorOptions?: dxTextBoxOptions;
+  editorOptions?: any;
   enabled?: boolean;
   mode?: 'contains' | 'startswith' | 'equals';
   searchExpr?: Array<(() => any) | string> | (() => any) | string;
@@ -722,10 +680,6 @@ type IColumnHeaderFilterSearchProps = React.PropsWithChildren<{
 }>;
 class ColumnHeaderFilterSearch extends NestedOption<IColumnHeaderFilterSearchProps> {
   public static OptionName = 'search';
-
-  public static ExpectedChildren = {
-    editorOptions: { optionName: 'editorOptions', isCollectionItem: false },
-  };
 }
 
 // owners:
@@ -893,93 +847,6 @@ type IEditingTextsProps = React.PropsWithChildren<{
 }>;
 class EditingTexts extends NestedOption<IEditingTextsProps> {
   public static OptionName = 'texts';
-}
-
-// owners:
-// ColumnHeaderFilterSearch
-// ColumnChooserSearch
-type IEditorOptionsProps = React.PropsWithChildren<{
-  accessKey?: string;
-  activeStateEnabled?: boolean;
-  bindingOptions?: object;
-  buttons?: Array<dxTextEditorButton | string | 'clear'>;
-  disabled?: boolean;
-  elementAttr?: object;
-  focusStateEnabled?: boolean;
-  height?: (() => number) | number | string;
-  hint?: string;
-  hoverStateEnabled?: boolean;
-  inputAttr?: any;
-  isValid?: boolean;
-  label?: string;
-  labelMode?: 'static' | 'floating' | 'hidden';
-  mask?: string;
-  maskChar?: string;
-  maskInvalidMessage?: string;
-  maskRules?: any;
-  maxLength?: number | string;
-  mode?: 'email' | 'password' | 'search' | 'tel' | 'text' | 'url';
-  name?: string;
-  onChange?: ((e: NativeEventInfo<any>) => void);
-  onContentReady?: ((e: EventInfo<any>) => void);
-  onCopy?: ((e: NativeEventInfo<any>) => void);
-  onCut?: ((e: NativeEventInfo<any>) => void);
-  onDisposing?: ((e: EventInfo<any>) => void);
-  onEnterKey?: ((e: NativeEventInfo<any>) => void);
-  onFocusIn?: ((e: NativeEventInfo<any>) => void);
-  onFocusOut?: ((e: NativeEventInfo<any>) => void);
-  onInitialized?: ((e: { component: Component<any>, element: any }) => void);
-  onInput?: ((e: NativeEventInfo<any>) => void);
-  onKeyDown?: ((e: NativeEventInfo<any>) => void);
-  onKeyUp?: ((e: NativeEventInfo<any>) => void);
-  onOptionChanged?: ((e: { component: DOMComponent, element: any, fullName: string, model: any, name: string, previousValue: any, value: any }) => void);
-  onPaste?: ((e: NativeEventInfo<any>) => void);
-  onValueChanged?: ((e: { component: Editor, element: any, event: event, model: any, previousValue: object, value: object }) => void);
-  placeholder?: string;
-  readOnly?: boolean;
-  rtlEnabled?: boolean;
-  showClearButton?: boolean;
-  showMaskMode?: 'always' | 'onFocus';
-  spellcheck?: boolean;
-  stylingMode?: 'outlined' | 'underlined' | 'filled';
-  tabIndex?: number;
-  text?: string;
-  useMaskedValue?: boolean;
-  validationError?: any;
-  validationErrors?: Array<any>;
-  validationMessageMode?: 'always' | 'auto';
-  validationMessagePosition?: 'bottom' | 'left' | 'right' | 'top';
-  validationStatus?: 'valid' | 'invalid' | 'pending';
-  value?: string;
-  valueChangeEvent?: string;
-  visible?: boolean;
-  width?: (() => number) | number | string;
-  defaultValue?: string;
-  onValueChange?: (value: string) => void;
-}>;
-class EditorOptions extends NestedOption<IEditorOptionsProps> {
-  public static OptionName = 'editorOptions';
-
-  public static DefaultsProps = {
-    defaultValue: 'value',
-  };
-}
-
-// owners:
-// EditorOptions
-type IEditorOptionsButtonProps = React.PropsWithChildren<{
-  location?: 'after' | 'before';
-  name?: string;
-  options?: dxButtonOptions;
-}>;
-class EditorOptionsButton extends NestedOption<IEditorOptionsButtonProps> {
-  public static OptionName = 'buttons';
-
-  public static IsCollectionItem = true;
-
-  public static ExpectedChildren = {
-    options: { optionName: 'options', isCollectionItem: false },
-  };
 }
 
 // owners:
@@ -1685,49 +1552,6 @@ class OperationDescriptions extends NestedOption<IOperationDescriptionsProps> {
 }
 
 // owners:
-// EditorOptionsButton
-type IOptionsProps = React.PropsWithChildren<{
-  accessKey?: string;
-  activeStateEnabled?: boolean;
-  bindingOptions?: object;
-  disabled?: boolean;
-  elementAttr?: object;
-  focusStateEnabled?: boolean;
-  height?: (() => number) | number | string;
-  hint?: string;
-  hoverStateEnabled?: boolean;
-  icon?: string;
-  onClick?: ((e: { component: dxButton, element: any, event: event, model: any, validationGroup: object }) => void);
-  onContentReady?: ((e: EventInfo<any>) => void);
-  onDisposing?: ((e: EventInfo<any>) => void);
-  onInitialized?: ((e: { component: Component<any>, element: any }) => void);
-  onOptionChanged?: ((e: { component: DOMComponent, element: any, fullName: string, model: any, name: string, previousValue: any, value: any }) => void);
-  rtlEnabled?: boolean;
-  stylingMode?: 'text' | 'outlined' | 'contained';
-  tabIndex?: number;
-  template?: ((buttonData: { icon: string, text: string }, contentElement: any) => string) | template;
-  text?: string;
-  type?: 'back' | 'danger' | 'default' | 'normal' | 'success';
-  useSubmitBehavior?: boolean;
-  validationGroup?: string;
-  visible?: boolean;
-  width?: (() => number) | number | string;
-  render?: (...params: any) => React.ReactNode;
-  component?: React.ComponentType<any>;
-  keyFn?: (data: any) => string;
-}>;
-class Options extends NestedOption<IOptionsProps> {
-  public static OptionName = 'options';
-
-  public static TemplateProps = [{
-    tmplOption: 'template',
-    render: 'render',
-    component: 'component',
-    keyFn: 'keyFn',
-  }];
-}
-
-// owners:
 // TreeList
 type IPagerProps = React.PropsWithChildren<{
   allowedPageSizes?: Array<number | 'all' | 'auto'> | 'auto';
@@ -2036,7 +1860,7 @@ class Scrolling extends NestedOption<IScrollingProps> {
 // ColumnChooser
 // TreeListHeaderFilter
 type ISearchProps = React.PropsWithChildren<{
-  editorOptions?: dxTextBoxOptions;
+  editorOptions?: any;
   enabled?: boolean;
   mode?: 'contains' | 'startswith' | 'equals';
   searchExpr?: Array<(() => any) | string> | (() => any) | string;
@@ -2278,7 +2102,7 @@ class TreeListHeaderFilter extends NestedOption<ITreeListHeaderFilterProps> {
 // owners:
 // TreeListHeaderFilter
 type ITreeListHeaderFilterSearchProps = React.PropsWithChildren<{
-  editorOptions?: dxTextBoxOptions;
+  editorOptions?: any;
   enabled?: boolean;
   mode?: 'contains' | 'startswith' | 'equals';
   timeout?: number;
@@ -2357,8 +2181,6 @@ export {
   ICollisionProps,
   Column,
   IColumnProps,
-  ColumnButton,
-  IColumnButtonProps,
   ColumnChooser,
   IColumnChooserProps,
   ColumnChooserSearch,
@@ -2387,10 +2209,6 @@ export {
   IEditingProps,
   EditingTexts,
   IEditingTextsProps,
-  EditorOptions,
-  IEditorOptionsProps,
-  EditorOptionsButton,
-  IEditorOptionsButtonProps,
   EmailRule,
   IEmailRuleProps,
   Field,
@@ -2441,8 +2259,6 @@ export {
   IOffsetProps,
   OperationDescriptions,
   IOperationDescriptionsProps,
-  Options,
-  IOptionsProps,
   Pager,
   IPagerProps,
   Paging,
