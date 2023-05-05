@@ -349,7 +349,7 @@ export function mapWidget(
       existingTypes[typeName] = existingTypeEntry;
     }
     if (isConflicted) {
-      const typePostfix = module === UNKNOWN_MODULE || !module.length
+      const typePrefix = module === UNKNOWN_MODULE || !module.length
         ? 'Aliased'
         : module
           .substring(module.lastIndexOf('/') + 1)
@@ -357,7 +357,7 @@ export function mapWidget(
           .map((s) => (s.charAt(0).toUpperCase() + s.slice(1)))
           .join('');
 
-      const aliasedTypeName = `${typeName}${typePostfix}`;
+      const aliasedTypeName = `${typePrefix}${typeName}`;
       const moduleKey = module && module.length ? module : UNKNOWN_MODULE;
       typeAliases[typeName] = { ...(typeAliases[typeName] || {}), [moduleKey]: aliasedTypeName };
       return aliasedTypeName;

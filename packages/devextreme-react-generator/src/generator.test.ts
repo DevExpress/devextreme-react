@@ -1062,10 +1062,10 @@ describe('mapWidget', () => {
       expect(component.nestedComponents?.[0].className).toBe('ComplexOption1');
       expect(component.nestedComponents?.[1].className).toBe('ComplexOption2');
       expect(customTypeImports!['devextreme/complex/option/some_super-module']).toEqual([
-        'ComplexOption1 as ComplexOption1SomeSuperModule',
+        'ComplexOption1 as SomeSuperModuleComplexOption1',
       ]);
       expect(customTypeImports!['yet/another/overidden/module']).toEqual([
-        'ComplexOption2 as ComplexOption2Aliased',
+        'ComplexOption2 as AliasedComplexOption2',
       ]);
     });
 
