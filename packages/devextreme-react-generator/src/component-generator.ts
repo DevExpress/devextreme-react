@@ -98,6 +98,7 @@ const USE_REQUEST_ANIMATION_FRAME: Set<string> = new Set([
   'dxChart',
   'dxDateBox',
   'dxDataGrid',
+  'dxFilterBuilder',
 ]);
 
 function getIndent(indent: number) {
