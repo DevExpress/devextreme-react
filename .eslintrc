@@ -8,7 +8,7 @@
         "node": true,
         "jest": true
     },
-    "ignorePatterns": ["packages/devextreme-react/src/*.ts", "packages/devextreme-react/src/ui/*.ts", "node_modules", "dist"],
+    "ignorePatterns": ["node_modules", "dist", "devextreme"],
     "parserOptions": {
         "project": ["./tsconfig.json", "./packages/*/tsconfig.json"]
     },
