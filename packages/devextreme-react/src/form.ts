@@ -1,58 +1,60 @@
 import dxForm, {
-    Properties
-} from "devextreme/ui/form";
+  Properties,
+} from 'devextreme/ui/form';
 
-import * as PropTypes from "prop-types";
-import { Component as BaseComponent, IHtmlOptions } from "./core/component";
-import NestedOption from "./core/nested-option";
+import * as PropTypes from 'prop-types';
 
-import type { dxButtonOptions } from "devextreme/ui/button";
-import type { event, EventInfo } from "devextreme/events/index";
-import type { Component } from "devextreme/core/component";
-import type { template } from "devextreme/core/templates/template";
-import type { dxFormButtonItem, dxFormEmptyItem, dxFormGroupItem, dxFormSimpleItem, dxFormTabbedItem } from "devextreme/ui/form";
-import type { CollectionWidgetItem } from "devextreme/ui/collection/ui.collection_widget.base";
-import type { dxTabPanelOptions, dxTabPanelItem } from "devextreme/ui/tab_panel";
-import type { DataSourceOptions } from "devextreme/data/data_source";
-import type { Store } from "devextreme/data/abstract_store";
+import type { dxButtonOptions } from 'devextreme/ui/button';
+import type { event, EventInfo } from 'devextreme/events/index';
+import type { Component } from 'devextreme/core/component';
+import type { template } from 'devextreme/core/templates/template';
+import type {
+  dxFormButtonItem, dxFormEmptyItem, dxFormGroupItem, dxFormSimpleItem, dxFormTabbedItem,
+} from 'devextreme/ui/form';
+import type { CollectionWidgetItem } from 'devextreme/ui/collection/ui.collection_widget.base';
+import type { dxTabPanelOptions, dxTabPanelItem } from 'devextreme/ui/tab_panel';
+import type { DataSourceOptions } from 'devextreme/data/data_source';
+import type { Store } from 'devextreme/data/abstract_store';
 
-import type dxButton from "devextreme/ui/button";
-import type DOMComponent from "devextreme/core/dom_component";
-import type DataSource from "devextreme/data/data_source";
-import type CollectionWidget from "devextreme/ui/collection/ui.collection_widget.base";
-import type dxTabPanel from "devextreme/ui/tab_panel";
+import type dxButton from 'devextreme/ui/button';
+import type DOMComponent from 'devextreme/core/dom_component';
+import type DataSource from 'devextreme/data/data_source';
+import type CollectionWidget from 'devextreme/ui/collection/ui.collection_widget.base';
+import type dxTabPanel from 'devextreme/ui/tab_panel';
 
-import type * as CommonTypes from "devextreme/common";
+import type * as CommonTypes from 'devextreme/common';
+import type * as FormTypes from 'devextreme/ui/form_types';
+import NestedOption from './core/nested-option';
+import { Component as BaseComponent, IHtmlOptions } from './core/component';
 
 type IFormOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
   defaultFormData?: any;
   onFormDataChange?: (value: any) => void;
-}>
+}>;
 
 class Form extends BaseComponent<React.PropsWithChildren<IFormOptions>> {
-
   public get instance(): dxForm {
     return this._instance;
   }
 
   protected _WidgetClass = dxForm;
 
-  protected subscribableOptions = ["formData"];
+  protected subscribableOptions = ['formData'];
 
-  protected independentEvents = ["onContentReady","onDisposing","onEditorEnterKey","onInitialized"];
+  protected independentEvents = ['onContentReady', 'onDisposing', 'onEditorEnterKey', 'onInitialized'];
 
   protected _defaults = {
-    defaultFormData: "formData"
+    defaultFormData: 'formData',
   };
 
   protected _expectedChildren = {
-    ButtonItem: { optionName: "items", isCollectionItem: true },
-    colCountByScreen: { optionName: "colCountByScreen", isCollectionItem: false },
-    EmptyItem: { optionName: "items", isCollectionItem: true },
-    GroupItem: { optionName: "items", isCollectionItem: true },
-    item: { optionName: "items", isCollectionItem: true },
-    SimpleItem: { optionName: "items", isCollectionItem: true },
-    TabbedItem: { optionName: "items", isCollectionItem: true }
+    ButtonItem: { optionName: 'items', isCollectionItem: true },
+    colCountByScreen: { optionName: 'colCountByScreen', isCollectionItem: false },
+    EmptyItem: { optionName: 'items', isCollectionItem: true },
+    GroupItem: { optionName: 'items', isCollectionItem: true },
+    item: { optionName: 'items', isCollectionItem: true },
+    SimpleItem: { optionName: 'items', isCollectionItem: true },
+    TabbedItem: { optionName: 'items', isCollectionItem: true },
   };
 }
 (Form as any).propTypes = {
@@ -63,10 +65,10 @@ class Form extends BaseComponent<React.PropsWithChildren<IFormOptions>> {
   colCount: PropTypes.oneOfType([
     PropTypes.number,
     PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.oneOf([
-      "auto"])
-  ])
+      PropTypes.string,
+      PropTypes.oneOf([
+        'auto']),
+    ]),
   ]),
   colCountByScreen: PropTypes.object,
   customizeItem: PropTypes.func,
@@ -76,7 +78,7 @@ class Form extends BaseComponent<React.PropsWithChildren<IFormOptions>> {
   height: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
+    PropTypes.string,
   ]),
   hint: PropTypes.string,
   hoverStateEnabled: PropTypes.bool,
@@ -84,17 +86,17 @@ class Form extends BaseComponent<React.PropsWithChildren<IFormOptions>> {
   labelLocation: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "left",
-      "right",
-      "top"])
+      'left',
+      'right',
+      'top']),
   ]),
   labelMode: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "static",
-      "floating",
-      "hidden",
-      "outside"])
+      'static',
+      'floating',
+      'hidden',
+      'outside']),
   ]),
   minColWidth: PropTypes.number,
   onContentReady: PropTypes.func,
@@ -120,10 +122,9 @@ class Form extends BaseComponent<React.PropsWithChildren<IFormOptions>> {
   width: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
-  ])
+    PropTypes.string,
+  ]),
 };
-
 
 // owners:
 // SimpleItem
@@ -131,14 +132,16 @@ type IAsyncRuleProps = React.PropsWithChildren<{
   ignoreEmptyValue?: boolean;
   message?: string;
   reevaluate?: boolean;
-  type?: "required" | "numeric" | "range" | "stringLength" | "custom" | "compare" | "pattern" | "email" | "async";
+  type?: 'required' | 'numeric' | 'range' | 'stringLength' | 'custom' | 'compare' | 'pattern' | 'email' | 'async';
   validationCallback?: ((options: { column: object, data: object, formItem: object, rule: object, validator: object, value: string | number }) => any);
-}>
+}>;
 class AsyncRule extends NestedOption<IAsyncRuleProps> {
-  public static OptionName = "validationRules";
+  public static OptionName = 'validationRules';
+
   public static IsCollectionItem = true;
+
   public static PredefinedProps = {
-    type: "async"
+    type: 'async',
   };
 }
 
@@ -148,21 +151,24 @@ type IButtonItemProps = React.PropsWithChildren<{
   buttonOptions?: dxButtonOptions;
   colSpan?: number;
   cssClass?: string;
-  horizontalAlignment?: "center" | "left" | "right";
-  itemType?: "empty" | "group" | "simple" | "tabbed" | "button";
+  horizontalAlignment?: 'center' | 'left' | 'right';
+  itemType?: 'empty' | 'group' | 'simple' | 'tabbed' | 'button';
   name?: string;
-  verticalAlignment?: "bottom" | "center" | "top";
+  verticalAlignment?: 'bottom' | 'center' | 'top';
   visible?: boolean;
   visibleIndex?: number;
-}>
+}>;
 class ButtonItem extends NestedOption<IButtonItemProps> {
-  public static OptionName = "items";
+  public static OptionName = 'items';
+
   public static IsCollectionItem = true;
+
   public static ExpectedChildren = {
-    buttonOptions: { optionName: "buttonOptions", isCollectionItem: false }
+    buttonOptions: { optionName: 'buttonOptions', isCollectionItem: false },
   };
+
   public static PredefinedProps = {
-    itemType: "button"
+    itemType: 'button',
   };
 }
 
@@ -185,11 +191,11 @@ type IButtonOptionsProps = React.PropsWithChildren<{
   onInitialized?: ((e: { component: Component<any>, element: any }) => void);
   onOptionChanged?: ((e: { component: DOMComponent, element: any, fullName: string, model: any, name: string, previousValue: any, value: any }) => void);
   rtlEnabled?: boolean;
-  stylingMode?: "text" | "outlined" | "contained";
+  stylingMode?: 'text' | 'outlined' | 'contained';
   tabIndex?: number;
   template?: ((buttonData: { icon: string, text: string }, contentElement: any) => string) | template;
   text?: string;
-  type?: "back" | "danger" | "default" | "normal" | "success";
+  type?: 'back' | 'danger' | 'default' | 'normal' | 'success';
   useSubmitBehavior?: boolean;
   validationGroup?: string;
   visible?: boolean;
@@ -197,14 +203,15 @@ type IButtonOptionsProps = React.PropsWithChildren<{
   render?: (...params: any) => React.ReactNode;
   component?: React.ComponentType<any>;
   keyFn?: (data: any) => string;
-}>
+}>;
 class ButtonOptions extends NestedOption<IButtonOptionsProps> {
-  public static OptionName = "buttonOptions";
+  public static OptionName = 'buttonOptions';
+
   public static TemplateProps = [{
-    tmplOption: "template",
-    render: "render",
-    component: "component",
-    keyFn: "keyFn"
+    tmplOption: 'template',
+    render: 'render',
+    component: 'component',
+    keyFn: 'keyFn',
   }];
 }
 
@@ -217,25 +224,27 @@ type IColCountByScreenProps = React.PropsWithChildren<{
   md?: number;
   sm?: number;
   xs?: number;
-}>
+}>;
 class ColCountByScreen extends NestedOption<IColCountByScreenProps> {
-  public static OptionName = "colCountByScreen";
+  public static OptionName = 'colCountByScreen';
 }
 
 // owners:
 // SimpleItem
 type ICompareRuleProps = React.PropsWithChildren<{
   comparisonTarget?: (() => object);
-  comparisonType?: "!=" | "!==" | "<" | "<=" | "==" | "===" | ">" | ">=";
+  comparisonType?: '!=' | '!==' | '<' | '<=' | '==' | '===' | '>' | '>=';
   ignoreEmptyValue?: boolean;
   message?: string;
-  type?: "required" | "numeric" | "range" | "stringLength" | "custom" | "compare" | "pattern" | "email" | "async";
-}>
+  type?: 'required' | 'numeric' | 'range' | 'stringLength' | 'custom' | 'compare' | 'pattern' | 'email' | 'async';
+}>;
 class CompareRule extends NestedOption<ICompareRuleProps> {
-  public static OptionName = "validationRules";
+  public static OptionName = 'validationRules';
+
   public static IsCollectionItem = true;
+
   public static PredefinedProps = {
-    type: "compare"
+    type: 'compare',
   };
 }
 
@@ -245,14 +254,16 @@ type ICustomRuleProps = React.PropsWithChildren<{
   ignoreEmptyValue?: boolean;
   message?: string;
   reevaluate?: boolean;
-  type?: "required" | "numeric" | "range" | "stringLength" | "custom" | "compare" | "pattern" | "email" | "async";
+  type?: 'required' | 'numeric' | 'range' | 'stringLength' | 'custom' | 'compare' | 'pattern' | 'email' | 'async';
   validationCallback?: ((options: { column: object, data: object, formItem: object, rule: object, validator: object, value: string | number }) => boolean);
-}>
+}>;
 class CustomRule extends NestedOption<ICustomRuleProps> {
-  public static OptionName = "validationRules";
+  public static OptionName = 'validationRules';
+
   public static IsCollectionItem = true;
+
   public static PredefinedProps = {
-    type: "custom"
+    type: 'custom',
   };
 }
 
@@ -261,13 +272,15 @@ class CustomRule extends NestedOption<ICustomRuleProps> {
 type IEmailRuleProps = React.PropsWithChildren<{
   ignoreEmptyValue?: boolean;
   message?: string;
-  type?: "required" | "numeric" | "range" | "stringLength" | "custom" | "compare" | "pattern" | "email" | "async";
-}>
+  type?: 'required' | 'numeric' | 'range' | 'stringLength' | 'custom' | 'compare' | 'pattern' | 'email' | 'async';
+}>;
 class EmailRule extends NestedOption<IEmailRuleProps> {
-  public static OptionName = "validationRules";
+  public static OptionName = 'validationRules';
+
   public static IsCollectionItem = true;
+
   public static PredefinedProps = {
-    type: "email"
+    type: 'email',
   };
 }
 
@@ -276,16 +289,18 @@ class EmailRule extends NestedOption<IEmailRuleProps> {
 type IEmptyItemProps = React.PropsWithChildren<{
   colSpan?: number;
   cssClass?: string;
-  itemType?: "empty" | "group" | "simple" | "tabbed" | "button";
+  itemType?: 'empty' | 'group' | 'simple' | 'tabbed' | 'button';
   name?: string;
   visible?: boolean;
   visibleIndex?: number;
-}>
+}>;
 class EmptyItem extends NestedOption<IEmptyItemProps> {
-  public static OptionName = "items";
+  public static OptionName = 'items';
+
   public static IsCollectionItem = true;
+
   public static PredefinedProps = {
-    itemType: "empty"
+    itemType: 'empty',
   };
 }
 
@@ -304,7 +319,7 @@ type IGroupItemProps = React.PropsWithChildren<{
   colSpan?: number;
   cssClass?: string;
   items?: Array<dxFormButtonItem | dxFormEmptyItem | dxFormGroupItem | dxFormSimpleItem | dxFormTabbedItem>;
-  itemType?: "empty" | "group" | "simple" | "tabbed" | "button";
+  itemType?: 'empty' | 'group' | 'simple' | 'tabbed' | 'button';
   name?: string;
   template?: ((data: { component: dxForm, formData: object }, itemElement: any) => string) | template;
   visible?: boolean;
@@ -312,21 +327,25 @@ type IGroupItemProps = React.PropsWithChildren<{
   render?: (...params: any) => React.ReactNode;
   component?: React.ComponentType<any>;
   keyFn?: (data: any) => string;
-}>
+}>;
 class GroupItem extends NestedOption<IGroupItemProps> {
-  public static OptionName = "items";
+  public static OptionName = 'items';
+
   public static IsCollectionItem = true;
+
   public static ExpectedChildren = {
-    colCountByScreen: { optionName: "colCountByScreen", isCollectionItem: false }
+    colCountByScreen: { optionName: 'colCountByScreen', isCollectionItem: false },
   };
+
   public static TemplateProps = [{
-    tmplOption: "template",
-    render: "render",
-    component: "component",
-    keyFn: "keyFn"
+    tmplOption: 'template',
+    render: 'render',
+    component: 'component',
+    keyFn: 'keyFn',
   }];
+
   public static PredefinedProps = {
-    itemType: "group"
+    itemType: 'group',
   };
 }
 
@@ -346,13 +365,13 @@ type IItemProps = React.PropsWithChildren<{
   cssClass?: string;
   dataField?: string;
   editorOptions?: any;
-  editorType?: "dxAutocomplete" | "dxCalendar" | "dxCheckBox" | "dxColorBox" | "dxDateBox" | "dxDropDownBox" | "dxHtmlEditor" | "dxLookup" | "dxNumberBox" | "dxRadioGroup" | "dxRangeSlider" | "dxSelectBox" | "dxSlider" | "dxSwitch" | "dxTagBox" | "dxTextArea" | "dxTextBox";
+  editorType?: 'dxAutocomplete' | 'dxCalendar' | 'dxCheckBox' | 'dxColorBox' | 'dxDateBox' | 'dxDropDownBox' | 'dxHtmlEditor' | 'dxLookup' | 'dxNumberBox' | 'dxRadioGroup' | 'dxRangeSlider' | 'dxSelectBox' | 'dxSlider' | 'dxSwitch' | 'dxTagBox' | 'dxTextArea' | 'dxTextBox';
   helpText?: string;
   isRequired?: boolean;
-  itemType?: "empty" | "group" | "simple" | "tabbed" | "button";
+  itemType?: 'empty' | 'group' | 'simple' | 'tabbed' | 'button';
   label?: object | {
-    alignment?: "center" | "left" | "right";
-    location?: "left" | "right" | "top";
+    alignment?: 'center' | 'left' | 'right';
+    location?: 'left' | 'right' | 'top';
     showColon?: boolean;
     template?: ((itemData: { component: dxForm, dataField: string, editorOptions: any, editorType: string, name: string, text: string }, itemElement: any) => string) | template;
     text?: string;
@@ -391,36 +410,38 @@ type IItemProps = React.PropsWithChildren<{
     title?: string;
   }[];
   buttonOptions?: dxButtonOptions;
-  horizontalAlignment?: "center" | "left" | "right";
-  verticalAlignment?: "bottom" | "center" | "top";
+  horizontalAlignment?: 'center' | 'left' | 'right';
+  verticalAlignment?: 'bottom' | 'center' | 'top';
   tabRender?: (...params: any) => React.ReactNode;
   tabComponent?: React.ComponentType<any>;
   tabKeyFn?: (data: any) => string;
   render?: (...params: any) => React.ReactNode;
   component?: React.ComponentType<any>;
   keyFn?: (data: any) => string;
-}>
+}>;
 class Item extends NestedOption<IItemProps> {
-  public static OptionName = "items";
+  public static OptionName = 'items';
+
   public static IsCollectionItem = true;
+
   public static TemplateProps = [{
-    tmplOption: "tabTemplate",
-    render: "tabRender",
-    component: "tabComponent",
-    keyFn: "tabKeyFn"
+    tmplOption: 'tabTemplate',
+    render: 'tabRender',
+    component: 'tabComponent',
+    keyFn: 'tabKeyFn',
   }, {
-    tmplOption: "template",
-    render: "render",
-    component: "component",
-    keyFn: "keyFn"
+    tmplOption: 'template',
+    render: 'render',
+    component: 'component',
+    keyFn: 'keyFn',
   }];
 }
 
 // owners:
 // SimpleItem
 type ILabelProps = React.PropsWithChildren<{
-  alignment?: "center" | "left" | "right";
-  location?: "left" | "right" | "top";
+  alignment?: 'center' | 'left' | 'right';
+  location?: 'left' | 'right' | 'top';
   showColon?: boolean;
   template?: ((itemData: { component: dxForm, dataField: string, editorOptions: any, editorType: string, name: string, text: string }, itemElement: any) => string) | template;
   text?: string;
@@ -428,14 +449,15 @@ type ILabelProps = React.PropsWithChildren<{
   render?: (...params: any) => React.ReactNode;
   component?: React.ComponentType<any>;
   keyFn?: (data: any) => string;
-}>
+}>;
 class Label extends NestedOption<ILabelProps> {
-  public static OptionName = "label";
+  public static OptionName = 'label';
+
   public static TemplateProps = [{
-    tmplOption: "template",
-    render: "render",
-    component: "component",
-    keyFn: "keyFn"
+    tmplOption: 'template',
+    render: 'render',
+    component: 'component',
+    keyFn: 'keyFn',
   }];
 }
 
@@ -444,13 +466,15 @@ class Label extends NestedOption<ILabelProps> {
 type INumericRuleProps = React.PropsWithChildren<{
   ignoreEmptyValue?: boolean;
   message?: string;
-  type?: "required" | "numeric" | "range" | "stringLength" | "custom" | "compare" | "pattern" | "email" | "async";
-}>
+  type?: 'required' | 'numeric' | 'range' | 'stringLength' | 'custom' | 'compare' | 'pattern' | 'email' | 'async';
+}>;
 class NumericRule extends NestedOption<INumericRuleProps> {
-  public static OptionName = "validationRules";
+  public static OptionName = 'validationRules';
+
   public static IsCollectionItem = true;
+
   public static PredefinedProps = {
-    type: "numeric"
+    type: 'numeric',
   };
 }
 
@@ -460,13 +484,15 @@ type IPatternRuleProps = React.PropsWithChildren<{
   ignoreEmptyValue?: boolean;
   message?: string;
   pattern?: any | string;
-  type?: "required" | "numeric" | "range" | "stringLength" | "custom" | "compare" | "pattern" | "email" | "async";
-}>
+  type?: 'required' | 'numeric' | 'range' | 'stringLength' | 'custom' | 'compare' | 'pattern' | 'email' | 'async';
+}>;
 class PatternRule extends NestedOption<IPatternRuleProps> {
-  public static OptionName = "validationRules";
+  public static OptionName = 'validationRules';
+
   public static IsCollectionItem = true;
+
   public static PredefinedProps = {
-    type: "pattern"
+    type: 'pattern',
   };
 }
 
@@ -478,13 +504,15 @@ type IRangeRuleProps = React.PropsWithChildren<{
   message?: string;
   min?: any | number;
   reevaluate?: boolean;
-  type?: "required" | "numeric" | "range" | "stringLength" | "custom" | "compare" | "pattern" | "email" | "async";
-}>
+  type?: 'required' | 'numeric' | 'range' | 'stringLength' | 'custom' | 'compare' | 'pattern' | 'email' | 'async';
+}>;
 class RangeRule extends NestedOption<IRangeRuleProps> {
-  public static OptionName = "validationRules";
+  public static OptionName = 'validationRules';
+
   public static IsCollectionItem = true;
+
   public static PredefinedProps = {
-    type: "range"
+    type: 'range',
   };
 }
 
@@ -493,13 +521,15 @@ class RangeRule extends NestedOption<IRangeRuleProps> {
 type IRequiredRuleProps = React.PropsWithChildren<{
   message?: string;
   trim?: boolean;
-  type?: "required" | "numeric" | "range" | "stringLength" | "custom" | "compare" | "pattern" | "email" | "async";
-}>
+  type?: 'required' | 'numeric' | 'range' | 'stringLength' | 'custom' | 'compare' | 'pattern' | 'email' | 'async';
+}>;
 class RequiredRule extends NestedOption<IRequiredRuleProps> {
-  public static OptionName = "validationRules";
+  public static OptionName = 'validationRules';
+
   public static IsCollectionItem = true;
+
   public static PredefinedProps = {
-    type: "required"
+    type: 'required',
   };
 }
 
@@ -510,13 +540,13 @@ type ISimpleItemProps = React.PropsWithChildren<{
   cssClass?: string;
   dataField?: string;
   editorOptions?: any;
-  editorType?: "dxAutocomplete" | "dxCalendar" | "dxCheckBox" | "dxColorBox" | "dxDateBox" | "dxDropDownBox" | "dxHtmlEditor" | "dxLookup" | "dxNumberBox" | "dxRadioGroup" | "dxRangeSlider" | "dxSelectBox" | "dxSlider" | "dxSwitch" | "dxTagBox" | "dxTextArea" | "dxTextBox";
+  editorType?: 'dxAutocomplete' | 'dxCalendar' | 'dxCheckBox' | 'dxColorBox' | 'dxDateBox' | 'dxDropDownBox' | 'dxHtmlEditor' | 'dxLookup' | 'dxNumberBox' | 'dxRadioGroup' | 'dxRangeSlider' | 'dxSelectBox' | 'dxSlider' | 'dxSwitch' | 'dxTagBox' | 'dxTextArea' | 'dxTextBox';
   helpText?: string;
   isRequired?: boolean;
-  itemType?: "empty" | "group" | "simple" | "tabbed" | "button";
+  itemType?: 'empty' | 'group' | 'simple' | 'tabbed' | 'button';
   label?: object | {
-    alignment?: "center" | "left" | "right";
-    location?: "left" | "right" | "top";
+    alignment?: 'center' | 'left' | 'right';
+    location?: 'left' | 'right' | 'top';
     showColon?: boolean;
     template?: ((itemData: { component: dxForm, dataField: string, editorOptions: any, editorType: string, name: string, text: string }, itemElement: any) => string) | template;
     text?: string;
@@ -530,31 +560,35 @@ type ISimpleItemProps = React.PropsWithChildren<{
   render?: (...params: any) => React.ReactNode;
   component?: React.ComponentType<any>;
   keyFn?: (data: any) => string;
-}>
+}>;
 class SimpleItem extends NestedOption<ISimpleItemProps> {
-  public static OptionName = "items";
+  public static OptionName = 'items';
+
   public static IsCollectionItem = true;
+
   public static ExpectedChildren = {
-    AsyncRule: { optionName: "validationRules", isCollectionItem: true },
-    CompareRule: { optionName: "validationRules", isCollectionItem: true },
-    CustomRule: { optionName: "validationRules", isCollectionItem: true },
-    EmailRule: { optionName: "validationRules", isCollectionItem: true },
-    label: { optionName: "label", isCollectionItem: false },
-    NumericRule: { optionName: "validationRules", isCollectionItem: true },
-    PatternRule: { optionName: "validationRules", isCollectionItem: true },
-    RangeRule: { optionName: "validationRules", isCollectionItem: true },
-    RequiredRule: { optionName: "validationRules", isCollectionItem: true },
-    StringLengthRule: { optionName: "validationRules", isCollectionItem: true },
-    validationRule: { optionName: "validationRules", isCollectionItem: true }
+    AsyncRule: { optionName: 'validationRules', isCollectionItem: true },
+    CompareRule: { optionName: 'validationRules', isCollectionItem: true },
+    CustomRule: { optionName: 'validationRules', isCollectionItem: true },
+    EmailRule: { optionName: 'validationRules', isCollectionItem: true },
+    label: { optionName: 'label', isCollectionItem: false },
+    NumericRule: { optionName: 'validationRules', isCollectionItem: true },
+    PatternRule: { optionName: 'validationRules', isCollectionItem: true },
+    RangeRule: { optionName: 'validationRules', isCollectionItem: true },
+    RequiredRule: { optionName: 'validationRules', isCollectionItem: true },
+    StringLengthRule: { optionName: 'validationRules', isCollectionItem: true },
+    validationRule: { optionName: 'validationRules', isCollectionItem: true },
   };
+
   public static TemplateProps = [{
-    tmplOption: "template",
-    render: "render",
-    component: "component",
-    keyFn: "keyFn"
+    tmplOption: 'template',
+    render: 'render',
+    component: 'component',
+    keyFn: 'keyFn',
   }];
+
   public static PredefinedProps = {
-    itemType: "simple"
+    itemType: 'simple',
   };
 }
 
@@ -566,13 +600,15 @@ type IStringLengthRuleProps = React.PropsWithChildren<{
   message?: string;
   min?: number;
   trim?: boolean;
-  type?: "required" | "numeric" | "range" | "stringLength" | "custom" | "compare" | "pattern" | "email" | "async";
-}>
+  type?: 'required' | 'numeric' | 'range' | 'stringLength' | 'custom' | 'compare' | 'pattern' | 'email' | 'async';
+}>;
 class StringLengthRule extends NestedOption<IStringLengthRuleProps> {
-  public static OptionName = "validationRules";
+  public static OptionName = 'validationRules';
+
   public static IsCollectionItem = true;
+
   public static PredefinedProps = {
-    type: "stringLength"
+    type: 'stringLength',
   };
 }
 
@@ -600,23 +636,26 @@ type ITabProps = React.PropsWithChildren<{
   render?: (...params: any) => React.ReactNode;
   component?: React.ComponentType<any>;
   keyFn?: (data: any) => string;
-}>
+}>;
 class Tab extends NestedOption<ITabProps> {
-  public static OptionName = "tabs";
+  public static OptionName = 'tabs';
+
   public static IsCollectionItem = true;
+
   public static ExpectedChildren = {
-    colCountByScreen: { optionName: "colCountByScreen", isCollectionItem: false }
+    colCountByScreen: { optionName: 'colCountByScreen', isCollectionItem: false },
   };
+
   public static TemplateProps = [{
-    tmplOption: "tabTemplate",
-    render: "tabRender",
-    component: "tabComponent",
-    keyFn: "tabKeyFn"
+    tmplOption: 'tabTemplate',
+    render: 'tabRender',
+    component: 'tabComponent',
+    keyFn: 'tabKeyFn',
   }, {
-    tmplOption: "template",
-    render: "render",
-    component: "component",
-    keyFn: "keyFn"
+    tmplOption: 'template',
+    render: 'render',
+    component: 'component',
+    keyFn: 'keyFn',
   }];
 }
 
@@ -625,7 +664,7 @@ class Tab extends NestedOption<ITabProps> {
 type ITabbedItemProps = React.PropsWithChildren<{
   colSpan?: number;
   cssClass?: string;
-  itemType?: "empty" | "group" | "simple" | "tabbed" | "button";
+  itemType?: 'empty' | 'group' | 'simple' | 'tabbed' | 'button';
   name?: string;
   tabPanelOptions?: dxTabPanelOptions;
   tabs?: Array<object> | {
@@ -647,16 +686,19 @@ type ITabbedItemProps = React.PropsWithChildren<{
   }[];
   visible?: boolean;
   visibleIndex?: number;
-}>
+}>;
 class TabbedItem extends NestedOption<ITabbedItemProps> {
-  public static OptionName = "items";
+  public static OptionName = 'items';
+
   public static IsCollectionItem = true;
+
   public static ExpectedChildren = {
-    tab: { optionName: "tabs", isCollectionItem: true },
-    tabPanelOptions: { optionName: "tabPanelOptions", isCollectionItem: false }
+    tab: { optionName: 'tabs', isCollectionItem: true },
+    tabPanelOptions: { optionName: 'tabPanelOptions', isCollectionItem: false },
   };
+
   public static PredefinedProps = {
-    itemType: "tabbed"
+    itemType: 'tabbed',
   };
 }
 
@@ -716,28 +758,31 @@ type ITabPanelOptionsProps = React.PropsWithChildren<{
   itemTitleRender?: (...params: any) => React.ReactNode;
   itemTitleComponent?: React.ComponentType<any>;
   itemTitleKeyFn?: (data: any) => string;
-}>
+}>;
 class TabPanelOptions extends NestedOption<ITabPanelOptionsProps> {
-  public static OptionName = "tabPanelOptions";
+  public static OptionName = 'tabPanelOptions';
+
   public static DefaultsProps = {
-    defaultItems: "items",
-    defaultSelectedIndex: "selectedIndex",
-    defaultSelectedItem: "selectedItem"
+    defaultItems: 'items',
+    defaultSelectedIndex: 'selectedIndex',
+    defaultSelectedItem: 'selectedItem',
   };
+
   public static ExpectedChildren = {
-    item: { optionName: "items", isCollectionItem: true },
-    tabPanelOptionsItem: { optionName: "items", isCollectionItem: true }
+    item: { optionName: 'items', isCollectionItem: true },
+    tabPanelOptionsItem: { optionName: 'items', isCollectionItem: true },
   };
+
   public static TemplateProps = [{
-    tmplOption: "itemTemplate",
-    render: "itemRender",
-    component: "itemComponent",
-    keyFn: "itemKeyFn"
+    tmplOption: 'itemTemplate',
+    render: 'itemRender',
+    component: 'itemComponent',
+    keyFn: 'itemKeyFn',
   }, {
-    tmplOption: "itemTitleTemplate",
-    render: "itemTitleRender",
-    component: "itemTitleComponent",
-    keyFn: "itemTitleKeyFn"
+    tmplOption: 'itemTitleTemplate',
+    render: 'itemTitleRender',
+    component: 'itemTitleComponent',
+    keyFn: 'itemTitleKeyFn',
   }];
 }
 
@@ -758,20 +803,22 @@ type ITabPanelOptionsItemProps = React.PropsWithChildren<{
   render?: (...params: any) => React.ReactNode;
   component?: React.ComponentType<any>;
   keyFn?: (data: any) => string;
-}>
+}>;
 class TabPanelOptionsItem extends NestedOption<ITabPanelOptionsItemProps> {
-  public static OptionName = "items";
+  public static OptionName = 'items';
+
   public static IsCollectionItem = true;
+
   public static TemplateProps = [{
-    tmplOption: "tabTemplate",
-    render: "tabRender",
-    component: "tabComponent",
-    keyFn: "tabKeyFn"
+    tmplOption: 'tabTemplate',
+    render: 'tabRender',
+    component: 'tabComponent',
+    keyFn: 'tabKeyFn',
   }, {
-    tmplOption: "template",
-    render: "render",
-    component: "component",
-    keyFn: "keyFn"
+    tmplOption: 'template',
+    render: 'render',
+    component: 'component',
+    keyFn: 'keyFn',
   }];
 }
 
@@ -780,21 +827,23 @@ class TabPanelOptionsItem extends NestedOption<ITabPanelOptionsItemProps> {
 type IValidationRuleProps = React.PropsWithChildren<{
   message?: string;
   trim?: boolean;
-  type?: "required" | "numeric" | "range" | "stringLength" | "custom" | "compare" | "pattern" | "email" | "async";
+  type?: 'required' | 'numeric' | 'range' | 'stringLength' | 'custom' | 'compare' | 'pattern' | 'email' | 'async';
   ignoreEmptyValue?: boolean;
   max?: any | number;
   min?: any | number;
   reevaluate?: boolean;
   validationCallback?: ((options: { column: object, data: object, formItem: object, rule: object, validator: object, value: string | number }) => boolean);
   comparisonTarget?: (() => object);
-  comparisonType?: "!=" | "!==" | "<" | "<=" | "==" | "===" | ">" | ">=";
+  comparisonType?: '!=' | '!==' | '<' | '<=' | '==' | '===' | '>' | '>=';
   pattern?: any | string;
-}>
+}>;
 class ValidationRule extends NestedOption<IValidationRuleProps> {
-  public static OptionName = "validationRules";
+  public static OptionName = 'validationRules';
+
   public static IsCollectionItem = true;
+
   public static PredefinedProps = {
-    type: "required"
+    type: 'required',
   };
 }
 
@@ -845,8 +894,6 @@ export {
   TabPanelOptionsItem,
   ITabPanelOptionsItemProps,
   ValidationRule,
-  IValidationRuleProps
+  IValidationRuleProps,
 };
-import type * as FormTypes from 'devextreme/ui/form_types';
 export { FormTypes };
-

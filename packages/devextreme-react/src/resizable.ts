@@ -1,32 +1,32 @@
 import dxResizable, {
-    Properties
-} from "devextreme/ui/resizable";
+  Properties,
+} from 'devextreme/ui/resizable';
 
-import * as PropTypes from "prop-types";
-import { Component as BaseComponent, IHtmlOptions } from "./core/component";
+import * as PropTypes from 'prop-types';
+import type * as ResizableTypes from 'devextreme/ui/resizable_types';
+import { Component as BaseComponent, IHtmlOptions } from './core/component';
 
 type IResizableOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
   defaultHeight?: (() => number) | number | string;
   defaultWidth?: (() => number) | number | string;
   onHeightChange?: (value: (() => number) | number | string) => void;
   onWidthChange?: (value: (() => number) | number | string) => void;
-}>
+}>;
 
 class Resizable extends BaseComponent<React.PropsWithChildren<IResizableOptions>> {
-
   public get instance(): dxResizable {
     return this._instance;
   }
 
   protected _WidgetClass = dxResizable;
 
-  protected subscribableOptions = ["height","width"];
+  protected subscribableOptions = ['height', 'width'];
 
-  protected independentEvents = ["onDisposing","onInitialized","onResize","onResizeEnd","onResizeStart"];
+  protected independentEvents = ['onDisposing', 'onInitialized', 'onResize', 'onResizeEnd', 'onResizeStart'];
 
   protected _defaults = {
-    defaultHeight: "height",
-    defaultWidth: "width"
+    defaultHeight: 'height',
+    defaultWidth: 'width',
   };
 }
 (Resizable as any).propTypes = {
@@ -34,16 +34,16 @@ class Resizable extends BaseComponent<React.PropsWithChildren<IResizableOptions>
   handles: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "bottom",
-      "left",
-      "right",
-      "top",
-      "all"])
+      'bottom',
+      'left',
+      'right',
+      'top',
+      'all']),
   ]),
   height: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
+    PropTypes.string,
   ]),
   keepAspectRatio: PropTypes.bool,
   maxHeight: PropTypes.number,
@@ -60,14 +60,12 @@ class Resizable extends BaseComponent<React.PropsWithChildren<IResizableOptions>
   width: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
-  ])
+    PropTypes.string,
+  ]),
 };
 export default Resizable;
 export {
   Resizable,
-  IResizableOptions
+  IResizableOptions,
 };
-import type * as ResizableTypes from 'devextreme/ui/resizable_types';
 export { ResizableTypes };
-

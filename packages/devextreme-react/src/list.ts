@@ -1,28 +1,30 @@
-export { ExplicitTypes } from "devextreme/ui/list";
 import dxList, {
-    Properties
-} from "devextreme/ui/list";
+  Properties,
+} from 'devextreme/ui/list';
 
-import * as PropTypes from "prop-types";
-import { Component as BaseComponent, IHtmlOptions } from "./core/component";
-import NestedOption from "./core/nested-option";
+import * as PropTypes from 'prop-types';
 
-import type { dxListItem } from "devextreme/ui/list";
-import type { dxButtonOptions } from "devextreme/ui/button";
-import type { CollectionWidgetItem } from "devextreme/ui/collection/ui.collection_widget.base";
-import type { template } from "devextreme/core/templates/template";
-import type { event, EventInfo, NativeEventInfo } from "devextreme/events/index";
-import type { Component } from "devextreme/core/component";
-import type { dxTextEditorButton } from "devextreme/ui/text_box/ui.text_editor.base";
+import type { dxListItem } from 'devextreme/ui/list';
+import type { dxButtonOptions } from 'devextreme/ui/button';
+import type { CollectionWidgetItem } from 'devextreme/ui/collection/ui.collection_widget.base';
+import type { template } from 'devextreme/core/templates/template';
+import type { event, EventInfo, NativeEventInfo } from 'devextreme/events/index';
+import type { Component } from 'devextreme/core/component';
+import type { dxTextEditorButton } from 'devextreme/ui/text_box/ui.text_editor.base';
 
-import type dxSortable from "devextreme/ui/sortable";
-import type dxDraggable from "devextreme/ui/draggable";
-import type DOMComponent from "devextreme/core/dom_component";
-import type dxButton from "devextreme/ui/button";
-import type Editor from "devextreme/ui/editor/editor";
+import type dxSortable from 'devextreme/ui/sortable';
+import type dxDraggable from 'devextreme/ui/draggable';
+import type DOMComponent from 'devextreme/core/dom_component';
+import type dxButton from 'devextreme/ui/button';
+import type Editor from 'devextreme/ui/editor/editor';
+import type * as ListTypes from 'devextreme/ui/list_types';
+import NestedOption from './core/nested-option';
+import { Component as BaseComponent, IHtmlOptions } from './core/component';
+
+export { ExplicitTypes } from 'devextreme/ui/list';
 
 type IListOptions<TItem = any, TKey = any> = React.PropsWithChildren<Properties<TItem, TKey> & IHtmlOptions & {
-  dataSource?: Properties<TItem, TKey>["dataSource"];
+  dataSource?: Properties<TItem, TKey>['dataSource'];
   groupRender?: (...params: any) => React.ReactNode;
   groupComponent?: React.ComponentType<any>;
   groupKeyFn?: (data: any) => string;
@@ -35,43 +37,42 @@ type IListOptions<TItem = any, TKey = any> = React.PropsWithChildren<Properties<
   onItemsChange?: (value: Array<any | dxListItem | string>) => void;
   onSelectedItemKeysChange?: (value: Array<any>) => void;
   onSelectedItemsChange?: (value: Array<any>) => void;
-}>
+}>;
 
 class List<TItem = any, TKey = any> extends BaseComponent<React.PropsWithChildren<IListOptions<TItem, TKey>>> {
-
   public get instance(): dxList<TItem, TKey> {
     return this._instance;
   }
 
   protected _WidgetClass = dxList;
 
-  protected subscribableOptions = ["items","selectedItemKeys","selectedItems"];
+  protected subscribableOptions = ['items', 'selectedItemKeys', 'selectedItems'];
 
-  protected independentEvents = ["onContentReady","onDisposing","onGroupRendered","onInitialized","onItemClick","onItemContextMenu","onItemDeleted","onItemDeleting","onItemHold","onItemRendered","onItemReordered","onItemSwipe","onPageLoading","onPullRefresh","onScroll","onSelectAllValueChanged"];
+  protected independentEvents = ['onContentReady', 'onDisposing', 'onGroupRendered', 'onInitialized', 'onItemClick', 'onItemContextMenu', 'onItemDeleted', 'onItemDeleting', 'onItemHold', 'onItemRendered', 'onItemReordered', 'onItemSwipe', 'onPageLoading', 'onPullRefresh', 'onScroll', 'onSelectAllValueChanged'];
 
   protected _defaults = {
-    defaultItems: "items",
-    defaultSelectedItemKeys: "selectedItemKeys",
-    defaultSelectedItems: "selectedItems"
+    defaultItems: 'items',
+    defaultSelectedItemKeys: 'selectedItemKeys',
+    defaultSelectedItems: 'selectedItems',
   };
 
   protected _expectedChildren = {
-    item: { optionName: "items", isCollectionItem: true },
-    itemDragging: { optionName: "itemDragging", isCollectionItem: false },
-    menuItem: { optionName: "menuItems", isCollectionItem: true },
-    searchEditorOptions: { optionName: "searchEditorOptions", isCollectionItem: false }
+    item: { optionName: 'items', isCollectionItem: true },
+    itemDragging: { optionName: 'itemDragging', isCollectionItem: false },
+    menuItem: { optionName: 'menuItems', isCollectionItem: true },
+    searchEditorOptions: { optionName: 'searchEditorOptions', isCollectionItem: false },
   };
 
   protected _templateProps = [{
-    tmplOption: "groupTemplate",
-    render: "groupRender",
-    component: "groupComponent",
-    keyFn: "groupKeyFn"
+    tmplOption: 'groupTemplate',
+    render: 'groupRender',
+    component: 'groupComponent',
+    keyFn: 'groupKeyFn',
   }, {
-    tmplOption: "itemTemplate",
-    render: "itemRender",
-    component: "itemComponent",
-    keyFn: "itemKeyFn"
+    tmplOption: 'itemTemplate',
+    render: 'itemRender',
+    component: 'itemComponent',
+    keyFn: 'itemKeyFn',
   }];
 }
 (List as any).propTypes = {
@@ -83,7 +84,7 @@ class List<TItem = any, TKey = any> extends BaseComponent<React.PropsWithChildre
   disabled: PropTypes.bool,
   displayExpr: PropTypes.oneOfType([
     PropTypes.func,
-    PropTypes.string
+    PropTypes.string,
   ]),
   elementAttr: PropTypes.object,
   focusStateEnabled: PropTypes.bool,
@@ -91,7 +92,7 @@ class List<TItem = any, TKey = any> extends BaseComponent<React.PropsWithChildre
   height: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
+    PropTypes.string,
   ]),
   hint: PropTypes.string,
   hoverStateEnabled: PropTypes.bool,
@@ -99,26 +100,26 @@ class List<TItem = any, TKey = any> extends BaseComponent<React.PropsWithChildre
   itemDeleteMode: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "context",
-      "slideButton",
-      "slideItem",
-      "static",
-      "swipe",
-      "toggle"])
+      'context',
+      'slideButton',
+      'slideItem',
+      'static',
+      'swipe',
+      'toggle']),
   ]),
   itemDragging: PropTypes.object,
   itemHoldTimeout: PropTypes.number,
   items: PropTypes.array,
   keyExpr: PropTypes.oneOfType([
     PropTypes.func,
-    PropTypes.string
+    PropTypes.string,
   ]),
   menuItems: PropTypes.array,
   menuMode: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "context",
-      "slide"])
+      'context',
+      'slide']),
   ]),
   nextButtonText: PropTypes.string,
   noDataText: PropTypes.string,
@@ -144,8 +145,8 @@ class List<TItem = any, TKey = any> extends BaseComponent<React.PropsWithChildre
   pageLoadMode: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "nextButton",
-      "scrollBottom"])
+      'nextButton',
+      'scrollBottom']),
   ]),
   pulledDownText: PropTypes.string,
   pullingDownText: PropTypes.string,
@@ -161,22 +162,22 @@ class List<TItem = any, TKey = any> extends BaseComponent<React.PropsWithChildre
   searchExpr: PropTypes.oneOfType([
     PropTypes.array,
     PropTypes.func,
-    PropTypes.string
+    PropTypes.string,
   ]),
   searchMode: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "contains",
-      "startswith",
-      "equals"])
+      'contains',
+      'startswith',
+      'equals']),
   ]),
   searchTimeout: PropTypes.number,
   searchValue: PropTypes.string,
   selectAllMode: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "allPages",
-      "page"])
+      'allPages',
+      'page']),
   ]),
   selectAllText: PropTypes.string,
   selectByClick: PropTypes.bool,
@@ -185,18 +186,18 @@ class List<TItem = any, TKey = any> extends BaseComponent<React.PropsWithChildre
   selectionMode: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "single",
-      "multiple",
-      "all",
-      "none"])
+      'single',
+      'multiple',
+      'all',
+      'none']),
   ]),
   showScrollbar: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "always",
-      "never",
-      "onHover",
-      "onScroll"])
+      'always',
+      'never',
+      'onHover',
+      'onScroll']),
   ]),
   showSelectionControls: PropTypes.bool,
   tabIndex: PropTypes.number,
@@ -205,23 +206,24 @@ class List<TItem = any, TKey = any> extends BaseComponent<React.PropsWithChildre
   width: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
-  ])
+    PropTypes.string,
+  ]),
 };
-
 
 // owners:
 // SearchEditorOptions
 type IButtonProps = React.PropsWithChildren<{
-  location?: "after" | "before";
+  location?: 'after' | 'before';
   name?: string;
   options?: dxButtonOptions;
-}>
+}>;
 class Button extends NestedOption<IButtonProps> {
-  public static OptionName = "buttons";
+  public static OptionName = 'buttons';
+
   public static IsCollectionItem = true;
+
   public static ExpectedChildren = {
-    options: { optionName: "options", isCollectionItem: false }
+    options: { optionName: 'options', isCollectionItem: false },
   };
 }
 
@@ -230,9 +232,9 @@ class Button extends NestedOption<IButtonProps> {
 type ICursorOffsetProps = React.PropsWithChildren<{
   x?: number;
   y?: number;
-}>
+}>;
 class CursorOffset extends NestedOption<ICursorOffsetProps> {
-  public static OptionName = "cursorOffset";
+  public static OptionName = 'cursorOffset';
 }
 
 // owners:
@@ -250,15 +252,17 @@ type IItemProps = React.PropsWithChildren<{
   render?: (...params: any) => React.ReactNode;
   component?: React.ComponentType<any>;
   keyFn?: (data: any) => string;
-}>
+}>;
 class Item extends NestedOption<IItemProps> {
-  public static OptionName = "items";
+  public static OptionName = 'items';
+
   public static IsCollectionItem = true;
+
   public static TemplateProps = [{
-    tmplOption: "template",
-    render: "render",
-    component: "component",
-    keyFn: "keyFn"
+    tmplOption: 'template',
+    render: 'render',
+    component: 'component',
+    keyFn: 'keyFn',
   }];
 }
 
@@ -276,15 +280,15 @@ type IItemDraggingProps = React.PropsWithChildren<{
     y?: number;
   };
   data?: any;
-  dragDirection?: "both" | "horizontal" | "vertical";
+  dragDirection?: 'both' | 'horizontal' | 'vertical';
   dragTemplate?: ((dragInfo: { fromIndex: number, itemData: any, itemElement: any }, containerElement: any) => string) | template;
-  dropFeedbackMode?: "push" | "indicate";
+  dropFeedbackMode?: 'push' | 'indicate';
   elementAttr?: object;
   filter?: string;
   group?: string;
   handle?: string;
   height?: (() => number) | number | string;
-  itemOrientation?: "horizontal" | "vertical";
+  itemOrientation?: 'horizontal' | 'vertical';
   moveItemOnDrop?: boolean;
   onAdd?: ((e: { component: dxSortable, dropInsideItem: boolean, element: any, event: event, fromComponent: dxSortable | dxDraggable, fromData: any, fromIndex: number, itemData: any, itemElement: any, model: any, toComponent: dxSortable | dxDraggable, toData: any, toIndex: number }) => void);
   onDisposing?: ((e: EventInfo<any>) => void);
@@ -303,17 +307,19 @@ type IItemDraggingProps = React.PropsWithChildren<{
   dragRender?: (...params: any) => React.ReactNode;
   dragComponent?: React.ComponentType<any>;
   dragKeyFn?: (data: any) => string;
-}>
+}>;
 class ItemDragging extends NestedOption<IItemDraggingProps> {
-  public static OptionName = "itemDragging";
+  public static OptionName = 'itemDragging';
+
   public static ExpectedChildren = {
-    cursorOffset: { optionName: "cursorOffset", isCollectionItem: false }
+    cursorOffset: { optionName: 'cursorOffset', isCollectionItem: false },
   };
+
   public static TemplateProps = [{
-    tmplOption: "dragTemplate",
-    render: "dragRender",
-    component: "dragComponent",
-    keyFn: "dragKeyFn"
+    tmplOption: 'dragTemplate',
+    render: 'dragRender',
+    component: 'dragComponent',
+    keyFn: 'dragKeyFn',
   }];
 }
 
@@ -322,9 +328,10 @@ class ItemDragging extends NestedOption<IItemDraggingProps> {
 type IMenuItemProps = React.PropsWithChildren<{
   action?: ((itemElement: any, itemData: object) => void);
   text?: string;
-}>
+}>;
 class MenuItem extends NestedOption<IMenuItemProps> {
-  public static OptionName = "menuItems";
+  public static OptionName = 'menuItems';
+
   public static IsCollectionItem = true;
 }
 
@@ -347,11 +354,11 @@ type IOptionsProps = React.PropsWithChildren<{
   onInitialized?: ((e: { component: Component<any>, element: any }) => void);
   onOptionChanged?: ((e: { component: DOMComponent, element: any, fullName: string, model: any, name: string, previousValue: any, value: any }) => void);
   rtlEnabled?: boolean;
-  stylingMode?: "text" | "outlined" | "contained";
+  stylingMode?: 'text' | 'outlined' | 'contained';
   tabIndex?: number;
   template?: ((buttonData: { icon: string, text: string }, contentElement: any) => string) | template;
   text?: string;
-  type?: "back" | "danger" | "default" | "normal" | "success";
+  type?: 'back' | 'danger' | 'default' | 'normal' | 'success';
   useSubmitBehavior?: boolean;
   validationGroup?: string;
   visible?: boolean;
@@ -359,14 +366,15 @@ type IOptionsProps = React.PropsWithChildren<{
   render?: (...params: any) => React.ReactNode;
   component?: React.ComponentType<any>;
   keyFn?: (data: any) => string;
-}>
+}>;
 class Options extends NestedOption<IOptionsProps> {
-  public static OptionName = "options";
+  public static OptionName = 'options';
+
   public static TemplateProps = [{
-    tmplOption: "template",
-    render: "render",
-    component: "component",
-    keyFn: "keyFn"
+    tmplOption: 'template',
+    render: 'render',
+    component: 'component',
+    keyFn: 'keyFn',
   }];
 }
 
@@ -376,7 +384,7 @@ type ISearchEditorOptionsProps = React.PropsWithChildren<{
   accessKey?: string;
   activeStateEnabled?: boolean;
   bindingOptions?: object;
-  buttons?: Array<dxTextEditorButton | string | "clear">;
+  buttons?: Array<dxTextEditorButton | string | 'clear'>;
   disabled?: boolean;
   elementAttr?: object;
   focusStateEnabled?: boolean;
@@ -386,13 +394,13 @@ type ISearchEditorOptionsProps = React.PropsWithChildren<{
   inputAttr?: any;
   isValid?: boolean;
   label?: string;
-  labelMode?: "static" | "floating" | "hidden";
+  labelMode?: 'static' | 'floating' | 'hidden';
   mask?: string;
   maskChar?: string;
   maskInvalidMessage?: string;
   maskRules?: any;
   maxLength?: number | string;
-  mode?: "email" | "password" | "search" | "tel" | "text" | "url";
+  mode?: 'email' | 'password' | 'search' | 'tel' | 'text' | 'url';
   name?: string;
   onChange?: ((e: NativeEventInfo<any>) => void);
   onContentReady?: ((e: EventInfo<any>) => void);
@@ -413,31 +421,33 @@ type ISearchEditorOptionsProps = React.PropsWithChildren<{
   readOnly?: boolean;
   rtlEnabled?: boolean;
   showClearButton?: boolean;
-  showMaskMode?: "always" | "onFocus";
+  showMaskMode?: 'always' | 'onFocus';
   spellcheck?: boolean;
-  stylingMode?: "outlined" | "underlined" | "filled";
+  stylingMode?: 'outlined' | 'underlined' | 'filled';
   tabIndex?: number;
   text?: string;
   useMaskedValue?: boolean;
   validationError?: any;
   validationErrors?: Array<any>;
-  validationMessageMode?: "always" | "auto";
-  validationMessagePosition?: "bottom" | "left" | "right" | "top";
-  validationStatus?: "valid" | "invalid" | "pending";
+  validationMessageMode?: 'always' | 'auto';
+  validationMessagePosition?: 'bottom' | 'left' | 'right' | 'top';
+  validationStatus?: 'valid' | 'invalid' | 'pending';
   value?: string;
   valueChangeEvent?: string;
   visible?: boolean;
   width?: (() => number) | number | string;
   defaultValue?: string;
   onValueChange?: (value: string) => void;
-}>
+}>;
 class SearchEditorOptions extends NestedOption<ISearchEditorOptionsProps> {
-  public static OptionName = "searchEditorOptions";
+  public static OptionName = 'searchEditorOptions';
+
   public static DefaultsProps = {
-    defaultValue: "value"
+    defaultValue: 'value',
   };
+
   public static ExpectedChildren = {
-    button: { optionName: "buttons", isCollectionItem: true }
+    button: { optionName: 'buttons', isCollectionItem: true },
   };
 }
 
@@ -458,8 +468,6 @@ export {
   Options,
   IOptionsProps,
   SearchEditorOptions,
-  ISearchEditorOptionsProps
+  ISearchEditorOptionsProps,
 };
-import type * as ListTypes from 'devextreme/ui/list_types';
 export { ListTypes };
-

@@ -1,50 +1,50 @@
 import dxFunnel, {
-    Properties
-} from "devextreme/viz/funnel";
+  Properties,
+} from 'devextreme/viz/funnel';
 
-import * as PropTypes from "prop-types";
-import { Component as BaseComponent, IHtmlOptions } from "./core/component";
-import NestedOption from "./core/nested-option";
+import * as PropTypes from 'prop-types';
 
-import type { dxFunnelItem, FunnelLegendItem } from "devextreme/viz/funnel";
-import type { template } from "devextreme/core/templates/template";
+import type { dxFunnelItem, FunnelLegendItem } from 'devextreme/viz/funnel';
+import type { template } from 'devextreme/core/templates/template';
 
-import type * as BaseWidgetTypes from "devextreme/viz/core/base_widget";
-import type * as LocalizationTypes from "devextreme/localization";
+import type * as BaseWidgetTypes from 'devextreme/viz/core/base_widget';
+import type * as LocalizationTypes from 'devextreme/localization';
+import type * as FunnelTypes from 'devextreme/viz/funnel_types';
+import NestedOption from './core/nested-option';
+import { Component as BaseComponent, IHtmlOptions } from './core/component';
 
 type IFunnelOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
   defaultLoadingIndicator?: object;
   onLoadingIndicatorChange?: (value: object) => void;
-}>
+}>;
 
 class Funnel extends BaseComponent<React.PropsWithChildren<IFunnelOptions>> {
-
   public get instance(): dxFunnel {
     return this._instance;
   }
 
   protected _WidgetClass = dxFunnel;
 
-  protected subscribableOptions = ["loadingIndicator","loadingIndicator.show"];
+  protected subscribableOptions = ['loadingIndicator', 'loadingIndicator.show'];
 
-  protected independentEvents = ["onDisposing","onDrawn","onExported","onExporting","onFileSaving","onIncidentOccurred","onInitialized","onItemClick","onLegendClick"];
+  protected independentEvents = ['onDisposing', 'onDrawn', 'onExported', 'onExporting', 'onFileSaving', 'onIncidentOccurred', 'onInitialized', 'onItemClick', 'onLegendClick'];
 
   protected _defaults = {
-    defaultLoadingIndicator: "loadingIndicator"
+    defaultLoadingIndicator: 'loadingIndicator',
   };
 
   protected _expectedChildren = {
-    adaptiveLayout: { optionName: "adaptiveLayout", isCollectionItem: false },
-    export: { optionName: "export", isCollectionItem: false },
-    funnelTitle: { optionName: "title", isCollectionItem: false },
-    item: { optionName: "item", isCollectionItem: false },
-    label: { optionName: "label", isCollectionItem: false },
-    legend: { optionName: "legend", isCollectionItem: false },
-    loadingIndicator: { optionName: "loadingIndicator", isCollectionItem: false },
-    margin: { optionName: "margin", isCollectionItem: false },
-    size: { optionName: "size", isCollectionItem: false },
-    title: { optionName: "title", isCollectionItem: false },
-    tooltip: { optionName: "tooltip", isCollectionItem: false }
+    adaptiveLayout: { optionName: 'adaptiveLayout', isCollectionItem: false },
+    export: { optionName: 'export', isCollectionItem: false },
+    funnelTitle: { optionName: 'title', isCollectionItem: false },
+    item: { optionName: 'item', isCollectionItem: false },
+    label: { optionName: 'label', isCollectionItem: false },
+    legend: { optionName: 'legend', isCollectionItem: false },
+    loadingIndicator: { optionName: 'loadingIndicator', isCollectionItem: false },
+    margin: { optionName: 'margin', isCollectionItem: false },
+    size: { optionName: 'size', isCollectionItem: false },
+    title: { optionName: 'title', isCollectionItem: false },
+    tooltip: { optionName: 'tooltip', isCollectionItem: false },
   };
 }
 (Funnel as any).propTypes = {
@@ -52,8 +52,8 @@ class Funnel extends BaseComponent<React.PropsWithChildren<IFunnelOptions>> {
   algorithm: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "dynamicHeight",
-      "dynamicSlope"])
+      'dynamicHeight',
+      'dynamicSlope']),
   ]),
   argumentField: PropTypes.string,
   colorField: PropTypes.string,
@@ -84,76 +84,75 @@ class Funnel extends BaseComponent<React.PropsWithChildren<IFunnelOptions>> {
   palette: PropTypes.oneOfType([
     PropTypes.array,
     PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.oneOf([
-      "Bright",
-      "Harmony Light",
-      "Ocean",
-      "Pastel",
-      "Soft",
-      "Soft Pastel",
-      "Vintage",
-      "Violet",
-      "Carmine",
-      "Dark Moon",
-      "Dark Violet",
-      "Green Mist",
-      "Soft Blue",
-      "Material",
-      "Office"])
-  ])
+      PropTypes.string,
+      PropTypes.oneOf([
+        'Bright',
+        'Harmony Light',
+        'Ocean',
+        'Pastel',
+        'Soft',
+        'Soft Pastel',
+        'Vintage',
+        'Violet',
+        'Carmine',
+        'Dark Moon',
+        'Dark Violet',
+        'Green Mist',
+        'Soft Blue',
+        'Material',
+        'Office']),
+    ]),
   ]),
   paletteExtensionMode: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "alternate",
-      "blend",
-      "extrapolate"])
+      'alternate',
+      'blend',
+      'extrapolate']),
   ]),
   pathModified: PropTypes.bool,
   redrawOnResize: PropTypes.bool,
   resolveLabelOverlapping: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "hide",
-      "none",
-      "shift"])
+      'hide',
+      'none',
+      'shift']),
   ]),
   rtlEnabled: PropTypes.bool,
   selectionMode: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "single",
-      "multiple",
-      "none"])
+      'single',
+      'multiple',
+      'none']),
   ]),
   size: PropTypes.object,
   sortData: PropTypes.bool,
   theme: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "generic.dark",
-      "generic.light",
-      "generic.contrast",
-      "generic.carmine",
-      "generic.darkmoon",
-      "generic.darkviolet",
-      "generic.greenmist",
-      "generic.softblue",
-      "material.blue.light",
-      "material.lime.light",
-      "material.orange.light",
-      "material.purple.light",
-      "material.teal.light"])
+      'generic.dark',
+      'generic.light',
+      'generic.contrast',
+      'generic.carmine',
+      'generic.darkmoon',
+      'generic.darkviolet',
+      'generic.greenmist',
+      'generic.softblue',
+      'material.blue.light',
+      'material.lime.light',
+      'material.orange.light',
+      'material.purple.light',
+      'material.teal.light']),
   ]),
   title: PropTypes.oneOfType([
     PropTypes.object,
-    PropTypes.string
+    PropTypes.string,
   ]),
   tooltip: PropTypes.object,
-  valueField: PropTypes.string
+  valueField: PropTypes.string,
 };
-
 
 // owners:
 // Funnel
@@ -161,9 +160,9 @@ type IAdaptiveLayoutProps = React.PropsWithChildren<{
   height?: number;
   keepLabels?: boolean;
   width?: number;
-}>
+}>;
 class AdaptiveLayout extends NestedOption<IAdaptiveLayoutProps> {
-  public static OptionName = "adaptiveLayout";
+  public static OptionName = 'adaptiveLayout';
 }
 
 // owners:
@@ -177,12 +176,12 @@ type IBorderProps = React.PropsWithChildren<{
   color?: string;
   visible?: boolean;
   width?: number;
-  dashStyle?: "dash" | "dot" | "longDash" | "solid";
+  dashStyle?: 'dash' | 'dot' | 'longDash' | 'solid';
   cornerRadius?: number;
   opacity?: number;
-}>
+}>;
 class Border extends NestedOption<IBorderProps> {
-  public static OptionName = "border";
+  public static OptionName = 'border';
 }
 
 // owners:
@@ -192,9 +191,9 @@ type IConnectorProps = React.PropsWithChildren<{
   opacity?: number;
   visible?: boolean;
   width?: number;
-}>
+}>;
 class Connector extends NestedOption<IConnectorProps> {
-  public static OptionName = "connector";
+  public static OptionName = 'connector';
 }
 
 // owners:
@@ -203,13 +202,13 @@ type IExportProps = React.PropsWithChildren<{
   backgroundColor?: string;
   enabled?: boolean;
   fileName?: string;
-  formats?: Array<"GIF" | "JPEG" | "PDF" | "PNG" | "SVG">;
+  formats?: Array<'GIF' | 'JPEG' | 'PDF' | 'PNG' | 'SVG'>;
   margin?: number;
   printingEnabled?: boolean;
   svgToCanvas?: ((svg: any, canvas: any) => any);
-}>
+}>;
 class Export extends NestedOption<IExportProps> {
-  public static OptionName = "export";
+  public static OptionName = 'export';
 }
 
 // owners:
@@ -227,9 +226,9 @@ type IFontProps = React.PropsWithChildren<{
   opacity?: number;
   size?: number | string;
   weight?: number;
-}>
+}>;
 class Font extends NestedOption<IFontProps> {
-  public static OptionName = "font";
+  public static OptionName = 'font';
 }
 
 // owners:
@@ -240,18 +239,18 @@ type IFormatProps = React.PropsWithChildren<{
   formatter?: ((value: number | any) => string);
   parser?: ((value: string) => number);
   precision?: number;
-  type?: "billions" | "currency" | "day" | "decimal" | "exponential" | "fixedPoint" | "largeNumber" | "longDate" | "longTime" | "millions" | "millisecond" | "month" | "monthAndDay" | "monthAndYear" | "percent" | "quarter" | "quarterAndYear" | "shortDate" | "shortTime" | "thousands" | "trillions" | "year" | "dayOfWeek" | "hour" | "longDateLongTime" | "minute" | "second" | "shortDateShortTime";
+  type?: 'billions' | 'currency' | 'day' | 'decimal' | 'exponential' | 'fixedPoint' | 'largeNumber' | 'longDate' | 'longTime' | 'millions' | 'millisecond' | 'month' | 'monthAndDay' | 'monthAndYear' | 'percent' | 'quarter' | 'quarterAndYear' | 'shortDate' | 'shortTime' | 'thousands' | 'trillions' | 'year' | 'dayOfWeek' | 'hour' | 'longDateLongTime' | 'minute' | 'second' | 'shortDateShortTime';
   useCurrencyAccountingStyle?: boolean;
-}>
+}>;
 class Format extends NestedOption<IFormatProps> {
-  public static OptionName = "format";
+  public static OptionName = 'format';
 }
 
 // owners:
 // Funnel
 type IFunnelTitleProps = React.PropsWithChildren<{
   font?: BaseWidgetTypes.Font;
-  horizontalAlignment?: "center" | "left" | "right";
+  horizontalAlignment?: 'center' | 'left' | 'right';
   margin?: number | object | {
     bottom?: number;
     left?: number;
@@ -263,21 +262,22 @@ type IFunnelTitleProps = React.PropsWithChildren<{
     font?: BaseWidgetTypes.Font;
     offset?: number;
     text?: string;
-    textOverflow?: "ellipsis" | "hide" | "none";
-    wordWrap?: "normal" | "breakWord" | "none";
+    textOverflow?: 'ellipsis' | 'hide' | 'none';
+    wordWrap?: 'normal' | 'breakWord' | 'none';
   };
   text?: string;
-  textOverflow?: "ellipsis" | "hide" | "none";
-  verticalAlignment?: "bottom" | "top";
-  wordWrap?: "normal" | "breakWord" | "none";
-}>
+  textOverflow?: 'ellipsis' | 'hide' | 'none';
+  verticalAlignment?: 'bottom' | 'top';
+  wordWrap?: 'normal' | 'breakWord' | 'none';
+}>;
 class FunnelTitle extends NestedOption<IFunnelTitleProps> {
-  public static OptionName = "title";
+  public static OptionName = 'title';
+
   public static ExpectedChildren = {
-    font: { optionName: "font", isCollectionItem: false },
-    funnelTitleSubtitle: { optionName: "subtitle", isCollectionItem: false },
-    margin: { optionName: "margin", isCollectionItem: false },
-    subtitle: { optionName: "subtitle", isCollectionItem: false }
+    font: { optionName: 'font', isCollectionItem: false },
+    funnelTitleSubtitle: { optionName: 'subtitle', isCollectionItem: false },
+    margin: { optionName: 'margin', isCollectionItem: false },
+    subtitle: { optionName: 'subtitle', isCollectionItem: false },
   };
 }
 
@@ -287,13 +287,14 @@ type IFunnelTitleSubtitleProps = React.PropsWithChildren<{
   font?: BaseWidgetTypes.Font;
   offset?: number;
   text?: string;
-  textOverflow?: "ellipsis" | "hide" | "none";
-  wordWrap?: "normal" | "breakWord" | "none";
-}>
+  textOverflow?: 'ellipsis' | 'hide' | 'none';
+  wordWrap?: 'normal' | 'breakWord' | 'none';
+}>;
 class FunnelTitleSubtitle extends NestedOption<IFunnelTitleSubtitleProps> {
-  public static OptionName = "subtitle";
+  public static OptionName = 'subtitle';
+
   public static ExpectedChildren = {
-    font: { optionName: "font", isCollectionItem: false }
+    font: { optionName: 'font', isCollectionItem: false },
   };
 }
 
@@ -301,13 +302,13 @@ class FunnelTitleSubtitle extends NestedOption<IFunnelTitleSubtitleProps> {
 // HoverStyle
 // SelectionStyle
 type IHatchingProps = React.PropsWithChildren<{
-  direction?: "left" | "none" | "right";
+  direction?: 'left' | 'none' | 'right';
   opacity?: number;
   step?: number;
   width?: number;
-}>
+}>;
 class Hatching extends NestedOption<IHatchingProps> {
-  public static OptionName = "hatching";
+  public static OptionName = 'hatching';
 }
 
 // owners:
@@ -319,18 +320,19 @@ type IHoverStyleProps = React.PropsWithChildren<{
     width?: number;
   };
   hatching?: object | {
-    direction?: "left" | "none" | "right";
+    direction?: 'left' | 'none' | 'right';
     opacity?: number;
     step?: number;
     width?: number;
   };
-}>
+}>;
 class HoverStyle extends NestedOption<IHoverStyleProps> {
-  public static OptionName = "hoverStyle";
+  public static OptionName = 'hoverStyle';
+
   public static ExpectedChildren = {
-    border: { optionName: "border", isCollectionItem: false },
-    hatching: { optionName: "hatching", isCollectionItem: false },
-    itemBorder: { optionName: "border", isCollectionItem: false }
+    border: { optionName: 'border', isCollectionItem: false },
+    hatching: { optionName: 'hatching', isCollectionItem: false },
+    itemBorder: { optionName: 'border', isCollectionItem: false },
   };
 }
 
@@ -349,7 +351,7 @@ type IItemProps = React.PropsWithChildren<{
       width?: number;
     };
     hatching?: object | {
-      direction?: "left" | "none" | "right";
+      direction?: 'left' | 'none' | 'right';
       opacity?: number;
       step?: number;
       width?: number;
@@ -362,20 +364,21 @@ type IItemProps = React.PropsWithChildren<{
       width?: number;
     };
     hatching?: object | {
-      direction?: "left" | "none" | "right";
+      direction?: 'left' | 'none' | 'right';
       opacity?: number;
       step?: number;
       width?: number;
     };
   };
-}>
+}>;
 class Item extends NestedOption<IItemProps> {
-  public static OptionName = "item";
+  public static OptionName = 'item';
+
   public static ExpectedChildren = {
-    border: { optionName: "border", isCollectionItem: false },
-    hoverStyle: { optionName: "hoverStyle", isCollectionItem: false },
-    itemBorder: { optionName: "border", isCollectionItem: false },
-    selectionStyle: { optionName: "selectionStyle", isCollectionItem: false }
+    border: { optionName: 'border', isCollectionItem: false },
+    hoverStyle: { optionName: 'hoverStyle', isCollectionItem: false },
+    itemBorder: { optionName: 'border', isCollectionItem: false },
+    selectionStyle: { optionName: 'selectionStyle', isCollectionItem: false },
   };
 }
 
@@ -387,9 +390,9 @@ type IItemBorderProps = React.PropsWithChildren<{
   color?: string;
   visible?: boolean;
   width?: number;
-}>
+}>;
 class ItemBorder extends NestedOption<IItemBorderProps> {
-  public static OptionName = "border";
+  public static OptionName = 'border';
 }
 
 // owners:
@@ -398,7 +401,7 @@ type ILabelProps = React.PropsWithChildren<{
   backgroundColor?: string;
   border?: object | {
     color?: string;
-    dashStyle?: "dash" | "dot" | "longDash" | "solid";
+    dashStyle?: 'dash' | 'dot' | 'longDash' | 'solid';
     visible?: boolean;
     width?: number;
   };
@@ -411,22 +414,23 @@ type ILabelProps = React.PropsWithChildren<{
   customizeText?: ((itemInfo: { item: dxFunnelItem, percent: number, percentText: string, value: number, valueText: string }) => string);
   font?: BaseWidgetTypes.Font;
   format?: LocalizationTypes.Format;
-  horizontalAlignment?: "left" | "right";
+  horizontalAlignment?: 'left' | 'right';
   horizontalOffset?: number;
-  position?: "columns" | "inside" | "outside";
+  position?: 'columns' | 'inside' | 'outside';
   showForZeroValues?: boolean;
-  textOverflow?: "ellipsis" | "hide" | "none";
+  textOverflow?: 'ellipsis' | 'hide' | 'none';
   visible?: boolean;
-  wordWrap?: "normal" | "breakWord" | "none";
-}>
+  wordWrap?: 'normal' | 'breakWord' | 'none';
+}>;
 class Label extends NestedOption<ILabelProps> {
-  public static OptionName = "label";
+  public static OptionName = 'label';
+
   public static ExpectedChildren = {
-    border: { optionName: "border", isCollectionItem: false },
-    connector: { optionName: "connector", isCollectionItem: false },
-    font: { optionName: "font", isCollectionItem: false },
-    format: { optionName: "format", isCollectionItem: false },
-    labelBorder: { optionName: "border", isCollectionItem: false }
+    border: { optionName: 'border', isCollectionItem: false },
+    connector: { optionName: 'connector', isCollectionItem: false },
+    font: { optionName: 'font', isCollectionItem: false },
+    format: { optionName: 'format', isCollectionItem: false },
+    labelBorder: { optionName: 'border', isCollectionItem: false },
   };
 }
 
@@ -434,12 +438,12 @@ class Label extends NestedOption<ILabelProps> {
 // Label
 type ILabelBorderProps = React.PropsWithChildren<{
   color?: string;
-  dashStyle?: "dash" | "dot" | "longDash" | "solid";
+  dashStyle?: 'dash' | 'dot' | 'longDash' | 'solid';
   visible?: boolean;
   width?: number;
-}>
+}>;
 class LabelBorder extends NestedOption<ILabelBorderProps> {
-  public static OptionName = "border";
+  public static OptionName = 'border';
 }
 
 // owners:
@@ -449,7 +453,7 @@ type ILegendProps = React.PropsWithChildren<{
   border?: object | {
     color?: string;
     cornerRadius?: number;
-    dashStyle?: "dash" | "dot" | "longDash" | "solid";
+    dashStyle?: 'dash' | 'dot' | 'longDash' | 'solid';
     opacity?: number;
     visible?: boolean;
     width?: number;
@@ -460,9 +464,9 @@ type ILegendProps = React.PropsWithChildren<{
   customizeItems?: ((items: Array<FunnelLegendItem>) => Array<FunnelLegendItem>);
   customizeText?: ((itemInfo: { item: dxFunnelItem, text: string }) => string);
   font?: BaseWidgetTypes.Font;
-  horizontalAlignment?: "center" | "left" | "right";
-  itemsAlignment?: "center" | "left" | "right";
-  itemTextPosition?: "bottom" | "left" | "right" | "top";
+  horizontalAlignment?: 'center' | 'left' | 'right';
+  itemsAlignment?: 'center' | 'left' | 'right';
+  itemTextPosition?: 'bottom' | 'left' | 'right' | 'top';
   margin?: number | object | {
     bottom?: number;
     left?: number;
@@ -471,14 +475,14 @@ type ILegendProps = React.PropsWithChildren<{
   };
   markerSize?: number;
   markerTemplate?: ((legendItem: FunnelLegendItem, element: any) => string) | template;
-  orientation?: "horizontal" | "vertical";
+  orientation?: 'horizontal' | 'vertical';
   paddingLeftRight?: number;
   paddingTopBottom?: number;
   rowCount?: number;
   rowItemSpacing?: number;
   title?: object | string | {
     font?: BaseWidgetTypes.Font;
-    horizontalAlignment?: "center" | "left" | "right";
+    horizontalAlignment?: 'center' | 'left' | 'right';
     margin?: object | {
       bottom?: number;
       left?: number;
@@ -492,29 +496,31 @@ type ILegendProps = React.PropsWithChildren<{
       text?: string;
     };
     text?: string;
-    verticalAlignment?: "bottom" | "top";
+    verticalAlignment?: 'bottom' | 'top';
   };
-  verticalAlignment?: "bottom" | "top";
+  verticalAlignment?: 'bottom' | 'top';
   visible?: boolean;
   markerRender?: (...params: any) => React.ReactNode;
   markerComponent?: React.ComponentType<any>;
   markerKeyFn?: (data: any) => string;
-}>
+}>;
 class Legend extends NestedOption<ILegendProps> {
-  public static OptionName = "legend";
+  public static OptionName = 'legend';
+
   public static ExpectedChildren = {
-    border: { optionName: "border", isCollectionItem: false },
-    font: { optionName: "font", isCollectionItem: false },
-    legendBorder: { optionName: "border", isCollectionItem: false },
-    legendTitle: { optionName: "title", isCollectionItem: false },
-    margin: { optionName: "margin", isCollectionItem: false },
-    title: { optionName: "title", isCollectionItem: false }
+    border: { optionName: 'border', isCollectionItem: false },
+    font: { optionName: 'font', isCollectionItem: false },
+    legendBorder: { optionName: 'border', isCollectionItem: false },
+    legendTitle: { optionName: 'title', isCollectionItem: false },
+    margin: { optionName: 'margin', isCollectionItem: false },
+    title: { optionName: 'title', isCollectionItem: false },
   };
+
   public static TemplateProps = [{
-    tmplOption: "markerTemplate",
-    render: "markerRender",
-    component: "markerComponent",
-    keyFn: "markerKeyFn"
+    tmplOption: 'markerTemplate',
+    render: 'markerRender',
+    component: 'markerComponent',
+    keyFn: 'markerKeyFn',
   }];
 }
 
@@ -523,20 +529,20 @@ class Legend extends NestedOption<ILegendProps> {
 type ILegendBorderProps = React.PropsWithChildren<{
   color?: string;
   cornerRadius?: number;
-  dashStyle?: "dash" | "dot" | "longDash" | "solid";
+  dashStyle?: 'dash' | 'dot' | 'longDash' | 'solid';
   opacity?: number;
   visible?: boolean;
   width?: number;
-}>
+}>;
 class LegendBorder extends NestedOption<ILegendBorderProps> {
-  public static OptionName = "border";
+  public static OptionName = 'border';
 }
 
 // owners:
 // Legend
 type ILegendTitleProps = React.PropsWithChildren<{
   font?: BaseWidgetTypes.Font;
-  horizontalAlignment?: "center" | "left" | "right";
+  horizontalAlignment?: 'center' | 'left' | 'right';
   margin?: object | {
     bottom?: number;
     left?: number;
@@ -550,15 +556,16 @@ type ILegendTitleProps = React.PropsWithChildren<{
     text?: string;
   };
   text?: string;
-  verticalAlignment?: "bottom" | "top";
-}>
+  verticalAlignment?: 'bottom' | 'top';
+}>;
 class LegendTitle extends NestedOption<ILegendTitleProps> {
-  public static OptionName = "title";
+  public static OptionName = 'title';
+
   public static ExpectedChildren = {
-    font: { optionName: "font", isCollectionItem: false },
-    legendTitleSubtitle: { optionName: "subtitle", isCollectionItem: false },
-    margin: { optionName: "margin", isCollectionItem: false },
-    subtitle: { optionName: "subtitle", isCollectionItem: false }
+    font: { optionName: 'font', isCollectionItem: false },
+    legendTitleSubtitle: { optionName: 'subtitle', isCollectionItem: false },
+    margin: { optionName: 'margin', isCollectionItem: false },
+    subtitle: { optionName: 'subtitle', isCollectionItem: false },
   };
 }
 
@@ -568,11 +575,12 @@ type ILegendTitleSubtitleProps = React.PropsWithChildren<{
   font?: BaseWidgetTypes.Font;
   offset?: number;
   text?: string;
-}>
+}>;
 class LegendTitleSubtitle extends NestedOption<ILegendTitleSubtitleProps> {
-  public static OptionName = "subtitle";
+  public static OptionName = 'subtitle';
+
   public static ExpectedChildren = {
-    font: { optionName: "font", isCollectionItem: false }
+    font: { optionName: 'font', isCollectionItem: false },
   };
 }
 
@@ -586,14 +594,16 @@ type ILoadingIndicatorProps = React.PropsWithChildren<{
   text?: string;
   defaultShow?: boolean;
   onShowChange?: (value: boolean) => void;
-}>
+}>;
 class LoadingIndicator extends NestedOption<ILoadingIndicatorProps> {
-  public static OptionName = "loadingIndicator";
+  public static OptionName = 'loadingIndicator';
+
   public static DefaultsProps = {
-    defaultShow: "show"
+    defaultShow: 'show',
   };
+
   public static ExpectedChildren = {
-    font: { optionName: "font", isCollectionItem: false }
+    font: { optionName: 'font', isCollectionItem: false },
   };
 }
 
@@ -607,9 +617,9 @@ type IMarginProps = React.PropsWithChildren<{
   left?: number;
   right?: number;
   top?: number;
-}>
+}>;
 class Margin extends NestedOption<IMarginProps> {
-  public static OptionName = "margin";
+  public static OptionName = 'margin';
 }
 
 // owners:
@@ -621,18 +631,19 @@ type ISelectionStyleProps = React.PropsWithChildren<{
     width?: number;
   };
   hatching?: object | {
-    direction?: "left" | "none" | "right";
+    direction?: 'left' | 'none' | 'right';
     opacity?: number;
     step?: number;
     width?: number;
   };
-}>
+}>;
 class SelectionStyle extends NestedOption<ISelectionStyleProps> {
-  public static OptionName = "selectionStyle";
+  public static OptionName = 'selectionStyle';
+
   public static ExpectedChildren = {
-    border: { optionName: "border", isCollectionItem: false },
-    hatching: { optionName: "hatching", isCollectionItem: false },
-    itemBorder: { optionName: "border", isCollectionItem: false }
+    border: { optionName: 'border', isCollectionItem: false },
+    hatching: { optionName: 'hatching', isCollectionItem: false },
+    itemBorder: { optionName: 'border', isCollectionItem: false },
   };
 }
 
@@ -644,9 +655,9 @@ type IShadowProps = React.PropsWithChildren<{
   offsetX?: number;
   offsetY?: number;
   opacity?: number;
-}>
+}>;
 class Shadow extends NestedOption<IShadowProps> {
-  public static OptionName = "shadow";
+  public static OptionName = 'shadow';
 }
 
 // owners:
@@ -654,9 +665,9 @@ class Shadow extends NestedOption<IShadowProps> {
 type ISizeProps = React.PropsWithChildren<{
   height?: number;
   width?: number;
-}>
+}>;
 class Size extends NestedOption<ISizeProps> {
-  public static OptionName = "size";
+  public static OptionName = 'size';
 }
 
 // owners:
@@ -666,11 +677,11 @@ type ISubtitleProps = React.PropsWithChildren<{
   font?: BaseWidgetTypes.Font;
   offset?: number;
   text?: string;
-  textOverflow?: "ellipsis" | "hide" | "none";
-  wordWrap?: "normal" | "breakWord" | "none";
-}>
+  textOverflow?: 'ellipsis' | 'hide' | 'none';
+  wordWrap?: 'normal' | 'breakWord' | 'none';
+}>;
 class Subtitle extends NestedOption<ISubtitleProps> {
-  public static OptionName = "subtitle";
+  public static OptionName = 'subtitle';
 }
 
 // owners:
@@ -678,7 +689,7 @@ class Subtitle extends NestedOption<ISubtitleProps> {
 // Funnel
 type ITitleProps = React.PropsWithChildren<{
   font?: BaseWidgetTypes.Font;
-  horizontalAlignment?: "center" | "left" | "right";
+  horizontalAlignment?: 'center' | 'left' | 'right';
   margin?: object | {
     bottom?: number;
     left?: number;
@@ -692,12 +703,12 @@ type ITitleProps = React.PropsWithChildren<{
     text?: string;
   };
   text?: string;
-  verticalAlignment?: "bottom" | "top";
-  textOverflow?: "ellipsis" | "hide" | "none";
-  wordWrap?: "normal" | "breakWord" | "none";
-}>
+  verticalAlignment?: 'bottom' | 'top';
+  textOverflow?: 'ellipsis' | 'hide' | 'none';
+  wordWrap?: 'normal' | 'breakWord' | 'none';
+}>;
 class Title extends NestedOption<ITitleProps> {
-  public static OptionName = "title";
+  public static OptionName = 'title';
 }
 
 // owners:
@@ -706,7 +717,7 @@ type ITooltipProps = React.PropsWithChildren<{
   arrowLength?: number;
   border?: object | {
     color?: string;
-    dashStyle?: "dash" | "dot" | "longDash" | "solid";
+    dashStyle?: 'dash' | 'dot' | 'longDash' | 'solid';
     opacity?: number;
     visible?: boolean;
     width?: number;
@@ -733,21 +744,23 @@ type ITooltipProps = React.PropsWithChildren<{
   contentRender?: (...params: any) => React.ReactNode;
   contentComponent?: React.ComponentType<any>;
   contentKeyFn?: (data: any) => string;
-}>
+}>;
 class Tooltip extends NestedOption<ITooltipProps> {
-  public static OptionName = "tooltip";
+  public static OptionName = 'tooltip';
+
   public static ExpectedChildren = {
-    border: { optionName: "border", isCollectionItem: false },
-    font: { optionName: "font", isCollectionItem: false },
-    format: { optionName: "format", isCollectionItem: false },
-    shadow: { optionName: "shadow", isCollectionItem: false },
-    tooltipBorder: { optionName: "border", isCollectionItem: false }
+    border: { optionName: 'border', isCollectionItem: false },
+    font: { optionName: 'font', isCollectionItem: false },
+    format: { optionName: 'format', isCollectionItem: false },
+    shadow: { optionName: 'shadow', isCollectionItem: false },
+    tooltipBorder: { optionName: 'border', isCollectionItem: false },
   };
+
   public static TemplateProps = [{
-    tmplOption: "contentTemplate",
-    render: "contentRender",
-    component: "contentComponent",
-    keyFn: "contentKeyFn"
+    tmplOption: 'contentTemplate',
+    render: 'contentRender',
+    component: 'contentComponent',
+    keyFn: 'contentKeyFn',
   }];
 }
 
@@ -755,13 +768,13 @@ class Tooltip extends NestedOption<ITooltipProps> {
 // Tooltip
 type ITooltipBorderProps = React.PropsWithChildren<{
   color?: string;
-  dashStyle?: "dash" | "dot" | "longDash" | "solid";
+  dashStyle?: 'dash' | 'dot' | 'longDash' | 'solid';
   opacity?: number;
   visible?: boolean;
   width?: number;
-}>
+}>;
 class TooltipBorder extends NestedOption<ITooltipBorderProps> {
-  public static OptionName = "border";
+  public static OptionName = 'border';
 }
 
 export default Funnel;
@@ -821,8 +834,6 @@ export {
   Tooltip,
   ITooltipProps,
   TooltipBorder,
-  ITooltipBorderProps
+  ITooltipBorderProps,
 };
-import type * as FunnelTypes from 'devextreme/viz/funnel_types';
 export { FunnelTypes };
-

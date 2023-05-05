@@ -1,29 +1,29 @@
 import dxSwitch, {
-    Properties
-} from "devextreme/ui/switch";
+  Properties,
+} from 'devextreme/ui/switch';
 
-import * as PropTypes from "prop-types";
-import { Component as BaseComponent, IHtmlOptions } from "./core/component";
+import * as PropTypes from 'prop-types';
+import type * as SwitchTypes from 'devextreme/ui/switch_types';
+import { Component as BaseComponent, IHtmlOptions } from './core/component';
 
 type ISwitchOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
   defaultValue?: boolean;
   onValueChange?: (value: boolean) => void;
-}>
+}>;
 
 class Switch extends BaseComponent<React.PropsWithChildren<ISwitchOptions>> {
-
   public get instance(): dxSwitch {
     return this._instance;
   }
 
   protected _WidgetClass = dxSwitch;
 
-  protected subscribableOptions = ["value"];
+  protected subscribableOptions = ['value'];
 
-  protected independentEvents = ["onContentReady","onDisposing","onInitialized","onValueChanged"];
+  protected independentEvents = ['onContentReady', 'onDisposing', 'onInitialized', 'onValueChanged'];
 
   protected _defaults = {
-    defaultValue: "value"
+    defaultValue: 'value',
   };
 }
 (Switch as any).propTypes = {
@@ -35,7 +35,7 @@ class Switch extends BaseComponent<React.PropsWithChildren<ISwitchOptions>> {
   height: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
+    PropTypes.string,
   ]),
   hint: PropTypes.string,
   hoverStateEnabled: PropTypes.bool,
@@ -55,37 +55,35 @@ class Switch extends BaseComponent<React.PropsWithChildren<ISwitchOptions>> {
   validationMessageMode: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "always",
-      "auto"])
+      'always',
+      'auto']),
   ]),
   validationMessagePosition: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "bottom",
-      "left",
-      "right",
-      "top"])
+      'bottom',
+      'left',
+      'right',
+      'top']),
   ]),
   validationStatus: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "valid",
-      "invalid",
-      "pending"])
+      'valid',
+      'invalid',
+      'pending']),
   ]),
   value: PropTypes.bool,
   visible: PropTypes.bool,
   width: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
-  ])
+    PropTypes.string,
+  ]),
 };
 export default Switch;
 export {
   Switch,
-  ISwitchOptions
+  ISwitchOptions,
 };
-import type * as SwitchTypes from 'devextreme/ui/switch_types';
 export { SwitchTypes };
-

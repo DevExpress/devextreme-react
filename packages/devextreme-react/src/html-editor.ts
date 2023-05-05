@@ -1,54 +1,54 @@
 import dxHtmlEditor, {
-    Properties
-} from "devextreme/ui/html_editor";
+  Properties,
+} from 'devextreme/ui/html_editor';
 
-import * as PropTypes from "prop-types";
-import { Component as BaseComponent, IHtmlOptions } from "./core/component";
-import NestedOption from "./core/nested-option";
+import * as PropTypes from 'prop-types';
 
-import type { EventInfo, event } from "devextreme/events/index";
-import type { Component } from "devextreme/core/component";
-import type { dxFileUploaderOptions } from "devextreme/ui/file_uploader";
-import type { dxHtmlEditorImageUploadTabItem, dxHtmlEditorTableContextMenuItem, dxHtmlEditorToolbarItem } from "devextreme/ui/html_editor";
-import type { CollectionWidgetItem } from "devextreme/ui/collection/ui.collection_widget.base";
-import type { template } from "devextreme/core/templates/template";
-import type { DataSourceOptions } from "devextreme/data/data_source";
-import type { Store } from "devextreme/data/abstract_store";
+import type { EventInfo, event } from 'devextreme/events/index';
+import type { Component } from 'devextreme/core/component';
+import type { dxFileUploaderOptions } from 'devextreme/ui/file_uploader';
+import type { dxHtmlEditorImageUploadTabItem, dxHtmlEditorTableContextMenuItem, dxHtmlEditorToolbarItem } from 'devextreme/ui/html_editor';
+import type { CollectionWidgetItem } from 'devextreme/ui/collection/ui.collection_widget.base';
+import type { template } from 'devextreme/core/templates/template';
+import type { DataSourceOptions } from 'devextreme/data/data_source';
+import type { Store } from 'devextreme/data/abstract_store';
 
-import type UploadInfo from "devextreme/file_management/upload_info";
-import type dxFileUploader from "devextreme/ui/file_uploader";
-import type DOMComponent from "devextreme/core/dom_component";
-import type DataSource from "devextreme/data/data_source";
+import type UploadInfo from 'devextreme/file_management/upload_info';
+import type dxFileUploader from 'devextreme/ui/file_uploader';
+import type DOMComponent from 'devextreme/core/dom_component';
+import type DataSource from 'devextreme/data/data_source';
+import type * as HtmlEditorTypes from 'devextreme/ui/html_editor_types';
+import NestedOption from './core/nested-option';
+import { Component as BaseComponent, IHtmlOptions } from './core/component';
 
 type IHtmlEditorOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
   defaultValue?: any;
   onValueChange?: (value: any) => void;
-}>
+}>;
 
 class HtmlEditor extends BaseComponent<React.PropsWithChildren<IHtmlEditorOptions>> {
-
   public get instance(): dxHtmlEditor {
     return this._instance;
   }
 
   protected _WidgetClass = dxHtmlEditor;
 
-  protected subscribableOptions = ["value"];
+  protected subscribableOptions = ['value'];
 
-  protected independentEvents = ["onContentReady","onDisposing","onFocusIn","onFocusOut","onInitialized","onValueChanged"];
+  protected independentEvents = ['onContentReady', 'onDisposing', 'onFocusIn', 'onFocusOut', 'onInitialized', 'onValueChanged'];
 
   protected _defaults = {
-    defaultValue: "value"
+    defaultValue: 'value',
   };
 
   protected _expectedChildren = {
-    imageUpload: { optionName: "imageUpload", isCollectionItem: false },
-    mediaResizing: { optionName: "mediaResizing", isCollectionItem: false },
-    mention: { optionName: "mentions", isCollectionItem: true },
-    tableContextMenu: { optionName: "tableContextMenu", isCollectionItem: false },
-    tableResizing: { optionName: "tableResizing", isCollectionItem: false },
-    toolbar: { optionName: "toolbar", isCollectionItem: false },
-    variables: { optionName: "variables", isCollectionItem: false }
+    imageUpload: { optionName: 'imageUpload', isCollectionItem: false },
+    mediaResizing: { optionName: 'mediaResizing', isCollectionItem: false },
+    mention: { optionName: 'mentions', isCollectionItem: true },
+    tableContextMenu: { optionName: 'tableContextMenu', isCollectionItem: false },
+    tableResizing: { optionName: 'tableResizing', isCollectionItem: false },
+    toolbar: { optionName: 'toolbar', isCollectionItem: false },
+    variables: { optionName: 'variables', isCollectionItem: false },
   };
 }
 (HtmlEditor as any).propTypes = {
@@ -62,7 +62,7 @@ class HtmlEditor extends BaseComponent<React.PropsWithChildren<IHtmlEditorOption
   height: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
+    PropTypes.string,
   ]),
   hint: PropTypes.string,
   hoverStateEnabled: PropTypes.bool,
@@ -84,9 +84,9 @@ class HtmlEditor extends BaseComponent<React.PropsWithChildren<IHtmlEditorOption
   stylingMode: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "outlined",
-      "underlined",
-      "filled"])
+      'outlined',
+      'underlined',
+      'filled']),
   ]),
   tabIndex: PropTypes.number,
   tableContextMenu: PropTypes.object,
@@ -96,39 +96,38 @@ class HtmlEditor extends BaseComponent<React.PropsWithChildren<IHtmlEditorOption
   validationMessageMode: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "always",
-      "auto"])
+      'always',
+      'auto']),
   ]),
   validationMessagePosition: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "bottom",
-      "left",
-      "right",
-      "top"])
+      'bottom',
+      'left',
+      'right',
+      'top']),
   ]),
   validationStatus: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "valid",
-      "invalid",
-      "pending"])
+      'valid',
+      'invalid',
+      'pending']),
   ]),
   valueType: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "html",
-      "markdown"])
+      'html',
+      'markdown']),
   ]),
   variables: PropTypes.object,
   visible: PropTypes.bool,
   width: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
-  ])
+    PropTypes.string,
+  ]),
 };
-
 
 // owners:
 // ImageUpload
@@ -188,22 +187,23 @@ type IFileUploaderOptionsProps = React.PropsWithChildren<{
   uploadFailedMessage?: string;
   uploadFile?: ((file: any, progressCallback: (() => void)) => any);
   uploadHeaders?: any;
-  uploadMethod?: "POST" | "PUT";
-  uploadMode?: "instantly" | "useButtons" | "useForm";
+  uploadMethod?: 'POST' | 'PUT';
+  uploadMode?: 'instantly' | 'useButtons' | 'useForm';
   uploadUrl?: string;
   validationError?: any;
   validationErrors?: Array<any>;
-  validationStatus?: "valid" | "invalid" | "pending";
+  validationStatus?: 'valid' | 'invalid' | 'pending';
   value?: Array<any>;
   visible?: boolean;
   width?: (() => number) | number | string;
   defaultValue?: Array<any>;
   onValueChange?: (value: Array<any>) => void;
-}>
+}>;
 class FileUploaderOptions extends NestedOption<IFileUploaderOptionsProps> {
-  public static OptionName = "fileUploaderOptions";
+  public static OptionName = 'fileUploaderOptions';
+
   public static DefaultsProps = {
-    defaultValue: "value"
+    defaultValue: 'value',
   };
 }
 
@@ -211,16 +211,17 @@ class FileUploaderOptions extends NestedOption<IFileUploaderOptionsProps> {
 // HtmlEditor
 type IImageUploadProps = React.PropsWithChildren<{
   fileUploaderOptions?: dxFileUploaderOptions;
-  fileUploadMode?: "base64" | "server" | "both";
-  tabs?: Array<dxHtmlEditorImageUploadTabItem | "url" | "file">;
+  fileUploadMode?: 'base64' | 'server' | 'both';
+  tabs?: Array<dxHtmlEditorImageUploadTabItem | 'url' | 'file'>;
   uploadDirectory?: string;
   uploadUrl?: string;
-}>
+}>;
 class ImageUpload extends NestedOption<IImageUploadProps> {
-  public static OptionName = "imageUpload";
+  public static OptionName = 'imageUpload';
+
   public static ExpectedChildren = {
-    fileUploaderOptions: { optionName: "fileUploaderOptions", isCollectionItem: false },
-    tab: { optionName: "tabs", isCollectionItem: true }
+    fileUploaderOptions: { optionName: 'fileUploaderOptions', isCollectionItem: false },
+    tab: { optionName: 'tabs', isCollectionItem: true },
   };
 }
 
@@ -233,8 +234,8 @@ type IItemProps = React.PropsWithChildren<{
   closeMenuOnClick?: boolean;
   disabled?: boolean;
   icon?: string;
-  items?: Array<dxHtmlEditorTableContextMenuItem | "background" | "bold" | "color" | "font" | "italic" | "link" | "image" | "strike" | "subscript" | "superscript" | "underline" | "blockquote" | "increaseIndent" | "decreaseIndent" | "orderedList" | "bulletList" | "alignLeft" | "alignCenter" | "alignRight" | "alignJustify" | "codeBlock" | "variable" | "undo" | "redo" | "clear" | "insertTable" | "insertHeaderRow" | "insertRowAbove" | "insertRowBelow" | "insertColumnLeft" | "insertColumnRight" | "deleteColumn" | "deleteRow" | "deleteTable" | "cellProperties" | "tableProperties">;
-  name?: "background" | "bold" | "color" | "font" | "italic" | "link" | "image" | "strike" | "subscript" | "superscript" | "underline" | "blockquote" | "increaseIndent" | "decreaseIndent" | "orderedList" | "bulletList" | "alignLeft" | "alignCenter" | "alignRight" | "alignJustify" | "codeBlock" | "variable" | "undo" | "redo" | "clear" | "insertTable" | "insertHeaderRow" | "insertRowAbove" | "insertRowBelow" | "insertColumnLeft" | "insertColumnRight" | "deleteColumn" | "deleteRow" | "deleteTable" | "cellProperties" | "tableProperties";
+  items?: Array<dxHtmlEditorTableContextMenuItem | 'background' | 'bold' | 'color' | 'font' | 'italic' | 'link' | 'image' | 'strike' | 'subscript' | 'superscript' | 'underline' | 'blockquote' | 'increaseIndent' | 'decreaseIndent' | 'orderedList' | 'bulletList' | 'alignLeft' | 'alignCenter' | 'alignRight' | 'alignJustify' | 'codeBlock' | 'variable' | 'undo' | 'redo' | 'clear' | 'insertTable' | 'insertHeaderRow' | 'insertRowAbove' | 'insertRowBelow' | 'insertColumnLeft' | 'insertColumnRight' | 'deleteColumn' | 'deleteRow' | 'deleteTable' | 'cellProperties' | 'tableProperties'>;
+  name?: 'background' | 'bold' | 'color' | 'font' | 'italic' | 'link' | 'image' | 'strike' | 'subscript' | 'superscript' | 'underline' | 'blockquote' | 'increaseIndent' | 'decreaseIndent' | 'orderedList' | 'bulletList' | 'alignLeft' | 'alignCenter' | 'alignRight' | 'alignJustify' | 'codeBlock' | 'variable' | 'undo' | 'redo' | 'clear' | 'insertTable' | 'insertHeaderRow' | 'insertRowAbove' | 'insertRowBelow' | 'insertColumnLeft' | 'insertColumnRight' | 'deleteColumn' | 'deleteRow' | 'deleteTable' | 'cellProperties' | 'tableProperties';
   selectable?: boolean;
   selected?: boolean;
   template?: ((itemData: CollectionWidgetItem, itemIndex: number, itemElement: any) => string) | template;
@@ -242,35 +243,37 @@ type IItemProps = React.PropsWithChildren<{
   visible?: boolean;
   acceptedValues?: Array<boolean | number | string>;
   cssClass?: string;
-  formatName?: "background" | "bold" | "color" | "font" | "italic" | "link" | "image" | "size" | "strike" | "subscript" | "superscript" | "underline" | "blockquote" | "header" | "increaseIndent" | "decreaseIndent" | "orderedList" | "bulletList" | "alignLeft" | "alignCenter" | "alignRight" | "alignJustify" | "codeBlock" | "variable" | "separator" | "undo" | "redo" | "clear" | "cellProperties" | "tableProperties" | "insertTable" | "insertHeaderRow" | "insertRowAbove" | "insertRowBelow" | "insertColumnLeft" | "insertColumnRight" | "deleteColumn" | "deleteRow" | "deleteTable";
+  formatName?: 'background' | 'bold' | 'color' | 'font' | 'italic' | 'link' | 'image' | 'size' | 'strike' | 'subscript' | 'superscript' | 'underline' | 'blockquote' | 'header' | 'increaseIndent' | 'decreaseIndent' | 'orderedList' | 'bulletList' | 'alignLeft' | 'alignCenter' | 'alignRight' | 'alignJustify' | 'codeBlock' | 'variable' | 'separator' | 'undo' | 'redo' | 'clear' | 'cellProperties' | 'tableProperties' | 'insertTable' | 'insertHeaderRow' | 'insertRowAbove' | 'insertRowBelow' | 'insertColumnLeft' | 'insertColumnRight' | 'deleteColumn' | 'deleteRow' | 'deleteTable';
   formatValues?: Array<boolean | number | string>;
   html?: string;
-  locateInMenu?: "always" | "auto" | "never";
-  location?: "after" | "before" | "center";
+  locateInMenu?: 'always' | 'auto' | 'never';
+  location?: 'after' | 'before' | 'center';
   menuItemTemplate?: (() => string) | template;
   options?: any;
-  showText?: "always" | "inMenu";
-  widget?: "dxAutocomplete" | "dxButton" | "dxCheckBox" | "dxDateBox" | "dxMenu" | "dxSelectBox" | "dxTabs" | "dxTextBox" | "dxButtonGroup" | "dxDropDownButton";
+  showText?: 'always' | 'inMenu';
+  widget?: 'dxAutocomplete' | 'dxButton' | 'dxCheckBox' | 'dxDateBox' | 'dxMenu' | 'dxSelectBox' | 'dxTabs' | 'dxTextBox' | 'dxButtonGroup' | 'dxDropDownButton';
   render?: (...params: any) => React.ReactNode;
   component?: React.ComponentType<any>;
   keyFn?: (data: any) => string;
   menuItemRender?: (...params: any) => React.ReactNode;
   menuItemComponent?: React.ComponentType<any>;
   menuItemKeyFn?: (data: any) => string;
-}>
+}>;
 class Item extends NestedOption<IItemProps> {
-  public static OptionName = "items";
+  public static OptionName = 'items';
+
   public static IsCollectionItem = true;
+
   public static TemplateProps = [{
-    tmplOption: "template",
-    render: "render",
-    component: "component",
-    keyFn: "keyFn"
+    tmplOption: 'template',
+    render: 'render',
+    component: 'component',
+    keyFn: 'keyFn',
   }, {
-    tmplOption: "menuItemTemplate",
-    render: "menuItemRender",
-    component: "menuItemComponent",
-    keyFn: "menuItemKeyFn"
+    tmplOption: 'menuItemTemplate',
+    render: 'menuItemRender',
+    component: 'menuItemComponent',
+    keyFn: 'menuItemKeyFn',
   }];
 }
 
@@ -279,9 +282,9 @@ class Item extends NestedOption<IItemProps> {
 type IMediaResizingProps = React.PropsWithChildren<{
   allowedTargets?: Array<string>;
   enabled?: boolean;
-}>
+}>;
 class MediaResizing extends NestedOption<IMediaResizingProps> {
-  public static OptionName = "mediaResizing";
+  public static OptionName = 'mediaResizing';
 }
 
 // owners:
@@ -302,30 +305,33 @@ type IMentionProps = React.PropsWithChildren<{
   render?: (...params: any) => React.ReactNode;
   component?: React.ComponentType<any>;
   keyFn?: (data: any) => string;
-}>
+}>;
 class Mention extends NestedOption<IMentionProps> {
-  public static OptionName = "mentions";
+  public static OptionName = 'mentions';
+
   public static IsCollectionItem = true;
+
   public static TemplateProps = [{
-    tmplOption: "itemTemplate",
-    render: "itemRender",
-    component: "itemComponent",
-    keyFn: "itemKeyFn"
+    tmplOption: 'itemTemplate',
+    render: 'itemRender',
+    component: 'itemComponent',
+    keyFn: 'itemKeyFn',
   }, {
-    tmplOption: "template",
-    render: "render",
-    component: "component",
-    keyFn: "keyFn"
+    tmplOption: 'template',
+    render: 'render',
+    component: 'component',
+    keyFn: 'keyFn',
   }];
 }
 
 // owners:
 // ImageUpload
 type ITabProps = React.PropsWithChildren<{
-  name?: "url" | "file";
-}>
+  name?: 'url' | 'file';
+}>;
 class Tab extends NestedOption<ITabProps> {
-  public static OptionName = "tabs";
+  public static OptionName = 'tabs';
+
   public static IsCollectionItem = true;
 }
 
@@ -333,13 +339,14 @@ class Tab extends NestedOption<ITabProps> {
 // HtmlEditor
 type ITableContextMenuProps = React.PropsWithChildren<{
   enabled?: boolean;
-  items?: Array<dxHtmlEditorTableContextMenuItem | "background" | "bold" | "color" | "font" | "italic" | "link" | "image" | "strike" | "subscript" | "superscript" | "underline" | "blockquote" | "increaseIndent" | "decreaseIndent" | "orderedList" | "bulletList" | "alignLeft" | "alignCenter" | "alignRight" | "alignJustify" | "codeBlock" | "variable" | "undo" | "redo" | "clear" | "insertTable" | "insertHeaderRow" | "insertRowAbove" | "insertRowBelow" | "insertColumnLeft" | "insertColumnRight" | "deleteColumn" | "deleteRow" | "deleteTable" | "cellProperties" | "tableProperties">;
-}>
+  items?: Array<dxHtmlEditorTableContextMenuItem | 'background' | 'bold' | 'color' | 'font' | 'italic' | 'link' | 'image' | 'strike' | 'subscript' | 'superscript' | 'underline' | 'blockquote' | 'increaseIndent' | 'decreaseIndent' | 'orderedList' | 'bulletList' | 'alignLeft' | 'alignCenter' | 'alignRight' | 'alignJustify' | 'codeBlock' | 'variable' | 'undo' | 'redo' | 'clear' | 'insertTable' | 'insertHeaderRow' | 'insertRowAbove' | 'insertRowBelow' | 'insertColumnLeft' | 'insertColumnRight' | 'deleteColumn' | 'deleteRow' | 'deleteTable' | 'cellProperties' | 'tableProperties'>;
+}>;
 class TableContextMenu extends NestedOption<ITableContextMenuProps> {
-  public static OptionName = "tableContextMenu";
+  public static OptionName = 'tableContextMenu';
+
   public static ExpectedChildren = {
-    item: { optionName: "items", isCollectionItem: true },
-    tableContextMenuItem: { optionName: "items", isCollectionItem: true }
+    item: { optionName: 'items', isCollectionItem: true },
+    tableContextMenuItem: { optionName: 'items', isCollectionItem: true },
   };
 }
 
@@ -351,8 +358,8 @@ type ITableContextMenuItemProps = React.PropsWithChildren<{
   closeMenuOnClick?: boolean;
   disabled?: boolean;
   icon?: string;
-  items?: Array<dxHtmlEditorTableContextMenuItem | "background" | "bold" | "color" | "font" | "italic" | "link" | "image" | "strike" | "subscript" | "superscript" | "underline" | "blockquote" | "increaseIndent" | "decreaseIndent" | "orderedList" | "bulletList" | "alignLeft" | "alignCenter" | "alignRight" | "alignJustify" | "codeBlock" | "variable" | "undo" | "redo" | "clear" | "insertTable" | "insertHeaderRow" | "insertRowAbove" | "insertRowBelow" | "insertColumnLeft" | "insertColumnRight" | "deleteColumn" | "deleteRow" | "deleteTable" | "cellProperties" | "tableProperties">;
-  name?: "background" | "bold" | "color" | "font" | "italic" | "link" | "image" | "strike" | "subscript" | "superscript" | "underline" | "blockquote" | "increaseIndent" | "decreaseIndent" | "orderedList" | "bulletList" | "alignLeft" | "alignCenter" | "alignRight" | "alignJustify" | "codeBlock" | "variable" | "undo" | "redo" | "clear" | "insertTable" | "insertHeaderRow" | "insertRowAbove" | "insertRowBelow" | "insertColumnLeft" | "insertColumnRight" | "deleteColumn" | "deleteRow" | "deleteTable" | "cellProperties" | "tableProperties";
+  items?: Array<dxHtmlEditorTableContextMenuItem | 'background' | 'bold' | 'color' | 'font' | 'italic' | 'link' | 'image' | 'strike' | 'subscript' | 'superscript' | 'underline' | 'blockquote' | 'increaseIndent' | 'decreaseIndent' | 'orderedList' | 'bulletList' | 'alignLeft' | 'alignCenter' | 'alignRight' | 'alignJustify' | 'codeBlock' | 'variable' | 'undo' | 'redo' | 'clear' | 'insertTable' | 'insertHeaderRow' | 'insertRowAbove' | 'insertRowBelow' | 'insertColumnLeft' | 'insertColumnRight' | 'deleteColumn' | 'deleteRow' | 'deleteTable' | 'cellProperties' | 'tableProperties'>;
+  name?: 'background' | 'bold' | 'color' | 'font' | 'italic' | 'link' | 'image' | 'strike' | 'subscript' | 'superscript' | 'underline' | 'blockquote' | 'increaseIndent' | 'decreaseIndent' | 'orderedList' | 'bulletList' | 'alignLeft' | 'alignCenter' | 'alignRight' | 'alignJustify' | 'codeBlock' | 'variable' | 'undo' | 'redo' | 'clear' | 'insertTable' | 'insertHeaderRow' | 'insertRowAbove' | 'insertRowBelow' | 'insertColumnLeft' | 'insertColumnRight' | 'deleteColumn' | 'deleteRow' | 'deleteTable' | 'cellProperties' | 'tableProperties';
   selectable?: boolean;
   selected?: boolean;
   template?: ((itemData: CollectionWidgetItem, itemIndex: number, itemElement: any) => string) | template;
@@ -361,15 +368,17 @@ type ITableContextMenuItemProps = React.PropsWithChildren<{
   render?: (...params: any) => React.ReactNode;
   component?: React.ComponentType<any>;
   keyFn?: (data: any) => string;
-}>
+}>;
 class TableContextMenuItem extends NestedOption<ITableContextMenuItemProps> {
-  public static OptionName = "items";
+  public static OptionName = 'items';
+
   public static IsCollectionItem = true;
+
   public static TemplateProps = [{
-    tmplOption: "template",
-    render: "render",
-    component: "component",
-    keyFn: "keyFn"
+    tmplOption: 'template',
+    render: 'render',
+    component: 'component',
+    keyFn: 'keyFn',
   }];
 }
 
@@ -379,23 +388,24 @@ type ITableResizingProps = React.PropsWithChildren<{
   enabled?: boolean;
   minColumnWidth?: number;
   minRowHeight?: number;
-}>
+}>;
 class TableResizing extends NestedOption<ITableResizingProps> {
-  public static OptionName = "tableResizing";
+  public static OptionName = 'tableResizing';
 }
 
 // owners:
 // HtmlEditor
 type IToolbarProps = React.PropsWithChildren<{
   container?: any | string;
-  items?: Array<dxHtmlEditorToolbarItem | "background" | "bold" | "color" | "font" | "italic" | "link" | "image" | "size" | "strike" | "subscript" | "superscript" | "underline" | "blockquote" | "header" | "increaseIndent" | "decreaseIndent" | "orderedList" | "bulletList" | "alignLeft" | "alignCenter" | "alignRight" | "alignJustify" | "codeBlock" | "variable" | "separator" | "undo" | "redo" | "clear" | "cellProperties" | "tableProperties" | "insertTable" | "insertHeaderRow" | "insertRowAbove" | "insertRowBelow" | "insertColumnLeft" | "insertColumnRight" | "deleteColumn" | "deleteRow" | "deleteTable">;
+  items?: Array<dxHtmlEditorToolbarItem | 'background' | 'bold' | 'color' | 'font' | 'italic' | 'link' | 'image' | 'size' | 'strike' | 'subscript' | 'superscript' | 'underline' | 'blockquote' | 'header' | 'increaseIndent' | 'decreaseIndent' | 'orderedList' | 'bulletList' | 'alignLeft' | 'alignCenter' | 'alignRight' | 'alignJustify' | 'codeBlock' | 'variable' | 'separator' | 'undo' | 'redo' | 'clear' | 'cellProperties' | 'tableProperties' | 'insertTable' | 'insertHeaderRow' | 'insertRowAbove' | 'insertRowBelow' | 'insertColumnLeft' | 'insertColumnRight' | 'deleteColumn' | 'deleteRow' | 'deleteTable'>;
   multiline?: boolean;
-}>
+}>;
 class Toolbar extends NestedOption<IToolbarProps> {
-  public static OptionName = "toolbar";
+  public static OptionName = 'toolbar';
+
   public static ExpectedChildren = {
-    item: { optionName: "items", isCollectionItem: true },
-    toolbarItem: { optionName: "items", isCollectionItem: true }
+    item: { optionName: 'items', isCollectionItem: true },
+    toolbarItem: { optionName: 'items', isCollectionItem: true },
   };
 }
 
@@ -405,39 +415,41 @@ type IToolbarItemProps = React.PropsWithChildren<{
   acceptedValues?: Array<boolean | number | string>;
   cssClass?: string;
   disabled?: boolean;
-  formatName?: "background" | "bold" | "color" | "font" | "italic" | "link" | "image" | "size" | "strike" | "subscript" | "superscript" | "underline" | "blockquote" | "header" | "increaseIndent" | "decreaseIndent" | "orderedList" | "bulletList" | "alignLeft" | "alignCenter" | "alignRight" | "alignJustify" | "codeBlock" | "variable" | "separator" | "undo" | "redo" | "clear" | "cellProperties" | "tableProperties" | "insertTable" | "insertHeaderRow" | "insertRowAbove" | "insertRowBelow" | "insertColumnLeft" | "insertColumnRight" | "deleteColumn" | "deleteRow" | "deleteTable";
+  formatName?: 'background' | 'bold' | 'color' | 'font' | 'italic' | 'link' | 'image' | 'size' | 'strike' | 'subscript' | 'superscript' | 'underline' | 'blockquote' | 'header' | 'increaseIndent' | 'decreaseIndent' | 'orderedList' | 'bulletList' | 'alignLeft' | 'alignCenter' | 'alignRight' | 'alignJustify' | 'codeBlock' | 'variable' | 'separator' | 'undo' | 'redo' | 'clear' | 'cellProperties' | 'tableProperties' | 'insertTable' | 'insertHeaderRow' | 'insertRowAbove' | 'insertRowBelow' | 'insertColumnLeft' | 'insertColumnRight' | 'deleteColumn' | 'deleteRow' | 'deleteTable';
   formatValues?: Array<boolean | number | string>;
   html?: string;
-  locateInMenu?: "always" | "auto" | "never";
-  location?: "after" | "before" | "center";
+  locateInMenu?: 'always' | 'auto' | 'never';
+  location?: 'after' | 'before' | 'center';
   menuItemTemplate?: (() => string) | template;
-  name?: "background" | "bold" | "color" | "font" | "italic" | "link" | "image" | "size" | "strike" | "subscript" | "superscript" | "underline" | "blockquote" | "header" | "increaseIndent" | "decreaseIndent" | "orderedList" | "bulletList" | "alignLeft" | "alignCenter" | "alignRight" | "alignJustify" | "codeBlock" | "variable" | "separator" | "undo" | "redo" | "clear" | "cellProperties" | "tableProperties" | "insertTable" | "insertHeaderRow" | "insertRowAbove" | "insertRowBelow" | "insertColumnLeft" | "insertColumnRight" | "deleteColumn" | "deleteRow" | "deleteTable";
+  name?: 'background' | 'bold' | 'color' | 'font' | 'italic' | 'link' | 'image' | 'size' | 'strike' | 'subscript' | 'superscript' | 'underline' | 'blockquote' | 'header' | 'increaseIndent' | 'decreaseIndent' | 'orderedList' | 'bulletList' | 'alignLeft' | 'alignCenter' | 'alignRight' | 'alignJustify' | 'codeBlock' | 'variable' | 'separator' | 'undo' | 'redo' | 'clear' | 'cellProperties' | 'tableProperties' | 'insertTable' | 'insertHeaderRow' | 'insertRowAbove' | 'insertRowBelow' | 'insertColumnLeft' | 'insertColumnRight' | 'deleteColumn' | 'deleteRow' | 'deleteTable';
   options?: any;
-  showText?: "always" | "inMenu";
+  showText?: 'always' | 'inMenu';
   template?: ((itemData: CollectionWidgetItem, itemIndex: number, itemElement: any) => string) | template;
   text?: string;
   visible?: boolean;
-  widget?: "dxAutocomplete" | "dxButton" | "dxCheckBox" | "dxDateBox" | "dxMenu" | "dxSelectBox" | "dxTabs" | "dxTextBox" | "dxButtonGroup" | "dxDropDownButton";
+  widget?: 'dxAutocomplete' | 'dxButton' | 'dxCheckBox' | 'dxDateBox' | 'dxMenu' | 'dxSelectBox' | 'dxTabs' | 'dxTextBox' | 'dxButtonGroup' | 'dxDropDownButton';
   menuItemRender?: (...params: any) => React.ReactNode;
   menuItemComponent?: React.ComponentType<any>;
   menuItemKeyFn?: (data: any) => string;
   render?: (...params: any) => React.ReactNode;
   component?: React.ComponentType<any>;
   keyFn?: (data: any) => string;
-}>
+}>;
 class ToolbarItem extends NestedOption<IToolbarItemProps> {
-  public static OptionName = "items";
+  public static OptionName = 'items';
+
   public static IsCollectionItem = true;
+
   public static TemplateProps = [{
-    tmplOption: "menuItemTemplate",
-    render: "menuItemRender",
-    component: "menuItemComponent",
-    keyFn: "menuItemKeyFn"
+    tmplOption: 'menuItemTemplate',
+    render: 'menuItemRender',
+    component: 'menuItemComponent',
+    keyFn: 'menuItemKeyFn',
   }, {
-    tmplOption: "template",
-    render: "render",
-    component: "component",
-    keyFn: "keyFn"
+    tmplOption: 'template',
+    render: 'render',
+    component: 'component',
+    keyFn: 'keyFn',
   }];
 }
 
@@ -446,9 +458,9 @@ class ToolbarItem extends NestedOption<IToolbarItemProps> {
 type IVariablesProps = React.PropsWithChildren<{
   dataSource?: Array<string> | DataSource | DataSourceOptions | null | Store | string;
   escapeChar?: Array<string> | string;
-}>
+}>;
 class Variables extends NestedOption<IVariablesProps> {
-  public static OptionName = "variables";
+  public static OptionName = 'variables';
 }
 
 export default HtmlEditor;
@@ -478,8 +490,6 @@ export {
   ToolbarItem,
   IToolbarItemProps,
   Variables,
-  IVariablesProps
+  IVariablesProps,
 };
-import type * as HtmlEditorTypes from 'devextreme/ui/html_editor_types';
 export { HtmlEditorTypes };
-

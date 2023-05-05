@@ -1,38 +1,38 @@
 import dxScrollView, {
-    Properties
-} from "devextreme/ui/scroll_view";
+  Properties,
+} from 'devextreme/ui/scroll_view';
 
-import * as PropTypes from "prop-types";
-import { Component as BaseComponent, IHtmlOptions } from "./core/component";
+import * as PropTypes from 'prop-types';
+import type * as ScrollViewTypes from 'devextreme/ui/scroll_view_types';
+import { Component as BaseComponent, IHtmlOptions } from './core/component';
 
 type IScrollViewOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
-}>
+}>;
 
 class ScrollView extends BaseComponent<React.PropsWithChildren<IScrollViewOptions>> {
-
   public get instance(): dxScrollView {
     return this._instance;
   }
 
   protected _WidgetClass = dxScrollView;
 
-  protected independentEvents = ["onDisposing","onInitialized","onPullDown","onReachBottom","onScroll","onUpdated"];
+  protected independentEvents = ['onDisposing', 'onInitialized', 'onPullDown', 'onReachBottom', 'onScroll', 'onUpdated'];
 }
 (ScrollView as any).propTypes = {
   bounceEnabled: PropTypes.bool,
   direction: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "both",
-      "horizontal",
-      "vertical"])
+      'both',
+      'horizontal',
+      'vertical']),
   ]),
   disabled: PropTypes.bool,
   elementAttr: PropTypes.object,
   height: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
+    PropTypes.string,
   ]),
   onDisposing: PropTypes.func,
   onInitialized: PropTypes.func,
@@ -51,23 +51,21 @@ class ScrollView extends BaseComponent<React.PropsWithChildren<IScrollViewOption
   showScrollbar: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "onScroll",
-      "onHover",
-      "always",
-      "never"])
+      'onScroll',
+      'onHover',
+      'always',
+      'never']),
   ]),
   useNative: PropTypes.bool,
   width: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
-  ])
+    PropTypes.string,
+  ]),
 };
 export default ScrollView;
 export {
   ScrollView,
-  IScrollViewOptions
+  IScrollViewOptions,
 };
-import type * as ScrollViewTypes from 'devextreme/ui/scroll_view_types';
 export { ScrollViewTypes };
-

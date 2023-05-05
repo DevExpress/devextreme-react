@@ -1,29 +1,28 @@
 import dxRecurrenceEditor, {
-    Properties
-} from "devextreme/ui/recurrence_editor";
+  Properties,
+} from 'devextreme/ui/recurrence_editor';
 
-import * as PropTypes from "prop-types";
-import { Component as BaseComponent, IHtmlOptions } from "./core/component";
+import * as PropTypes from 'prop-types';
+import { Component as BaseComponent, IHtmlOptions } from './core/component';
 
 type IRecurrenceEditorOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
   defaultValue?: string;
   onValueChange?: (value: string) => void;
-}>
+}>;
 
 class RecurrenceEditor extends BaseComponent<React.PropsWithChildren<IRecurrenceEditorOptions>> {
-
   public get instance(): dxRecurrenceEditor {
     return this._instance;
   }
 
   protected _WidgetClass = dxRecurrenceEditor;
 
-  protected subscribableOptions = ["value"];
+  protected subscribableOptions = ['value'];
 
-  protected independentEvents = ["onContentReady","onDisposing","onInitialized","onValueChanged"];
+  protected independentEvents = ['onContentReady', 'onDisposing', 'onInitialized', 'onValueChanged'];
 
   protected _defaults = {
-    defaultValue: "value"
+    defaultValue: 'value',
   };
 }
 (RecurrenceEditor as any).propTypes = {
@@ -35,7 +34,7 @@ class RecurrenceEditor extends BaseComponent<React.PropsWithChildren<IRecurrence
   height: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
+    PropTypes.string,
   ]),
   hint: PropTypes.string,
   hoverStateEnabled: PropTypes.bool,
@@ -52,34 +51,34 @@ class RecurrenceEditor extends BaseComponent<React.PropsWithChildren<IRecurrence
   validationMessageMode: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "always",
-      "auto"])
+      'always',
+      'auto']),
   ]),
   validationMessagePosition: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "bottom",
-      "left",
-      "right",
-      "top"])
+      'bottom',
+      'left',
+      'right',
+      'top']),
   ]),
   validationStatus: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "valid",
-      "invalid",
-      "pending"])
+      'valid',
+      'invalid',
+      'pending']),
   ]),
   value: PropTypes.string,
   visible: PropTypes.bool,
   width: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
-  ])
+    PropTypes.string,
+  ]),
 };
 export default RecurrenceEditor;
 export {
   RecurrenceEditor,
-  IRecurrenceEditorOptions
+  IRecurrenceEditorOptions,
 };

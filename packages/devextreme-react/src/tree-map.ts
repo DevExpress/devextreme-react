@@ -1,47 +1,47 @@
 import dxTreeMap, {
-    Properties
-} from "devextreme/viz/tree_map";
+  Properties,
+} from 'devextreme/viz/tree_map';
 
-import * as PropTypes from "prop-types";
-import { Component as BaseComponent, IHtmlOptions } from "./core/component";
-import NestedOption from "./core/nested-option";
+import * as PropTypes from 'prop-types';
 
-import type { dxTreeMapNode } from "devextreme/viz/tree_map";
-import type { template } from "devextreme/core/templates/template";
+import type { dxTreeMapNode } from 'devextreme/viz/tree_map';
+import type { template } from 'devextreme/core/templates/template';
 
-import type * as BaseWidgetTypes from "devextreme/viz/core/base_widget";
-import type * as LocalizationTypes from "devextreme/localization";
+import type * as BaseWidgetTypes from 'devextreme/viz/core/base_widget';
+import type * as LocalizationTypes from 'devextreme/localization';
+import type * as TreeMapTypes from 'devextreme/viz/tree_map_types';
+import NestedOption from './core/nested-option';
+import { Component as BaseComponent, IHtmlOptions } from './core/component';
 
 type ITreeMapOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
   defaultLoadingIndicator?: object;
   onLoadingIndicatorChange?: (value: object) => void;
-}>
+}>;
 
 class TreeMap extends BaseComponent<React.PropsWithChildren<ITreeMapOptions>> {
-
   public get instance(): dxTreeMap {
     return this._instance;
   }
 
   protected _WidgetClass = dxTreeMap;
 
-  protected subscribableOptions = ["loadingIndicator","loadingIndicator.show"];
+  protected subscribableOptions = ['loadingIndicator', 'loadingIndicator.show'];
 
-  protected independentEvents = ["onClick","onDisposing","onDrawn","onDrill","onExported","onExporting","onFileSaving","onIncidentOccurred","onInitialized","onNodesInitialized","onNodesRendering"];
+  protected independentEvents = ['onClick', 'onDisposing', 'onDrawn', 'onDrill', 'onExported', 'onExporting', 'onFileSaving', 'onIncidentOccurred', 'onInitialized', 'onNodesInitialized', 'onNodesRendering'];
 
   protected _defaults = {
-    defaultLoadingIndicator: "loadingIndicator"
+    defaultLoadingIndicator: 'loadingIndicator',
   };
 
   protected _expectedChildren = {
-    colorizer: { optionName: "colorizer", isCollectionItem: false },
-    export: { optionName: "export", isCollectionItem: false },
-    group: { optionName: "group", isCollectionItem: false },
-    loadingIndicator: { optionName: "loadingIndicator", isCollectionItem: false },
-    size: { optionName: "size", isCollectionItem: false },
-    tile: { optionName: "tile", isCollectionItem: false },
-    title: { optionName: "title", isCollectionItem: false },
-    tooltip: { optionName: "tooltip", isCollectionItem: false }
+    colorizer: { optionName: 'colorizer', isCollectionItem: false },
+    export: { optionName: 'export', isCollectionItem: false },
+    group: { optionName: 'group', isCollectionItem: false },
+    loadingIndicator: { optionName: 'loadingIndicator', isCollectionItem: false },
+    size: { optionName: 'size', isCollectionItem: false },
+    tile: { optionName: 'tile', isCollectionItem: false },
+    title: { optionName: 'title', isCollectionItem: false },
+    tooltip: { optionName: 'tooltip', isCollectionItem: false },
   };
 }
 (TreeMap as any).propTypes = {
@@ -59,20 +59,20 @@ class TreeMap extends BaseComponent<React.PropsWithChildren<ITreeMapOptions>> {
   layoutAlgorithm: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.oneOf([
-      "sliceanddice",
-      "squarified",
-      "strip"])
-  ])
+      PropTypes.string,
+      PropTypes.oneOf([
+        'sliceanddice',
+        'squarified',
+        'strip']),
+    ]),
   ]),
   layoutDirection: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "leftBottomRightTop",
-      "leftTopRightBottom",
-      "rightBottomLeftTop",
-      "rightTopLeftBottom"])
+      'leftBottomRightTop',
+      'leftTopRightBottom',
+      'rightBottomLeftTop',
+      'rightTopLeftBottom']),
   ]),
   loadingIndicator: PropTypes.object,
   maxDepth: PropTypes.number,
@@ -97,37 +97,36 @@ class TreeMap extends BaseComponent<React.PropsWithChildren<ITreeMapOptions>> {
   selectionMode: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "single",
-      "multiple",
-      "none"])
+      'single',
+      'multiple',
+      'none']),
   ]),
   size: PropTypes.object,
   theme: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "generic.dark",
-      "generic.light",
-      "generic.contrast",
-      "generic.carmine",
-      "generic.darkmoon",
-      "generic.darkviolet",
-      "generic.greenmist",
-      "generic.softblue",
-      "material.blue.light",
-      "material.lime.light",
-      "material.orange.light",
-      "material.purple.light",
-      "material.teal.light"])
+      'generic.dark',
+      'generic.light',
+      'generic.contrast',
+      'generic.carmine',
+      'generic.darkmoon',
+      'generic.darkviolet',
+      'generic.greenmist',
+      'generic.softblue',
+      'material.blue.light',
+      'material.lime.light',
+      'material.orange.light',
+      'material.purple.light',
+      'material.teal.light']),
   ]),
   tile: PropTypes.object,
   title: PropTypes.oneOfType([
     PropTypes.object,
-    PropTypes.string
+    PropTypes.string,
   ]),
   tooltip: PropTypes.object,
-  valueField: PropTypes.string
+  valueField: PropTypes.string,
 };
-
 
 // owners:
 // Group
@@ -140,12 +139,12 @@ class TreeMap extends BaseComponent<React.PropsWithChildren<ITreeMapOptions>> {
 type IBorderProps = React.PropsWithChildren<{
   color?: string;
   width?: number;
-  dashStyle?: "dash" | "dot" | "longDash" | "solid";
+  dashStyle?: 'dash' | 'dot' | 'longDash' | 'solid';
   opacity?: number;
   visible?: boolean;
-}>
+}>;
 class Border extends NestedOption<IBorderProps> {
-  public static OptionName = "border";
+  public static OptionName = 'border';
 }
 
 // owners:
@@ -153,13 +152,13 @@ class Border extends NestedOption<IBorderProps> {
 type IColorizerProps = React.PropsWithChildren<{
   colorCodeField?: string;
   colorizeGroups?: boolean;
-  palette?: Array<string> | "Bright" | "Harmony Light" | "Ocean" | "Pastel" | "Soft" | "Soft Pastel" | "Vintage" | "Violet" | "Carmine" | "Dark Moon" | "Dark Violet" | "Green Mist" | "Soft Blue" | "Material" | "Office";
-  paletteExtensionMode?: "alternate" | "blend" | "extrapolate";
+  palette?: Array<string> | 'Bright' | 'Harmony Light' | 'Ocean' | 'Pastel' | 'Soft' | 'Soft Pastel' | 'Vintage' | 'Violet' | 'Carmine' | 'Dark Moon' | 'Dark Violet' | 'Green Mist' | 'Soft Blue' | 'Material' | 'Office';
+  paletteExtensionMode?: 'alternate' | 'blend' | 'extrapolate';
   range?: Array<number>;
-  type?: "discrete" | "gradient" | "none" | "range";
-}>
+  type?: 'discrete' | 'gradient' | 'none' | 'range';
+}>;
 class Colorizer extends NestedOption<IColorizerProps> {
-  public static OptionName = "colorizer";
+  public static OptionName = 'colorizer';
 }
 
 // owners:
@@ -168,13 +167,13 @@ type IExportProps = React.PropsWithChildren<{
   backgroundColor?: string;
   enabled?: boolean;
   fileName?: string;
-  formats?: Array<"GIF" | "JPEG" | "PDF" | "PNG" | "SVG">;
+  formats?: Array<'GIF' | 'JPEG' | 'PDF' | 'PNG' | 'SVG'>;
   margin?: number;
   printingEnabled?: boolean;
   svgToCanvas?: ((svg: any, canvas: any) => any);
-}>
+}>;
 class Export extends NestedOption<IExportProps> {
-  public static OptionName = "export";
+  public static OptionName = 'export';
 }
 
 // owners:
@@ -190,9 +189,9 @@ type IFontProps = React.PropsWithChildren<{
   opacity?: number;
   size?: number | string;
   weight?: number;
-}>
+}>;
 class Font extends NestedOption<IFontProps> {
-  public static OptionName = "font";
+  public static OptionName = 'font';
 }
 
 // owners:
@@ -202,11 +201,11 @@ type IFormatProps = React.PropsWithChildren<{
   formatter?: ((value: number | any) => string);
   parser?: ((value: string) => number);
   precision?: number;
-  type?: "billions" | "currency" | "day" | "decimal" | "exponential" | "fixedPoint" | "largeNumber" | "longDate" | "longTime" | "millions" | "millisecond" | "month" | "monthAndDay" | "monthAndYear" | "percent" | "quarter" | "quarterAndYear" | "shortDate" | "shortTime" | "thousands" | "trillions" | "year" | "dayOfWeek" | "hour" | "longDateLongTime" | "minute" | "second" | "shortDateShortTime";
+  type?: 'billions' | 'currency' | 'day' | 'decimal' | 'exponential' | 'fixedPoint' | 'largeNumber' | 'longDate' | 'longTime' | 'millions' | 'millisecond' | 'month' | 'monthAndDay' | 'monthAndYear' | 'percent' | 'quarter' | 'quarterAndYear' | 'shortDate' | 'shortTime' | 'thousands' | 'trillions' | 'year' | 'dayOfWeek' | 'hour' | 'longDateLongTime' | 'minute' | 'second' | 'shortDateShortTime';
   useCurrencyAccountingStyle?: boolean;
-}>
+}>;
 class Format extends NestedOption<IFormatProps> {
-  public static OptionName = "format";
+  public static OptionName = 'format';
 }
 
 // owners:
@@ -228,7 +227,7 @@ type IGroupProps = React.PropsWithChildren<{
   };
   label?: object | {
     font?: BaseWidgetTypes.Font;
-    textOverflow?: "ellipsis" | "hide" | "none";
+    textOverflow?: 'ellipsis' | 'hide' | 'none';
     visible?: boolean;
   };
   padding?: number;
@@ -239,16 +238,17 @@ type IGroupProps = React.PropsWithChildren<{
     };
     color?: string;
   };
-}>
+}>;
 class Group extends NestedOption<IGroupProps> {
-  public static OptionName = "group";
+  public static OptionName = 'group';
+
   public static ExpectedChildren = {
-    border: { optionName: "border", isCollectionItem: false },
-    groupLabel: { optionName: "label", isCollectionItem: false },
-    hoverStyle: { optionName: "hoverStyle", isCollectionItem: false },
-    label: { optionName: "label", isCollectionItem: false },
-    selectionStyle: { optionName: "selectionStyle", isCollectionItem: false },
-    treeMapborder: { optionName: "border", isCollectionItem: false }
+    border: { optionName: 'border', isCollectionItem: false },
+    groupLabel: { optionName: 'label', isCollectionItem: false },
+    hoverStyle: { optionName: 'hoverStyle', isCollectionItem: false },
+    label: { optionName: 'label', isCollectionItem: false },
+    selectionStyle: { optionName: 'selectionStyle', isCollectionItem: false },
+    treeMapborder: { optionName: 'border', isCollectionItem: false },
   };
 }
 
@@ -256,13 +256,14 @@ class Group extends NestedOption<IGroupProps> {
 // Group
 type IGroupLabelProps = React.PropsWithChildren<{
   font?: BaseWidgetTypes.Font;
-  textOverflow?: "ellipsis" | "hide" | "none";
+  textOverflow?: 'ellipsis' | 'hide' | 'none';
   visible?: boolean;
-}>
+}>;
 class GroupLabel extends NestedOption<IGroupLabelProps> {
-  public static OptionName = "label";
+  public static OptionName = 'label';
+
   public static ExpectedChildren = {
-    font: { optionName: "font", isCollectionItem: false }
+    font: { optionName: 'font', isCollectionItem: false },
   };
 }
 
@@ -275,9 +276,9 @@ type IHoverStyleProps = React.PropsWithChildren<{
     width?: number;
   };
   color?: string;
-}>
+}>;
 class HoverStyle extends NestedOption<IHoverStyleProps> {
-  public static OptionName = "hoverStyle";
+  public static OptionName = 'hoverStyle';
 }
 
 // owners:
@@ -285,12 +286,12 @@ class HoverStyle extends NestedOption<IHoverStyleProps> {
 // Tile
 type ILabelProps = React.PropsWithChildren<{
   font?: BaseWidgetTypes.Font;
-  textOverflow?: "ellipsis" | "hide" | "none";
+  textOverflow?: 'ellipsis' | 'hide' | 'none';
   visible?: boolean;
-  wordWrap?: "normal" | "breakWord" | "none";
-}>
+  wordWrap?: 'normal' | 'breakWord' | 'none';
+}>;
 class Label extends NestedOption<ILabelProps> {
-  public static OptionName = "label";
+  public static OptionName = 'label';
 }
 
 // owners:
@@ -303,14 +304,16 @@ type ILoadingIndicatorProps = React.PropsWithChildren<{
   text?: string;
   defaultShow?: boolean;
   onShowChange?: (value: boolean) => void;
-}>
+}>;
 class LoadingIndicator extends NestedOption<ILoadingIndicatorProps> {
-  public static OptionName = "loadingIndicator";
+  public static OptionName = 'loadingIndicator';
+
   public static DefaultsProps = {
-    defaultShow: "show"
+    defaultShow: 'show',
   };
+
   public static ExpectedChildren = {
-    font: { optionName: "font", isCollectionItem: false }
+    font: { optionName: 'font', isCollectionItem: false },
   };
 }
 
@@ -321,9 +324,9 @@ type IMarginProps = React.PropsWithChildren<{
   left?: number;
   right?: number;
   top?: number;
-}>
+}>;
 class Margin extends NestedOption<IMarginProps> {
-  public static OptionName = "margin";
+  public static OptionName = 'margin';
 }
 
 // owners:
@@ -335,9 +338,9 @@ type ISelectionStyleProps = React.PropsWithChildren<{
     width?: number;
   };
   color?: string;
-}>
+}>;
 class SelectionStyle extends NestedOption<ISelectionStyleProps> {
-  public static OptionName = "selectionStyle";
+  public static OptionName = 'selectionStyle';
 }
 
 // owners:
@@ -348,9 +351,9 @@ type IShadowProps = React.PropsWithChildren<{
   offsetX?: number;
   offsetY?: number;
   opacity?: number;
-}>
+}>;
 class Shadow extends NestedOption<IShadowProps> {
-  public static OptionName = "shadow";
+  public static OptionName = 'shadow';
 }
 
 // owners:
@@ -358,9 +361,9 @@ class Shadow extends NestedOption<IShadowProps> {
 type ISizeProps = React.PropsWithChildren<{
   height?: number;
   width?: number;
-}>
+}>;
 class Size extends NestedOption<ISizeProps> {
-  public static OptionName = "size";
+  public static OptionName = 'size';
 }
 
 // owners:
@@ -369,13 +372,14 @@ type ISubtitleProps = React.PropsWithChildren<{
   font?: BaseWidgetTypes.Font;
   offset?: number;
   text?: string;
-  textOverflow?: "ellipsis" | "hide" | "none";
-  wordWrap?: "normal" | "breakWord" | "none";
-}>
+  textOverflow?: 'ellipsis' | 'hide' | 'none';
+  wordWrap?: 'normal' | 'breakWord' | 'none';
+}>;
 class Subtitle extends NestedOption<ISubtitleProps> {
-  public static OptionName = "subtitle";
+  public static OptionName = 'subtitle';
+
   public static ExpectedChildren = {
-    font: { optionName: "font", isCollectionItem: false }
+    font: { optionName: 'font', isCollectionItem: false },
   };
 }
 
@@ -396,9 +400,9 @@ type ITileProps = React.PropsWithChildren<{
   };
   label?: object | {
     font?: BaseWidgetTypes.Font;
-    textOverflow?: "ellipsis" | "hide" | "none";
+    textOverflow?: 'ellipsis' | 'hide' | 'none';
     visible?: boolean;
-    wordWrap?: "normal" | "breakWord" | "none";
+    wordWrap?: 'normal' | 'breakWord' | 'none';
   };
   selectionStyle?: object | {
     border?: object | {
@@ -407,16 +411,17 @@ type ITileProps = React.PropsWithChildren<{
     };
     color?: string;
   };
-}>
+}>;
 class Tile extends NestedOption<ITileProps> {
-  public static OptionName = "tile";
+  public static OptionName = 'tile';
+
   public static ExpectedChildren = {
-    border: { optionName: "border", isCollectionItem: false },
-    hoverStyle: { optionName: "hoverStyle", isCollectionItem: false },
-    label: { optionName: "label", isCollectionItem: false },
-    selectionStyle: { optionName: "selectionStyle", isCollectionItem: false },
-    tileLabel: { optionName: "label", isCollectionItem: false },
-    treeMapborder: { optionName: "border", isCollectionItem: false }
+    border: { optionName: 'border', isCollectionItem: false },
+    hoverStyle: { optionName: 'hoverStyle', isCollectionItem: false },
+    label: { optionName: 'label', isCollectionItem: false },
+    selectionStyle: { optionName: 'selectionStyle', isCollectionItem: false },
+    tileLabel: { optionName: 'label', isCollectionItem: false },
+    treeMapborder: { optionName: 'border', isCollectionItem: false },
   };
 }
 
@@ -424,14 +429,15 @@ class Tile extends NestedOption<ITileProps> {
 // Tile
 type ITileLabelProps = React.PropsWithChildren<{
   font?: BaseWidgetTypes.Font;
-  textOverflow?: "ellipsis" | "hide" | "none";
+  textOverflow?: 'ellipsis' | 'hide' | 'none';
   visible?: boolean;
-  wordWrap?: "normal" | "breakWord" | "none";
-}>
+  wordWrap?: 'normal' | 'breakWord' | 'none';
+}>;
 class TileLabel extends NestedOption<ITileLabelProps> {
-  public static OptionName = "label";
+  public static OptionName = 'label';
+
   public static ExpectedChildren = {
-    font: { optionName: "font", isCollectionItem: false }
+    font: { optionName: 'font', isCollectionItem: false },
   };
 }
 
@@ -439,7 +445,7 @@ class TileLabel extends NestedOption<ITileLabelProps> {
 // TreeMap
 type ITitleProps = React.PropsWithChildren<{
   font?: BaseWidgetTypes.Font;
-  horizontalAlignment?: "center" | "left" | "right";
+  horizontalAlignment?: 'center' | 'left' | 'right';
   margin?: number | object | {
     bottom?: number;
     left?: number;
@@ -451,20 +457,21 @@ type ITitleProps = React.PropsWithChildren<{
     font?: BaseWidgetTypes.Font;
     offset?: number;
     text?: string;
-    textOverflow?: "ellipsis" | "hide" | "none";
-    wordWrap?: "normal" | "breakWord" | "none";
+    textOverflow?: 'ellipsis' | 'hide' | 'none';
+    wordWrap?: 'normal' | 'breakWord' | 'none';
   };
   text?: string;
-  textOverflow?: "ellipsis" | "hide" | "none";
-  verticalAlignment?: "bottom" | "top";
-  wordWrap?: "normal" | "breakWord" | "none";
-}>
+  textOverflow?: 'ellipsis' | 'hide' | 'none';
+  verticalAlignment?: 'bottom' | 'top';
+  wordWrap?: 'normal' | 'breakWord' | 'none';
+}>;
 class Title extends NestedOption<ITitleProps> {
-  public static OptionName = "title";
+  public static OptionName = 'title';
+
   public static ExpectedChildren = {
-    font: { optionName: "font", isCollectionItem: false },
-    margin: { optionName: "margin", isCollectionItem: false },
-    subtitle: { optionName: "subtitle", isCollectionItem: false }
+    font: { optionName: 'font', isCollectionItem: false },
+    margin: { optionName: 'margin', isCollectionItem: false },
+    subtitle: { optionName: 'subtitle', isCollectionItem: false },
   };
 }
 
@@ -474,7 +481,7 @@ type ITooltipProps = React.PropsWithChildren<{
   arrowLength?: number;
   border?: object | {
     color?: string;
-    dashStyle?: "dash" | "dot" | "longDash" | "solid";
+    dashStyle?: 'dash' | 'dot' | 'longDash' | 'solid';
     opacity?: number;
     visible?: boolean;
     width?: number;
@@ -501,21 +508,23 @@ type ITooltipProps = React.PropsWithChildren<{
   contentRender?: (...params: any) => React.ReactNode;
   contentComponent?: React.ComponentType<any>;
   contentKeyFn?: (data: any) => string;
-}>
+}>;
 class Tooltip extends NestedOption<ITooltipProps> {
-  public static OptionName = "tooltip";
+  public static OptionName = 'tooltip';
+
   public static ExpectedChildren = {
-    border: { optionName: "border", isCollectionItem: false },
-    font: { optionName: "font", isCollectionItem: false },
-    format: { optionName: "format", isCollectionItem: false },
-    shadow: { optionName: "shadow", isCollectionItem: false },
-    tooltipBorder: { optionName: "border", isCollectionItem: false }
+    border: { optionName: 'border', isCollectionItem: false },
+    font: { optionName: 'font', isCollectionItem: false },
+    format: { optionName: 'format', isCollectionItem: false },
+    shadow: { optionName: 'shadow', isCollectionItem: false },
+    tooltipBorder: { optionName: 'border', isCollectionItem: false },
   };
+
   public static TemplateProps = [{
-    tmplOption: "contentTemplate",
-    render: "contentRender",
-    component: "contentComponent",
-    keyFn: "contentKeyFn"
+    tmplOption: 'contentTemplate',
+    render: 'contentRender',
+    component: 'contentComponent',
+    keyFn: 'contentKeyFn',
   }];
 }
 
@@ -523,13 +532,13 @@ class Tooltip extends NestedOption<ITooltipProps> {
 // Tooltip
 type ITooltipBorderProps = React.PropsWithChildren<{
   color?: string;
-  dashStyle?: "dash" | "dot" | "longDash" | "solid";
+  dashStyle?: 'dash' | 'dot' | 'longDash' | 'solid';
   opacity?: number;
   visible?: boolean;
   width?: number;
-}>
+}>;
 class TooltipBorder extends NestedOption<ITooltipBorderProps> {
-  public static OptionName = "border";
+  public static OptionName = 'border';
 }
 
 // owners:
@@ -542,9 +551,9 @@ class TooltipBorder extends NestedOption<ITooltipBorderProps> {
 type ITreeMapborderProps = React.PropsWithChildren<{
   color?: string;
   width?: number;
-}>
+}>;
 class TreeMapborder extends NestedOption<ITreeMapborderProps> {
-  public static OptionName = "border";
+  public static OptionName = 'border';
 }
 
 export default TreeMap;
@@ -592,8 +601,6 @@ export {
   TooltipBorder,
   ITooltipBorderProps,
   TreeMapborder,
-  ITreeMapborderProps
+  ITreeMapborderProps,
 };
-import type * as TreeMapTypes from 'devextreme/viz/tree_map_types';
 export { TreeMapTypes };
-

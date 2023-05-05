@@ -1,16 +1,17 @@
 import dxCircularGauge, {
-    Properties
-} from "devextreme/viz/circular_gauge";
+  Properties,
+} from 'devextreme/viz/circular_gauge';
 
-import * as PropTypes from "prop-types";
-import { Component as BaseComponent, IHtmlOptions } from "./core/component";
-import NestedOption from "./core/nested-option";
+import * as PropTypes from 'prop-types';
 
-import type { ChartsColor } from "devextreme/common/charts";
-import type { template } from "devextreme/core/templates/template";
+import type { ChartsColor } from 'devextreme/common/charts';
+import type { template } from 'devextreme/core/templates/template';
 
-import type * as BaseWidgetTypes from "devextreme/viz/core/base_widget";
-import type * as LocalizationTypes from "devextreme/localization";
+import type * as BaseWidgetTypes from 'devextreme/viz/core/base_widget';
+import type * as LocalizationTypes from 'devextreme/localization';
+import type * as CircularGaugeTypes from 'devextreme/viz/circular_gauge_types';
+import NestedOption from './core/nested-option';
+import { Component as BaseComponent, IHtmlOptions } from './core/component';
 
 type ICircularGaugeOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
   centerRender?: (...params: any) => React.ReactNode;
@@ -22,46 +23,45 @@ type ICircularGaugeOptions = React.PropsWithChildren<Properties & IHtmlOptions &
   onLoadingIndicatorChange?: (value: object) => void;
   onSubvaluesChange?: (value: Array<number>) => void;
   onValueChange?: (value: number) => void;
-}>
+}>;
 
 class CircularGauge extends BaseComponent<React.PropsWithChildren<ICircularGaugeOptions>> {
-
   public get instance(): dxCircularGauge {
     return this._instance;
   }
 
   protected _WidgetClass = dxCircularGauge;
 
-  protected subscribableOptions = ["loadingIndicator","loadingIndicator.show","subvalues","value"];
+  protected subscribableOptions = ['loadingIndicator', 'loadingIndicator.show', 'subvalues', 'value'];
 
-  protected independentEvents = ["onDisposing","onDrawn","onExported","onExporting","onFileSaving","onIncidentOccurred","onInitialized","onTooltipHidden","onTooltipShown"];
+  protected independentEvents = ['onDisposing', 'onDrawn', 'onExported', 'onExporting', 'onFileSaving', 'onIncidentOccurred', 'onInitialized', 'onTooltipHidden', 'onTooltipShown'];
 
   protected _defaults = {
-    defaultLoadingIndicator: "loadingIndicator",
-    defaultSubvalues: "subvalues",
-    defaultValue: "value"
+    defaultLoadingIndicator: 'loadingIndicator',
+    defaultSubvalues: 'subvalues',
+    defaultValue: 'value',
   };
 
   protected _expectedChildren = {
-    animation: { optionName: "animation", isCollectionItem: false },
-    export: { optionName: "export", isCollectionItem: false },
-    geometry: { optionName: "geometry", isCollectionItem: false },
-    loadingIndicator: { optionName: "loadingIndicator", isCollectionItem: false },
-    margin: { optionName: "margin", isCollectionItem: false },
-    rangeContainer: { optionName: "rangeContainer", isCollectionItem: false },
-    scale: { optionName: "scale", isCollectionItem: false },
-    size: { optionName: "size", isCollectionItem: false },
-    subvalueIndicator: { optionName: "subvalueIndicator", isCollectionItem: false },
-    title: { optionName: "title", isCollectionItem: false },
-    tooltip: { optionName: "tooltip", isCollectionItem: false },
-    valueIndicator: { optionName: "valueIndicator", isCollectionItem: false }
+    animation: { optionName: 'animation', isCollectionItem: false },
+    export: { optionName: 'export', isCollectionItem: false },
+    geometry: { optionName: 'geometry', isCollectionItem: false },
+    loadingIndicator: { optionName: 'loadingIndicator', isCollectionItem: false },
+    margin: { optionName: 'margin', isCollectionItem: false },
+    rangeContainer: { optionName: 'rangeContainer', isCollectionItem: false },
+    scale: { optionName: 'scale', isCollectionItem: false },
+    size: { optionName: 'size', isCollectionItem: false },
+    subvalueIndicator: { optionName: 'subvalueIndicator', isCollectionItem: false },
+    title: { optionName: 'title', isCollectionItem: false },
+    tooltip: { optionName: 'tooltip', isCollectionItem: false },
+    valueIndicator: { optionName: 'valueIndicator', isCollectionItem: false },
   };
 
   protected _templateProps = [{
-    tmplOption: "centerTemplate",
-    render: "centerRender",
-    component: "centerComponent",
-    keyFn: "centerKeyFn"
+    tmplOption: 'centerTemplate',
+    render: 'centerRender',
+    component: 'centerComponent',
+    keyFn: 'centerKeyFn',
   }];
 }
 (CircularGauge as any).propTypes = {
@@ -94,39 +94,38 @@ class CircularGauge extends BaseComponent<React.PropsWithChildren<ICircularGauge
   theme: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "generic.dark",
-      "generic.light",
-      "generic.contrast",
-      "generic.carmine",
-      "generic.darkmoon",
-      "generic.darkviolet",
-      "generic.greenmist",
-      "generic.softblue",
-      "material.blue.light",
-      "material.lime.light",
-      "material.orange.light",
-      "material.purple.light",
-      "material.teal.light"])
+      'generic.dark',
+      'generic.light',
+      'generic.contrast',
+      'generic.carmine',
+      'generic.darkmoon',
+      'generic.darkviolet',
+      'generic.greenmist',
+      'generic.softblue',
+      'material.blue.light',
+      'material.lime.light',
+      'material.orange.light',
+      'material.purple.light',
+      'material.teal.light']),
   ]),
   title: PropTypes.oneOfType([
     PropTypes.object,
-    PropTypes.string
+    PropTypes.string,
   ]),
   tooltip: PropTypes.object,
   value: PropTypes.number,
-  valueIndicator: PropTypes.object
+  valueIndicator: PropTypes.object,
 };
-
 
 // owners:
 // CircularGauge
 type IAnimationProps = React.PropsWithChildren<{
   duration?: number;
-  easing?: "easeOutCubic" | "linear";
+  easing?: 'easeOutCubic' | 'linear';
   enabled?: boolean;
-}>
+}>;
 class Animation extends NestedOption<IAnimationProps> {
-  public static OptionName = "animation";
+  public static OptionName = 'animation';
 }
 
 // owners:
@@ -134,22 +133,22 @@ class Animation extends NestedOption<IAnimationProps> {
 type IBackgroundColorProps = React.PropsWithChildren<{
   base?: string;
   fillId?: string;
-}>
+}>;
 class BackgroundColor extends NestedOption<IBackgroundColorProps> {
-  public static OptionName = "backgroundColor";
+  public static OptionName = 'backgroundColor';
 }
 
 // owners:
 // Tooltip
 type IBorderProps = React.PropsWithChildren<{
   color?: string;
-  dashStyle?: "dash" | "dot" | "longDash" | "solid";
+  dashStyle?: 'dash' | 'dot' | 'longDash' | 'solid';
   opacity?: number;
   visible?: boolean;
   width?: number;
-}>
+}>;
 class Border extends NestedOption<IBorderProps> {
-  public static OptionName = "border";
+  public static OptionName = 'border';
 }
 
 // owners:
@@ -158,9 +157,9 @@ class Border extends NestedOption<IBorderProps> {
 type IColorProps = React.PropsWithChildren<{
   base?: string;
   fillId?: string;
-}>
+}>;
 class Color extends NestedOption<IColorProps> {
-  public static OptionName = "color";
+  public static OptionName = 'color';
 }
 
 // owners:
@@ -169,13 +168,13 @@ type IExportProps = React.PropsWithChildren<{
   backgroundColor?: string;
   enabled?: boolean;
   fileName?: string;
-  formats?: Array<"GIF" | "JPEG" | "PDF" | "PNG" | "SVG">;
+  formats?: Array<'GIF' | 'JPEG' | 'PDF' | 'PNG' | 'SVG'>;
   margin?: number;
   printingEnabled?: boolean;
   svgToCanvas?: ((svg: any, canvas: any) => any);
-}>
+}>;
 class Export extends NestedOption<IExportProps> {
-  public static OptionName = "export";
+  public static OptionName = 'export';
 }
 
 // owners:
@@ -191,9 +190,9 @@ type IFontProps = React.PropsWithChildren<{
   opacity?: number;
   size?: number | string;
   weight?: number;
-}>
+}>;
 class Font extends NestedOption<IFontProps> {
-  public static OptionName = "font";
+  public static OptionName = 'font';
 }
 
 // owners:
@@ -205,11 +204,11 @@ type IFormatProps = React.PropsWithChildren<{
   formatter?: ((value: number | any) => string);
   parser?: ((value: string) => number);
   precision?: number;
-  type?: "billions" | "currency" | "day" | "decimal" | "exponential" | "fixedPoint" | "largeNumber" | "longDate" | "longTime" | "millions" | "millisecond" | "month" | "monthAndDay" | "monthAndYear" | "percent" | "quarter" | "quarterAndYear" | "shortDate" | "shortTime" | "thousands" | "trillions" | "year" | "dayOfWeek" | "hour" | "longDateLongTime" | "minute" | "second" | "shortDateShortTime";
+  type?: 'billions' | 'currency' | 'day' | 'decimal' | 'exponential' | 'fixedPoint' | 'largeNumber' | 'longDate' | 'longTime' | 'millions' | 'millisecond' | 'month' | 'monthAndDay' | 'monthAndYear' | 'percent' | 'quarter' | 'quarterAndYear' | 'shortDate' | 'shortTime' | 'thousands' | 'trillions' | 'year' | 'dayOfWeek' | 'hour' | 'longDateLongTime' | 'minute' | 'second' | 'shortDateShortTime';
   useCurrencyAccountingStyle?: boolean;
-}>
+}>;
 class Format extends NestedOption<IFormatProps> {
-  public static OptionName = "format";
+  public static OptionName = 'format';
 }
 
 // owners:
@@ -217,9 +216,9 @@ class Format extends NestedOption<IFormatProps> {
 type IGeometryProps = React.PropsWithChildren<{
   endAngle?: number;
   startAngle?: number;
-}>
+}>;
 class Geometry extends NestedOption<IGeometryProps> {
-  public static OptionName = "geometry";
+  public static OptionName = 'geometry';
 }
 
 // owners:
@@ -228,17 +227,18 @@ type ILabelProps = React.PropsWithChildren<{
   customizeText?: ((scaleValue: { value: number, valueText: string }) => string);
   font?: BaseWidgetTypes.Font;
   format?: LocalizationTypes.Format;
-  hideFirstOrLast?: "first" | "last";
+  hideFirstOrLast?: 'first' | 'last';
   indentFromTick?: number;
-  overlappingBehavior?: "hide" | "none";
+  overlappingBehavior?: 'hide' | 'none';
   useRangeColors?: boolean;
   visible?: boolean;
-}>
+}>;
 class Label extends NestedOption<ILabelProps> {
-  public static OptionName = "label";
+  public static OptionName = 'label';
+
   public static ExpectedChildren = {
-    font: { optionName: "font", isCollectionItem: false },
-    format: { optionName: "format", isCollectionItem: false }
+    font: { optionName: 'font', isCollectionItem: false },
+    format: { optionName: 'format', isCollectionItem: false },
   };
 }
 
@@ -251,14 +251,16 @@ type ILoadingIndicatorProps = React.PropsWithChildren<{
   text?: string;
   defaultShow?: boolean;
   onShowChange?: (value: boolean) => void;
-}>
+}>;
 class LoadingIndicator extends NestedOption<ILoadingIndicatorProps> {
-  public static OptionName = "loadingIndicator";
+  public static OptionName = 'loadingIndicator';
+
   public static DefaultsProps = {
-    defaultShow: "show"
+    defaultShow: 'show',
   };
+
   public static ExpectedChildren = {
-    font: { optionName: "font", isCollectionItem: false }
+    font: { optionName: 'font', isCollectionItem: false },
   };
 }
 
@@ -270,9 +272,9 @@ type IMarginProps = React.PropsWithChildren<{
   left?: number;
   right?: number;
   top?: number;
-}>
+}>;
 class Margin extends NestedOption<IMarginProps> {
-  public static OptionName = "margin";
+  public static OptionName = 'margin';
 }
 
 // owners:
@@ -283,9 +285,9 @@ type IMinorTickProps = React.PropsWithChildren<{
   opacity?: number;
   visible?: boolean;
   width?: number;
-}>
+}>;
 class MinorTick extends NestedOption<IMinorTickProps> {
-  public static OptionName = "minorTick";
+  public static OptionName = 'minorTick';
 }
 
 // owners:
@@ -294,12 +296,14 @@ type IRangeProps = React.PropsWithChildren<{
   color?: ChartsColor | string;
   endValue?: number;
   startValue?: number;
-}>
+}>;
 class Range extends NestedOption<IRangeProps> {
-  public static OptionName = "ranges";
+  public static OptionName = 'ranges';
+
   public static IsCollectionItem = true;
+
   public static ExpectedChildren = {
-    color: { optionName: "color", isCollectionItem: false }
+    color: { optionName: 'color', isCollectionItem: false },
   };
 }
 
@@ -308,21 +312,22 @@ class Range extends NestedOption<IRangeProps> {
 type IRangeContainerProps = React.PropsWithChildren<{
   backgroundColor?: ChartsColor | string;
   offset?: number;
-  orientation?: "center" | "inside" | "outside";
-  palette?: Array<string> | "Bright" | "Harmony Light" | "Ocean" | "Pastel" | "Soft" | "Soft Pastel" | "Vintage" | "Violet" | "Carmine" | "Dark Moon" | "Dark Violet" | "Green Mist" | "Soft Blue" | "Material" | "Office";
-  paletteExtensionMode?: "alternate" | "blend" | "extrapolate";
+  orientation?: 'center' | 'inside' | 'outside';
+  palette?: Array<string> | 'Bright' | 'Harmony Light' | 'Ocean' | 'Pastel' | 'Soft' | 'Soft Pastel' | 'Vintage' | 'Violet' | 'Carmine' | 'Dark Moon' | 'Dark Violet' | 'Green Mist' | 'Soft Blue' | 'Material' | 'Office';
+  paletteExtensionMode?: 'alternate' | 'blend' | 'extrapolate';
   ranges?: Array<object> | {
     color?: ChartsColor | string;
     endValue?: number;
     startValue?: number;
   }[];
   width?: number;
-}>
+}>;
 class RangeContainer extends NestedOption<IRangeContainerProps> {
-  public static OptionName = "rangeContainer";
+  public static OptionName = 'rangeContainer';
+
   public static ExpectedChildren = {
-    backgroundColor: { optionName: "backgroundColor", isCollectionItem: false },
-    range: { optionName: "ranges", isCollectionItem: true }
+    backgroundColor: { optionName: 'backgroundColor', isCollectionItem: false },
+    range: { optionName: 'ranges', isCollectionItem: true },
   };
 }
 
@@ -337,9 +342,9 @@ type IScaleProps = React.PropsWithChildren<{
     customizeText?: ((scaleValue: { value: number, valueText: string }) => string);
     font?: BaseWidgetTypes.Font;
     format?: LocalizationTypes.Format;
-    hideFirstOrLast?: "first" | "last";
+    hideFirstOrLast?: 'first' | 'last';
     indentFromTick?: number;
-    overlappingBehavior?: "hide" | "none";
+    overlappingBehavior?: 'hide' | 'none';
     useRangeColors?: boolean;
     visible?: boolean;
   };
@@ -351,7 +356,7 @@ type IScaleProps = React.PropsWithChildren<{
     width?: number;
   };
   minorTickInterval?: number;
-  orientation?: "center" | "inside" | "outside";
+  orientation?: 'center' | 'inside' | 'outside';
   scaleDivisionFactor?: number;
   startValue?: number;
   tick?: object | {
@@ -362,13 +367,14 @@ type IScaleProps = React.PropsWithChildren<{
     width?: number;
   };
   tickInterval?: number;
-}>
+}>;
 class Scale extends NestedOption<IScaleProps> {
-  public static OptionName = "scale";
+  public static OptionName = 'scale';
+
   public static ExpectedChildren = {
-    label: { optionName: "label", isCollectionItem: false },
-    minorTick: { optionName: "minorTick", isCollectionItem: false },
-    tick: { optionName: "tick", isCollectionItem: false }
+    label: { optionName: 'label', isCollectionItem: false },
+    minorTick: { optionName: 'minorTick', isCollectionItem: false },
+    tick: { optionName: 'tick', isCollectionItem: false },
   };
 }
 
@@ -380,9 +386,9 @@ type IShadowProps = React.PropsWithChildren<{
   offsetX?: number;
   offsetY?: number;
   opacity?: number;
-}>
+}>;
 class Shadow extends NestedOption<IShadowProps> {
-  public static OptionName = "shadow";
+  public static OptionName = 'shadow';
 }
 
 // owners:
@@ -390,9 +396,9 @@ class Shadow extends NestedOption<IShadowProps> {
 type ISizeProps = React.PropsWithChildren<{
   height?: number;
   width?: number;
-}>
+}>;
 class Size extends NestedOption<ISizeProps> {
-  public static OptionName = "size";
+  public static OptionName = 'size';
 }
 
 // owners:
@@ -401,13 +407,14 @@ type ISubtitleProps = React.PropsWithChildren<{
   font?: BaseWidgetTypes.Font;
   offset?: number;
   text?: string;
-  textOverflow?: "ellipsis" | "hide" | "none";
-  wordWrap?: "normal" | "breakWord" | "none";
-}>
+  textOverflow?: 'ellipsis' | 'hide' | 'none';
+  wordWrap?: 'normal' | 'breakWord' | 'none';
+}>;
 class Subtitle extends NestedOption<ISubtitleProps> {
-  public static OptionName = "subtitle";
+  public static OptionName = 'subtitle';
+
   public static ExpectedChildren = {
-    font: { optionName: "font", isCollectionItem: false }
+    font: { optionName: 'font', isCollectionItem: false },
   };
 }
 
@@ -419,11 +426,11 @@ type ISubvalueIndicatorProps = React.PropsWithChildren<{
   baseValue?: number;
   beginAdaptingAtRadius?: number;
   color?: ChartsColor | string;
-  horizontalOrientation?: "left" | "right";
+  horizontalOrientation?: 'left' | 'right';
   indentFromCenter?: number;
   length?: number;
   offset?: number;
-  palette?: Array<string> | "Bright" | "Harmony Light" | "Ocean" | "Pastel" | "Soft" | "Soft Pastel" | "Vintage" | "Violet" | "Carmine" | "Dark Moon" | "Dark Violet" | "Green Mist" | "Soft Blue" | "Material" | "Office";
+  palette?: Array<string> | 'Bright' | 'Harmony Light' | 'Ocean' | 'Pastel' | 'Soft' | 'Soft Pastel' | 'Vintage' | 'Violet' | 'Carmine' | 'Dark Moon' | 'Dark Violet' | 'Green Mist' | 'Soft Blue' | 'Material' | 'Office';
   secondColor?: string;
   secondFraction?: number;
   size?: number;
@@ -435,15 +442,16 @@ type ISubvalueIndicatorProps = React.PropsWithChildren<{
     format?: LocalizationTypes.Format;
     indent?: number;
   };
-  type?: "circle" | "rangeBar" | "rectangle" | "rectangleNeedle" | "rhombus" | "textCloud" | "triangleMarker" | "triangleNeedle" | "twoColorNeedle";
-  verticalOrientation?: "bottom" | "top";
+  type?: 'circle' | 'rangeBar' | 'rectangle' | 'rectangleNeedle' | 'rhombus' | 'textCloud' | 'triangleMarker' | 'triangleNeedle' | 'twoColorNeedle';
+  verticalOrientation?: 'bottom' | 'top';
   width?: number;
-}>
+}>;
 class SubvalueIndicator extends NestedOption<ISubvalueIndicatorProps> {
-  public static OptionName = "subvalueIndicator";
+  public static OptionName = 'subvalueIndicator';
+
   public static ExpectedChildren = {
-    color: { optionName: "color", isCollectionItem: false },
-    text: { optionName: "text", isCollectionItem: false }
+    color: { optionName: 'color', isCollectionItem: false },
+    text: { optionName: 'text', isCollectionItem: false },
   };
 }
 
@@ -454,12 +462,13 @@ type ITextProps = React.PropsWithChildren<{
   font?: BaseWidgetTypes.Font;
   format?: LocalizationTypes.Format;
   indent?: number;
-}>
+}>;
 class Text extends NestedOption<ITextProps> {
-  public static OptionName = "text";
+  public static OptionName = 'text';
+
   public static ExpectedChildren = {
-    font: { optionName: "font", isCollectionItem: false },
-    format: { optionName: "format", isCollectionItem: false }
+    font: { optionName: 'font', isCollectionItem: false },
+    format: { optionName: 'format', isCollectionItem: false },
   };
 }
 
@@ -471,16 +480,16 @@ type ITickProps = React.PropsWithChildren<{
   opacity?: number;
   visible?: boolean;
   width?: number;
-}>
+}>;
 class Tick extends NestedOption<ITickProps> {
-  public static OptionName = "tick";
+  public static OptionName = 'tick';
 }
 
 // owners:
 // CircularGauge
 type ITitleProps = React.PropsWithChildren<{
   font?: BaseWidgetTypes.Font;
-  horizontalAlignment?: "center" | "left" | "right";
+  horizontalAlignment?: 'center' | 'left' | 'right';
   margin?: number | object | {
     bottom?: number;
     left?: number;
@@ -492,20 +501,21 @@ type ITitleProps = React.PropsWithChildren<{
     font?: BaseWidgetTypes.Font;
     offset?: number;
     text?: string;
-    textOverflow?: "ellipsis" | "hide" | "none";
-    wordWrap?: "normal" | "breakWord" | "none";
+    textOverflow?: 'ellipsis' | 'hide' | 'none';
+    wordWrap?: 'normal' | 'breakWord' | 'none';
   };
   text?: string;
-  textOverflow?: "ellipsis" | "hide" | "none";
-  verticalAlignment?: "bottom" | "top";
-  wordWrap?: "normal" | "breakWord" | "none";
-}>
+  textOverflow?: 'ellipsis' | 'hide' | 'none';
+  verticalAlignment?: 'bottom' | 'top';
+  wordWrap?: 'normal' | 'breakWord' | 'none';
+}>;
 class Title extends NestedOption<ITitleProps> {
-  public static OptionName = "title";
+  public static OptionName = 'title';
+
   public static ExpectedChildren = {
-    font: { optionName: "font", isCollectionItem: false },
-    margin: { optionName: "margin", isCollectionItem: false },
-    subtitle: { optionName: "subtitle", isCollectionItem: false }
+    font: { optionName: 'font', isCollectionItem: false },
+    margin: { optionName: 'margin', isCollectionItem: false },
+    subtitle: { optionName: 'subtitle', isCollectionItem: false },
   };
 }
 
@@ -515,7 +525,7 @@ type ITooltipProps = React.PropsWithChildren<{
   arrowLength?: number;
   border?: object | {
     color?: string;
-    dashStyle?: "dash" | "dot" | "longDash" | "solid";
+    dashStyle?: 'dash' | 'dot' | 'longDash' | 'solid';
     opacity?: number;
     visible?: boolean;
     width?: number;
@@ -543,20 +553,22 @@ type ITooltipProps = React.PropsWithChildren<{
   contentRender?: (...params: any) => React.ReactNode;
   contentComponent?: React.ComponentType<any>;
   contentKeyFn?: (data: any) => string;
-}>
+}>;
 class Tooltip extends NestedOption<ITooltipProps> {
-  public static OptionName = "tooltip";
+  public static OptionName = 'tooltip';
+
   public static ExpectedChildren = {
-    border: { optionName: "border", isCollectionItem: false },
-    font: { optionName: "font", isCollectionItem: false },
-    format: { optionName: "format", isCollectionItem: false },
-    shadow: { optionName: "shadow", isCollectionItem: false }
+    border: { optionName: 'border', isCollectionItem: false },
+    font: { optionName: 'font', isCollectionItem: false },
+    format: { optionName: 'format', isCollectionItem: false },
+    shadow: { optionName: 'shadow', isCollectionItem: false },
   };
+
   public static TemplateProps = [{
-    tmplOption: "contentTemplate",
-    render: "contentRender",
-    component: "contentComponent",
-    keyFn: "contentKeyFn"
+    tmplOption: 'contentTemplate',
+    render: 'contentRender',
+    component: 'contentComponent',
+    keyFn: 'contentKeyFn',
   }];
 }
 
@@ -568,11 +580,11 @@ type IValueIndicatorProps = React.PropsWithChildren<{
   baseValue?: number;
   beginAdaptingAtRadius?: number;
   color?: ChartsColor | string;
-  horizontalOrientation?: "left" | "right";
+  horizontalOrientation?: 'left' | 'right';
   indentFromCenter?: number;
   length?: number;
   offset?: number;
-  palette?: Array<string> | "Bright" | "Harmony Light" | "Ocean" | "Pastel" | "Soft" | "Soft Pastel" | "Vintage" | "Violet" | "Carmine" | "Dark Moon" | "Dark Violet" | "Green Mist" | "Soft Blue" | "Material" | "Office";
+  palette?: Array<string> | 'Bright' | 'Harmony Light' | 'Ocean' | 'Pastel' | 'Soft' | 'Soft Pastel' | 'Vintage' | 'Violet' | 'Carmine' | 'Dark Moon' | 'Dark Violet' | 'Green Mist' | 'Soft Blue' | 'Material' | 'Office';
   secondColor?: string;
   secondFraction?: number;
   size?: number;
@@ -584,12 +596,12 @@ type IValueIndicatorProps = React.PropsWithChildren<{
     format?: LocalizationTypes.Format;
     indent?: number;
   };
-  type?: "circle" | "rangeBar" | "rectangle" | "rectangleNeedle" | "rhombus" | "textCloud" | "triangleMarker" | "triangleNeedle" | "twoColorNeedle";
-  verticalOrientation?: "bottom" | "top";
+  type?: 'circle' | 'rangeBar' | 'rectangle' | 'rectangleNeedle' | 'rhombus' | 'textCloud' | 'triangleMarker' | 'triangleNeedle' | 'twoColorNeedle';
+  verticalOrientation?: 'bottom' | 'top';
   width?: number;
-}>
+}>;
 class ValueIndicator extends NestedOption<IValueIndicatorProps> {
-  public static OptionName = "valueIndicator";
+  public static OptionName = 'valueIndicator';
 }
 
 export default CircularGauge;
@@ -643,8 +655,6 @@ export {
   Tooltip,
   ITooltipProps,
   ValueIndicator,
-  IValueIndicatorProps
+  IValueIndicatorProps,
 };
-import type * as CircularGaugeTypes from 'devextreme/viz/circular_gauge_types';
 export { CircularGaugeTypes };
-

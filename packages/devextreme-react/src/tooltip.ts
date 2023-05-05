@@ -1,30 +1,30 @@
 import dxTooltip, {
-    Properties
-} from "devextreme/ui/tooltip";
+  Properties,
+} from 'devextreme/ui/tooltip';
 
-import * as PropTypes from "prop-types";
-import { Component as BaseComponent, IHtmlOptions } from "./core/component";
-import NestedOption from "./core/nested-option";
+import * as PropTypes from 'prop-types';
 
-import type { PositionConfig } from "devextreme/animation/position";
-import type { AnimationConfig, AnimationState } from "devextreme/animation/fx";
+import type { PositionConfig } from 'devextreme/animation/position';
+import type { AnimationConfig, AnimationState } from 'devextreme/animation/fx';
+import type * as TooltipTypes from 'devextreme/ui/tooltip_types';
+import NestedOption from './core/nested-option';
+import { Component as BaseComponent, IHtmlOptions } from './core/component';
 
 type ITooltipOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
   contentRender?: (...params: any) => React.ReactNode;
   contentComponent?: React.ComponentType<any>;
   contentKeyFn?: (data: any) => string;
   defaultHeight?: (() => number) | number | string;
-  defaultPosition?: PositionConfig | "bottom" | "left" | "right" | "top";
+  defaultPosition?: PositionConfig | 'bottom' | 'left' | 'right' | 'top';
   defaultVisible?: boolean;
   defaultWidth?: (() => number) | number | string;
   onHeightChange?: (value: (() => number) | number | string) => void;
-  onPositionChange?: (value: PositionConfig | "bottom" | "left" | "right" | "top") => void;
+  onPositionChange?: (value: PositionConfig | 'bottom' | 'left' | 'right' | 'top') => void;
   onVisibleChange?: (value: boolean) => void;
   onWidthChange?: (value: (() => number) | number | string) => void;
-}>
+}>;
 
 class Tooltip extends BaseComponent<React.PropsWithChildren<ITooltipOptions>> {
-
   public get instance(): dxTooltip {
     return this._instance;
   }
@@ -33,36 +33,36 @@ class Tooltip extends BaseComponent<React.PropsWithChildren<ITooltipOptions>> {
 
   protected isPortalComponent = true;
 
-  protected subscribableOptions = ["height","position","visible","width"];
+  protected subscribableOptions = ['height', 'position', 'visible', 'width'];
 
-  protected independentEvents = ["onContentReady","onDisposing","onHidden","onHiding","onInitialized","onShowing","onShown"];
+  protected independentEvents = ['onContentReady', 'onDisposing', 'onHidden', 'onHiding', 'onInitialized', 'onShowing', 'onShown'];
 
   protected _defaults = {
-    defaultHeight: "height",
-    defaultPosition: "position",
-    defaultVisible: "visible",
-    defaultWidth: "width"
+    defaultHeight: 'height',
+    defaultPosition: 'position',
+    defaultVisible: 'visible',
+    defaultWidth: 'width',
   };
 
   protected _expectedChildren = {
-    animation: { optionName: "animation", isCollectionItem: false },
-    hideEvent: { optionName: "hideEvent", isCollectionItem: false },
-    position: { optionName: "position", isCollectionItem: false },
-    showEvent: { optionName: "showEvent", isCollectionItem: false }
+    animation: { optionName: 'animation', isCollectionItem: false },
+    hideEvent: { optionName: 'hideEvent', isCollectionItem: false },
+    position: { optionName: 'position', isCollectionItem: false },
+    showEvent: { optionName: 'showEvent', isCollectionItem: false },
   };
 
   protected _templateProps = [{
-    tmplOption: "contentTemplate",
-    render: "contentRender",
-    component: "contentComponent",
-    keyFn: "contentKeyFn"
+    tmplOption: 'contentTemplate',
+    render: 'contentRender',
+    component: 'contentComponent',
+    keyFn: 'contentKeyFn',
   }];
 }
 (Tooltip as any).propTypes = {
   animation: PropTypes.object,
   closeOnOutsideClick: PropTypes.oneOfType([
     PropTypes.bool,
-    PropTypes.func
+    PropTypes.func,
   ]),
   copyRootClassesToWrapper: PropTypes.bool,
   deferRendering: PropTypes.bool,
@@ -70,15 +70,15 @@ class Tooltip extends BaseComponent<React.PropsWithChildren<ITooltipOptions>> {
   height: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
+    PropTypes.string,
   ]),
   hideEvent: PropTypes.oneOfType([
     PropTypes.object,
-    PropTypes.string
+    PropTypes.string,
   ]),
   hideOnOutsideClick: PropTypes.oneOfType([
     PropTypes.bool,
-    PropTypes.func
+    PropTypes.func,
   ]),
   hideOnParentScroll: PropTypes.bool,
   hint: PropTypes.string,
@@ -86,22 +86,22 @@ class Tooltip extends BaseComponent<React.PropsWithChildren<ITooltipOptions>> {
   maxHeight: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
+    PropTypes.string,
   ]),
   maxWidth: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
+    PropTypes.string,
   ]),
   minHeight: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
+    PropTypes.string,
   ]),
   minWidth: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
+    PropTypes.string,
   ]),
   onContentReady: PropTypes.func,
   onDisposing: PropTypes.func,
@@ -114,52 +114,52 @@ class Tooltip extends BaseComponent<React.PropsWithChildren<ITooltipOptions>> {
   position: PropTypes.oneOfType([
     PropTypes.object,
     PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.oneOf([
-      "bottom",
-      "left",
-      "right",
-      "top"])
-  ])
+      PropTypes.string,
+      PropTypes.oneOf([
+        'bottom',
+        'left',
+        'right',
+        'top']),
+    ]),
   ]),
   rtlEnabled: PropTypes.bool,
   shading: PropTypes.bool,
   shadingColor: PropTypes.string,
   showEvent: PropTypes.oneOfType([
     PropTypes.object,
-    PropTypes.string
+    PropTypes.string,
   ]),
   visible: PropTypes.bool,
   width: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
-  ])
+    PropTypes.string,
+  ]),
 };
-
 
 // owners:
 // Tooltip
 type IAnimationProps = React.PropsWithChildren<{
   hide?: AnimationConfig;
   show?: AnimationConfig;
-}>
+}>;
 class Animation extends NestedOption<IAnimationProps> {
-  public static OptionName = "animation";
+  public static OptionName = 'animation';
+
   public static ExpectedChildren = {
-    hide: { optionName: "hide", isCollectionItem: false },
-    show: { optionName: "show", isCollectionItem: false }
+    hide: { optionName: 'hide', isCollectionItem: false },
+    show: { optionName: 'show', isCollectionItem: false },
   };
 }
 
 // owners:
 // Position
 type IAtProps = React.PropsWithChildren<{
-  x?: "center" | "left" | "right";
-  y?: "bottom" | "center" | "top";
-}>
+  x?: 'center' | 'left' | 'right';
+  y?: 'bottom' | 'center' | 'top';
+}>;
 class At extends NestedOption<IAtProps> {
-  public static OptionName = "at";
+  public static OptionName = 'at';
 }
 
 // owners:
@@ -167,19 +167,19 @@ class At extends NestedOption<IAtProps> {
 type IBoundaryOffsetProps = React.PropsWithChildren<{
   x?: number;
   y?: number;
-}>
+}>;
 class BoundaryOffset extends NestedOption<IBoundaryOffsetProps> {
-  public static OptionName = "boundaryOffset";
+  public static OptionName = 'boundaryOffset';
 }
 
 // owners:
 // Position
 type ICollisionProps = React.PropsWithChildren<{
-  x?: "fit" | "flip" | "flipfit" | "none";
-  y?: "fit" | "flip" | "flipfit" | "none";
-}>
+  x?: 'fit' | 'flip' | 'flipfit' | 'none';
+  y?: 'fit' | 'flip' | 'flipfit' | 'none';
+}>;
 class Collision extends NestedOption<ICollisionProps> {
-  public static OptionName = "collision";
+  public static OptionName = 'collision';
 }
 
 // owners:
@@ -190,11 +190,12 @@ type IFromProps = React.PropsWithChildren<{
   position?: PositionConfig;
   scale?: number;
   top?: number;
-}>
+}>;
 class From extends NestedOption<IFromProps> {
-  public static OptionName = "from";
+  public static OptionName = 'from';
+
   public static ExpectedChildren = {
-    position: { optionName: "position", isCollectionItem: false }
+    position: { optionName: 'position', isCollectionItem: false },
   };
 }
 
@@ -203,20 +204,21 @@ class From extends NestedOption<IFromProps> {
 type IHideProps = React.PropsWithChildren<{
   complete?: (($element: any, config: AnimationConfig) => void);
   delay?: number;
-  direction?: "bottom" | "left" | "right" | "top";
+  direction?: 'bottom' | 'left' | 'right' | 'top';
   duration?: number;
   easing?: string;
   from?: AnimationState;
   staggerDelay?: number;
   start?: (($element: any, config: AnimationConfig) => void);
   to?: AnimationState;
-  type?: "css" | "fade" | "fadeIn" | "fadeOut" | "pop" | "slide" | "slideIn" | "slideOut";
-}>
+  type?: 'css' | 'fade' | 'fadeIn' | 'fadeOut' | 'pop' | 'slide' | 'slideIn' | 'slideOut';
+}>;
 class Hide extends NestedOption<IHideProps> {
-  public static OptionName = "hide";
+  public static OptionName = 'hide';
+
   public static ExpectedChildren = {
-    from: { optionName: "from", isCollectionItem: false },
-    to: { optionName: "to", isCollectionItem: false }
+    from: { optionName: 'from', isCollectionItem: false },
+    to: { optionName: 'to', isCollectionItem: false },
   };
 }
 
@@ -225,19 +227,19 @@ class Hide extends NestedOption<IHideProps> {
 type IHideEventProps = React.PropsWithChildren<{
   delay?: number;
   name?: string;
-}>
+}>;
 class HideEvent extends NestedOption<IHideEventProps> {
-  public static OptionName = "hideEvent";
+  public static OptionName = 'hideEvent';
 }
 
 // owners:
 // Position
 type IMyProps = React.PropsWithChildren<{
-  x?: "center" | "left" | "right";
-  y?: "bottom" | "center" | "top";
-}>
+  x?: 'center' | 'left' | 'right';
+  y?: 'bottom' | 'center' | 'top';
+}>;
 class My extends NestedOption<IMyProps> {
-  public static OptionName = "my";
+  public static OptionName = 'my';
 }
 
 // owners:
@@ -245,40 +247,40 @@ class My extends NestedOption<IMyProps> {
 type IOffsetProps = React.PropsWithChildren<{
   x?: number;
   y?: number;
-}>
+}>;
 class Offset extends NestedOption<IOffsetProps> {
-  public static OptionName = "offset";
+  public static OptionName = 'offset';
 }
 
 // owners:
 // From
 // Tooltip
 type IPositionProps = React.PropsWithChildren<{
-  at?: object | "bottom" | "center" | "left" | "left bottom" | "left top" | "right" | "right bottom" | "right top" | "top" | {
-    x?: "center" | "left" | "right";
-    y?: "bottom" | "center" | "top";
+  at?: object | 'bottom' | 'center' | 'left' | 'left bottom' | 'left top' | 'right' | 'right bottom' | 'right top' | 'top' | {
+    x?: 'center' | 'left' | 'right';
+    y?: 'bottom' | 'center' | 'top';
   };
   boundary?: any | string;
   boundaryOffset?: object | string | {
     x?: number;
     y?: number;
   };
-  collision?: object | "fit" | "fit flip" | "fit flipfit" | "fit none" | "flip" | "flip fit" | "flip none" | "flipfit" | "flipfit fit" | "flipfit none" | "none" | "none fit" | "none flip" | "none flipfit" | {
-    x?: "fit" | "flip" | "flipfit" | "none";
-    y?: "fit" | "flip" | "flipfit" | "none";
+  collision?: object | 'fit' | 'fit flip' | 'fit flipfit' | 'fit none' | 'flip' | 'flip fit' | 'flip none' | 'flipfit' | 'flipfit fit' | 'flipfit none' | 'none' | 'none fit' | 'none flip' | 'none flipfit' | {
+    x?: 'fit' | 'flip' | 'flipfit' | 'none';
+    y?: 'fit' | 'flip' | 'flipfit' | 'none';
   };
-  my?: object | "bottom" | "center" | "left" | "left bottom" | "left top" | "right" | "right bottom" | "right top" | "top" | {
-    x?: "center" | "left" | "right";
-    y?: "bottom" | "center" | "top";
+  my?: object | 'bottom' | 'center' | 'left' | 'left bottom' | 'left top' | 'right' | 'right bottom' | 'right top' | 'top' | {
+    x?: 'center' | 'left' | 'right';
+    y?: 'bottom' | 'center' | 'top';
   };
   of?: any | string;
   offset?: object | string | {
     x?: number;
     y?: number;
   };
-}>
+}>;
 class Position extends NestedOption<IPositionProps> {
-  public static OptionName = "position";
+  public static OptionName = 'position';
 }
 
 // owners:
@@ -286,17 +288,17 @@ class Position extends NestedOption<IPositionProps> {
 type IShowProps = React.PropsWithChildren<{
   complete?: (($element: any, config: AnimationConfig) => void);
   delay?: number;
-  direction?: "bottom" | "left" | "right" | "top";
+  direction?: 'bottom' | 'left' | 'right' | 'top';
   duration?: number;
   easing?: string;
   from?: AnimationState;
   staggerDelay?: number;
   start?: (($element: any, config: AnimationConfig) => void);
   to?: AnimationState;
-  type?: "css" | "fade" | "fadeIn" | "fadeOut" | "pop" | "slide" | "slideIn" | "slideOut";
-}>
+  type?: 'css' | 'fade' | 'fadeIn' | 'fadeOut' | 'pop' | 'slide' | 'slideIn' | 'slideOut';
+}>;
 class Show extends NestedOption<IShowProps> {
-  public static OptionName = "show";
+  public static OptionName = 'show';
 }
 
 // owners:
@@ -304,9 +306,9 @@ class Show extends NestedOption<IShowProps> {
 type IShowEventProps = React.PropsWithChildren<{
   delay?: number;
   name?: string;
-}>
+}>;
 class ShowEvent extends NestedOption<IShowEventProps> {
-  public static OptionName = "showEvent";
+  public static OptionName = 'showEvent';
 }
 
 // owners:
@@ -317,9 +319,9 @@ type IToProps = React.PropsWithChildren<{
   position?: PositionConfig;
   scale?: number;
   top?: number;
-}>
+}>;
 class To extends NestedOption<IToProps> {
-  public static OptionName = "to";
+  public static OptionName = 'to';
 }
 
 export default Tooltip;
@@ -351,8 +353,6 @@ export {
   ShowEvent,
   IShowEventProps,
   To,
-  IToProps
+  IToProps,
 };
-import type * as TooltipTypes from 'devextreme/ui/tooltip_types';
 export { TooltipTypes };
-

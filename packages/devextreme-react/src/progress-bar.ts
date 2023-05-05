@@ -1,29 +1,29 @@
 import dxProgressBar, {
-    Properties
-} from "devextreme/ui/progress_bar";
+  Properties,
+} from 'devextreme/ui/progress_bar';
 
-import * as PropTypes from "prop-types";
-import { Component as BaseComponent, IHtmlOptions } from "./core/component";
+import * as PropTypes from 'prop-types';
+import type * as ProgressBarTypes from 'devextreme/ui/progress_bar_types';
+import { Component as BaseComponent, IHtmlOptions } from './core/component';
 
 type IProgressBarOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
   defaultValue?: false | number;
   onValueChange?: (value: false | number) => void;
-}>
+}>;
 
 class ProgressBar extends BaseComponent<React.PropsWithChildren<IProgressBarOptions>> {
-
   public get instance(): dxProgressBar {
     return this._instance;
   }
 
   protected _WidgetClass = dxProgressBar;
 
-  protected subscribableOptions = ["value"];
+  protected subscribableOptions = ['value'];
 
-  protected independentEvents = ["onComplete","onContentReady","onDisposing","onInitialized","onValueChanged"];
+  protected independentEvents = ['onComplete', 'onContentReady', 'onDisposing', 'onInitialized', 'onValueChanged'];
 
   protected _defaults = {
-    defaultValue: "value"
+    defaultValue: 'value',
   };
 }
 (ProgressBar as any).propTypes = {
@@ -32,7 +32,7 @@ class ProgressBar extends BaseComponent<React.PropsWithChildren<IProgressBarOpti
   height: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
+    PropTypes.string,
   ]),
   hint: PropTypes.string,
   hoverStateEnabled: PropTypes.bool,
@@ -50,42 +50,40 @@ class ProgressBar extends BaseComponent<React.PropsWithChildren<IProgressBarOpti
   showStatus: PropTypes.bool,
   statusFormat: PropTypes.oneOfType([
     PropTypes.func,
-    PropTypes.string
+    PropTypes.string,
   ]),
   validationErrors: PropTypes.array,
   validationMessageMode: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "always",
-      "auto"])
+      'always',
+      'auto']),
   ]),
   validationMessagePosition: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "bottom",
-      "left",
-      "right",
-      "top"])
+      'bottom',
+      'left',
+      'right',
+      'top']),
   ]),
   validationStatus: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "valid",
-      "invalid",
-      "pending"])
+      'valid',
+      'invalid',
+      'pending']),
   ]),
   visible: PropTypes.bool,
   width: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
-  ])
+    PropTypes.string,
+  ]),
 };
 export default ProgressBar;
 export {
   ProgressBar,
-  IProgressBarOptions
+  IProgressBarOptions,
 };
-import type * as ProgressBarTypes from 'devextreme/ui/progress_bar_types';
 export { ProgressBarTypes };
-

@@ -1,49 +1,48 @@
-import dxColorBox, {
+import dxDateRangeBox, {
   Properties,
-} from 'devextreme/ui/color_box';
+} from 'devextreme/ui/date_range_box';
 
 import * as PropTypes from 'prop-types';
 
 import type { AnimationConfig, AnimationState } from 'devextreme/animation/fx';
 import type { dxButtonOptions } from 'devextreme/ui/button';
-import type { event, EventInfo } from 'devextreme/events/index';
 import type { template } from 'devextreme/core/templates/template';
+import type { DisabledDate } from 'devextreme/ui/calendar';
+import type { EventInfo, event } from 'devextreme/events/index';
 import type { Component } from 'devextreme/core/component';
 import type { PositionConfig } from 'devextreme/animation/position';
 import type { dxPopupToolbarItem } from 'devextreme/ui/popup';
 import type { CollectionWidgetItem } from 'devextreme/ui/collection/ui.collection_widget.base';
 
-import type dxOverlay from 'devextreme/ui/overlay';
 import type DOMComponent from 'devextreme/core/dom_component';
+import type Editor from 'devextreme/ui/editor/editor';
+import type dxOverlay from 'devextreme/ui/overlay';
 import type dxPopup from 'devextreme/ui/popup';
 import type dxButton from 'devextreme/ui/button';
-import type * as ColorBoxTypes from 'devextreme/ui/color_box_types';
+import type * as DateRangeBoxTypes from 'devextreme/ui/date_range_box_types';
 import NestedOption from './core/nested-option';
 import { Component as BaseComponent, IHtmlOptions } from './core/component';
 
-type IColorBoxOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
+type IDateRangeBoxOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
   dropDownButtonRender?: (...params: any) => React.ReactNode;
   dropDownButtonComponent?: React.ComponentType<any>;
   dropDownButtonKeyFn?: (data: any) => string;
-  fieldRender?: (...params: any) => React.ReactNode;
-  fieldComponent?: React.ComponentType<any>;
-  fieldKeyFn?: (data: any) => string;
   defaultOpened?: boolean;
-  defaultValue?: string;
+  defaultValue?: Array<any | number | string>;
   onOpenedChange?: (value: boolean) => void;
-  onValueChange?: (value: string) => void;
+  onValueChange?: (value: Array<any | number | string>) => void;
 }>;
 
-class ColorBox extends BaseComponent<React.PropsWithChildren<IColorBoxOptions>> {
-  public get instance(): dxColorBox {
+class DateRangeBox extends BaseComponent<React.PropsWithChildren<IDateRangeBoxOptions>> {
+  public get instance(): dxDateRangeBox {
     return this._instance;
   }
 
-  protected _WidgetClass = dxColorBox;
+  protected _WidgetClass = dxDateRangeBox;
 
   protected subscribableOptions = ['opened', 'value'];
 
-  protected independentEvents = ['onChange', 'onClosed', 'onCopy', 'onCut', 'onDisposing', 'onEnterKey', 'onFocusIn', 'onFocusOut', 'onInitialized', 'onInput', 'onKeyDown', 'onKeyUp', 'onOpened', 'onPaste', 'onValueChanged'];
+  protected independentEvents = ['onChange', 'onClosed', 'onContentReady', 'onCopy', 'onCut', 'onDisposing', 'onEnterKey', 'onFocusIn', 'onFocusOut', 'onInitialized', 'onInput', 'onKeyDown', 'onKeyUp', 'onOpened', 'onPaste', 'onValueChanged'];
 
   protected _defaults = {
     defaultOpened: 'opened',
@@ -52,6 +51,8 @@ class ColorBox extends BaseComponent<React.PropsWithChildren<IColorBoxOptions>> 
 
   protected _expectedChildren = {
     button: { optionName: 'buttons', isCollectionItem: true },
+    calendarOptions: { optionName: 'calendarOptions', isCollectionItem: false },
+    displayFormat: { optionName: 'displayFormat', isCollectionItem: false },
     dropDownOptions: { optionName: 'dropDownOptions', isCollectionItem: false },
   };
 
@@ -60,14 +61,9 @@ class ColorBox extends BaseComponent<React.PropsWithChildren<IColorBoxOptions>> 
     render: 'dropDownButtonRender',
     component: 'dropDownButtonComponent',
     keyFn: 'dropDownButtonKeyFn',
-  }, {
-    tmplOption: 'fieldTemplate',
-    render: 'fieldRender',
-    component: 'fieldComponent',
-    keyFn: 'fieldKeyFn',
   }];
 }
-(ColorBox as any).propTypes = {
+(DateRangeBox as any).propTypes = {
   acceptCustomValue: PropTypes.bool,
   accessKey: PropTypes.string,
   activeStateEnabled: PropTypes.bool,
@@ -79,11 +75,22 @@ class ColorBox extends BaseComponent<React.PropsWithChildren<IColorBoxOptions>> 
       'useButtons']),
   ]),
   buttons: PropTypes.array,
+  calendarOptions: PropTypes.object,
   cancelButtonText: PropTypes.string,
+  dateOutOfRangeMessage: PropTypes.string,
+  dateSerializationFormat: PropTypes.string,
   deferRendering: PropTypes.bool,
   disabled: PropTypes.bool,
+  disabledDates: PropTypes.oneOfType([
+    PropTypes.array,
+    PropTypes.func,
+  ]),
+  displayFormat: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.func,
+    PropTypes.string,
+  ]),
   dropDownOptions: PropTypes.object,
-  editAlphaChannel: PropTypes.bool,
   elementAttr: PropTypes.object,
   focusStateEnabled: PropTypes.bool,
   height: PropTypes.oneOfType([
@@ -93,8 +100,8 @@ class ColorBox extends BaseComponent<React.PropsWithChildren<IColorBoxOptions>> 
   ]),
   hint: PropTypes.string,
   hoverStateEnabled: PropTypes.bool,
+  invalidDateMessage: PropTypes.string,
   isValid: PropTypes.bool,
-  keyStep: PropTypes.number,
   label: PropTypes.string,
   labelMode: PropTypes.oneOfType([
     PropTypes.string,
@@ -103,9 +110,14 @@ class ColorBox extends BaseComponent<React.PropsWithChildren<IColorBoxOptions>> 
       'floating',
       'hidden']),
   ]),
+  maxLength: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.string,
+  ]),
   name: PropTypes.string,
   onChange: PropTypes.func,
   onClosed: PropTypes.func,
+  onContentReady: PropTypes.func,
   onCopy: PropTypes.func,
   onCut: PropTypes.func,
   onDisposing: PropTypes.func,
@@ -122,11 +134,18 @@ class ColorBox extends BaseComponent<React.PropsWithChildren<IColorBoxOptions>> 
   onValueChanged: PropTypes.func,
   opened: PropTypes.bool,
   openOnFieldClick: PropTypes.bool,
+  pickerType: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.oneOf([
+      'calendar',
+      'native']),
+  ]),
   placeholder: PropTypes.string,
   readOnly: PropTypes.bool,
   rtlEnabled: PropTypes.bool,
   showClearButton: PropTypes.bool,
   showDropDownButton: PropTypes.bool,
+  spellcheck: PropTypes.bool,
   stylingMode: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
@@ -136,6 +155,8 @@ class ColorBox extends BaseComponent<React.PropsWithChildren<IColorBoxOptions>> 
   ]),
   tabIndex: PropTypes.number,
   text: PropTypes.string,
+  todayButtonText: PropTypes.string,
+  useMaskBehavior: PropTypes.bool,
   validationErrors: PropTypes.array,
   validationMessageMode: PropTypes.oneOfType([
     PropTypes.string,
@@ -159,7 +180,8 @@ class ColorBox extends BaseComponent<React.PropsWithChildren<IColorBoxOptions>> 
       'invalid',
       'pending']),
   ]),
-  value: PropTypes.string,
+  value: PropTypes.array,
+  valueChangeEvent: PropTypes.string,
   visible: PropTypes.bool,
   width: PropTypes.oneOfType([
     PropTypes.func,
@@ -204,7 +226,7 @@ class BoundaryOffset extends NestedOption<IBoundaryOffsetProps> {
 }
 
 // owners:
-// ColorBox
+// DateRangeBox
 type IButtonProps = React.PropsWithChildren<{
   location?: 'after' | 'before';
   name?: string;
@@ -221,6 +243,71 @@ class Button extends NestedOption<IButtonProps> {
 }
 
 // owners:
+// DateRangeBox
+type ICalendarOptionsProps = React.PropsWithChildren<{
+  accessKey?: string;
+  activeStateEnabled?: boolean;
+  bindingOptions?: object;
+  cellTemplate?: ((itemData: { date: any, text: string, view: string }, itemIndex: number, itemElement: any) => string) | template;
+  dateSerializationFormat?: string;
+  disabled?: boolean;
+  disabledDates?: Array<any> | ((data: DisabledDate) => boolean);
+  elementAttr?: object;
+  firstDayOfWeek?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
+  focusStateEnabled?: boolean;
+  height?: (() => number) | number | string;
+  hint?: string;
+  hoverStateEnabled?: boolean;
+  isValid?: boolean;
+  max?: any | number | string;
+  maxZoomLevel?: 'century' | 'decade' | 'month' | 'year';
+  min?: any | number | string;
+  minZoomLevel?: 'century' | 'decade' | 'month' | 'year';
+  name?: string;
+  onDisposing?: ((e: EventInfo<any>) => void);
+  onInitialized?: ((e: { component: Component<any>, element: any }) => void);
+  onOptionChanged?: ((e: { component: DOMComponent, element: any, fullName: string, model: any, name: string, previousValue: any, value: any }) => void);
+  onValueChanged?: ((e: { component: Editor, element: any, event: event, model: any, previousValue: object, value: object }) => void);
+  readOnly?: boolean;
+  rtlEnabled?: boolean;
+  showTodayButton?: boolean;
+  showWeekNumbers?: boolean;
+  tabIndex?: number;
+  validationError?: any;
+  validationErrors?: Array<any>;
+  validationMessageMode?: 'always' | 'auto';
+  validationMessagePosition?: 'bottom' | 'left' | 'right' | 'top';
+  validationStatus?: 'valid' | 'invalid' | 'pending';
+  value?: any | number | string;
+  visible?: boolean;
+  weekNumberRule?: 'auto' | 'firstDay' | 'fullWeek' | 'firstFourDays';
+  width?: (() => number) | number | string;
+  zoomLevel?: 'century' | 'decade' | 'month' | 'year';
+  defaultValue?: any | number | string;
+  onValueChange?: (value: any | number | string) => void;
+  defaultZoomLevel?: 'century' | 'decade' | 'month' | 'year';
+  onZoomLevelChange?: (value: 'century' | 'decade' | 'month' | 'year') => void;
+  cellRender?: (...params: any) => React.ReactNode;
+  cellComponent?: React.ComponentType<any>;
+  cellKeyFn?: (data: any) => string;
+}>;
+class CalendarOptions extends NestedOption<ICalendarOptionsProps> {
+  public static OptionName = 'calendarOptions';
+
+  public static DefaultsProps = {
+    defaultValue: 'value',
+    defaultZoomLevel: 'zoomLevel',
+  };
+
+  public static TemplateProps = [{
+    tmplOption: 'cellTemplate',
+    render: 'cellRender',
+    component: 'cellComponent',
+    keyFn: 'cellKeyFn',
+  }];
+}
+
+// owners:
 // Position
 type ICollisionProps = React.PropsWithChildren<{
   x?: 'fit' | 'flip' | 'flipfit' | 'none';
@@ -231,7 +318,21 @@ class Collision extends NestedOption<ICollisionProps> {
 }
 
 // owners:
-// ColorBox
+// DateRangeBox
+type IDisplayFormatProps = React.PropsWithChildren<{
+  currency?: string;
+  formatter?: ((value: number | any) => string);
+  parser?: ((value: string) => number);
+  precision?: number;
+  type?: 'billions' | 'currency' | 'day' | 'decimal' | 'exponential' | 'fixedPoint' | 'largeNumber' | 'longDate' | 'longTime' | 'millions' | 'millisecond' | 'month' | 'monthAndDay' | 'monthAndYear' | 'percent' | 'quarter' | 'quarterAndYear' | 'shortDate' | 'shortTime' | 'thousands' | 'trillions' | 'year' | 'dayOfWeek' | 'hour' | 'longDateLongTime' | 'minute' | 'second' | 'shortDateShortTime';
+  useCurrencyAccountingStyle?: boolean;
+}>;
+class DisplayFormat extends NestedOption<IDisplayFormatProps> {
+  public static OptionName = 'displayFormat';
+}
+
+// owners:
+// DateRangeBox
 type IDropDownOptionsProps = React.PropsWithChildren<{
   accessKey?: string;
   animation?: object | {
@@ -538,10 +639,10 @@ class ToolbarItem extends NestedOption<IToolbarItemProps> {
   }];
 }
 
-export default ColorBox;
+export default DateRangeBox;
 export {
-  ColorBox,
-  IColorBoxOptions,
+  DateRangeBox,
+  IDateRangeBoxOptions,
   Animation,
   IAnimationProps,
   At,
@@ -550,8 +651,12 @@ export {
   IBoundaryOffsetProps,
   Button,
   IButtonProps,
+  CalendarOptions,
+  ICalendarOptionsProps,
   Collision,
   ICollisionProps,
+  DisplayFormat,
+  IDisplayFormatProps,
   DropDownOptions,
   IDropDownOptionsProps,
   From,
@@ -573,4 +678,4 @@ export {
   ToolbarItem,
   IToolbarItemProps,
 };
-export { ColorBoxTypes };
+export { DateRangeBoxTypes };

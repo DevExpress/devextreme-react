@@ -1,19 +1,21 @@
-export { ExplicitTypes } from "devextreme/ui/action_sheet";
 import dxActionSheet, {
-    Properties
-} from "devextreme/ui/action_sheet";
+  Properties,
+} from 'devextreme/ui/action_sheet';
 
-import * as PropTypes from "prop-types";
-import { Component as BaseComponent, IHtmlOptions } from "./core/component";
-import NestedOption from "./core/nested-option";
+import * as PropTypes from 'prop-types';
 
-import type { dxActionSheetItem } from "devextreme/ui/action_sheet";
-import type { NativeEventInfo } from "devextreme/events/index";
-import type { CollectionWidgetItem } from "devextreme/ui/collection/ui.collection_widget.base";
-import type { template } from "devextreme/core/templates/template";
+import type { dxActionSheetItem } from 'devextreme/ui/action_sheet';
+import type { NativeEventInfo } from 'devextreme/events/index';
+import type { CollectionWidgetItem } from 'devextreme/ui/collection/ui.collection_widget.base';
+import type { template } from 'devextreme/core/templates/template';
+import type * as ActionSheetTypes from 'devextreme/ui/action_sheet_types';
+import NestedOption from './core/nested-option';
+import { Component as BaseComponent, IHtmlOptions } from './core/component';
+
+export { ExplicitTypes } from 'devextreme/ui/action_sheet';
 
 type IActionSheetOptions<TItem = any, TKey = any> = React.PropsWithChildren<Properties<TItem, TKey> & IHtmlOptions & {
-  dataSource?: Properties<TItem, TKey>["dataSource"];
+  dataSource?: Properties<TItem, TKey>['dataSource'];
   itemRender?: (...params: any) => React.ReactNode;
   itemComponent?: React.ComponentType<any>;
   itemKeyFn?: (data: any) => string;
@@ -21,34 +23,33 @@ type IActionSheetOptions<TItem = any, TKey = any> = React.PropsWithChildren<Prop
   defaultVisible?: boolean;
   onItemsChange?: (value: Array<any | dxActionSheetItem | string>) => void;
   onVisibleChange?: (value: boolean) => void;
-}>
+}>;
 
 class ActionSheet<TItem = any, TKey = any> extends BaseComponent<React.PropsWithChildren<IActionSheetOptions<TItem, TKey>>> {
-
   public get instance(): dxActionSheet<TItem, TKey> {
     return this._instance;
   }
 
   protected _WidgetClass = dxActionSheet;
 
-  protected subscribableOptions = ["items","visible"];
+  protected subscribableOptions = ['items', 'visible'];
 
-  protected independentEvents = ["onCancelClick","onContentReady","onDisposing","onInitialized","onItemClick","onItemContextMenu","onItemHold","onItemRendered"];
+  protected independentEvents = ['onCancelClick', 'onContentReady', 'onDisposing', 'onInitialized', 'onItemClick', 'onItemContextMenu', 'onItemHold', 'onItemRendered'];
 
   protected _defaults = {
-    defaultItems: "items",
-    defaultVisible: "visible"
+    defaultItems: 'items',
+    defaultVisible: 'visible',
   };
 
   protected _expectedChildren = {
-    item: { optionName: "items", isCollectionItem: true }
+    item: { optionName: 'items', isCollectionItem: true },
   };
 
   protected _templateProps = [{
-    tmplOption: "itemTemplate",
-    render: "itemRender",
-    component: "itemComponent",
-    keyFn: "itemKeyFn"
+    tmplOption: 'itemTemplate',
+    render: 'itemRender',
+    component: 'itemComponent',
+    keyFn: 'itemKeyFn',
   }];
 }
 (ActionSheet as any).propTypes = {
@@ -58,7 +59,7 @@ class ActionSheet<TItem = any, TKey = any> extends BaseComponent<React.PropsWith
   height: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
+    PropTypes.string,
   ]),
   hint: PropTypes.string,
   hoverStateEnabled: PropTypes.bool,
@@ -82,10 +83,9 @@ class ActionSheet<TItem = any, TKey = any> extends BaseComponent<React.PropsWith
   width: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
-  ])
+    PropTypes.string,
+  ]),
 };
-
 
 // owners:
 // ActionSheet
@@ -93,22 +93,24 @@ type IItemProps = React.PropsWithChildren<{
   disabled?: boolean;
   icon?: string;
   onClick?: ((e: NativeEventInfo<any>) => void);
-  stylingMode?: "text" | "outlined" | "contained";
+  stylingMode?: 'text' | 'outlined' | 'contained';
   template?: ((itemData: CollectionWidgetItem, itemIndex: number, itemElement: any) => string) | template;
   text?: string;
-  type?: "back" | "danger" | "default" | "normal" | "success";
+  type?: 'back' | 'danger' | 'default' | 'normal' | 'success';
   render?: (...params: any) => React.ReactNode;
   component?: React.ComponentType<any>;
   keyFn?: (data: any) => string;
-}>
+}>;
 class Item extends NestedOption<IItemProps> {
-  public static OptionName = "items";
+  public static OptionName = 'items';
+
   public static IsCollectionItem = true;
+
   public static TemplateProps = [{
-    tmplOption: "template",
-    render: "render",
-    component: "component",
-    keyFn: "keyFn"
+    tmplOption: 'template',
+    render: 'render',
+    component: 'component',
+    keyFn: 'keyFn',
   }];
 }
 
@@ -117,8 +119,6 @@ export {
   ActionSheet,
   IActionSheetOptions,
   Item,
-  IItemProps
+  IItemProps,
 };
-import type * as ActionSheetTypes from 'devextreme/ui/action_sheet_types';
 export { ActionSheetTypes };
-

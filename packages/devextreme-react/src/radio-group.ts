@@ -1,13 +1,14 @@
 import dxRadioGroup, {
-    Properties
-} from "devextreme/ui/radio_group";
+  Properties,
+} from 'devextreme/ui/radio_group';
 
-import * as PropTypes from "prop-types";
-import { Component as BaseComponent, IHtmlOptions } from "./core/component";
-import NestedOption from "./core/nested-option";
+import * as PropTypes from 'prop-types';
 
-import type { CollectionWidgetItem } from "devextreme/ui/collection/ui.collection_widget.base";
-import type { template } from "devextreme/core/templates/template";
+import type { CollectionWidgetItem } from 'devextreme/ui/collection/ui.collection_widget.base';
+import type { template } from 'devextreme/core/templates/template';
+import type * as RadioGroupTypes from 'devextreme/ui/radio_group_types';
+import NestedOption from './core/nested-option';
+import { Component as BaseComponent, IHtmlOptions } from './core/component';
 
 type IRadioGroupOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
   itemRender?: (...params: any) => React.ReactNode;
@@ -15,33 +16,32 @@ type IRadioGroupOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
   itemKeyFn?: (data: any) => string;
   defaultValue?: any;
   onValueChange?: (value: any) => void;
-}>
+}>;
 
 class RadioGroup extends BaseComponent<React.PropsWithChildren<IRadioGroupOptions>> {
-
   public get instance(): dxRadioGroup {
     return this._instance;
   }
 
   protected _WidgetClass = dxRadioGroup;
 
-  protected subscribableOptions = ["value"];
+  protected subscribableOptions = ['value'];
 
-  protected independentEvents = ["onContentReady","onDisposing","onInitialized","onValueChanged"];
+  protected independentEvents = ['onContentReady', 'onDisposing', 'onInitialized', 'onValueChanged'];
 
   protected _defaults = {
-    defaultValue: "value"
+    defaultValue: 'value',
   };
 
   protected _expectedChildren = {
-    item: { optionName: "items", isCollectionItem: true }
+    item: { optionName: 'items', isCollectionItem: true },
   };
 
   protected _templateProps = [{
-    tmplOption: "itemTemplate",
-    render: "itemRender",
-    component: "itemComponent",
-    keyFn: "itemKeyFn"
+    tmplOption: 'itemTemplate',
+    render: 'itemRender',
+    component: 'itemComponent',
+    keyFn: 'itemKeyFn',
   }];
 }
 (RadioGroup as any).propTypes = {
@@ -50,14 +50,14 @@ class RadioGroup extends BaseComponent<React.PropsWithChildren<IRadioGroupOption
   disabled: PropTypes.bool,
   displayExpr: PropTypes.oneOfType([
     PropTypes.func,
-    PropTypes.string
+    PropTypes.string,
   ]),
   elementAttr: PropTypes.object,
   focusStateEnabled: PropTypes.bool,
   height: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
+    PropTypes.string,
   ]),
   hint: PropTypes.string,
   hoverStateEnabled: PropTypes.bool,
@@ -66,8 +66,8 @@ class RadioGroup extends BaseComponent<React.PropsWithChildren<IRadioGroupOption
   layout: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "horizontal",
-      "vertical"])
+      'horizontal',
+      'vertical']),
   ]),
   name: PropTypes.string,
   onContentReady: PropTypes.func,
@@ -82,36 +82,35 @@ class RadioGroup extends BaseComponent<React.PropsWithChildren<IRadioGroupOption
   validationMessageMode: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "always",
-      "auto"])
+      'always',
+      'auto']),
   ]),
   validationMessagePosition: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "bottom",
-      "left",
-      "right",
-      "top"])
+      'bottom',
+      'left',
+      'right',
+      'top']),
   ]),
   validationStatus: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "valid",
-      "invalid",
-      "pending"])
+      'valid',
+      'invalid',
+      'pending']),
   ]),
   valueExpr: PropTypes.oneOfType([
     PropTypes.func,
-    PropTypes.string
+    PropTypes.string,
   ]),
   visible: PropTypes.bool,
   width: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
-  ])
+    PropTypes.string,
+  ]),
 };
-
 
 // owners:
 // RadioGroup
@@ -124,15 +123,17 @@ type IItemProps = React.PropsWithChildren<{
   render?: (...params: any) => React.ReactNode;
   component?: React.ComponentType<any>;
   keyFn?: (data: any) => string;
-}>
+}>;
 class Item extends NestedOption<IItemProps> {
-  public static OptionName = "items";
+  public static OptionName = 'items';
+
   public static IsCollectionItem = true;
+
   public static TemplateProps = [{
-    tmplOption: "template",
-    render: "render",
-    component: "component",
-    keyFn: "keyFn"
+    tmplOption: 'template',
+    render: 'render',
+    component: 'component',
+    keyFn: 'keyFn',
   }];
 }
 
@@ -141,8 +142,6 @@ export {
   RadioGroup,
   IRadioGroupOptions,
   Item,
-  IItemProps
+  IItemProps,
 };
-import type * as RadioGroupTypes from 'devextreme/ui/radio_group_types';
 export { RadioGroupTypes };
-

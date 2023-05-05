@@ -1,82 +1,83 @@
-export { ExplicitTypes } from "devextreme/ui/box";
 import dxBox, {
-    Properties
-} from "devextreme/ui/box";
+  Properties,
+} from 'devextreme/ui/box';
 
-import * as PropTypes from "prop-types";
-import { Component as BaseComponent, IHtmlOptions } from "./core/component";
-import NestedOption from "./core/nested-option";
+import * as PropTypes from 'prop-types';
 
-import type { dxBoxItem, dxBoxOptions } from "devextreme/ui/box";
-import type { CollectionWidgetItem } from "devextreme/ui/collection/ui.collection_widget.base";
-import type { template } from "devextreme/core/templates/template";
+import type { dxBoxItem, dxBoxOptions } from 'devextreme/ui/box';
+import type { CollectionWidgetItem } from 'devextreme/ui/collection/ui.collection_widget.base';
+import type { template } from 'devextreme/core/templates/template';
+import type * as BoxTypes from 'devextreme/ui/box_types';
+import NestedOption from './core/nested-option';
+import { Component as BaseComponent, IHtmlOptions } from './core/component';
+
+export { ExplicitTypes } from 'devextreme/ui/box';
 
 type IBoxOptions<TItem = any, TKey = any> = React.PropsWithChildren<Properties<TItem, TKey> & IHtmlOptions & {
-  dataSource?: Properties<TItem, TKey>["dataSource"];
+  dataSource?: Properties<TItem, TKey>['dataSource'];
   itemRender?: (...params: any) => React.ReactNode;
   itemComponent?: React.ComponentType<any>;
   itemKeyFn?: (data: any) => string;
   defaultItems?: Array<any | dxBoxItem | string>;
   onItemsChange?: (value: Array<any | dxBoxItem | string>) => void;
-}>
+}>;
 
 class Box<TItem = any, TKey = any> extends BaseComponent<React.PropsWithChildren<IBoxOptions<TItem, TKey>>> {
-
   public get instance(): dxBox<TItem, TKey> {
     return this._instance;
   }
 
   protected _WidgetClass = dxBox;
 
-  protected subscribableOptions = ["items"];
+  protected subscribableOptions = ['items'];
 
-  protected independentEvents = ["onContentReady","onDisposing","onInitialized","onItemClick","onItemContextMenu","onItemHold","onItemRendered"];
+  protected independentEvents = ['onContentReady', 'onDisposing', 'onInitialized', 'onItemClick', 'onItemContextMenu', 'onItemHold', 'onItemRendered'];
 
   protected _defaults = {
-    defaultItems: "items"
+    defaultItems: 'items',
   };
 
   protected _expectedChildren = {
-    item: { optionName: "items", isCollectionItem: true }
+    item: { optionName: 'items', isCollectionItem: true },
   };
 
   protected _templateProps = [{
-    tmplOption: "itemTemplate",
-    render: "itemRender",
-    component: "itemComponent",
-    keyFn: "itemKeyFn"
+    tmplOption: 'itemTemplate',
+    render: 'itemRender',
+    component: 'itemComponent',
+    keyFn: 'itemKeyFn',
   }];
 }
 (Box as any).propTypes = {
   align: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "center",
-      "end",
-      "space-around",
-      "space-between",
-      "start"])
+      'center',
+      'end',
+      'space-around',
+      'space-between',
+      'start']),
   ]),
   crossAlign: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "center",
-      "end",
-      "start",
-      "stretch"])
+      'center',
+      'end',
+      'start',
+      'stretch']),
   ]),
   direction: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "col",
-      "row"])
+      'col',
+      'row']),
   ]),
   disabled: PropTypes.bool,
   elementAttr: PropTypes.object,
   height: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
+    PropTypes.string,
   ]),
   hoverStateEnabled: PropTypes.bool,
   itemHoldTimeout: PropTypes.number,
@@ -94,15 +95,14 @@ class Box<TItem = any, TKey = any> extends BaseComponent<React.PropsWithChildren
   width: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
-  ])
+    PropTypes.string,
+  ]),
 };
-
 
 // owners:
 // Box
 type IItemProps = React.PropsWithChildren<{
-  baseSize?: number | "auto";
+  baseSize?: number | 'auto';
   box?: dxBoxOptions;
   disabled?: boolean;
   html?: string;
@@ -114,15 +114,17 @@ type IItemProps = React.PropsWithChildren<{
   render?: (...params: any) => React.ReactNode;
   component?: React.ComponentType<any>;
   keyFn?: (data: any) => string;
-}>
+}>;
 class Item extends NestedOption<IItemProps> {
-  public static OptionName = "items";
+  public static OptionName = 'items';
+
   public static IsCollectionItem = true;
+
   public static TemplateProps = [{
-    tmplOption: "template",
-    render: "render",
-    component: "component",
-    keyFn: "keyFn"
+    tmplOption: 'template',
+    render: 'render',
+    component: 'component',
+    keyFn: 'keyFn',
   }];
 }
 
@@ -131,8 +133,6 @@ export {
   Box,
   IBoxOptions,
   Item,
-  IItemProps
+  IItemProps,
 };
-import type * as BoxTypes from 'devextreme/ui/box_types';
 export { BoxTypes };
-

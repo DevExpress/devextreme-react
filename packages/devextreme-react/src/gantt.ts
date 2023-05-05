@@ -1,32 +1,35 @@
 import dxGantt, {
-    Properties
-} from "devextreme/ui/gantt";
+  Properties,
+} from 'devextreme/ui/gantt';
 
-import * as PropTypes from "prop-types";
-import { Component as BaseComponent, IHtmlOptions } from "./core/component";
-import NestedOption from "./core/nested-option";
+import * as PropTypes from 'prop-types';
 
-import type { dxButtonOptions } from "devextreme/ui/button";
-import type { dxTreeListColumn, dxTreeListRowObject } from "devextreme/ui/tree_list";
-import type { template } from "devextreme/core/templates/template";
-import type { DataSourceOptions } from "devextreme/data/data_source";
-import type { Store } from "devextreme/data/abstract_store";
-import type { ColumnHeaderFilterSearchConfig, HeaderFilterSearchConfig } from "devextreme/common/grids";
-import type { dxTextBoxOptions } from "devextreme/ui/text_box";
-import type { dxGanttContextMenuItem, dxGanttFilterRowOperationDescriptions, dxGanttHeaderFilterTexts, dxGanttToolbarItem } from "devextreme/ui/gantt";
-import type { dxContextMenuItem } from "devextreme/ui/context_menu";
-import type { CollectionWidgetItem } from "devextreme/ui/collection/ui.collection_widget.base";
-import type { dxTextEditorButton } from "devextreme/ui/text_box/ui.text_editor.base";
-import type { NativeEventInfo, EventInfo, event } from "devextreme/events/index";
-import type { Component } from "devextreme/core/component";
+import type { dxButtonOptions } from 'devextreme/ui/button';
+import type { dxTreeListColumn, dxTreeListRowObject } from 'devextreme/ui/tree_list';
+import type { template } from 'devextreme/core/templates/template';
+import type { DataSourceOptions } from 'devextreme/data/data_source';
+import type { Store } from 'devextreme/data/abstract_store';
+import type { ColumnHeaderFilterSearchConfig, HeaderFilterSearchConfig } from 'devextreme/common/grids';
+import type { dxTextBoxOptions } from 'devextreme/ui/text_box';
+import type {
+  dxGanttContextMenuItem, dxGanttFilterRowOperationDescriptions, dxGanttHeaderFilterTexts, dxGanttToolbarItem,
+} from 'devextreme/ui/gantt';
+import type { dxContextMenuItem } from 'devextreme/ui/context_menu';
+import type { CollectionWidgetItem } from 'devextreme/ui/collection/ui.collection_widget.base';
+import type { dxTextEditorButton } from 'devextreme/ui/text_box/ui.text_editor.base';
+import type { NativeEventInfo, EventInfo, event } from 'devextreme/events/index';
+import type { Component } from 'devextreme/core/component';
 
-import type dxTreeList from "devextreme/ui/tree_list";
-import type DataSource from "devextreme/data/data_source";
-import type DOMComponent from "devextreme/core/dom_component";
-import type Editor from "devextreme/ui/editor/editor";
-import type dxButton from "devextreme/ui/button";
+import type dxTreeList from 'devextreme/ui/tree_list';
+import type DataSource from 'devextreme/data/data_source';
+import type DOMComponent from 'devextreme/core/dom_component';
+import type Editor from 'devextreme/ui/editor/editor';
+import type dxButton from 'devextreme/ui/button';
 
-import type * as LocalizationTypes from "devextreme/localization";
+import type * as LocalizationTypes from 'devextreme/localization';
+import type * as GanttTypes from 'devextreme/ui/gantt_types';
+import NestedOption from './core/nested-option';
+import { Component as BaseComponent, IHtmlOptions } from './core/component';
 
 type IGanttOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
   taskContentRender?: (...params: any) => React.ReactNode;
@@ -41,56 +44,55 @@ type IGanttOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
   taskTooltipContentRender?: (...params: any) => React.ReactNode;
   taskTooltipContentComponent?: React.ComponentType<any>;
   taskTooltipContentKeyFn?: (data: any) => string;
-}>
+}>;
 
 class Gantt extends BaseComponent<React.PropsWithChildren<IGanttOptions>> {
-
   public get instance(): dxGantt {
     return this._instance;
   }
 
   protected _WidgetClass = dxGantt;
 
-  protected independentEvents = ["onContentReady","onContextMenuPreparing","onCustomCommand","onDependencyDeleted","onDependencyDeleting","onDependencyInserted","onDependencyInserting","onDisposing","onInitialized","onResourceAssigned","onResourceAssigning","onResourceDeleted","onResourceDeleting","onResourceInserted","onResourceInserting","onResourceManagerDialogShowing","onResourceUnassigned","onResourceUnassigning","onScaleCellPrepared","onTaskClick","onTaskDblClick","onTaskDeleted","onTaskDeleting","onTaskEditDialogShowing","onTaskInserted","onTaskInserting","onTaskMoving","onTaskUpdated","onTaskUpdating"];
+  protected independentEvents = ['onContentReady', 'onContextMenuPreparing', 'onCustomCommand', 'onDependencyDeleted', 'onDependencyDeleting', 'onDependencyInserted', 'onDependencyInserting', 'onDisposing', 'onInitialized', 'onResourceAssigned', 'onResourceAssigning', 'onResourceDeleted', 'onResourceDeleting', 'onResourceInserted', 'onResourceInserting', 'onResourceManagerDialogShowing', 'onResourceUnassigned', 'onResourceUnassigning', 'onScaleCellPrepared', 'onTaskClick', 'onTaskDblClick', 'onTaskDeleted', 'onTaskDeleting', 'onTaskEditDialogShowing', 'onTaskInserted', 'onTaskInserting', 'onTaskMoving', 'onTaskUpdated', 'onTaskUpdating'];
 
   protected _expectedChildren = {
-    column: { optionName: "columns", isCollectionItem: true },
-    contextMenu: { optionName: "contextMenu", isCollectionItem: false },
-    dependencies: { optionName: "dependencies", isCollectionItem: false },
-    editing: { optionName: "editing", isCollectionItem: false },
-    filterRow: { optionName: "filterRow", isCollectionItem: false },
-    ganttHeaderFilter: { optionName: "headerFilter", isCollectionItem: false },
-    headerFilter: { optionName: "headerFilter", isCollectionItem: false },
-    resourceAssignments: { optionName: "resourceAssignments", isCollectionItem: false },
-    resources: { optionName: "resources", isCollectionItem: false },
-    scaleTypeRange: { optionName: "scaleTypeRange", isCollectionItem: false },
-    sorting: { optionName: "sorting", isCollectionItem: false },
-    stripLine: { optionName: "stripLines", isCollectionItem: true },
-    tasks: { optionName: "tasks", isCollectionItem: false },
-    toolbar: { optionName: "toolbar", isCollectionItem: false },
-    validation: { optionName: "validation", isCollectionItem: false }
+    column: { optionName: 'columns', isCollectionItem: true },
+    contextMenu: { optionName: 'contextMenu', isCollectionItem: false },
+    dependencies: { optionName: 'dependencies', isCollectionItem: false },
+    editing: { optionName: 'editing', isCollectionItem: false },
+    filterRow: { optionName: 'filterRow', isCollectionItem: false },
+    ganttHeaderFilter: { optionName: 'headerFilter', isCollectionItem: false },
+    headerFilter: { optionName: 'headerFilter', isCollectionItem: false },
+    resourceAssignments: { optionName: 'resourceAssignments', isCollectionItem: false },
+    resources: { optionName: 'resources', isCollectionItem: false },
+    scaleTypeRange: { optionName: 'scaleTypeRange', isCollectionItem: false },
+    sorting: { optionName: 'sorting', isCollectionItem: false },
+    stripLine: { optionName: 'stripLines', isCollectionItem: true },
+    tasks: { optionName: 'tasks', isCollectionItem: false },
+    toolbar: { optionName: 'toolbar', isCollectionItem: false },
+    validation: { optionName: 'validation', isCollectionItem: false },
   };
 
   protected _templateProps = [{
-    tmplOption: "taskContentTemplate",
-    render: "taskContentRender",
-    component: "taskContentComponent",
-    keyFn: "taskContentKeyFn"
+    tmplOption: 'taskContentTemplate',
+    render: 'taskContentRender',
+    component: 'taskContentComponent',
+    keyFn: 'taskContentKeyFn',
   }, {
-    tmplOption: "taskProgressTooltipContentTemplate",
-    render: "taskProgressTooltipContentRender",
-    component: "taskProgressTooltipContentComponent",
-    keyFn: "taskProgressTooltipContentKeyFn"
+    tmplOption: 'taskProgressTooltipContentTemplate',
+    render: 'taskProgressTooltipContentRender',
+    component: 'taskProgressTooltipContentComponent',
+    keyFn: 'taskProgressTooltipContentKeyFn',
   }, {
-    tmplOption: "taskTimeTooltipContentTemplate",
-    render: "taskTimeTooltipContentRender",
-    component: "taskTimeTooltipContentComponent",
-    keyFn: "taskTimeTooltipContentKeyFn"
+    tmplOption: 'taskTimeTooltipContentTemplate',
+    render: 'taskTimeTooltipContentRender',
+    component: 'taskTimeTooltipContentComponent',
+    keyFn: 'taskTimeTooltipContentKeyFn',
   }, {
-    tmplOption: "taskTooltipContentTemplate",
-    render: "taskTooltipContentRender",
-    component: "taskTooltipContentComponent",
-    keyFn: "taskTooltipContentKeyFn"
+    tmplOption: 'taskTooltipContentTemplate',
+    render: 'taskTooltipContentRender',
+    component: 'taskTooltipContentComponent',
+    keyFn: 'taskTooltipContentKeyFn',
   }];
 }
 (Gantt as any).propTypes = {
@@ -113,14 +115,14 @@ class Gantt extends BaseComponent<React.PropsWithChildren<IGanttOptions>> {
       3,
       4,
       5,
-      6])
+      6]),
   ]),
   focusStateEnabled: PropTypes.bool,
   headerFilter: PropTypes.object,
   height: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
+    PropTypes.string,
   ]),
   hint: PropTypes.string,
   hoverStateEnabled: PropTypes.bool,
@@ -160,15 +162,15 @@ class Gantt extends BaseComponent<React.PropsWithChildren<IGanttOptions>> {
   scaleType: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "auto",
-      "minutes",
-      "hours",
-      "sixHours",
-      "days",
-      "weeks",
-      "months",
-      "quarters",
-      "years"])
+      'auto',
+      'minutes',
+      'hours',
+      'sixHours',
+      'days',
+      'weeks',
+      'months',
+      'quarters',
+      'years']),
   ]),
   scaleTypeRange: PropTypes.object,
   showDependencies: PropTypes.bool,
@@ -182,9 +184,9 @@ class Gantt extends BaseComponent<React.PropsWithChildren<IGanttOptions>> {
   taskTitlePosition: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "inside",
-      "outside",
-      "none"])
+      'inside',
+      'outside',
+      'none']),
   ]),
   toolbar: PropTypes.object,
   validation: PropTypes.object,
@@ -192,30 +194,31 @@ class Gantt extends BaseComponent<React.PropsWithChildren<IGanttOptions>> {
   width: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
-  ])
+    PropTypes.string,
+  ]),
 };
-
 
 // owners:
 // EditorOptions
 type IButtonProps = React.PropsWithChildren<{
-  location?: "after" | "before";
+  location?: 'after' | 'before';
   name?: string;
   options?: dxButtonOptions;
-}>
+}>;
 class Button extends NestedOption<IButtonProps> {
-  public static OptionName = "buttons";
+  public static OptionName = 'buttons';
+
   public static IsCollectionItem = true;
+
   public static ExpectedChildren = {
-    options: { optionName: "options", isCollectionItem: false }
+    options: { optionName: 'options', isCollectionItem: false },
   };
 }
 
 // owners:
 // Gantt
 type IColumnProps = React.PropsWithChildren<{
-  alignment?: "center" | "left" | "right";
+  alignment?: 'center' | 'left' | 'right';
   allowFiltering?: boolean;
   allowHeaderFiltering?: boolean;
   allowSorting?: boolean;
@@ -228,11 +231,11 @@ type IColumnProps = React.PropsWithChildren<{
   cssClass?: string;
   customizeText?: ((cellInfo: { groupInterval: string | number, target: string, value: any, valueText: string }) => string);
   dataField?: string;
-  dataType?: "string" | "number" | "date" | "boolean" | "object" | "datetime";
+  dataType?: 'string' | 'number' | 'date' | 'boolean' | 'object' | 'datetime';
   encodeHtml?: boolean;
   falseText?: string;
-  filterOperations?: Array<"=" | "<>" | "<" | "<=" | ">" | ">=" | "contains" | "endswith" | "isblank" | "isnotblank" | "notcontains" | "startswith" | "between" | "anyof" | "noneof" | string>;
-  filterType?: "exclude" | "include";
+  filterOperations?: Array<'=' | '<>' | '<' | '<=' | '>' | '>=' | 'contains' | 'endswith' | 'isblank' | 'isnotblank' | 'notcontains' | 'startswith' | 'between' | 'anyof' | 'noneof' | string>;
+  filterType?: 'exclude' | 'include';
   filterValue?: any;
   filterValues?: Array<any>;
   format?: LocalizationTypes.Format;
@@ -241,17 +244,17 @@ type IColumnProps = React.PropsWithChildren<{
     allowSearch?: boolean;
     allowSelectAll?: boolean;
     dataSource?: Array<any> | DataSourceOptions | ((options: { component: object, dataSource: DataSourceOptions | null }) => void) | null | Store;
-    groupInterval?: number | "day" | "hour" | "minute" | "month" | "quarter" | "second" | "year";
+    groupInterval?: number | 'day' | 'hour' | 'minute' | 'month' | 'quarter' | 'second' | 'year';
     height?: number;
     search?: ColumnHeaderFilterSearchConfig;
-    searchMode?: "contains" | "startswith" | "equals";
+    searchMode?: 'contains' | 'startswith' | 'equals';
     width?: number;
   };
   minWidth?: number;
-  selectedFilterOperation?: "<" | "<=" | "<>" | "=" | ">" | ">=" | "between" | "contains" | "endswith" | "notcontains" | "startswith";
+  selectedFilterOperation?: '<' | '<=' | '<>' | '=' | '>' | '>=' | 'between' | 'contains' | 'endswith' | 'notcontains' | 'startswith';
   sortIndex?: number;
   sortingMethod?: ((value1: any, value2: any) => number);
-  sortOrder?: "asc" | "desc";
+  sortOrder?: 'asc' | 'desc';
   trueText?: string;
   visible?: boolean;
   visibleIndex?: number;
@@ -260,12 +263,12 @@ type IColumnProps = React.PropsWithChildren<{
   onFilterValueChange?: (value: any) => void;
   defaultFilterValues?: Array<any>;
   onFilterValuesChange?: (value: Array<any>) => void;
-  defaultSelectedFilterOperation?: "<" | "<=" | "<>" | "=" | ">" | ">=" | "between" | "contains" | "endswith" | "notcontains" | "startswith";
-  onSelectedFilterOperationChange?: (value: "<" | "<=" | "<>" | "=" | ">" | ">=" | "between" | "contains" | "endswith" | "notcontains" | "startswith") => void;
+  defaultSelectedFilterOperation?: '<' | '<=' | '<>' | '=' | '>' | '>=' | 'between' | 'contains' | 'endswith' | 'notcontains' | 'startswith';
+  onSelectedFilterOperationChange?: (value: '<' | '<=' | '<>' | '=' | '>' | '>=' | 'between' | 'contains' | 'endswith' | 'notcontains' | 'startswith') => void;
   defaultSortIndex?: number;
   onSortIndexChange?: (value: number) => void;
-  defaultSortOrder?: "asc" | "desc";
-  onSortOrderChange?: (value: "asc" | "desc") => void;
+  defaultSortOrder?: 'asc' | 'desc';
+  onSortOrderChange?: (value: 'asc' | 'desc') => void;
   defaultVisible?: boolean;
   onVisibleChange?: (value: boolean) => void;
   defaultVisibleIndex?: number;
@@ -276,34 +279,38 @@ type IColumnProps = React.PropsWithChildren<{
   headerCellRender?: (...params: any) => React.ReactNode;
   headerCellComponent?: React.ComponentType<any>;
   headerCellKeyFn?: (data: any) => string;
-}>
+}>;
 class Column extends NestedOption<IColumnProps> {
-  public static OptionName = "columns";
+  public static OptionName = 'columns';
+
   public static IsCollectionItem = true;
+
   public static DefaultsProps = {
-    defaultFilterValue: "filterValue",
-    defaultFilterValues: "filterValues",
-    defaultSelectedFilterOperation: "selectedFilterOperation",
-    defaultSortIndex: "sortIndex",
-    defaultSortOrder: "sortOrder",
-    defaultVisible: "visible",
-    defaultVisibleIndex: "visibleIndex"
+    defaultFilterValue: 'filterValue',
+    defaultFilterValues: 'filterValues',
+    defaultSelectedFilterOperation: 'selectedFilterOperation',
+    defaultSortIndex: 'sortIndex',
+    defaultSortOrder: 'sortOrder',
+    defaultVisible: 'visible',
+    defaultVisibleIndex: 'visibleIndex',
   };
+
   public static ExpectedChildren = {
-    columnHeaderFilter: { optionName: "headerFilter", isCollectionItem: false },
-    format: { optionName: "format", isCollectionItem: false },
-    headerFilter: { optionName: "headerFilter", isCollectionItem: false }
+    columnHeaderFilter: { optionName: 'headerFilter', isCollectionItem: false },
+    format: { optionName: 'format', isCollectionItem: false },
+    headerFilter: { optionName: 'headerFilter', isCollectionItem: false },
   };
+
   public static TemplateProps = [{
-    tmplOption: "cellTemplate",
-    render: "cellRender",
-    component: "cellComponent",
-    keyFn: "cellKeyFn"
+    tmplOption: 'cellTemplate',
+    render: 'cellRender',
+    component: 'cellComponent',
+    keyFn: 'cellKeyFn',
   }, {
-    tmplOption: "headerCellTemplate",
-    render: "headerCellRender",
-    component: "headerCellComponent",
-    keyFn: "headerCellKeyFn"
+    tmplOption: 'headerCellTemplate',
+    render: 'headerCellRender',
+    component: 'headerCellComponent',
+    keyFn: 'headerCellKeyFn',
   }];
 }
 
@@ -313,17 +320,18 @@ type IColumnHeaderFilterProps = React.PropsWithChildren<{
   allowSearch?: boolean;
   allowSelectAll?: boolean;
   dataSource?: Array<any> | DataSourceOptions | ((options: { component: object, dataSource: DataSourceOptions | null }) => void) | null | Store;
-  groupInterval?: number | "day" | "hour" | "minute" | "month" | "quarter" | "second" | "year";
+  groupInterval?: number | 'day' | 'hour' | 'minute' | 'month' | 'quarter' | 'second' | 'year';
   height?: number;
   search?: ColumnHeaderFilterSearchConfig;
-  searchMode?: "contains" | "startswith" | "equals";
+  searchMode?: 'contains' | 'startswith' | 'equals';
   width?: number;
-}>
+}>;
 class ColumnHeaderFilter extends NestedOption<IColumnHeaderFilterProps> {
-  public static OptionName = "headerFilter";
+  public static OptionName = 'headerFilter';
+
   public static ExpectedChildren = {
-    columnHeaderFilterSearch: { optionName: "search", isCollectionItem: false },
-    search: { optionName: "search", isCollectionItem: false }
+    columnHeaderFilterSearch: { optionName: 'search', isCollectionItem: false },
+    search: { optionName: 'search', isCollectionItem: false },
   };
 }
 
@@ -332,14 +340,15 @@ class ColumnHeaderFilter extends NestedOption<IColumnHeaderFilterProps> {
 type IColumnHeaderFilterSearchProps = React.PropsWithChildren<{
   editorOptions?: dxTextBoxOptions;
   enabled?: boolean;
-  mode?: "contains" | "startswith" | "equals";
+  mode?: 'contains' | 'startswith' | 'equals';
   searchExpr?: Array<(() => any) | string> | (() => any) | string;
   timeout?: number;
-}>
+}>;
 class ColumnHeaderFilterSearch extends NestedOption<IColumnHeaderFilterSearchProps> {
-  public static OptionName = "search";
+  public static OptionName = 'search';
+
   public static ExpectedChildren = {
-    editorOptions: { optionName: "editorOptions", isCollectionItem: false }
+    editorOptions: { optionName: 'editorOptions', isCollectionItem: false },
   };
 }
 
@@ -347,13 +356,14 @@ class ColumnHeaderFilterSearch extends NestedOption<IColumnHeaderFilterSearchPro
 // Gantt
 type IContextMenuProps = React.PropsWithChildren<{
   enabled?: boolean;
-  items?: Array<dxGanttContextMenuItem | "undo" | "redo" | "expandAll" | "collapseAll" | "addTask" | "deleteTask" | "zoomIn" | "zoomOut" | "deleteDependency" | "taskDetails" | "resourceManager">;
-}>
+  items?: Array<dxGanttContextMenuItem | 'undo' | 'redo' | 'expandAll' | 'collapseAll' | 'addTask' | 'deleteTask' | 'zoomIn' | 'zoomOut' | 'deleteDependency' | 'taskDetails' | 'resourceManager'>;
+}>;
 class ContextMenu extends NestedOption<IContextMenuProps> {
-  public static OptionName = "contextMenu";
+  public static OptionName = 'contextMenu';
+
   public static ExpectedChildren = {
-    contextMenuItem: { optionName: "items", isCollectionItem: true },
-    item: { optionName: "items", isCollectionItem: true }
+    contextMenuItem: { optionName: 'items', isCollectionItem: true },
+    item: { optionName: 'items', isCollectionItem: true },
   };
 }
 
@@ -365,7 +375,7 @@ type IContextMenuItemProps = React.PropsWithChildren<{
   disabled?: boolean;
   icon?: string;
   items?: Array<dxContextMenuItem>;
-  name?: "undo" | "redo" | "expandAll" | "collapseAll" | "addTask" | "deleteTask" | "zoomIn" | "zoomOut" | "deleteDependency" | "taskDetails" | "resourceManager";
+  name?: 'undo' | 'redo' | 'expandAll' | 'collapseAll' | 'addTask' | 'deleteTask' | 'zoomIn' | 'zoomOut' | 'deleteDependency' | 'taskDetails' | 'resourceManager';
   selectable?: boolean;
   selected?: boolean;
   template?: ((itemData: CollectionWidgetItem, itemIndex: number, itemElement: any) => string) | template;
@@ -374,15 +384,17 @@ type IContextMenuItemProps = React.PropsWithChildren<{
   render?: (...params: any) => React.ReactNode;
   component?: React.ComponentType<any>;
   keyFn?: (data: any) => string;
-}>
+}>;
 class ContextMenuItem extends NestedOption<IContextMenuItemProps> {
-  public static OptionName = "items";
+  public static OptionName = 'items';
+
   public static IsCollectionItem = true;
+
   public static TemplateProps = [{
-    tmplOption: "template",
-    render: "render",
-    component: "component",
-    keyFn: "keyFn"
+    tmplOption: 'template',
+    render: 'render',
+    component: 'component',
+    keyFn: 'keyFn',
   }];
 }
 
@@ -394,9 +406,9 @@ type IDependenciesProps = React.PropsWithChildren<{
   predecessorIdExpr?: (() => void) | string;
   successorIdExpr?: (() => void) | string;
   typeExpr?: (() => void) | string;
-}>
+}>;
 class Dependencies extends NestedOption<IDependenciesProps> {
-  public static OptionName = "dependencies";
+  public static OptionName = 'dependencies';
 }
 
 // owners:
@@ -412,9 +424,9 @@ type IEditingProps = React.PropsWithChildren<{
   allowTaskResourceUpdating?: boolean;
   allowTaskUpdating?: boolean;
   enabled?: boolean;
-}>
+}>;
 class Editing extends NestedOption<IEditingProps> {
-  public static OptionName = "editing";
+  public static OptionName = 'editing';
 }
 
 // owners:
@@ -423,7 +435,7 @@ type IEditorOptionsProps = React.PropsWithChildren<{
   accessKey?: string;
   activeStateEnabled?: boolean;
   bindingOptions?: object;
-  buttons?: Array<dxTextEditorButton | string | "clear">;
+  buttons?: Array<dxTextEditorButton | string | 'clear'>;
   disabled?: boolean;
   elementAttr?: object;
   focusStateEnabled?: boolean;
@@ -433,13 +445,13 @@ type IEditorOptionsProps = React.PropsWithChildren<{
   inputAttr?: any;
   isValid?: boolean;
   label?: string;
-  labelMode?: "static" | "floating" | "hidden";
+  labelMode?: 'static' | 'floating' | 'hidden';
   mask?: string;
   maskChar?: string;
   maskInvalidMessage?: string;
   maskRules?: any;
   maxLength?: number | string;
-  mode?: "email" | "password" | "search" | "tel" | "text" | "url";
+  mode?: 'email' | 'password' | 'search' | 'tel' | 'text' | 'url';
   name?: string;
   onChange?: ((e: NativeEventInfo<any>) => void);
   onContentReady?: ((e: EventInfo<any>) => void);
@@ -460,31 +472,33 @@ type IEditorOptionsProps = React.PropsWithChildren<{
   readOnly?: boolean;
   rtlEnabled?: boolean;
   showClearButton?: boolean;
-  showMaskMode?: "always" | "onFocus";
+  showMaskMode?: 'always' | 'onFocus';
   spellcheck?: boolean;
-  stylingMode?: "outlined" | "underlined" | "filled";
+  stylingMode?: 'outlined' | 'underlined' | 'filled';
   tabIndex?: number;
   text?: string;
   useMaskedValue?: boolean;
   validationError?: any;
   validationErrors?: Array<any>;
-  validationMessageMode?: "always" | "auto";
-  validationMessagePosition?: "bottom" | "left" | "right" | "top";
-  validationStatus?: "valid" | "invalid" | "pending";
+  validationMessageMode?: 'always' | 'auto';
+  validationMessagePosition?: 'bottom' | 'left' | 'right' | 'top';
+  validationStatus?: 'valid' | 'invalid' | 'pending';
   value?: string;
   valueChangeEvent?: string;
   visible?: boolean;
   width?: (() => number) | number | string;
   defaultValue?: string;
   onValueChange?: (value: string) => void;
-}>
+}>;
 class EditorOptions extends NestedOption<IEditorOptionsProps> {
-  public static OptionName = "editorOptions";
+  public static OptionName = 'editorOptions';
+
   public static DefaultsProps = {
-    defaultValue: "value"
+    defaultValue: 'value',
   };
+
   public static ExpectedChildren = {
-    button: { optionName: "buttons", isCollectionItem: true }
+    button: { optionName: 'buttons', isCollectionItem: true },
   };
 }
 
@@ -498,11 +512,12 @@ type IFilterRowProps = React.PropsWithChildren<{
   showAllText?: string;
   showOperationChooser?: boolean;
   visible?: boolean;
-}>
+}>;
 class FilterRow extends NestedOption<IFilterRowProps> {
-  public static OptionName = "filterRow";
+  public static OptionName = 'filterRow';
+
   public static ExpectedChildren = {
-    operationDescriptions: { optionName: "operationDescriptions", isCollectionItem: false }
+    operationDescriptions: { optionName: 'operationDescriptions', isCollectionItem: false },
   };
 }
 
@@ -513,11 +528,11 @@ type IFormatProps = React.PropsWithChildren<{
   formatter?: ((value: number | any) => string);
   parser?: ((value: string) => number);
   precision?: number;
-  type?: "billions" | "currency" | "day" | "decimal" | "exponential" | "fixedPoint" | "largeNumber" | "longDate" | "longTime" | "millions" | "millisecond" | "month" | "monthAndDay" | "monthAndYear" | "percent" | "quarter" | "quarterAndYear" | "shortDate" | "shortTime" | "thousands" | "trillions" | "year" | "dayOfWeek" | "hour" | "longDateLongTime" | "minute" | "second" | "shortDateShortTime";
+  type?: 'billions' | 'currency' | 'day' | 'decimal' | 'exponential' | 'fixedPoint' | 'largeNumber' | 'longDate' | 'longTime' | 'millions' | 'millisecond' | 'month' | 'monthAndDay' | 'monthAndYear' | 'percent' | 'quarter' | 'quarterAndYear' | 'shortDate' | 'shortTime' | 'thousands' | 'trillions' | 'year' | 'dayOfWeek' | 'hour' | 'longDateLongTime' | 'minute' | 'second' | 'shortDateShortTime';
   useCurrencyAccountingStyle?: boolean;
-}>
+}>;
 class Format extends NestedOption<IFormatProps> {
-  public static OptionName = "format";
+  public static OptionName = 'format';
 }
 
 // owners:
@@ -531,13 +546,14 @@ type IGanttHeaderFilterProps = React.PropsWithChildren<{
   texts?: dxGanttHeaderFilterTexts;
   visible?: boolean;
   width?: number;
-}>
+}>;
 class GanttHeaderFilter extends NestedOption<IGanttHeaderFilterProps> {
-  public static OptionName = "headerFilter";
+  public static OptionName = 'headerFilter';
+
   public static ExpectedChildren = {
-    ganttHeaderFilterSearch: { optionName: "search", isCollectionItem: false },
-    search: { optionName: "search", isCollectionItem: false },
-    texts: { optionName: "texts", isCollectionItem: false }
+    ganttHeaderFilterSearch: { optionName: 'search', isCollectionItem: false },
+    search: { optionName: 'search', isCollectionItem: false },
+    texts: { optionName: 'texts', isCollectionItem: false },
   };
 }
 
@@ -546,11 +562,11 @@ class GanttHeaderFilter extends NestedOption<IGanttHeaderFilterProps> {
 type IGanttHeaderFilterSearchProps = React.PropsWithChildren<{
   editorOptions?: dxTextBoxOptions;
   enabled?: boolean;
-  mode?: "contains" | "startswith" | "equals";
+  mode?: 'contains' | 'startswith' | 'equals';
   timeout?: number;
-}>
+}>;
 class GanttHeaderFilterSearch extends NestedOption<IGanttHeaderFilterSearchProps> {
-  public static OptionName = "search";
+  public static OptionName = 'search';
 }
 
 // owners:
@@ -560,17 +576,17 @@ type IHeaderFilterProps = React.PropsWithChildren<{
   allowSearch?: boolean;
   allowSelectAll?: boolean;
   dataSource?: Array<any> | DataSourceOptions | ((options: { component: object, dataSource: DataSourceOptions | null }) => void) | null | Store;
-  groupInterval?: number | "day" | "hour" | "minute" | "month" | "quarter" | "second" | "year";
+  groupInterval?: number | 'day' | 'hour' | 'minute' | 'month' | 'quarter' | 'second' | 'year';
   height?: number;
   search?: ColumnHeaderFilterSearchConfig;
-  searchMode?: "contains" | "startswith" | "equals";
+  searchMode?: 'contains' | 'startswith' | 'equals';
   width?: number;
   searchTimeout?: number;
   texts?: dxGanttHeaderFilterTexts;
   visible?: boolean;
-}>
+}>;
 class HeaderFilter extends NestedOption<IHeaderFilterProps> {
-  public static OptionName = "headerFilter";
+  public static OptionName = 'headerFilter';
 }
 
 // owners:
@@ -582,7 +598,7 @@ type IItemProps = React.PropsWithChildren<{
   disabled?: boolean;
   icon?: string;
   items?: Array<dxContextMenuItem>;
-  name?: "undo" | "redo" | "expandAll" | "collapseAll" | "addTask" | "deleteTask" | "zoomIn" | "zoomOut" | "deleteDependency" | "taskDetails" | "resourceManager";
+  name?: 'undo' | 'redo' | 'expandAll' | 'collapseAll' | 'addTask' | 'deleteTask' | 'zoomIn' | 'zoomOut' | 'deleteDependency' | 'taskDetails' | 'resourceManager';
   selectable?: boolean;
   selected?: boolean;
   template?: ((itemData: CollectionWidgetItem, itemIndex: number, itemElement: any) => string) | template;
@@ -590,32 +606,34 @@ type IItemProps = React.PropsWithChildren<{
   visible?: boolean;
   cssClass?: string;
   html?: string;
-  locateInMenu?: "always" | "auto" | "never";
-  location?: "after" | "before" | "center";
+  locateInMenu?: 'always' | 'auto' | 'never';
+  location?: 'after' | 'before' | 'center';
   menuItemTemplate?: (() => string) | template;
   options?: any;
-  showText?: "always" | "inMenu";
-  widget?: "dxAutocomplete" | "dxButton" | "dxCheckBox" | "dxDateBox" | "dxMenu" | "dxSelectBox" | "dxTabs" | "dxTextBox" | "dxButtonGroup" | "dxDropDownButton";
+  showText?: 'always' | 'inMenu';
+  widget?: 'dxAutocomplete' | 'dxButton' | 'dxCheckBox' | 'dxDateBox' | 'dxMenu' | 'dxSelectBox' | 'dxTabs' | 'dxTextBox' | 'dxButtonGroup' | 'dxDropDownButton';
   render?: (...params: any) => React.ReactNode;
   component?: React.ComponentType<any>;
   keyFn?: (data: any) => string;
   menuItemRender?: (...params: any) => React.ReactNode;
   menuItemComponent?: React.ComponentType<any>;
   menuItemKeyFn?: (data: any) => string;
-}>
+}>;
 class Item extends NestedOption<IItemProps> {
-  public static OptionName = "items";
+  public static OptionName = 'items';
+
   public static IsCollectionItem = true;
+
   public static TemplateProps = [{
-    tmplOption: "template",
-    render: "render",
-    component: "component",
-    keyFn: "keyFn"
+    tmplOption: 'template',
+    render: 'render',
+    component: 'component',
+    keyFn: 'keyFn',
   }, {
-    tmplOption: "menuItemTemplate",
-    render: "menuItemRender",
-    component: "menuItemComponent",
-    keyFn: "menuItemKeyFn"
+    tmplOption: 'menuItemTemplate',
+    render: 'menuItemRender',
+    component: 'menuItemComponent',
+    keyFn: 'menuItemKeyFn',
   }];
 }
 
@@ -633,9 +651,9 @@ type IOperationDescriptionsProps = React.PropsWithChildren<{
   notContains?: string;
   notEqual?: string;
   startsWith?: string;
-}>
+}>;
 class OperationDescriptions extends NestedOption<IOperationDescriptionsProps> {
-  public static OptionName = "operationDescriptions";
+  public static OptionName = 'operationDescriptions';
 }
 
 // owners:
@@ -657,11 +675,11 @@ type IOptionsProps = React.PropsWithChildren<{
   onInitialized?: ((e: { component: Component<any>, element: any }) => void);
   onOptionChanged?: ((e: { component: DOMComponent, element: any, fullName: string, model: any, name: string, previousValue: any, value: any }) => void);
   rtlEnabled?: boolean;
-  stylingMode?: "text" | "outlined" | "contained";
+  stylingMode?: 'text' | 'outlined' | 'contained';
   tabIndex?: number;
   template?: ((buttonData: { icon: string, text: string }, contentElement: any) => string) | template;
   text?: string;
-  type?: "back" | "danger" | "default" | "normal" | "success";
+  type?: 'back' | 'danger' | 'default' | 'normal' | 'success';
   useSubmitBehavior?: boolean;
   validationGroup?: string;
   visible?: boolean;
@@ -669,14 +687,15 @@ type IOptionsProps = React.PropsWithChildren<{
   render?: (...params: any) => React.ReactNode;
   component?: React.ComponentType<any>;
   keyFn?: (data: any) => string;
-}>
+}>;
 class Options extends NestedOption<IOptionsProps> {
-  public static OptionName = "options";
+  public static OptionName = 'options';
+
   public static TemplateProps = [{
-    tmplOption: "template",
-    render: "render",
-    component: "component",
-    keyFn: "keyFn"
+    tmplOption: 'template',
+    render: 'render',
+    component: 'component',
+    keyFn: 'keyFn',
   }];
 }
 
@@ -687,9 +706,9 @@ type IResourceAssignmentsProps = React.PropsWithChildren<{
   keyExpr?: (() => void) | string;
   resourceIdExpr?: (() => void) | string;
   taskIdExpr?: (() => void) | string;
-}>
+}>;
 class ResourceAssignments extends NestedOption<IResourceAssignmentsProps> {
-  public static OptionName = "resourceAssignments";
+  public static OptionName = 'resourceAssignments';
 }
 
 // owners:
@@ -699,19 +718,19 @@ type IResourcesProps = React.PropsWithChildren<{
   dataSource?: Array<any> | DataSource | DataSourceOptions | null | Store | string;
   keyExpr?: (() => void) | string;
   textExpr?: (() => void) | string;
-}>
+}>;
 class Resources extends NestedOption<IResourcesProps> {
-  public static OptionName = "resources";
+  public static OptionName = 'resources';
 }
 
 // owners:
 // Gantt
 type IScaleTypeRangeProps = React.PropsWithChildren<{
-  max?: "auto" | "minutes" | "hours" | "sixHours" | "days" | "weeks" | "months" | "quarters" | "years";
-  min?: "auto" | "minutes" | "hours" | "sixHours" | "days" | "weeks" | "months" | "quarters" | "years";
-}>
+  max?: 'auto' | 'minutes' | 'hours' | 'sixHours' | 'days' | 'weeks' | 'months' | 'quarters' | 'years';
+  min?: 'auto' | 'minutes' | 'hours' | 'sixHours' | 'days' | 'weeks' | 'months' | 'quarters' | 'years';
+}>;
 class ScaleTypeRange extends NestedOption<IScaleTypeRangeProps> {
-  public static OptionName = "scaleTypeRange";
+  public static OptionName = 'scaleTypeRange';
 }
 
 // owners:
@@ -720,12 +739,12 @@ class ScaleTypeRange extends NestedOption<IScaleTypeRangeProps> {
 type ISearchProps = React.PropsWithChildren<{
   editorOptions?: dxTextBoxOptions;
   enabled?: boolean;
-  mode?: "contains" | "startswith" | "equals";
+  mode?: 'contains' | 'startswith' | 'equals';
   searchExpr?: Array<(() => any) | string> | (() => any) | string;
   timeout?: number;
-}>
+}>;
 class Search extends NestedOption<ISearchProps> {
-  public static OptionName = "search";
+  public static OptionName = 'search';
 }
 
 // owners:
@@ -734,11 +753,11 @@ type ISortingProps = React.PropsWithChildren<{
   ascendingText?: string;
   clearText?: string;
   descendingText?: string;
-  mode?: "single" | "multiple" | "none";
+  mode?: 'single' | 'multiple' | 'none';
   showSortIndexes?: boolean;
-}>
+}>;
 class Sorting extends NestedOption<ISortingProps> {
-  public static OptionName = "sorting";
+  public static OptionName = 'sorting';
 }
 
 // owners:
@@ -748,9 +767,10 @@ type IStripLineProps = React.PropsWithChildren<{
   end?: any | (() => any) | number | string;
   start?: any | (() => any) | number | string;
   title?: string;
-}>
+}>;
 class StripLine extends NestedOption<IStripLineProps> {
-  public static OptionName = "stripLines";
+  public static OptionName = 'stripLines';
+
   public static IsCollectionItem = true;
 }
 
@@ -765,9 +785,9 @@ type ITasksProps = React.PropsWithChildren<{
   progressExpr?: (() => void) | string;
   startExpr?: (() => void) | string;
   titleExpr?: (() => void) | string;
-}>
+}>;
 class Tasks extends NestedOption<ITasksProps> {
-  public static OptionName = "tasks";
+  public static OptionName = 'tasks';
 }
 
 // owners:
@@ -776,21 +796,22 @@ type ITextsProps = React.PropsWithChildren<{
   cancel?: string;
   emptyValue?: string;
   ok?: string;
-}>
+}>;
 class Texts extends NestedOption<ITextsProps> {
-  public static OptionName = "texts";
+  public static OptionName = 'texts';
 }
 
 // owners:
 // Gantt
 type IToolbarProps = React.PropsWithChildren<{
-  items?: Array<dxGanttToolbarItem | "separator" | "undo" | "redo" | "expandAll" | "collapseAll" | "addTask" | "deleteTask" | "zoomIn" | "zoomOut" | "taskDetails" | "fullScreen" | "resourceManager" | "showResources" | "showDependencies">;
-}>
+  items?: Array<dxGanttToolbarItem | 'separator' | 'undo' | 'redo' | 'expandAll' | 'collapseAll' | 'addTask' | 'deleteTask' | 'zoomIn' | 'zoomOut' | 'taskDetails' | 'fullScreen' | 'resourceManager' | 'showResources' | 'showDependencies'>;
+}>;
 class Toolbar extends NestedOption<IToolbarProps> {
-  public static OptionName = "toolbar";
+  public static OptionName = 'toolbar';
+
   public static ExpectedChildren = {
-    item: { optionName: "items", isCollectionItem: true },
-    toolbarItem: { optionName: "items", isCollectionItem: true }
+    item: { optionName: 'items', isCollectionItem: true },
+    toolbarItem: { optionName: 'items', isCollectionItem: true },
   };
 }
 
@@ -800,36 +821,38 @@ type IToolbarItemProps = React.PropsWithChildren<{
   cssClass?: string;
   disabled?: boolean;
   html?: string;
-  locateInMenu?: "always" | "auto" | "never";
-  location?: "after" | "before" | "center";
+  locateInMenu?: 'always' | 'auto' | 'never';
+  location?: 'after' | 'before' | 'center';
   menuItemTemplate?: (() => string) | template;
-  name?: "separator" | "undo" | "redo" | "expandAll" | "collapseAll" | "addTask" | "deleteTask" | "zoomIn" | "zoomOut" | "taskDetails" | "fullScreen" | "resourceManager" | "showResources" | "showDependencies";
+  name?: 'separator' | 'undo' | 'redo' | 'expandAll' | 'collapseAll' | 'addTask' | 'deleteTask' | 'zoomIn' | 'zoomOut' | 'taskDetails' | 'fullScreen' | 'resourceManager' | 'showResources' | 'showDependencies';
   options?: any;
-  showText?: "always" | "inMenu";
+  showText?: 'always' | 'inMenu';
   template?: ((itemData: CollectionWidgetItem, itemIndex: number, itemElement: any) => string) | template;
   text?: string;
   visible?: boolean;
-  widget?: "dxAutocomplete" | "dxButton" | "dxCheckBox" | "dxDateBox" | "dxMenu" | "dxSelectBox" | "dxTabs" | "dxTextBox" | "dxButtonGroup" | "dxDropDownButton";
+  widget?: 'dxAutocomplete' | 'dxButton' | 'dxCheckBox' | 'dxDateBox' | 'dxMenu' | 'dxSelectBox' | 'dxTabs' | 'dxTextBox' | 'dxButtonGroup' | 'dxDropDownButton';
   menuItemRender?: (...params: any) => React.ReactNode;
   menuItemComponent?: React.ComponentType<any>;
   menuItemKeyFn?: (data: any) => string;
   render?: (...params: any) => React.ReactNode;
   component?: React.ComponentType<any>;
   keyFn?: (data: any) => string;
-}>
+}>;
 class ToolbarItem extends NestedOption<IToolbarItemProps> {
-  public static OptionName = "items";
+  public static OptionName = 'items';
+
   public static IsCollectionItem = true;
+
   public static TemplateProps = [{
-    tmplOption: "menuItemTemplate",
-    render: "menuItemRender",
-    component: "menuItemComponent",
-    keyFn: "menuItemKeyFn"
+    tmplOption: 'menuItemTemplate',
+    render: 'menuItemRender',
+    component: 'menuItemComponent',
+    keyFn: 'menuItemKeyFn',
   }, {
-    tmplOption: "template",
-    render: "render",
-    component: "component",
-    keyFn: "keyFn"
+    tmplOption: 'template',
+    render: 'render',
+    component: 'component',
+    keyFn: 'keyFn',
   }];
 }
 
@@ -839,9 +862,9 @@ type IValidationProps = React.PropsWithChildren<{
   autoUpdateParentTasks?: boolean;
   enablePredecessorGap?: boolean;
   validateDependencies?: boolean;
-}>
+}>;
 class Validation extends NestedOption<IValidationProps> {
-  public static OptionName = "validation";
+  public static OptionName = 'validation';
 }
 
 export default Gantt;
@@ -903,8 +926,6 @@ export {
   ToolbarItem,
   IToolbarItemProps,
   Validation,
-  IValidationProps
+  IValidationProps,
 };
-import type * as GanttTypes from 'devextreme/ui/gantt_types';
 export { GanttTypes };
-

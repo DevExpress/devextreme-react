@@ -1,33 +1,33 @@
 import dxValidator, {
-    Properties as IValidatorOptions
-} from "devextreme/ui/validator";
+  Properties as IValidatorOptions,
+} from 'devextreme/ui/validator';
 
-import * as PropTypes from "prop-types";
-import { ExtensionComponent as BaseComponent } from "./core/extension-component";
-import NestedOption from "./core/nested-option";
+import * as PropTypes from 'prop-types';
+import type * as ValidatorTypes from 'devextreme/ui/validator_types';
+import { ExtensionComponent as BaseComponent } from './core/extension-component';
+import NestedOption from './core/nested-option';
 
 class Validator extends BaseComponent<React.PropsWithChildren<IValidatorOptions>> {
-
   public get instance(): dxValidator {
     return this._instance;
   }
 
   protected _WidgetClass = dxValidator;
 
-  protected independentEvents = ["onDisposing","onInitialized","onValidated"];
+  protected independentEvents = ['onDisposing', 'onInitialized', 'onValidated'];
 
   protected _expectedChildren = {
-    adapter: { optionName: "adapter", isCollectionItem: false },
-    AsyncRule: { optionName: "validationRules", isCollectionItem: true },
-    CompareRule: { optionName: "validationRules", isCollectionItem: true },
-    CustomRule: { optionName: "validationRules", isCollectionItem: true },
-    EmailRule: { optionName: "validationRules", isCollectionItem: true },
-    NumericRule: { optionName: "validationRules", isCollectionItem: true },
-    PatternRule: { optionName: "validationRules", isCollectionItem: true },
-    RangeRule: { optionName: "validationRules", isCollectionItem: true },
-    RequiredRule: { optionName: "validationRules", isCollectionItem: true },
-    StringLengthRule: { optionName: "validationRules", isCollectionItem: true },
-    validationRule: { optionName: "validationRules", isCollectionItem: true }
+    adapter: { optionName: 'adapter', isCollectionItem: false },
+    AsyncRule: { optionName: 'validationRules', isCollectionItem: true },
+    CompareRule: { optionName: 'validationRules', isCollectionItem: true },
+    CustomRule: { optionName: 'validationRules', isCollectionItem: true },
+    EmailRule: { optionName: 'validationRules', isCollectionItem: true },
+    NumericRule: { optionName: 'validationRules', isCollectionItem: true },
+    PatternRule: { optionName: 'validationRules', isCollectionItem: true },
+    RangeRule: { optionName: 'validationRules', isCollectionItem: true },
+    RequiredRule: { optionName: 'validationRules', isCollectionItem: true },
+    StringLengthRule: { optionName: 'validationRules', isCollectionItem: true },
+    validationRule: { optionName: 'validationRules', isCollectionItem: true },
   };
 }
 (Validator as any).propTypes = {
@@ -36,7 +36,7 @@ class Validator extends BaseComponent<React.PropsWithChildren<IValidatorOptions>
   height: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
+    PropTypes.string,
   ]),
   name: PropTypes.string,
   onDisposing: PropTypes.func,
@@ -48,10 +48,9 @@ class Validator extends BaseComponent<React.PropsWithChildren<IValidatorOptions>
   width: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
-  ])
+    PropTypes.string,
+  ]),
 };
-
 
 // owners:
 // Validator
@@ -62,9 +61,9 @@ type IAdapterProps = React.PropsWithChildren<{
   getValue?: (() => void);
   reset?: (() => void);
   validationRequestsCallbacks?: Array<(() => void)>;
-}>
+}>;
 class Adapter extends NestedOption<IAdapterProps> {
-  public static OptionName = "adapter";
+  public static OptionName = 'adapter';
 }
 
 // owners:
@@ -73,14 +72,16 @@ type IAsyncRuleProps = React.PropsWithChildren<{
   ignoreEmptyValue?: boolean;
   message?: string;
   reevaluate?: boolean;
-  type?: "required" | "numeric" | "range" | "stringLength" | "custom" | "compare" | "pattern" | "email" | "async";
+  type?: 'required' | 'numeric' | 'range' | 'stringLength' | 'custom' | 'compare' | 'pattern' | 'email' | 'async';
   validationCallback?: ((options: { column: object, data: object, formItem: object, rule: object, validator: object, value: string | number }) => any);
-}>
+}>;
 class AsyncRule extends NestedOption<IAsyncRuleProps> {
-  public static OptionName = "validationRules";
+  public static OptionName = 'validationRules';
+
   public static IsCollectionItem = true;
+
   public static PredefinedProps = {
-    type: "async"
+    type: 'async',
   };
 }
 
@@ -88,16 +89,18 @@ class AsyncRule extends NestedOption<IAsyncRuleProps> {
 // Validator
 type ICompareRuleProps = React.PropsWithChildren<{
   comparisonTarget?: (() => object);
-  comparisonType?: "!=" | "!==" | "<" | "<=" | "==" | "===" | ">" | ">=";
+  comparisonType?: '!=' | '!==' | '<' | '<=' | '==' | '===' | '>' | '>=';
   ignoreEmptyValue?: boolean;
   message?: string;
-  type?: "required" | "numeric" | "range" | "stringLength" | "custom" | "compare" | "pattern" | "email" | "async";
-}>
+  type?: 'required' | 'numeric' | 'range' | 'stringLength' | 'custom' | 'compare' | 'pattern' | 'email' | 'async';
+}>;
 class CompareRule extends NestedOption<ICompareRuleProps> {
-  public static OptionName = "validationRules";
+  public static OptionName = 'validationRules';
+
   public static IsCollectionItem = true;
+
   public static PredefinedProps = {
-    type: "compare"
+    type: 'compare',
   };
 }
 
@@ -107,14 +110,16 @@ type ICustomRuleProps = React.PropsWithChildren<{
   ignoreEmptyValue?: boolean;
   message?: string;
   reevaluate?: boolean;
-  type?: "required" | "numeric" | "range" | "stringLength" | "custom" | "compare" | "pattern" | "email" | "async";
+  type?: 'required' | 'numeric' | 'range' | 'stringLength' | 'custom' | 'compare' | 'pattern' | 'email' | 'async';
   validationCallback?: ((options: { column: object, data: object, formItem: object, rule: object, validator: object, value: string | number }) => boolean);
-}>
+}>;
 class CustomRule extends NestedOption<ICustomRuleProps> {
-  public static OptionName = "validationRules";
+  public static OptionName = 'validationRules';
+
   public static IsCollectionItem = true;
+
   public static PredefinedProps = {
-    type: "custom"
+    type: 'custom',
   };
 }
 
@@ -123,13 +128,15 @@ class CustomRule extends NestedOption<ICustomRuleProps> {
 type IEmailRuleProps = React.PropsWithChildren<{
   ignoreEmptyValue?: boolean;
   message?: string;
-  type?: "required" | "numeric" | "range" | "stringLength" | "custom" | "compare" | "pattern" | "email" | "async";
-}>
+  type?: 'required' | 'numeric' | 'range' | 'stringLength' | 'custom' | 'compare' | 'pattern' | 'email' | 'async';
+}>;
 class EmailRule extends NestedOption<IEmailRuleProps> {
-  public static OptionName = "validationRules";
+  public static OptionName = 'validationRules';
+
   public static IsCollectionItem = true;
+
   public static PredefinedProps = {
-    type: "email"
+    type: 'email',
   };
 }
 
@@ -138,13 +145,15 @@ class EmailRule extends NestedOption<IEmailRuleProps> {
 type INumericRuleProps = React.PropsWithChildren<{
   ignoreEmptyValue?: boolean;
   message?: string;
-  type?: "required" | "numeric" | "range" | "stringLength" | "custom" | "compare" | "pattern" | "email" | "async";
-}>
+  type?: 'required' | 'numeric' | 'range' | 'stringLength' | 'custom' | 'compare' | 'pattern' | 'email' | 'async';
+}>;
 class NumericRule extends NestedOption<INumericRuleProps> {
-  public static OptionName = "validationRules";
+  public static OptionName = 'validationRules';
+
   public static IsCollectionItem = true;
+
   public static PredefinedProps = {
-    type: "numeric"
+    type: 'numeric',
   };
 }
 
@@ -154,13 +163,15 @@ type IPatternRuleProps = React.PropsWithChildren<{
   ignoreEmptyValue?: boolean;
   message?: string;
   pattern?: any | string;
-  type?: "required" | "numeric" | "range" | "stringLength" | "custom" | "compare" | "pattern" | "email" | "async";
-}>
+  type?: 'required' | 'numeric' | 'range' | 'stringLength' | 'custom' | 'compare' | 'pattern' | 'email' | 'async';
+}>;
 class PatternRule extends NestedOption<IPatternRuleProps> {
-  public static OptionName = "validationRules";
+  public static OptionName = 'validationRules';
+
   public static IsCollectionItem = true;
+
   public static PredefinedProps = {
-    type: "pattern"
+    type: 'pattern',
   };
 }
 
@@ -172,13 +183,15 @@ type IRangeRuleProps = React.PropsWithChildren<{
   message?: string;
   min?: any | number;
   reevaluate?: boolean;
-  type?: "required" | "numeric" | "range" | "stringLength" | "custom" | "compare" | "pattern" | "email" | "async";
-}>
+  type?: 'required' | 'numeric' | 'range' | 'stringLength' | 'custom' | 'compare' | 'pattern' | 'email' | 'async';
+}>;
 class RangeRule extends NestedOption<IRangeRuleProps> {
-  public static OptionName = "validationRules";
+  public static OptionName = 'validationRules';
+
   public static IsCollectionItem = true;
+
   public static PredefinedProps = {
-    type: "range"
+    type: 'range',
   };
 }
 
@@ -187,13 +200,15 @@ class RangeRule extends NestedOption<IRangeRuleProps> {
 type IRequiredRuleProps = React.PropsWithChildren<{
   message?: string;
   trim?: boolean;
-  type?: "required" | "numeric" | "range" | "stringLength" | "custom" | "compare" | "pattern" | "email" | "async";
-}>
+  type?: 'required' | 'numeric' | 'range' | 'stringLength' | 'custom' | 'compare' | 'pattern' | 'email' | 'async';
+}>;
 class RequiredRule extends NestedOption<IRequiredRuleProps> {
-  public static OptionName = "validationRules";
+  public static OptionName = 'validationRules';
+
   public static IsCollectionItem = true;
+
   public static PredefinedProps = {
-    type: "required"
+    type: 'required',
   };
 }
 
@@ -205,13 +220,15 @@ type IStringLengthRuleProps = React.PropsWithChildren<{
   message?: string;
   min?: number;
   trim?: boolean;
-  type?: "required" | "numeric" | "range" | "stringLength" | "custom" | "compare" | "pattern" | "email" | "async";
-}>
+  type?: 'required' | 'numeric' | 'range' | 'stringLength' | 'custom' | 'compare' | 'pattern' | 'email' | 'async';
+}>;
 class StringLengthRule extends NestedOption<IStringLengthRuleProps> {
-  public static OptionName = "validationRules";
+  public static OptionName = 'validationRules';
+
   public static IsCollectionItem = true;
+
   public static PredefinedProps = {
-    type: "stringLength"
+    type: 'stringLength',
   };
 }
 
@@ -220,21 +237,23 @@ class StringLengthRule extends NestedOption<IStringLengthRuleProps> {
 type IValidationRuleProps = React.PropsWithChildren<{
   message?: string;
   trim?: boolean;
-  type?: "required" | "numeric" | "range" | "stringLength" | "custom" | "compare" | "pattern" | "email" | "async";
+  type?: 'required' | 'numeric' | 'range' | 'stringLength' | 'custom' | 'compare' | 'pattern' | 'email' | 'async';
   ignoreEmptyValue?: boolean;
   max?: any | number;
   min?: any | number;
   reevaluate?: boolean;
   validationCallback?: ((options: { column: object, data: object, formItem: object, rule: object, validator: object, value: string | number }) => boolean);
   comparisonTarget?: (() => object);
-  comparisonType?: "!=" | "!==" | "<" | "<=" | "==" | "===" | ">" | ">=";
+  comparisonType?: '!=' | '!==' | '<' | '<=' | '==' | '===' | '>' | '>=';
   pattern?: any | string;
-}>
+}>;
 class ValidationRule extends NestedOption<IValidationRuleProps> {
-  public static OptionName = "validationRules";
+  public static OptionName = 'validationRules';
+
   public static IsCollectionItem = true;
+
   public static PredefinedProps = {
-    type: "required"
+    type: 'required',
   };
 }
 
@@ -263,8 +282,6 @@ export {
   StringLengthRule,
   IStringLengthRuleProps,
   ValidationRule,
-  IValidationRuleProps
+  IValidationRuleProps,
 };
-import type * as ValidatorTypes from 'devextreme/ui/validator_types';
 export { ValidatorTypes };
-

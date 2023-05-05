@@ -1,29 +1,29 @@
 import dxFileUploader, {
-    Properties
-} from "devextreme/ui/file_uploader";
+  Properties,
+} from 'devextreme/ui/file_uploader';
 
-import * as PropTypes from "prop-types";
-import { Component as BaseComponent, IHtmlOptions } from "./core/component";
+import * as PropTypes from 'prop-types';
+import type * as FileUploaderTypes from 'devextreme/ui/file_uploader_types';
+import { Component as BaseComponent, IHtmlOptions } from './core/component';
 
 type IFileUploaderOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
   defaultValue?: Array<any>;
   onValueChange?: (value: Array<any>) => void;
-}>
+}>;
 
 class FileUploader extends BaseComponent<React.PropsWithChildren<IFileUploaderOptions>> {
-
   public get instance(): dxFileUploader {
     return this._instance;
   }
 
   protected _WidgetClass = dxFileUploader;
 
-  protected subscribableOptions = ["value"];
+  protected subscribableOptions = ['value'];
 
-  protected independentEvents = ["onBeforeSend","onContentReady","onDisposing","onDropZoneEnter","onDropZoneLeave","onFilesUploaded","onInitialized","onProgress","onUploadAborted","onUploaded","onUploadError","onUploadStarted","onValueChanged"];
+  protected independentEvents = ['onBeforeSend', 'onContentReady', 'onDisposing', 'onDropZoneEnter', 'onDropZoneLeave', 'onFilesUploaded', 'onInitialized', 'onProgress', 'onUploadAborted', 'onUploaded', 'onUploadError', 'onUploadStarted', 'onValueChanged'];
 
   protected _defaults = {
-    defaultValue: "value"
+    defaultValue: 'value',
   };
 }
 (FileUploader as any).propTypes = {
@@ -40,7 +40,7 @@ class FileUploader extends BaseComponent<React.PropsWithChildren<IFileUploaderOp
   height: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
+    PropTypes.string,
   ]),
   hint: PropTypes.string,
   hoverStateEnabled: PropTypes.bool,
@@ -83,38 +83,36 @@ class FileUploader extends BaseComponent<React.PropsWithChildren<IFileUploaderOp
   uploadMethod: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "POST",
-      "PUT"])
+      'POST',
+      'PUT']),
   ]),
   uploadMode: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "instantly",
-      "useButtons",
-      "useForm"])
+      'instantly',
+      'useButtons',
+      'useForm']),
   ]),
   uploadUrl: PropTypes.string,
   validationErrors: PropTypes.array,
   validationStatus: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "valid",
-      "invalid",
-      "pending"])
+      'valid',
+      'invalid',
+      'pending']),
   ]),
   value: PropTypes.array,
   visible: PropTypes.bool,
   width: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
-  ])
+    PropTypes.string,
+  ]),
 };
 export default FileUploader;
 export {
   FileUploader,
-  IFileUploaderOptions
+  IFileUploaderOptions,
 };
-import type * as FileUploaderTypes from 'devextreme/ui/file_uploader_types';
 export { FileUploaderTypes };
-

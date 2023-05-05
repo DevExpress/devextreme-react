@@ -1,44 +1,44 @@
 import dxFilterBuilder, {
-    Properties
-} from "devextreme/ui/filter_builder";
+  Properties,
+} from 'devextreme/ui/filter_builder';
 
-import * as PropTypes from "prop-types";
-import { Component as BaseComponent, IHtmlOptions } from "./core/component";
-import NestedOption from "./core/nested-option";
+import * as PropTypes from 'prop-types';
 
-import type { dxFilterBuilderField } from "devextreme/ui/filter_builder";
-import type { template } from "devextreme/core/templates/template";
-import type { DataSourceOptions } from "devextreme/data/data_source";
-import type { Store } from "devextreme/data/abstract_store";
+import type { dxFilterBuilderField } from 'devextreme/ui/filter_builder';
+import type { template } from 'devextreme/core/templates/template';
+import type { DataSourceOptions } from 'devextreme/data/data_source';
+import type { Store } from 'devextreme/data/abstract_store';
 
-import type * as LocalizationTypes from "devextreme/localization";
+import type * as LocalizationTypes from 'devextreme/localization';
+import type * as FilterBuilderTypes from 'devextreme/ui/filter_builder_types';
+import NestedOption from './core/nested-option';
+import { Component as BaseComponent, IHtmlOptions } from './core/component';
 
 type IFilterBuilderOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
   defaultValue?: Array<any> | (() => any) | string;
   onValueChange?: (value: Array<any> | (() => any) | string) => void;
-}>
+}>;
 
 class FilterBuilder extends BaseComponent<React.PropsWithChildren<IFilterBuilderOptions>> {
-
   public get instance(): dxFilterBuilder {
     return this._instance;
   }
 
   protected _WidgetClass = dxFilterBuilder;
 
-  protected subscribableOptions = ["value"];
+  protected subscribableOptions = ['value'];
 
-  protected independentEvents = ["onContentReady","onDisposing","onEditorPrepared","onEditorPreparing","onInitialized","onValueChanged"];
+  protected independentEvents = ['onContentReady', 'onDisposing', 'onEditorPrepared', 'onEditorPreparing', 'onInitialized', 'onValueChanged'];
 
   protected _defaults = {
-    defaultValue: "value"
+    defaultValue: 'value',
   };
 
   protected _expectedChildren = {
-    customOperation: { optionName: "customOperations", isCollectionItem: true },
-    field: { optionName: "fields", isCollectionItem: true },
-    filterOperationDescriptions: { optionName: "filterOperationDescriptions", isCollectionItem: false },
-    groupOperationDescriptions: { optionName: "groupOperationDescriptions", isCollectionItem: false }
+    customOperation: { optionName: 'customOperations', isCollectionItem: true },
+    field: { optionName: 'fields', isCollectionItem: true },
+    filterOperationDescriptions: { optionName: 'filterOperationDescriptions', isCollectionItem: false },
+    groupOperationDescriptions: { optionName: 'groupOperationDescriptions', isCollectionItem: false },
   };
 }
 (FilterBuilder as any).propTypes = {
@@ -56,7 +56,7 @@ class FilterBuilder extends BaseComponent<React.PropsWithChildren<IFilterBuilder
   height: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
+    PropTypes.string,
   ]),
   hint: PropTypes.string,
   hoverStateEnabled: PropTypes.bool,
@@ -73,16 +73,15 @@ class FilterBuilder extends BaseComponent<React.PropsWithChildren<IFilterBuilder
   value: PropTypes.oneOfType([
     PropTypes.array,
     PropTypes.func,
-    PropTypes.string
+    PropTypes.string,
   ]),
   visible: PropTypes.bool,
   width: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
-  ])
+    PropTypes.string,
+  ]),
 };
-
 
 // owners:
 // FilterBuilder
@@ -90,7 +89,7 @@ type ICustomOperationProps = React.PropsWithChildren<{
   calculateFilterExpression?: ((filterValue: any, field: dxFilterBuilderField) => string);
   caption?: string;
   customizeText?: ((fieldInfo: { field: dxFilterBuilderField, value: string | number | any, valueText: string }) => string);
-  dataTypes?: Array<"string" | "number" | "date" | "boolean" | "object" | "datetime">;
+  dataTypes?: Array<'string' | 'number' | 'date' | 'boolean' | 'object' | 'datetime'>;
   editorTemplate?: ((conditionInfo: { field: dxFilterBuilderField, setValue: (() => void), value: string | number | any }, container: any) => string) | template;
   hasValue?: boolean;
   icon?: string;
@@ -98,15 +97,17 @@ type ICustomOperationProps = React.PropsWithChildren<{
   editorRender?: (...params: any) => React.ReactNode;
   editorComponent?: React.ComponentType<any>;
   editorKeyFn?: (data: any) => string;
-}>
+}>;
 class CustomOperation extends NestedOption<ICustomOperationProps> {
-  public static OptionName = "customOperations";
+  public static OptionName = 'customOperations';
+
   public static IsCollectionItem = true;
+
   public static TemplateProps = [{
-    tmplOption: "editorTemplate",
-    render: "editorRender",
-    component: "editorComponent",
-    keyFn: "editorKeyFn"
+    tmplOption: 'editorTemplate',
+    render: 'editorRender',
+    component: 'editorComponent',
+    keyFn: 'editorKeyFn',
   }];
 }
 
@@ -117,11 +118,11 @@ type IFieldProps = React.PropsWithChildren<{
   caption?: string;
   customizeText?: ((fieldInfo: { value: string | number | any, valueText: string }) => string);
   dataField?: string;
-  dataType?: "string" | "number" | "date" | "boolean" | "object" | "datetime";
+  dataType?: 'string' | 'number' | 'date' | 'boolean' | 'object' | 'datetime';
   editorOptions?: any;
   editorTemplate?: ((conditionInfo: { field: dxFilterBuilderField, filterOperation: string, setValue: (() => void), value: string | number | any }, container: any) => string) | template;
   falseText?: string;
-  filterOperations?: Array<"=" | "<>" | "<" | "<=" | ">" | ">=" | "contains" | "endswith" | "isblank" | "isnotblank" | "notcontains" | "startswith" | "between" | string>;
+  filterOperations?: Array<'=' | '<>' | '<' | '<=' | '>' | '>=' | 'contains' | 'endswith' | 'isblank' | 'isnotblank' | 'notcontains' | 'startswith' | 'between' | string>;
   format?: LocalizationTypes.Format;
   lookup?: object | {
     allowClearing?: boolean;
@@ -134,19 +135,22 @@ type IFieldProps = React.PropsWithChildren<{
   editorRender?: (...params: any) => React.ReactNode;
   editorComponent?: React.ComponentType<any>;
   editorKeyFn?: (data: any) => string;
-}>
+}>;
 class Field extends NestedOption<IFieldProps> {
-  public static OptionName = "fields";
+  public static OptionName = 'fields';
+
   public static IsCollectionItem = true;
+
   public static ExpectedChildren = {
-    format: { optionName: "format", isCollectionItem: false },
-    lookup: { optionName: "lookup", isCollectionItem: false }
+    format: { optionName: 'format', isCollectionItem: false },
+    lookup: { optionName: 'lookup', isCollectionItem: false },
   };
+
   public static TemplateProps = [{
-    tmplOption: "editorTemplate",
-    render: "editorRender",
-    component: "editorComponent",
-    keyFn: "editorKeyFn"
+    tmplOption: 'editorTemplate',
+    render: 'editorRender',
+    component: 'editorComponent',
+    keyFn: 'editorKeyFn',
   }];
 }
 
@@ -166,9 +170,9 @@ type IFilterOperationDescriptionsProps = React.PropsWithChildren<{
   notContains?: string;
   notEqual?: string;
   startsWith?: string;
-}>
+}>;
 class FilterOperationDescriptions extends NestedOption<IFilterOperationDescriptionsProps> {
-  public static OptionName = "filterOperationDescriptions";
+  public static OptionName = 'filterOperationDescriptions';
 }
 
 // owners:
@@ -178,11 +182,11 @@ type IFormatProps = React.PropsWithChildren<{
   formatter?: ((value: number | any) => string);
   parser?: ((value: string) => number);
   precision?: number;
-  type?: "billions" | "currency" | "day" | "decimal" | "exponential" | "fixedPoint" | "largeNumber" | "longDate" | "longTime" | "millions" | "millisecond" | "month" | "monthAndDay" | "monthAndYear" | "percent" | "quarter" | "quarterAndYear" | "shortDate" | "shortTime" | "thousands" | "trillions" | "year" | "dayOfWeek" | "hour" | "longDateLongTime" | "minute" | "second" | "shortDateShortTime";
+  type?: 'billions' | 'currency' | 'day' | 'decimal' | 'exponential' | 'fixedPoint' | 'largeNumber' | 'longDate' | 'longTime' | 'millions' | 'millisecond' | 'month' | 'monthAndDay' | 'monthAndYear' | 'percent' | 'quarter' | 'quarterAndYear' | 'shortDate' | 'shortTime' | 'thousands' | 'trillions' | 'year' | 'dayOfWeek' | 'hour' | 'longDateLongTime' | 'minute' | 'second' | 'shortDateShortTime';
   useCurrencyAccountingStyle?: boolean;
-}>
+}>;
 class Format extends NestedOption<IFormatProps> {
-  public static OptionName = "format";
+  public static OptionName = 'format';
 }
 
 // owners:
@@ -192,9 +196,9 @@ type IGroupOperationDescriptionsProps = React.PropsWithChildren<{
   notAnd?: string;
   notOr?: string;
   or?: string;
-}>
+}>;
 class GroupOperationDescriptions extends NestedOption<IGroupOperationDescriptionsProps> {
-  public static OptionName = "groupOperationDescriptions";
+  public static OptionName = 'groupOperationDescriptions';
 }
 
 // owners:
@@ -204,9 +208,9 @@ type ILookupProps = React.PropsWithChildren<{
   dataSource?: Array<any> | DataSourceOptions | Store;
   displayExpr?: ((data: object) => string) | string;
   valueExpr?: ((data: object) => string) | string;
-}>
+}>;
 class Lookup extends NestedOption<ILookupProps> {
-  public static OptionName = "lookup";
+  public static OptionName = 'lookup';
 }
 
 export default FilterBuilder;
@@ -224,8 +228,6 @@ export {
   GroupOperationDescriptions,
   IGroupOperationDescriptionsProps,
   Lookup,
-  ILookupProps
+  ILookupProps,
 };
-import type * as FilterBuilderTypes from 'devextreme/ui/filter_builder_types';
 export { FilterBuilderTypes };
-

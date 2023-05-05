@@ -1,29 +1,29 @@
 import dxValidationGroup, {
-    Properties
-} from "devextreme/ui/validation_group";
+  Properties,
+} from 'devextreme/ui/validation_group';
 
-import * as PropTypes from "prop-types";
-import { Component as BaseComponent, IHtmlOptions } from "./core/component";
+import * as PropTypes from 'prop-types';
+import type * as ValidationGroupTypes from 'devextreme/ui/validation_group_types';
+import { Component as BaseComponent, IHtmlOptions } from './core/component';
 
 type IValidationGroupOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
-}>
+}>;
 
 class ValidationGroup extends BaseComponent<React.PropsWithChildren<IValidationGroupOptions>> {
-
   public get instance(): dxValidationGroup {
     return this._instance;
   }
 
   protected _WidgetClass = dxValidationGroup;
 
-  protected independentEvents = ["onDisposing","onInitialized"];
+  protected independentEvents = ['onDisposing', 'onInitialized'];
 }
 (ValidationGroup as any).propTypes = {
   elementAttr: PropTypes.object,
   height: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
+    PropTypes.string,
   ]),
   onDisposing: PropTypes.func,
   onInitialized: PropTypes.func,
@@ -31,14 +31,12 @@ class ValidationGroup extends BaseComponent<React.PropsWithChildren<IValidationG
   width: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
-  ])
+    PropTypes.string,
+  ]),
 };
 export default ValidationGroup;
 export {
   ValidationGroup,
-  IValidationGroupOptions
+  IValidationGroupOptions,
 };
-import type * as ValidationGroupTypes from 'devextreme/ui/validation_group_types';
 export { ValidationGroupTypes };
-

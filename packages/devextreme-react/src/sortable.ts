@@ -1,36 +1,36 @@
 import dxSortable, {
-    Properties
-} from "devextreme/ui/sortable";
+  Properties,
+} from 'devextreme/ui/sortable';
 
-import * as PropTypes from "prop-types";
-import { Component as BaseComponent, IHtmlOptions } from "./core/component";
-import NestedOption from "./core/nested-option";
+import * as PropTypes from 'prop-types';
+import type * as SortableTypes from 'devextreme/ui/sortable_types';
+import { Component as BaseComponent, IHtmlOptions } from './core/component';
+import NestedOption from './core/nested-option';
 
 type ISortableOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
   dragRender?: (...params: any) => React.ReactNode;
   dragComponent?: React.ComponentType<any>;
   dragKeyFn?: (data: any) => string;
-}>
+}>;
 
 class Sortable extends BaseComponent<React.PropsWithChildren<ISortableOptions>> {
-
   public get instance(): dxSortable {
     return this._instance;
   }
 
   protected _WidgetClass = dxSortable;
 
-  protected independentEvents = ["onAdd","onDisposing","onDragChange","onDragEnd","onDragMove","onDragStart","onInitialized","onRemove","onReorder"];
+  protected independentEvents = ['onAdd', 'onDisposing', 'onDragChange', 'onDragEnd', 'onDragMove', 'onDragStart', 'onInitialized', 'onRemove', 'onReorder'];
 
   protected _expectedChildren = {
-    cursorOffset: { optionName: "cursorOffset", isCollectionItem: false }
+    cursorOffset: { optionName: 'cursorOffset', isCollectionItem: false },
   };
 
   protected _templateProps = [{
-    tmplOption: "dragTemplate",
-    render: "dragRender",
-    component: "dragComponent",
-    keyFn: "dragKeyFn"
+    tmplOption: 'dragTemplate',
+    render: 'dragRender',
+    component: 'dragComponent',
+    keyFn: 'dragKeyFn',
   }];
 }
 (Sortable as any).propTypes = {
@@ -39,20 +39,20 @@ class Sortable extends BaseComponent<React.PropsWithChildren<ISortableOptions>> 
   autoScroll: PropTypes.bool,
   cursorOffset: PropTypes.oneOfType([
     PropTypes.object,
-    PropTypes.string
+    PropTypes.string,
   ]),
   dragDirection: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "both",
-      "horizontal",
-      "vertical"])
+      'both',
+      'horizontal',
+      'vertical']),
   ]),
   dropFeedbackMode: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "push",
-      "indicate"])
+      'push',
+      'indicate']),
   ]),
   elementAttr: PropTypes.object,
   filter: PropTypes.string,
@@ -61,13 +61,13 @@ class Sortable extends BaseComponent<React.PropsWithChildren<ISortableOptions>> 
   height: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
+    PropTypes.string,
   ]),
   itemOrientation: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "horizontal",
-      "vertical"])
+      'horizontal',
+      'vertical']),
   ]),
   moveItemOnDrop: PropTypes.bool,
   onAdd: PropTypes.func,
@@ -86,19 +86,18 @@ class Sortable extends BaseComponent<React.PropsWithChildren<ISortableOptions>> 
   width: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
-  ])
+    PropTypes.string,
+  ]),
 };
-
 
 // owners:
 // Sortable
 type ICursorOffsetProps = React.PropsWithChildren<{
   x?: number;
   y?: number;
-}>
+}>;
 class CursorOffset extends NestedOption<ICursorOffsetProps> {
-  public static OptionName = "cursorOffset";
+  public static OptionName = 'cursorOffset';
 }
 
 export default Sortable;
@@ -106,8 +105,6 @@ export {
   Sortable,
   ISortableOptions,
   CursorOffset,
-  ICursorOffsetProps
+  ICursorOffsetProps,
 };
-import type * as SortableTypes from 'devextreme/ui/sortable_types';
 export { SortableTypes };
-

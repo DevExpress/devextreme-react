@@ -1,13 +1,14 @@
 import dxButtonGroup, {
-    Properties
-} from "devextreme/ui/button_group";
+  Properties,
+} from 'devextreme/ui/button_group';
 
-import * as PropTypes from "prop-types";
-import { Component as BaseComponent, IHtmlOptions } from "./core/component";
-import NestedOption from "./core/nested-option";
+import * as PropTypes from 'prop-types';
 
-import type { CollectionWidgetItem } from "devextreme/ui/collection/ui.collection_widget.base";
-import type { template } from "devextreme/core/templates/template";
+import type { CollectionWidgetItem } from 'devextreme/ui/collection/ui.collection_widget.base';
+import type { template } from 'devextreme/core/templates/template';
+import type * as ButtonGroupTypes from 'devextreme/ui/button_group_types';
+import NestedOption from './core/nested-option';
+import { Component as BaseComponent, IHtmlOptions } from './core/component';
 
 type IButtonGroupOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
   buttonRender?: (...params: any) => React.ReactNode;
@@ -17,34 +18,33 @@ type IButtonGroupOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
   defaultSelectedItems?: Array<any>;
   onSelectedItemKeysChange?: (value: Array<any>) => void;
   onSelectedItemsChange?: (value: Array<any>) => void;
-}>
+}>;
 
 class ButtonGroup extends BaseComponent<React.PropsWithChildren<IButtonGroupOptions>> {
-
   public get instance(): dxButtonGroup {
     return this._instance;
   }
 
   protected _WidgetClass = dxButtonGroup;
 
-  protected subscribableOptions = ["selectedItemKeys","selectedItems"];
+  protected subscribableOptions = ['selectedItemKeys', 'selectedItems'];
 
-  protected independentEvents = ["onContentReady","onDisposing","onInitialized","onItemClick"];
+  protected independentEvents = ['onContentReady', 'onDisposing', 'onInitialized', 'onItemClick'];
 
   protected _defaults = {
-    defaultSelectedItemKeys: "selectedItemKeys",
-    defaultSelectedItems: "selectedItems"
+    defaultSelectedItemKeys: 'selectedItemKeys',
+    defaultSelectedItems: 'selectedItems',
   };
 
   protected _expectedChildren = {
-    item: { optionName: "items", isCollectionItem: true }
+    item: { optionName: 'items', isCollectionItem: true },
   };
 
   protected _templateProps = [{
-    tmplOption: "buttonTemplate",
-    render: "buttonRender",
-    component: "buttonComponent",
-    keyFn: "buttonKeyFn"
+    tmplOption: 'buttonTemplate',
+    render: 'buttonRender',
+    component: 'buttonComponent',
+    keyFn: 'buttonKeyFn',
   }];
 }
 (ButtonGroup as any).propTypes = {
@@ -56,14 +56,14 @@ class ButtonGroup extends BaseComponent<React.PropsWithChildren<IButtonGroupOpti
   height: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
+    PropTypes.string,
   ]),
   hint: PropTypes.string,
   hoverStateEnabled: PropTypes.bool,
   items: PropTypes.array,
   keyExpr: PropTypes.oneOfType([
     PropTypes.func,
-    PropTypes.string
+    PropTypes.string,
   ]),
   onContentReady: PropTypes.func,
   onDisposing: PropTypes.func,
@@ -77,26 +77,25 @@ class ButtonGroup extends BaseComponent<React.PropsWithChildren<IButtonGroupOpti
   selectionMode: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "single",
-      "multiple",
-      "none"])
+      'single',
+      'multiple',
+      'none']),
   ]),
   stylingMode: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "text",
-      "outlined",
-      "contained"])
+      'text',
+      'outlined',
+      'contained']),
   ]),
   tabIndex: PropTypes.number,
   visible: PropTypes.bool,
   width: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
-  ])
+    PropTypes.string,
+  ]),
 };
-
 
 // owners:
 // ButtonGroup
@@ -107,20 +106,22 @@ type IItemProps = React.PropsWithChildren<{
   icon?: string;
   template?: ((itemData: CollectionWidgetItem, itemIndex: number, itemElement: any) => string) | template;
   text?: string;
-  type?: "back" | "danger" | "default" | "normal" | "success";
+  type?: 'back' | 'danger' | 'default' | 'normal' | 'success';
   visible?: boolean;
   render?: (...params: any) => React.ReactNode;
   component?: React.ComponentType<any>;
   keyFn?: (data: any) => string;
-}>
+}>;
 class Item extends NestedOption<IItemProps> {
-  public static OptionName = "items";
+  public static OptionName = 'items';
+
   public static IsCollectionItem = true;
+
   public static TemplateProps = [{
-    tmplOption: "template",
-    render: "render",
-    component: "component",
-    keyFn: "keyFn"
+    tmplOption: 'template',
+    render: 'render',
+    component: 'component',
+    keyFn: 'keyFn',
   }];
 }
 
@@ -129,8 +130,6 @@ export {
   ButtonGroup,
   IButtonGroupOptions,
   Item,
-  IItemProps
+  IItemProps,
 };
-import type * as ButtonGroupTypes from 'devextreme/ui/button_group_types';
 export { ButtonGroupTypes };
-

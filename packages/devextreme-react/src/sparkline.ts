@@ -1,33 +1,33 @@
 import dxSparkline, {
-    Properties
-} from "devextreme/viz/sparkline";
+  Properties,
+} from 'devextreme/viz/sparkline';
 
-import * as PropTypes from "prop-types";
-import { Component as BaseComponent, IHtmlOptions } from "./core/component";
-import NestedOption from "./core/nested-option";
+import * as PropTypes from 'prop-types';
 
-import type { template } from "devextreme/core/templates/template";
+import type { template } from 'devextreme/core/templates/template';
 
-import type * as BaseWidgetTypes from "devextreme/viz/core/base_widget";
-import type * as LocalizationTypes from "devextreme/localization";
+import type * as BaseWidgetTypes from 'devextreme/viz/core/base_widget';
+import type * as LocalizationTypes from 'devextreme/localization';
+import type * as SparklineTypes from 'devextreme/viz/sparkline_types';
+import NestedOption from './core/nested-option';
+import { Component as BaseComponent, IHtmlOptions } from './core/component';
 
 type ISparklineOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
-}>
+}>;
 
 class Sparkline extends BaseComponent<React.PropsWithChildren<ISparklineOptions>> {
-
   public get instance(): dxSparkline {
     return this._instance;
   }
 
   protected _WidgetClass = dxSparkline;
 
-  protected independentEvents = ["onDisposing","onDrawn","onExported","onExporting","onFileSaving","onIncidentOccurred","onInitialized","onTooltipHidden","onTooltipShown"];
+  protected independentEvents = ['onDisposing', 'onDrawn', 'onExported', 'onExporting', 'onFileSaving', 'onIncidentOccurred', 'onInitialized', 'onTooltipHidden', 'onTooltipShown'];
 
   protected _expectedChildren = {
-    margin: { optionName: "margin", isCollectionItem: false },
-    size: { optionName: "size", isCollectionItem: false },
-    tooltip: { optionName: "tooltip", isCollectionItem: false }
+    margin: { optionName: 'margin', isCollectionItem: false },
+    size: { optionName: 'size', isCollectionItem: false },
+    tooltip: { optionName: 'tooltip', isCollectionItem: false },
   };
 }
 (Sparkline as any).propTypes = {
@@ -62,13 +62,13 @@ class Sparkline extends BaseComponent<React.PropsWithChildren<ISparklineOptions>
   pointSymbol: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "circle",
-      "cross",
-      "polygon",
-      "square",
-      "triangle",
-      "triangleDown",
-      "triangleUp"])
+      'circle',
+      'cross',
+      'polygon',
+      'square',
+      'triangle',
+      'triangleDown',
+      'triangleUp']),
   ]),
   rtlEnabled: PropTypes.bool,
   showFirstLast: PropTypes.bool,
@@ -77,50 +77,49 @@ class Sparkline extends BaseComponent<React.PropsWithChildren<ISparklineOptions>
   theme: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "generic.dark",
-      "generic.light",
-      "generic.contrast",
-      "generic.carmine",
-      "generic.darkmoon",
-      "generic.darkviolet",
-      "generic.greenmist",
-      "generic.softblue",
-      "material.blue.light",
-      "material.lime.light",
-      "material.orange.light",
-      "material.purple.light",
-      "material.teal.light"])
+      'generic.dark',
+      'generic.light',
+      'generic.contrast',
+      'generic.carmine',
+      'generic.darkmoon',
+      'generic.darkviolet',
+      'generic.greenmist',
+      'generic.softblue',
+      'material.blue.light',
+      'material.lime.light',
+      'material.orange.light',
+      'material.purple.light',
+      'material.teal.light']),
   ]),
   tooltip: PropTypes.object,
   type: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "area",
-      "bar",
-      "line",
-      "spline",
-      "splinearea",
-      "steparea",
-      "stepline",
-      "winloss"])
+      'area',
+      'bar',
+      'line',
+      'spline',
+      'splinearea',
+      'steparea',
+      'stepline',
+      'winloss']),
   ]),
   valueField: PropTypes.string,
   winColor: PropTypes.string,
-  winlossThreshold: PropTypes.number
+  winlossThreshold: PropTypes.number,
 };
-
 
 // owners:
 // Tooltip
 type IBorderProps = React.PropsWithChildren<{
   color?: string;
-  dashStyle?: "dash" | "dot" | "longDash" | "solid";
+  dashStyle?: 'dash' | 'dot' | 'longDash' | 'solid';
   opacity?: number;
   visible?: boolean;
   width?: number;
-}>
+}>;
 class Border extends NestedOption<IBorderProps> {
-  public static OptionName = "border";
+  public static OptionName = 'border';
 }
 
 // owners:
@@ -131,9 +130,9 @@ type IFontProps = React.PropsWithChildren<{
   opacity?: number;
   size?: number | string;
   weight?: number;
-}>
+}>;
 class Font extends NestedOption<IFontProps> {
-  public static OptionName = "font";
+  public static OptionName = 'font';
 }
 
 // owners:
@@ -143,11 +142,11 @@ type IFormatProps = React.PropsWithChildren<{
   formatter?: ((value: number | any) => string);
   parser?: ((value: string) => number);
   precision?: number;
-  type?: "billions" | "currency" | "day" | "decimal" | "exponential" | "fixedPoint" | "largeNumber" | "longDate" | "longTime" | "millions" | "millisecond" | "month" | "monthAndDay" | "monthAndYear" | "percent" | "quarter" | "quarterAndYear" | "shortDate" | "shortTime" | "thousands" | "trillions" | "year" | "dayOfWeek" | "hour" | "longDateLongTime" | "minute" | "second" | "shortDateShortTime";
+  type?: 'billions' | 'currency' | 'day' | 'decimal' | 'exponential' | 'fixedPoint' | 'largeNumber' | 'longDate' | 'longTime' | 'millions' | 'millisecond' | 'month' | 'monthAndDay' | 'monthAndYear' | 'percent' | 'quarter' | 'quarterAndYear' | 'shortDate' | 'shortTime' | 'thousands' | 'trillions' | 'year' | 'dayOfWeek' | 'hour' | 'longDateLongTime' | 'minute' | 'second' | 'shortDateShortTime';
   useCurrencyAccountingStyle?: boolean;
-}>
+}>;
 class Format extends NestedOption<IFormatProps> {
-  public static OptionName = "format";
+  public static OptionName = 'format';
 }
 
 // owners:
@@ -157,9 +156,9 @@ type IMarginProps = React.PropsWithChildren<{
   left?: number;
   right?: number;
   top?: number;
-}>
+}>;
 class Margin extends NestedOption<IMarginProps> {
-  public static OptionName = "margin";
+  public static OptionName = 'margin';
 }
 
 // owners:
@@ -170,9 +169,9 @@ type IShadowProps = React.PropsWithChildren<{
   offsetX?: number;
   offsetY?: number;
   opacity?: number;
-}>
+}>;
 class Shadow extends NestedOption<IShadowProps> {
-  public static OptionName = "shadow";
+  public static OptionName = 'shadow';
 }
 
 // owners:
@@ -180,9 +179,9 @@ class Shadow extends NestedOption<IShadowProps> {
 type ISizeProps = React.PropsWithChildren<{
   height?: number;
   width?: number;
-}>
+}>;
 class Size extends NestedOption<ISizeProps> {
-  public static OptionName = "size";
+  public static OptionName = 'size';
 }
 
 // owners:
@@ -191,7 +190,7 @@ type ITooltipProps = React.PropsWithChildren<{
   arrowLength?: number;
   border?: object | {
     color?: string;
-    dashStyle?: "dash" | "dot" | "longDash" | "solid";
+    dashStyle?: 'dash' | 'dot' | 'longDash' | 'solid';
     opacity?: number;
     visible?: boolean;
     width?: number;
@@ -219,20 +218,22 @@ type ITooltipProps = React.PropsWithChildren<{
   contentRender?: (...params: any) => React.ReactNode;
   contentComponent?: React.ComponentType<any>;
   contentKeyFn?: (data: any) => string;
-}>
+}>;
 class Tooltip extends NestedOption<ITooltipProps> {
-  public static OptionName = "tooltip";
+  public static OptionName = 'tooltip';
+
   public static ExpectedChildren = {
-    border: { optionName: "border", isCollectionItem: false },
-    font: { optionName: "font", isCollectionItem: false },
-    format: { optionName: "format", isCollectionItem: false },
-    shadow: { optionName: "shadow", isCollectionItem: false }
+    border: { optionName: 'border', isCollectionItem: false },
+    font: { optionName: 'font', isCollectionItem: false },
+    format: { optionName: 'format', isCollectionItem: false },
+    shadow: { optionName: 'shadow', isCollectionItem: false },
   };
+
   public static TemplateProps = [{
-    tmplOption: "contentTemplate",
-    render: "contentRender",
-    component: "contentComponent",
-    keyFn: "contentKeyFn"
+    tmplOption: 'contentTemplate',
+    render: 'contentRender',
+    component: 'contentComponent',
+    keyFn: 'contentKeyFn',
   }];
 }
 
@@ -253,8 +254,6 @@ export {
   Size,
   ISizeProps,
   Tooltip,
-  ITooltipProps
+  ITooltipProps,
 };
-import type * as SparklineTypes from 'devextreme/viz/sparkline_types';
 export { SparklineTypes };
-

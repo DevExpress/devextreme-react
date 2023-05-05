@@ -1,36 +1,36 @@
 import dxDraggable, {
-    Properties
-} from "devextreme/ui/draggable";
+  Properties,
+} from 'devextreme/ui/draggable';
 
-import * as PropTypes from "prop-types";
-import { Component as BaseComponent, IHtmlOptions } from "./core/component";
-import NestedOption from "./core/nested-option";
+import * as PropTypes from 'prop-types';
+import type * as DraggableTypes from 'devextreme/ui/draggable_types';
+import { Component as BaseComponent, IHtmlOptions } from './core/component';
+import NestedOption from './core/nested-option';
 
 type IDraggableOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
   dragRender?: (...params: any) => React.ReactNode;
   dragComponent?: React.ComponentType<any>;
   dragKeyFn?: (data: any) => string;
-}>
+}>;
 
 class Draggable extends BaseComponent<React.PropsWithChildren<IDraggableOptions>> {
-
   public get instance(): dxDraggable {
     return this._instance;
   }
 
   protected _WidgetClass = dxDraggable;
 
-  protected independentEvents = ["onDisposing","onDragEnd","onDragMove","onDragStart","onInitialized"];
+  protected independentEvents = ['onDisposing', 'onDragEnd', 'onDragMove', 'onDragStart', 'onInitialized'];
 
   protected _expectedChildren = {
-    cursorOffset: { optionName: "cursorOffset", isCollectionItem: false }
+    cursorOffset: { optionName: 'cursorOffset', isCollectionItem: false },
   };
 
   protected _templateProps = [{
-    tmplOption: "dragTemplate",
-    render: "dragRender",
-    component: "dragComponent",
-    keyFn: "dragKeyFn"
+    tmplOption: 'dragTemplate',
+    render: 'dragRender',
+    component: 'dragComponent',
+    keyFn: 'dragKeyFn',
   }];
 }
 (Draggable as any).propTypes = {
@@ -38,14 +38,14 @@ class Draggable extends BaseComponent<React.PropsWithChildren<IDraggableOptions>
   clone: PropTypes.bool,
   cursorOffset: PropTypes.oneOfType([
     PropTypes.object,
-    PropTypes.string
+    PropTypes.string,
   ]),
   dragDirection: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "both",
-      "horizontal",
-      "vertical"])
+      'both',
+      'horizontal',
+      'vertical']),
   ]),
   elementAttr: PropTypes.object,
   group: PropTypes.string,
@@ -53,7 +53,7 @@ class Draggable extends BaseComponent<React.PropsWithChildren<IDraggableOptions>
   height: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
+    PropTypes.string,
   ]),
   onDisposing: PropTypes.func,
   onDragEnd: PropTypes.func,
@@ -67,19 +67,18 @@ class Draggable extends BaseComponent<React.PropsWithChildren<IDraggableOptions>
   width: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
-  ])
+    PropTypes.string,
+  ]),
 };
-
 
 // owners:
 // Draggable
 type ICursorOffsetProps = React.PropsWithChildren<{
   x?: number;
   y?: number;
-}>
+}>;
 class CursorOffset extends NestedOption<ICursorOffsetProps> {
-  public static OptionName = "cursorOffset";
+  public static OptionName = 'cursorOffset';
 }
 
 export default Draggable;
@@ -87,8 +86,6 @@ export {
   Draggable,
   IDraggableOptions,
   CursorOffset,
-  ICursorOffsetProps
+  ICursorOffsetProps,
 };
-import type * as DraggableTypes from 'devextreme/ui/draggable_types';
 export { DraggableTypes };
-

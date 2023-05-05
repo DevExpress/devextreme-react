@@ -1,22 +1,22 @@
 import dxSpeedDialAction, {
-    Properties
-} from "devextreme/ui/speed_dial_action";
+  Properties,
+} from 'devextreme/ui/speed_dial_action';
 
-import * as PropTypes from "prop-types";
-import { Component as BaseComponent, IHtmlOptions } from "./core/component";
+import * as PropTypes from 'prop-types';
+import type * as SpeedDialActionTypes from 'devextreme/ui/speed_dial_action_types';
+import { Component as BaseComponent, IHtmlOptions } from './core/component';
 
 type ISpeedDialActionOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
-}>
+}>;
 
 class SpeedDialAction extends BaseComponent<React.PropsWithChildren<ISpeedDialActionOptions>> {
-
   public get instance(): dxSpeedDialAction {
     return this._instance;
   }
 
   protected _WidgetClass = dxSpeedDialAction;
 
-  protected independentEvents = ["onClick","onContentReady","onDisposing","onInitialized"];
+  protected independentEvents = ['onClick', 'onContentReady', 'onDisposing', 'onInitialized'];
 }
 (SpeedDialAction as any).propTypes = {
   accessKey: PropTypes.string,
@@ -35,13 +35,11 @@ class SpeedDialAction extends BaseComponent<React.PropsWithChildren<ISpeedDialAc
   onOptionChanged: PropTypes.func,
   rtlEnabled: PropTypes.bool,
   tabIndex: PropTypes.number,
-  visible: PropTypes.bool
+  visible: PropTypes.bool,
 };
 export default SpeedDialAction;
 export {
   SpeedDialAction,
-  ISpeedDialActionOptions
+  ISpeedDialActionOptions,
 };
-import type * as SpeedDialActionTypes from 'devextreme/ui/speed_dial_action_types';
 export { SpeedDialActionTypes };
-

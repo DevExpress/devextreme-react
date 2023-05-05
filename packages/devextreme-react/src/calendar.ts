@@ -1,42 +1,42 @@
 import dxCalendar, {
-    Properties
-} from "devextreme/ui/calendar";
+  Properties,
+} from 'devextreme/ui/calendar';
 
-import * as PropTypes from "prop-types";
-import { Component as BaseComponent, IHtmlOptions } from "./core/component";
+import * as PropTypes from 'prop-types';
+import type * as CalendarTypes from 'devextreme/ui/calendar_types';
+import { Component as BaseComponent, IHtmlOptions } from './core/component';
 
 type ICalendarOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
   cellRender?: (...params: any) => React.ReactNode;
   cellComponent?: React.ComponentType<any>;
   cellKeyFn?: (data: any) => string;
   defaultValue?: any | number | string;
-  defaultZoomLevel?: "century" | "decade" | "month" | "year";
+  defaultZoomLevel?: 'century' | 'decade' | 'month' | 'year';
   onValueChange?: (value: any | number | string) => void;
-  onZoomLevelChange?: (value: "century" | "decade" | "month" | "year") => void;
-}>
+  onZoomLevelChange?: (value: 'century' | 'decade' | 'month' | 'year') => void;
+}>;
 
 class Calendar extends BaseComponent<React.PropsWithChildren<ICalendarOptions>> {
-
   public get instance(): dxCalendar {
     return this._instance;
   }
 
   protected _WidgetClass = dxCalendar;
 
-  protected subscribableOptions = ["value","zoomLevel"];
+  protected subscribableOptions = ['value', 'zoomLevel'];
 
-  protected independentEvents = ["onDisposing","onInitialized","onValueChanged"];
+  protected independentEvents = ['onDisposing', 'onInitialized', 'onValueChanged'];
 
   protected _defaults = {
-    defaultValue: "value",
-    defaultZoomLevel: "zoomLevel"
+    defaultValue: 'value',
+    defaultZoomLevel: 'zoomLevel',
   };
 
   protected _templateProps = [{
-    tmplOption: "cellTemplate",
-    render: "cellRender",
-    component: "cellComponent",
-    keyFn: "cellKeyFn"
+    tmplOption: 'cellTemplate',
+    render: 'cellRender',
+    component: 'cellComponent',
+    keyFn: 'cellKeyFn',
   }];
 }
 (Calendar as any).propTypes = {
@@ -46,7 +46,7 @@ class Calendar extends BaseComponent<React.PropsWithChildren<ICalendarOptions>> 
   disabled: PropTypes.bool,
   disabledDates: PropTypes.oneOfType([
     PropTypes.array,
-    PropTypes.func
+    PropTypes.func,
   ]),
   elementAttr: PropTypes.object,
   firstDayOfWeek: PropTypes.oneOfType([
@@ -58,13 +58,13 @@ class Calendar extends BaseComponent<React.PropsWithChildren<ICalendarOptions>> 
       3,
       4,
       5,
-      6])
+      6]),
   ]),
   focusStateEnabled: PropTypes.bool,
   height: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
+    PropTypes.string,
   ]),
   hint: PropTypes.string,
   hoverStateEnabled: PropTypes.bool,
@@ -72,18 +72,18 @@ class Calendar extends BaseComponent<React.PropsWithChildren<ICalendarOptions>> 
   maxZoomLevel: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "century",
-      "decade",
-      "month",
-      "year"])
+      'century',
+      'decade',
+      'month',
+      'year']),
   ]),
   minZoomLevel: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "century",
-      "decade",
-      "month",
-      "year"])
+      'century',
+      'decade',
+      'month',
+      'year']),
   ]),
   name: PropTypes.string,
   onDisposing: PropTypes.func,
@@ -99,52 +99,50 @@ class Calendar extends BaseComponent<React.PropsWithChildren<ICalendarOptions>> 
   validationMessageMode: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "always",
-      "auto"])
+      'always',
+      'auto']),
   ]),
   validationMessagePosition: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "bottom",
-      "left",
-      "right",
-      "top"])
+      'bottom',
+      'left',
+      'right',
+      'top']),
   ]),
   validationStatus: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "valid",
-      "invalid",
-      "pending"])
+      'valid',
+      'invalid',
+      'pending']),
   ]),
   visible: PropTypes.bool,
   weekNumberRule: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "auto",
-      "firstDay",
-      "fullWeek",
-      "firstFourDays"])
+      'auto',
+      'firstDay',
+      'fullWeek',
+      'firstFourDays']),
   ]),
   width: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
+    PropTypes.string,
   ]),
   zoomLevel: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "century",
-      "decade",
-      "month",
-      "year"])
-  ])
+      'century',
+      'decade',
+      'month',
+      'year']),
+  ]),
 };
 export default Calendar;
 export {
   Calendar,
-  ICalendarOptions
+  ICalendarOptions,
 };
-import type * as CalendarTypes from 'devextreme/ui/calendar_types';
 export { CalendarTypes };
-

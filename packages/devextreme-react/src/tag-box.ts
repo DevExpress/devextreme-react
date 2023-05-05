@@ -1,24 +1,25 @@
 import dxTagBox, {
-    Properties
-} from "devextreme/ui/tag_box";
+  Properties,
+} from 'devextreme/ui/tag_box';
 
-import * as PropTypes from "prop-types";
-import { Component as BaseComponent, IHtmlOptions } from "./core/component";
-import NestedOption from "./core/nested-option";
+import * as PropTypes from 'prop-types';
 
-import type { AnimationConfig, AnimationState } from "devextreme/animation/fx";
-import type { dxButtonOptions } from "devextreme/ui/button";
-import type { event, EventInfo } from "devextreme/events/index";
-import type { template } from "devextreme/core/templates/template";
-import type { Component } from "devextreme/core/component";
-import type { PositionConfig } from "devextreme/animation/position";
-import type { dxPopupToolbarItem } from "devextreme/ui/popup";
-import type { CollectionWidgetItem } from "devextreme/ui/collection/ui.collection_widget.base";
+import type { AnimationConfig, AnimationState } from 'devextreme/animation/fx';
+import type { dxButtonOptions } from 'devextreme/ui/button';
+import type { event, EventInfo } from 'devextreme/events/index';
+import type { template } from 'devextreme/core/templates/template';
+import type { Component } from 'devextreme/core/component';
+import type { PositionConfig } from 'devextreme/animation/position';
+import type { dxPopupToolbarItem } from 'devextreme/ui/popup';
+import type { CollectionWidgetItem } from 'devextreme/ui/collection/ui.collection_widget.base';
 
-import type dxOverlay from "devextreme/ui/overlay";
-import type DOMComponent from "devextreme/core/dom_component";
-import type dxPopup from "devextreme/ui/popup";
-import type dxButton from "devextreme/ui/button";
+import type dxOverlay from 'devextreme/ui/overlay';
+import type DOMComponent from 'devextreme/core/dom_component';
+import type dxPopup from 'devextreme/ui/popup';
+import type dxButton from 'devextreme/ui/button';
+import type * as TagBoxTypes from 'devextreme/ui/tag_box_types';
+import NestedOption from './core/nested-option';
+import { Component as BaseComponent, IHtmlOptions } from './core/component';
 
 type ITagBoxOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
   dropDownButtonRender?: (...params: any) => React.ReactNode;
@@ -40,56 +41,55 @@ type ITagBoxOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
   defaultValue?: Array<any | number | string>;
   onOpenedChange?: (value: boolean) => void;
   onValueChange?: (value: Array<any | number | string>) => void;
-}>
+}>;
 
 class TagBox extends BaseComponent<React.PropsWithChildren<ITagBoxOptions>> {
-
   public get instance(): dxTagBox {
     return this._instance;
   }
 
   protected _WidgetClass = dxTagBox;
 
-  protected subscribableOptions = ["opened","value"];
+  protected subscribableOptions = ['opened', 'value'];
 
-  protected independentEvents = ["onChange","onClosed","onContentReady","onCustomItemCreating","onDisposing","onEnterKey","onFocusIn","onFocusOut","onInitialized","onInput","onItemClick","onKeyDown","onKeyUp","onMultiTagPreparing","onOpened","onSelectAllValueChanged","onValueChanged"];
+  protected independentEvents = ['onChange', 'onClosed', 'onContentReady', 'onCustomItemCreating', 'onDisposing', 'onEnterKey', 'onFocusIn', 'onFocusOut', 'onInitialized', 'onInput', 'onItemClick', 'onKeyDown', 'onKeyUp', 'onMultiTagPreparing', 'onOpened', 'onSelectAllValueChanged', 'onValueChanged'];
 
   protected _defaults = {
-    defaultOpened: "opened",
-    defaultValue: "value"
+    defaultOpened: 'opened',
+    defaultValue: 'value',
   };
 
   protected _expectedChildren = {
-    button: { optionName: "buttons", isCollectionItem: true },
-    dropDownOptions: { optionName: "dropDownOptions", isCollectionItem: false },
-    item: { optionName: "items", isCollectionItem: true }
+    button: { optionName: 'buttons', isCollectionItem: true },
+    dropDownOptions: { optionName: 'dropDownOptions', isCollectionItem: false },
+    item: { optionName: 'items', isCollectionItem: true },
   };
 
   protected _templateProps = [{
-    tmplOption: "dropDownButtonTemplate",
-    render: "dropDownButtonRender",
-    component: "dropDownButtonComponent",
-    keyFn: "dropDownButtonKeyFn"
+    tmplOption: 'dropDownButtonTemplate',
+    render: 'dropDownButtonRender',
+    component: 'dropDownButtonComponent',
+    keyFn: 'dropDownButtonKeyFn',
   }, {
-    tmplOption: "fieldTemplate",
-    render: "fieldRender",
-    component: "fieldComponent",
-    keyFn: "fieldKeyFn"
+    tmplOption: 'fieldTemplate',
+    render: 'fieldRender',
+    component: 'fieldComponent',
+    keyFn: 'fieldKeyFn',
   }, {
-    tmplOption: "groupTemplate",
-    render: "groupRender",
-    component: "groupComponent",
-    keyFn: "groupKeyFn"
+    tmplOption: 'groupTemplate',
+    render: 'groupRender',
+    component: 'groupComponent',
+    keyFn: 'groupKeyFn',
   }, {
-    tmplOption: "itemTemplate",
-    render: "itemRender",
-    component: "itemComponent",
-    keyFn: "itemKeyFn"
+    tmplOption: 'itemTemplate',
+    render: 'itemRender',
+    component: 'itemComponent',
+    keyFn: 'itemKeyFn',
   }, {
-    tmplOption: "tagTemplate",
-    render: "tagRender",
-    component: "tagComponent",
-    keyFn: "tagKeyFn"
+    tmplOption: 'tagTemplate',
+    render: 'tagRender',
+    component: 'tagComponent',
+    keyFn: 'tagKeyFn',
   }];
 }
 (TagBox as any).propTypes = {
@@ -99,8 +99,8 @@ class TagBox extends BaseComponent<React.PropsWithChildren<ITagBoxOptions>> {
   applyValueMode: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "instantly",
-      "useButtons"])
+      'instantly',
+      'useButtons']),
   ]),
   buttons: PropTypes.array,
   customItemCreateEvent: PropTypes.string,
@@ -108,7 +108,7 @@ class TagBox extends BaseComponent<React.PropsWithChildren<ITagBoxOptions>> {
   disabled: PropTypes.bool,
   displayExpr: PropTypes.oneOfType([
     PropTypes.func,
-    PropTypes.string
+    PropTypes.string,
   ]),
   dropDownOptions: PropTypes.object,
   elementAttr: PropTypes.object,
@@ -117,7 +117,7 @@ class TagBox extends BaseComponent<React.PropsWithChildren<ITagBoxOptions>> {
   height: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
+    PropTypes.string,
   ]),
   hideSelectedItems: PropTypes.bool,
   hint: PropTypes.string,
@@ -128,15 +128,15 @@ class TagBox extends BaseComponent<React.PropsWithChildren<ITagBoxOptions>> {
   labelMode: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "static",
-      "floating",
-      "hidden"])
+      'static',
+      'floating',
+      'hidden']),
   ]),
   maxDisplayedTags: PropTypes.number,
   maxFilterQueryLength: PropTypes.number,
   maxLength: PropTypes.oneOfType([
     PropTypes.number,
-    PropTypes.string
+    PropTypes.string,
   ]),
   minSearchLength: PropTypes.number,
   multiline: PropTypes.bool,
@@ -170,20 +170,20 @@ class TagBox extends BaseComponent<React.PropsWithChildren<ITagBoxOptions>> {
   searchExpr: PropTypes.oneOfType([
     PropTypes.array,
     PropTypes.func,
-    PropTypes.string
+    PropTypes.string,
   ]),
   searchMode: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "contains",
-      "startswith"])
+      'contains',
+      'startswith']),
   ]),
   searchTimeout: PropTypes.number,
   selectAllMode: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "allPages",
-      "page"])
+      'allPages',
+      'page']),
   ]),
   selectAllText: PropTypes.string,
   selectedItems: PropTypes.array,
@@ -195,9 +195,9 @@ class TagBox extends BaseComponent<React.PropsWithChildren<ITagBoxOptions>> {
   stylingMode: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "outlined",
-      "underlined",
-      "filled"])
+      'outlined',
+      'underlined',
+      'filled']),
   ]),
   tabIndex: PropTypes.number,
   text: PropTypes.string,
@@ -206,63 +206,63 @@ class TagBox extends BaseComponent<React.PropsWithChildren<ITagBoxOptions>> {
   validationMessageMode: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "always",
-      "auto"])
+      'always',
+      'auto']),
   ]),
   validationMessagePosition: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "bottom",
-      "left",
-      "right",
-      "top",
-      "auto"])
+      'bottom',
+      'left',
+      'right',
+      'top',
+      'auto']),
   ]),
   validationStatus: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "valid",
-      "invalid",
-      "pending"])
+      'valid',
+      'invalid',
+      'pending']),
   ]),
   value: PropTypes.array,
   valueChangeEvent: PropTypes.string,
   valueExpr: PropTypes.oneOfType([
     PropTypes.func,
-    PropTypes.string
+    PropTypes.string,
   ]),
   visible: PropTypes.bool,
   width: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
+    PropTypes.string,
   ]),
-  wrapItemText: PropTypes.bool
+  wrapItemText: PropTypes.bool,
 };
-
 
 // owners:
 // DropDownOptions
 type IAnimationProps = React.PropsWithChildren<{
   hide?: AnimationConfig;
   show?: AnimationConfig;
-}>
+}>;
 class Animation extends NestedOption<IAnimationProps> {
-  public static OptionName = "animation";
+  public static OptionName = 'animation';
+
   public static ExpectedChildren = {
-    hide: { optionName: "hide", isCollectionItem: false },
-    show: { optionName: "show", isCollectionItem: false }
+    hide: { optionName: 'hide', isCollectionItem: false },
+    show: { optionName: 'show', isCollectionItem: false },
   };
 }
 
 // owners:
 // Position
 type IAtProps = React.PropsWithChildren<{
-  x?: "center" | "left" | "right";
-  y?: "bottom" | "center" | "top";
-}>
+  x?: 'center' | 'left' | 'right';
+  y?: 'bottom' | 'center' | 'top';
+}>;
 class At extends NestedOption<IAtProps> {
-  public static OptionName = "at";
+  public static OptionName = 'at';
 }
 
 // owners:
@@ -270,34 +270,36 @@ class At extends NestedOption<IAtProps> {
 type IBoundaryOffsetProps = React.PropsWithChildren<{
   x?: number;
   y?: number;
-}>
+}>;
 class BoundaryOffset extends NestedOption<IBoundaryOffsetProps> {
-  public static OptionName = "boundaryOffset";
+  public static OptionName = 'boundaryOffset';
 }
 
 // owners:
 // TagBox
 type IButtonProps = React.PropsWithChildren<{
-  location?: "after" | "before";
+  location?: 'after' | 'before';
   name?: string;
   options?: dxButtonOptions;
-}>
+}>;
 class Button extends NestedOption<IButtonProps> {
-  public static OptionName = "buttons";
+  public static OptionName = 'buttons';
+
   public static IsCollectionItem = true;
+
   public static ExpectedChildren = {
-    options: { optionName: "options", isCollectionItem: false }
+    options: { optionName: 'options', isCollectionItem: false },
   };
 }
 
 // owners:
 // Position
 type ICollisionProps = React.PropsWithChildren<{
-  x?: "fit" | "flip" | "flipfit" | "none";
-  y?: "fit" | "flip" | "flipfit" | "none";
-}>
+  x?: 'fit' | 'flip' | 'flipfit' | 'none';
+  y?: 'fit' | 'flip' | 'flipfit' | 'none';
+}>;
 class Collision extends NestedOption<ICollisionProps> {
-  public static OptionName = "collision";
+  public static OptionName = 'collision';
 }
 
 // owners:
@@ -343,7 +345,7 @@ type IDropDownOptionsProps = React.PropsWithChildren<{
   onShowing?: ((e: { cancel: boolean | any, component: dxOverlay<any>, element: any, model: any }) => void);
   onShown?: ((e: EventInfo<any>) => void);
   onTitleRendered?: ((e: { component: dxPopup, element: any, model: any, titleElement: any }) => void);
-  position?: (() => void) | PositionConfig | "bottom" | "center" | "left" | "left bottom" | "left top" | "right" | "right bottom" | "right top" | "top";
+  position?: (() => void) | PositionConfig | 'bottom' | 'center' | 'left' | 'left bottom' | 'left top' | 'right' | 'right bottom' | 'right top' | 'top';
   resizeEnabled?: boolean;
   restorePosition?: boolean;
   rtlEnabled?: boolean;
@@ -360,8 +362,8 @@ type IDropDownOptionsProps = React.PropsWithChildren<{
   wrapperAttr?: any;
   defaultHeight?: (() => number) | number | string;
   onHeightChange?: (value: (() => number) | number | string) => void;
-  defaultPosition?: (() => void) | PositionConfig | "bottom" | "center" | "left" | "left bottom" | "left top" | "right" | "right bottom" | "right top" | "top";
-  onPositionChange?: (value: (() => void) | PositionConfig | "bottom" | "center" | "left" | "left bottom" | "left top" | "right" | "right bottom" | "right top" | "top") => void;
+  defaultPosition?: (() => void) | PositionConfig | 'bottom' | 'center' | 'left' | 'left bottom' | 'left top' | 'right' | 'right bottom' | 'right top' | 'top';
+  onPositionChange?: (value: (() => void) | PositionConfig | 'bottom' | 'center' | 'left' | 'left bottom' | 'left top' | 'right' | 'right bottom' | 'right top' | 'top') => void;
   defaultVisible?: boolean;
   onVisibleChange?: (value: boolean) => void;
   defaultWidth?: (() => number) | number | string;
@@ -372,30 +374,33 @@ type IDropDownOptionsProps = React.PropsWithChildren<{
   titleRender?: (...params: any) => React.ReactNode;
   titleComponent?: React.ComponentType<any>;
   titleKeyFn?: (data: any) => string;
-}>
+}>;
 class DropDownOptions extends NestedOption<IDropDownOptionsProps> {
-  public static OptionName = "dropDownOptions";
+  public static OptionName = 'dropDownOptions';
+
   public static DefaultsProps = {
-    defaultHeight: "height",
-    defaultPosition: "position",
-    defaultVisible: "visible",
-    defaultWidth: "width"
+    defaultHeight: 'height',
+    defaultPosition: 'position',
+    defaultVisible: 'visible',
+    defaultWidth: 'width',
   };
+
   public static ExpectedChildren = {
-    animation: { optionName: "animation", isCollectionItem: false },
-    position: { optionName: "position", isCollectionItem: false },
-    toolbarItem: { optionName: "toolbarItems", isCollectionItem: true }
+    animation: { optionName: 'animation', isCollectionItem: false },
+    position: { optionName: 'position', isCollectionItem: false },
+    toolbarItem: { optionName: 'toolbarItems', isCollectionItem: true },
   };
+
   public static TemplateProps = [{
-    tmplOption: "contentTemplate",
-    render: "contentRender",
-    component: "contentComponent",
-    keyFn: "contentKeyFn"
+    tmplOption: 'contentTemplate',
+    render: 'contentRender',
+    component: 'contentComponent',
+    keyFn: 'contentKeyFn',
   }, {
-    tmplOption: "titleTemplate",
-    render: "titleRender",
-    component: "titleComponent",
-    keyFn: "titleKeyFn"
+    tmplOption: 'titleTemplate',
+    render: 'titleRender',
+    component: 'titleComponent',
+    keyFn: 'titleKeyFn',
   }];
 }
 
@@ -407,11 +412,12 @@ type IFromProps = React.PropsWithChildren<{
   position?: PositionConfig;
   scale?: number;
   top?: number;
-}>
+}>;
 class From extends NestedOption<IFromProps> {
-  public static OptionName = "from";
+  public static OptionName = 'from';
+
   public static ExpectedChildren = {
-    position: { optionName: "position", isCollectionItem: false }
+    position: { optionName: 'position', isCollectionItem: false },
   };
 }
 
@@ -420,20 +426,21 @@ class From extends NestedOption<IFromProps> {
 type IHideProps = React.PropsWithChildren<{
   complete?: (($element: any, config: AnimationConfig) => void);
   delay?: number;
-  direction?: "bottom" | "left" | "right" | "top";
+  direction?: 'bottom' | 'left' | 'right' | 'top';
   duration?: number;
   easing?: string;
   from?: AnimationState;
   staggerDelay?: number;
   start?: (($element: any, config: AnimationConfig) => void);
   to?: AnimationState;
-  type?: "css" | "fade" | "fadeIn" | "fadeOut" | "pop" | "slide" | "slideIn" | "slideOut";
-}>
+  type?: 'css' | 'fade' | 'fadeIn' | 'fadeOut' | 'pop' | 'slide' | 'slideIn' | 'slideOut';
+}>;
 class Hide extends NestedOption<IHideProps> {
-  public static OptionName = "hide";
+  public static OptionName = 'hide';
+
   public static ExpectedChildren = {
-    from: { optionName: "from", isCollectionItem: false },
-    to: { optionName: "to", isCollectionItem: false }
+    from: { optionName: 'from', isCollectionItem: false },
+    to: { optionName: 'to', isCollectionItem: false },
   };
 }
 
@@ -448,26 +455,28 @@ type IItemProps = React.PropsWithChildren<{
   render?: (...params: any) => React.ReactNode;
   component?: React.ComponentType<any>;
   keyFn?: (data: any) => string;
-}>
+}>;
 class Item extends NestedOption<IItemProps> {
-  public static OptionName = "items";
+  public static OptionName = 'items';
+
   public static IsCollectionItem = true;
+
   public static TemplateProps = [{
-    tmplOption: "template",
-    render: "render",
-    component: "component",
-    keyFn: "keyFn"
+    tmplOption: 'template',
+    render: 'render',
+    component: 'component',
+    keyFn: 'keyFn',
   }];
 }
 
 // owners:
 // Position
 type IMyProps = React.PropsWithChildren<{
-  x?: "center" | "left" | "right";
-  y?: "bottom" | "center" | "top";
-}>
+  x?: 'center' | 'left' | 'right';
+  y?: 'bottom' | 'center' | 'top';
+}>;
 class My extends NestedOption<IMyProps> {
-  public static OptionName = "my";
+  public static OptionName = 'my';
 }
 
 // owners:
@@ -475,9 +484,9 @@ class My extends NestedOption<IMyProps> {
 type IOffsetProps = React.PropsWithChildren<{
   x?: number;
   y?: number;
-}>
+}>;
 class Offset extends NestedOption<IOffsetProps> {
-  public static OptionName = "offset";
+  public static OptionName = 'offset';
 }
 
 // owners:
@@ -499,11 +508,11 @@ type IOptionsProps = React.PropsWithChildren<{
   onInitialized?: ((e: { component: Component<any>, element: any }) => void);
   onOptionChanged?: ((e: { component: DOMComponent, element: any, fullName: string, model: any, name: string, previousValue: any, value: any }) => void);
   rtlEnabled?: boolean;
-  stylingMode?: "text" | "outlined" | "contained";
+  stylingMode?: 'text' | 'outlined' | 'contained';
   tabIndex?: number;
   template?: ((buttonData: { icon: string, text: string }, contentElement: any) => string) | template;
   text?: string;
-  type?: "back" | "danger" | "default" | "normal" | "success";
+  type?: 'back' | 'danger' | 'default' | 'normal' | 'success';
   useSubmitBehavior?: boolean;
   validationGroup?: string;
   visible?: boolean;
@@ -511,14 +520,15 @@ type IOptionsProps = React.PropsWithChildren<{
   render?: (...params: any) => React.ReactNode;
   component?: React.ComponentType<any>;
   keyFn?: (data: any) => string;
-}>
+}>;
 class Options extends NestedOption<IOptionsProps> {
-  public static OptionName = "options";
+  public static OptionName = 'options';
+
   public static TemplateProps = [{
-    tmplOption: "template",
-    render: "render",
-    component: "component",
-    keyFn: "keyFn"
+    tmplOption: 'template',
+    render: 'render',
+    component: 'component',
+    keyFn: 'keyFn',
   }];
 }
 
@@ -526,31 +536,31 @@ class Options extends NestedOption<IOptionsProps> {
 // From
 // DropDownOptions
 type IPositionProps = React.PropsWithChildren<{
-  at?: object | "bottom" | "center" | "left" | "left bottom" | "left top" | "right" | "right bottom" | "right top" | "top" | {
-    x?: "center" | "left" | "right";
-    y?: "bottom" | "center" | "top";
+  at?: object | 'bottom' | 'center' | 'left' | 'left bottom' | 'left top' | 'right' | 'right bottom' | 'right top' | 'top' | {
+    x?: 'center' | 'left' | 'right';
+    y?: 'bottom' | 'center' | 'top';
   };
   boundary?: any | string;
   boundaryOffset?: object | string | {
     x?: number;
     y?: number;
   };
-  collision?: object | "fit" | "fit flip" | "fit flipfit" | "fit none" | "flip" | "flip fit" | "flip none" | "flipfit" | "flipfit fit" | "flipfit none" | "none" | "none fit" | "none flip" | "none flipfit" | {
-    x?: "fit" | "flip" | "flipfit" | "none";
-    y?: "fit" | "flip" | "flipfit" | "none";
+  collision?: object | 'fit' | 'fit flip' | 'fit flipfit' | 'fit none' | 'flip' | 'flip fit' | 'flip none' | 'flipfit' | 'flipfit fit' | 'flipfit none' | 'none' | 'none fit' | 'none flip' | 'none flipfit' | {
+    x?: 'fit' | 'flip' | 'flipfit' | 'none';
+    y?: 'fit' | 'flip' | 'flipfit' | 'none';
   };
-  my?: object | "bottom" | "center" | "left" | "left bottom" | "left top" | "right" | "right bottom" | "right top" | "top" | {
-    x?: "center" | "left" | "right";
-    y?: "bottom" | "center" | "top";
+  my?: object | 'bottom' | 'center' | 'left' | 'left bottom' | 'left top' | 'right' | 'right bottom' | 'right top' | 'top' | {
+    x?: 'center' | 'left' | 'right';
+    y?: 'bottom' | 'center' | 'top';
   };
   of?: any | string;
   offset?: object | string | {
     x?: number;
     y?: number;
   };
-}>
+}>;
 class Position extends NestedOption<IPositionProps> {
-  public static OptionName = "position";
+  public static OptionName = 'position';
 }
 
 // owners:
@@ -558,17 +568,17 @@ class Position extends NestedOption<IPositionProps> {
 type IShowProps = React.PropsWithChildren<{
   complete?: (($element: any, config: AnimationConfig) => void);
   delay?: number;
-  direction?: "bottom" | "left" | "right" | "top";
+  direction?: 'bottom' | 'left' | 'right' | 'top';
   duration?: number;
   easing?: string;
   from?: AnimationState;
   staggerDelay?: number;
   start?: (($element: any, config: AnimationConfig) => void);
   to?: AnimationState;
-  type?: "css" | "fade" | "fadeIn" | "fadeOut" | "pop" | "slide" | "slideIn" | "slideOut";
-}>
+  type?: 'css' | 'fade' | 'fadeIn' | 'fadeOut' | 'pop' | 'slide' | 'slideIn' | 'slideOut';
+}>;
 class Show extends NestedOption<IShowProps> {
-  public static OptionName = "show";
+  public static OptionName = 'show';
 }
 
 // owners:
@@ -579,9 +589,9 @@ type IToProps = React.PropsWithChildren<{
   position?: PositionConfig;
   scale?: number;
   top?: number;
-}>
+}>;
 class To extends NestedOption<IToProps> {
-  public static OptionName = "to";
+  public static OptionName = 'to';
 }
 
 // owners:
@@ -590,36 +600,38 @@ type IToolbarItemProps = React.PropsWithChildren<{
   cssClass?: string;
   disabled?: boolean;
   html?: string;
-  locateInMenu?: "always" | "auto" | "never";
-  location?: "after" | "before" | "center";
+  locateInMenu?: 'always' | 'auto' | 'never';
+  location?: 'after' | 'before' | 'center';
   menuItemTemplate?: (() => string) | template;
   options?: any;
-  showText?: "always" | "inMenu";
+  showText?: 'always' | 'inMenu';
   template?: ((itemData: CollectionWidgetItem, itemIndex: number, itemElement: any) => string) | template;
   text?: string;
-  toolbar?: "bottom" | "top";
+  toolbar?: 'bottom' | 'top';
   visible?: boolean;
-  widget?: "dxAutocomplete" | "dxButton" | "dxCheckBox" | "dxDateBox" | "dxMenu" | "dxSelectBox" | "dxTabs" | "dxTextBox" | "dxButtonGroup" | "dxDropDownButton";
+  widget?: 'dxAutocomplete' | 'dxButton' | 'dxCheckBox' | 'dxDateBox' | 'dxMenu' | 'dxSelectBox' | 'dxTabs' | 'dxTextBox' | 'dxButtonGroup' | 'dxDropDownButton';
   menuItemRender?: (...params: any) => React.ReactNode;
   menuItemComponent?: React.ComponentType<any>;
   menuItemKeyFn?: (data: any) => string;
   render?: (...params: any) => React.ReactNode;
   component?: React.ComponentType<any>;
   keyFn?: (data: any) => string;
-}>
+}>;
 class ToolbarItem extends NestedOption<IToolbarItemProps> {
-  public static OptionName = "toolbarItems";
+  public static OptionName = 'toolbarItems';
+
   public static IsCollectionItem = true;
+
   public static TemplateProps = [{
-    tmplOption: "menuItemTemplate",
-    render: "menuItemRender",
-    component: "menuItemComponent",
-    keyFn: "menuItemKeyFn"
+    tmplOption: 'menuItemTemplate',
+    render: 'menuItemRender',
+    component: 'menuItemComponent',
+    keyFn: 'menuItemKeyFn',
   }, {
-    tmplOption: "template",
-    render: "render",
-    component: "component",
-    keyFn: "keyFn"
+    tmplOption: 'template',
+    render: 'render',
+    component: 'component',
+    keyFn: 'keyFn',
   }];
 }
 
@@ -658,8 +670,6 @@ export {
   To,
   IToProps,
   ToolbarItem,
-  IToolbarItemProps
+  IToolbarItemProps,
 };
-import type * as TagBoxTypes from 'devextreme/ui/tag_box_types';
 export { TagBoxTypes };
-

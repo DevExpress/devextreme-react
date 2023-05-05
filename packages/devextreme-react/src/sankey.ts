@@ -1,49 +1,49 @@
 import dxSankey, {
-    Properties
-} from "devextreme/viz/sankey";
+  Properties,
+} from 'devextreme/viz/sankey';
 
-import * as PropTypes from "prop-types";
-import { Component as BaseComponent, IHtmlOptions } from "./core/component";
-import NestedOption from "./core/nested-option";
+import * as PropTypes from 'prop-types';
 
-import type { dxSankeyNode } from "devextreme/viz/sankey";
-import type { template } from "devextreme/core/templates/template";
+import type { dxSankeyNode } from 'devextreme/viz/sankey';
+import type { template } from 'devextreme/core/templates/template';
 
-import type * as BaseWidgetTypes from "devextreme/viz/core/base_widget";
-import type * as LocalizationTypes from "devextreme/localization";
+import type * as BaseWidgetTypes from 'devextreme/viz/core/base_widget';
+import type * as LocalizationTypes from 'devextreme/localization';
+import type * as SankeyTypes from 'devextreme/viz/sankey_types';
+import NestedOption from './core/nested-option';
+import { Component as BaseComponent, IHtmlOptions } from './core/component';
 
 type ISankeyOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
   defaultLoadingIndicator?: object;
   onLoadingIndicatorChange?: (value: object) => void;
-}>
+}>;
 
 class Sankey extends BaseComponent<React.PropsWithChildren<ISankeyOptions>> {
-
   public get instance(): dxSankey {
     return this._instance;
   }
 
   protected _WidgetClass = dxSankey;
 
-  protected subscribableOptions = ["loadingIndicator","loadingIndicator.show"];
+  protected subscribableOptions = ['loadingIndicator', 'loadingIndicator.show'];
 
-  protected independentEvents = ["onDisposing","onDrawn","onExported","onExporting","onFileSaving","onIncidentOccurred","onInitialized","onLinkClick","onNodeClick"];
+  protected independentEvents = ['onDisposing', 'onDrawn', 'onExported', 'onExporting', 'onFileSaving', 'onIncidentOccurred', 'onInitialized', 'onLinkClick', 'onNodeClick'];
 
   protected _defaults = {
-    defaultLoadingIndicator: "loadingIndicator"
+    defaultLoadingIndicator: 'loadingIndicator',
   };
 
   protected _expectedChildren = {
-    adaptiveLayout: { optionName: "adaptiveLayout", isCollectionItem: false },
-    export: { optionName: "export", isCollectionItem: false },
-    label: { optionName: "label", isCollectionItem: false },
-    link: { optionName: "link", isCollectionItem: false },
-    loadingIndicator: { optionName: "loadingIndicator", isCollectionItem: false },
-    margin: { optionName: "margin", isCollectionItem: false },
-    node: { optionName: "node", isCollectionItem: false },
-    size: { optionName: "size", isCollectionItem: false },
-    title: { optionName: "title", isCollectionItem: false },
-    tooltip: { optionName: "tooltip", isCollectionItem: false }
+    adaptiveLayout: { optionName: 'adaptiveLayout', isCollectionItem: false },
+    export: { optionName: 'export', isCollectionItem: false },
+    label: { optionName: 'label', isCollectionItem: false },
+    link: { optionName: 'link', isCollectionItem: false },
+    loadingIndicator: { optionName: 'loadingIndicator', isCollectionItem: false },
+    margin: { optionName: 'margin', isCollectionItem: false },
+    node: { optionName: 'node', isCollectionItem: false },
+    size: { optionName: 'size', isCollectionItem: false },
+    title: { optionName: 'title', isCollectionItem: false },
+    tooltip: { optionName: 'tooltip', isCollectionItem: false },
   };
 }
 (Sankey as any).propTypes = {
@@ -51,12 +51,12 @@ class Sankey extends BaseComponent<React.PropsWithChildren<ISankeyOptions>> {
   alignment: PropTypes.oneOfType([
     PropTypes.array,
     PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.oneOf([
-      "bottom",
-      "center",
-      "top"])
-  ])
+      PropTypes.string,
+      PropTypes.oneOf([
+        'bottom',
+        'center',
+        'top']),
+    ]),
   ]),
   disabled: PropTypes.bool,
   elementAttr: PropTypes.object,
@@ -82,31 +82,31 @@ class Sankey extends BaseComponent<React.PropsWithChildren<ISankeyOptions>> {
   palette: PropTypes.oneOfType([
     PropTypes.array,
     PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.oneOf([
-      "Bright",
-      "Harmony Light",
-      "Ocean",
-      "Pastel",
-      "Soft",
-      "Soft Pastel",
-      "Vintage",
-      "Violet",
-      "Carmine",
-      "Dark Moon",
-      "Dark Violet",
-      "Green Mist",
-      "Soft Blue",
-      "Material",
-      "Office"])
-  ])
+      PropTypes.string,
+      PropTypes.oneOf([
+        'Bright',
+        'Harmony Light',
+        'Ocean',
+        'Pastel',
+        'Soft',
+        'Soft Pastel',
+        'Vintage',
+        'Violet',
+        'Carmine',
+        'Dark Moon',
+        'Dark Violet',
+        'Green Mist',
+        'Soft Blue',
+        'Material',
+        'Office']),
+    ]),
   ]),
   paletteExtensionMode: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "alternate",
-      "blend",
-      "extrapolate"])
+      'alternate',
+      'blend',
+      'extrapolate']),
   ]),
   pathModified: PropTypes.bool,
   redrawOnResize: PropTypes.bool,
@@ -117,28 +117,27 @@ class Sankey extends BaseComponent<React.PropsWithChildren<ISankeyOptions>> {
   theme: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "generic.dark",
-      "generic.light",
-      "generic.contrast",
-      "generic.carmine",
-      "generic.darkmoon",
-      "generic.darkviolet",
-      "generic.greenmist",
-      "generic.softblue",
-      "material.blue.light",
-      "material.lime.light",
-      "material.orange.light",
-      "material.purple.light",
-      "material.teal.light"])
+      'generic.dark',
+      'generic.light',
+      'generic.contrast',
+      'generic.carmine',
+      'generic.darkmoon',
+      'generic.darkviolet',
+      'generic.greenmist',
+      'generic.softblue',
+      'material.blue.light',
+      'material.lime.light',
+      'material.orange.light',
+      'material.purple.light',
+      'material.teal.light']),
   ]),
   title: PropTypes.oneOfType([
     PropTypes.object,
-    PropTypes.string
+    PropTypes.string,
   ]),
   tooltip: PropTypes.object,
-  weightField: PropTypes.string
+  weightField: PropTypes.string,
 };
-
 
 // owners:
 // Sankey
@@ -146,9 +145,9 @@ type IAdaptiveLayoutProps = React.PropsWithChildren<{
   height?: number;
   keepLabels?: boolean;
   width?: number;
-}>
+}>;
 class AdaptiveLayout extends NestedOption<IAdaptiveLayoutProps> {
-  public static OptionName = "adaptiveLayout";
+  public static OptionName = 'adaptiveLayout';
 }
 
 // owners:
@@ -162,11 +161,11 @@ type IBorderProps = React.PropsWithChildren<{
   color?: string;
   visible?: boolean;
   width?: number;
-  dashStyle?: "dash" | "dot" | "longDash" | "solid";
+  dashStyle?: 'dash' | 'dot' | 'longDash' | 'solid';
   opacity?: number;
-}>
+}>;
 class Border extends NestedOption<IBorderProps> {
-  public static OptionName = "border";
+  public static OptionName = 'border';
 }
 
 // owners:
@@ -175,13 +174,13 @@ type IExportProps = React.PropsWithChildren<{
   backgroundColor?: string;
   enabled?: boolean;
   fileName?: string;
-  formats?: Array<"GIF" | "JPEG" | "PDF" | "PNG" | "SVG">;
+  formats?: Array<'GIF' | 'JPEG' | 'PDF' | 'PNG' | 'SVG'>;
   margin?: number;
   printingEnabled?: boolean;
   svgToCanvas?: ((svg: any, canvas: any) => any);
-}>
+}>;
 class Export extends NestedOption<IExportProps> {
-  public static OptionName = "export";
+  public static OptionName = 'export';
 }
 
 // owners:
@@ -196,9 +195,9 @@ type IFontProps = React.PropsWithChildren<{
   opacity?: number;
   size?: number | string;
   weight?: number;
-}>
+}>;
 class Font extends NestedOption<IFontProps> {
-  public static OptionName = "font";
+  public static OptionName = 'font';
 }
 
 // owners:
@@ -208,24 +207,24 @@ type IFormatProps = React.PropsWithChildren<{
   formatter?: ((value: number | any) => string);
   parser?: ((value: string) => number);
   precision?: number;
-  type?: "billions" | "currency" | "day" | "decimal" | "exponential" | "fixedPoint" | "largeNumber" | "longDate" | "longTime" | "millions" | "millisecond" | "month" | "monthAndDay" | "monthAndYear" | "percent" | "quarter" | "quarterAndYear" | "shortDate" | "shortTime" | "thousands" | "trillions" | "year" | "dayOfWeek" | "hour" | "longDateLongTime" | "minute" | "second" | "shortDateShortTime";
+  type?: 'billions' | 'currency' | 'day' | 'decimal' | 'exponential' | 'fixedPoint' | 'largeNumber' | 'longDate' | 'longTime' | 'millions' | 'millisecond' | 'month' | 'monthAndDay' | 'monthAndYear' | 'percent' | 'quarter' | 'quarterAndYear' | 'shortDate' | 'shortTime' | 'thousands' | 'trillions' | 'year' | 'dayOfWeek' | 'hour' | 'longDateLongTime' | 'minute' | 'second' | 'shortDateShortTime';
   useCurrencyAccountingStyle?: boolean;
-}>
+}>;
 class Format extends NestedOption<IFormatProps> {
-  public static OptionName = "format";
+  public static OptionName = 'format';
 }
 
 // owners:
 // HoverStyle
 // HoverStyle
 type IHatchingProps = React.PropsWithChildren<{
-  direction?: "left" | "none" | "right";
+  direction?: 'left' | 'none' | 'right';
   opacity?: number;
   step?: number;
   width?: number;
-}>
+}>;
 class Hatching extends NestedOption<IHatchingProps> {
-  public static OptionName = "hatching";
+  public static OptionName = 'hatching';
 }
 
 // owners:
@@ -239,15 +238,15 @@ type IHoverStyleProps = React.PropsWithChildren<{
   };
   color?: string;
   hatching?: object | {
-    direction?: "left" | "none" | "right";
+    direction?: 'left' | 'none' | 'right';
     opacity?: number;
     step?: number;
     width?: number;
   };
   opacity?: number;
-}>
+}>;
 class HoverStyle extends NestedOption<IHoverStyleProps> {
-  public static OptionName = "hoverStyle";
+  public static OptionName = 'hoverStyle';
 }
 
 // owners:
@@ -261,7 +260,7 @@ type ILabelProps = React.PropsWithChildren<{
   customizeText?: ((itemInfo: dxSankeyNode) => string);
   font?: BaseWidgetTypes.Font;
   horizontalOffset?: number;
-  overlappingBehavior?: "ellipsis" | "hide" | "none";
+  overlappingBehavior?: 'ellipsis' | 'hide' | 'none';
   shadow?: object | {
     blur?: number;
     color?: string;
@@ -272,14 +271,15 @@ type ILabelProps = React.PropsWithChildren<{
   useNodeColors?: boolean;
   verticalOffset?: number;
   visible?: boolean;
-}>
+}>;
 class Label extends NestedOption<ILabelProps> {
-  public static OptionName = "label";
+  public static OptionName = 'label';
+
   public static ExpectedChildren = {
-    border: { optionName: "border", isCollectionItem: false },
-    font: { optionName: "font", isCollectionItem: false },
-    sankeyborder: { optionName: "border", isCollectionItem: false },
-    shadow: { optionName: "shadow", isCollectionItem: false }
+    border: { optionName: 'border', isCollectionItem: false },
+    font: { optionName: 'font', isCollectionItem: false },
+    sankeyborder: { optionName: 'border', isCollectionItem: false },
+    shadow: { optionName: 'shadow', isCollectionItem: false },
   };
 }
 
@@ -292,7 +292,7 @@ type ILinkProps = React.PropsWithChildren<{
     width?: number;
   };
   color?: string;
-  colorMode?: "none" | "source" | "target" | "gradient";
+  colorMode?: 'none' | 'source' | 'target' | 'gradient';
   hoverStyle?: object | {
     border?: object | {
       color?: string;
@@ -301,7 +301,7 @@ type ILinkProps = React.PropsWithChildren<{
     };
     color?: string;
     hatching?: object | {
-      direction?: "left" | "none" | "right";
+      direction?: 'left' | 'none' | 'right';
       opacity?: number;
       step?: number;
       width?: number;
@@ -309,13 +309,14 @@ type ILinkProps = React.PropsWithChildren<{
     opacity?: number;
   };
   opacity?: number;
-}>
+}>;
 class Link extends NestedOption<ILinkProps> {
-  public static OptionName = "link";
+  public static OptionName = 'link';
+
   public static ExpectedChildren = {
-    border: { optionName: "border", isCollectionItem: false },
-    hoverStyle: { optionName: "hoverStyle", isCollectionItem: false },
-    sankeyborder: { optionName: "border", isCollectionItem: false }
+    border: { optionName: 'border', isCollectionItem: false },
+    hoverStyle: { optionName: 'hoverStyle', isCollectionItem: false },
+    sankeyborder: { optionName: 'border', isCollectionItem: false },
   };
 }
 
@@ -329,14 +330,16 @@ type ILoadingIndicatorProps = React.PropsWithChildren<{
   text?: string;
   defaultShow?: boolean;
   onShowChange?: (value: boolean) => void;
-}>
+}>;
 class LoadingIndicator extends NestedOption<ILoadingIndicatorProps> {
-  public static OptionName = "loadingIndicator";
+  public static OptionName = 'loadingIndicator';
+
   public static DefaultsProps = {
-    defaultShow: "show"
+    defaultShow: 'show',
   };
+
   public static ExpectedChildren = {
-    font: { optionName: "font", isCollectionItem: false }
+    font: { optionName: 'font', isCollectionItem: false },
   };
 }
 
@@ -348,9 +351,9 @@ type IMarginProps = React.PropsWithChildren<{
   left?: number;
   right?: number;
   top?: number;
-}>
+}>;
 class Margin extends NestedOption<IMarginProps> {
-  public static OptionName = "margin";
+  public static OptionName = 'margin';
 }
 
 // owners:
@@ -370,7 +373,7 @@ type INodeProps = React.PropsWithChildren<{
     };
     color?: string;
     hatching?: object | {
-      direction?: "left" | "none" | "right";
+      direction?: 'left' | 'none' | 'right';
       opacity?: number;
       step?: number;
       width?: number;
@@ -380,13 +383,14 @@ type INodeProps = React.PropsWithChildren<{
   opacity?: number;
   padding?: number;
   width?: number;
-}>
+}>;
 class Node extends NestedOption<INodeProps> {
-  public static OptionName = "node";
+  public static OptionName = 'node';
+
   public static ExpectedChildren = {
-    border: { optionName: "border", isCollectionItem: false },
-    hoverStyle: { optionName: "hoverStyle", isCollectionItem: false },
-    sankeyborder: { optionName: "border", isCollectionItem: false }
+    border: { optionName: 'border', isCollectionItem: false },
+    hoverStyle: { optionName: 'hoverStyle', isCollectionItem: false },
+    sankeyborder: { optionName: 'border', isCollectionItem: false },
   };
 }
 
@@ -400,9 +404,9 @@ type ISankeyborderProps = React.PropsWithChildren<{
   color?: string;
   visible?: boolean;
   width?: number;
-}>
+}>;
 class Sankeyborder extends NestedOption<ISankeyborderProps> {
-  public static OptionName = "border";
+  public static OptionName = 'border';
 }
 
 // owners:
@@ -414,9 +418,9 @@ type IShadowProps = React.PropsWithChildren<{
   offsetX?: number;
   offsetY?: number;
   opacity?: number;
-}>
+}>;
 class Shadow extends NestedOption<IShadowProps> {
-  public static OptionName = "shadow";
+  public static OptionName = 'shadow';
 }
 
 // owners:
@@ -424,9 +428,9 @@ class Shadow extends NestedOption<IShadowProps> {
 type ISizeProps = React.PropsWithChildren<{
   height?: number;
   width?: number;
-}>
+}>;
 class Size extends NestedOption<ISizeProps> {
-  public static OptionName = "size";
+  public static OptionName = 'size';
 }
 
 // owners:
@@ -435,13 +439,14 @@ type ISubtitleProps = React.PropsWithChildren<{
   font?: BaseWidgetTypes.Font;
   offset?: number;
   text?: string;
-  textOverflow?: "ellipsis" | "hide" | "none";
-  wordWrap?: "normal" | "breakWord" | "none";
-}>
+  textOverflow?: 'ellipsis' | 'hide' | 'none';
+  wordWrap?: 'normal' | 'breakWord' | 'none';
+}>;
 class Subtitle extends NestedOption<ISubtitleProps> {
-  public static OptionName = "subtitle";
+  public static OptionName = 'subtitle';
+
   public static ExpectedChildren = {
-    font: { optionName: "font", isCollectionItem: false }
+    font: { optionName: 'font', isCollectionItem: false },
   };
 }
 
@@ -449,7 +454,7 @@ class Subtitle extends NestedOption<ISubtitleProps> {
 // Sankey
 type ITitleProps = React.PropsWithChildren<{
   font?: BaseWidgetTypes.Font;
-  horizontalAlignment?: "center" | "left" | "right";
+  horizontalAlignment?: 'center' | 'left' | 'right';
   margin?: number | object | {
     bottom?: number;
     left?: number;
@@ -461,20 +466,21 @@ type ITitleProps = React.PropsWithChildren<{
     font?: BaseWidgetTypes.Font;
     offset?: number;
     text?: string;
-    textOverflow?: "ellipsis" | "hide" | "none";
-    wordWrap?: "normal" | "breakWord" | "none";
+    textOverflow?: 'ellipsis' | 'hide' | 'none';
+    wordWrap?: 'normal' | 'breakWord' | 'none';
   };
   text?: string;
-  textOverflow?: "ellipsis" | "hide" | "none";
-  verticalAlignment?: "bottom" | "top";
-  wordWrap?: "normal" | "breakWord" | "none";
-}>
+  textOverflow?: 'ellipsis' | 'hide' | 'none';
+  verticalAlignment?: 'bottom' | 'top';
+  wordWrap?: 'normal' | 'breakWord' | 'none';
+}>;
 class Title extends NestedOption<ITitleProps> {
-  public static OptionName = "title";
+  public static OptionName = 'title';
+
   public static ExpectedChildren = {
-    font: { optionName: "font", isCollectionItem: false },
-    margin: { optionName: "margin", isCollectionItem: false },
-    subtitle: { optionName: "subtitle", isCollectionItem: false }
+    font: { optionName: 'font', isCollectionItem: false },
+    margin: { optionName: 'margin', isCollectionItem: false },
+    subtitle: { optionName: 'subtitle', isCollectionItem: false },
   };
 }
 
@@ -484,7 +490,7 @@ type ITooltipProps = React.PropsWithChildren<{
   arrowLength?: number;
   border?: object | {
     color?: string;
-    dashStyle?: "dash" | "dot" | "longDash" | "solid";
+    dashStyle?: 'dash' | 'dot' | 'longDash' | 'solid';
     opacity?: number;
     visible?: boolean;
     width?: number;
@@ -516,26 +522,28 @@ type ITooltipProps = React.PropsWithChildren<{
   nodeTooltipRender?: (...params: any) => React.ReactNode;
   nodeTooltipComponent?: React.ComponentType<any>;
   nodeTooltipKeyFn?: (data: any) => string;
-}>
+}>;
 class Tooltip extends NestedOption<ITooltipProps> {
-  public static OptionName = "tooltip";
+  public static OptionName = 'tooltip';
+
   public static ExpectedChildren = {
-    border: { optionName: "border", isCollectionItem: false },
-    font: { optionName: "font", isCollectionItem: false },
-    format: { optionName: "format", isCollectionItem: false },
-    shadow: { optionName: "shadow", isCollectionItem: false },
-    tooltipBorder: { optionName: "border", isCollectionItem: false }
+    border: { optionName: 'border', isCollectionItem: false },
+    font: { optionName: 'font', isCollectionItem: false },
+    format: { optionName: 'format', isCollectionItem: false },
+    shadow: { optionName: 'shadow', isCollectionItem: false },
+    tooltipBorder: { optionName: 'border', isCollectionItem: false },
   };
+
   public static TemplateProps = [{
-    tmplOption: "linkTooltipTemplate",
-    render: "linkTooltipRender",
-    component: "linkTooltipComponent",
-    keyFn: "linkTooltipKeyFn"
+    tmplOption: 'linkTooltipTemplate',
+    render: 'linkTooltipRender',
+    component: 'linkTooltipComponent',
+    keyFn: 'linkTooltipKeyFn',
   }, {
-    tmplOption: "nodeTooltipTemplate",
-    render: "nodeTooltipRender",
-    component: "nodeTooltipComponent",
-    keyFn: "nodeTooltipKeyFn"
+    tmplOption: 'nodeTooltipTemplate',
+    render: 'nodeTooltipRender',
+    component: 'nodeTooltipComponent',
+    keyFn: 'nodeTooltipKeyFn',
   }];
 }
 
@@ -543,13 +551,13 @@ class Tooltip extends NestedOption<ITooltipProps> {
 // Tooltip
 type ITooltipBorderProps = React.PropsWithChildren<{
   color?: string;
-  dashStyle?: "dash" | "dot" | "longDash" | "solid";
+  dashStyle?: 'dash' | 'dot' | 'longDash' | 'solid';
   opacity?: number;
   visible?: boolean;
   width?: number;
-}>
+}>;
 class TooltipBorder extends NestedOption<ITooltipBorderProps> {
-  public static OptionName = "border";
+  public static OptionName = 'border';
 }
 
 export default Sankey;
@@ -593,8 +601,6 @@ export {
   Tooltip,
   ITooltipProps,
   TooltipBorder,
-  ITooltipBorderProps
+  ITooltipBorderProps,
 };
-import type * as SankeyTypes from 'devextreme/viz/sankey_types';
 export { SankeyTypes };
-

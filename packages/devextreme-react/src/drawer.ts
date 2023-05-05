@@ -1,9 +1,10 @@
 import dxDrawer, {
-    Properties
-} from "devextreme/ui/drawer";
+  Properties,
+} from 'devextreme/ui/drawer';
 
-import * as PropTypes from "prop-types";
-import { Component as BaseComponent, IHtmlOptions } from "./core/component";
+import * as PropTypes from 'prop-types';
+import type * as DrawerTypes from 'devextreme/ui/drawer_types';
+import { Component as BaseComponent, IHtmlOptions } from './core/component';
 
 type IDrawerOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
   render?: (...params: any) => React.ReactNode;
@@ -11,29 +12,28 @@ type IDrawerOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
   keyFn?: (data: any) => string;
   defaultOpened?: boolean;
   onOpenedChange?: (value: boolean) => void;
-}>
+}>;
 
 class Drawer extends BaseComponent<React.PropsWithChildren<IDrawerOptions>> {
-
   public get instance(): dxDrawer {
     return this._instance;
   }
 
   protected _WidgetClass = dxDrawer;
 
-  protected subscribableOptions = ["opened"];
+  protected subscribableOptions = ['opened'];
 
-  protected independentEvents = ["onDisposing","onInitialized"];
+  protected independentEvents = ['onDisposing', 'onInitialized'];
 
   protected _defaults = {
-    defaultOpened: "opened"
+    defaultOpened: 'opened',
   };
 
   protected _templateProps = [{
-    tmplOption: "template",
-    render: "render",
-    component: "component",
-    keyFn: "keyFn"
+    tmplOption: 'template',
+    render: 'render',
+    component: 'component',
+    keyFn: 'keyFn',
   }];
 }
 (Drawer as any).propTypes = {
@@ -42,14 +42,14 @@ class Drawer extends BaseComponent<React.PropsWithChildren<IDrawerOptions>> {
   animationEnabled: PropTypes.bool,
   closeOnOutsideClick: PropTypes.oneOfType([
     PropTypes.bool,
-    PropTypes.func
+    PropTypes.func,
   ]),
   disabled: PropTypes.bool,
   elementAttr: PropTypes.object,
   height: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
+    PropTypes.string,
   ]),
   hint: PropTypes.string,
   hoverStateEnabled: PropTypes.bool,
@@ -62,25 +62,25 @@ class Drawer extends BaseComponent<React.PropsWithChildren<IDrawerOptions>> {
   openedStateMode: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "overlap",
-      "shrink",
-      "push"])
+      'overlap',
+      'shrink',
+      'push']),
   ]),
   position: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "left",
-      "right",
-      "top",
-      "bottom",
-      "before",
-      "after"])
+      'left',
+      'right',
+      'top',
+      'bottom',
+      'before',
+      'after']),
   ]),
   revealMode: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "slide",
-      "expand"])
+      'slide',
+      'expand']),
   ]),
   rtlEnabled: PropTypes.bool,
   shading: PropTypes.bool,
@@ -88,14 +88,12 @@ class Drawer extends BaseComponent<React.PropsWithChildren<IDrawerOptions>> {
   width: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
-  ])
+    PropTypes.string,
+  ]),
 };
 export default Drawer;
 export {
   Drawer,
-  IDrawerOptions
+  IDrawerOptions,
 };
-import type * as DrawerTypes from 'devextreme/ui/drawer_types';
 export { DrawerTypes };
-

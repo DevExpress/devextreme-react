@@ -1,18 +1,20 @@
-export { ExplicitTypes } from "devextreme/ui/tabs";
 import dxTabs, {
-    Properties
-} from "devextreme/ui/tabs";
+  Properties,
+} from 'devextreme/ui/tabs';
 
-import * as PropTypes from "prop-types";
-import { Component as BaseComponent, IHtmlOptions } from "./core/component";
-import NestedOption from "./core/nested-option";
+import * as PropTypes from 'prop-types';
 
-import type { dxTabsItem } from "devextreme/ui/tabs";
-import type { CollectionWidgetItem } from "devextreme/ui/collection/ui.collection_widget.base";
-import type { template } from "devextreme/core/templates/template";
+import type { dxTabsItem } from 'devextreme/ui/tabs';
+import type { CollectionWidgetItem } from 'devextreme/ui/collection/ui.collection_widget.base';
+import type { template } from 'devextreme/core/templates/template';
+import type * as TabsTypes from 'devextreme/ui/tabs_types';
+import NestedOption from './core/nested-option';
+import { Component as BaseComponent, IHtmlOptions } from './core/component';
+
+export { ExplicitTypes } from 'devextreme/ui/tabs';
 
 type ITabsOptions<TItem = any, TKey = any> = React.PropsWithChildren<Properties<TItem, TKey> & IHtmlOptions & {
-  dataSource?: Properties<TItem, TKey>["dataSource"];
+  dataSource?: Properties<TItem, TKey>['dataSource'];
   itemRender?: (...params: any) => React.ReactNode;
   itemComponent?: React.ComponentType<any>;
   itemKeyFn?: (data: any) => string;
@@ -26,37 +28,36 @@ type ITabsOptions<TItem = any, TKey = any> = React.PropsWithChildren<Properties<
   onSelectedItemChange?: (value: any) => void;
   onSelectedItemKeysChange?: (value: Array<any>) => void;
   onSelectedItemsChange?: (value: Array<any>) => void;
-}>
+}>;
 
 class Tabs<TItem = any, TKey = any> extends BaseComponent<React.PropsWithChildren<ITabsOptions<TItem, TKey>>> {
-
   public get instance(): dxTabs<TItem, TKey> {
     return this._instance;
   }
 
   protected _WidgetClass = dxTabs;
 
-  protected subscribableOptions = ["items","selectedIndex","selectedItem","selectedItemKeys","selectedItems"];
+  protected subscribableOptions = ['items', 'selectedIndex', 'selectedItem', 'selectedItemKeys', 'selectedItems'];
 
-  protected independentEvents = ["onContentReady","onDisposing","onInitialized","onItemClick","onItemContextMenu","onItemHold","onItemRendered"];
+  protected independentEvents = ['onContentReady', 'onDisposing', 'onInitialized', 'onItemClick', 'onItemContextMenu', 'onItemHold', 'onItemRendered'];
 
   protected _defaults = {
-    defaultItems: "items",
-    defaultSelectedIndex: "selectedIndex",
-    defaultSelectedItem: "selectedItem",
-    defaultSelectedItemKeys: "selectedItemKeys",
-    defaultSelectedItems: "selectedItems"
+    defaultItems: 'items',
+    defaultSelectedIndex: 'selectedIndex',
+    defaultSelectedItem: 'selectedItem',
+    defaultSelectedItemKeys: 'selectedItemKeys',
+    defaultSelectedItems: 'selectedItems',
   };
 
   protected _expectedChildren = {
-    item: { optionName: "items", isCollectionItem: true }
+    item: { optionName: 'items', isCollectionItem: true },
   };
 
   protected _templateProps = [{
-    tmplOption: "itemTemplate",
-    render: "itemRender",
-    component: "itemComponent",
-    keyFn: "itemKeyFn"
+    tmplOption: 'itemTemplate',
+    render: 'itemRender',
+    component: 'itemComponent',
+    keyFn: 'itemKeyFn',
   }];
 }
 (Tabs as any).propTypes = {
@@ -67,7 +68,7 @@ class Tabs<TItem = any, TKey = any> extends BaseComponent<React.PropsWithChildre
   height: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
+    PropTypes.string,
   ]),
   hint: PropTypes.string,
   hoverStateEnabled: PropTypes.bool,
@@ -75,7 +76,7 @@ class Tabs<TItem = any, TKey = any> extends BaseComponent<React.PropsWithChildre
   items: PropTypes.array,
   keyExpr: PropTypes.oneOfType([
     PropTypes.func,
-    PropTypes.string
+    PropTypes.string,
   ]),
   noDataText: PropTypes.string,
   onContentReady: PropTypes.func,
@@ -97,8 +98,8 @@ class Tabs<TItem = any, TKey = any> extends BaseComponent<React.PropsWithChildre
   selectionMode: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "single",
-      "multiple"])
+      'single',
+      'multiple']),
   ]),
   showNavButtons: PropTypes.bool,
   tabIndex: PropTypes.number,
@@ -106,10 +107,9 @@ class Tabs<TItem = any, TKey = any> extends BaseComponent<React.PropsWithChildre
   width: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
-  ])
+    PropTypes.string,
+  ]),
 };
-
 
 // owners:
 // Tabs
@@ -124,15 +124,17 @@ type IItemProps = React.PropsWithChildren<{
   render?: (...params: any) => React.ReactNode;
   component?: React.ComponentType<any>;
   keyFn?: (data: any) => string;
-}>
+}>;
 class Item extends NestedOption<IItemProps> {
-  public static OptionName = "items";
+  public static OptionName = 'items';
+
   public static IsCollectionItem = true;
+
   public static TemplateProps = [{
-    tmplOption: "template",
-    render: "render",
-    component: "component",
-    keyFn: "keyFn"
+    tmplOption: 'template',
+    render: 'render',
+    component: 'component',
+    keyFn: 'keyFn',
   }];
 }
 
@@ -141,8 +143,6 @@ export {
   Tabs,
   ITabsOptions,
   Item,
-  IItemProps
+  IItemProps,
 };
-import type * as TabsTypes from 'devextreme/ui/tabs_types';
 export { TabsTypes };
-

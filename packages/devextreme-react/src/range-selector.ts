@@ -1,58 +1,58 @@
 import dxRangeSelector, {
-    Properties
-} from "devextreme/viz/range_selector";
+  Properties,
+} from 'devextreme/viz/range_selector';
 
-import * as PropTypes from "prop-types";
-import { Component as BaseComponent, IHtmlOptions } from "./core/component";
-import NestedOption from "./core/nested-option";
+import * as PropTypes from 'prop-types';
 
-import type { chartPointAggregationInfoObject, chartSeriesObject, dxChartCommonSeriesSettings } from "devextreme/viz/chart";
-import type { ChartSeries } from "devextreme/viz/common";
-import type { ChartsColor, ScaleBreak } from "devextreme/common/charts";
+import type { chartPointAggregationInfoObject, chartSeriesObject, dxChartCommonSeriesSettings } from 'devextreme/viz/chart';
+import type { ChartSeries } from 'devextreme/viz/common';
+import type { ChartsColor, ScaleBreak } from 'devextreme/common/charts';
 
-import type * as CommonChartTypes from "devextreme/common/charts";
-import type * as LocalizationTypes from "devextreme/localization";
-import type * as BaseWidgetTypes from "devextreme/viz/core/base_widget";
+import type * as CommonChartTypes from 'devextreme/common/charts';
+import type * as LocalizationTypes from 'devextreme/localization';
+import type * as BaseWidgetTypes from 'devextreme/viz/core/base_widget';
+import type * as RangeSelectorTypes from 'devextreme/viz/range_selector_types';
+import NestedOption from './core/nested-option';
+import { Component as BaseComponent, IHtmlOptions } from './core/component';
 
 type IRangeSelectorOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
   defaultLoadingIndicator?: object;
   defaultValue?: Array<any | number | string> | CommonChartTypes.VisualRange;
   onLoadingIndicatorChange?: (value: object) => void;
   onValueChange?: (value: Array<any | number | string> | CommonChartTypes.VisualRange) => void;
-}>
+}>;
 
 class RangeSelector extends BaseComponent<React.PropsWithChildren<IRangeSelectorOptions>> {
-
   public get instance(): dxRangeSelector {
     return this._instance;
   }
 
   protected _WidgetClass = dxRangeSelector;
 
-  protected subscribableOptions = ["loadingIndicator","loadingIndicator.show","value"];
+  protected subscribableOptions = ['loadingIndicator', 'loadingIndicator.show', 'value'];
 
-  protected independentEvents = ["onDisposing","onDrawn","onExported","onExporting","onFileSaving","onIncidentOccurred","onInitialized","onValueChanged"];
+  protected independentEvents = ['onDisposing', 'onDrawn', 'onExported', 'onExporting', 'onFileSaving', 'onIncidentOccurred', 'onInitialized', 'onValueChanged'];
 
   protected _defaults = {
-    defaultLoadingIndicator: "loadingIndicator",
-    defaultValue: "value"
+    defaultLoadingIndicator: 'loadingIndicator',
+    defaultValue: 'value',
   };
 
   protected _expectedChildren = {
-    background: { optionName: "background", isCollectionItem: false },
-    behavior: { optionName: "behavior", isCollectionItem: false },
-    chart: { optionName: "chart", isCollectionItem: false },
-    export: { optionName: "export", isCollectionItem: false },
-    indent: { optionName: "indent", isCollectionItem: false },
-    loadingIndicator: { optionName: "loadingIndicator", isCollectionItem: false },
-    margin: { optionName: "margin", isCollectionItem: false },
-    scale: { optionName: "scale", isCollectionItem: false },
-    shutter: { optionName: "shutter", isCollectionItem: false },
-    size: { optionName: "size", isCollectionItem: false },
-    sliderHandle: { optionName: "sliderHandle", isCollectionItem: false },
-    sliderMarker: { optionName: "sliderMarker", isCollectionItem: false },
-    title: { optionName: "title", isCollectionItem: false },
-    value: { optionName: "value", isCollectionItem: false }
+    background: { optionName: 'background', isCollectionItem: false },
+    behavior: { optionName: 'behavior', isCollectionItem: false },
+    chart: { optionName: 'chart', isCollectionItem: false },
+    export: { optionName: 'export', isCollectionItem: false },
+    indent: { optionName: 'indent', isCollectionItem: false },
+    loadingIndicator: { optionName: 'loadingIndicator', isCollectionItem: false },
+    margin: { optionName: 'margin', isCollectionItem: false },
+    scale: { optionName: 'scale', isCollectionItem: false },
+    shutter: { optionName: 'shutter', isCollectionItem: false },
+    size: { optionName: 'size', isCollectionItem: false },
+    sliderHandle: { optionName: 'sliderHandle', isCollectionItem: false },
+    sliderMarker: { optionName: 'sliderMarker', isCollectionItem: false },
+    title: { optionName: 'title', isCollectionItem: false },
+    value: { optionName: 'value', isCollectionItem: false },
   };
 }
 (RangeSelector as any).propTypes = {
@@ -84,10 +84,10 @@ class RangeSelector extends BaseComponent<React.PropsWithChildren<IRangeSelector
   selectedRangeUpdateMode: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "auto",
-      "keep",
-      "reset",
-      "shift"])
+      'auto',
+      'keep',
+      'reset',
+      'shift']),
   ]),
   shutter: PropTypes.object,
   size: PropTypes.object,
@@ -96,40 +96,39 @@ class RangeSelector extends BaseComponent<React.PropsWithChildren<IRangeSelector
   theme: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "generic.dark",
-      "generic.light",
-      "generic.contrast",
-      "generic.carmine",
-      "generic.darkmoon",
-      "generic.darkviolet",
-      "generic.greenmist",
-      "generic.softblue",
-      "material.blue.light",
-      "material.lime.light",
-      "material.orange.light",
-      "material.purple.light",
-      "material.teal.light"])
+      'generic.dark',
+      'generic.light',
+      'generic.contrast',
+      'generic.carmine',
+      'generic.darkmoon',
+      'generic.darkviolet',
+      'generic.greenmist',
+      'generic.softblue',
+      'material.blue.light',
+      'material.lime.light',
+      'material.orange.light',
+      'material.purple.light',
+      'material.teal.light']),
   ]),
   title: PropTypes.oneOfType([
     PropTypes.object,
-    PropTypes.string
+    PropTypes.string,
   ]),
   value: PropTypes.oneOfType([
     PropTypes.array,
-    PropTypes.object
-  ])
+    PropTypes.object,
+  ]),
 };
-
 
 // owners:
 // CommonSeriesSettings
 type IAggregationProps = React.PropsWithChildren<{
   calculate?: ((aggregationInfo: chartPointAggregationInfoObject, series: chartSeriesObject) => object);
   enabled?: boolean;
-  method?: "avg" | "count" | "max" | "min" | "ohlc" | "range" | "sum" | "custom";
-}>
+  method?: 'avg' | 'count' | 'max' | 'min' | 'ohlc' | 'range' | 'sum' | 'custom';
+}>;
 class Aggregation extends NestedOption<IAggregationProps> {
-  public static OptionName = "aggregation";
+  public static OptionName = 'aggregation';
 }
 
 // owners:
@@ -144,9 +143,9 @@ type IAggregationIntervalProps = React.PropsWithChildren<{
   seconds?: number;
   weeks?: number;
   years?: number;
-}>
+}>;
 class AggregationInterval extends NestedOption<IAggregationIntervalProps> {
-  public static OptionName = "aggregationInterval";
+  public static OptionName = 'aggregationInterval';
 }
 
 // owners:
@@ -156,11 +155,11 @@ type IArgumentFormatProps = React.PropsWithChildren<{
   formatter?: ((value: number | any) => string);
   parser?: ((value: string) => number);
   precision?: number;
-  type?: "billions" | "currency" | "day" | "decimal" | "exponential" | "fixedPoint" | "largeNumber" | "longDate" | "longTime" | "millions" | "millisecond" | "month" | "monthAndDay" | "monthAndYear" | "percent" | "quarter" | "quarterAndYear" | "shortDate" | "shortTime" | "thousands" | "trillions" | "year" | "dayOfWeek" | "hour" | "longDateLongTime" | "minute" | "second" | "shortDateShortTime";
+  type?: 'billions' | 'currency' | 'day' | 'decimal' | 'exponential' | 'fixedPoint' | 'largeNumber' | 'longDate' | 'longTime' | 'millions' | 'millisecond' | 'month' | 'monthAndDay' | 'monthAndYear' | 'percent' | 'quarter' | 'quarterAndYear' | 'shortDate' | 'shortTime' | 'thousands' | 'trillions' | 'year' | 'dayOfWeek' | 'hour' | 'longDateLongTime' | 'minute' | 'second' | 'shortDateShortTime';
   useCurrencyAccountingStyle?: boolean;
-}>
+}>;
 class ArgumentFormat extends NestedOption<IArgumentFormatProps> {
-  public static OptionName = "argumentFormat";
+  public static OptionName = 'argumentFormat';
 }
 
 // owners:
@@ -168,27 +167,28 @@ class ArgumentFormat extends NestedOption<IArgumentFormatProps> {
 type IBackgroundProps = React.PropsWithChildren<{
   color?: string;
   image?: object | {
-    location?: "center" | "centerBottom" | "centerTop" | "full" | "leftBottom" | "leftCenter" | "leftTop" | "rightBottom" | "rightCenter" | "rightTop";
+    location?: 'center' | 'centerBottom' | 'centerTop' | 'full' | 'leftBottom' | 'leftCenter' | 'leftTop' | 'rightBottom' | 'rightCenter' | 'rightTop';
     url?: string;
   };
   visible?: boolean;
-}>
+}>;
 class Background extends NestedOption<IBackgroundProps> {
-  public static OptionName = "background";
+  public static OptionName = 'background';
+
   public static ExpectedChildren = {
-    backgroundImage: { optionName: "image", isCollectionItem: false },
-    image: { optionName: "image", isCollectionItem: false }
+    backgroundImage: { optionName: 'image', isCollectionItem: false },
+    image: { optionName: 'image', isCollectionItem: false },
   };
 }
 
 // owners:
 // Background
 type IBackgroundImageProps = React.PropsWithChildren<{
-  location?: "center" | "centerBottom" | "centerTop" | "full" | "leftBottom" | "leftCenter" | "leftTop" | "rightBottom" | "rightCenter" | "rightTop";
+  location?: 'center' | 'centerBottom' | 'centerTop' | 'full' | 'leftBottom' | 'leftCenter' | 'leftTop' | 'rightBottom' | 'rightCenter' | 'rightTop';
   url?: string;
-}>
+}>;
 class BackgroundImage extends NestedOption<IBackgroundImageProps> {
-  public static OptionName = "image";
+  public static OptionName = 'image';
 }
 
 // owners:
@@ -196,14 +196,14 @@ class BackgroundImage extends NestedOption<IBackgroundImageProps> {
 type IBehaviorProps = React.PropsWithChildren<{
   allowSlidersSwap?: boolean;
   animationEnabled?: boolean;
-  callValueChanged?: "onMoving" | "onMovingComplete";
+  callValueChanged?: 'onMoving' | 'onMovingComplete';
   manualRangeSelectionEnabled?: boolean;
   moveSelectedRangeByClick?: boolean;
   snapToTicks?: boolean;
-  valueChangeMode?: "onHandleMove" | "onHandleRelease";
-}>
+  valueChangeMode?: 'onHandleMove' | 'onHandleRelease';
+}>;
 class Behavior extends NestedOption<IBehaviorProps> {
-  public static OptionName = "behavior";
+  public static OptionName = 'behavior';
 }
 
 // owners:
@@ -216,12 +216,12 @@ class Behavior extends NestedOption<IBehaviorProps> {
 // PointSelectionStyle
 type IBorderProps = React.PropsWithChildren<{
   color?: string;
-  dashStyle?: "dash" | "dot" | "longDash" | "solid";
+  dashStyle?: 'dash' | 'dot' | 'longDash' | 'solid';
   visible?: boolean;
   width?: number;
-}>
+}>;
 class Border extends NestedOption<IBorderProps> {
-  public static OptionName = "border";
+  public static OptionName = 'border';
 }
 
 // owners:
@@ -229,9 +229,10 @@ class Border extends NestedOption<IBorderProps> {
 type IBreakProps = React.PropsWithChildren<{
   endValue?: any | number | string;
   startValue?: any | number | string;
-}>
+}>;
 class Break extends NestedOption<IBreakProps> {
-  public static OptionName = "breaks";
+  public static OptionName = 'breaks';
+
   public static IsCollectionItem = true;
 }
 
@@ -239,11 +240,11 @@ class Break extends NestedOption<IBreakProps> {
 // Scale
 type IBreakStyleProps = React.PropsWithChildren<{
   color?: string;
-  line?: "straight" | "waved";
+  line?: 'straight' | 'waved';
   width?: number;
-}>
+}>;
 class BreakStyle extends NestedOption<IBreakStyleProps> {
-  public static OptionName = "breakStyle";
+  public static OptionName = 'breakStyle';
 }
 
 // owners:
@@ -261,8 +262,8 @@ type IChartProps = React.PropsWithChildren<{
   maxBubbleSize?: number;
   minBubbleSize?: number;
   negativesAsZeroes?: boolean;
-  palette?: Array<string> | "Bright" | "Harmony Light" | "Ocean" | "Pastel" | "Soft" | "Soft Pastel" | "Vintage" | "Violet" | "Carmine" | "Dark Moon" | "Dark Violet" | "Green Mist" | "Soft Blue" | "Material" | "Office";
-  paletteExtensionMode?: "alternate" | "blend" | "extrapolate";
+  palette?: Array<string> | 'Bright' | 'Harmony Light' | 'Ocean' | 'Pastel' | 'Soft' | 'Soft Pastel' | 'Vintage' | 'Violet' | 'Carmine' | 'Dark Moon' | 'Dark Violet' | 'Green Mist' | 'Soft Blue' | 'Material' | 'Office';
+  paletteExtensionMode?: 'alternate' | 'blend' | 'extrapolate';
   series?: Array<ChartSeries> | ChartSeries;
   seriesTemplate?: object | {
     customizeSeries?: ((seriesName: any) => ChartSeries);
@@ -274,18 +275,19 @@ type IChartProps = React.PropsWithChildren<{
     logarithmBase?: number;
     max?: number;
     min?: number;
-    type?: "continuous" | "logarithmic";
-    valueType?: "datetime" | "numeric" | "string";
+    type?: 'continuous' | 'logarithmic';
+    valueType?: 'datetime' | 'numeric' | 'string';
   };
-}>
+}>;
 class Chart extends NestedOption<IChartProps> {
-  public static OptionName = "chart";
+  public static OptionName = 'chart';
+
   public static ExpectedChildren = {
-    commonSeriesSettings: { optionName: "commonSeriesSettings", isCollectionItem: false },
-    dataPrepareSettings: { optionName: "dataPrepareSettings", isCollectionItem: false },
-    series: { optionName: "series", isCollectionItem: true },
-    seriesTemplate: { optionName: "seriesTemplate", isCollectionItem: false },
-    valueAxis: { optionName: "valueAxis", isCollectionItem: false }
+    commonSeriesSettings: { optionName: 'commonSeriesSettings', isCollectionItem: false },
+    dataPrepareSettings: { optionName: 'dataPrepareSettings', isCollectionItem: false },
+    series: { optionName: 'series', isCollectionItem: true },
+    seriesTemplate: { optionName: 'seriesTemplate', isCollectionItem: false },
+    valueAxis: { optionName: 'valueAxis', isCollectionItem: false },
   };
 }
 
@@ -299,9 +301,9 @@ class Chart extends NestedOption<IChartProps> {
 type IColorProps = React.PropsWithChildren<{
   base?: string;
   fillId?: string;
-}>
+}>;
 class Color extends NestedOption<IColorProps> {
-  public static OptionName = "color";
+  public static OptionName = 'color';
 }
 
 // owners:
@@ -310,7 +312,7 @@ type ICommonSeriesSettingsProps = React.PropsWithChildren<{
   aggregation?: object | {
     calculate?: ((aggregationInfo: chartPointAggregationInfoObject, series: chartSeriesObject) => object);
     enabled?: boolean;
-    method?: "avg" | "count" | "max" | "min" | "ohlc" | "range" | "sum" | "custom";
+    method?: 'avg' | 'count' | 'max' | 'min' | 'ohlc' | 'range' | 'sum' | 'custom';
   };
   area?: any;
   argumentField?: string;
@@ -321,7 +323,7 @@ type ICommonSeriesSettingsProps = React.PropsWithChildren<{
   barWidth?: number;
   border?: object | {
     color?: string;
-    dashStyle?: "dash" | "dot" | "longDash" | "solid";
+    dashStyle?: 'dash' | 'dot' | 'longDash' | 'solid';
     visible?: boolean;
     width?: number;
   };
@@ -330,25 +332,25 @@ type ICommonSeriesSettingsProps = React.PropsWithChildren<{
   closeValueField?: string;
   color?: ChartsColor | string;
   cornerRadius?: number;
-  dashStyle?: "dash" | "dot" | "longDash" | "solid";
+  dashStyle?: 'dash' | 'dot' | 'longDash' | 'solid';
   fullstackedarea?: any;
   fullstackedbar?: any;
   fullstackedline?: any;
   fullstackedspline?: any;
   fullstackedsplinearea?: any;
   highValueField?: string;
-  hoverMode?: "allArgumentPoints" | "allSeriesPoints" | "excludePoints" | "includePoints" | "nearestPoint" | "none" | "onlyPoint";
+  hoverMode?: 'allArgumentPoints' | 'allSeriesPoints' | 'excludePoints' | 'includePoints' | 'nearestPoint' | 'none' | 'onlyPoint';
   hoverStyle?: object | {
     border?: object | {
       color?: string;
-      dashStyle?: "dash" | "dot" | "longDash" | "solid";
+      dashStyle?: 'dash' | 'dot' | 'longDash' | 'solid';
       visible?: boolean;
       width?: number;
     };
     color?: ChartsColor | string;
-    dashStyle?: "dash" | "dot" | "longDash" | "solid";
+    dashStyle?: 'dash' | 'dot' | 'longDash' | 'solid';
     hatching?: object | {
-      direction?: "left" | "none" | "right";
+      direction?: 'left' | 'none' | 'right';
       opacity?: number;
       step?: number;
       width?: number;
@@ -359,12 +361,12 @@ type ICommonSeriesSettingsProps = React.PropsWithChildren<{
   ignoreEmptyPoints?: boolean;
   innerColor?: string;
   label?: object | {
-    alignment?: "center" | "left" | "right";
+    alignment?: 'center' | 'left' | 'right';
     argumentFormat?: LocalizationTypes.Format;
     backgroundColor?: string;
     border?: object | {
       color?: string;
-      dashStyle?: "dash" | "dot" | "longDash" | "solid";
+      dashStyle?: 'dash' | 'dot' | 'longDash' | 'solid';
       visible?: boolean;
       width?: number;
     };
@@ -378,7 +380,7 @@ type ICommonSeriesSettingsProps = React.PropsWithChildren<{
     font?: BaseWidgetTypes.Font;
     format?: LocalizationTypes.Format;
     horizontalOffset?: number;
-    position?: "inside" | "outside";
+    position?: 'inside' | 'outside';
     rotationAngle?: number;
     showForZeroValues?: boolean;
     verticalOffset?: number;
@@ -398,7 +400,7 @@ type ICommonSeriesSettingsProps = React.PropsWithChildren<{
       width?: number;
     };
     color?: ChartsColor | string;
-    hoverMode?: "allArgumentPoints" | "allSeriesPoints" | "none" | "onlyPoint";
+    hoverMode?: 'allArgumentPoints' | 'allSeriesPoints' | 'none' | 'onlyPoint';
     hoverStyle?: object | {
       border?: object | {
         color?: string;
@@ -422,7 +424,7 @@ type ICommonSeriesSettingsProps = React.PropsWithChildren<{
         rangeMinPoint?: number;
       };
     };
-    selectionMode?: "allArgumentPoints" | "allSeriesPoints" | "none" | "onlyPoint";
+    selectionMode?: 'allArgumentPoints' | 'allSeriesPoints' | 'none' | 'onlyPoint';
     selectionStyle?: object | {
       border?: object | {
         color?: string;
@@ -433,7 +435,7 @@ type ICommonSeriesSettingsProps = React.PropsWithChildren<{
       size?: number;
     };
     size?: number;
-    symbol?: "circle" | "cross" | "polygon" | "square" | "triangle" | "triangleDown" | "triangleUp";
+    symbol?: 'circle' | 'cross' | 'polygon' | 'square' | 'triangle' | 'triangleDown' | 'triangleUp';
     visible?: boolean;
   };
   rangearea?: any;
@@ -442,21 +444,21 @@ type ICommonSeriesSettingsProps = React.PropsWithChildren<{
   rangeValue2Field?: string;
   reduction?: object | {
     color?: string;
-    level?: "close" | "high" | "low" | "open";
+    level?: 'close' | 'high' | 'low' | 'open';
   };
   scatter?: any;
-  selectionMode?: "allArgumentPoints" | "allSeriesPoints" | "excludePoints" | "includePoints" | "none" | "onlyPoint";
+  selectionMode?: 'allArgumentPoints' | 'allSeriesPoints' | 'excludePoints' | 'includePoints' | 'none' | 'onlyPoint';
   selectionStyle?: object | {
     border?: object | {
       color?: string;
-      dashStyle?: "dash" | "dot" | "longDash" | "solid";
+      dashStyle?: 'dash' | 'dot' | 'longDash' | 'solid';
       visible?: boolean;
       width?: number;
     };
     color?: ChartsColor | string;
-    dashStyle?: "dash" | "dot" | "longDash" | "solid";
+    dashStyle?: 'dash' | 'dot' | 'longDash' | 'solid';
     hatching?: object | {
-      direction?: "left" | "none" | "right";
+      direction?: 'left' | 'none' | 'right';
       opacity?: number;
       step?: number;
       width?: number;
@@ -478,38 +480,39 @@ type ICommonSeriesSettingsProps = React.PropsWithChildren<{
   stepline?: any;
   stock?: any;
   tagField?: string;
-  type?: "area" | "bar" | "bubble" | "candlestick" | "fullstackedarea" | "fullstackedbar" | "fullstackedline" | "fullstackedspline" | "fullstackedsplinearea" | "line" | "rangearea" | "rangebar" | "scatter" | "spline" | "splinearea" | "stackedarea" | "stackedbar" | "stackedline" | "stackedspline" | "stackedsplinearea" | "steparea" | "stepline" | "stock";
+  type?: 'area' | 'bar' | 'bubble' | 'candlestick' | 'fullstackedarea' | 'fullstackedbar' | 'fullstackedline' | 'fullstackedspline' | 'fullstackedsplinearea' | 'line' | 'rangearea' | 'rangebar' | 'scatter' | 'spline' | 'splinearea' | 'stackedarea' | 'stackedbar' | 'stackedline' | 'stackedspline' | 'stackedsplinearea' | 'steparea' | 'stepline' | 'stock';
   valueErrorBar?: object | {
     color?: string;
-    displayMode?: "auto" | "high" | "low" | "none";
+    displayMode?: 'auto' | 'high' | 'low' | 'none';
     edgeLength?: number;
     highValueField?: string;
     lineWidth?: number;
     lowValueField?: string;
     opacity?: number;
-    type?: "fixed" | "percent" | "stdDeviation" | "stdError" | "variance";
+    type?: 'fixed' | 'percent' | 'stdDeviation' | 'stdError' | 'variance';
     value?: number;
   };
   valueField?: string;
   visible?: boolean;
   width?: number;
-}>
+}>;
 class CommonSeriesSettings extends NestedOption<ICommonSeriesSettingsProps> {
-  public static OptionName = "commonSeriesSettings";
+  public static OptionName = 'commonSeriesSettings';
+
   public static ExpectedChildren = {
-    aggregation: { optionName: "aggregation", isCollectionItem: false },
-    border: { optionName: "border", isCollectionItem: false },
-    color: { optionName: "color", isCollectionItem: false },
-    commonSeriesSettingsHoverStyle: { optionName: "hoverStyle", isCollectionItem: false },
-    commonSeriesSettingsLabel: { optionName: "label", isCollectionItem: false },
-    commonSeriesSettingsSelectionStyle: { optionName: "selectionStyle", isCollectionItem: false },
-    hoverStyle: { optionName: "hoverStyle", isCollectionItem: false },
-    label: { optionName: "label", isCollectionItem: false },
-    point: { optionName: "point", isCollectionItem: false },
-    reduction: { optionName: "reduction", isCollectionItem: false },
-    selectionStyle: { optionName: "selectionStyle", isCollectionItem: false },
-    seriesBorder: { optionName: "border", isCollectionItem: false },
-    valueErrorBar: { optionName: "valueErrorBar", isCollectionItem: false }
+    aggregation: { optionName: 'aggregation', isCollectionItem: false },
+    border: { optionName: 'border', isCollectionItem: false },
+    color: { optionName: 'color', isCollectionItem: false },
+    commonSeriesSettingsHoverStyle: { optionName: 'hoverStyle', isCollectionItem: false },
+    commonSeriesSettingsLabel: { optionName: 'label', isCollectionItem: false },
+    commonSeriesSettingsSelectionStyle: { optionName: 'selectionStyle', isCollectionItem: false },
+    hoverStyle: { optionName: 'hoverStyle', isCollectionItem: false },
+    label: { optionName: 'label', isCollectionItem: false },
+    point: { optionName: 'point', isCollectionItem: false },
+    reduction: { optionName: 'reduction', isCollectionItem: false },
+    selectionStyle: { optionName: 'selectionStyle', isCollectionItem: false },
+    seriesBorder: { optionName: 'border', isCollectionItem: false },
+    valueErrorBar: { optionName: 'valueErrorBar', isCollectionItem: false },
   };
 }
 
@@ -518,40 +521,41 @@ class CommonSeriesSettings extends NestedOption<ICommonSeriesSettingsProps> {
 type ICommonSeriesSettingsHoverStyleProps = React.PropsWithChildren<{
   border?: object | {
     color?: string;
-    dashStyle?: "dash" | "dot" | "longDash" | "solid";
+    dashStyle?: 'dash' | 'dot' | 'longDash' | 'solid';
     visible?: boolean;
     width?: number;
   };
   color?: ChartsColor | string;
-  dashStyle?: "dash" | "dot" | "longDash" | "solid";
+  dashStyle?: 'dash' | 'dot' | 'longDash' | 'solid';
   hatching?: object | {
-    direction?: "left" | "none" | "right";
+    direction?: 'left' | 'none' | 'right';
     opacity?: number;
     step?: number;
     width?: number;
   };
   highlight?: boolean;
   width?: number;
-}>
+}>;
 class CommonSeriesSettingsHoverStyle extends NestedOption<ICommonSeriesSettingsHoverStyleProps> {
-  public static OptionName = "hoverStyle";
+  public static OptionName = 'hoverStyle';
+
   public static ExpectedChildren = {
-    border: { optionName: "border", isCollectionItem: false },
-    color: { optionName: "color", isCollectionItem: false },
-    hatching: { optionName: "hatching", isCollectionItem: false },
-    seriesBorder: { optionName: "border", isCollectionItem: false }
+    border: { optionName: 'border', isCollectionItem: false },
+    color: { optionName: 'color', isCollectionItem: false },
+    hatching: { optionName: 'hatching', isCollectionItem: false },
+    seriesBorder: { optionName: 'border', isCollectionItem: false },
   };
 }
 
 // owners:
 // CommonSeriesSettings
 type ICommonSeriesSettingsLabelProps = React.PropsWithChildren<{
-  alignment?: "center" | "left" | "right";
+  alignment?: 'center' | 'left' | 'right';
   argumentFormat?: LocalizationTypes.Format;
   backgroundColor?: string;
   border?: object | {
     color?: string;
-    dashStyle?: "dash" | "dot" | "longDash" | "solid";
+    dashStyle?: 'dash' | 'dot' | 'longDash' | 'solid';
     visible?: boolean;
     width?: number;
   };
@@ -565,21 +569,22 @@ type ICommonSeriesSettingsLabelProps = React.PropsWithChildren<{
   font?: BaseWidgetTypes.Font;
   format?: LocalizationTypes.Format;
   horizontalOffset?: number;
-  position?: "inside" | "outside";
+  position?: 'inside' | 'outside';
   rotationAngle?: number;
   showForZeroValues?: boolean;
   verticalOffset?: number;
   visible?: boolean;
-}>
+}>;
 class CommonSeriesSettingsLabel extends NestedOption<ICommonSeriesSettingsLabelProps> {
-  public static OptionName = "label";
+  public static OptionName = 'label';
+
   public static ExpectedChildren = {
-    argumentFormat: { optionName: "argumentFormat", isCollectionItem: false },
-    border: { optionName: "border", isCollectionItem: false },
-    connector: { optionName: "connector", isCollectionItem: false },
-    font: { optionName: "font", isCollectionItem: false },
-    format: { optionName: "format", isCollectionItem: false },
-    seriesBorder: { optionName: "border", isCollectionItem: false }
+    argumentFormat: { optionName: 'argumentFormat', isCollectionItem: false },
+    border: { optionName: 'border', isCollectionItem: false },
+    connector: { optionName: 'connector', isCollectionItem: false },
+    font: { optionName: 'font', isCollectionItem: false },
+    format: { optionName: 'format', isCollectionItem: false },
+    seriesBorder: { optionName: 'border', isCollectionItem: false },
   };
 }
 
@@ -588,28 +593,29 @@ class CommonSeriesSettingsLabel extends NestedOption<ICommonSeriesSettingsLabelP
 type ICommonSeriesSettingsSelectionStyleProps = React.PropsWithChildren<{
   border?: object | {
     color?: string;
-    dashStyle?: "dash" | "dot" | "longDash" | "solid";
+    dashStyle?: 'dash' | 'dot' | 'longDash' | 'solid';
     visible?: boolean;
     width?: number;
   };
   color?: ChartsColor | string;
-  dashStyle?: "dash" | "dot" | "longDash" | "solid";
+  dashStyle?: 'dash' | 'dot' | 'longDash' | 'solid';
   hatching?: object | {
-    direction?: "left" | "none" | "right";
+    direction?: 'left' | 'none' | 'right';
     opacity?: number;
     step?: number;
     width?: number;
   };
   highlight?: boolean;
   width?: number;
-}>
+}>;
 class CommonSeriesSettingsSelectionStyle extends NestedOption<ICommonSeriesSettingsSelectionStyleProps> {
-  public static OptionName = "selectionStyle";
+  public static OptionName = 'selectionStyle';
+
   public static ExpectedChildren = {
-    border: { optionName: "border", isCollectionItem: false },
-    color: { optionName: "color", isCollectionItem: false },
-    hatching: { optionName: "hatching", isCollectionItem: false },
-    seriesBorder: { optionName: "border", isCollectionItem: false }
+    border: { optionName: 'border', isCollectionItem: false },
+    color: { optionName: 'color', isCollectionItem: false },
+    hatching: { optionName: 'hatching', isCollectionItem: false },
+    seriesBorder: { optionName: 'border', isCollectionItem: false },
   };
 }
 
@@ -619,9 +625,9 @@ type IConnectorProps = React.PropsWithChildren<{
   color?: string;
   visible?: boolean;
   width?: number;
-}>
+}>;
 class Connector extends NestedOption<IConnectorProps> {
-  public static OptionName = "connector";
+  public static OptionName = 'connector';
 }
 
 // owners:
@@ -630,9 +636,9 @@ type IDataPrepareSettingsProps = React.PropsWithChildren<{
   checkTypeForAllData?: boolean;
   convertToAxisDataType?: boolean;
   sortingMethod?: boolean | ((a: { arg: any | number | string, val: any | number | string }, b: { arg: any | number | string, val: any | number | string }) => number);
-}>
+}>;
 class DataPrepareSettings extends NestedOption<IDataPrepareSettingsProps> {
-  public static OptionName = "dataPrepareSettings";
+  public static OptionName = 'dataPrepareSettings';
 }
 
 // owners:
@@ -641,13 +647,13 @@ type IExportProps = React.PropsWithChildren<{
   backgroundColor?: string;
   enabled?: boolean;
   fileName?: string;
-  formats?: Array<"GIF" | "JPEG" | "PDF" | "PNG" | "SVG">;
+  formats?: Array<'GIF' | 'JPEG' | 'PDF' | 'PNG' | 'SVG'>;
   margin?: number;
   printingEnabled?: boolean;
   svgToCanvas?: ((svg: any, canvas: any) => any);
-}>
+}>;
 class Export extends NestedOption<IExportProps> {
-  public static OptionName = "export";
+  public static OptionName = 'export';
 }
 
 // owners:
@@ -663,9 +669,9 @@ type IFontProps = React.PropsWithChildren<{
   opacity?: number;
   size?: number | string;
   weight?: number;
-}>
+}>;
 class Font extends NestedOption<IFontProps> {
-  public static OptionName = "font";
+  public static OptionName = 'font';
 }
 
 // owners:
@@ -678,24 +684,24 @@ type IFormatProps = React.PropsWithChildren<{
   formatter?: ((value: number | any) => string);
   parser?: ((value: string) => number);
   precision?: number;
-  type?: "billions" | "currency" | "day" | "decimal" | "exponential" | "fixedPoint" | "largeNumber" | "longDate" | "longTime" | "millions" | "millisecond" | "month" | "monthAndDay" | "monthAndYear" | "percent" | "quarter" | "quarterAndYear" | "shortDate" | "shortTime" | "thousands" | "trillions" | "year" | "dayOfWeek" | "hour" | "longDateLongTime" | "minute" | "second" | "shortDateShortTime";
+  type?: 'billions' | 'currency' | 'day' | 'decimal' | 'exponential' | 'fixedPoint' | 'largeNumber' | 'longDate' | 'longTime' | 'millions' | 'millisecond' | 'month' | 'monthAndDay' | 'monthAndYear' | 'percent' | 'quarter' | 'quarterAndYear' | 'shortDate' | 'shortTime' | 'thousands' | 'trillions' | 'year' | 'dayOfWeek' | 'hour' | 'longDateLongTime' | 'minute' | 'second' | 'shortDateShortTime';
   useCurrencyAccountingStyle?: boolean;
-}>
+}>;
 class Format extends NestedOption<IFormatProps> {
-  public static OptionName = "format";
+  public static OptionName = 'format';
 }
 
 // owners:
 // CommonSeriesSettingsHoverStyle
 // CommonSeriesSettingsSelectionStyle
 type IHatchingProps = React.PropsWithChildren<{
-  direction?: "left" | "none" | "right";
+  direction?: 'left' | 'none' | 'right';
   opacity?: number;
   step?: number;
   width?: number;
-}>
+}>;
 class Hatching extends NestedOption<IHatchingProps> {
-  public static OptionName = "hatching";
+  public static OptionName = 'hatching';
 }
 
 // owners:
@@ -703,9 +709,9 @@ class Hatching extends NestedOption<IHatchingProps> {
 type IHeightProps = React.PropsWithChildren<{
   rangeMaxPoint?: number;
   rangeMinPoint?: number;
-}>
+}>;
 class Height extends NestedOption<IHeightProps> {
-  public static OptionName = "height";
+  public static OptionName = 'height';
 }
 
 // owners:
@@ -714,14 +720,14 @@ class Height extends NestedOption<IHeightProps> {
 type IHoverStyleProps = React.PropsWithChildren<{
   border?: object | {
     color?: string;
-    dashStyle?: "dash" | "dot" | "longDash" | "solid";
+    dashStyle?: 'dash' | 'dot' | 'longDash' | 'solid';
     visible?: boolean;
     width?: number;
   };
   color?: ChartsColor | string;
-  dashStyle?: "dash" | "dot" | "longDash" | "solid";
+  dashStyle?: 'dash' | 'dot' | 'longDash' | 'solid';
   hatching?: object | {
-    direction?: "left" | "none" | "right";
+    direction?: 'left' | 'none' | 'right';
     opacity?: number;
     step?: number;
     width?: number;
@@ -729,16 +735,16 @@ type IHoverStyleProps = React.PropsWithChildren<{
   highlight?: boolean;
   width?: number;
   size?: number;
-}>
+}>;
 class HoverStyle extends NestedOption<IHoverStyleProps> {
-  public static OptionName = "hoverStyle";
+  public static OptionName = 'hoverStyle';
 }
 
 // owners:
 // Background
 // Point
 type IImageProps = React.PropsWithChildren<{
-  location?: "center" | "centerBottom" | "centerTop" | "full" | "leftBottom" | "leftCenter" | "leftTop" | "rightBottom" | "rightCenter" | "rightTop";
+  location?: 'center' | 'centerBottom' | 'centerTop' | 'full' | 'leftBottom' | 'leftCenter' | 'leftTop' | 'rightBottom' | 'rightCenter' | 'rightTop';
   url?: string;
   height?: number | object | {
     rangeMaxPoint?: number;
@@ -748,9 +754,9 @@ type IImageProps = React.PropsWithChildren<{
     rangeMaxPoint?: number;
     rangeMinPoint?: number;
   };
-}>
+}>;
 class Image extends NestedOption<IImageProps> {
-  public static OptionName = "image";
+  public static OptionName = 'image';
 }
 
 // owners:
@@ -758,9 +764,9 @@ class Image extends NestedOption<IImageProps> {
 type IIndentProps = React.PropsWithChildren<{
   left?: number;
   right?: number;
-}>
+}>;
 class Indent extends NestedOption<IIndentProps> {
-  public static OptionName = "indent";
+  public static OptionName = 'indent';
 }
 
 // owners:
@@ -768,12 +774,12 @@ class Indent extends NestedOption<IIndentProps> {
 // Scale
 // Marker
 type ILabelProps = React.PropsWithChildren<{
-  alignment?: "center" | "left" | "right";
+  alignment?: 'center' | 'left' | 'right';
   argumentFormat?: LocalizationTypes.Format;
   backgroundColor?: string;
   border?: object | {
     color?: string;
-    dashStyle?: "dash" | "dot" | "longDash" | "solid";
+    dashStyle?: 'dash' | 'dot' | 'longDash' | 'solid';
     visible?: boolean;
     width?: number;
   };
@@ -787,16 +793,16 @@ type ILabelProps = React.PropsWithChildren<{
   font?: BaseWidgetTypes.Font;
   format?: LocalizationTypes.Format;
   horizontalOffset?: number;
-  position?: "inside" | "outside";
+  position?: 'inside' | 'outside';
   rotationAngle?: number;
   showForZeroValues?: boolean;
   verticalOffset?: number;
   visible?: boolean;
-  overlappingBehavior?: "hide" | "none";
+  overlappingBehavior?: 'hide' | 'none';
   topIndent?: number;
-}>
+}>;
 class Label extends NestedOption<ILabelProps> {
-  public static OptionName = "label";
+  public static OptionName = 'label';
 }
 
 // owners:
@@ -811,9 +817,9 @@ type ILengthProps = React.PropsWithChildren<{
   seconds?: number;
   weeks?: number;
   years?: number;
-}>
+}>;
 class Length extends NestedOption<ILengthProps> {
-  public static OptionName = "length";
+  public static OptionName = 'length';
 }
 
 // owners:
@@ -826,14 +832,16 @@ type ILoadingIndicatorProps = React.PropsWithChildren<{
   text?: string;
   defaultShow?: boolean;
   onShowChange?: (value: boolean) => void;
-}>
+}>;
 class LoadingIndicator extends NestedOption<ILoadingIndicatorProps> {
-  public static OptionName = "loadingIndicator";
+  public static OptionName = 'loadingIndicator';
+
   public static DefaultsProps = {
-    defaultShow: "show"
+    defaultShow: 'show',
   };
+
   public static ExpectedChildren = {
-    font: { optionName: "font", isCollectionItem: false }
+    font: { optionName: 'font', isCollectionItem: false },
   };
 }
 
@@ -845,9 +853,9 @@ type IMarginProps = React.PropsWithChildren<{
   left?: number;
   right?: number;
   top?: number;
-}>
+}>;
 class Margin extends NestedOption<IMarginProps> {
-  public static OptionName = "margin";
+  public static OptionName = 'margin';
 }
 
 // owners:
@@ -862,12 +870,13 @@ type IMarkerProps = React.PropsWithChildren<{
   textTopIndent?: number;
   topIndent?: number;
   visible?: boolean;
-}>
+}>;
 class Marker extends NestedOption<IMarkerProps> {
-  public static OptionName = "marker";
+  public static OptionName = 'marker';
+
   public static ExpectedChildren = {
-    label: { optionName: "label", isCollectionItem: false },
-    markerLabel: { optionName: "label", isCollectionItem: false }
+    label: { optionName: 'label', isCollectionItem: false },
+    markerLabel: { optionName: 'label', isCollectionItem: false },
   };
 }
 
@@ -876,11 +885,12 @@ class Marker extends NestedOption<IMarkerProps> {
 type IMarkerLabelProps = React.PropsWithChildren<{
   customizeText?: ((markerValue: { value: any | number, valueText: string }) => string);
   format?: LocalizationTypes.Format;
-}>
+}>;
 class MarkerLabel extends NestedOption<IMarkerLabelProps> {
-  public static OptionName = "label";
+  public static OptionName = 'label';
+
   public static ExpectedChildren = {
-    format: { optionName: "format", isCollectionItem: false }
+    format: { optionName: 'format', isCollectionItem: false },
   };
 }
 
@@ -896,9 +906,9 @@ type IMaxRangeProps = React.PropsWithChildren<{
   seconds?: number;
   weeks?: number;
   years?: number;
-}>
+}>;
 class MaxRange extends NestedOption<IMaxRangeProps> {
-  public static OptionName = "maxRange";
+  public static OptionName = 'maxRange';
 }
 
 // owners:
@@ -908,9 +918,9 @@ type IMinorTickProps = React.PropsWithChildren<{
   opacity?: number;
   visible?: boolean;
   width?: number;
-}>
+}>;
 class MinorTick extends NestedOption<IMinorTickProps> {
-  public static OptionName = "minorTick";
+  public static OptionName = 'minorTick';
 }
 
 // owners:
@@ -925,9 +935,9 @@ type IMinorTickIntervalProps = React.PropsWithChildren<{
   seconds?: number;
   weeks?: number;
   years?: number;
-}>
+}>;
 class MinorTickInterval extends NestedOption<IMinorTickIntervalProps> {
-  public static OptionName = "minorTickInterval";
+  public static OptionName = 'minorTickInterval';
 }
 
 // owners:
@@ -942,9 +952,9 @@ type IMinRangeProps = React.PropsWithChildren<{
   seconds?: number;
   weeks?: number;
   years?: number;
-}>
+}>;
 class MinRange extends NestedOption<IMinRangeProps> {
-  public static OptionName = "minRange";
+  public static OptionName = 'minRange';
 }
 
 // owners:
@@ -956,7 +966,7 @@ type IPointProps = React.PropsWithChildren<{
     width?: number;
   };
   color?: ChartsColor | string;
-  hoverMode?: "allArgumentPoints" | "allSeriesPoints" | "none" | "onlyPoint";
+  hoverMode?: 'allArgumentPoints' | 'allSeriesPoints' | 'none' | 'onlyPoint';
   hoverStyle?: object | {
     border?: object | {
       color?: string;
@@ -980,7 +990,7 @@ type IPointProps = React.PropsWithChildren<{
       rangeMinPoint?: number;
     };
   };
-  selectionMode?: "allArgumentPoints" | "allSeriesPoints" | "none" | "onlyPoint";
+  selectionMode?: 'allArgumentPoints' | 'allSeriesPoints' | 'none' | 'onlyPoint';
   selectionStyle?: object | {
     border?: object | {
       color?: string;
@@ -991,21 +1001,22 @@ type IPointProps = React.PropsWithChildren<{
     size?: number;
   };
   size?: number;
-  symbol?: "circle" | "cross" | "polygon" | "square" | "triangle" | "triangleDown" | "triangleUp";
+  symbol?: 'circle' | 'cross' | 'polygon' | 'square' | 'triangle' | 'triangleDown' | 'triangleUp';
   visible?: boolean;
-}>
+}>;
 class Point extends NestedOption<IPointProps> {
-  public static OptionName = "point";
+  public static OptionName = 'point';
+
   public static ExpectedChildren = {
-    border: { optionName: "border", isCollectionItem: false },
-    color: { optionName: "color", isCollectionItem: false },
-    hoverStyle: { optionName: "hoverStyle", isCollectionItem: false },
-    image: { optionName: "image", isCollectionItem: false },
-    pointBorder: { optionName: "border", isCollectionItem: false },
-    pointHoverStyle: { optionName: "hoverStyle", isCollectionItem: false },
-    pointImage: { optionName: "image", isCollectionItem: false },
-    pointSelectionStyle: { optionName: "selectionStyle", isCollectionItem: false },
-    selectionStyle: { optionName: "selectionStyle", isCollectionItem: false }
+    border: { optionName: 'border', isCollectionItem: false },
+    color: { optionName: 'color', isCollectionItem: false },
+    hoverStyle: { optionName: 'hoverStyle', isCollectionItem: false },
+    image: { optionName: 'image', isCollectionItem: false },
+    pointBorder: { optionName: 'border', isCollectionItem: false },
+    pointHoverStyle: { optionName: 'hoverStyle', isCollectionItem: false },
+    pointImage: { optionName: 'image', isCollectionItem: false },
+    pointSelectionStyle: { optionName: 'selectionStyle', isCollectionItem: false },
+    selectionStyle: { optionName: 'selectionStyle', isCollectionItem: false },
   };
 }
 
@@ -1017,9 +1028,9 @@ type IPointBorderProps = React.PropsWithChildren<{
   color?: string;
   visible?: boolean;
   width?: number;
-}>
+}>;
 class PointBorder extends NestedOption<IPointBorderProps> {
-  public static OptionName = "border";
+  public static OptionName = 'border';
 }
 
 // owners:
@@ -1032,13 +1043,14 @@ type IPointHoverStyleProps = React.PropsWithChildren<{
   };
   color?: ChartsColor | string;
   size?: number;
-}>
+}>;
 class PointHoverStyle extends NestedOption<IPointHoverStyleProps> {
-  public static OptionName = "hoverStyle";
+  public static OptionName = 'hoverStyle';
+
   public static ExpectedChildren = {
-    border: { optionName: "border", isCollectionItem: false },
-    color: { optionName: "color", isCollectionItem: false },
-    pointBorder: { optionName: "border", isCollectionItem: false }
+    border: { optionName: 'border', isCollectionItem: false },
+    color: { optionName: 'color', isCollectionItem: false },
+    pointBorder: { optionName: 'border', isCollectionItem: false },
   };
 }
 
@@ -1057,13 +1069,14 @@ type IPointImageProps = React.PropsWithChildren<{
     rangeMaxPoint?: number;
     rangeMinPoint?: number;
   };
-}>
+}>;
 class PointImage extends NestedOption<IPointImageProps> {
-  public static OptionName = "image";
+  public static OptionName = 'image';
+
   public static ExpectedChildren = {
-    height: { optionName: "height", isCollectionItem: false },
-    url: { optionName: "url", isCollectionItem: false },
-    width: { optionName: "width", isCollectionItem: false }
+    height: { optionName: 'height', isCollectionItem: false },
+    url: { optionName: 'url', isCollectionItem: false },
+    width: { optionName: 'width', isCollectionItem: false },
   };
 }
 
@@ -1077,13 +1090,14 @@ type IPointSelectionStyleProps = React.PropsWithChildren<{
   };
   color?: ChartsColor | string;
   size?: number;
-}>
+}>;
 class PointSelectionStyle extends NestedOption<IPointSelectionStyleProps> {
-  public static OptionName = "selectionStyle";
+  public static OptionName = 'selectionStyle';
+
   public static ExpectedChildren = {
-    border: { optionName: "border", isCollectionItem: false },
-    color: { optionName: "color", isCollectionItem: false },
-    pointBorder: { optionName: "border", isCollectionItem: false }
+    border: { optionName: 'border', isCollectionItem: false },
+    color: { optionName: 'color', isCollectionItem: false },
+    pointBorder: { optionName: 'border', isCollectionItem: false },
   };
 }
 
@@ -1091,10 +1105,10 @@ class PointSelectionStyle extends NestedOption<IPointSelectionStyleProps> {
 // CommonSeriesSettings
 type IReductionProps = React.PropsWithChildren<{
   color?: string;
-  level?: "close" | "high" | "low" | "open";
-}>
+  level?: 'close' | 'high' | 'low' | 'open';
+}>;
 class Reduction extends NestedOption<IReductionProps> {
-  public static OptionName = "reduction";
+  public static OptionName = 'reduction';
 }
 
 // owners:
@@ -1102,7 +1116,7 @@ class Reduction extends NestedOption<IReductionProps> {
 type IScaleProps = React.PropsWithChildren<{
   aggregateByCategory?: boolean;
   aggregationGroupWidth?: number;
-  aggregationInterval?: number | object | "day" | "hour" | "millisecond" | "minute" | "month" | "quarter" | "second" | "week" | "year" | {
+  aggregationInterval?: number | object | 'day' | 'hour' | 'millisecond' | 'minute' | 'month' | 'quarter' | 'second' | 'week' | 'year' | {
     days?: number;
     hours?: number;
     milliseconds?: number;
@@ -1120,11 +1134,11 @@ type IScaleProps = React.PropsWithChildren<{
   }[];
   breakStyle?: object | {
     color?: string;
-    line?: "straight" | "waved";
+    line?: 'straight' | 'waved';
     width?: number;
   };
   categories?: Array<any | number | string>;
-  discreteAxisDivisionMode?: "betweenLabels" | "crossLabels";
+  discreteAxisDivisionMode?: 'betweenLabels' | 'crossLabels';
   endOnTick?: boolean;
   endValue?: any | number | string;
   holidays?: Array<any | string> | Array<number>;
@@ -1132,7 +1146,7 @@ type IScaleProps = React.PropsWithChildren<{
     customizeText?: ((scaleValue: { value: any | number | string, valueText: string }) => string);
     font?: BaseWidgetTypes.Font;
     format?: LocalizationTypes.Format;
-    overlappingBehavior?: "hide" | "none";
+    overlappingBehavior?: 'hide' | 'none';
     topIndent?: number;
     visible?: boolean;
   };
@@ -1149,7 +1163,7 @@ type IScaleProps = React.PropsWithChildren<{
     topIndent?: number;
     visible?: boolean;
   };
-  maxRange?: number | object | "day" | "hour" | "millisecond" | "minute" | "month" | "quarter" | "second" | "week" | "year" | {
+  maxRange?: number | object | 'day' | 'hour' | 'millisecond' | 'minute' | 'month' | 'quarter' | 'second' | 'week' | 'year' | {
     days?: number;
     hours?: number;
     milliseconds?: number;
@@ -1167,7 +1181,7 @@ type IScaleProps = React.PropsWithChildren<{
     width?: number;
   };
   minorTickCount?: number;
-  minorTickInterval?: number | object | "day" | "hour" | "millisecond" | "minute" | "month" | "quarter" | "second" | "week" | "year" | {
+  minorTickInterval?: number | object | 'day' | 'hour' | 'millisecond' | 'minute' | 'month' | 'quarter' | 'second' | 'week' | 'year' | {
     days?: number;
     hours?: number;
     milliseconds?: number;
@@ -1178,7 +1192,7 @@ type IScaleProps = React.PropsWithChildren<{
     weeks?: number;
     years?: number;
   };
-  minRange?: number | object | "day" | "hour" | "millisecond" | "minute" | "month" | "quarter" | "second" | "week" | "year" | {
+  minRange?: number | object | 'day' | 'hour' | 'millisecond' | 'minute' | 'month' | 'quarter' | 'second' | 'week' | 'year' | {
     days?: number;
     hours?: number;
     milliseconds?: number;
@@ -1198,7 +1212,7 @@ type IScaleProps = React.PropsWithChildren<{
     opacity?: number;
     width?: number;
   };
-  tickInterval?: number | object | "day" | "hour" | "millisecond" | "minute" | "month" | "quarter" | "second" | "week" | "year" | {
+  tickInterval?: number | object | 'day' | 'hour' | 'millisecond' | 'minute' | 'month' | 'quarter' | 'second' | 'week' | 'year' | {
     days?: number;
     hours?: number;
     milliseconds?: number;
@@ -1209,26 +1223,27 @@ type IScaleProps = React.PropsWithChildren<{
     weeks?: number;
     years?: number;
   };
-  type?: "continuous" | "discrete" | "logarithmic" | "semidiscrete";
-  valueType?: "datetime" | "numeric" | "string";
+  type?: 'continuous' | 'discrete' | 'logarithmic' | 'semidiscrete';
+  valueType?: 'datetime' | 'numeric' | 'string';
   workdaysOnly?: boolean;
   workWeek?: Array<number>;
-}>
+}>;
 class Scale extends NestedOption<IScaleProps> {
-  public static OptionName = "scale";
+  public static OptionName = 'scale';
+
   public static ExpectedChildren = {
-    aggregationInterval: { optionName: "aggregationInterval", isCollectionItem: false },
-    break: { optionName: "breaks", isCollectionItem: true },
-    breakStyle: { optionName: "breakStyle", isCollectionItem: false },
-    label: { optionName: "label", isCollectionItem: false },
-    marker: { optionName: "marker", isCollectionItem: false },
-    maxRange: { optionName: "maxRange", isCollectionItem: false },
-    minorTick: { optionName: "minorTick", isCollectionItem: false },
-    minorTickInterval: { optionName: "minorTickInterval", isCollectionItem: false },
-    minRange: { optionName: "minRange", isCollectionItem: false },
-    scaleLabel: { optionName: "label", isCollectionItem: false },
-    tick: { optionName: "tick", isCollectionItem: false },
-    tickInterval: { optionName: "tickInterval", isCollectionItem: false }
+    aggregationInterval: { optionName: 'aggregationInterval', isCollectionItem: false },
+    break: { optionName: 'breaks', isCollectionItem: true },
+    breakStyle: { optionName: 'breakStyle', isCollectionItem: false },
+    label: { optionName: 'label', isCollectionItem: false },
+    marker: { optionName: 'marker', isCollectionItem: false },
+    maxRange: { optionName: 'maxRange', isCollectionItem: false },
+    minorTick: { optionName: 'minorTick', isCollectionItem: false },
+    minorTickInterval: { optionName: 'minorTickInterval', isCollectionItem: false },
+    minRange: { optionName: 'minRange', isCollectionItem: false },
+    scaleLabel: { optionName: 'label', isCollectionItem: false },
+    tick: { optionName: 'tick', isCollectionItem: false },
+    tickInterval: { optionName: 'tickInterval', isCollectionItem: false },
   };
 }
 
@@ -1238,15 +1253,16 @@ type IScaleLabelProps = React.PropsWithChildren<{
   customizeText?: ((scaleValue: { value: any | number | string, valueText: string }) => string);
   font?: BaseWidgetTypes.Font;
   format?: LocalizationTypes.Format;
-  overlappingBehavior?: "hide" | "none";
+  overlappingBehavior?: 'hide' | 'none';
   topIndent?: number;
   visible?: boolean;
-}>
+}>;
 class ScaleLabel extends NestedOption<IScaleLabelProps> {
-  public static OptionName = "label";
+  public static OptionName = 'label';
+
   public static ExpectedChildren = {
-    font: { optionName: "font", isCollectionItem: false },
-    format: { optionName: "format", isCollectionItem: false }
+    font: { optionName: 'font', isCollectionItem: false },
+    format: { optionName: 'format', isCollectionItem: false },
   };
 }
 
@@ -1261,18 +1277,18 @@ type ISelectionStyleProps = React.PropsWithChildren<{
   };
   color?: ChartsColor | string;
   size?: number;
-  dashStyle?: "dash" | "dot" | "longDash" | "solid";
+  dashStyle?: 'dash' | 'dot' | 'longDash' | 'solid';
   hatching?: object | {
-    direction?: "left" | "none" | "right";
+    direction?: 'left' | 'none' | 'right';
     opacity?: number;
     step?: number;
     width?: number;
   };
   highlight?: boolean;
   width?: number;
-}>
+}>;
 class SelectionStyle extends NestedOption<ISelectionStyleProps> {
-  public static OptionName = "selectionStyle";
+  public static OptionName = 'selectionStyle';
 }
 
 // owners:
@@ -1281,7 +1297,7 @@ type ISeriesProps = React.PropsWithChildren<{
   aggregation?: object | {
     calculate?: ((aggregationInfo: chartPointAggregationInfoObject, series: chartSeriesObject) => object);
     enabled?: boolean;
-    method?: "avg" | "count" | "max" | "min" | "ohlc" | "range" | "sum" | "custom";
+    method?: 'avg' | 'count' | 'max' | 'min' | 'ohlc' | 'range' | 'sum' | 'custom';
   };
   argumentField?: string;
   axis?: string;
@@ -1290,27 +1306,27 @@ type ISeriesProps = React.PropsWithChildren<{
   barWidth?: number;
   border?: object | {
     color?: string;
-    dashStyle?: "dash" | "dot" | "longDash" | "solid";
+    dashStyle?: 'dash' | 'dot' | 'longDash' | 'solid';
     visible?: boolean;
     width?: number;
   };
   closeValueField?: string;
   color?: ChartsColor | string;
   cornerRadius?: number;
-  dashStyle?: "dash" | "dot" | "longDash" | "solid";
+  dashStyle?: 'dash' | 'dot' | 'longDash' | 'solid';
   highValueField?: string;
-  hoverMode?: "allArgumentPoints" | "allSeriesPoints" | "excludePoints" | "includePoints" | "nearestPoint" | "none" | "onlyPoint";
+  hoverMode?: 'allArgumentPoints' | 'allSeriesPoints' | 'excludePoints' | 'includePoints' | 'nearestPoint' | 'none' | 'onlyPoint';
   hoverStyle?: object | {
     border?: object | {
       color?: string;
-      dashStyle?: "dash" | "dot" | "longDash" | "solid";
+      dashStyle?: 'dash' | 'dot' | 'longDash' | 'solid';
       visible?: boolean;
       width?: number;
     };
     color?: ChartsColor | string;
-    dashStyle?: "dash" | "dot" | "longDash" | "solid";
+    dashStyle?: 'dash' | 'dot' | 'longDash' | 'solid';
     hatching?: object | {
-      direction?: "left" | "none" | "right";
+      direction?: 'left' | 'none' | 'right';
       opacity?: number;
       step?: number;
       width?: number;
@@ -1321,12 +1337,12 @@ type ISeriesProps = React.PropsWithChildren<{
   ignoreEmptyPoints?: boolean;
   innerColor?: string;
   label?: object | {
-    alignment?: "center" | "left" | "right";
+    alignment?: 'center' | 'left' | 'right';
     argumentFormat?: LocalizationTypes.Format;
     backgroundColor?: string;
     border?: object | {
       color?: string;
-      dashStyle?: "dash" | "dot" | "longDash" | "solid";
+      dashStyle?: 'dash' | 'dot' | 'longDash' | 'solid';
       visible?: boolean;
       width?: number;
     };
@@ -1340,7 +1356,7 @@ type ISeriesProps = React.PropsWithChildren<{
     font?: BaseWidgetTypes.Font;
     format?: LocalizationTypes.Format;
     horizontalOffset?: number;
-    position?: "inside" | "outside";
+    position?: 'inside' | 'outside';
     rotationAngle?: number;
     showForZeroValues?: boolean;
     verticalOffset?: number;
@@ -1360,7 +1376,7 @@ type ISeriesProps = React.PropsWithChildren<{
       width?: number;
     };
     color?: ChartsColor | string;
-    hoverMode?: "allArgumentPoints" | "allSeriesPoints" | "none" | "onlyPoint";
+    hoverMode?: 'allArgumentPoints' | 'allSeriesPoints' | 'none' | 'onlyPoint';
     hoverStyle?: object | {
       border?: object | {
         color?: string;
@@ -1384,7 +1400,7 @@ type ISeriesProps = React.PropsWithChildren<{
         rangeMinPoint?: number;
       };
     };
-    selectionMode?: "allArgumentPoints" | "allSeriesPoints" | "none" | "onlyPoint";
+    selectionMode?: 'allArgumentPoints' | 'allSeriesPoints' | 'none' | 'onlyPoint';
     selectionStyle?: object | {
       border?: object | {
         color?: string;
@@ -1395,27 +1411,27 @@ type ISeriesProps = React.PropsWithChildren<{
       size?: number;
     };
     size?: number;
-    symbol?: "circle" | "cross" | "polygon" | "square" | "triangle" | "triangleDown" | "triangleUp";
+    symbol?: 'circle' | 'cross' | 'polygon' | 'square' | 'triangle' | 'triangleDown' | 'triangleUp';
     visible?: boolean;
   };
   rangeValue1Field?: string;
   rangeValue2Field?: string;
   reduction?: object | {
     color?: string;
-    level?: "close" | "high" | "low" | "open";
+    level?: 'close' | 'high' | 'low' | 'open';
   };
-  selectionMode?: "allArgumentPoints" | "allSeriesPoints" | "excludePoints" | "includePoints" | "none" | "onlyPoint";
+  selectionMode?: 'allArgumentPoints' | 'allSeriesPoints' | 'excludePoints' | 'includePoints' | 'none' | 'onlyPoint';
   selectionStyle?: object | {
     border?: object | {
       color?: string;
-      dashStyle?: "dash" | "dot" | "longDash" | "solid";
+      dashStyle?: 'dash' | 'dot' | 'longDash' | 'solid';
       visible?: boolean;
       width?: number;
     };
     color?: ChartsColor | string;
-    dashStyle?: "dash" | "dot" | "longDash" | "solid";
+    dashStyle?: 'dash' | 'dot' | 'longDash' | 'solid';
     hatching?: object | {
-      direction?: "left" | "none" | "right";
+      direction?: 'left' | 'none' | 'right';
       opacity?: number;
       step?: number;
       width?: number;
@@ -1428,24 +1444,25 @@ type ISeriesProps = React.PropsWithChildren<{
   stack?: string;
   tag?: any;
   tagField?: string;
-  type?: "area" | "bar" | "bubble" | "candlestick" | "fullstackedarea" | "fullstackedbar" | "fullstackedline" | "fullstackedspline" | "fullstackedsplinearea" | "line" | "rangearea" | "rangebar" | "scatter" | "spline" | "splinearea" | "stackedarea" | "stackedbar" | "stackedline" | "stackedspline" | "stackedsplinearea" | "steparea" | "stepline" | "stock";
+  type?: 'area' | 'bar' | 'bubble' | 'candlestick' | 'fullstackedarea' | 'fullstackedbar' | 'fullstackedline' | 'fullstackedspline' | 'fullstackedsplinearea' | 'line' | 'rangearea' | 'rangebar' | 'scatter' | 'spline' | 'splinearea' | 'stackedarea' | 'stackedbar' | 'stackedline' | 'stackedspline' | 'stackedsplinearea' | 'steparea' | 'stepline' | 'stock';
   valueErrorBar?: object | {
     color?: string;
-    displayMode?: "auto" | "high" | "low" | "none";
+    displayMode?: 'auto' | 'high' | 'low' | 'none';
     edgeLength?: number;
     highValueField?: string;
     lineWidth?: number;
     lowValueField?: string;
     opacity?: number;
-    type?: "fixed" | "percent" | "stdDeviation" | "stdError" | "variance";
+    type?: 'fixed' | 'percent' | 'stdDeviation' | 'stdError' | 'variance';
     value?: number;
   };
   valueField?: string;
   visible?: boolean;
   width?: number;
-}>
+}>;
 class Series extends NestedOption<ISeriesProps> {
-  public static OptionName = "series";
+  public static OptionName = 'series';
+
   public static IsCollectionItem = true;
 }
 
@@ -1456,12 +1473,12 @@ class Series extends NestedOption<ISeriesProps> {
 // CommonSeriesSettingsSelectionStyle
 type ISeriesBorderProps = React.PropsWithChildren<{
   color?: string;
-  dashStyle?: "dash" | "dot" | "longDash" | "solid";
+  dashStyle?: 'dash' | 'dot' | 'longDash' | 'solid';
   visible?: boolean;
   width?: number;
-}>
+}>;
 class SeriesBorder extends NestedOption<ISeriesBorderProps> {
-  public static OptionName = "border";
+  public static OptionName = 'border';
 }
 
 // owners:
@@ -1469,9 +1486,9 @@ class SeriesBorder extends NestedOption<ISeriesBorderProps> {
 type ISeriesTemplateProps = React.PropsWithChildren<{
   customizeSeries?: ((seriesName: any) => ChartSeries);
   nameField?: string;
-}>
+}>;
 class SeriesTemplate extends NestedOption<ISeriesTemplateProps> {
-  public static OptionName = "seriesTemplate";
+  public static OptionName = 'seriesTemplate';
 }
 
 // owners:
@@ -1479,9 +1496,9 @@ class SeriesTemplate extends NestedOption<ISeriesTemplateProps> {
 type IShutterProps = React.PropsWithChildren<{
   color?: string;
   opacity?: number;
-}>
+}>;
 class Shutter extends NestedOption<IShutterProps> {
-  public static OptionName = "shutter";
+  public static OptionName = 'shutter';
 }
 
 // owners:
@@ -1489,9 +1506,9 @@ class Shutter extends NestedOption<IShutterProps> {
 type ISizeProps = React.PropsWithChildren<{
   height?: number;
   width?: number;
-}>
+}>;
 class Size extends NestedOption<ISizeProps> {
-  public static OptionName = "size";
+  public static OptionName = 'size';
 }
 
 // owners:
@@ -1500,9 +1517,9 @@ type ISliderHandleProps = React.PropsWithChildren<{
   color?: string;
   opacity?: number;
   width?: number;
-}>
+}>;
 class SliderHandle extends NestedOption<ISliderHandleProps> {
-  public static OptionName = "sliderHandle";
+  public static OptionName = 'sliderHandle';
 }
 
 // owners:
@@ -1517,12 +1534,13 @@ type ISliderMarkerProps = React.PropsWithChildren<{
   paddingTopBottom?: number;
   placeholderHeight?: number;
   visible?: boolean;
-}>
+}>;
 class SliderMarker extends NestedOption<ISliderMarkerProps> {
-  public static OptionName = "sliderMarker";
+  public static OptionName = 'sliderMarker';
+
   public static ExpectedChildren = {
-    font: { optionName: "font", isCollectionItem: false },
-    format: { optionName: "format", isCollectionItem: false }
+    font: { optionName: 'font', isCollectionItem: false },
+    format: { optionName: 'format', isCollectionItem: false },
   };
 }
 
@@ -1532,13 +1550,14 @@ type ISubtitleProps = React.PropsWithChildren<{
   font?: BaseWidgetTypes.Font;
   offset?: number;
   text?: string;
-  textOverflow?: "ellipsis" | "hide" | "none";
-  wordWrap?: "normal" | "breakWord" | "none";
-}>
+  textOverflow?: 'ellipsis' | 'hide' | 'none';
+  wordWrap?: 'normal' | 'breakWord' | 'none';
+}>;
 class Subtitle extends NestedOption<ISubtitleProps> {
-  public static OptionName = "subtitle";
+  public static OptionName = 'subtitle';
+
   public static ExpectedChildren = {
-    font: { optionName: "font", isCollectionItem: false }
+    font: { optionName: 'font', isCollectionItem: false },
   };
 }
 
@@ -1548,9 +1567,9 @@ type ITickProps = React.PropsWithChildren<{
   color?: string;
   opacity?: number;
   width?: number;
-}>
+}>;
 class Tick extends NestedOption<ITickProps> {
-  public static OptionName = "tick";
+  public static OptionName = 'tick';
 }
 
 // owners:
@@ -1565,16 +1584,16 @@ type ITickIntervalProps = React.PropsWithChildren<{
   seconds?: number;
   weeks?: number;
   years?: number;
-}>
+}>;
 class TickInterval extends NestedOption<ITickIntervalProps> {
-  public static OptionName = "tickInterval";
+  public static OptionName = 'tickInterval';
 }
 
 // owners:
 // RangeSelector
 type ITitleProps = React.PropsWithChildren<{
   font?: BaseWidgetTypes.Font;
-  horizontalAlignment?: "center" | "left" | "right";
+  horizontalAlignment?: 'center' | 'left' | 'right';
   margin?: number | object | {
     bottom?: number;
     left?: number;
@@ -1586,20 +1605,21 @@ type ITitleProps = React.PropsWithChildren<{
     font?: BaseWidgetTypes.Font;
     offset?: number;
     text?: string;
-    textOverflow?: "ellipsis" | "hide" | "none";
-    wordWrap?: "normal" | "breakWord" | "none";
+    textOverflow?: 'ellipsis' | 'hide' | 'none';
+    wordWrap?: 'normal' | 'breakWord' | 'none';
   };
   text?: string;
-  textOverflow?: "ellipsis" | "hide" | "none";
-  verticalAlignment?: "bottom" | "top";
-  wordWrap?: "normal" | "breakWord" | "none";
-}>
+  textOverflow?: 'ellipsis' | 'hide' | 'none';
+  verticalAlignment?: 'bottom' | 'top';
+  wordWrap?: 'normal' | 'breakWord' | 'none';
+}>;
 class Title extends NestedOption<ITitleProps> {
-  public static OptionName = "title";
+  public static OptionName = 'title';
+
   public static ExpectedChildren = {
-    font: { optionName: "font", isCollectionItem: false },
-    margin: { optionName: "margin", isCollectionItem: false },
-    subtitle: { optionName: "subtitle", isCollectionItem: false }
+    font: { optionName: 'font', isCollectionItem: false },
+    margin: { optionName: 'margin', isCollectionItem: false },
+    subtitle: { optionName: 'subtitle', isCollectionItem: false },
   };
 }
 
@@ -1608,16 +1628,16 @@ class Title extends NestedOption<ITitleProps> {
 type IUrlProps = React.PropsWithChildren<{
   rangeMaxPoint?: string;
   rangeMinPoint?: string;
-}>
+}>;
 class Url extends NestedOption<IUrlProps> {
-  public static OptionName = "url";
+  public static OptionName = 'url';
 }
 
 // owners:
 // RangeSelector
 type IValueProps = React.PropsWithChildren<{
   endValue?: any | number | string;
-  length?: number | object | "day" | "hour" | "millisecond" | "minute" | "month" | "quarter" | "second" | "week" | "year" | {
+  length?: number | object | 'day' | 'hour' | 'millisecond' | 'minute' | 'month' | 'quarter' | 'second' | 'week' | 'year' | {
     days?: number;
     hours?: number;
     milliseconds?: number;
@@ -1633,15 +1653,17 @@ type IValueProps = React.PropsWithChildren<{
   onEndValueChange?: (value: any | number | string) => void;
   defaultStartValue?: any | number | string;
   onStartValueChange?: (value: any | number | string) => void;
-}>
+}>;
 class Value extends NestedOption<IValueProps> {
-  public static OptionName = "value";
+  public static OptionName = 'value';
+
   public static DefaultsProps = {
-    defaultEndValue: "endValue",
-    defaultStartValue: "startValue"
+    defaultEndValue: 'endValue',
+    defaultStartValue: 'startValue',
   };
+
   public static ExpectedChildren = {
-    length: { optionName: "length", isCollectionItem: false }
+    length: { optionName: 'length', isCollectionItem: false },
   };
 }
 
@@ -1652,28 +1674,28 @@ type IValueAxisProps = React.PropsWithChildren<{
   logarithmBase?: number;
   max?: number;
   min?: number;
-  type?: "continuous" | "logarithmic";
-  valueType?: "datetime" | "numeric" | "string";
-}>
+  type?: 'continuous' | 'logarithmic';
+  valueType?: 'datetime' | 'numeric' | 'string';
+}>;
 class ValueAxis extends NestedOption<IValueAxisProps> {
-  public static OptionName = "valueAxis";
+  public static OptionName = 'valueAxis';
 }
 
 // owners:
 // CommonSeriesSettings
 type IValueErrorBarProps = React.PropsWithChildren<{
   color?: string;
-  displayMode?: "auto" | "high" | "low" | "none";
+  displayMode?: 'auto' | 'high' | 'low' | 'none';
   edgeLength?: number;
   highValueField?: string;
   lineWidth?: number;
   lowValueField?: string;
   opacity?: number;
-  type?: "fixed" | "percent" | "stdDeviation" | "stdError" | "variance";
+  type?: 'fixed' | 'percent' | 'stdDeviation' | 'stdError' | 'variance';
   value?: number;
-}>
+}>;
 class ValueErrorBar extends NestedOption<IValueErrorBarProps> {
-  public static OptionName = "valueErrorBar";
+  public static OptionName = 'valueErrorBar';
 }
 
 // owners:
@@ -1681,9 +1703,9 @@ class ValueErrorBar extends NestedOption<IValueErrorBarProps> {
 type IWidthProps = React.PropsWithChildren<{
   rangeMaxPoint?: number;
   rangeMinPoint?: number;
-}>
+}>;
 class Width extends NestedOption<IWidthProps> {
-  public static OptionName = "width";
+  public static OptionName = 'width';
 }
 
 export default RangeSelector;
@@ -1809,8 +1831,6 @@ export {
   ValueErrorBar,
   IValueErrorBarProps,
   Width,
-  IWidthProps
+  IWidthProps,
 };
-import type * as RangeSelectorTypes from 'devextreme/viz/range_selector_types';
 export { RangeSelectorTypes };
-

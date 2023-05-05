@@ -1,55 +1,55 @@
 import dxVectorMap, {
-    Properties
-} from "devextreme/viz/vector_map";
+  Properties,
+} from 'devextreme/viz/vector_map';
 
-import * as PropTypes from "prop-types";
-import { Component as BaseComponent, IHtmlOptions } from "./core/component";
-import NestedOption from "./core/nested-option";
+import * as PropTypes from 'prop-types';
 
-import type { dxVectorMapAnnotationConfig, MapLayerElement, VectorMapLegendItem } from "devextreme/viz/vector_map";
-import type { template } from "devextreme/core/templates/template";
-import type { DataSourceOptions } from "devextreme/data/data_source";
-import type { Store } from "devextreme/data/abstract_store";
+import type { dxVectorMapAnnotationConfig, MapLayerElement, VectorMapLegendItem } from 'devextreme/viz/vector_map';
+import type { template } from 'devextreme/core/templates/template';
+import type { DataSourceOptions } from 'devextreme/data/data_source';
+import type { Store } from 'devextreme/data/abstract_store';
 
-import type DataSource from "devextreme/data/data_source";
+import type DataSource from 'devextreme/data/data_source';
 
-import type * as BaseWidgetTypes from "devextreme/viz/core/base_widget";
+import type * as BaseWidgetTypes from 'devextreme/viz/core/base_widget';
+import type * as VectorMapTypes from 'devextreme/viz/vector_map_types';
+import NestedOption from './core/nested-option';
+import { Component as BaseComponent, IHtmlOptions } from './core/component';
 
 type IVectorMapOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
   defaultLoadingIndicator?: object;
   onLoadingIndicatorChange?: (value: object) => void;
-}>
+}>;
 
 class VectorMap extends BaseComponent<React.PropsWithChildren<IVectorMapOptions>> {
-
   public get instance(): dxVectorMap {
     return this._instance;
   }
 
   protected _WidgetClass = dxVectorMap;
 
-  protected subscribableOptions = ["loadingIndicator","loadingIndicator.show"];
+  protected subscribableOptions = ['loadingIndicator', 'loadingIndicator.show'];
 
-  protected independentEvents = ["onClick","onDisposing","onDrawn","onExported","onExporting","onFileSaving","onIncidentOccurred","onInitialized","onTooltipHidden","onTooltipShown"];
+  protected independentEvents = ['onClick', 'onDisposing', 'onDrawn', 'onExported', 'onExporting', 'onFileSaving', 'onIncidentOccurred', 'onInitialized', 'onTooltipHidden', 'onTooltipShown'];
 
   protected _defaults = {
-    defaultLoadingIndicator: "loadingIndicator"
+    defaultLoadingIndicator: 'loadingIndicator',
   };
 
   protected _expectedChildren = {
-    annotation: { optionName: "annotations", isCollectionItem: true },
-    background: { optionName: "background", isCollectionItem: false },
-    commonAnnotationSettings: { optionName: "commonAnnotationSettings", isCollectionItem: false },
-    controlBar: { optionName: "controlBar", isCollectionItem: false },
-    export: { optionName: "export", isCollectionItem: false },
-    layer: { optionName: "layers", isCollectionItem: true },
-    legend: { optionName: "legends", isCollectionItem: true },
-    loadingIndicator: { optionName: "loadingIndicator", isCollectionItem: false },
-    projection: { optionName: "projection", isCollectionItem: false },
-    size: { optionName: "size", isCollectionItem: false },
-    title: { optionName: "title", isCollectionItem: false },
-    tooltip: { optionName: "tooltip", isCollectionItem: false },
-    vectorMapTitle: { optionName: "title", isCollectionItem: false }
+    annotation: { optionName: 'annotations', isCollectionItem: true },
+    background: { optionName: 'background', isCollectionItem: false },
+    commonAnnotationSettings: { optionName: 'commonAnnotationSettings', isCollectionItem: false },
+    controlBar: { optionName: 'controlBar', isCollectionItem: false },
+    export: { optionName: 'export', isCollectionItem: false },
+    layer: { optionName: 'layers', isCollectionItem: true },
+    legend: { optionName: 'legends', isCollectionItem: true },
+    loadingIndicator: { optionName: 'loadingIndicator', isCollectionItem: false },
+    projection: { optionName: 'projection', isCollectionItem: false },
+    size: { optionName: 'size', isCollectionItem: false },
+    title: { optionName: 'title', isCollectionItem: false },
+    tooltip: { optionName: 'tooltip', isCollectionItem: false },
+    vectorMapTitle: { optionName: 'title', isCollectionItem: false },
   };
 }
 (VectorMap as any).propTypes = {
@@ -65,7 +65,7 @@ class VectorMap extends BaseComponent<React.PropsWithChildren<IVectorMapOptions>
   export: PropTypes.object,
   layers: PropTypes.oneOfType([
     PropTypes.array,
-    PropTypes.object
+    PropTypes.object,
   ]),
   legends: PropTypes.array,
   loadingIndicator: PropTypes.object,
@@ -89,13 +89,13 @@ class VectorMap extends BaseComponent<React.PropsWithChildren<IVectorMapOptions>
   projection: PropTypes.oneOfType([
     PropTypes.object,
     PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.oneOf([
-      "equirectangular",
-      "lambert",
-      "mercator",
-      "miller"])
-  ])
+      PropTypes.string,
+      PropTypes.oneOf([
+        'equirectangular',
+        'lambert',
+        'mercator',
+        'miller']),
+    ]),
   ]),
   redrawOnResize: PropTypes.bool,
   rtlEnabled: PropTypes.bool,
@@ -103,31 +103,30 @@ class VectorMap extends BaseComponent<React.PropsWithChildren<IVectorMapOptions>
   theme: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "generic.dark",
-      "generic.light",
-      "generic.contrast",
-      "generic.carmine",
-      "generic.darkmoon",
-      "generic.darkviolet",
-      "generic.greenmist",
-      "generic.softblue",
-      "material.blue.light",
-      "material.lime.light",
-      "material.orange.light",
-      "material.purple.light",
-      "material.teal.light"])
+      'generic.dark',
+      'generic.light',
+      'generic.contrast',
+      'generic.carmine',
+      'generic.darkmoon',
+      'generic.darkviolet',
+      'generic.greenmist',
+      'generic.softblue',
+      'material.blue.light',
+      'material.lime.light',
+      'material.orange.light',
+      'material.purple.light',
+      'material.teal.light']),
   ]),
   title: PropTypes.oneOfType([
     PropTypes.object,
-    PropTypes.string
+    PropTypes.string,
   ]),
   tooltip: PropTypes.object,
   touchEnabled: PropTypes.bool,
   wheelEnabled: PropTypes.bool,
   zoomFactor: PropTypes.number,
-  zoomingEnabled: PropTypes.bool
+  zoomingEnabled: PropTypes.bool,
 };
-
 
 // owners:
 // VectorMap
@@ -138,7 +137,7 @@ type IAnnotationProps = React.PropsWithChildren<{
   border?: object | {
     color?: string;
     cornerRadius?: number;
-    dashStyle?: "dash" | "dot" | "longDash" | "solid";
+    dashStyle?: 'dash' | 'dot' | 'longDash' | 'solid';
     opacity?: number;
     visible?: boolean;
     width?: number;
@@ -170,12 +169,12 @@ type IAnnotationProps = React.PropsWithChildren<{
   };
   template?: ((annotation: dxVectorMapAnnotationConfig | any, element: any) => string) | template;
   text?: string;
-  textOverflow?: "ellipsis" | "hide" | "none";
+  textOverflow?: 'ellipsis' | 'hide' | 'none';
   tooltipEnabled?: boolean;
   tooltipTemplate?: ((annotation: dxVectorMapAnnotationConfig | any, element: any) => string) | template;
-  type?: "text" | "image" | "custom";
+  type?: 'text' | 'image' | 'custom';
   width?: number;
-  wordWrap?: "normal" | "breakWord" | "none";
+  wordWrap?: 'normal' | 'breakWord' | 'none';
   x?: number;
   y?: number;
   render?: (...params: any) => React.ReactNode;
@@ -184,27 +183,30 @@ type IAnnotationProps = React.PropsWithChildren<{
   tooltipRender?: (...params: any) => React.ReactNode;
   tooltipComponent?: React.ComponentType<any>;
   tooltipKeyFn?: (data: any) => string;
-}>
+}>;
 class Annotation extends NestedOption<IAnnotationProps> {
-  public static OptionName = "annotations";
+  public static OptionName = 'annotations';
+
   public static IsCollectionItem = true;
+
   public static ExpectedChildren = {
-    annotationBorder: { optionName: "border", isCollectionItem: false },
-    border: { optionName: "border", isCollectionItem: false },
-    font: { optionName: "font", isCollectionItem: false },
-    image: { optionName: "image", isCollectionItem: false },
-    shadow: { optionName: "shadow", isCollectionItem: false }
+    annotationBorder: { optionName: 'border', isCollectionItem: false },
+    border: { optionName: 'border', isCollectionItem: false },
+    font: { optionName: 'font', isCollectionItem: false },
+    image: { optionName: 'image', isCollectionItem: false },
+    shadow: { optionName: 'shadow', isCollectionItem: false },
   };
+
   public static TemplateProps = [{
-    tmplOption: "template",
-    render: "render",
-    component: "component",
-    keyFn: "keyFn"
+    tmplOption: 'template',
+    render: 'render',
+    component: 'component',
+    keyFn: 'keyFn',
   }, {
-    tmplOption: "tooltipTemplate",
-    render: "tooltipRender",
-    component: "tooltipComponent",
-    keyFn: "tooltipKeyFn"
+    tmplOption: 'tooltipTemplate',
+    render: 'tooltipRender',
+    component: 'tooltipComponent',
+    keyFn: 'tooltipKeyFn',
   }];
 }
 
@@ -214,13 +216,13 @@ class Annotation extends NestedOption<IAnnotationProps> {
 type IAnnotationBorderProps = React.PropsWithChildren<{
   color?: string;
   cornerRadius?: number;
-  dashStyle?: "dash" | "dot" | "longDash" | "solid";
+  dashStyle?: 'dash' | 'dot' | 'longDash' | 'solid';
   opacity?: number;
   visible?: boolean;
   width?: number;
-}>
+}>;
 class AnnotationBorder extends NestedOption<IAnnotationBorderProps> {
-  public static OptionName = "border";
+  public static OptionName = 'border';
 }
 
 // owners:
@@ -228,9 +230,9 @@ class AnnotationBorder extends NestedOption<IAnnotationBorderProps> {
 type IBackgroundProps = React.PropsWithChildren<{
   borderColor?: string;
   color?: string;
-}>
+}>;
 class Background extends NestedOption<IBackgroundProps> {
-  public static OptionName = "background";
+  public static OptionName = 'background';
 }
 
 // owners:
@@ -240,13 +242,13 @@ class Background extends NestedOption<IBackgroundProps> {
 type IBorderProps = React.PropsWithChildren<{
   color?: string;
   cornerRadius?: number;
-  dashStyle?: "dash" | "dot" | "longDash" | "solid";
+  dashStyle?: 'dash' | 'dot' | 'longDash' | 'solid';
   opacity?: number;
   visible?: boolean;
   width?: number;
-}>
+}>;
 class Border extends NestedOption<IBorderProps> {
-  public static OptionName = "border";
+  public static OptionName = 'border';
 }
 
 // owners:
@@ -258,7 +260,7 @@ type ICommonAnnotationSettingsProps = React.PropsWithChildren<{
   border?: object | {
     color?: string;
     cornerRadius?: number;
-    dashStyle?: "dash" | "dot" | "longDash" | "solid";
+    dashStyle?: 'dash' | 'dot' | 'longDash' | 'solid';
     opacity?: number;
     visible?: boolean;
     width?: number;
@@ -289,12 +291,12 @@ type ICommonAnnotationSettingsProps = React.PropsWithChildren<{
   };
   template?: ((annotation: dxVectorMapAnnotationConfig | any, element: any) => string) | template;
   text?: string;
-  textOverflow?: "ellipsis" | "hide" | "none";
+  textOverflow?: 'ellipsis' | 'hide' | 'none';
   tooltipEnabled?: boolean;
   tooltipTemplate?: ((annotation: dxVectorMapAnnotationConfig | any, element: any) => string) | template;
-  type?: "text" | "image" | "custom";
+  type?: 'text' | 'image' | 'custom';
   width?: number;
-  wordWrap?: "normal" | "breakWord" | "none";
+  wordWrap?: 'normal' | 'breakWord' | 'none';
   x?: number;
   y?: number;
   render?: (...params: any) => React.ReactNode;
@@ -303,19 +305,20 @@ type ICommonAnnotationSettingsProps = React.PropsWithChildren<{
   tooltipRender?: (...params: any) => React.ReactNode;
   tooltipComponent?: React.ComponentType<any>;
   tooltipKeyFn?: (data: any) => string;
-}>
+}>;
 class CommonAnnotationSettings extends NestedOption<ICommonAnnotationSettingsProps> {
-  public static OptionName = "commonAnnotationSettings";
+  public static OptionName = 'commonAnnotationSettings';
+
   public static TemplateProps = [{
-    tmplOption: "template",
-    render: "render",
-    component: "component",
-    keyFn: "keyFn"
+    tmplOption: 'template',
+    render: 'render',
+    component: 'component',
+    keyFn: 'keyFn',
   }, {
-    tmplOption: "tooltipTemplate",
-    render: "tooltipRender",
-    component: "tooltipComponent",
-    keyFn: "tooltipKeyFn"
+    tmplOption: 'tooltipTemplate',
+    render: 'tooltipRender',
+    component: 'tooltipComponent',
+    keyFn: 'tooltipKeyFn',
   }];
 }
 
@@ -325,15 +328,15 @@ type IControlBarProps = React.PropsWithChildren<{
   borderColor?: string;
   color?: string;
   enabled?: boolean;
-  horizontalAlignment?: "center" | "left" | "right";
+  horizontalAlignment?: 'center' | 'left' | 'right';
   margin?: number;
   opacity?: number;
   panVisible?: boolean;
-  verticalAlignment?: "bottom" | "top";
+  verticalAlignment?: 'bottom' | 'top';
   zoomVisible?: boolean;
-}>
+}>;
 class ControlBar extends NestedOption<IControlBarProps> {
-  public static OptionName = "controlBar";
+  public static OptionName = 'controlBar';
 }
 
 // owners:
@@ -342,13 +345,13 @@ type IExportProps = React.PropsWithChildren<{
   backgroundColor?: string;
   enabled?: boolean;
   fileName?: string;
-  formats?: Array<"GIF" | "JPEG" | "PDF" | "PNG" | "SVG">;
+  formats?: Array<'GIF' | 'JPEG' | 'PDF' | 'PNG' | 'SVG'>;
   margin?: number;
   printingEnabled?: boolean;
   svgToCanvas?: ((svg: any, canvas: any) => any);
-}>
+}>;
 class Export extends NestedOption<IExportProps> {
-  public static OptionName = "export";
+  public static OptionName = 'export';
 }
 
 // owners:
@@ -367,9 +370,9 @@ type IFontProps = React.PropsWithChildren<{
   opacity?: number;
   size?: number | string;
   weight?: number;
-}>
+}>;
 class Font extends NestedOption<IFontProps> {
-  public static OptionName = "font";
+  public static OptionName = 'font';
 }
 
 // owners:
@@ -378,9 +381,9 @@ type IImageProps = React.PropsWithChildren<{
   height?: number;
   url?: string;
   width?: number;
-}>
+}>;
 class Image extends NestedOption<IImageProps> {
-  public static OptionName = "image";
+  public static OptionName = 'image';
 }
 
 // owners:
@@ -389,11 +392,12 @@ type ILabelProps = React.PropsWithChildren<{
   dataField?: string;
   enabled?: boolean;
   font?: BaseWidgetTypes.Font;
-}>
+}>;
 class Label extends NestedOption<ILabelProps> {
-  public static OptionName = "label";
+  public static OptionName = 'label';
+
   public static ExpectedChildren = {
-    font: { optionName: "font", isCollectionItem: false }
+    font: { optionName: 'font', isCollectionItem: false },
   };
 }
 
@@ -408,7 +412,7 @@ type ILayerProps = React.PropsWithChildren<{
   customize?: ((elements: Array<MapLayerElement>) => void);
   dataField?: string;
   dataSource?: Array<any> | DataSource | DataSourceOptions | null | object | Store | string;
-  elementType?: "bubble" | "dot" | "image" | "pie";
+  elementType?: 'bubble' | 'dot' | 'image' | 'pie';
   hoveredBorderColor?: string;
   hoveredBorderWidth?: number;
   hoveredColor?: string;
@@ -422,23 +426,25 @@ type ILayerProps = React.PropsWithChildren<{
   minSize?: number;
   name?: string;
   opacity?: number;
-  palette?: Array<string> | "Bright" | "Harmony Light" | "Ocean" | "Pastel" | "Soft" | "Soft Pastel" | "Vintage" | "Violet" | "Carmine" | "Dark Moon" | "Dark Violet" | "Green Mist" | "Soft Blue" | "Material" | "Office";
+  palette?: Array<string> | 'Bright' | 'Harmony Light' | 'Ocean' | 'Pastel' | 'Soft' | 'Soft Pastel' | 'Vintage' | 'Violet' | 'Carmine' | 'Dark Moon' | 'Dark Violet' | 'Green Mist' | 'Soft Blue' | 'Material' | 'Office';
   paletteIndex?: number;
   paletteSize?: number;
   selectedBorderColor?: string;
   selectedBorderWidth?: number;
   selectedColor?: string;
-  selectionMode?: "single" | "multiple" | "none";
+  selectionMode?: 'single' | 'multiple' | 'none';
   size?: number;
   sizeGroupingField?: string;
   sizeGroups?: Array<number>;
-  type?: "area" | "line" | "marker";
-}>
+  type?: 'area' | 'line' | 'marker';
+}>;
 class Layer extends NestedOption<ILayerProps> {
-  public static OptionName = "layers";
+  public static OptionName = 'layers';
+
   public static IsCollectionItem = true;
+
   public static ExpectedChildren = {
-    label: { optionName: "label", isCollectionItem: false }
+    label: { optionName: 'label', isCollectionItem: false },
   };
 }
 
@@ -449,7 +455,7 @@ type ILegendProps = React.PropsWithChildren<{
   border?: object | {
     color?: string;
     cornerRadius?: number;
-    dashStyle?: "dash" | "dot" | "longDash" | "solid";
+    dashStyle?: 'dash' | 'dot' | 'longDash' | 'solid';
     opacity?: number;
     visible?: boolean;
     width?: number;
@@ -460,9 +466,9 @@ type ILegendProps = React.PropsWithChildren<{
   customizeItems?: ((items: Array<VectorMapLegendItem>) => Array<VectorMapLegendItem>);
   customizeText?: ((itemInfo: { color: string, end: number, index: number, size: number, start: number }) => string);
   font?: BaseWidgetTypes.Font;
-  horizontalAlignment?: "center" | "left" | "right";
-  itemsAlignment?: "center" | "left" | "right";
-  itemTextPosition?: "bottom" | "left" | "right" | "top";
+  horizontalAlignment?: 'center' | 'left' | 'right';
+  itemsAlignment?: 'center' | 'left' | 'right';
+  itemTextPosition?: 'bottom' | 'left' | 'right' | 'top';
   margin?: number | object | {
     bottom?: number;
     left?: number;
@@ -470,10 +476,10 @@ type ILegendProps = React.PropsWithChildren<{
     top?: number;
   };
   markerColor?: string;
-  markerShape?: "circle" | "square";
+  markerShape?: 'circle' | 'square';
   markerSize?: number;
   markerTemplate?: ((legendItem: VectorMapLegendItem, element: any) => string) | template;
-  orientation?: "horizontal" | "vertical";
+  orientation?: 'horizontal' | 'vertical';
   paddingLeftRight?: number;
   paddingTopBottom?: number;
   rowCount?: number;
@@ -484,7 +490,7 @@ type ILegendProps = React.PropsWithChildren<{
   };
   title?: object | string | {
     font?: BaseWidgetTypes.Font;
-    horizontalAlignment?: "center" | "left" | "right";
+    horizontalAlignment?: 'center' | 'left' | 'right';
     margin?: object | {
       bottom?: number;
       left?: number;
@@ -498,31 +504,34 @@ type ILegendProps = React.PropsWithChildren<{
       text?: string;
     };
     text?: string;
-    verticalAlignment?: "bottom" | "top";
+    verticalAlignment?: 'bottom' | 'top';
   };
-  verticalAlignment?: "bottom" | "top";
+  verticalAlignment?: 'bottom' | 'top';
   visible?: boolean;
   markerRender?: (...params: any) => React.ReactNode;
   markerComponent?: React.ComponentType<any>;
   markerKeyFn?: (data: any) => string;
-}>
+}>;
 class Legend extends NestedOption<ILegendProps> {
-  public static OptionName = "legends";
+  public static OptionName = 'legends';
+
   public static IsCollectionItem = true;
+
   public static ExpectedChildren = {
-    annotationBorder: { optionName: "border", isCollectionItem: false },
-    border: { optionName: "border", isCollectionItem: false },
-    font: { optionName: "font", isCollectionItem: false },
-    legendTitle: { optionName: "title", isCollectionItem: false },
-    margin: { optionName: "margin", isCollectionItem: false },
-    source: { optionName: "source", isCollectionItem: false },
-    title: { optionName: "title", isCollectionItem: false }
+    annotationBorder: { optionName: 'border', isCollectionItem: false },
+    border: { optionName: 'border', isCollectionItem: false },
+    font: { optionName: 'font', isCollectionItem: false },
+    legendTitle: { optionName: 'title', isCollectionItem: false },
+    margin: { optionName: 'margin', isCollectionItem: false },
+    source: { optionName: 'source', isCollectionItem: false },
+    title: { optionName: 'title', isCollectionItem: false },
   };
+
   public static TemplateProps = [{
-    tmplOption: "markerTemplate",
-    render: "markerRender",
-    component: "markerComponent",
-    keyFn: "markerKeyFn"
+    tmplOption: 'markerTemplate',
+    render: 'markerRender',
+    component: 'markerComponent',
+    keyFn: 'markerKeyFn',
   }];
 }
 
@@ -530,7 +539,7 @@ class Legend extends NestedOption<ILegendProps> {
 // Legend
 type ILegendTitleProps = React.PropsWithChildren<{
   font?: BaseWidgetTypes.Font;
-  horizontalAlignment?: "center" | "left" | "right";
+  horizontalAlignment?: 'center' | 'left' | 'right';
   margin?: object | {
     bottom?: number;
     left?: number;
@@ -544,15 +553,16 @@ type ILegendTitleProps = React.PropsWithChildren<{
     text?: string;
   };
   text?: string;
-  verticalAlignment?: "bottom" | "top";
-}>
+  verticalAlignment?: 'bottom' | 'top';
+}>;
 class LegendTitle extends NestedOption<ILegendTitleProps> {
-  public static OptionName = "title";
+  public static OptionName = 'title';
+
   public static ExpectedChildren = {
-    font: { optionName: "font", isCollectionItem: false },
-    legendTitleSubtitle: { optionName: "subtitle", isCollectionItem: false },
-    margin: { optionName: "margin", isCollectionItem: false },
-    subtitle: { optionName: "subtitle", isCollectionItem: false }
+    font: { optionName: 'font', isCollectionItem: false },
+    legendTitleSubtitle: { optionName: 'subtitle', isCollectionItem: false },
+    margin: { optionName: 'margin', isCollectionItem: false },
+    subtitle: { optionName: 'subtitle', isCollectionItem: false },
   };
 }
 
@@ -562,11 +572,12 @@ type ILegendTitleSubtitleProps = React.PropsWithChildren<{
   font?: BaseWidgetTypes.Font;
   offset?: number;
   text?: string;
-}>
+}>;
 class LegendTitleSubtitle extends NestedOption<ILegendTitleSubtitleProps> {
-  public static OptionName = "subtitle";
+  public static OptionName = 'subtitle';
+
   public static ExpectedChildren = {
-    font: { optionName: "font", isCollectionItem: false }
+    font: { optionName: 'font', isCollectionItem: false },
   };
 }
 
@@ -580,14 +591,16 @@ type ILoadingIndicatorProps = React.PropsWithChildren<{
   text?: string;
   defaultShow?: boolean;
   onShowChange?: (value: boolean) => void;
-}>
+}>;
 class LoadingIndicator extends NestedOption<ILoadingIndicatorProps> {
-  public static OptionName = "loadingIndicator";
+  public static OptionName = 'loadingIndicator';
+
   public static DefaultsProps = {
-    defaultShow: "show"
+    defaultShow: 'show',
   };
+
   public static ExpectedChildren = {
-    font: { optionName: "font", isCollectionItem: false }
+    font: { optionName: 'font', isCollectionItem: false },
   };
 }
 
@@ -600,9 +613,9 @@ type IMarginProps = React.PropsWithChildren<{
   left?: number;
   right?: number;
   top?: number;
-}>
+}>;
 class Margin extends NestedOption<IMarginProps> {
-  public static OptionName = "margin";
+  public static OptionName = 'margin';
 }
 
 // owners:
@@ -611,9 +624,9 @@ type IProjectionProps = React.PropsWithChildren<{
   aspectRatio?: number;
   from?: ((coordinates: Array<number>) => Array<number>);
   to?: ((coordinates: Array<number>) => Array<number>);
-}>
+}>;
 class Projection extends NestedOption<IProjectionProps> {
-  public static OptionName = "projection";
+  public static OptionName = 'projection';
 }
 
 // owners:
@@ -625,9 +638,9 @@ type IShadowProps = React.PropsWithChildren<{
   offsetX?: number;
   offsetY?: number;
   opacity?: number;
-}>
+}>;
 class Shadow extends NestedOption<IShadowProps> {
-  public static OptionName = "shadow";
+  public static OptionName = 'shadow';
 }
 
 // owners:
@@ -635,9 +648,9 @@ class Shadow extends NestedOption<IShadowProps> {
 type ISizeProps = React.PropsWithChildren<{
   height?: number;
   width?: number;
-}>
+}>;
 class Size extends NestedOption<ISizeProps> {
-  public static OptionName = "size";
+  public static OptionName = 'size';
 }
 
 // owners:
@@ -645,9 +658,9 @@ class Size extends NestedOption<ISizeProps> {
 type ISourceProps = React.PropsWithChildren<{
   grouping?: string;
   layer?: string;
-}>
+}>;
 class Source extends NestedOption<ISourceProps> {
-  public static OptionName = "source";
+  public static OptionName = 'source';
 }
 
 // owners:
@@ -657,11 +670,11 @@ type ISubtitleProps = React.PropsWithChildren<{
   font?: BaseWidgetTypes.Font;
   offset?: number;
   text?: string;
-  textOverflow?: "ellipsis" | "hide" | "none";
-  wordWrap?: "normal" | "breakWord" | "none";
-}>
+  textOverflow?: 'ellipsis' | 'hide' | 'none';
+  wordWrap?: 'normal' | 'breakWord' | 'none';
+}>;
 class Subtitle extends NestedOption<ISubtitleProps> {
-  public static OptionName = "subtitle";
+  public static OptionName = 'subtitle';
 }
 
 // owners:
@@ -669,7 +682,7 @@ class Subtitle extends NestedOption<ISubtitleProps> {
 // VectorMap
 type ITitleProps = React.PropsWithChildren<{
   font?: BaseWidgetTypes.Font;
-  horizontalAlignment?: "center" | "left" | "right";
+  horizontalAlignment?: 'center' | 'left' | 'right';
   margin?: object | {
     bottom?: number;
     left?: number;
@@ -683,12 +696,12 @@ type ITitleProps = React.PropsWithChildren<{
     text?: string;
   };
   text?: string;
-  verticalAlignment?: "bottom" | "top";
-  textOverflow?: "ellipsis" | "hide" | "none";
-  wordWrap?: "normal" | "breakWord" | "none";
-}>
+  verticalAlignment?: 'bottom' | 'top';
+  textOverflow?: 'ellipsis' | 'hide' | 'none';
+  wordWrap?: 'normal' | 'breakWord' | 'none';
+}>;
 class Title extends NestedOption<ITitleProps> {
-  public static OptionName = "title";
+  public static OptionName = 'title';
 }
 
 // owners:
@@ -697,7 +710,7 @@ type ITooltipProps = React.PropsWithChildren<{
   arrowLength?: number;
   border?: object | {
     color?: string;
-    dashStyle?: "dash" | "dot" | "longDash" | "solid";
+    dashStyle?: 'dash' | 'dot' | 'longDash' | 'solid';
     opacity?: number;
     visible?: boolean;
     width?: number;
@@ -723,20 +736,22 @@ type ITooltipProps = React.PropsWithChildren<{
   contentRender?: (...params: any) => React.ReactNode;
   contentComponent?: React.ComponentType<any>;
   contentKeyFn?: (data: any) => string;
-}>
+}>;
 class Tooltip extends NestedOption<ITooltipProps> {
-  public static OptionName = "tooltip";
+  public static OptionName = 'tooltip';
+
   public static ExpectedChildren = {
-    border: { optionName: "border", isCollectionItem: false },
-    font: { optionName: "font", isCollectionItem: false },
-    shadow: { optionName: "shadow", isCollectionItem: false },
-    tooltipBorder: { optionName: "border", isCollectionItem: false }
+    border: { optionName: 'border', isCollectionItem: false },
+    font: { optionName: 'font', isCollectionItem: false },
+    shadow: { optionName: 'shadow', isCollectionItem: false },
+    tooltipBorder: { optionName: 'border', isCollectionItem: false },
   };
+
   public static TemplateProps = [{
-    tmplOption: "contentTemplate",
-    render: "contentRender",
-    component: "contentComponent",
-    keyFn: "contentKeyFn"
+    tmplOption: 'contentTemplate',
+    render: 'contentRender',
+    component: 'contentComponent',
+    keyFn: 'contentKeyFn',
   }];
 }
 
@@ -744,20 +759,20 @@ class Tooltip extends NestedOption<ITooltipProps> {
 // Tooltip
 type ITooltipBorderProps = React.PropsWithChildren<{
   color?: string;
-  dashStyle?: "dash" | "dot" | "longDash" | "solid";
+  dashStyle?: 'dash' | 'dot' | 'longDash' | 'solid';
   opacity?: number;
   visible?: boolean;
   width?: number;
-}>
+}>;
 class TooltipBorder extends NestedOption<ITooltipBorderProps> {
-  public static OptionName = "border";
+  public static OptionName = 'border';
 }
 
 // owners:
 // VectorMap
 type IVectorMapTitleProps = React.PropsWithChildren<{
   font?: BaseWidgetTypes.Font;
-  horizontalAlignment?: "center" | "left" | "right";
+  horizontalAlignment?: 'center' | 'left' | 'right';
   margin?: number | object | {
     bottom?: number;
     left?: number;
@@ -769,21 +784,22 @@ type IVectorMapTitleProps = React.PropsWithChildren<{
     font?: BaseWidgetTypes.Font;
     offset?: number;
     text?: string;
-    textOverflow?: "ellipsis" | "hide" | "none";
-    wordWrap?: "normal" | "breakWord" | "none";
+    textOverflow?: 'ellipsis' | 'hide' | 'none';
+    wordWrap?: 'normal' | 'breakWord' | 'none';
   };
   text?: string;
-  textOverflow?: "ellipsis" | "hide" | "none";
-  verticalAlignment?: "bottom" | "top";
-  wordWrap?: "normal" | "breakWord" | "none";
-}>
+  textOverflow?: 'ellipsis' | 'hide' | 'none';
+  verticalAlignment?: 'bottom' | 'top';
+  wordWrap?: 'normal' | 'breakWord' | 'none';
+}>;
 class VectorMapTitle extends NestedOption<IVectorMapTitleProps> {
-  public static OptionName = "title";
+  public static OptionName = 'title';
+
   public static ExpectedChildren = {
-    font: { optionName: "font", isCollectionItem: false },
-    margin: { optionName: "margin", isCollectionItem: false },
-    subtitle: { optionName: "subtitle", isCollectionItem: false },
-    vectorMapTitleSubtitle: { optionName: "subtitle", isCollectionItem: false }
+    font: { optionName: 'font', isCollectionItem: false },
+    margin: { optionName: 'margin', isCollectionItem: false },
+    subtitle: { optionName: 'subtitle', isCollectionItem: false },
+    vectorMapTitleSubtitle: { optionName: 'subtitle', isCollectionItem: false },
   };
 }
 
@@ -793,13 +809,14 @@ type IVectorMapTitleSubtitleProps = React.PropsWithChildren<{
   font?: BaseWidgetTypes.Font;
   offset?: number;
   text?: string;
-  textOverflow?: "ellipsis" | "hide" | "none";
-  wordWrap?: "normal" | "breakWord" | "none";
-}>
+  textOverflow?: 'ellipsis' | 'hide' | 'none';
+  wordWrap?: 'normal' | 'breakWord' | 'none';
+}>;
 class VectorMapTitleSubtitle extends NestedOption<IVectorMapTitleSubtitleProps> {
-  public static OptionName = "subtitle";
+  public static OptionName = 'subtitle';
+
   public static ExpectedChildren = {
-    font: { optionName: "font", isCollectionItem: false }
+    font: { optionName: 'font', isCollectionItem: false },
   };
 }
 
@@ -858,8 +875,6 @@ export {
   VectorMapTitle,
   IVectorMapTitleProps,
   VectorMapTitleSubtitle,
-  IVectorMapTitleSubtitleProps
+  IVectorMapTitleSubtitleProps,
 };
-import type * as VectorMapTypes from 'devextreme/viz/vector_map_types';
 export { VectorMapTypes };
-

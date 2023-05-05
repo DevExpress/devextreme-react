@@ -1,29 +1,29 @@
 import dxCheckBox, {
-    Properties
-} from "devextreme/ui/check_box";
+  Properties,
+} from 'devextreme/ui/check_box';
 
-import * as PropTypes from "prop-types";
-import { Component as BaseComponent, IHtmlOptions } from "./core/component";
+import * as PropTypes from 'prop-types';
+import type * as CheckBoxTypes from 'devextreme/ui/check_box_types';
+import { Component as BaseComponent, IHtmlOptions } from './core/component';
 
 type ICheckBoxOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
   defaultValue?: boolean | null;
   onValueChange?: (value: boolean | null) => void;
-}>
+}>;
 
 class CheckBox extends BaseComponent<React.PropsWithChildren<ICheckBoxOptions>> {
-
   public get instance(): dxCheckBox {
     return this._instance;
   }
 
   protected _WidgetClass = dxCheckBox;
 
-  protected subscribableOptions = ["value"];
+  protected subscribableOptions = ['value'];
 
-  protected independentEvents = ["onContentReady","onDisposing","onInitialized","onValueChanged"];
+  protected independentEvents = ['onContentReady', 'onDisposing', 'onInitialized', 'onValueChanged'];
 
   protected _defaults = {
-    defaultValue: "value"
+    defaultValue: 'value',
   };
 }
 (CheckBox as any).propTypes = {
@@ -36,13 +36,13 @@ class CheckBox extends BaseComponent<React.PropsWithChildren<ICheckBoxOptions>> 
   height: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
+    PropTypes.string,
   ]),
   hint: PropTypes.string,
   hoverStateEnabled: PropTypes.bool,
   iconSize: PropTypes.oneOfType([
     PropTypes.number,
-    PropTypes.string
+    PropTypes.string,
   ]),
   isValid: PropTypes.bool,
   name: PropTypes.string,
@@ -59,36 +59,34 @@ class CheckBox extends BaseComponent<React.PropsWithChildren<ICheckBoxOptions>> 
   validationMessageMode: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "always",
-      "auto"])
+      'always',
+      'auto']),
   ]),
   validationMessagePosition: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "bottom",
-      "left",
-      "right",
-      "top"])
+      'bottom',
+      'left',
+      'right',
+      'top']),
   ]),
   validationStatus: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "valid",
-      "invalid",
-      "pending"])
+      'valid',
+      'invalid',
+      'pending']),
   ]),
   visible: PropTypes.bool,
   width: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
-  ])
+    PropTypes.string,
+  ]),
 };
 export default CheckBox;
 export {
   CheckBox,
-  ICheckBoxOptions
+  ICheckBoxOptions,
 };
-import type * as CheckBoxTypes from 'devextreme/ui/check_box_types';
 export { CheckBoxTypes };
-

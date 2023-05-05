@@ -1,29 +1,29 @@
 import dxLoadIndicator, {
-    Properties
-} from "devextreme/ui/load_indicator";
+  Properties,
+} from 'devextreme/ui/load_indicator';
 
-import * as PropTypes from "prop-types";
-import { Component as BaseComponent, IHtmlOptions } from "./core/component";
+import * as PropTypes from 'prop-types';
+import type * as LoadIndicatorTypes from 'devextreme/ui/load_indicator_types';
+import { Component as BaseComponent, IHtmlOptions } from './core/component';
 
 type ILoadIndicatorOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
-}>
+}>;
 
 class LoadIndicator extends BaseComponent<React.PropsWithChildren<ILoadIndicatorOptions>> {
-
   public get instance(): dxLoadIndicator {
     return this._instance;
   }
 
   protected _WidgetClass = dxLoadIndicator;
 
-  protected independentEvents = ["onContentReady","onDisposing","onInitialized"];
+  protected independentEvents = ['onContentReady', 'onDisposing', 'onInitialized'];
 }
 (LoadIndicator as any).propTypes = {
   elementAttr: PropTypes.object,
   height: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
+    PropTypes.string,
   ]),
   hint: PropTypes.string,
   indicatorSrc: PropTypes.string,
@@ -36,14 +36,12 @@ class LoadIndicator extends BaseComponent<React.PropsWithChildren<ILoadIndicator
   width: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
-  ])
+    PropTypes.string,
+  ]),
 };
 export default LoadIndicator;
 export {
   LoadIndicator,
-  ILoadIndicatorOptions
+  ILoadIndicatorOptions,
 };
-import type * as LoadIndicatorTypes from 'devextreme/ui/load_indicator_types';
 export { LoadIndicatorTypes };
-

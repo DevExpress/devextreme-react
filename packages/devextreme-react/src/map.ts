@@ -1,10 +1,11 @@
 import dxMap, {
-    Properties
-} from "devextreme/ui/map";
+  Properties,
+} from 'devextreme/ui/map';
 
-import * as PropTypes from "prop-types";
-import { Component as BaseComponent, IHtmlOptions } from "./core/component";
-import NestedOption from "./core/nested-option";
+import * as PropTypes from 'prop-types';
+import type * as MapTypes from 'devextreme/ui/map_types';
+import { Component as BaseComponent, IHtmlOptions } from './core/component';
+import NestedOption from './core/nested-option';
 
 type IMapOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
   defaultCenter?: Array<number> | object | string;
@@ -15,32 +16,31 @@ type IMapOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
   onMarkersChange?: (value: Array<object>) => void;
   onRoutesChange?: (value: Array<object>) => void;
   onZoomChange?: (value: number) => void;
-}>
+}>;
 
 class Map extends BaseComponent<React.PropsWithChildren<IMapOptions>> {
-
   public get instance(): dxMap {
     return this._instance;
   }
 
   protected _WidgetClass = dxMap;
 
-  protected subscribableOptions = ["center","markers","routes","zoom"];
+  protected subscribableOptions = ['center', 'markers', 'routes', 'zoom'];
 
-  protected independentEvents = ["onClick","onDisposing","onInitialized","onMarkerAdded","onMarkerRemoved","onReady","onRouteAdded","onRouteRemoved"];
+  protected independentEvents = ['onClick', 'onDisposing', 'onInitialized', 'onMarkerAdded', 'onMarkerRemoved', 'onReady', 'onRouteAdded', 'onRouteRemoved'];
 
   protected _defaults = {
-    defaultCenter: "center",
-    defaultMarkers: "markers",
-    defaultRoutes: "routes",
-    defaultZoom: "zoom"
+    defaultCenter: 'center',
+    defaultMarkers: 'markers',
+    defaultRoutes: 'routes',
+    defaultZoom: 'zoom',
   };
 
   protected _expectedChildren = {
-    apiKey: { optionName: "apiKey", isCollectionItem: false },
-    center: { optionName: "center", isCollectionItem: false },
-    marker: { optionName: "markers", isCollectionItem: true },
-    route: { optionName: "routes", isCollectionItem: true }
+    apiKey: { optionName: 'apiKey', isCollectionItem: false },
+    center: { optionName: 'center', isCollectionItem: false },
+    marker: { optionName: 'markers', isCollectionItem: true },
+    route: { optionName: 'routes', isCollectionItem: true },
   };
 }
 (Map as any).propTypes = {
@@ -48,13 +48,13 @@ class Map extends BaseComponent<React.PropsWithChildren<IMapOptions>> {
   activeStateEnabled: PropTypes.bool,
   apiKey: PropTypes.oneOfType([
     PropTypes.object,
-    PropTypes.string
+    PropTypes.string,
   ]),
   autoAdjust: PropTypes.bool,
   center: PropTypes.oneOfType([
     PropTypes.array,
     PropTypes.object,
-    PropTypes.string
+    PropTypes.string,
   ]),
   controls: PropTypes.bool,
   disabled: PropTypes.bool,
@@ -63,7 +63,7 @@ class Map extends BaseComponent<React.PropsWithChildren<IMapOptions>> {
   height: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
+    PropTypes.string,
   ]),
   hint: PropTypes.string,
   hoverStateEnabled: PropTypes.bool,
@@ -81,9 +81,9 @@ class Map extends BaseComponent<React.PropsWithChildren<IMapOptions>> {
   provider: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "bing",
-      "google",
-      "googleStatic"])
+      'bing',
+      'google',
+      'googleStatic']),
   ]),
   routes: PropTypes.array,
   rtlEnabled: PropTypes.bool,
@@ -91,19 +91,18 @@ class Map extends BaseComponent<React.PropsWithChildren<IMapOptions>> {
   type: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "hybrid",
-      "roadmap",
-      "satellite"])
+      'hybrid',
+      'roadmap',
+      'satellite']),
   ]),
   visible: PropTypes.bool,
   width: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
+    PropTypes.string,
   ]),
-  zoom: PropTypes.number
+  zoom: PropTypes.number,
 };
-
 
 // owners:
 // Map
@@ -111,9 +110,9 @@ type IApiKeyProps = React.PropsWithChildren<{
   bing?: string;
   google?: string;
   googleStatic?: string;
-}>
+}>;
 class ApiKey extends NestedOption<IApiKeyProps> {
-  public static OptionName = "apiKey";
+  public static OptionName = 'apiKey';
 }
 
 // owners:
@@ -121,9 +120,9 @@ class ApiKey extends NestedOption<IApiKeyProps> {
 type ICenterProps = React.PropsWithChildren<{
   lat?: number;
   lng?: number;
-}>
+}>;
 class Center extends NestedOption<ICenterProps> {
-  public static OptionName = "center";
+  public static OptionName = 'center';
 }
 
 // owners:
@@ -132,9 +131,9 @@ class Center extends NestedOption<ICenterProps> {
 type ILocationProps = React.PropsWithChildren<{
   lat?: number;
   lng?: number;
-}>
+}>;
 class Location extends NestedOption<ILocationProps> {
-  public static OptionName = "location";
+  public static OptionName = 'location';
 }
 
 // owners:
@@ -150,13 +149,15 @@ type IMarkerProps = React.PropsWithChildren<{
     isShown?: boolean;
     text?: string;
   };
-}>
+}>;
 class Marker extends NestedOption<IMarkerProps> {
-  public static OptionName = "markers";
+  public static OptionName = 'markers';
+
   public static IsCollectionItem = true;
+
   public static ExpectedChildren = {
-    location: { optionName: "location", isCollectionItem: false },
-    tooltip: { optionName: "tooltip", isCollectionItem: false }
+    location: { optionName: 'location', isCollectionItem: false },
+    tooltip: { optionName: 'tooltip', isCollectionItem: false },
   };
 }
 
@@ -168,15 +169,17 @@ type IRouteProps = React.PropsWithChildren<{
     lat?: number;
     lng?: number;
   }[];
-  mode?: "driving" | "walking";
+  mode?: 'driving' | 'walking';
   opacity?: number;
   weight?: number;
-}>
+}>;
 class Route extends NestedOption<IRouteProps> {
-  public static OptionName = "routes";
+  public static OptionName = 'routes';
+
   public static IsCollectionItem = true;
+
   public static ExpectedChildren = {
-    location: { optionName: "locations", isCollectionItem: true }
+    location: { optionName: 'locations', isCollectionItem: true },
   };
 }
 
@@ -185,9 +188,9 @@ class Route extends NestedOption<IRouteProps> {
 type ITooltipProps = React.PropsWithChildren<{
   isShown?: boolean;
   text?: string;
-}>
+}>;
 class Tooltip extends NestedOption<ITooltipProps> {
-  public static OptionName = "tooltip";
+  public static OptionName = 'tooltip';
 }
 
 export default Map;
@@ -205,8 +208,6 @@ export {
   Route,
   IRouteProps,
   Tooltip,
-  ITooltipProps
+  ITooltipProps,
 };
-import type * as MapTypes from 'devextreme/ui/map_types';
 export { MapTypes };
-

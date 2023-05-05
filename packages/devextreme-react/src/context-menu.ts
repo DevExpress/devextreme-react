@@ -1,20 +1,22 @@
-export { ExplicitTypes } from "devextreme/ui/context_menu";
 import dxContextMenu, {
-    Properties
-} from "devextreme/ui/context_menu";
+  Properties,
+} from 'devextreme/ui/context_menu';
 
-import * as PropTypes from "prop-types";
-import { Component as BaseComponent, IHtmlOptions } from "./core/component";
-import NestedOption from "./core/nested-option";
+import * as PropTypes from 'prop-types';
 
-import type { dxContextMenuItem } from "devextreme/ui/context_menu";
-import type { AnimationConfig, AnimationState } from "devextreme/animation/fx";
-import type { PositionConfig } from "devextreme/animation/position";
-import type { CollectionWidgetItem } from "devextreme/ui/collection/ui.collection_widget.base";
-import type { template } from "devextreme/core/templates/template";
+import type { dxContextMenuItem } from 'devextreme/ui/context_menu';
+import type { AnimationConfig, AnimationState } from 'devextreme/animation/fx';
+import type { PositionConfig } from 'devextreme/animation/position';
+import type { CollectionWidgetItem } from 'devextreme/ui/collection/ui.collection_widget.base';
+import type { template } from 'devextreme/core/templates/template';
+import type * as ContextMenuTypes from 'devextreme/ui/context_menu_types';
+import NestedOption from './core/nested-option';
+import { Component as BaseComponent, IHtmlOptions } from './core/component';
+
+export { ExplicitTypes } from 'devextreme/ui/context_menu';
 
 type IContextMenuOptions<TKey = any> = React.PropsWithChildren<Properties<TKey> & IHtmlOptions & {
-  dataSource?: Properties<TKey>["dataSource"];
+  dataSource?: Properties<TKey>['dataSource'];
   itemRender?: (...params: any) => React.ReactNode;
   itemComponent?: React.ComponentType<any>;
   itemKeyFn?: (data: any) => string;
@@ -24,39 +26,38 @@ type IContextMenuOptions<TKey = any> = React.PropsWithChildren<Properties<TKey> 
   onItemsChange?: (value: Array<dxContextMenuItem>) => void;
   onSelectedItemChange?: (value: any) => void;
   onVisibleChange?: (value: boolean) => void;
-}>
+}>;
 
 class ContextMenu<TKey = any> extends BaseComponent<React.PropsWithChildren<IContextMenuOptions<TKey>>> {
-
   public get instance(): dxContextMenu<TKey> {
     return this._instance;
   }
 
   protected _WidgetClass = dxContextMenu;
 
-  protected subscribableOptions = ["items","selectedItem","visible"];
+  protected subscribableOptions = ['items', 'selectedItem', 'visible'];
 
-  protected independentEvents = ["onContentReady","onDisposing","onHidden","onHiding","onInitialized","onItemClick","onItemContextMenu","onItemRendered","onPositioning","onShowing","onShown"];
+  protected independentEvents = ['onContentReady', 'onDisposing', 'onHidden', 'onHiding', 'onInitialized', 'onItemClick', 'onItemContextMenu', 'onItemRendered', 'onPositioning', 'onShowing', 'onShown'];
 
   protected _defaults = {
-    defaultItems: "items",
-    defaultSelectedItem: "selectedItem",
-    defaultVisible: "visible"
+    defaultItems: 'items',
+    defaultSelectedItem: 'selectedItem',
+    defaultVisible: 'visible',
   };
 
   protected _expectedChildren = {
-    animation: { optionName: "animation", isCollectionItem: false },
-    item: { optionName: "items", isCollectionItem: true },
-    position: { optionName: "position", isCollectionItem: false },
-    showEvent: { optionName: "showEvent", isCollectionItem: false },
-    showSubmenuMode: { optionName: "showSubmenuMode", isCollectionItem: false }
+    animation: { optionName: 'animation', isCollectionItem: false },
+    item: { optionName: 'items', isCollectionItem: true },
+    position: { optionName: 'position', isCollectionItem: false },
+    showEvent: { optionName: 'showEvent', isCollectionItem: false },
+    showSubmenuMode: { optionName: 'showSubmenuMode', isCollectionItem: false },
   };
 
   protected _templateProps = [{
-    tmplOption: "itemTemplate",
-    render: "itemRender",
-    component: "itemComponent",
-    keyFn: "itemKeyFn"
+    tmplOption: 'itemTemplate',
+    render: 'itemRender',
+    component: 'itemComponent',
+    keyFn: 'itemKeyFn',
   }];
 }
 (ContextMenu as any).propTypes = {
@@ -65,35 +66,35 @@ class ContextMenu<TKey = any> extends BaseComponent<React.PropsWithChildren<ICon
   animation: PropTypes.object,
   closeOnOutsideClick: PropTypes.oneOfType([
     PropTypes.bool,
-    PropTypes.func
+    PropTypes.func,
   ]),
   cssClass: PropTypes.string,
   disabled: PropTypes.bool,
   disabledExpr: PropTypes.oneOfType([
     PropTypes.func,
-    PropTypes.string
+    PropTypes.string,
   ]),
   displayExpr: PropTypes.oneOfType([
     PropTypes.func,
-    PropTypes.string
+    PropTypes.string,
   ]),
   elementAttr: PropTypes.object,
   focusStateEnabled: PropTypes.bool,
   height: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
+    PropTypes.string,
   ]),
   hideOnOutsideClick: PropTypes.oneOfType([
     PropTypes.bool,
-    PropTypes.func
+    PropTypes.func,
   ]),
   hint: PropTypes.string,
   hoverStateEnabled: PropTypes.bool,
   items: PropTypes.array,
   itemsExpr: PropTypes.oneOfType([
     PropTypes.func,
-    PropTypes.string
+    PropTypes.string,
   ]),
   onContentReady: PropTypes.func,
   onDisposing: PropTypes.func,
@@ -113,66 +114,66 @@ class ContextMenu<TKey = any> extends BaseComponent<React.PropsWithChildren<ICon
   selectByClick: PropTypes.bool,
   selectedExpr: PropTypes.oneOfType([
     PropTypes.func,
-    PropTypes.string
+    PropTypes.string,
   ]),
   selectionMode: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "single",
-      "none"])
+      'single',
+      'none']),
   ]),
   showEvent: PropTypes.oneOfType([
     PropTypes.object,
-    PropTypes.string
+    PropTypes.string,
   ]),
   showSubmenuMode: PropTypes.oneOfType([
     PropTypes.object,
     PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.oneOf([
-      "onClick",
-      "onHover"])
-  ])
+      PropTypes.string,
+      PropTypes.oneOf([
+        'onClick',
+        'onHover']),
+    ]),
   ]),
   submenuDirection: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "auto",
-      "left",
-      "right"])
+      'auto',
+      'left',
+      'right']),
   ]),
   tabIndex: PropTypes.number,
   visible: PropTypes.bool,
   width: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
-  ])
+    PropTypes.string,
+  ]),
 };
-
 
 // owners:
 // ContextMenu
 type IAnimationProps = React.PropsWithChildren<{
   hide?: AnimationConfig;
   show?: AnimationConfig;
-}>
+}>;
 class Animation extends NestedOption<IAnimationProps> {
-  public static OptionName = "animation";
+  public static OptionName = 'animation';
+
   public static ExpectedChildren = {
-    hide: { optionName: "hide", isCollectionItem: false },
-    show: { optionName: "show", isCollectionItem: false }
+    hide: { optionName: 'hide', isCollectionItem: false },
+    show: { optionName: 'show', isCollectionItem: false },
   };
 }
 
 // owners:
 // Position
 type IAtProps = React.PropsWithChildren<{
-  x?: "center" | "left" | "right";
-  y?: "bottom" | "center" | "top";
-}>
+  x?: 'center' | 'left' | 'right';
+  y?: 'bottom' | 'center' | 'top';
+}>;
 class At extends NestedOption<IAtProps> {
-  public static OptionName = "at";
+  public static OptionName = 'at';
 }
 
 // owners:
@@ -180,19 +181,19 @@ class At extends NestedOption<IAtProps> {
 type IBoundaryOffsetProps = React.PropsWithChildren<{
   x?: number;
   y?: number;
-}>
+}>;
 class BoundaryOffset extends NestedOption<IBoundaryOffsetProps> {
-  public static OptionName = "boundaryOffset";
+  public static OptionName = 'boundaryOffset';
 }
 
 // owners:
 // Position
 type ICollisionProps = React.PropsWithChildren<{
-  x?: "fit" | "flip" | "flipfit" | "none";
-  y?: "fit" | "flip" | "flipfit" | "none";
-}>
+  x?: 'fit' | 'flip' | 'flipfit' | 'none';
+  y?: 'fit' | 'flip' | 'flipfit' | 'none';
+}>;
 class Collision extends NestedOption<ICollisionProps> {
-  public static OptionName = "collision";
+  public static OptionName = 'collision';
 }
 
 // owners:
@@ -200,9 +201,9 @@ class Collision extends NestedOption<ICollisionProps> {
 type IDelayProps = React.PropsWithChildren<{
   hide?: number;
   show?: number;
-}>
+}>;
 class Delay extends NestedOption<IDelayProps> {
-  public static OptionName = "delay";
+  public static OptionName = 'delay';
 }
 
 // owners:
@@ -213,11 +214,12 @@ type IFromProps = React.PropsWithChildren<{
   position?: PositionConfig;
   scale?: number;
   top?: number;
-}>
+}>;
 class From extends NestedOption<IFromProps> {
-  public static OptionName = "from";
+  public static OptionName = 'from';
+
   public static ExpectedChildren = {
-    position: { optionName: "position", isCollectionItem: false }
+    position: { optionName: 'position', isCollectionItem: false },
   };
 }
 
@@ -226,20 +228,21 @@ class From extends NestedOption<IFromProps> {
 type IHideProps = React.PropsWithChildren<{
   complete?: (($element: any, config: AnimationConfig) => void);
   delay?: number;
-  direction?: "bottom" | "left" | "right" | "top";
+  direction?: 'bottom' | 'left' | 'right' | 'top';
   duration?: number;
   easing?: string;
   from?: AnimationState;
   staggerDelay?: number;
   start?: (($element: any, config: AnimationConfig) => void);
   to?: AnimationState;
-  type?: "css" | "fade" | "fadeIn" | "fadeOut" | "pop" | "slide" | "slideIn" | "slideOut";
-}>
+  type?: 'css' | 'fade' | 'fadeIn' | 'fadeOut' | 'pop' | 'slide' | 'slideIn' | 'slideOut';
+}>;
 class Hide extends NestedOption<IHideProps> {
-  public static OptionName = "hide";
+  public static OptionName = 'hide';
+
   public static ExpectedChildren = {
-    from: { optionName: "from", isCollectionItem: false },
-    to: { optionName: "to", isCollectionItem: false }
+    from: { optionName: 'from', isCollectionItem: false },
+    to: { optionName: 'to', isCollectionItem: false },
   };
 }
 
@@ -259,26 +262,28 @@ type IItemProps = React.PropsWithChildren<{
   render?: (...params: any) => React.ReactNode;
   component?: React.ComponentType<any>;
   keyFn?: (data: any) => string;
-}>
+}>;
 class Item extends NestedOption<IItemProps> {
-  public static OptionName = "items";
+  public static OptionName = 'items';
+
   public static IsCollectionItem = true;
+
   public static TemplateProps = [{
-    tmplOption: "template",
-    render: "render",
-    component: "component",
-    keyFn: "keyFn"
+    tmplOption: 'template',
+    render: 'render',
+    component: 'component',
+    keyFn: 'keyFn',
   }];
 }
 
 // owners:
 // Position
 type IMyProps = React.PropsWithChildren<{
-  x?: "center" | "left" | "right";
-  y?: "bottom" | "center" | "top";
-}>
+  x?: 'center' | 'left' | 'right';
+  y?: 'bottom' | 'center' | 'top';
+}>;
 class My extends NestedOption<IMyProps> {
-  public static OptionName = "my";
+  public static OptionName = 'my';
 }
 
 // owners:
@@ -286,40 +291,40 @@ class My extends NestedOption<IMyProps> {
 type IOffsetProps = React.PropsWithChildren<{
   x?: number;
   y?: number;
-}>
+}>;
 class Offset extends NestedOption<IOffsetProps> {
-  public static OptionName = "offset";
+  public static OptionName = 'offset';
 }
 
 // owners:
 // ContextMenu
 // From
 type IPositionProps = React.PropsWithChildren<{
-  at?: object | "bottom" | "center" | "left" | "left bottom" | "left top" | "right" | "right bottom" | "right top" | "top" | {
-    x?: "center" | "left" | "right";
-    y?: "bottom" | "center" | "top";
+  at?: object | 'bottom' | 'center' | 'left' | 'left bottom' | 'left top' | 'right' | 'right bottom' | 'right top' | 'top' | {
+    x?: 'center' | 'left' | 'right';
+    y?: 'bottom' | 'center' | 'top';
   };
   boundary?: any | string;
   boundaryOffset?: object | string | {
     x?: number;
     y?: number;
   };
-  collision?: object | "fit" | "fit flip" | "fit flipfit" | "fit none" | "flip" | "flip fit" | "flip none" | "flipfit" | "flipfit fit" | "flipfit none" | "none" | "none fit" | "none flip" | "none flipfit" | {
-    x?: "fit" | "flip" | "flipfit" | "none";
-    y?: "fit" | "flip" | "flipfit" | "none";
+  collision?: object | 'fit' | 'fit flip' | 'fit flipfit' | 'fit none' | 'flip' | 'flip fit' | 'flip none' | 'flipfit' | 'flipfit fit' | 'flipfit none' | 'none' | 'none fit' | 'none flip' | 'none flipfit' | {
+    x?: 'fit' | 'flip' | 'flipfit' | 'none';
+    y?: 'fit' | 'flip' | 'flipfit' | 'none';
   };
-  my?: object | "bottom" | "center" | "left" | "left bottom" | "left top" | "right" | "right bottom" | "right top" | "top" | {
-    x?: "center" | "left" | "right";
-    y?: "bottom" | "center" | "top";
+  my?: object | 'bottom' | 'center' | 'left' | 'left bottom' | 'left top' | 'right' | 'right bottom' | 'right top' | 'top' | {
+    x?: 'center' | 'left' | 'right';
+    y?: 'bottom' | 'center' | 'top';
   };
   of?: any | string;
   offset?: object | string | {
     x?: number;
     y?: number;
   };
-}>
+}>;
 class Position extends NestedOption<IPositionProps> {
-  public static OptionName = "position";
+  public static OptionName = 'position';
 }
 
 // owners:
@@ -327,17 +332,17 @@ class Position extends NestedOption<IPositionProps> {
 type IShowProps = React.PropsWithChildren<{
   complete?: (($element: any, config: AnimationConfig) => void);
   delay?: number;
-  direction?: "bottom" | "left" | "right" | "top";
+  direction?: 'bottom' | 'left' | 'right' | 'top';
   duration?: number;
   easing?: string;
   from?: AnimationState;
   staggerDelay?: number;
   start?: (($element: any, config: AnimationConfig) => void);
   to?: AnimationState;
-  type?: "css" | "fade" | "fadeIn" | "fadeOut" | "pop" | "slide" | "slideIn" | "slideOut";
-}>
+  type?: 'css' | 'fade' | 'fadeIn' | 'fadeOut' | 'pop' | 'slide' | 'slideIn' | 'slideOut';
+}>;
 class Show extends NestedOption<IShowProps> {
-  public static OptionName = "show";
+  public static OptionName = 'show';
 }
 
 // owners:
@@ -345,9 +350,9 @@ class Show extends NestedOption<IShowProps> {
 type IShowEventProps = React.PropsWithChildren<{
   delay?: number;
   name?: string;
-}>
+}>;
 class ShowEvent extends NestedOption<IShowEventProps> {
-  public static OptionName = "showEvent";
+  public static OptionName = 'showEvent';
 }
 
 // owners:
@@ -357,12 +362,13 @@ type IShowSubmenuModeProps = React.PropsWithChildren<{
     hide?: number;
     show?: number;
   };
-  name?: "onClick" | "onHover";
-}>
+  name?: 'onClick' | 'onHover';
+}>;
 class ShowSubmenuMode extends NestedOption<IShowSubmenuModeProps> {
-  public static OptionName = "showSubmenuMode";
+  public static OptionName = 'showSubmenuMode';
+
   public static ExpectedChildren = {
-    delay: { optionName: "delay", isCollectionItem: false }
+    delay: { optionName: 'delay', isCollectionItem: false },
   };
 }
 
@@ -374,9 +380,9 @@ type IToProps = React.PropsWithChildren<{
   position?: PositionConfig;
   scale?: number;
   top?: number;
-}>
+}>;
 class To extends NestedOption<IToProps> {
-  public static OptionName = "to";
+  public static OptionName = 'to';
 }
 
 export default ContextMenu;
@@ -412,8 +418,6 @@ export {
   ShowSubmenuMode,
   IShowSubmenuModeProps,
   To,
-  IToProps
+  IToProps,
 };
-import type * as ContextMenuTypes from 'devextreme/ui/context_menu_types';
 export { ContextMenuTypes };
-

@@ -1,59 +1,60 @@
-export { ExplicitTypes } from "devextreme/ui/tree_view";
 import dxTreeView, {
-    Properties
-} from "devextreme/ui/tree_view";
+  Properties,
+} from 'devextreme/ui/tree_view';
 
-import * as PropTypes from "prop-types";
-import { Component as BaseComponent, IHtmlOptions } from "./core/component";
-import NestedOption from "./core/nested-option";
+import * as PropTypes from 'prop-types';
 
-import type { dxTreeViewItem } from "devextreme/ui/tree_view";
-import type { dxButtonOptions } from "devextreme/ui/button";
-import type { CollectionWidgetItem } from "devextreme/ui/collection/ui.collection_widget.base";
-import type { template } from "devextreme/core/templates/template";
-import type { event, EventInfo, NativeEventInfo } from "devextreme/events/index";
-import type { Component } from "devextreme/core/component";
-import type { dxTextEditorButton } from "devextreme/ui/text_box/ui.text_editor.base";
+import type { dxTreeViewItem } from 'devextreme/ui/tree_view';
+import type { dxButtonOptions } from 'devextreme/ui/button';
+import type { CollectionWidgetItem } from 'devextreme/ui/collection/ui.collection_widget.base';
+import type { template } from 'devextreme/core/templates/template';
+import type { event, EventInfo, NativeEventInfo } from 'devextreme/events/index';
+import type { Component } from 'devextreme/core/component';
+import type { dxTextEditorButton } from 'devextreme/ui/text_box/ui.text_editor.base';
 
-import type dxButton from "devextreme/ui/button";
-import type DOMComponent from "devextreme/core/dom_component";
-import type Editor from "devextreme/ui/editor/editor";
+import type dxButton from 'devextreme/ui/button';
+import type DOMComponent from 'devextreme/core/dom_component';
+import type Editor from 'devextreme/ui/editor/editor';
+import type * as TreeViewTypes from 'devextreme/ui/tree_view_types';
+import NestedOption from './core/nested-option';
+import { Component as BaseComponent, IHtmlOptions } from './core/component';
+
+export { ExplicitTypes } from 'devextreme/ui/tree_view';
 
 type ITreeViewOptions<TKey = any> = React.PropsWithChildren<Properties<TKey> & IHtmlOptions & {
-  dataSource?: Properties<TKey>["dataSource"];
+  dataSource?: Properties<TKey>['dataSource'];
   itemRender?: (...params: any) => React.ReactNode;
   itemComponent?: React.ComponentType<any>;
   itemKeyFn?: (data: any) => string;
   defaultItems?: Array<dxTreeViewItem>;
   onItemsChange?: (value: Array<dxTreeViewItem>) => void;
-}>
+}>;
 
 class TreeView<TKey = any> extends BaseComponent<React.PropsWithChildren<ITreeViewOptions<TKey>>> {
-
   public get instance(): dxTreeView<TKey> {
     return this._instance;
   }
 
   protected _WidgetClass = dxTreeView;
 
-  protected subscribableOptions = ["items"];
+  protected subscribableOptions = ['items'];
 
-  protected independentEvents = ["onContentReady","onDisposing","onInitialized","onItemClick","onItemCollapsed","onItemContextMenu","onItemExpanded","onItemHold","onItemRendered","onSelectAllValueChanged"];
+  protected independentEvents = ['onContentReady', 'onDisposing', 'onInitialized', 'onItemClick', 'onItemCollapsed', 'onItemContextMenu', 'onItemExpanded', 'onItemHold', 'onItemRendered', 'onSelectAllValueChanged'];
 
   protected _defaults = {
-    defaultItems: "items"
+    defaultItems: 'items',
   };
 
   protected _expectedChildren = {
-    item: { optionName: "items", isCollectionItem: true },
-    searchEditorOptions: { optionName: "searchEditorOptions", isCollectionItem: false }
+    item: { optionName: 'items', isCollectionItem: true },
+    searchEditorOptions: { optionName: 'searchEditorOptions', isCollectionItem: false },
   };
 
   protected _templateProps = [{
-    tmplOption: "itemTemplate",
-    render: "itemRender",
-    component: "itemComponent",
-    keyFn: "itemKeyFn"
+    tmplOption: 'itemTemplate',
+    render: 'itemRender',
+    component: 'itemComponent',
+    keyFn: 'itemKeyFn',
   }];
 }
 (TreeView as any).propTypes = {
@@ -64,40 +65,40 @@ class TreeView<TKey = any> extends BaseComponent<React.PropsWithChildren<ITreeVi
   dataStructure: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "plain",
-      "tree"])
+      'plain',
+      'tree']),
   ]),
   disabled: PropTypes.bool,
   disabledExpr: PropTypes.oneOfType([
     PropTypes.func,
-    PropTypes.string
+    PropTypes.string,
   ]),
   displayExpr: PropTypes.oneOfType([
     PropTypes.func,
-    PropTypes.string
+    PropTypes.string,
   ]),
   elementAttr: PropTypes.object,
   expandAllEnabled: PropTypes.bool,
   expandedExpr: PropTypes.oneOfType([
     PropTypes.func,
-    PropTypes.string
+    PropTypes.string,
   ]),
   expandEvent: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "dblclick",
-      "click"])
+      'dblclick',
+      'click']),
   ]),
   expandNodesRecursive: PropTypes.bool,
   focusStateEnabled: PropTypes.bool,
   hasItemsExpr: PropTypes.oneOfType([
     PropTypes.func,
-    PropTypes.string
+    PropTypes.string,
   ]),
   height: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
+    PropTypes.string,
   ]),
   hint: PropTypes.string,
   hoverStateEnabled: PropTypes.bool,
@@ -105,11 +106,11 @@ class TreeView<TKey = any> extends BaseComponent<React.PropsWithChildren<ITreeVi
   items: PropTypes.array,
   itemsExpr: PropTypes.oneOfType([
     PropTypes.func,
-    PropTypes.string
+    PropTypes.string,
   ]),
   keyExpr: PropTypes.oneOfType([
     PropTypes.func,
-    PropTypes.string
+    PropTypes.string,
   ]),
   noDataText: PropTypes.string,
   onContentReady: PropTypes.func,
@@ -127,29 +128,29 @@ class TreeView<TKey = any> extends BaseComponent<React.PropsWithChildren<ITreeVi
   onSelectionChanged: PropTypes.func,
   parentIdExpr: PropTypes.oneOfType([
     PropTypes.func,
-    PropTypes.string
+    PropTypes.string,
   ]),
   rtlEnabled: PropTypes.bool,
   scrollDirection: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "both",
-      "horizontal",
-      "vertical"])
+      'both',
+      'horizontal',
+      'vertical']),
   ]),
   searchEditorOptions: PropTypes.object,
   searchEnabled: PropTypes.bool,
   searchExpr: PropTypes.oneOfType([
     PropTypes.array,
     PropTypes.func,
-    PropTypes.string
+    PropTypes.string,
   ]),
   searchMode: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "contains",
-      "startswith",
-      "equals"])
+      'contains',
+      'startswith',
+      'equals']),
   ]),
   searchTimeout: PropTypes.number,
   searchValue: PropTypes.string,
@@ -157,21 +158,21 @@ class TreeView<TKey = any> extends BaseComponent<React.PropsWithChildren<ITreeVi
   selectByClick: PropTypes.bool,
   selectedExpr: PropTypes.oneOfType([
     PropTypes.func,
-    PropTypes.string
+    PropTypes.string,
   ]),
   selectionMode: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "single",
-      "multiple"])
+      'single',
+      'multiple']),
   ]),
   selectNodesRecursive: PropTypes.bool,
   showCheckBoxesMode: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "none",
-      "normal",
-      "selectAll"])
+      'none',
+      'normal',
+      'selectAll']),
   ]),
   tabIndex: PropTypes.number,
   useNativeScrolling: PropTypes.bool,
@@ -180,23 +181,24 @@ class TreeView<TKey = any> extends BaseComponent<React.PropsWithChildren<ITreeVi
   width: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
-  ])
+    PropTypes.string,
+  ]),
 };
-
 
 // owners:
 // SearchEditorOptions
 type IButtonProps = React.PropsWithChildren<{
-  location?: "after" | "before";
+  location?: 'after' | 'before';
   name?: string;
   options?: dxButtonOptions;
-}>
+}>;
 class Button extends NestedOption<IButtonProps> {
-  public static OptionName = "buttons";
+  public static OptionName = 'buttons';
+
   public static IsCollectionItem = true;
+
   public static ExpectedChildren = {
-    options: { optionName: "options", isCollectionItem: false }
+    options: { optionName: 'options', isCollectionItem: false },
   };
 }
 
@@ -218,15 +220,17 @@ type IItemProps = React.PropsWithChildren<{
   render?: (...params: any) => React.ReactNode;
   component?: React.ComponentType<any>;
   keyFn?: (data: any) => string;
-}>
+}>;
 class Item extends NestedOption<IItemProps> {
-  public static OptionName = "items";
+  public static OptionName = 'items';
+
   public static IsCollectionItem = true;
+
   public static TemplateProps = [{
-    tmplOption: "template",
-    render: "render",
-    component: "component",
-    keyFn: "keyFn"
+    tmplOption: 'template',
+    render: 'render',
+    component: 'component',
+    keyFn: 'keyFn',
   }];
 }
 
@@ -249,11 +253,11 @@ type IOptionsProps = React.PropsWithChildren<{
   onInitialized?: ((e: { component: Component<any>, element: any }) => void);
   onOptionChanged?: ((e: { component: DOMComponent, element: any, fullName: string, model: any, name: string, previousValue: any, value: any }) => void);
   rtlEnabled?: boolean;
-  stylingMode?: "text" | "outlined" | "contained";
+  stylingMode?: 'text' | 'outlined' | 'contained';
   tabIndex?: number;
   template?: ((buttonData: { icon: string, text: string }, contentElement: any) => string) | template;
   text?: string;
-  type?: "back" | "danger" | "default" | "normal" | "success";
+  type?: 'back' | 'danger' | 'default' | 'normal' | 'success';
   useSubmitBehavior?: boolean;
   validationGroup?: string;
   visible?: boolean;
@@ -261,14 +265,15 @@ type IOptionsProps = React.PropsWithChildren<{
   render?: (...params: any) => React.ReactNode;
   component?: React.ComponentType<any>;
   keyFn?: (data: any) => string;
-}>
+}>;
 class Options extends NestedOption<IOptionsProps> {
-  public static OptionName = "options";
+  public static OptionName = 'options';
+
   public static TemplateProps = [{
-    tmplOption: "template",
-    render: "render",
-    component: "component",
-    keyFn: "keyFn"
+    tmplOption: 'template',
+    render: 'render',
+    component: 'component',
+    keyFn: 'keyFn',
   }];
 }
 
@@ -278,7 +283,7 @@ type ISearchEditorOptionsProps = React.PropsWithChildren<{
   accessKey?: string;
   activeStateEnabled?: boolean;
   bindingOptions?: object;
-  buttons?: Array<dxTextEditorButton | string | "clear">;
+  buttons?: Array<dxTextEditorButton | string | 'clear'>;
   disabled?: boolean;
   elementAttr?: object;
   focusStateEnabled?: boolean;
@@ -288,13 +293,13 @@ type ISearchEditorOptionsProps = React.PropsWithChildren<{
   inputAttr?: any;
   isValid?: boolean;
   label?: string;
-  labelMode?: "static" | "floating" | "hidden";
+  labelMode?: 'static' | 'floating' | 'hidden';
   mask?: string;
   maskChar?: string;
   maskInvalidMessage?: string;
   maskRules?: any;
   maxLength?: number | string;
-  mode?: "email" | "password" | "search" | "tel" | "text" | "url";
+  mode?: 'email' | 'password' | 'search' | 'tel' | 'text' | 'url';
   name?: string;
   onChange?: ((e: NativeEventInfo<any>) => void);
   onContentReady?: ((e: EventInfo<any>) => void);
@@ -315,31 +320,33 @@ type ISearchEditorOptionsProps = React.PropsWithChildren<{
   readOnly?: boolean;
   rtlEnabled?: boolean;
   showClearButton?: boolean;
-  showMaskMode?: "always" | "onFocus";
+  showMaskMode?: 'always' | 'onFocus';
   spellcheck?: boolean;
-  stylingMode?: "outlined" | "underlined" | "filled";
+  stylingMode?: 'outlined' | 'underlined' | 'filled';
   tabIndex?: number;
   text?: string;
   useMaskedValue?: boolean;
   validationError?: any;
   validationErrors?: Array<any>;
-  validationMessageMode?: "always" | "auto";
-  validationMessagePosition?: "bottom" | "left" | "right" | "top";
-  validationStatus?: "valid" | "invalid" | "pending";
+  validationMessageMode?: 'always' | 'auto';
+  validationMessagePosition?: 'bottom' | 'left' | 'right' | 'top';
+  validationStatus?: 'valid' | 'invalid' | 'pending';
   value?: string;
   valueChangeEvent?: string;
   visible?: boolean;
   width?: (() => number) | number | string;
   defaultValue?: string;
   onValueChange?: (value: string) => void;
-}>
+}>;
 class SearchEditorOptions extends NestedOption<ISearchEditorOptionsProps> {
-  public static OptionName = "searchEditorOptions";
+  public static OptionName = 'searchEditorOptions';
+
   public static DefaultsProps = {
-    defaultValue: "value"
+    defaultValue: 'value',
   };
+
   public static ExpectedChildren = {
-    button: { optionName: "buttons", isCollectionItem: true }
+    button: { optionName: 'buttons', isCollectionItem: true },
   };
 }
 
@@ -354,8 +361,6 @@ export {
   Options,
   IOptionsProps,
   SearchEditorOptions,
-  ISearchEditorOptionsProps
+  ISearchEditorOptionsProps,
 };
-import type * as TreeViewTypes from 'devextreme/ui/tree_view_types';
 export { TreeViewTypes };
-

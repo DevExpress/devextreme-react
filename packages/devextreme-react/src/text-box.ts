@@ -1,42 +1,42 @@
 import dxTextBox, {
-    Properties
-} from "devextreme/ui/text_box";
+  Properties,
+} from 'devextreme/ui/text_box';
 
-import * as PropTypes from "prop-types";
-import { Component as BaseComponent, IHtmlOptions } from "./core/component";
-import NestedOption from "./core/nested-option";
+import * as PropTypes from 'prop-types';
 
-import type { dxButtonOptions } from "devextreme/ui/button";
-import type { event, EventInfo } from "devextreme/events/index";
-import type { Component } from "devextreme/core/component";
-import type { template } from "devextreme/core/templates/template";
+import type { dxButtonOptions } from 'devextreme/ui/button';
+import type { event, EventInfo } from 'devextreme/events/index';
+import type { Component } from 'devextreme/core/component';
+import type { template } from 'devextreme/core/templates/template';
 
-import type dxButton from "devextreme/ui/button";
-import type DOMComponent from "devextreme/core/dom_component";
+import type dxButton from 'devextreme/ui/button';
+import type DOMComponent from 'devextreme/core/dom_component';
+import type * as TextBoxTypes from 'devextreme/ui/text_box_types';
+import NestedOption from './core/nested-option';
+import { Component as BaseComponent, IHtmlOptions } from './core/component';
 
 type ITextBoxOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
   defaultValue?: string;
   onValueChange?: (value: string) => void;
-}>
+}>;
 
 class TextBox extends BaseComponent<React.PropsWithChildren<ITextBoxOptions>> {
-
   public get instance(): dxTextBox {
     return this._instance;
   }
 
   protected _WidgetClass = dxTextBox;
 
-  protected subscribableOptions = ["value"];
+  protected subscribableOptions = ['value'];
 
-  protected independentEvents = ["onChange","onContentReady","onCopy","onCut","onDisposing","onEnterKey","onFocusIn","onFocusOut","onInitialized","onInput","onKeyDown","onKeyUp","onPaste","onValueChanged"];
+  protected independentEvents = ['onChange', 'onContentReady', 'onCopy', 'onCut', 'onDisposing', 'onEnterKey', 'onFocusIn', 'onFocusOut', 'onInitialized', 'onInput', 'onKeyDown', 'onKeyUp', 'onPaste', 'onValueChanged'];
 
   protected _defaults = {
-    defaultValue: "value"
+    defaultValue: 'value',
   };
 
   protected _expectedChildren = {
-    button: { optionName: "buttons", isCollectionItem: true }
+    button: { optionName: 'buttons', isCollectionItem: true },
   };
 }
 (TextBox as any).propTypes = {
@@ -49,7 +49,7 @@ class TextBox extends BaseComponent<React.PropsWithChildren<ITextBoxOptions>> {
   height: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
+    PropTypes.string,
   ]),
   hint: PropTypes.string,
   hoverStateEnabled: PropTypes.bool,
@@ -58,26 +58,26 @@ class TextBox extends BaseComponent<React.PropsWithChildren<ITextBoxOptions>> {
   labelMode: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "static",
-      "floating",
-      "hidden"])
+      'static',
+      'floating',
+      'hidden']),
   ]),
   mask: PropTypes.string,
   maskChar: PropTypes.string,
   maskInvalidMessage: PropTypes.string,
   maxLength: PropTypes.oneOfType([
     PropTypes.number,
-    PropTypes.string
+    PropTypes.string,
   ]),
   mode: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "email",
-      "password",
-      "search",
-      "tel",
-      "text",
-      "url"])
+      'email',
+      'password',
+      'search',
+      'tel',
+      'text',
+      'url']),
   ]),
   name: PropTypes.string,
   onChange: PropTypes.func,
@@ -102,16 +102,16 @@ class TextBox extends BaseComponent<React.PropsWithChildren<ITextBoxOptions>> {
   showMaskMode: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "always",
-      "onFocus"])
+      'always',
+      'onFocus']),
   ]),
   spellcheck: PropTypes.bool,
   stylingMode: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "outlined",
-      "underlined",
-      "filled"])
+      'outlined',
+      'underlined',
+      'filled']),
   ]),
   tabIndex: PropTypes.number,
   text: PropTypes.string,
@@ -120,23 +120,23 @@ class TextBox extends BaseComponent<React.PropsWithChildren<ITextBoxOptions>> {
   validationMessageMode: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "always",
-      "auto"])
+      'always',
+      'auto']),
   ]),
   validationMessagePosition: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "bottom",
-      "left",
-      "right",
-      "top"])
+      'bottom',
+      'left',
+      'right',
+      'top']),
   ]),
   validationStatus: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.oneOf([
-      "valid",
-      "invalid",
-      "pending"])
+      'valid',
+      'invalid',
+      'pending']),
   ]),
   value: PropTypes.string,
   valueChangeEvent: PropTypes.string,
@@ -144,23 +144,24 @@ class TextBox extends BaseComponent<React.PropsWithChildren<ITextBoxOptions>> {
   width: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
-  ])
+    PropTypes.string,
+  ]),
 };
-
 
 // owners:
 // TextBox
 type IButtonProps = React.PropsWithChildren<{
-  location?: "after" | "before";
+  location?: 'after' | 'before';
   name?: string;
   options?: dxButtonOptions;
-}>
+}>;
 class Button extends NestedOption<IButtonProps> {
-  public static OptionName = "buttons";
+  public static OptionName = 'buttons';
+
   public static IsCollectionItem = true;
+
   public static ExpectedChildren = {
-    options: { optionName: "options", isCollectionItem: false }
+    options: { optionName: 'options', isCollectionItem: false },
   };
 }
 
@@ -183,11 +184,11 @@ type IOptionsProps = React.PropsWithChildren<{
   onInitialized?: ((e: { component: Component<any>, element: any }) => void);
   onOptionChanged?: ((e: { component: DOMComponent, element: any, fullName: string, model: any, name: string, previousValue: any, value: any }) => void);
   rtlEnabled?: boolean;
-  stylingMode?: "text" | "outlined" | "contained";
+  stylingMode?: 'text' | 'outlined' | 'contained';
   tabIndex?: number;
   template?: ((buttonData: { icon: string, text: string }, contentElement: any) => string) | template;
   text?: string;
-  type?: "back" | "danger" | "default" | "normal" | "success";
+  type?: 'back' | 'danger' | 'default' | 'normal' | 'success';
   useSubmitBehavior?: boolean;
   validationGroup?: string;
   visible?: boolean;
@@ -195,14 +196,15 @@ type IOptionsProps = React.PropsWithChildren<{
   render?: (...params: any) => React.ReactNode;
   component?: React.ComponentType<any>;
   keyFn?: (data: any) => string;
-}>
+}>;
 class Options extends NestedOption<IOptionsProps> {
-  public static OptionName = "options";
+  public static OptionName = 'options';
+
   public static TemplateProps = [{
-    tmplOption: "template",
-    render: "render",
-    component: "component",
-    keyFn: "keyFn"
+    tmplOption: 'template',
+    render: 'render',
+    component: 'component',
+    keyFn: 'keyFn',
   }];
 }
 
@@ -213,8 +215,6 @@ export {
   Button,
   IButtonProps,
   Options,
-  IOptionsProps
+  IOptionsProps,
 };
-import type * as TextBoxTypes from 'devextreme/ui/text_box_types';
 export { TextBoxTypes };
-

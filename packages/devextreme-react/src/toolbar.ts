@@ -1,18 +1,20 @@
-export { ExplicitTypes } from "devextreme/ui/toolbar";
 import dxToolbar, {
-    Properties
-} from "devextreme/ui/toolbar";
+  Properties,
+} from 'devextreme/ui/toolbar';
 
-import * as PropTypes from "prop-types";
-import { Component as BaseComponent, IHtmlOptions } from "./core/component";
-import NestedOption from "./core/nested-option";
+import * as PropTypes from 'prop-types';
 
-import type { dxToolbarItem } from "devextreme/ui/toolbar";
-import type { template } from "devextreme/core/templates/template";
-import type { CollectionWidgetItem } from "devextreme/ui/collection/ui.collection_widget.base";
+import type { dxToolbarItem } from 'devextreme/ui/toolbar';
+import type { template } from 'devextreme/core/templates/template';
+import type { CollectionWidgetItem } from 'devextreme/ui/collection/ui.collection_widget.base';
+import type * as ToolbarTypes from 'devextreme/ui/toolbar_types';
+import NestedOption from './core/nested-option';
+import { Component as BaseComponent, IHtmlOptions } from './core/component';
+
+export { ExplicitTypes } from 'devextreme/ui/toolbar';
 
 type IToolbarOptions<TItem = any, TKey = any> = React.PropsWithChildren<Properties<TItem, TKey> & IHtmlOptions & {
-  dataSource?: Properties<TItem, TKey>["dataSource"];
+  dataSource?: Properties<TItem, TKey>['dataSource'];
   itemRender?: (...params: any) => React.ReactNode;
   itemComponent?: React.ComponentType<any>;
   itemKeyFn?: (data: any) => string;
@@ -21,38 +23,37 @@ type IToolbarOptions<TItem = any, TKey = any> = React.PropsWithChildren<Properti
   menuItemKeyFn?: (data: any) => string;
   defaultItems?: Array<any | dxToolbarItem | string>;
   onItemsChange?: (value: Array<any | dxToolbarItem | string>) => void;
-}>
+}>;
 
 class Toolbar<TItem = any, TKey = any> extends BaseComponent<React.PropsWithChildren<IToolbarOptions<TItem, TKey>>> {
-
   public get instance(): dxToolbar<TItem, TKey> {
     return this._instance;
   }
 
   protected _WidgetClass = dxToolbar;
 
-  protected subscribableOptions = ["items"];
+  protected subscribableOptions = ['items'];
 
-  protected independentEvents = ["onContentReady","onDisposing","onInitialized","onItemClick","onItemContextMenu","onItemHold","onItemRendered"];
+  protected independentEvents = ['onContentReady', 'onDisposing', 'onInitialized', 'onItemClick', 'onItemContextMenu', 'onItemHold', 'onItemRendered'];
 
   protected _defaults = {
-    defaultItems: "items"
+    defaultItems: 'items',
   };
 
   protected _expectedChildren = {
-    item: { optionName: "items", isCollectionItem: true }
+    item: { optionName: 'items', isCollectionItem: true },
   };
 
   protected _templateProps = [{
-    tmplOption: "itemTemplate",
-    render: "itemRender",
-    component: "itemComponent",
-    keyFn: "itemKeyFn"
+    tmplOption: 'itemTemplate',
+    render: 'itemRender',
+    component: 'itemComponent',
+    keyFn: 'itemKeyFn',
   }, {
-    tmplOption: "menuItemTemplate",
-    render: "menuItemRender",
-    component: "menuItemComponent",
-    keyFn: "menuItemKeyFn"
+    tmplOption: 'menuItemTemplate',
+    render: 'menuItemRender',
+    component: 'menuItemComponent',
+    keyFn: 'menuItemKeyFn',
   }];
 }
 (Toolbar as any).propTypes = {
@@ -77,10 +78,9 @@ class Toolbar<TItem = any, TKey = any> extends BaseComponent<React.PropsWithChil
   width: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.number,
-    PropTypes.string
-  ])
+    PropTypes.string,
+  ]),
 };
-
 
 // owners:
 // Toolbar
@@ -88,35 +88,37 @@ type IItemProps = React.PropsWithChildren<{
   cssClass?: string;
   disabled?: boolean;
   html?: string;
-  locateInMenu?: "always" | "auto" | "never";
-  location?: "after" | "before" | "center";
+  locateInMenu?: 'always' | 'auto' | 'never';
+  location?: 'after' | 'before' | 'center';
   menuItemTemplate?: (() => string) | template;
   options?: any;
-  showText?: "always" | "inMenu";
+  showText?: 'always' | 'inMenu';
   template?: ((itemData: CollectionWidgetItem, itemIndex: number, itemElement: any) => string) | template;
   text?: string;
   visible?: boolean;
-  widget?: "dxAutocomplete" | "dxButton" | "dxCheckBox" | "dxDateBox" | "dxMenu" | "dxSelectBox" | "dxTabs" | "dxTextBox" | "dxButtonGroup" | "dxDropDownButton";
+  widget?: 'dxAutocomplete' | 'dxButton' | 'dxCheckBox' | 'dxDateBox' | 'dxMenu' | 'dxSelectBox' | 'dxTabs' | 'dxTextBox' | 'dxButtonGroup' | 'dxDropDownButton';
   menuItemRender?: (...params: any) => React.ReactNode;
   menuItemComponent?: React.ComponentType<any>;
   menuItemKeyFn?: (data: any) => string;
   render?: (...params: any) => React.ReactNode;
   component?: React.ComponentType<any>;
   keyFn?: (data: any) => string;
-}>
+}>;
 class Item extends NestedOption<IItemProps> {
-  public static OptionName = "items";
+  public static OptionName = 'items';
+
   public static IsCollectionItem = true;
+
   public static TemplateProps = [{
-    tmplOption: "menuItemTemplate",
-    render: "menuItemRender",
-    component: "menuItemComponent",
-    keyFn: "menuItemKeyFn"
+    tmplOption: 'menuItemTemplate',
+    render: 'menuItemRender',
+    component: 'menuItemComponent',
+    keyFn: 'menuItemKeyFn',
   }, {
-    tmplOption: "template",
-    render: "render",
-    component: "component",
-    keyFn: "keyFn"
+    tmplOption: 'template',
+    render: 'render',
+    component: 'component',
+    keyFn: 'keyFn',
   }];
 }
 
@@ -125,8 +127,6 @@ export {
   Toolbar,
   IToolbarOptions,
   Item,
-  IItemProps
+  IItemProps,
 };
-import type * as ToolbarTypes from 'devextreme/ui/toolbar_types';
 export { ToolbarTypes };
-
