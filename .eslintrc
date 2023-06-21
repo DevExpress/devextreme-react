@@ -28,7 +28,15 @@
                "unschedule",
                "subscribable",
                "renderer",
-               "rerender"
+               "rerender",
+               "dx",
+               "descr",
+               "params",
+               "typings",
+               "wildcard",
+               "metadata",
+               "namespace",
+               "namespaces"
             ]
         }
     ]

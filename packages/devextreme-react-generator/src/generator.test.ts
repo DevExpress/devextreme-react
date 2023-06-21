@@ -11,6 +11,8 @@ import {
   createPropTyping,
   extractPropTypings,
   mapWidget,
+  createCustomTypeResolver,
+  ImportOverridesMetadata,
 } from './generator';
 
 describe('collectIndependentEvents', () => {
@@ -25,6 +27,8 @@ describe('collectIndependentEvents', () => {
             type: 'Function',
             acceptableValues: [],
             isCustomType: true,
+            importPath: '',
+            isImportedType: false,
           },
         ],
         props: [],
@@ -39,6 +43,8 @@ describe('collectIndependentEvents', () => {
             type: 'Function',
             acceptableValues: [],
             isCustomType: true,
+            importPath: '',
+            isImportedType: false,
           },
         ],
         props: [],
@@ -53,11 +59,15 @@ describe('collectIndependentEvents', () => {
             type: 'Function',
             acceptableValues: [],
             isCustomType: true,
+            importPath: '',
+            isImportedType: false,
           },
           {
             type: 'Number',
             acceptableValues: [],
             isCustomType: true,
+            importPath: '',
+            isImportedType: false,
           },
         ],
         props: [],
@@ -72,11 +82,15 @@ describe('collectIndependentEvents', () => {
             type: 'Function',
             acceptableValues: [],
             isCustomType: true,
+            importPath: '',
+            isImportedType: false,
           },
           {
             type: 'Number',
             acceptableValues: [],
             isCustomType: true,
+            importPath: '',
+            isImportedType: false,
           },
         ],
         props: [],
@@ -91,11 +105,15 @@ describe('collectIndependentEvents', () => {
             type: 'Function',
             acceptableValues: [],
             isCustomType: true,
+            importPath: '',
+            isImportedType: false,
           },
           {
             type: 'Number',
             acceptableValues: [],
             isCustomType: true,
+            importPath: '',
+            isImportedType: false,
           },
         ],
         props: [],
@@ -110,6 +128,8 @@ describe('collectIndependentEvents', () => {
             type: 'Function',
             acceptableValues: [],
             isCustomType: true,
+            importPath: '',
+            isImportedType: false,
           },
         ],
         props: [],
@@ -124,6 +144,8 @@ describe('collectIndependentEvents', () => {
             type: 'Function',
             acceptableValues: [],
             isCustomType: true,
+            importPath: '',
+            isImportedType: false,
           },
         ],
         props: [],
@@ -138,11 +160,15 @@ describe('collectIndependentEvents', () => {
             type: 'Function',
             acceptableValues: [],
             isCustomType: true,
+            importPath: '',
+            isImportedType: false,
           },
           {
             type: 'Number',
             acceptableValues: [],
             isCustomType: true,
+            importPath: '',
+            isImportedType: false,
           },
         ],
         props: [],
@@ -157,6 +183,8 @@ describe('collectIndependentEvents', () => {
             type: 'Function',
             acceptableValues: [],
             isCustomType: true,
+            importPath: '',
+            isImportedType: false,
           },
         ],
         props: [],
@@ -171,11 +199,15 @@ describe('collectIndependentEvents', () => {
             type: 'Function',
             acceptableValues: [],
             isCustomType: true,
+            importPath: '',
+            isImportedType: false,
           },
           {
             type: 'Number',
             acceptableValues: [],
             isCustomType: true,
+            importPath: '',
+            isImportedType: false,
           },
         ],
         props: [],
@@ -191,28 +223,32 @@ describe('collectIndependentEvents', () => {
 
 describe('collectSubscribableRecursively', () => {
   it('subscribable options', () => {
-    const options: IProp[] = [{
-      name: 'option1',
-      isSubscribable: true,
-      isDeprecated: false,
-      types: [],
-      props: [],
-      firedEvents: [],
-    }, {
-      name: 'option2',
-      isSubscribable: false,
-      isDeprecated: false,
-      types: [],
-      props: [],
-      firedEvents: [],
-    }, {
-      name: 'option3',
-      isSubscribable: true,
-      isDeprecated: false,
-      types: [],
-      props: [],
-      firedEvents: [],
-    }];
+    const options: IProp[] = [
+      {
+        name: 'option1',
+        isSubscribable: true,
+        isDeprecated: false,
+        types: [],
+        props: [],
+        firedEvents: [],
+      },
+      {
+        name: 'option2',
+        isSubscribable: false,
+        isDeprecated: false,
+        types: [],
+        props: [],
+        firedEvents: [],
+      },
+      {
+        name: 'option3',
+        isSubscribable: true,
+        isDeprecated: false,
+        types: [],
+        props: [],
+        firedEvents: [],
+      },
+    ];
 
     const subscribableOptions = collectSubscribableRecursively(options);
     expect(subscribableOptions.length).toBe(2);
@@ -229,21 +265,24 @@ describe('collectSubscribableRecursively', () => {
       props: [],
       firedEvents: [],
     };
-    const options: IProp[] = [{
-      name: 'option1',
-      isSubscribable: false,
-      isDeprecated: false,
-      types: [],
-      props: [subOption],
-      firedEvents: [],
-    }, {
-      name: 'option2',
-      isSubscribable: true,
-      isDeprecated: false,
-      types: [],
-      props: [subOption],
-      firedEvents: [],
-    }];
+    const options: IProp[] = [
+      {
+        name: 'option1',
+        isSubscribable: false,
+        isDeprecated: false,
+        types: [],
+        props: [subOption],
+        firedEvents: [],
+      },
+      {
+        name: 'option2',
+        isSubscribable: true,
+        isDeprecated: false,
+        types: [],
+        props: [subOption],
+        firedEvents: [],
+      },
+    ];
 
     const subscribableOptions = collectSubscribableRecursively(options);
     expect(subscribableOptions.length).toBe(3);
@@ -261,14 +300,16 @@ describe('collectSubscribableRecursively', () => {
 
 describe('mapSubscribableOption', () => {
   it('should work with subscribable option', () => {
-    expect(mapSubscribableOption({
-      name: 'option',
-      isSubscribable: true,
-      isDeprecated: false,
-      types: [],
-      props: [],
-      firedEvents: [],
-    })).toEqual({
+    expect(
+      mapSubscribableOption({
+        name: 'option',
+        isSubscribable: true,
+        isDeprecated: false,
+        types: [],
+        props: [],
+        firedEvents: [],
+      }),
+    ).toEqual({
       name: 'option',
       isSubscribable: true,
       type: 'any',
@@ -276,14 +317,16 @@ describe('mapSubscribableOption', () => {
   });
 
   it('should work with non-subscribable option', () => {
-    expect(mapSubscribableOption({
-      name: 'option',
-      isSubscribable: false,
-      isDeprecated: false,
-      types: [],
-      props: [],
-      firedEvents: [],
-    })).toEqual({
+    expect(
+      mapSubscribableOption({
+        name: 'option',
+        isSubscribable: false,
+        isDeprecated: false,
+        types: [],
+        props: [],
+        firedEvents: [],
+      }),
+    ).toEqual({
       name: 'option',
       isSubscribable: undefined,
       type: 'any',
@@ -293,44 +336,58 @@ describe('mapSubscribableOption', () => {
 
 describe('isNestedOptionArray', () => {
   it('should work', () => {
-    expect(isNestedOptionArray({
-      name: 'option',
-      isSubscribable: true,
-      isDeprecated: false,
-      types: [{
-        type: 'Array',
-        acceptableValues: [],
-        isCustomType: false,
-      }],
-      props: [],
-      firedEvents: [],
-    })).toBe(true);
+    expect(
+      isNestedOptionArray({
+        name: 'option',
+        isSubscribable: true,
+        isDeprecated: false,
+        types: [
+          {
+            type: 'Array',
+            acceptableValues: [],
+            isCustomType: false,
+            importPath: '',
+            isImportedType: false,
+          },
+        ],
+        props: [],
+        firedEvents: [],
+      }),
+    ).toBe(true);
   });
 
   it('should return false if "types" is empty array', () => {
-    expect(isNestedOptionArray({
-      name: 'option',
-      isSubscribable: true,
-      isDeprecated: false,
-      types: [],
-      props: [],
-      firedEvents: [],
-    })).toBe(false);
+    expect(
+      isNestedOptionArray({
+        name: 'option',
+        isSubscribable: true,
+        isDeprecated: false,
+        types: [],
+        props: [],
+        firedEvents: [],
+      }),
+    ).toBe(false);
   });
 
   it('should return false for non-array type', () => {
-    expect(isNestedOptionArray({
-      name: 'option',
-      isSubscribable: true,
-      isDeprecated: false,
-      types: [{
-        type: 'String',
-        acceptableValues: [],
-        isCustomType: false,
-      }],
-      props: [],
-      firedEvents: [],
-    })).toBe(false);
+    expect(
+      isNestedOptionArray({
+        name: 'option',
+        isSubscribable: true,
+        isDeprecated: false,
+        types: [
+          {
+            type: 'String',
+            acceptableValues: [],
+            isCustomType: false,
+            importPath: '',
+            isImportedType: false,
+          },
+        ],
+        props: [],
+        firedEvents: [],
+      }),
+    ).toBe(false);
   });
 });
 
@@ -357,31 +414,47 @@ describe('mapOption', () => {
       name: 'option',
       isSubscribable: false,
       isDeprecated: false,
-      types: [{
-        type: 'String',
-        acceptableValues: [],
-        isCustomType: false,
-      }, {
-        type: 'Number',
-        acceptableValues: [],
-        isCustomType: false,
-      }, {
-        type: 'MyType',
-        acceptableValues: [],
-        isCustomType: false,
-      }],
-      props: [{
-        name: 'prop1',
-        firedEvents: [],
-        isSubscribable: false,
-        isDeprecated: false,
-        props: [],
-        types: [{
+      types: [
+        {
+          type: 'String',
+          acceptableValues: [],
+          isCustomType: false,
+          importPath: '',
+          isImportedType: false,
+        },
+        {
           type: 'Number',
           acceptableValues: [],
           isCustomType: false,
-        }],
-      }],
+          importPath: '',
+          isImportedType: false,
+        },
+        {
+          type: 'MyType',
+          acceptableValues: [],
+          isCustomType: false,
+          importPath: '',
+          isImportedType: false,
+        },
+      ],
+      props: [
+        {
+          name: 'prop1',
+          firedEvents: [],
+          isSubscribable: false,
+          isDeprecated: false,
+          props: [],
+          types: [
+            {
+              type: 'Number',
+              acceptableValues: [],
+              isCustomType: false,
+              importPath: '',
+              isImportedType: false,
+            },
+          ],
+        },
+      ],
       firedEvents: [],
     };
 
@@ -389,11 +462,13 @@ describe('mapOption', () => {
       isArray: false,
       name: 'option',
       type: 'string | number',
-      nested: [{
-        isSubscribable: undefined,
-        name: 'prop1',
-        type: 'any',
-      }],
+      nested: [
+        {
+          isSubscribable: undefined,
+          name: 'prop1',
+          type: 'number',
+        },
+      ],
       isSubscribable: undefined,
     });
   });
@@ -404,21 +479,23 @@ describe('mapOption', () => {
       isSubscribable: false,
       isDeprecated: false,
       types: [],
-      props: [{
-        name: 'subOption',
-        isSubscribable: false,
-        isDeprecated: false,
-        types: [],
-        props: [],
-        firedEvents: [],
-      }],
+      props: [
+        {
+          name: 'subOption',
+          isSubscribable: false,
+          isDeprecated: false,
+          types: [],
+          props: [],
+          firedEvents: [],
+        },
+      ],
       firedEvents: [],
     };
 
     expect(mapOption(option)).toEqual({
       name: 'option',
       isSubscribable: undefined,
-      nested: option.props.map(mapOption),
+      nested: option.props.map((p) => mapOption(p)),
       isArray: isNestedOptionArray(option),
     });
   });
@@ -426,33 +503,33 @@ describe('mapOption', () => {
 
 describe('extractNestedComponents', () => {
   it('should work', () => {
-    const options = [{
-      isCollectionItem: false,
-      name: 'firstOption',
-      nesteds: [],
-      optionName: 'firstOptionName',
-      owners: ['widget', 'secondOption'],
-      predefinedProps: {},
-      props: [],
-      templates: [],
-    }, {
-      isCollectionItem: false,
-      name: 'secondOption',
-      nesteds: [],
-      optionName: 'secondOptionName',
-      owners: [],
-      predefinedProps: {},
-      props: [],
-      templates: [],
-    }];
+    const options = [
+      {
+        isCollectionItem: false,
+        name: 'firstOption',
+        nesteds: [],
+        optionName: 'firstOptionName',
+        owners: ['widget', 'secondOption'],
+        predefinedProps: {},
+        props: [],
+        templates: [],
+      },
+      {
+        isCollectionItem: false,
+        name: 'secondOption',
+        nesteds: [],
+        optionName: 'secondOptionName',
+        owners: [],
+        predefinedProps: {},
+        props: [],
+        templates: [],
+      },
+    ];
     const nestedComponent = extractNestedComponents(options, 'widget', 'DxWidget');
 
     expect(nestedComponent[0].className).toBe('FirstOption');
     expect(nestedComponent[0].expectedChildren).toBe(options[0].nesteds);
-    expect(nestedComponent[0].owners).toEqual([
-      'DxWidget',
-      'SecondOption',
-    ]);
+    expect(nestedComponent[0].owners).toEqual(['DxWidget', 'SecondOption']);
 
     expect(nestedComponent[1].className).toBe('SecondOption');
     expect(nestedComponent[1].expectedChildren).toBe(options[1].nesteds);
@@ -466,11 +543,16 @@ describe('createPropTyping', () => {
       name: 'SomeType',
       props: [],
       templates: [],
-      types: [{
-        type: 'String',
-        acceptableValues: [],
-        isCustomType: false,
-      }],
+      types: [
+        {
+          type: 'String',
+          acceptableValues: [],
+          isCustomType: false,
+          importPath: '',
+          isImportedType: false,
+        },
+      ],
+      module: '',
     },
   };
 
@@ -492,11 +574,15 @@ describe('createPropTyping', () => {
       name: 'option2',
       isSubscribable: false,
       isDeprecated: false,
-      types: [{
-        type: 'Array',
-        acceptableValues: [],
-        isCustomType: false,
-      }],
+      types: [
+        {
+          type: 'Array',
+          acceptableValues: [],
+          isCustomType: false,
+          importPath: '',
+          isImportedType: false,
+        },
+      ],
       props: [],
       firedEvents: [],
     };
@@ -514,11 +600,15 @@ describe('createPropTyping', () => {
       name: 'option3',
       isSubscribable: false,
       isDeprecated: false,
-      types: [{
-        type: 'CustomType',
-        acceptableValues: [],
-        isCustomType: true,
-      }],
+      types: [
+        {
+          type: 'CustomType',
+          acceptableValues: [],
+          isCustomType: true,
+          importPath: '',
+          isImportedType: false,
+        },
+      ],
       props: [],
       firedEvents: [],
     };
@@ -532,61 +622,76 @@ describe('createPropTyping', () => {
 
 describe('extractPropTypings', () => {
   it('should work', () => {
-    const options = [{
-      name: 'option1',
-      isSubscribable: false,
-      isDeprecated: false,
-      types: [],
-      props: [],
-      firedEvents: [],
-    }, {
-      name: 'option2',
-      isSubscribable: false,
-      isDeprecated: false,
-      types: [{
-        type: 'Array',
-        acceptableValues: [],
-        isCustomType: false,
-      }],
-      props: [],
-      firedEvents: [],
-    }, {
-      name: 'option3',
-      isSubscribable: false,
-      isDeprecated: false,
-      types: [{
-        type: 'CustomType',
-        acceptableValues: [],
-        isCustomType: true,
-      }],
-      props: [],
-      firedEvents: [],
-    }];
+    const options = [
+      {
+        name: 'option1',
+        isSubscribable: false,
+        isDeprecated: false,
+        types: [],
+        props: [],
+        firedEvents: [],
+      },
+      {
+        name: 'option2',
+        isSubscribable: false,
+        isDeprecated: false,
+        types: [
+          {
+            type: 'Array',
+            acceptableValues: [],
+            isCustomType: false,
+            importPath: '',
+            isImportedType: false,
+          },
+        ],
+        props: [],
+        firedEvents: [],
+      },
+      {
+        name: 'option3',
+        isSubscribable: false,
+        isDeprecated: false,
+        types: [
+          {
+            type: 'CustomType',
+            acceptableValues: [],
+            isCustomType: true,
+            importPath: '',
+            isImportedType: false,
+          },
+        ],
+        props: [],
+        firedEvents: [],
+      },
+    ];
     const customTypes = {
       CustomType: {
         name: 'SomeType',
         props: [],
         templates: [],
-        types: [{
-          type: 'String',
-          acceptableValues: [],
-          isCustomType: false,
-        }],
+        types: [
+          {
+            type: 'String',
+            acceptableValues: [],
+            isCustomType: false,
+            importPath: '',
+            isImportedType: false,
+          },
+        ],
+        module: '',
       },
     };
 
-    const expected = [{
-      propName: 'option2',
-      types: [
-        'array',
-      ],
-    }, {
-      propName: 'option3',
-      types: [
-        'object',
-        'string',
-      ],
-    }];
+    const expected = [
+      {
+        propName: 'option2',
+        types: ['array'],
+      },
+      {
+        propName: 'option3',
+        types: ['object', 'string'],
+      },
+    ];
 
     expect(extractPropTypings(options, customTypes)).toEqual(expected);
   });
@@ -608,86 +713,86 @@ describe('mapWidget', () => {
   };
 
   it('should rename widget', () => {
-    const { fileName, component } = mapWidget(
-      rawWidget,
-      '',
-      '',
-      '',
-      [],
-      '',
-    );
+    const { fileName, component } = mapWidget(rawWidget, '', '', '', [], '');
 
     expect(component.name).toBe('testWidget');
     expect(fileName).toBe('test-widget.ts');
   });
 
   it('should build export path', () => {
-    const { component } = mapWidget(
-      rawWidget,
-      '',
-      '',
-      '',
-      [],
-      'some-package',
-    );
+    const { component } = mapWidget(rawWidget, '', '', '', [], 'some-package');
 
     expect(component.dxExportPath).toBe('some-package/widget/index');
   });
 
   describe('options', () => {
-    const options: IProp[] = [{
-      name: 'option1',
-      isSubscribable: true,
-      isDeprecated: false,
-      types: [],
-      props: [],
-      firedEvents: [],
-    }, {
-      name: 'option2',
-      isSubscribable: false,
-      isDeprecated: false,
-      types: [],
-      props: [],
-      firedEvents: [],
-    }, {
-      name: 'option3',
-      isSubscribable: true,
-      isDeprecated: false,
-      types: [{
-        type: 'CustomType',
-        acceptableValues: [],
-        isCustomType: true,
-      }],
-      props: [],
-      firedEvents: [],
-    }];
+    const options: IProp[] = [
+      {
+        name: 'option1',
+        isSubscribable: true,
+        isDeprecated: false,
+        types: [],
+        props: [],
+        firedEvents: [],
+      },
+      {
+        name: 'option2',
+        isSubscribable: false,
+        isDeprecated: false,
+        types: [],
+        props: [],
+        firedEvents: [],
+      },
+      {
+        name: 'option3',
+        isSubscribable: true,
+        isDeprecated: false,
+        types: [
+          {
+            type: 'CustomType',
+            acceptableValues: [],
+            isCustomType: true,
+            importPath: '',
+            isImportedType: false,
+          },
+        ],
+        props: [],
+        firedEvents: [],
+      },
+    ];
 
-    const complexOptions: IComplexProp[] = [{
-      isCollectionItem: false,
-      name: 'complexOption1',
-      nesteds: [],
-      optionName: 'widgetComplexOption1',
-      owners: [],
-      predefinedProps: {},
-      props: [],
-      templates: [],
-    }, {
-      isCollectionItem: true,
-      name: 'complexOption2',
-      nesteds: [],
-      optionName: 'widgetComplexOption2',
-      owners: [],
-      predefinedProps: {},
-      props: [],
-      templates: [],
-    }];
+    const complexOptions: IComplexProp[] = [
+      {
+        isCollectionItem: false,
+        name: 'complexOption1',
+        nesteds: [],
+        optionName: 'widgetComplexOption1',
+        owners: [],
+        predefinedProps: {},
+        props: [],
+        templates: [],
+      },
+      {
+        isCollectionItem: true,
+        name: 'complexOption2',
+        nesteds: [],
+        optionName: 'widgetComplexOption2',
+        owners: [],
+        predefinedProps: {},
+        props: [],
+        templates: [],
+      },
+    ];
 
-    const customTypes = [{
-      name: 'CustomType',
-      props: [],
-      templates: [],
-      types: [],
-    }];
+    const customTypes = [
+      {
+        name: 'CustomType',
+        props: [],
+        templates: [],
+        types: [],
+        module: '',
+      },
+    ];
 
     const widgetWithOptions = {
       ...rawWidget,
@@ -695,57 +800,238 @@ describe('mapWidget', () => {
       complexOptions,
     };
 
-    it('should process subscribable options', () => {
-      const { component } = mapWidget(
-        widgetWithOptions,
-        '',
-        '',
-        '',
-        customTypes,
-        '',
-      );
+    const widgetWithCustomTypes = {
+      ...rawWidget,
+      options: [
+        {
+          name: 'option1',
+          isSubscribable: true,
+          isDeprecated: false,
+          types: [
+            {
+              type: 'CustomTypeWithModule',
+              acceptableValues: [],
+              isCustomType: true,
+              importPath: '',
+              isImportedType: false,
+            },
+          ],
+          props: [],
+          firedEvents: [],
+        },
+        {
+          name: 'option2',
+          isSubscribable: true,
+          isDeprecated: false,
+          types: [
+            {
+              type: 'CustomTypeWithoutModule',
+              acceptableValues: [],
+              isCustomType: true,
+              importPath: '',
+              isImportedType: false,
+            },
+          ],
+          props: [],
+          firedEvents: [],
+        },
+        {
+          name: 'option3',
+          isSubscribable: true,
+          isDeprecated: false,
+          types: [
+            {
+              type: 'CustomTypeWithTypeResolution',
+              acceptableValues: [],
+              isCustomType: true,
+              importPath: '',
+              isImportedType: false,
+            },
+          ],
+          props: [],
+          firedEvents: [],
+        },
+        {
+          name: 'option4',
+          isSubscribable: true,
+          isDeprecated: false,
+          types: [
+            {
+              type: 'CustomTypeWithNameConflict',
+              acceptableValues: [],
+              isCustomType: true,
+              importPath: '',
+              isImportedType: false,
+            },
+          ],
+          props: [],
+          firedEvents: [],
+        },
+        {
+          name: 'option5',
+          isSubscribable: true,
+          isDeprecated: false,
+          types: [
+            {
+              type: 'CustomTypeWithDefaultImport',
+              acceptableValues: [],
+              isCustomType: true,
+              importPath: '',
+              isImportedType: false,
+            },
+          ],
+          props: [],
+          firedEvents: [],
+        },
+        {
+          name: 'option6',
+          isSubscribable: true,
+          isDeprecated: false,
+          types: [
+            {
+              type: 'CustomGenericType',
+              acceptableValues: [],
+              isCustomType: true,
+              importPath: '',
+              isImportedType: false,
+            },
+          ],
+          props: [],
+          firedEvents: [],
+        },
+        {
+          name: 'optionThatConflictsWithComponent',
+          isSubscribable: true,
+          isDeprecated: false,
+          types: [
+            {
+              type: 'ComplexOption1',
+              acceptableValues: [],
+              isCustomType: true,
+              importPath: '',
+              isImportedType: false,
+            },
+          ],
+          props: [],
+          firedEvents: [],
+        },
+        {
+          name: 'optionThatConflictsWithComponent2',
+          isSubscribable: true,
+          isDeprecated: false,
+          types: [
+            {
+              type: 'ComplexOption2',
+              acceptableValues: [],
+              isCustomType: true,
+              importPath: '',
+              isImportedType: false,
+            },
+          ],
+          props: [],
+          firedEvents: [],
+        },
+      ],
+    };
 
-      expect(component.subscribableOptions).toEqual([{
-        name: 'option1',
-        isSubscribable: true,
-        type: 'any',
-      }, {
-        name: 'option3',
-        isSubscribable: true,
-        type: 'any',
-      }]);
+    const customTypesWithModules = [
+      {
+        name: 'CustomTypeWithModule',
+        props: [],
+        templates: [],
+        types: [],
+        module: 'custom/type/module',
+      },
+      {
+        name: 'CustomTypeWithoutModule',
+        props: [],
+        templates: [],
+        types: [],
+        module: '',
+      },
+      {
+        name: 'CustomTypeWithTypeResolution',
+        props: [],
+        templates: [],
+        types: [],
+        module: '',
+      },
+      {
+        name: 'CustomTypeWithNameConflict',
+        props: [],
+        templates: [],
+        types: [],
+        module: '',
+      },
+      {
+        name: 'CustomTypeWithDefaultImport',
+        props: [],
+        templates: [],
+        types: [],
+        module: '',
+      },
+      {
+        name: 'CustomGenericType',
+        props: [],
+        templates: [],
+        types: [],
+        module: '',
+      },
+      {
+        name: 'ComplexOption1',
+        props: [],
+        templates: [],
+        types: [],
+        module: 'complex/option/some_super-module',
+      },
+      {
+        name: 'ComplexOption2',
+        props: [],
+        templates: [],
+        types: [],
+        module: '',
+      },
+    ];
+
+    it('should process subscribable options', () => {
+      const { component } = mapWidget(widgetWithOptions, '', '', '', customTypes, '');
+
+      expect(component.subscribableOptions).toEqual([
+        {
+          name: 'option1',
+          isSubscribable: true,
+          type: 'any',
+        },
+        {
+          name: 'option3',
+          isSubscribable: true,
+          type: 'any',
+        },
+      ]);
     });
 
-    it('should process subscribable options', () => {
-      const { component } = mapWidget(
-        widgetWithOptions,
-        '',
-        '',
-        '',
-        customTypes,
-        '',
-      );
+    it('should process subscribable options with empty import overrides metadata', () => {
+      const { component } = mapWidget(widgetWithOptions, '', '', '', customTypes, '', {
+        generateCustomTypes: true,
+        importOverridesMetadata: {},
+      });
 
-      expect(component.subscribableOptions).toEqual([{
-        name: 'option1',
-        isSubscribable: true,
-        type: 'any',
-      }, {
-        name: 'option3',
-        isSubscribable: true,
-        type: 'any',
-      }]);
+      expect(component.subscribableOptions).toEqual([
+        {
+          name: 'option1',
+          isSubscribable: true,
+          type: 'any',
+        },
+        {
+          name: 'option3',
+          isSubscribable: true,
+          type: 'CustomType',
+        },
+      ]);
     });
 
     it('should process complex options', () => {
-      const { component } = mapWidget(
-        widgetWithOptions,
-        '',
-        '',
-        '',
-        customTypes,
-        '',
-      );
+      const { component } = mapWidget(widgetWithOptions, '', '', '', customTypes, '');
 
       expect(component.nestedComponents?.length).toBe(2);
       expect(component.nestedComponents?.[0].className).toBe('ComplexOption1');
@@ -753,26 +1039,134 @@ describe('mapWidget', () => {
       expect(component.nestedComponents?.[1].className).toBe('ComplexOption2');
       expect(component.nestedComponents?.[1].optionName).toBe('widgetComplexOption2');
     });
+    it('should resolve name conflicts in complex options', () => {
+      const importOverridesMetadata: ImportOverridesMetadata = {
+        importOverrides: {
+          ComplexOption2: 'yet/another/overidden/module',
+        },
+      };
+
+      const { component, customTypeImports } = mapWidget(
+        { ...widgetWithCustomTypes, complexOptions },
+        '',
+        '',
+        '',
+        customTypesWithModules,
+        '',
+        {
+          generateCustomTypes: true,
+          importOverridesMetadata,
+        },
+      );
+      expect(component.nestedComponents?.length).toBe(2);
+      expect(component.nestedComponents?.[0].className).toBe('ComplexOption1');
+      expect(component.nestedComponents?.[1].className).toBe('ComplexOption2');
+      expect(customTypeImports!['devextreme/complex/option/some_super-module']).toEqual([
+        'ComplexOption1 as SomeSuperModuleComplexOption1',
+      ]);
+      expect(customTypeImports!['yet/another/overidden/module']).toEqual([
+        'ComplexOption2 as AliasedComplexOption2',
+      ]);
+    });
+
+    it('should resolve name conflicts in complex options with overrides if present', () => {
+      const importOverridesMetadata: ImportOverridesMetadata = {
+        nameConflictsResolutionNamespaces: {
+          ComplexOption1: 'NamespaceForNestedComponentNamesConflict',
+        },
+      };
+
+      const { component, customTypeImports, wildcardTypeImports } = mapWidget(
+        { ...widgetWithCustomTypes, complexOptions },
+        '',
+        '',
+        '',
+        customTypesWithModules,
+        '',
+        {
+          generateCustomTypes: true,
+          importOverridesMetadata,
+        },
+      );
+      expect(component.nestedComponents?.length).toBe(2);
+      expect(component.nestedComponents?.[0].className).toBe('ComplexOption1');
+      expect(customTypeImports!['devextreme/complex/option/some_super-module']).toBeUndefined();
+      expect(wildcardTypeImports).toEqual({
+        'devextreme/complex/option/some_super-module': 'NamespaceForNestedComponentNamesConflict',
+      });
+    });
 
     it('should process custom types', () => {
-      const { component } = mapWidget(
-        widgetWithOptions,
+      const { component } = mapWidget(widgetWithOptions, '', '', '', customTypes, '');
+
+      expect(component.propTypings).toEqual([
+        {
+          propName: 'option3',
+          types: ['object'],
+        },
+      ]);
+    });
+    it('should process custom types with type resolver with overrides', () => {
+      const importOverridesMetadata: ImportOverridesMetadata = {
+        importOverrides: {
+          CustomTypeWithoutModule: 'overridden/module',
+          CustomTypeWithNameConflict: 'another/overridden/module',
+        },
+        genericTypes: {
+          CustomGenericType: {},
+        },
+        defaultImports: {
+          CustomTypeWithDefaultImport: 'module/with/default/import',
+        },
+        nameConflictsResolutionNamespaces: {
+          CustomTypeWithNameConflict: 'NoConflictNamespace',
+        },
+        typeResolutions: {
+          CustomTypeWithTypeResolution: 'CustomTypeWithModule',
+        },
+      };
+
+      const {
+        component, defaultTypeImports, wildcardTypeImports, customTypeImports,
+      } = mapWidget(
+        widgetWithCustomTypes,
         '',
         '',
         '',
-        customTypes,
+        customTypesWithModules,
         '',
+        {
+          generateCustomTypes: true,
+          importOverridesMetadata,
+        },
       );
 
-      expect(component.propTypings).toEqual([{
-        propName: 'option3',
-        types: ['object'],
-      }]);
+      const resultOptions = component.subscribableOptions!.reduce(
+        (result, option) => {
+          result[option.name] = option;
+          return result;
+        },
+        {},
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      ) as any;
+
+      expect(resultOptions.option1.type).toEqual('CustomTypeWithModule');
+      expect(resultOptions.option2.type).toEqual('CustomTypeWithoutModule');
+      expect(resultOptions.option3.type).toEqual('CustomTypeWithModule');
+      expect(resultOptions.option4.type).toEqual('NoConflictNamespace.CustomTypeWithNameConflict');
+      expect(resultOptions.option5.type).toEqual('CustomTypeWithDefaultImport');
+      expect(resultOptions.option6.type).toEqual('CustomGenericType<any>');
+      expect(customTypeImports!['devextreme/custom/type/module']).toEqual(['CustomTypeWithModule']);
+      expect(customTypeImports!['overridden/module']).toEqual(['CustomTypeWithoutModule']);
+      expect(defaultTypeImports).toEqual({
+        CustomTypeWithDefaultImport: 'module/with/default/import',
+      });
+      expect(wildcardTypeImports).toEqual({ 'another/overridden/module': 'NoConflictNamespace' });
     });
   });
   describe('convertToBaseType', () => {
     const types = ['Object', 'MyType', 'Number', 'String', 'Boolean', 'Any'];
-    const expected = ['object', undefined, 'number', 'string', 'boolean', 'any'];
+    const expected = ['Record<string, any>', undefined, 'number', 'string', 'boolean', 'any'];
 
     it('should return base types', () => {
       expect(types.map((t) => convertToBaseType(t))).toEqual(expected);
@@ -780,29 +1174,88 @@ describe('mapWidget', () => {
   });
 
   describe('getComplexOptionType', () => {
-    const types = [{
-      type: 'String',
-      acceptableValues: [],
-      isCustomType: false,
-    }, {
-      type: 'Number',
-      acceptableValues: [],
-      isCustomType: false,
-    }, {
-      type: 'Object',
-      acceptableValues: [],
-      isCustomType: false,
-    }, {
-      type: 'MyType',
-      acceptableValues: [],
-      isCustomType: true,
-    },
+    const types = [
+      {
+        type: 'String',
+        acceptableValues: [],
+        isCustomType: false,
+        importPath: '',
+        isImportedType: false,
+      },
+      {
+        type: 'Number',
+        acceptableValues: [],
+        isCustomType: false,
+        importPath: '',
+        isImportedType: false,
+
+      },
+      {
+        type: 'Object',
+        acceptableValues: [],
+        isCustomType: false,
+        importPath: '',
+        isImportedType: false,
+
+      },
+      {
+        type: 'MyType',
+        acceptableValues: [],
+        isCustomType: true,
+        importPath: '',
+        isImportedType: false,
+
+      },
     ];
 
-    const expected = 'string | number | object';
+    const expected = 'string | number | Record<string, any>';
 
     it('should return base types', () => {
       expect(getComplexOptionType(types)).toEqual(expected);
+    });
+  });
+
+  describe('getComplexOptionType with custom type resolver', () => {
+    const types = [
+      {
+        type: 'String',
+        acceptableValues: [],
+        isCustomType: false,
+        importPath: '',
+        isImportedType: false,
+
+      },
+      {
+        type: 'Number',
+        acceptableValues: [],
+        isCustomType: false,
+        importPath: '',
+        isImportedType: false,
+
+      },
+      {
+        type: 'Object',
+        acceptableValues: [],
+        isCustomType: false,
+        importPath: '',
+        isImportedType: false,
+
+      },
+      {
+        type: 'MyType',
+        acceptableValues: [],
+        isCustomType: true,
+        importPath: '',
+        isImportedType: false,
+
+      },
+    ];
+
+    const typeResolver = createCustomTypeResolver({}, {}, {});
+    const expected = 'string | number | Record<string, any> | MyType';
+
+    it('should return base types', () => {
+      expect(getComplexOptionType(types, typeResolver)).toEqual(expected);
     });
   });
 });
