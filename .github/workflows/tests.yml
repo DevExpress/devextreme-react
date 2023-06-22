@@ -26,19 +26,18 @@ jobs:
     - name: Clone devextreme repo
       run: test -d ../devextreme || git clone -b 23_2 https://github.com/devexpress/devextreme ../devextreme
 
-    - name: Use Node.js 15
+    - name: Use Node.js 18
       uses: actions/setup-node@v3
       with:
-        node-version: '15'
+        node-version: '18'
 
     - name: Install packages in devextreme repo
-      run: |
-        cd ../devextreme
-        npm install --no-audit --no-fund
+      working-directory: ../devextreme
+      run: npm i --no-audit --no-fund
+
     - name: Build devextreme repo
-      run: |
-        cd ../devextreme
-        npm run build-dist
+      working-directory: ../devextreme
+      run: npm run build-npm-devextreme
 
     - name: Install devextreme package
       run: |
