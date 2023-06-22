@@ -42,17 +42,13 @@ jobs:
 
     - name: Install devextreme package
       run: |
-        npx lerna@6 add devextreme@file:../devextreme/artifacts/npm/devextreme/ --dev --no-bootstrap --scope=devextreme-react --exact --peer
-        npx lerna@6 add devextreme@file:../devextreme/artifacts/npm/devextreme/ --no-bootstrap --scope=devextreme-react-sandbox --exact
+        npm i --save-dev ../devextreme/artifacts/npm/devextreme/ --workspace=devextreme-react --workspace=devextreme-react-sandbox
 
     - name: Run npm install
       run: npm install --no-audit --no-fund
 
     - name: Run devextreme-react-generator tests
-      run: npx lerna run --scope devextreme-react-generator test
-
-    - name: Run bootstrap
-      run: npm run bootstrap
+      run: npm run test --workspace=devextreme-react-generator
 
     - name: Run lint
       run: npm run lint
