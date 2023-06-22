@@ -39,9 +39,15 @@ jobs:
       working-directory: ../devextreme
       run: npm run build-npm-devextreme
 
+    - name: Pack DevExtreme
+      working-directory: ../devextreme/artifacts/npm/devextreme
+      run: |
+        npm pack
+        mv devextreme*.tgz devextreme.tgz
+
     - name: Install devextreme package
       run: |
-        npm i --save-dev ../devextreme/artifacts/npm/devextreme/ --workspace=devextreme-react --workspace=devextreme-react-sandbox
+        npm i --save-dev ../devextreme/artifacts/npm/devextreme/devextreme.tgz --workspace=devextreme-react --workspace=devextreme-react-sandbox
 
     - name: Run npm install
       run: npm install --no-audit --no-fund
