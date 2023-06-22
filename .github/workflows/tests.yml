@@ -47,10 +47,10 @@ jobs:
 
     - name: Install devextreme package
       run: |
-        npm i --save-dev ../devextreme/artifacts/npm/devextreme/devextreme.tgz --workspace=devextreme-react --workspace=devextreme-react-sandbox
+        npm i --save-dev ../devextreme/artifacts/npm/devextreme/devextreme.tgz --workspace=devextreme-react --workspace=devextreme-react-sandbox --no-audit --no-fund
 
     - name: Run npm install
-      run: npm install --no-audit --no-fund
+      run: npm i --no-audit --no-fund
 
     - name: Run devextreme-react-generator tests
       run: npm run test --workspace=devextreme-react-generator
