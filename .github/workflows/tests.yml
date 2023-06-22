@@ -42,8 +42,8 @@ jobs:
 
     - name: Install devextreme package
       run: |
-        npx lerna add devextreme@file:../devextreme/artifacts/npm/devextreme/ --dev --no-bootstrap --scope=devextreme-react --exact --peer
-        npx lerna add devextreme@file:../devextreme/artifacts/npm/devextreme/ --no-bootstrap --scope=devextreme-react-sandbox --exact
+        npx lerna@6 add devextreme@file:../devextreme/artifacts/npm/devextreme/ --dev --no-bootstrap --scope=devextreme-react --exact --peer
+        npx lerna@6 add devextreme@file:../devextreme/artifacts/npm/devextreme/ --no-bootstrap --scope=devextreme-react-sandbox --exact
 
     - name: Run npm install
       run: npm install --no-audit --no-fund
