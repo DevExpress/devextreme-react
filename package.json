@@ -53,5 +53,8 @@
     "devextreme",
     "devexpress"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "devextreme": "^23.1.3"
+  }
 }
