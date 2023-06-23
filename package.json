@@ -43,7 +43,7 @@
     "clean:packages": "npm run clean --workspaces --if-present",
     "clean:root": "del-cli node_modules",
     "start": "npm run update-integration-meta && npm run build && npm run start --workspace=devextreme-react-sandbox",
-    "build": "npm run update-integration-meta && npm run build && npm run lint",
+    "build": "npm run update-integration-meta && npm run build --workspaces --if-present && npm run lint",
     "lint": "gulp lint",
     "test": "npm run update-integration-meta && npm run build && jest --coverage",
     "test-watch": "jest --watch",
