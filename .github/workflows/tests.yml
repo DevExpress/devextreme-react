@@ -50,7 +50,7 @@ jobs:
         npm i --save-dev ../devextreme/artifacts/npm/devextreme/devextreme.tgz --workspace=devextreme-react --workspace=devextreme-react-sandbox --legacy-peer-deps --no-audit --no-fund
 
     - name: Run npm install
-      run: npm i --no-audit --no-fund
+      run: npm i --legacy-peer-deps --no-audit --no-fund
 
     - name: Run devextreme-react-generator tests
       run: npm run test --workspace=devextreme-react-generator
