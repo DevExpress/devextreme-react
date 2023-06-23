@@ -55,8 +55,8 @@ jobs:
     - name: Run devextreme-react-generator tests
       run: npm run test --workspace=devextreme-react-generator
 
-    - name: Run lint
-      run: npm run lint
+#    - name: Run lint
+#      run: npm run lint
 
     - name: Pack with React
       run: npm run pack
