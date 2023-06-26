@@ -26,33 +26,34 @@ jobs:
     - name: Clone devextreme repo
       run: test -d ../devextreme || git clone -b 23_1 https://github.com/devexpress/devextreme ../devextreme
 
-    - name: Use Node.js 15
+    - name: Use Node.js 18
       uses: actions/setup-node@v3
       with:
-        node-version: '15'
+        node-version: '18'
 
     - name: Install packages in devextreme repo
-      run: |
-        cd ../devextreme
-        npm install --no-audit --no-fund
+      working-directory: ../devextreme
+      run: npm i --no-audit --no-fund
+
     - name: Build devextreme repo
+      working-directory: ../devextreme
+      run: npm run build-npm-devextreme
+
+    - name: Pack DevExtreme
+      working-directory: ../devextreme/artifacts/npm/devextreme
       run: |
-        cd ../devextreme
-        npm run build-dist
+        npm pack
+        mv devextreme*.tgz devextreme.tgz
 
     - name: Install devextreme package
       run: |
-        npx lerna add devextreme@file:../devextreme/artifacts/npm/devextreme/ --dev --no-bootstrap --scope=devextreme-react --exact --peer
-        npx lerna add devextreme@file:../devextreme/artifacts/npm/devextreme/ --no-bootstrap --scope=devextreme-react-sandbox --exact
+        npm i --save-dev ../devextreme/artifacts/npm/devextreme/devextreme.tgz --workspace=devextreme-react --workspace=devextreme-react-sandbox --legacy-peer-deps --no-audit --no-fund
 
     - name: Run npm install
-      run: npm install --no-audit --no-fund
+      run: npm i --legacy-peer-deps --no-audit --no-fund
 
     - name: Run devextreme-react-generator tests
-      run: npx lerna run --scope devextreme-react-generator test
-
-    - name: Run bootstrap
-      run: npm run bootstrap
+      run: npm run test --workspace=devextreme-react-generator
 
     - name: Run lint
       run: npm run lint
