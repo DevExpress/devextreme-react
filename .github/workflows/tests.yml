@@ -36,18 +36,22 @@ jobs:
       run: npm i --no-audit --no-fund
 
     - name: Build devextreme repo
-      working-directory: ../devextreme
+      working-directory: ../devextreme/packages/devextreme
       run: npm run build-npm-devextreme
 
+    - name: Build devextreme repo
+      working-directory: ../devextreme/packages/devextreme
+      run: npm run discover-declarations
+
     - name: Pack DevExtreme
-      working-directory: ../devextreme/artifacts/npm/devextreme
+      working-directory: ../devextreme/packages/devextreme/artifacts/npm/devextreme
       run: |
         npm pack
         mv devextreme*.tgz devextreme.tgz
 
     - name: Install devextreme package
       run: |
-        npm i --save-dev ../devextreme/artifacts/npm/devextreme/devextreme.tgz --workspace=devextreme-react --workspace=devextreme-react-sandbox --legacy-peer-deps --no-audit --no-fund
+        npm i --save-dev ../devextreme/packages/devextreme/artifacts/npm/devextreme/devextreme.tgz --workspace=devextreme-react --workspace=devextreme-react-sandbox --legacy-peer-deps --no-audit --no-fund
 
     - name: Run npm install
       run: npm i --legacy-peer-deps --no-audit --no-fund
