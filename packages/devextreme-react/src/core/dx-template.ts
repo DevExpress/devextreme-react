@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import * as events from 'devextreme/events';
-import { DoubleKeyMap, generateID } from './helpers';
+import { generateID } from './helpers';
 import { ITemplateArgs } from './template';
 import { ITemplateWrapperProps, TemplateWrapper } from './template-wrapper';
 import { TemplatesStore } from './templates-store';
@@ -27,19 +27,18 @@ function createDxTemplate(
   templatesStore: TemplatesStore,
   keyFn?: (data: any) => string,
 ): IDxTemplate {
-  const renderedTemplates = new DoubleKeyMap<any, HTMLElement | null, string>();
+  const renderedTemplateMap = new Map<HTMLElement, string>();
 
   return {
     render: (data: IDxTemplateData) => {
       const container = unwrapElement(data.container);
-      const key = { key1: data.model, key2: container };
-      const prevTemplateId = renderedTemplates.get(key);
+      const prevTemplateId = renderedTemplateMap.get(container);
 
       let templateId: string;
 
       const onRemoved = (): void => {
         templatesStore.setDeferredRemove(templateId, true);
-        renderedTemplates.delete(key);
+        renderedTemplateMap.delete(container);
       };
 
       const _subscribeOnContainerRemoval = (): void => {
@@ -60,7 +59,7 @@ function createDxTemplate(
         templateId = keyFn ? keyFn(data.model) : `__template_${generateID()}`;
 
         if (data.model !== undefined) {
-          renderedTemplates.set(key, templateId);
+          renderedTemplateMap.set(container, templateId);
         }
       }
 
