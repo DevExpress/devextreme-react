@@ -52,6 +52,9 @@ jobs:
     - name: Run npm install
       run: npm i --legacy-peer-deps --no-audit --no-fund
 
+    - name: Build React generator
+      run: npm run build --workspace=devextreme-react-generator
+
     - name: Run devextreme-react-generator tests
       run: npm run test --workspace=devextreme-react-generator
 
