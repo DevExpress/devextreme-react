@@ -215,11 +215,10 @@ const renderModule: (model: {
 
 const renderImports: (model: {
   dxExportPath: string;
+  htmlOptionsPath: string;
   baseComponentPath: string;
   baseComponentName: string;
   widgetName: string;
-  optionsAliasName?: string;
-  hasExtraOptions: boolean;
   hasPropTypings: boolean;
   hasExplicitTypes: boolean;
   configComponentPath?: string;
@@ -232,18 +231,23 @@ const renderImports: (model: {
 + '<#?#>'
 
 + 'import <#= it.widgetName #>, {\n'
-+ '    Properties<#? it.optionsAliasName #> as <#= it.optionsAliasName #><#?#>\n'
++ '    Properties\n'
 + '} from "<#= it.dxExportPath #>";\n\n'
 
 + '<#? it.hasPropTypings #>'
     + 'import * as PropTypes from "prop-types";\n'
 + '<#?#>'
 
-+ 'import { <#= it.baseComponentName #> as BaseComponent'
-    + '<#? it.hasExtraOptions #>'
-        + ', IHtmlOptions'
-    + '<#?#>'
-+ ' } from "<#= it.baseComponentPath #>";\n'
++ '<#? it.htmlOptionsPath === it.baseComponentPath #>'
+
+  + 'import { <#= it.baseComponentName #> as BaseComponent, IHtmlOptions } from "<#= it.baseComponentPath #>";\n'
+
++ '<#??#>'
+
+  + 'import { <#= it.baseComponentName #> as BaseComponent } from "<#= it.baseComponentPath #>";\n'
+  + 'import { IHtmlOptions } from "<#= it.htmlOptionsPath #>";\n'
+
++ '<#?#>'
 
 + '<#? it.configComponentPath #>'
     + 'import NestedOption from "<#= it.configComponentPath #>";\n'
@@ -364,27 +368,35 @@ const renderOptionsInterface: (model: {
 + `type <#= it.optionsName #>NarrowedEvents${TYPE_PARAMS_WITH_DEFAULTS} = <#= it.renderedNarrowedEvents #>\n\n`
 + '<#?#>'
 
-+ `type <#= it.optionsName #>${TYPE_PARAMS_WITH_DEFAULTS} = React.PropsWithChildren<<#? it.renderedNarrowedEvents #>ReplaceFieldTypes<<#?#>Properties${TYPE_PARAMS}<#? it.renderedNarrowedEvents #>, <#= it.optionsName #>NarrowedEvents${TYPE_PARAMS}><#?#> & IHtmlOptions & {\n`
++ `type <#= it.optionsName #>${TYPE_PARAMS_WITH_DEFAULTS} = React.PropsWithChildren<<#? it.renderedNarrowedEvents #>ReplaceFieldTypes<<#?#>Properties${TYPE_PARAMS}<#? it.renderedNarrowedEvents #>, <#= it.optionsName #>NarrowedEvents${TYPE_PARAMS}><#?#> & IHtmlOptions`
 
-+ '<#? it.typeParams #>'
-    + `  dataSource?: Properties${TYPE_PARAMS}["dataSource"];\n`
++ '<#? it.typeParams || it.templates?.length || it.defaultProps?.length || it.onChangeEvents?.length #>'
+
+  + ' & {\n'
+
+  + '<#? it.typeParams #>'
+      + `  dataSource?: Properties${TYPE_PARAMS}["dataSource"];\n`
+  + '<#?#>'
+
+  + '<#~ it.templates :template #>'
+      + `  <#= template.render #>?: ${TYPE_RENDER};\n`
+      + `  <#= template.component #>?: ${TYPE_COMPONENT};\n`
+      + `  <#= template.keyFn #>?: ${TYPE_KEY_FN};\n`
+  + '<#~#>'
+
+  + '<#~ it.defaultProps :prop #>'
+      + '  <#= prop.name #>?: <#= prop.type #>;\n'
+  + '<#~#>'
+
+  + '<#~ it.onChangeEvents :prop #>'
+      + '  <#= prop.name #>?: <#= prop.type #>;\n'
+  + '<#~#>'
+
+  + '}'
+
 + '<#?#>'
 
-+ '<#~ it.templates :template #>'
-    + `  <#= template.render #>?: ${TYPE_RENDER};\n`
-    + `  <#= template.component #>?: ${TYPE_COMPONENT};\n`
-    + `  <#= template.keyFn #>?: ${TYPE_KEY_FN};\n`
-+ '<#~#>'
-
-+ '<#~ it.defaultProps :prop #>'
-    + '  <#= prop.name #>?: <#= prop.type #>;\n'
-+ '<#~#>'
-
-+ '<#~ it.onChangeEvents :prop #>'
-    + '  <#= prop.name #>?: <#= prop.type #>;\n'
-+ '<#~#>'
-
-+ '}>',
++ '>',
 );
 
 const renderComponent: (model: {
@@ -607,7 +619,6 @@ function generate(
     }))
     : undefined;
 
-  const hasExtraOptions = !component.isExtension;
   const widgetName = `dx${uppercaseFirst(component.name)}`;
 
   const renderedPropTypings = component.propTypings
@@ -623,13 +634,12 @@ function generate(
 
     renderedImports: renderImports({
       dxExportPath: component.dxExportPath,
+      htmlOptionsPath: component.baseComponentPath,
       baseComponentPath: component.isExtension
         ? component.extensionComponentPath
         : component.baseComponentPath,
       baseComponentName: component.isExtension ? 'ExtensionComponent' : 'Component',
       widgetName,
-      optionsAliasName: hasExtraOptions ? undefined : optionsName,
-      hasExtraOptions,
       hasPropTypings: isNotEmptyArray(renderedPropTypings),
       hasExplicitTypes,
       configComponentPath: isNotEmptyArray(nestedComponents)
@@ -640,7 +650,7 @@ function generate(
       wildcardTypeImports,
     }),
 
-    renderedOptionsInterface: !hasExtraOptions ? undefined : renderOptionsInterface({
+    renderedOptionsInterface: renderOptionsInterface({
       optionsName,
       defaultProps: defaultProps || [],
       onChangeEvents: onChangeEvents || [],
