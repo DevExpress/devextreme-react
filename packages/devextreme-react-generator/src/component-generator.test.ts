@@ -9,8 +9,7 @@ import dxCLASS_NAME, {
 
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 
-type ICLASS_NAMEOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
-}>
+type ICLASS_NAMEOptions = React.PropsWithChildren<Properties & IHtmlOptions>
 
 class CLASS_NAME extends BaseComponent<React.PropsWithChildren<ICLASS_NAMEOptions>> {
 
@@ -42,10 +41,13 @@ it('generates extension component', () => {
   // #region EXPECTED
   const EXPECTED = `
 import dxCLASS_NAME, {
-    Properties as ICLASS_NAMEOptions
+    Properties
 } from "DX/WIDGET/PATH";
 
 import { ExtensionComponent as BaseComponent } from "EXTENSION_COMPONENT_PATH";
+import { IHtmlOptions } from "BASE_COMPONENT_PATH";
+
+type ICLASS_NAMEOptions = React.PropsWithChildren<Properties & IHtmlOptions>
 
 class CLASS_NAME extends BaseComponent<React.PropsWithChildren<ICLASS_NAMEOptions>> {
 
@@ -457,8 +459,7 @@ import dxCLASS_NAME, {
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 import NestedOption from "CONFIG_COMPONENT_PATH";
 
-type ICLASS_NAMEOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
-}>
+type ICLASS_NAMEOptions = React.PropsWithChildren<Properties & IHtmlOptions>
 
 class CLASS_NAME extends BaseComponent<React.PropsWithChildren<ICLASS_NAMEOptions>> {
 
@@ -571,8 +572,7 @@ import dxCLASS_NAME, {
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 import NestedOption from "CONFIG_COMPONENT_PATH";
 
-type ICLASS_NAMEOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
-}>
+type ICLASS_NAMEOptions = React.PropsWithChildren<Properties & IHtmlOptions>
 
 class CLASS_NAME extends BaseComponent<React.PropsWithChildren<ICLASS_NAMEOptions>> {
 
@@ -639,8 +639,7 @@ import dxCLASS_NAME, {
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 import NestedOption from "CONFIG_COMPONENT_PATH";
 
-type ICLASS_NAMEOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
-}>
+type ICLASS_NAMEOptions = React.PropsWithChildren<Properties & IHtmlOptions>
 
 class CLASS_NAME extends BaseComponent<React.PropsWithChildren<ICLASS_NAMEOptions>> {
 
@@ -724,8 +723,7 @@ import dxCLASS_NAME, {
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 import NestedOption from "CONFIG_COMPONENT_PATH";
 
-type ICLASS_NAMEOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
-}>
+type ICLASS_NAMEOptions = React.PropsWithChildren<Properties & IHtmlOptions>
 
 class CLASS_NAME extends BaseComponent<React.PropsWithChildren<ICLASS_NAMEOptions>> {
 
@@ -800,8 +798,7 @@ import dxCLASS_NAME, {
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 import NestedOption from "CONFIG_COMPONENT_PATH";
 
-type ICLASS_NAMEOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
-}>
+type ICLASS_NAMEOptions = React.PropsWithChildren<Properties & IHtmlOptions>
 
 class CLASS_NAME extends BaseComponent<React.PropsWithChildren<ICLASS_NAMEOptions>> {
 
@@ -873,8 +870,7 @@ import dxCLASS_NAME, {
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 import NestedOption from "CONFIG_COMPONENT_PATH";
 
-type ICLASS_NAMEOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
-}>
+type ICLASS_NAMEOptions = React.PropsWithChildren<Properties & IHtmlOptions>
 
 class CLASS_NAME extends BaseComponent<React.PropsWithChildren<ICLASS_NAMEOptions>> {
 
@@ -966,8 +962,7 @@ import dxCLASS_NAME, {
 import * as PropTypes from "prop-types";
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 
-type ICLASS_NAMEOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
-}>
+type ICLASS_NAMEOptions = React.PropsWithChildren<Properties & IHtmlOptions>
 
 class CLASS_NAME extends BaseComponent<React.PropsWithChildren<ICLASS_NAMEOptions>> {
 
@@ -1014,8 +1009,7 @@ import dxCLASS_NAME, {
 import * as PropTypes from "prop-types";
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 
-type ICLASS_NAMEOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
-}>
+type ICLASS_NAMEOptions = React.PropsWithChildren<Properties & IHtmlOptions>
 
 class CLASS_NAME extends BaseComponent<React.PropsWithChildren<ICLASS_NAMEOptions>> {
 
@@ -1069,8 +1063,7 @@ import dxCLASS_NAME, {
 import * as PropTypes from "prop-types";
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 
-type ICLASS_NAMEOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
-}>
+type ICLASS_NAMEOptions = React.PropsWithChildren<Properties & IHtmlOptions>
 
 class CLASS_NAME extends BaseComponent<React.PropsWithChildren<ICLASS_NAMEOptions>> {
 
@@ -1120,8 +1113,7 @@ import dxCLASS_NAME, {
 import * as PropTypes from "prop-types";
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 
-type ICLASS_NAMEOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
-}>
+type ICLASS_NAMEOptions = React.PropsWithChildren<Properties & IHtmlOptions>
 
 class CLASS_NAME extends BaseComponent<React.PropsWithChildren<ICLASS_NAMEOptions>> {
 
@@ -1171,8 +1163,7 @@ import dxCLASS_NAME, {
 import * as PropTypes from "prop-types";
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 
-type ICLASS_NAMEOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
-}>
+type ICLASS_NAMEOptions = React.PropsWithChildren<Properties & IHtmlOptions>
 
 class CLASS_NAME extends BaseComponent<React.PropsWithChildren<ICLASS_NAMEOptions>> {
 
@@ -1238,8 +1229,7 @@ import dxCLASS_NAME, {
 
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 
-type ICLASS_NAMEOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
-}>
+type ICLASS_NAMEOptions = React.PropsWithChildren<Properties & IHtmlOptions>
 
 class CLASS_NAME extends BaseComponent<React.PropsWithChildren<ICLASS_NAMEOptions>> {
 
@@ -1286,8 +1276,7 @@ import dxCLASS_NAME, {
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 import NestedOption from "CONFIG_COMPONENT_PATH";
 
-type ICLASS_NAMEOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
-}>
+type ICLASS_NAMEOptions = React.PropsWithChildren<Properties & IHtmlOptions>
 
 class CLASS_NAME extends BaseComponent<React.PropsWithChildren<ICLASS_NAMEOptions>> {
 
@@ -1370,8 +1359,7 @@ type ICLASS_NAMEOptionsNarrowedEvents = {
   onSomethingHappened?: ((e: SomethingHappenedEvent) => void);
 }
 
-type ICLASS_NAMEOptions = React.PropsWithChildren<ReplaceFieldTypes<Properties, ICLASS_NAMEOptionsNarrowedEvents> & IHtmlOptions & {
-}>
+type ICLASS_NAMEOptions = React.PropsWithChildren<ReplaceFieldTypes<Properties, ICLASS_NAMEOptionsNarrowedEvents> & IHtmlOptions>
 
 class CLASS_NAME extends BaseComponent<React.PropsWithChildren<ICLASS_NAMEOptions>> {
 
@@ -1408,8 +1396,7 @@ import dxCLASS_NAME, {
 
 import { Component as BaseComponent, IHtmlOptions } from "BASE_COMPONENT_PATH";
 
-type ICLASS_NAMEOptions = React.PropsWithChildren<Properties & IHtmlOptions & {
-}>
+type ICLASS_NAMEOptions = React.PropsWithChildren<Properties & IHtmlOptions>
 
 class CLASS_NAME extends BaseComponent<React.PropsWithChildren<ICLASS_NAMEOptions>> {
 
