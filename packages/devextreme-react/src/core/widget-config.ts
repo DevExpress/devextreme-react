@@ -2,6 +2,7 @@ import { ITemplateMeta } from './template';
 
 const elementPropNames = ['style', 'id'];
 const classNamePropName = 'className';
+const refPropName = ['dropZone', 'dialogTrigger'];
 
 function isIgnoredProp(name: string) {
   return name === 'children' || name === classNamePropName || elementPropNames.indexOf(name) > -1;
@@ -30,20 +31,26 @@ function separateProps(
 
   Object.keys(props).forEach((key) => {
     const defaultOptionName = defaultsProps ? defaultsProps[key] : null;
+    const value = props[key];
 
     if (isIgnoredProp(key)) { return; }
 
     if (defaultOptionName) {
-      defaults[defaultOptionName] = props[key];
+      defaults[defaultOptionName] = value;
       return;
     }
 
     if (knownTemplates[key]) {
-      templates[key] = props[key];
+      templates[key] = value;
       return;
     }
 
-    options[key] = props[key];
+    if (refPropName.includes(key)) {
+      options[key] = value && value.current ? value.current : value;
+      return;
+    }
+
+    options[key] = value;
   });
 
   return { options, defaults, templates };
