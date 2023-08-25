@@ -139,9 +139,14 @@ export function getComplexOptionType(
         return `${p.name}: ${parameterType === BaseTypes.Object ? BaseTypes.Any : parameterType}`;
       })
         .join(', ') || '';
-      const returnType = (
-        functionDescriptor.returnValueType && (formatTypeDescriptor(functionDescriptor.returnValueType) || (functionDescriptor.returnValueType.type === 'void' && 'void'))
-      ) || BaseTypes.Any;
+      let returnType = '';
+      if (functionDescriptor.returnValueTypes) {
+        returnType = functionDescriptor.returnValueTypes.length > 1
+          ? functionDescriptor.returnValueTypes.map((t) => formatTypeDescriptor(t)).join(' | ')
+          : (formatTypeDescriptor(functionDescriptor.returnValueTypes[0]) || (functionDescriptor.returnValueTypes[0].type === 'void' && 'void')) || BaseTypes.Any;
+      } else {
+        returnType = BaseTypes.Any;
+      }
       return `(${parameters}) => ${returnType}`;
     }
 

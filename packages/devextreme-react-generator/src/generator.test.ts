@@ -1258,6 +1258,32 @@ describe('mapWidget', () => {
       expect(getComplexOptionType(types, typeResolver)).toEqual(expected);
     });
   });
+
+  describe('getComplexOptionType for func with multiple return types', () => {
+    const types = [
+      {
+        type: 'Function',
+        acceptableValues: [],
+        isCustomType: false,
+        importPath: '',
+        isImportedType: false,
+        params: [],
+        returnValueTypes: [{
+          type: 'String',
+        }, {
+          type: 'Number',
+        },
+        ],
+      },
+    ];
+
+    const expected = '(() => string | number)';
+
+    it('should return multiple types', () => {
+      expect(getComplexOptionType(types)).toEqual(expected);
+    });
+  });
+
   describe('getComplexOptionType for func with single return type', () => {
     const types = [
       {
@@ -1267,9 +1293,9 @@ describe('mapWidget', () => {
         importPath: '',
         isImportedType: false,
         params: [],
-        returnValueType: {
+        returnValueTypes: [{
           type: 'String',
-        },
+        }],
       },
     ];
 
@@ -1279,6 +1305,7 @@ describe('mapWidget', () => {
       expect(getComplexOptionType(types)).toEqual(expected);
     });
   });
+
   describe('getComplexOptionType for func with void return type', () => {
     const types = [
       {
@@ -1288,9 +1315,9 @@ describe('mapWidget', () => {
         importPath: '',
         isImportedType: false,
         params: [],
-        returnValueType: {
+        returnValueTypes: [{
           type: 'void',
-        },
+        }],
       },
     ];
 
@@ -1300,6 +1327,7 @@ describe('mapWidget', () => {
       expect(getComplexOptionType(types)).toEqual(expected);
     });
   });
+
   describe('getComplexOptionType for func with unknown IMD return type', () => {
     const types = [
       {
@@ -1309,9 +1337,9 @@ describe('mapWidget', () => {
         importPath: '',
         isImportedType: false,
         params: [],
-        returnValueType: {
+        returnValueTypes: [{
           type: 'UNKNOWN',
-        },
+        }],
       },
     ];
 
@@ -1321,6 +1349,7 @@ describe('mapWidget', () => {
       expect(getComplexOptionType(types)).toEqual(expected);
     });
   });
+
   describe('getComplexOptionType for func with empty returnValueTypes IMD', () => {
     const types = [
       {
