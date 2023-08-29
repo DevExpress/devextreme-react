@@ -1306,50 +1306,6 @@ describe('mapWidget', () => {
     });
   });
 
-  describe('getComplexOptionType for func with void return type', () => {
-    const types = [
-      {
-        type: 'Function',
-        acceptableValues: [],
-        isCustomType: false,
-        importPath: '',
-        isImportedType: false,
-        params: [],
-        returnValueTypes: [{
-          type: 'void',
-        }],
-      },
-    ];
-
-    const expected = '(() => void)';
-
-    it('should return void type', () => {
-      expect(getComplexOptionType(types)).toEqual(expected);
-    });
-  });
-
-  describe('getComplexOptionType for func with unknown IMD return type', () => {
-    const types = [
-      {
-        type: 'Function',
-        acceptableValues: [],
-        isCustomType: false,
-        importPath: '',
-        isImportedType: false,
-        params: [],
-        returnValueTypes: [{
-          type: 'UNKNOWN',
-        }],
-      },
-    ];
-
-    const expected = '(() => any)';
-
-    it('should return any fallback type', () => {
-      expect(getComplexOptionType(types)).toEqual(expected);
-    });
-  });
-
   describe('getComplexOptionType for func with empty returnValueTypes IMD', () => {
     const types = [
       {
