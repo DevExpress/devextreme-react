@@ -54,6 +54,7 @@ enum BaseTypes {
   Null = 'null',
   True = 'true',
   False = 'false',
+  void = 'void',
 }
 
 const UNKNOWN_MODULE = 'UNKNOWN_MODULE';
@@ -139,9 +140,9 @@ export function getComplexOptionType(
         return `${p.name}: ${parameterType === BaseTypes.Object ? BaseTypes.Any : parameterType}`;
       })
         .join(', ') || '';
-      const returnType = (
-        functionDescriptor.returnValueType && (formatTypeDescriptor(functionDescriptor.returnValueType) || (functionDescriptor.returnValueType.type === 'void' && 'void'))
-      ) || BaseTypes.Any;
+      const returnType = functionDescriptor.returnValueTypes
+        ? functionDescriptor.returnValueTypes.map((t) => formatTypeDescriptor(t)).join(' | ')
+        : BaseTypes.Any;
       return `(${parameters}) => ${returnType}`;
     }
 

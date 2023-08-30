@@ -1258,4 +1258,70 @@ describe('mapWidget', () => {
       expect(getComplexOptionType(types, typeResolver)).toEqual(expected);
     });
   });
+
+  describe('getComplexOptionType for func with multiple return types', () => {
+    const types = [
+      {
+        type: 'Function',
+        acceptableValues: [],
+        isCustomType: false,
+        importPath: '',
+        isImportedType: false,
+        params: [],
+        returnValueTypes: [{
+          type: 'String',
+        }, {
+          type: 'Number',
+        },
+        ],
+      },
+    ];
+
+    const expected = '(() => string | number)';
+
+    it('should return multiple types', () => {
+      expect(getComplexOptionType(types)).toEqual(expected);
+    });
+  });
+
+  describe('getComplexOptionType for func with single return type', () => {
+    const types = [
+      {
+        type: 'Function',
+        acceptableValues: [],
+        isCustomType: false,
+        importPath: '',
+        isImportedType: false,
+        params: [],
+        returnValueTypes: [{
+          type: 'String',
+        }],
+      },
+    ];
+
+    const expected = '(() => string)';
+
+    it('should return single type', () => {
+      expect(getComplexOptionType(types)).toEqual(expected);
+    });
+  });
+
+  describe('getComplexOptionType for func with empty returnValueTypes IMD', () => {
+    const types = [
+      {
+        type: 'Function',
+        acceptableValues: [],
+        isCustomType: false,
+        importPath: '',
+        isImportedType: false,
+        params: [],
+      },
+    ];
+
+    const expected = '(() => any)';
+
+    it('should return any fallback type', () => {
+      expect(getComplexOptionType(types)).toEqual(expected);
+    });
+  });
 });
