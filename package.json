@@ -48,7 +48,7 @@
     "test": "npm run update-integration-meta && npm run build && jest --coverage",
     "test-watch": "jest --watch",
     "pack": "npm run update-integration-meta && npm run pack --workspaces --if-present",
-    "update-integration-meta": "dx-tools integration-data-generator --js-scripts ../devextreme/packages/devextreme/js  --artifacts ../devextreme/packages/devextreme/artifacts/internal-tools --output-path ./packages/devextreme-react/metadata/integration-data.json --version 23_2"
+    "update-integration-meta": "dx-tools integration-data-generator --artifacts ../devextreme/artifacts/internal-tools --output-path ./packages/devextreme-react/metadata/integration-data.json --version 23_2"
   },
   "keywords": [
     "react",
