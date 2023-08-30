@@ -37,11 +37,11 @@ jobs:
 
     - name: Build devextreme repo
       working-directory: ../devextreme/packages/devextreme
-      run: npm run build-npm-devextreme
+      run: npm run build
 
-    - name: Build devextreme repo
-      working-directory: ../devextreme/packages/devextreme
-      run: npm run discover-declarations
+    - name: Discover declarations
+      working-directory: ../devextreme
+      run: npm run tools:discover-declarations
 
     - name: Pack DevExtreme
       working-directory: ../devextreme/packages/devextreme/artifacts/npm/devextreme
