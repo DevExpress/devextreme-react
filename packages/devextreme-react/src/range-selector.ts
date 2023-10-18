@@ -11,9 +11,8 @@ import type { chartPointAggregationInfoObject, chartSeriesObject, dxChartCommonS
 import type { ChartSeries } from "devextreme/viz/common";
 import type { ChartsColor, ScaleBreak } from "devextreme/common/charts";
 
-import type * as CommonChartTypes from "devextreme/common/charts";
+import type * as BaseWidgetTypes from "devextreme/common/charts";
 import type * as LocalizationTypes from "devextreme/localization";
-import type * as BaseWidgetTypes from "devextreme/viz/core/base_widget";
 
 type ReplaceFieldTypes<TSource, TReplacement> = {
   [P in keyof TSource]: P extends keyof TReplacement ? TReplacement[P] : TSource[P];

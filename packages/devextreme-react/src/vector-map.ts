@@ -13,7 +13,7 @@ import type { Store } from "devextreme/data/abstract_store";
 
 import type DataSource from "devextreme/data/data_source";
 
-import type * as BaseWidgetTypes from "devextreme/viz/core/base_widget";
+import type * as BaseWidgetTypes from "devextreme/common/charts";
 
 type ReplaceFieldTypes<TSource, TReplacement> = {
   [P in keyof TSource]: P extends keyof TReplacement ? TReplacement[P] : TSource[P];

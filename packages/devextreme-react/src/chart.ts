@@ -11,8 +11,7 @@ import type { template } from "devextreme/core/templates/template";
 import type { ScaleBreak, ChartsColor } from "devextreme/common/charts";
 import type { BaseChartLegendItem } from "devextreme/viz/chart_components/base_chart";
 
-import type * as CommonChartTypes from "devextreme/common/charts";
-import type * as BaseWidgetTypes from "devextreme/viz/core/base_widget";
+import type * as BaseWidgetTypes from "devextreme/common/charts";
 import type * as LocalizationTypes from "devextreme/localization";
 
 type ReplaceFieldTypes<TSource, TReplacement> = {
