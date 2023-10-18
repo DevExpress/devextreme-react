@@ -89,7 +89,6 @@
         "ValidationRule": "devextreme/common"
     },
     "nameConflictsResolutionNamespaces": {
-        "Font": "BaseWidgetTypes",
         "Format": "LocalizationTypes",
         "ValidationRule": "CommonTypes",
         "VisualRange": "CommonChartTypes"
