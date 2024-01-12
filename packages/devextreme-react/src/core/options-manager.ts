@@ -9,14 +9,18 @@ import type { IConfigNode } from './configuration/config-node';
 
 const optionsManagers = new Set<OptionsManager>();
 let guardTimeoutHandler = -1;
+let innerGuardTimeoutHandler = -1;
 
 export function unscheduleGuards(): void {
   clearTimeout(guardTimeoutHandler);
+  clearTimeout(innerGuardTimeoutHandler);
 }
 export function scheduleGuards(): void {
   unscheduleGuards();
   guardTimeoutHandler = window.setTimeout(() => {
-    optionsManagers.forEach((optionManager) => optionManager.execGuards());
+    innerGuardTimeoutHandler = window.setTimeout(() => {
+      optionsManagers.forEach((optionManager) => optionManager.execGuards());
+    });
   });
 }
 
