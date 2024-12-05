@@ -3,12 +3,12 @@
 [![Build Status](https://api.shippable.com/projects/5a9532d976382b0800e7a53c/badge?branch=master)](https://app.shippable.com/github/DevExpress/devextreme-react)
 [![NPM](https://img.shields.io/npm/v/devextreme-react.svg?maxAge=43200)](https://www.npmjs.com/package/devextreme-react)
 
-This project allows you to use [DevExtreme widgets](http://js.devexpress.com/Demos/WidgetsGallery/) in [React](https://reactjs.org) applications.
+This project allows you to use [DevExtreme components](http://js.devexpress.com/Demos/WidgetsGallery/) in [React](https://reactjs.org) applications.
 
 * [Documentation](https://js.devexpress.com/Documentation/Guide/React_Components/DevExtreme_React_Components/)
 * [Technical Demos](https://js.devexpress.com/Demos/WidgetsGallery/Demo/DataGrid/Overview/React/Light/)
-* [API Reference](http://js.devexpress.com/Documentation/ApiReference/)
-* [Live example](https://stackblitz.com/edit/devextreme-react)
+* [Responsive UI Templates](https://js.devexpress.com/React/Templates/UITemplates/)
+* [Application Template](https://js.devexpress.com/React/Documentation/Guide/React_Components/Application_Template/)
 
 ## License ##
 
