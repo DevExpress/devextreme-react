@@ -34,7 +34,7 @@
   "devDependencies": {
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.0.1",
-    "@types/dot": "^1.1.5",
+    "@types/dot": "^1.1.7",
     "@types/jest": "^22.2.3",
     "cpy-cli": "^3.1.1",
     "del-cli": "^3.0.1",
